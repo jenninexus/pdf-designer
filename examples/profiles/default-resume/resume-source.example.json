@@ -1,0 +1,65 @@
+{
+  "_meta": {
+    "description": "Example resume/company source vault. One entry per verified claim, each with provenance (source_file) and a confidence level, so tailored resumes only ever draw from source-backed facts instead of invented ones. Copy this file, replace every value with your own real, verifiable claims, and keep it out of version control if it contains anything private (see .gitignore). Multi-profile note: every claim carries an `applies_to` array naming which profile(s) may use it - see `examples/profiles/*/profile.json` for what each profile is. A claim missing a given profile's id must never appear in that profile's output, even if it's true.",
+    "applicant": "Jane Example",
+    "entity": "Example Studio LLC",
+    "profiles": {
+      "default-resume": "The single default example profile in this folder.",
+      "co-founder-solo": "A second, hypothetical solo profile for a co-founder applying alone - not built out here, referenced only to show how applies_to scopes a claim away from a profile it doesn't belong to."
+    },
+    "last_updated": "2026-01-01"
+  },
+  "claims": [
+    {
+      "source_id": "founder-role",
+      "person_or_entity": "Jane Example / Example Studio LLC",
+      "claim": "Founder and lead developer of Example Studio LLC, 2015-present; ships and maintains a small catalog of web and mobile games.",
+      "evidence_type": "resume",
+      "source_file": "path/to/your/resume.pdf",
+      "tags": ["founder", "leadership"],
+      "confidence": "source-backed",
+      "applies_to": ["default-resume"]
+    },
+    {
+      "source_id": "flagship-title",
+      "person_or_entity": "Example Studio LLC",
+      "claim": "Flagship Game Title is the studio's most popular release: browser multiplayer game distributed on Steam and itch.io.",
+      "evidence_type": "resume + internal ranking",
+      "source_file": "path/to/your/resume.pdf",
+      "tags": ["shipped-game", "flagship"],
+      "confidence": "source-backed",
+      "applies_to": ["default-resume", "co-founder-solo"]
+    },
+    {
+      "source_id": "toolset-gap-example",
+      "person_or_entity": "Jane Example",
+      "claim": "No verified production experience with Engine X yet. Do not claim it without separate verification.",
+      "evidence_type": "internal gap note",
+      "source_file": "path/to/your/job-listing-capture.md",
+      "tags": ["honest-gap"],
+      "confidence": "explicitly-unverified",
+      "applies_to": ["default-resume"]
+    },
+    {
+      "source_id": "education-example-scoped-out",
+      "person_or_entity": "Jane Example",
+      "claim": "Jane's own alma mater / personal education fact.",
+      "evidence_type": "resume",
+      "source_file": "path/to/your/resume.pdf",
+      "tags": ["education"],
+      "confidence": "source-backed",
+      "applies_to": ["default-resume"],
+      "note": "Worked example of the applies_to rule: this is real and true, but it's Jane's personal history, not the co-founder's - it's deliberately scoped to default-resume only so a hypothetical co-founder-solo profile never borrows it. The same pattern applies to any founder-specific fact (an engine you personally authored, a school only you attended, etc.) that shouldn't leak into a teammate's solo application."
+    },
+    {
+      "source_id": "generation-policy-example",
+      "person_or_entity": "Example Studio LLC",
+      "claim": "Generated resume text stays in one applicant voice, and target-employer names stay out of the resume body (they belong in the cover letter instead).",
+      "evidence_type": "internal policy",
+      "source_file": "path/to/your/policy-notes.md",
+      "tags": ["generation-policy", "tailoring-rule"],
+      "confidence": "policy",
+      "applies_to": ["default-resume", "co-founder-solo"]
+    }
+  ]
+}

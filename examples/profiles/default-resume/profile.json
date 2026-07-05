@@ -1,0 +1,44 @@
+{
+  "id": "default-resume",
+  "name": "Default Professional Resume",
+  "status": "ready",
+  "lastUpdated": "2026-07-04",
+  "description": "Single-voice, employer-neutral resume template: one applicant voice, flagship credits first, honest capability gaps, ATS-safe print styles.",
+  "theme": "default-professional",
+  "themeTokens": "../../../themes/default-professional.css",
+  "themeData": "../../../themes/default-theme.json",
+  "themeSync": {
+    "mode": "token-map",
+    "note": "External palette kits can be mapped into the default-theme.json token names, then mirrored into default-professional.css without changing Letter geometry."
+  },
+  "render": "default-resume.html",
+  "exampleData": "resume-source.example.json",
+  "includeFilter": { "applies_to": "default-resume" },
+  "layout": {
+    "paper": "Letter",
+    "widthIn": 8.5,
+    "heightIn": 11,
+    "printCssRequired": "@page { size: Letter; margin: ... }",
+    "screenPreview": "Use visible Letter-sized wrappers (8.5in x 11in) so page breaks can be reviewed before export.",
+    "footer": "Optional fixed print footer. Reserve bottom space through @page margins and page breaks."
+  },
+  "paths": {
+    "defaultExportDir": "_exports",
+    "note": "html_to_pdf.py writes here by default when no explicit output PDF is passed; use --output-dir or a full output path to override."
+  },
+  "exportModes": {
+    "lightPdf": "Default ATS-safe print mode.",
+    "darkPdf": "Run html_to_pdf.py with --pdf-theme dark; template must include html[data-pdf-theme=\"dark\"] print overrides.",
+    "bundlePdf": "Run merge_pdfs.py final-application.pdf cover-letter.pdf resume.pdf --require-letter when a portal accepts one upload.",
+    "png": "Render generated PDFs to page PNG files with pdf_to_png.py."
+  },
+  "sections": [
+    { "id": "header",       "title": "Header",           "data": "applicant + entity + contact links" },
+    { "id": "profile",      "title": "Profile",          "data": "one applicant voice, 3-5 sentence summary, no target-employer name" },
+    { "id": "capabilities", "title": "Core Capabilities","data": "grouped skill categories, pulled from vault claims" },
+    { "id": "credits",      "title": "Selected Credits", "data": "flagship items first (by your own ranking), then supporting credits" },
+    { "id": "about",        "title": "About",            "data": "single bio paragraph, same voice as Profile" },
+    { "id": "technology",   "title": "Technology",       "data": "stack list + an explicit honest-gap note for anything unverified" }
+  ],
+  "_note": "This profile's live reference render IS default-resume.html. resume-source.example.json documents the claim-vault schema this template's content should be tailored from — copy both, replace with your own verified claims, and keep the real copies out of version control (see ../../../.gitignore)."
+}

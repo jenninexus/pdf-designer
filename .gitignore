@@ -1,0 +1,44 @@
+# Personal workspace (contains private machine paths) — the .example version is tracked instead
+pdf-designer.code-workspace
+
+# Personal/private data — anything real (not *.example.*) that could name you, an employer,
+# or contain unverified/sensitive claims stays local only. Applies at the repo root AND inside
+# any examples/profiles/<your-id>/ folder you create from the default-resume template.
+private/
+notes/
+storage/
+resume-source.json
+**/resume-source.json
+job-listing-capture-*.md
+**/job-listing-capture-*.md
+!**/*.example.json
+!**/*.example.md
+
+# Generated output
+*.pdf
+*.png
+output/
+_exports/
+**/_exports/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/
+
+# Node (if a future browser-extension/UI layer is added)
+node_modules/
+dist/
+build/
+
+# Editor/OS cruft
+.DS_Store
+Thumbs.db
+.vscode/*.log
+
+# Secrets
+.env
+.env.*
+!.env.example

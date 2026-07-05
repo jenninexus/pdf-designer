@@ -1,0 +1,24 @@
+{
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    "git.enabled": true,
+    "files.exclude": {
+      "**/node_modules/**": true,
+      "**/__pycache__/**": true,
+      "**/*.pyc": true
+    },
+    "search.exclude": {
+      "**/storage/**": true,
+      "**/_exports/**": true
+    },
+    "python.analysis.typeCheckingMode": "basic",
+    "window.title": "PDF Designer - ${activeEditorShort}"
+  },
+  "extensions": {
+    "recommendations": ["ms-python.python"]
+  }
+}

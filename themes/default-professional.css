@@ -1,0 +1,169 @@
+/* ============================================================
+   Default Professional — pdf-designer theme.
+
+   Public, brand-neutral resume/cover-letter theme with two
+   intentional modes:
+   - dark: polished preview / branded PDF export
+   - light: ATS-safe print/submission export
+
+   The HTML->PDF exporter defaults to US Letter (8.5 x 11). Templates
+   should keep the @page rule explicit so browser print, Playwright PDF,
+   and downstream PNG exports share the same geometry.
+
+   See themes/default-theme.json for the same tokens as data.
+   Palette/design-sync tools should map their colors into these variable
+   names and leave the page geometry variables unchanged unless the
+   profile explicitly requests another paper size.
+   ============================================================ */
+
+:root {
+  color-scheme: dark;
+
+  --resume-paper: Letter;
+  --resume-page-width: 8.5in;
+  --resume-page-height: 11in;
+  --resume-page-margin-top: 0.5in;
+  --resume-page-margin-x: 0.55in;
+  --resume-page-margin-bottom: 0.78in;
+  --resume-footer-bottom: 0.25in;
+
+  --bg: #0b0d12;
+  --surface: #10131a;
+  --elevated: #171b24;
+  --elevated-2: #1f2430;
+
+  --text: rgba(240, 242, 246, 0.94);
+  --dim: rgba(240, 242, 246, 0.68);
+  --dim2: rgba(240, 242, 246, 0.44);
+
+  --border: rgba(79, 209, 201, 0.14);
+  --border2: rgba(79, 209, 201, 0.32);
+
+  --primary: #4fd1c9;
+  --secondary: #e3b559;
+  --accent: #9d8cd9;
+  --support: #6aa7ff;
+
+  --card-radius: 10px;
+  --card-radius-sm: 6px;
+  --sans: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --heading: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --mono: 'JetBrains Mono', ui-monospace, monospace;
+  --ats-safe: Arial, Helvetica, sans-serif;
+}
+
+:root[data-theme="light"],
+:root[data-pdf-theme="light"] {
+  color-scheme: light;
+
+  --bg: #f5f7fa;
+  --surface: #ffffff;
+  --elevated: #f0f3f7;
+  --elevated-2: #e8edf3;
+
+  --text: #171b24;
+  --dim: rgba(23, 27, 36, 0.72);
+  --dim2: rgba(23, 27, 36, 0.50);
+
+  --border: rgba(23, 27, 36, 0.14);
+  --border2: rgba(23, 27, 36, 0.28);
+
+  --primary: #087c78;
+  --secondary: #9b6a12;
+  --accent: #6f57c2;
+  --support: #2b65b8;
+}
+
+:root[data-theme="dark"],
+:root[data-pdf-theme="dark"] {
+  color-scheme: dark;
+
+  --bg: #0b0d12;
+  --surface: #10131a;
+  --elevated: #171b24;
+  --elevated-2: #1f2430;
+
+  --text: rgba(240, 242, 246, 0.94);
+  --dim: rgba(240, 242, 246, 0.68);
+  --dim2: rgba(240, 242, 246, 0.44);
+
+  --border: rgba(79, 209, 201, 0.14);
+  --border2: rgba(79, 209, 201, 0.32);
+
+  --primary: #4fd1c9;
+  --secondary: #e3b559;
+  --accent: #9d8cd9;
+  --support: #6aa7ff;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]):not([data-pdf-theme="dark"]) {
+    color-scheme: light;
+
+    --bg: #f5f7fa;
+    --surface: #ffffff;
+    --elevated: #f0f3f7;
+    --elevated-2: #e8edf3;
+
+    --text: #171b24;
+    --dim: rgba(23, 27, 36, 0.72);
+    --dim2: rgba(23, 27, 36, 0.50);
+
+    --border: rgba(23, 27, 36, 0.14);
+    --border2: rgba(23, 27, 36, 0.28);
+
+    --primary: #087c78;
+    --secondary: #9b6a12;
+    --accent: #6f57c2;
+    --support: #2b65b8;
+  }
+}
+
+@media print {
+  @page {
+    size: Letter;
+    margin: 0.5in 0.55in 0.78in;
+  }
+
+  :root {
+    color-scheme: light;
+
+    --bg: #ffffff;
+    --surface: #ffffff;
+    --elevated: #ffffff;
+    --elevated-2: #f3f5f8;
+
+    --text: #171b24;
+    --dim: rgba(23, 27, 36, 0.72);
+    --dim2: rgba(23, 27, 36, 0.50);
+
+    --border: rgba(23, 27, 36, 0.14);
+    --border2: rgba(23, 27, 36, 0.28);
+
+    --primary: #087c78;
+    --secondary: #9b6a12;
+    --accent: #6f57c2;
+    --support: #2b65b8;
+  }
+
+  html[data-pdf-theme="dark"] {
+    color-scheme: dark;
+
+    --bg: #0b0d12;
+    --surface: #10131a;
+    --elevated: #171b24;
+    --elevated-2: #1f2430;
+
+    --text: rgba(240, 242, 246, 0.94);
+    --dim: rgba(240, 242, 246, 0.68);
+    --dim2: rgba(240, 242, 246, 0.44);
+
+    --border: rgba(79, 209, 201, 0.14);
+    --border2: rgba(79, 209, 201, 0.32);
+
+    --primary: #4fd1c9;
+    --secondary: #e3b559;
+    --accent: #9d8cd9;
+    --support: #6aa7ff;
+  }
+}

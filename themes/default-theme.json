@@ -1,0 +1,174 @@
+{
+  "_meta": {
+    "description": "Default brand-neutral professional theme for pdf-designer resume and cover-letter templates.",
+    "version": "0.3.0",
+    "last_updated": "2026-07-05",
+    "css_mirror": "themes/default-professional.css",
+    "mode_contract": "Light and dark are both intentional. Default print/PDF is light for ATS/submission safety; `--pdf-theme dark` keeps the same Letter pagination while rendering the dark branded variant.",
+    "privacy_note": "This public theme is generalized and contains no personal brand names, private paths, or project-specific values."
+  },
+  "document": {
+    "paper": "Letter",
+    "width_in": 8.5,
+    "height_in": 11,
+    "playwright_format": "Letter",
+    "page_css": "@page { size: Letter; margin: 0.5in 0.55in 0.78in; }",
+    "print_geometry": {
+      "margin_top_in": 0.5,
+      "margin_x_in": 0.55,
+      "margin_bottom_in": 0.78,
+      "footer_bottom_in": 0.25
+    },
+    "footer_rule": "Fixed print footers are supported, but templates must reserve bottom space through @page margins and deliberate page breaks."
+  },
+  "paths": {
+    "default_export_dir": "_exports",
+    "html_to_pdf_default": "When no explicit output PDF is supplied, write under <html directory>/_exports/.",
+    "png_default": "When no explicit PNG output directory is supplied, write under <pdf directory>/_exports/<pdf-name>-png/.",
+    "override": "Use an explicit output path or --output-dir to target another folder."
+  },
+  "export_modes": {
+    "light_pdf": {
+      "purpose": "ATS-safe submission PDF and ordinary printing.",
+      "command": "python -m pdf_tool.html_to_pdf document.html",
+      "theme_selector": "default @media print"
+    },
+    "dark_pdf": {
+      "purpose": "Branded portfolio/review PDF using dark colors while preserving Letter geometry.",
+      "command": "python -m pdf_tool.html_to_pdf document.html --pdf-theme dark",
+      "theme_selector": "html[data-pdf-theme=\"dark\"]"
+    },
+    "png": {
+      "purpose": "Render any generated PDF to one PNG per page.",
+      "command": "python -m pdf_tool.pdf_to_png document.pdf"
+    },
+    "bundle_pdf": {
+      "purpose": "Combine exported documents, such as cover letter + resume, into one upload PDF.",
+      "command": "python -m pdf_tool.merge_pdfs final-application.pdf cover-letter.pdf resume.pdf --require-letter",
+      "validation": "Use --require-letter for resume/application bundles so every page remains US Letter 8.5 x 11."
+    }
+  },
+  "palette_sync": {
+    "source_of_truth": "themes/default-theme.json",
+    "css_mirror": "themes/default-professional.css",
+    "external_theme_kit_contract": "Map external palette tokens into the pdf-designer names below. Do not change document geometry during palette sync unless the profile explicitly opts into another paper size.",
+    "required_color_tokens": [
+      "primary",
+      "secondary",
+      "accent",
+      "support",
+      "bg",
+      "surface",
+      "elevated",
+      "text",
+      "dim",
+      "dim2",
+      "border",
+      "border2"
+    ],
+    "locked_geometry_tokens": [
+      "document.paper",
+      "document.width_in",
+      "document.height_in",
+      "document.print_geometry"
+    ]
+  },
+  "brand": {
+    "primary": "#4fd1c9",
+    "secondary": "#e3b559",
+    "accent": "#9d8cd9",
+    "support": "#6aa7ff",
+    "description": "Cool teal primary, restrained gold secondary, soft violet accent, and professional blue support. Generic enough for a public default while avoiding a single-hue palette."
+  },
+  "mode_summary": {
+    "light": {
+      "background": "#ffffff",
+      "surface": "#ffffff",
+      "text": "#171b24",
+      "primary": "#087c78",
+      "secondary": "#9b6a12",
+      "accent": "#6f57c2",
+      "use": "ATS-safe submission PDFs and ordinary print."
+    },
+    "dark": {
+      "background": "#0b0d12",
+      "surface": "#10131a",
+      "text": "rgba(240, 242, 246, 0.94)",
+      "primary": "#4fd1c9",
+      "secondary": "#e3b559",
+      "accent": "#9d8cd9",
+      "use": "Browser preview, branded PDF exports, and PNG preview artifacts."
+    }
+  },
+  "dark": {
+    "backgrounds": {
+      "body": "#0b0d12",
+      "surface": "#10131a",
+      "elevated": "#171b24",
+      "elevated_2": "#1f2430"
+    },
+    "text": {
+      "primary": "rgba(240, 242, 246, 0.94)",
+      "secondary": "rgba(240, 242, 246, 0.68)",
+      "muted": "rgba(240, 242, 246, 0.44)"
+    },
+    "borders": {
+      "subtle": "rgba(79, 209, 201, 0.14)",
+      "strong": "rgba(79, 209, 201, 0.32)"
+    },
+    "accents": {
+      "primary": "#4fd1c9",
+      "secondary": "#e3b559",
+      "accent": "#9d8cd9",
+      "support": "#6aa7ff"
+    },
+    "glass": {
+      "background": "rgba(11, 13, 18, 0.60)",
+      "border": "rgba(79, 209, 201, 0.14)"
+    }
+  },
+  "light": {
+    "backgrounds": {
+      "body": "#f5f7fa",
+      "surface": "#ffffff",
+      "elevated": "#f0f3f7",
+      "elevated_2": "#e8edf3"
+    },
+    "text": {
+      "primary": "#171b24",
+      "secondary": "rgba(23, 27, 36, 0.72)",
+      "muted": "rgba(23, 27, 36, 0.50)"
+    },
+    "borders": {
+      "subtle": "rgba(23, 27, 36, 0.14)",
+      "strong": "rgba(23, 27, 36, 0.28)"
+    },
+    "accents": {
+      "primary": "#087c78",
+      "secondary": "#9b6a12",
+      "accent": "#6f57c2",
+      "support": "#2b65b8"
+    }
+  },
+  "fonts": {
+    "heading_hub": "'Fraunces', Georgia, 'Times New Roman', serif",
+    "body_hub": "'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif",
+    "mono": "'JetBrains Mono', ui-monospace, monospace",
+    "ats_submission": "Arial, Helvetica, sans-serif",
+    "note": "Use heading_hub/body_hub for branded web previews. Use ats_submission for any resume or letter intended for ATS parsing."
+  },
+  "spacing": {
+    "xs": "4px",
+    "sm": "8px",
+    "md": "16px",
+    "lg": "24px",
+    "xl": "32px"
+  },
+  "borderRadius": {
+    "sm": "6px",
+    "md": "10px",
+    "lg": "14px",
+    "xl": "20px",
+    "full": "9999px"
+  }
+}
