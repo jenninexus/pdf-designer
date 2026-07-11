@@ -1,0 +1,40 @@
+{
+  "_meta": {
+    "description": "Default theme + canvas presets for pdf-designer collage layouts. Shares the brand palette with themes/default-resume.json; adds canvas presets and collage-specific tokens.",
+    "version": "0.1.0",
+    "last_updated": "2026-07-10",
+    "design_doc": "docs/COLLAGE-DESIGN.md",
+    "palette_source": "themes/default-resume.json#brand — one brand palette backs both document types."
+  },
+  "canvas_presets": {
+    "letter-portrait":     { "ratio": "8.5x11in", "width": 8.5,  "height": 11,   "unit": "in", "dpi": 300, "px": [2550, 3300], "use": "Print page, PDF one-sheet" },
+    "letter-landscape":    { "ratio": "11x8.5in", "width": 11,   "height": 8.5,  "unit": "in", "dpi": 300, "px": [3300, 2550], "use": "Print landscape" },
+    "hd-landscape":        { "ratio": "16:9", "px": [1920, 1080], "alt_px": [1280, 720],  "use": "YouTube thumbnail, slides, banners" },
+    "hd-portrait":         { "ratio": "9:16", "px": [1080, 1920], "alt_px": [720, 1280],  "use": "Stories, Reels, TikTok, Shorts" },
+    "standard-landscape":  { "ratio": "4:3",  "px": [1440, 1080], "use": "Classic photo layout" },
+    "standard-portrait":   { "ratio": "3:4",  "px": [1080, 1440], "use": "Portrait photo layout" },
+    "ig-portrait":         { "ratio": "4:5",  "px": [1080, 1350], "use": "Instagram portrait post" },
+    "square":              { "ratio": "1:1",  "px": [1024, 1024], "alt_px": [[1000, 1000], [512, 512]], "use": "Instagram square, avatars, thumbnails" }
+  },
+  "layout_families": [
+    "uniform-grid",
+    "hero-mosaic",
+    "masonry",
+    "filmstrip",
+    "spotlight-caption",
+    "frame-scatter"
+  ],
+  "tokens": {
+    "gutter_screen": "12px",
+    "gutter_print_in": 0.1,
+    "cell_radius": "10px",
+    "caption_font": "'Inter', ui-sans-serif, system-ui, sans-serif",
+    "caption_size": "12px",
+    "page_padding_screen": "24px",
+    "page_padding_print_in": 0.35
+  },
+  "modes": {
+    "dark": { "bg": "#0b0d12", "caption_text": "rgba(240,242,246,0.94)", "caption_dim": "rgba(240,242,246,0.68)", "cell_border": "rgba(79,209,201,0.14)" },
+    "light": { "bg": "#ffffff", "caption_text": "#171b24", "caption_dim": "rgba(23,27,36,0.72)", "cell_border": "rgba(23,27,36,0.14)" }
+  }
+}

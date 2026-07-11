@@ -20,4 +20,4 @@ Start with **option 1 (open core, MIT or Apache-2.0 for this repo)** unless ther
 
 ## Also relevant: internal-only theme sourcing
 
-The default theme (`themes/default-theme.json` / `default-professional.css`) was adapted from a private internal design-system pattern that is **not public** and not a dependency of this project. Keep any exact sourcing trail in gitignored local notes only. Nothing in this repo should link to or assume access to private design-system repositories; if that source becomes public later, this note is the place to revisit turning "adapted from" into a real reference/dependency.
+The default theme (`themes/default-resume.json` / `default-resume.css`) was adapted from a private internal design-system pattern that is **not public** and not a dependency of this project. Keep any exact sourcing trail in gitignored local notes only. Nothing in this repo should link to or assume access to private design-system repositories; if that source becomes public later, this note is the place to revisit turning "adapted from" into a real reference/dependency.

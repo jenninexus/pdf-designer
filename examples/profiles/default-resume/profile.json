@@ -4,12 +4,12 @@
   "status": "ready",
   "lastUpdated": "2026-07-04",
   "description": "Single-voice, employer-neutral resume template: one applicant voice, flagship credits first, honest capability gaps, ATS-safe print styles.",
-  "theme": "default-professional",
-  "themeTokens": "../../../themes/default-professional.css",
-  "themeData": "../../../themes/default-theme.json",
+  "theme": "default-resume",
+  "themeTokens": "../../../themes/default-resume.css",
+  "themeData": "../../../themes/default-resume.json",
   "themeSync": {
     "mode": "token-map",
-    "note": "External palette kits can be mapped into the default-theme.json token names, then mirrored into default-professional.css without changing Letter geometry."
+    "note": "External palette kits can be mapped into the default-resume.json token names, then mirrored into default-resume.css without changing Letter geometry."
   },
   "render": "default-resume.html",
   "exampleData": "resume-source.example.json",

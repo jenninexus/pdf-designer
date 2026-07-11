@@ -1,0 +1,22 @@
+{
+  "_schema": "Input file for a collage project. Copy to storage/collages/<project>/collage-source.json and fill in. See docs/COLLAGE-DESIGN.md.",
+  "imagesDir": "./images",
+  "images": [
+    { "file": "hero-shot.png", "caption": "Optional caption", "role": "hero" },
+    { "file": "detail-01.png" },
+    { "file": "detail-02.png" }
+  ],
+  "canvas": "letter-portrait",
+  "layout": "auto",
+  "hero": "hero-shot.png",
+  "text": [
+    { "type": "title", "content": "Project Showcase", "cell": "top" },
+    { "type": "card", "content": "One text block can occupy a grid cell — images and text mix in the spotlight-caption family.", "cell": "auto" }
+  ],
+  "theme": "dark",
+  "options": {
+    "gutter": "default",
+    "captions": false,
+    "background": "theme"
+  }
+}
