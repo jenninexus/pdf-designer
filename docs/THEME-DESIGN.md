@@ -7,8 +7,8 @@ profiles.
 
 Tracked default theme files:
 
-- `themes/default-theme.json` - token data and export contract.
-- `themes/default-professional.css` - CSS custom-property mirror.
+- `themes/default-resume.json` - token data and export contract.
+- `themes/default-resume.css` - CSS custom-property mirror.
 - `examples/profiles/default-resume/profile.json` - default resume profile.
 - `examples/profiles/default-resume/default-resume.html` - reference render.
 

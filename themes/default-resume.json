@@ -3,7 +3,7 @@
     "description": "Default brand-neutral professional theme for pdf-designer resume and cover-letter templates.",
     "version": "0.3.0",
     "last_updated": "2026-07-05",
-    "css_mirror": "themes/default-professional.css",
+    "css_mirror": "themes/default-resume.css",
     "mode_contract": "Light and dark are both intentional. Default print/PDF is light for ATS/submission safety; `--pdf-theme dark` keeps the same Letter pagination while rendering the dark branded variant.",
     "privacy_note": "This public theme is generalized and contains no personal brand names, private paths, or project-specific values."
   },
@@ -49,8 +49,8 @@
     }
   },
   "palette_sync": {
-    "source_of_truth": "themes/default-theme.json",
-    "css_mirror": "themes/default-professional.css",
+    "source_of_truth": "themes/default-resume.json",
+    "css_mirror": "themes/default-resume.css",
     "external_theme_kit_contract": "Map external palette tokens into the pdf-designer names below. Do not change document geometry during palette sync unless the profile explicitly opts into another paper size.",
     "required_color_tokens": [
       "primary",

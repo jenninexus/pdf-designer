@@ -10,7 +10,7 @@
    should keep the @page rule explicit so browser print, Playwright PDF,
    and downstream PNG exports share the same geometry.
 
-   See themes/default-theme.json for the same tokens as data.
+   See themes/default-resume.json for the same tokens as data.
    Palette/design-sync tools should map their colors into these variable
    names and leave the page geometry variables unchanged unless the
    profile explicitly requests another paper size.

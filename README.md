@@ -28,9 +28,12 @@ Not a SaaS. Your data stays on your machine. See [`docs/ARCHITECTURE.md`](docs/A
 - **`src/pdf_tool/html_to_pdf.py`** — render any HTML file to PDF with a real headless browser (Playwright + Chromium), so CSS grid/flex layout and `@media print` rules render exactly like a browser's own Print → Save as PDF.
 - **`src/pdf_tool/merge_pdfs.py`** — combine cover letters, resumes, and supporting PDFs into one upload bundle, with optional US Letter validation.
 - **`src/pdf_tool/pdf_to_png.py`** — render exported PDFs to one PNG per page for previews, review artifacts, or web images.
-- **`themes/default-professional.css`** (+ `default-theme.json` as the same tokens in data form) — a generic professional theme with intentional dark preview/brand-export mode, light ATS/submission mode, and US Letter print geometry.
+- **`themes/default-resume.css`** (+ `default-resume.json` as the same tokens in data form) — a generic professional theme with intentional dark preview/brand-export mode, light ATS/submission mode, and US Letter print geometry.
 - **`examples/profiles/default-resume/`** — a full example profile, mirroring the pattern below: `profile.json` (metadata + which theme/render/data it uses), `default-resume.html` (the reference render), `resume-source.example.json` (the claim-vault schema, one entry per verified fact).
 - **`examples/job-listing-capture.example.md`** — a template for capturing a job listing before tailoring anything toward it.
+- **`examples/applications/`** — the one-folder-per-job-application workflow: where to drop the listing link, screenshots, and gig details, and how to track what was actually submitted. Copy `example-application/` per gig.
+- **`examples/profiles/default-collage/`** + [`docs/COLLAGE-DESIGN.md`](docs/COLLAGE-DESIGN.md) — the multi-image collage layout profile (PowerPoint-Designer-style layout candidates from a directory of images). Scaffold + design SSOT today; `src/pdf_tool/collage.py` generator planned.
+- **`AGENTS.md`** — the machine/agent-facing capability map of this repo, for any AI coding assistant (not tied to one vendor).
 
 ### Profiles
 
@@ -38,7 +41,20 @@ Each use case (a resume, a specific cover-letter style, a different document typ
 
 ## What's planned
 
-AcroForm PDF field filling, flat-PDF overlay filling, job-listing keyword extraction, a match-score report (strong / partial / missing, with evidence links), resume tailoring from verified claims only, browser-form autofill mapping, and an optional React preview/customizer layer that can apply saved theme profiles through the token adapter contract. See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for the full roadmap.
+AcroForm PDF field filling, flat-PDF overlay filling, job-listing keyword extraction, a match-score report (strong / partial / missing, with evidence links), resume tailoring from verified claims only, browser-form autofill mapping, the collage layout generator (`pdf_tool/collage.py`, see [`docs/COLLAGE-DESIGN.md`](docs/COLLAGE-DESIGN.md)), and an optional React preview/customizer layer that can apply saved theme profiles through the token adapter contract. See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for the full roadmap.
+
+## Default canvas sizes
+
+Print documents default to **US Letter (8.5 × 11 in)**. Collage/image layouts additionally target the standard social canvases (preset data: [`themes/default-collage.json`](themes/default-collage.json), design notes: [`docs/COLLAGE-DESIGN.md`](docs/COLLAGE-DESIGN.md)):
+
+| Ratio | Pixels | Use |
+|---|---|---|
+| 8.5 × 11 in (portrait/landscape) | 2550 × 3300 @300dpi | Print / PDF one-sheet |
+| 16:9 | 1920 × 1080 or 1280 × 720 | YouTube, slides, banners |
+| 9:16 | 1080 × 1920 or 720 × 1280 | Stories, Reels, Shorts |
+| 4:3 / 3:4 | 1440 × 1080 / 1080 × 1440 | Classic photo layouts |
+| 4:5 | 1080 × 1350 | Instagram portrait post |
+| 1:1 | 1024 × 1024 (or 1000², 512²) | Instagram square, avatars |
 
 ## Quick start
 
@@ -97,13 +113,13 @@ The default theme intentionally defines both modes:
 
 ### Theme and palette sync
 
-`themes/default-theme.json` is the data SSOT and `themes/default-professional.css` is the CSS mirror. To use another palette system, map its tokens into the same names used here (`primary`, `secondary`, `accent`, `support`, `bg`, `surface`, `text`, `dim`, `border`) and keep the document geometry unchanged unless the target explicitly asks for another paper size. This lets external theme kits swap the look without changing resume layout, page breaks, or ATS-safe print behavior.
+`themes/default-resume.json` is the data SSOT and `themes/default-resume.css` is the CSS mirror. To use another palette system, map its tokens into the same names used here (`primary`, `secondary`, `accent`, `support`, `bg`, `surface`, `text`, `dim`, `border`) and keep the document geometry unchanged unless the target explicitly asks for another paper size. This lets external theme kits swap the look without changing resume layout, page breaks, or ATS-safe print behavior.
 
 ## Using this for your own resume/applications
 
 1. Copy `examples/profiles/default-resume/` to `examples/profiles/<your-id>/` (or anywhere outside the repo) and fill in `resume-source.example.json` → your own real, verifiable claims.
 2. Copy `examples/job-listing-capture.example.md` per job listing you're targeting.
-3. Adapt `default-resume.html` (or build your own) against `themes/default-professional.css`, keeping any target-employer-specific language in a separate cover letter, not the resume body.
+3. Adapt `default-resume.html` (or build your own) against `themes/default-resume.css`, keeping any target-employer-specific language in a separate cover letter, not the resume body.
 4. Render to PDF with `html_to_pdf.py`.
 
 Keep your real, filled-in files out of version control unless you deliberately want them public — see `.gitignore` (it already ignores non-`.example.` resume-source/job-listing files).

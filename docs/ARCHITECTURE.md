@@ -22,6 +22,8 @@ pdf-designer/
       __init__.py
       html_to_pdf.py         (done — Playwright-based HTML → PDF export)
       merge_pdfs.py          (done — bundle PDFs with optional Letter validation)
+      pdf_to_png.py          (done — render PDF pages to PNG previews)
+      collage.py             (planned — multi-image layout candidates from an image directory; see COLLAGE-DESIGN.md)
       inspect_pdf.py         (planned — detect AcroForm fields vs. flat/scanned PDFs)
       fill_pdf.py            (planned — AcroForm field fill)
       overlay.py             (planned — ReportLab overlay merge for flat PDFs)
@@ -36,14 +38,22 @@ pdf-designer/
       submission_log.py      (planned — track what was submitted where, with which resume version)
   examples/
     job-listing-capture.example.md
+    applications/            (one-folder-per-job-application workflow + copyable template)
+      README.md
+      example-application/
     profiles/
       default-resume/
         profile.json         (metadata: which theme/render/data this profile uses)
         default-resume.html  (reference render)
         resume-source.example.json
+      default-collage/       (multi-image collage layouts — see COLLAGE-DESIGN.md)
+        profile.json
+        default-collage.html
+        collage-source.example.json
   themes/
-    default-theme.json        (tokens as data; dark/light + Letter export contract)
-    default-professional.css  (same tokens as a CSS custom-property block)
+    default-resume.json      (tokens as data; dark/light + Letter export contract)
+    default-resume.css       (same tokens as a CSS custom-property block)
+    default-collage.json     (collage canvas presets + tokens)
   templates/
     pdf/                     (AcroForm/overlay templates go here)
     browser/                 (ATS field-map templates go here)
@@ -64,7 +74,7 @@ Rule of thumb: when adding a new claim, ask "does this belong to the team, or to
 
 ## Themes And Export Modes
 
-`themes/default-professional.css` and `themes/default-theme.json` are the public default theme SSOT. They are intentionally self-contained and brand-neutral. The same template should support:
+`themes/default-resume.css` and `themes/default-resume.json` are the public default theme SSOT. They are intentionally self-contained and brand-neutral. The same template should support:
 
 - **Screen / preview mode**: dark by default, suitable for browser review and portfolio-style presentation.
 - **Light PDF mode**: default `@media print` output for ATS-safe submission PDFs.
@@ -116,7 +126,7 @@ Fixed print footers are supported, but templates must reserve bottom space throu
 
 ## Theme Token Sync
 
-`themes/default-theme.json` is the data SSOT; `themes/default-professional.css` is the CSS mirror. Other palette systems can drive a profile by mapping their own token names into the pdf-designer contract:
+`themes/default-resume.json` is the data SSOT; `themes/default-resume.css` is the CSS mirror. Other palette systems can drive a profile by mapping their own token names into the pdf-designer contract:
 
 - `primary`, `secondary`, `accent`, `support`
 - `bg`, `surface`, `elevated`, `text`, `dim`, `dim2`

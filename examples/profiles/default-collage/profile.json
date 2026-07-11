@@ -1,0 +1,27 @@
+{
+  "id": "default-collage",
+  "name": "Default Collage",
+  "status": "scaffold",
+  "lastUpdated": "2026-07-10",
+  "description": "Multi-image collage layout profile. Give it an image directory + a canvas preset, get candidate layouts to compare — PowerPoint-Designer style. Design SSOT: docs/COLLAGE-DESIGN.md.",
+  "theme": "default-collage",
+  "themeData": "../../../themes/default-collage.json",
+  "designDoc": "../../../docs/COLLAGE-DESIGN.md",
+  "render": "default-collage.html",
+  "exampleData": "collage-source.example.json",
+  "layout": {
+    "defaultCanvas": "letter-portrait",
+    "canvasPresets": "See themes/default-collage.json#canvas_presets — letter portrait/landscape, 16:9, 9:16, 4:3, 3:4, 4:5 (Instagram), 1:1.",
+    "defaultFamily": "hero-mosaic",
+    "families": ["uniform-grid", "hero-mosaic", "masonry", "filmstrip", "spotlight-caption", "frame-scatter"],
+    "capacity": "Up to ~15 images per Letter page; split pages beyond that."
+  },
+  "exportModes": {
+    "lightPdf": "Print counterpart (white background) — default @media print.",
+    "darkPdf": "Full-color dark canvas via html_to_pdf.py --pdf-theme dark.",
+    "png": "Social-size exports (16:9, 9:16, 1:1, ...) render via pdf_to_png.py or direct screenshot at the pixel preset.",
+    "bundle": "A collage page is Letter HTML like any other — merge_pdfs.py can append it to a resume/portfolio bundle."
+  },
+  "plannedModule": "src/pdf_tool/collage.py — python -m pdf_tool.collage <imagesDir> --canvas <preset> --layout auto",
+  "_note": "default-collage.html is a hand-built reference render of the hero-mosaic family (6 images, Letter portrait) using CSS-gradient placeholder tiles — swap in real <img> tags or run the planned generator. Real image sets live in storage/collages/<project>/ (gitignored)."
+}
