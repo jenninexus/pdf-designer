@@ -9,14 +9,21 @@ notes/
 storage/
 resume-source.json
 **/resume-source.json
+collage-source.json
+**/collage-source.json
 job-listing-capture-*.md
 **/job-listing-capture-*.md
 !**/*.example.json
 !**/*.example.md
 
-# Generated output
+# Generated output + personal images (collage sets, screenshots) — real image
+# files stay local; a future tracked example image needs an explicit ! exception
 *.pdf
 *.png
+*.jpg
+*.jpeg
+*.webp
+*.gif
 output/
 _exports/
 **/_exports/
