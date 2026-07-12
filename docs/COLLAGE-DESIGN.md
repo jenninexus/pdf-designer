@@ -126,13 +126,17 @@ storage/collages/<project>/        your real image sets + generated candidates (
 ```text
 python -m pdf_tool.collage <imagesDir>                                      # all 6 candidates + picker
 python -m pdf_tool.collage <imagesDir> --canvas square --layout hero-mosaic # one family, one canvas
+python -m pdf_tool.collage <imagesDir> --canvas hd-landscape --px 1280x720 --png   # 16:9 at 720p
 python -m pdf_tool.collage <imagesDir> --hero best.png --title "Showcase" --theme dark --png
 ```
 
 - Default (`--layout auto`) writes one candidate HTML per family into
-  `<imagesDir>/_candidates/` plus **`index.html` — the PowerPoint-Designer-style
-  picker**: every candidate side by side as live scaled previews; click one to
-  open it full size.
+  **`<imagesDir>/_candidates/<canvas>-<W>x<H>/`** plus **`index.html` — the
+  PowerPoint-Designer-style picker**: every candidate side by side as live
+  scaled previews; click one to open it full size. Each canvas size gets its
+  own subfolder, so a new size/ratio run never overwrites earlier candidates.
+- `--px WIDTHxHEIGHT` overrides a preset's pixel size (e.g. `hd-landscape`
+  at 1280×720 instead of the default 1920×1080).
 - `--png` also screenshots each candidate at the canvas pixel size (that's how
   social-format exports work; print canvases export via `html_to_pdf.py`).
 - If `<imagesDir>/collage-source.json` exists, its `canvas`/`layout`/`hero`/
