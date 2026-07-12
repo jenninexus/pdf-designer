@@ -32,7 +32,7 @@ Not a SaaS. Your data stays on your machine. See [`docs/ARCHITECTURE.md`](docs/A
 - **`examples/profiles/default-resume/`** — a full example profile, mirroring the pattern below: `profile.json` (metadata + which theme/render/data it uses), `default-resume.html` (the reference render), `resume-source.example.json` (the claim-vault schema, one entry per verified fact).
 - **`examples/job-listing-capture.example.md`** — a template for capturing a job listing before tailoring anything toward it.
 - **`examples/applications/`** — the one-folder-per-job-application workflow: where to drop the listing link, screenshots, and gig details, and how to track what was actually submitted. Copy `example-application/` per gig.
-- **`examples/profiles/default-collage/`** + [`docs/COLLAGE-DESIGN.md`](docs/COLLAGE-DESIGN.md) — the multi-image collage layout profile (PowerPoint-Designer-style layout candidates from a directory of images). Scaffold + design SSOT today; `src/pdf_tool/collage.py` generator planned.
+- **`src/pdf_tool/collage.py`** — the collage layout generator: point it at a directory of images and it writes one candidate layout per family (uniform grid, hero mosaic, masonry, filmstrip, spotlight+caption, frame scatter) plus an `index.html` picker gallery to compare them side by side, PowerPoint-Designer style. `--png` renders each candidate to an image. Design SSOT: [`docs/COLLAGE-DESIGN.md`](docs/COLLAGE-DESIGN.md); example profile: `examples/profiles/default-collage/`.
 - **`AGENTS.md`** — the machine/agent-facing capability map of this repo, for any AI coding assistant (not tied to one vendor).
 
 ### Profiles
@@ -41,7 +41,7 @@ Each use case (a resume, a specific cover-letter style, a different document typ
 
 ## What's planned
 
-AcroForm PDF field filling, flat-PDF overlay filling, job-listing keyword extraction, a match-score report (strong / partial / missing, with evidence links), resume tailoring from verified claims only, browser-form autofill mapping, the collage layout generator (`pdf_tool/collage.py`, see [`docs/COLLAGE-DESIGN.md`](docs/COLLAGE-DESIGN.md)), and an optional React preview/customizer layer that can apply saved theme profiles through the token adapter contract. See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for the full roadmap.
+AcroForm PDF field filling, flat-PDF overlay filling, job-listing keyword extraction, a match-score report (strong / partial / missing, with evidence links), resume tailoring from verified claims only, browser-form autofill mapping, and an optional React preview/customizer layer that can apply saved theme profiles through the token adapter contract. See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for the full roadmap.
 
 ## Default canvas sizes
 
@@ -67,6 +67,7 @@ python -m pdf_tool.html_to_pdf path/to/your-document.html --pdf-theme dark
 python -m pdf_tool.html_to_pdf path/to/your-document.html --output-dir path/to/_exports
 python -m pdf_tool.merge_pdfs final-application.pdf cover-letter.pdf resume.pdf --require-letter
 python -m pdf_tool.pdf_to_png path/to/your-document.pdf
+python -m pdf_tool.collage path/to/images --layout auto --png   # collage candidates + picker gallery
 ```
 
 Re-running against the same HTML never overwrites a previous export by default — it writes `your-document-v2.pdf`, `-v3.pdf`, and so on, so you always keep the last version you actually sent somewhere. Default exports go into `_exports` next to the source HTML. Pass an explicit output path, `--output-dir`, or `--force` to control the export location/overwrite behavior.

@@ -26,6 +26,7 @@ python -m pdf_tool.html_to_pdf <doc>.html --pdf-theme dark      # dark branded P
 python -m pdf_tool.html_to_pdf <doc>.html --output-dir <dir>    # control export location
 python -m pdf_tool.merge_pdfs out.pdf a.pdf b.pdf --require-letter   # bundle, validate 8.5x11
 python -m pdf_tool.pdf_to_png <doc>.pdf                         # one PNG per page (visual verify)
+python -m pdf_tool.collage <imagesDir> --layout auto --png      # collage candidates + picker gallery
 ```
 
 Run from `src/` (or with `src/` on `PYTHONPATH`). Exports default to
@@ -80,7 +81,8 @@ PNGs — that is the intended agent feedback loop.
 - **Tailor a resume:** read the application folder's
   `job-listing-capture.md`, adjust the resume HTML emphasis using only vault
   claims, export light PDF, verify via PNG.
-- **Collage:** design + layout families in
-  [`docs/COLLAGE-DESIGN.md`](docs/COLLAGE-DESIGN.md); until
-  `pdf_tool/collage.py` exists, hand-build from
-  `examples/profiles/default-collage/default-collage.html`.
+- **Collage:** put images in `storage/collages/<project>/`, run
+  `python -m pdf_tool.collage <dir> --layout auto --png`, open
+  `<dir>/_candidates/index.html` to compare all six layout families, then
+  export the winner (PNG for social canvases, `html_to_pdf.py` for print).
+  Design + families: [`docs/COLLAGE-DESIGN.md`](docs/COLLAGE-DESIGN.md).

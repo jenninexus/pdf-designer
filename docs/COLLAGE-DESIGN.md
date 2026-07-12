@@ -5,9 +5,11 @@ images** and get back a set of **collage layout options** to compare and pick
 from — the same experience as dropping photos into PowerPoint and having it
 offer a handful of arrangement candidates.
 
-Status: **planned** — this doc is the design SSOT; the example profile at
-[`../examples/profiles/default-collage/`](../examples/profiles/default-collage/)
-is the working scaffold. Canvas presets below are mirrored in the root
+Status: **v1 built** — `src/pdf_tool/collage.py` implements all six layout
+families, the candidates output, the `index.html` picker gallery, and `--png`
+rendering. This doc remains the design SSOT; the example profile lives at
+[`../examples/profiles/default-collage/`](../examples/profiles/default-collage/).
+Canvas presets below are mirrored in the root
 [`README.md`](../README.md#default-canvas-sizes).
 
 ## The feature in one flow
@@ -117,18 +119,26 @@ storage/collages/<project>/        your real image sets + generated candidates (
 - `text` — optional array of `{type: "title"|"caption"|"card", content, cell}`
 - `theme` — `dark` (default full-color) or `light` (print counterpart)
 
-## Planned module
+## The module
 
 `src/pdf_tool/collage.py`:
 
 ```text
-python -m pdf_tool.collage storage/collages/myproject/images --canvas letter-portrait --layout auto
+python -m pdf_tool.collage <imagesDir>                                      # all 6 candidates + picker
+python -m pdf_tool.collage <imagesDir> --canvas square --layout hero-mosaic # one family, one canvas
+python -m pdf_tool.collage <imagesDir> --hero best.png --title "Showcase" --theme dark --png
 ```
 
-- `--layout auto` writes one candidate HTML per applicable family into
-  `_candidates/`, plus a PNG contact sheet of all candidates for quick compare.
-- `--layout hero-mosaic --canvas square` regenerates just one.
-- Deterministic: same inputs → same layout (seeded ordering, no RNG).
+- Default (`--layout auto`) writes one candidate HTML per family into
+  `<imagesDir>/_candidates/` plus **`index.html` — the PowerPoint-Designer-style
+  picker**: every candidate side by side as live scaled previews; click one to
+  open it full size.
+- `--png` also screenshots each candidate at the canvas pixel size (that's how
+  social-format exports work; print canvases export via `html_to_pdf.py`).
+- If `<imagesDir>/collage-source.json` exists, its `canvas`/`layout`/`hero`/
+  `text`/`theme` become the defaults; CLI flags win.
+- Deterministic: images sorted by name, hero = largest image unless overridden,
+  frame-scatter jitter hashed from filenames — same inputs, same layouts.
 - Combining with other documents stays trivial: a collage page is just
   another HTML → PDF page, so `merge_pdfs.py` can append a photo-collage
   page to a resume or portfolio bundle.
