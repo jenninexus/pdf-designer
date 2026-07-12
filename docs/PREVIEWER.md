@@ -16,6 +16,7 @@ and the CLI keep working without them (headless parity).
 ## What exists now: `pdf_tool.preview`
 
 ```powershell
+cd src                                    # commands run from src/ (module path)
 python -m pdf_tool.preview                # scan the repo, open http://127.0.0.1:8787
 python -m pdf_tool.preview path/to/dir    # scan any directory (e.g. one application folder)
 python -m pdf_tool.preview --port 9000 --no-open

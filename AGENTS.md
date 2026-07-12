@@ -19,7 +19,7 @@ Local-first PDF/document toolkit. Two layers:
 ## Commands an agent can run
 
 ```bash
-pip install playwright && playwright install chromium   # one-time setup
+pip install playwright pymupdf && playwright install chromium   # one-time setup
 
 python -m pdf_tool.html_to_pdf <doc>.html                       # light/ATS PDF (default)
 python -m pdf_tool.html_to_pdf <doc>.html --pdf-theme dark      # dark branded PDF, same pagination
@@ -27,6 +27,8 @@ python -m pdf_tool.html_to_pdf <doc>.html --output-dir <dir>    # control export
 python -m pdf_tool.merge_pdfs out.pdf a.pdf b.pdf --require-letter   # bundle, validate 8.5x11
 python -m pdf_tool.pdf_to_png <doc>.pdf                         # one PNG per page (visual verify)
 python -m pdf_tool.collage <imagesDir> --layout auto --png      # collage candidates + picker gallery
+#   → writes to <imagesDir>/_candidates/<canvas>-<W>x<H>/ (never overwrites other sizes)
+#   --canvas <preset> --px WxH --hero <file> --title "..." --theme light|dark
 python -m pdf_tool.preview --no-open --port 8787                # Design Hub server (127.0.0.1; docs/PREVIEWER.md)
 ```
 

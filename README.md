@@ -59,17 +59,38 @@ Print documents default to **US Letter (8.5 × 11 in)**. Collage/image layouts a
 
 ## Quick start
 
-```
-pip install playwright
-playwright install chromium
+One-time setup, then **run every command from the `src/` directory** (that's what puts `pdf_tool` on the module path):
 
-python -m pdf_tool.html_to_pdf path/to/your-document.html
-python -m pdf_tool.html_to_pdf path/to/your-document.html --pdf-theme dark
-python -m pdf_tool.html_to_pdf path/to/your-document.html --output-dir path/to/_exports
+```
+pip install playwright pymupdf
+playwright install chromium
+cd src
+```
+
+### Preview & pick — the Design Hub
+
+```
+python -m pdf_tool.preview
+```
+
+Opens `http://127.0.0.1:8787`: a sidebar of live thumbnails for every `.html` document in the repo (resume renders, collage candidates, cover letters), grouped by folder. Click one to preview it full size, audition color schemes with the **palette** dropdown, then **Export selected** to PDF (light/dark) or PNG pages into any folder. Full guide + app roadmap: [`docs/PREVIEWER.md`](docs/PREVIEWER.md).
+
+### Make a collage from a folder of images
+
+```
+python -m pdf_tool.collage path/to/images --title "My Showcase" --png
+python -m pdf_tool.collage path/to/images --canvas hd-landscape --px 1280x720 --png   # 16:9 social size
+```
+
+Writes one candidate per layout family into `path/to/images/_candidates/<canvas>-<W>x<H>/` (each canvas size gets its own folder — nothing is overwritten) plus an `index.html` picker to compare them all. Layout families + canvas presets: [`docs/COLLAGE-DESIGN.md`](docs/COLLAGE-DESIGN.md).
+
+### Export documents
+
+```
+python -m pdf_tool.html_to_pdf path/to/your-document.html                    # light/ATS PDF
+python -m pdf_tool.html_to_pdf path/to/your-document.html --pdf-theme dark   # dark branded PDF
 python -m pdf_tool.merge_pdfs final-application.pdf cover-letter.pdf resume.pdf --require-letter
-python -m pdf_tool.pdf_to_png path/to/your-document.pdf
-python -m pdf_tool.collage path/to/images --layout auto --png   # collage candidates + picker gallery
-python -m pdf_tool.preview                                      # Design Hub: preview everything, pick, export
+python -m pdf_tool.pdf_to_png path/to/your-document.pdf                      # one PNG per page
 ```
 
 Re-running against the same HTML never overwrites a previous export by default — it writes `your-document-v2.pdf`, `-v3.pdf`, and so on, so you always keep the last version you actually sent somewhere. Default exports go into `_exports` next to the source HTML. Pass an explicit output path, `--output-dir`, or `--force` to control the export location/overwrite behavior.

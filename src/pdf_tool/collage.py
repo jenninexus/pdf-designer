@@ -14,9 +14,13 @@ Usage:
     python -m pdf_tool.collage path/to/images --canvas letter-portrait --layout auto
     python -m pdf_tool.collage path/to/images --canvas square --layout hero-mosaic
     python -m pdf_tool.collage path/to/images --hero best-shot.png --title "Project Showcase"
+    python -m pdf_tool.collage path/to/images --canvas hd-landscape --px 1280x720 --png
     python -m pdf_tool.collage path/to/images --png     # also screenshot each candidate
 
-Candidates are written to <imagesDir>/_candidates/ (or --out DIR). If a
+Candidates are written to <imagesDir>/_candidates/<canvas>-<W>x<H>/ (or
+--out DIR) — every canvas size gets its own folder, so new runs never
+overwrite earlier candidates. --px WIDTHxHEIGHT overrides a preset's pixel
+size (e.g. hd-landscape at 1280x720 instead of 1920x1080). If a
 collage-source.json exists in the images directory, its canvas/layout/hero/
 title/theme values are used as defaults (CLI flags win). Same inputs always
 produce the same layouts — no RNG; frame-scatter jitter is hashed from
@@ -102,7 +106,7 @@ def scan_images(images_dir: Path):
 
 # ---------------------------------------------------------------- presets
 
-def load_canvas_preset(name: str):
+def load_canvas_preset(name: str, px_override: str | None = None):
     presets = json.loads(_THEME_PATH.read_text(encoding="utf-8"))["canvas_presets"]
     if name not in presets:
         raise SystemExit(f"Unknown canvas preset '{name}'. Options: {', '.join(presets)}")
@@ -111,6 +115,11 @@ def load_canvas_preset(name: str):
     if p.get("unit") == "in":
         # Letter presets: use half of the 300dpi pixel size (150dpi) on screen.
         px_w, px_h = px_w // 2, px_h // 2
+    if px_override:
+        try:
+            px_w, px_h = (int(v) for v in px_override.lower().split("x"))
+        except ValueError:
+            raise SystemExit(f"--px expects WIDTHxHEIGHT (e.g. 1280x720), got '{px_override}'")
     return {"id": name, "px_w": px_w, "px_h": px_h, "print_in": (p.get("width"), p.get("height")) if p.get("unit") == "in" else None}
 
 
@@ -332,7 +341,7 @@ def render_index(families, images, canvas, out_dir: Path, opts) -> str:
 # ---------------------------------------------------------------- generation
 
 def generate(images_dir, canvas_name=None, layout=None, hero=None, title=None,
-             theme=None, out_dir=None, png=False):
+             theme=None, out_dir=None, png=False, px=None):
     images_dir = Path(images_dir).resolve()
     if not images_dir.is_dir():
         raise FileNotFoundError(images_dir)
@@ -342,7 +351,7 @@ def generate(images_dir, canvas_name=None, layout=None, hero=None, title=None,
     if source_file.exists():
         source = json.loads(source_file.read_text(encoding="utf-8"))
 
-    canvas = load_canvas_preset(canvas_name or source.get("canvas") or "letter-portrait")
+    canvas = load_canvas_preset(canvas_name or source.get("canvas") or "letter-portrait", px_override=px)
     layout = layout or source.get("layout") or "auto"
     opts = {
         "hero": hero or source.get("hero"),
@@ -354,8 +363,14 @@ def generate(images_dir, canvas_name=None, layout=None, hero=None, title=None,
     if not images:
         raise SystemExit(f"No images found in {images_dir} (looked for {', '.join(sorted(IMAGE_EXTS))})")
 
-    out = Path(out_dir).resolve() if out_dir else images_dir / "_candidates"
+    # Each canvas gets its own subfolder, so a new size/ratio run never
+    # overwrites earlier candidates (letter-portrait vs hd-landscape etc.).
+    default_out = images_dir / "_candidates" / f"{canvas['id']}-{canvas['px_w']}x{canvas['px_h']}"
+    out = Path(out_dir).resolve() if out_dir else default_out
     out.mkdir(parents=True, exist_ok=True)
+    import os
+
+    opts["src_prefix"] = os.path.relpath(images_dir, out).replace("\\", "/") + "/"
 
     families = FAMILIES if layout == "auto" else [layout]
     unknown = [f for f in families if f not in BUILDERS]
@@ -393,7 +408,7 @@ def generate(images_dir, canvas_name=None, layout=None, hero=None, title=None,
 
 def main() -> None:
     raw = sys.argv[1:]
-    flags = {"--canvas": None, "--layout": None, "--hero": None, "--title": None, "--theme": None, "--out": None}
+    flags = {"--canvas": None, "--layout": None, "--hero": None, "--title": None, "--theme": None, "--out": None, "--px": None}
     png = False
     args = []
     i = 0
@@ -427,6 +442,7 @@ def main() -> None:
             theme=flags["--theme"],
             out_dir=flags["--out"],
             png=png,
+            px=flags["--px"],
         )
     except ModuleNotFoundError:
         print(
