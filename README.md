@@ -33,6 +33,7 @@ Not a SaaS. Your data stays on your machine. See [`docs/ARCHITECTURE.md`](docs/A
 - **`examples/job-listing-capture.example.md`** — a template for capturing a job listing before tailoring anything toward it.
 - **`examples/applications/`** — the one-folder-per-job-application workflow: where to drop the listing link, screenshots, and gig details, and how to track what was actually submitted. Copy `example-application/` per gig.
 - **`src/pdf_tool/collage.py`** — the collage layout generator: point it at a directory of images and it writes one candidate layout per family (uniform grid, hero mosaic, masonry, filmstrip, spotlight+caption, frame scatter) plus an `index.html` picker gallery to compare them side by side, PowerPoint-Designer style. `--png` renders each candidate to an image. Design SSOT: [`docs/COLLAGE-DESIGN.md`](docs/COLLAGE-DESIGN.md); example profile: `examples/profiles/default-collage/`.
+- **`src/pdf_tool/preview.py`** — the **Design Hub**: a local previewer (`python -m pdf_tool.preview`) with a PowerPoint-style sidebar of live thumbnails for every document, a palette swapper to audition color schemes, and one-click export of the selected document. Design + app roadmap (pywebview shell, drag-and-drop canvas editor, collage books): [`docs/PREVIEWER.md`](docs/PREVIEWER.md).
 - **`AGENTS.md`** — the machine/agent-facing capability map of this repo, for any AI coding assistant (not tied to one vendor).
 
 ### Profiles
@@ -68,6 +69,7 @@ python -m pdf_tool.html_to_pdf path/to/your-document.html --output-dir path/to/_
 python -m pdf_tool.merge_pdfs final-application.pdf cover-letter.pdf resume.pdf --require-letter
 python -m pdf_tool.pdf_to_png path/to/your-document.pdf
 python -m pdf_tool.collage path/to/images --layout auto --png   # collage candidates + picker gallery
+python -m pdf_tool.preview                                      # Design Hub: preview everything, pick, export
 ```
 
 Re-running against the same HTML never overwrites a previous export by default — it writes `your-document-v2.pdf`, `-v3.pdf`, and so on, so you always keep the last version you actually sent somewhere. Default exports go into `_exports` next to the source HTML. Pass an explicit output path, `--output-dir`, or `--force` to control the export location/overwrite behavior.
