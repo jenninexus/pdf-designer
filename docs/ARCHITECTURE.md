@@ -23,6 +23,7 @@ pdf-designer/
       html_to_pdf.py         (done — Playwright-based HTML → PDF export)
       merge_pdfs.py          (done — bundle PDFs with optional Letter validation)
       pdf_to_png.py          (done — render PDF pages to PNG previews)
+      preview.py             (done — Design Hub: local preview server w/ palette swapper + export; see PREVIEWER.md)
       collage.py             (done — multi-image layout candidates + picker gallery from an image directory; see COLLAGE-DESIGN.md)
       inspect_pdf.py         (planned — detect AcroForm fields vs. flat/scanned PDFs)
       fill_pdf.py            (planned — AcroForm field fill)

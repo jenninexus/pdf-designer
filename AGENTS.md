@@ -27,6 +27,7 @@ python -m pdf_tool.html_to_pdf <doc>.html --output-dir <dir>    # control export
 python -m pdf_tool.merge_pdfs out.pdf a.pdf b.pdf --require-letter   # bundle, validate 8.5x11
 python -m pdf_tool.pdf_to_png <doc>.pdf                         # one PNG per page (visual verify)
 python -m pdf_tool.collage <imagesDir> --layout auto --png      # collage candidates + picker gallery
+python -m pdf_tool.preview --no-open --port 8787                # Design Hub server (127.0.0.1; docs/PREVIEWER.md)
 ```
 
 Run from `src/` (or with `src/` on `PYTHONPATH`). Exports default to

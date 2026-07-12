@@ -48,6 +48,7 @@ def export_html_to_pdf(
     page_format: str = "Letter",
     force: bool = False,
     pdf_theme: str | None = None,
+    css_vars: dict | None = None,
 ) -> Path:
     """Render html_path to PDF and return the output path.
 
@@ -93,6 +94,14 @@ def export_html_to_pdf(
             page.evaluate(
                 "theme => { document.documentElement.dataset.pdfTheme = theme; }",
                 pdf_theme,
+            )
+        if css_vars:
+            # Palette override (e.g. from the preview server's palette swapper):
+            # inline styles on <html> outrank :root rules, so the exported PDF
+            # matches a palette-swapped screen preview exactly.
+            page.evaluate(
+                "vars => { for (const [k, v] of Object.entries(vars)) document.documentElement.style.setProperty(k, v); }",
+                css_vars,
             )
         page.emulate_media(media="print")
         page.pdf(
