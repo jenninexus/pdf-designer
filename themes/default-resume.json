@@ -86,7 +86,7 @@
       "surface": "#ffffff",
       "text": "#171b24",
       "primary": "#087c78",
-      "secondary": "#9b6a12",
+      "secondary": "#0E6E7A",
       "accent": "#6f57c2",
       "use": "ATS-safe submission PDFs and ordinary print."
     },
@@ -145,7 +145,7 @@
     },
     "accents": {
       "primary": "#087c78",
-      "secondary": "#9b6a12",
+      "secondary": "#0E6E7A",
       "accent": "#6f57c2",
       "support": "#2b65b8"
     }
