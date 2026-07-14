@@ -162,15 +162,32 @@ def check_vault(path: Path):
                     errors.append(f"{where}: strength {e.get('strength')!r} not in {sorted(STRENGTHS)}")
 
     # --- COVERAGE: is any track too thin to build a good resume from? --------
+    #
+    # Count only NARRATIVE claims -- the ones that say what this person DID and can DO.
+    # Tools (`kind: "tool"`) are deliberately `any`: a tool you know is a tool you know, and
+    # a game-dev or AI listing may absolutely ask about 3ds Max. Hiding a tool behind a track
+    # tag is how one vault's game-dev track ended up seeing 4 of its 12 software claims.
+    # So tools are selectable everywhere and RANKED by the track's `toolbeltOrder` -- which
+    # means counting them here would mask a genuinely empty track behind a full toolbelt.
     for t in sorted(tracks):
         got = collect(v, t)
-        specific = sum(1 for h in got["skills"] if not h[0])
-        total = len(got["skills"])
-        if specific < THIN_TRACK:
+        narrative = [h for h in got["skills"] if h[3].get("kind") != "tool"]
+        tools = len(got["skills"]) - len(narrative)
+        # `any` narrative claims are real evidence too -- they just aren't track-exclusive.
+        # What actually makes a resume thin is having no STORY to tell, so count the whole
+        # narrative pool (plus employment + credits, which carry the shipped work).
+        depth = len(narrative) + len(got["employment"]) + len(got["credits"])
+        if depth < THIN_TRACK:
             warnings.append(
-                f"THIN TRACK `{t}`: only {specific} track-specific skill claim(s) "
-                f"({total} incl. `any`). A resume on this track will be generic. "
-                f"Either tag more claims with `{t}`, or don't use this track."
+                f"THIN TRACK `{t}`: only {depth} narrative claims + employment + credits "
+                f"(tools excluded -- {tools} tools are selectable from every track by design). "
+                f"A resume on this track would be a toolbelt with no story. Add "
+                f"experience/capability claims tagged `{t}`."
+            )
+        if not v["roleTracks"].get(t, {}).get("toolbeltOrder"):
+            warnings.append(
+                f"track `{t}` has no `toolbeltOrder` -- nothing says which tools should LEAD "
+                f"for this job family, so the resume may open its toolbelt with the wrong ones."
             )
 
     # --- the verification ledger (the Maya/ZBrush check) ---------------------
@@ -244,6 +261,29 @@ def explain(user: str, track: str, verbose: bool = False) -> int:
         hits = got[sec]
         if not hits:
             continue
+        if sec == "skills":
+            narrative = [h for h in hits if h[3].get("kind") != "tool"]
+            tools = [h for h in hits if h[3].get("kind") == "tool"]
+            specific = sum(1 for h in narrative if not h[0])
+            print(f"\nSKILLS — narrative  ({len(narrative)} available, {specific} track-specific)")
+            print("   what she DID and can DO. This is the story; lead with it.")
+            for is_any, _, _g, e in narrative:
+                tag = "any " if is_any else "**  "
+                print(f"   {tag}[{(e.get('strength') or '')[:4]:4}] {str(e.get('id'))[:22]:22} "
+                      f"{(e.get('claim') or '')[:44]}")
+
+            if tools:
+                print(f"\nTOOLBELT  ({len(tools)} tools — selectable from EVERY track)")
+                order = spec.get("toolbeltOrder") or []
+                if order:
+                    print(f"   LEAD WITH, on this track: {' · '.join(order)}")
+                print("   A tool you know is a tool you know. Every tool below is claimable on")
+                print("   this track — `toolbeltOrder` says which ones OPEN the section.")
+                for _ia, _r, _g, e in tools:
+                    print(f"        [{(e.get('strength') or '')[:4]:4}] {str(e.get('id'))[:22]:22} "
+                          f"{(e.get('claim') or '')[:44]}")
+            continue
+
         specific = sum(1 for h in hits if not h[0])
         print(f"\n{sec.upper()}  ({len(hits)} available, {specific} track-specific)")
         for is_any, _, group, e in hits:
@@ -254,11 +294,12 @@ def explain(user: str, track: str, verbose: bool = False) -> int:
             print(f"   {tag}[{st:4}] {str(cid)[:22]:22} {txt[:44]}")
 
     total = sum(len(got[s]) for s in TRACKED_SECTIONS)
-    spec_n = sum(1 for h in got["skills"] if not h[0])
+    narrative = [h for h in got["skills"] if h[3].get("kind") != "tool"]
+    spec_n = sum(1 for h in narrative if not h[0])
     print(f"\n{'-' * 78}")
     print(f"  {total} entries available.  '**' = track-specific (lead with these).")
-    print(f"  '{track}' has {spec_n} track-specific SKILL claims.", end="  ")
-    print("THIN -- resume will be generic." if spec_n < THIN_TRACK else "Healthy.")
+    print(f"  '{track}' has {spec_n} track-specific NARRATIVE claims.", end="  ")
+    print("THIN -- toolbelt with no story." if spec_n < THIN_TRACK else "Healthy.")
     print(f"{'-' * 78}")
     print("\n  If something you EXPECT is missing from this list, it is tagged wrong in the")
     print("  vault and WILL NOT appear on the resume. Fix the tags, not the resume.\n")
