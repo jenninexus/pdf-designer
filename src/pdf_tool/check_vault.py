@@ -1,28 +1,40 @@
-"""Vault guard -- validate a claim vault before anyone writes a resume from it.
+"""Vault guard -- make sure a resume gets everything the vault can honestly give it.
 
-The vault is the single source of truth for what a person may truthfully claim.
-Nothing validated it, so a typo failed SILENTLY at resume-authoring time: a claim
-tagged with a track that does not exist is simply never selected, and the resume
-comes out quietly missing its best evidence. Nobody sees an error -- they just get
-a worse resume.
+The vault is the single source of truth for what a person may truthfully claim. The
+danger is not that it says something false. The danger is that a claim is SILENTLY
+INVISIBLE -- tagged with a track that doesn't exist, or with no track that matches the
+job -- so the resume is quietly built without the best evidence its owner has.
 
-What it checks
-  1. Every claim has `source` and `confidence`  -- source-backed only, no exceptions.
-  2. Every `tracks` entry names a track that actually exists in `roleTracks`.
-     (Or `any`.)  A typo'd track is invisible, not loud -- this makes it loud.
-  3. Every `strength` is lead | solid | supporting.
-  4. Every role track carries an `angle` -- otherwise /make-resume has no framing.
-  5. `doNotClaim.tools` is a VERIFICATION LEDGER, not a blocklist: every entry needs
-     a `status`. Anything `unverified` is reported as MUST-ASK, never as a gap.
-     (This is the Maya/ZBrush failure, encoded as a check.)
-  6. No claim ID is duplicated.
+Nobody sees an error. They just get a worse resume, and never find out why.
+
+That has now happened three times:
+  * Five claims (Photoshop, Figma, Affinity, Adobe CS, UX/UI) were tagged `ui-ux` on a
+    vault that had no `ui-ux` track. A UI/UX resume would have shipped without her
+    entire design toolkit.
+  * Five engine claims (WebGPU, multiplayer, WWISE, Unreal/Unity, platforms) were
+    tagged `game-dev` only -- so an ENGINE-RESEARCH resume built on the `ai` track
+    couldn't see any of them.
+  * Two industry-standard tools sat in `doNotClaim` for months while both applicants
+    had years of experience with each.
+
+The lesson each time: you cannot fix this with discipline. "Remember to check the
+vault" is exactly the instruction that already failed. It has to be a GUARD.
+
+THE THREE LAYERS
+  1. VALIDATE  -- every section, not just skills. A track typo anywhere is now an error.
+  2. COVERAGE  -- warn when a track is THIN (few claims reachable). A thin track means
+                  a weak resume, and it is invisible without this check.
+  3. EXPLAIN   -- print exactly what a resume WILL contain, ranked, BEFORE you build it.
+                  You should never have to render a PDF to find out what it says.
 
 Usage:
-    python -m pdf_tool.check_vault storage/jenni/resume-source.json
-    python -m pdf_tool.check_vault --all          # every vault under storage/
+    python -m pdf_tool.check_vault --all                     # validate + coverage
+    python -m pdf_tool.check_vault --explain shade ai        # what an `ai` resume gets
+    python -m pdf_tool.check_vault --explain jenni 3d-viz --verbose
+    python -m pdf_tool.check_vault storage/shade/resume-source.json
 
-Exits non-zero on any error. Warnings (e.g. unverified tools) do not fail the run
--- they are reported so you know what to ask about.
+Exit non-zero on any error. Warnings (unverified tools, thin tracks) do not fail the
+run -- they are reported so you know what to ask about.
 """
 
 import json
@@ -31,6 +43,66 @@ from pathlib import Path
 
 STRENGTHS = {"lead", "solid", "supporting"}
 STATUSES = {"unverified", "confirmed-absent", "confirmed-have"}
+RANK = {"lead": 0, "solid": 1, "supporting": 2}
+
+# Every section whose entries carry `tracks` and therefore feed a resume.
+# `skills` used to be the only one validated -- which meant a typo'd track on a CREDIT
+# or an EMPLOYMENT entry failed just as silently, and nothing ever caught it.
+TRACKED_SECTIONS = ("skills", "employment", "credits", "education", "clients")
+
+# A track with fewer than this many track-specific claims will produce a thin,
+# generic resume. Not an error -- but you should know before you build.
+THIN_TRACK = 5
+
+
+def _iter_entries(node):
+    """Yield (label, entry) for every dict entry in a vault section, whatever its shape.
+
+    Sections are inconsistent by design (skills is grouped by domain, employment is a
+    flat list, credits nests titles/outsourcerCredits/ownTitles). Walk them all rather
+    than special-casing, so a new section can't quietly escape validation.
+    """
+    if isinstance(node, list):
+        for e in node:
+            if isinstance(e, dict):
+                yield "", e
+    elif isinstance(node, dict):
+        for key, val in node.items():
+            if key.startswith("_"):
+                continue
+            if isinstance(val, list):
+                for e in val:
+                    if isinstance(e, dict):
+                        yield key, e
+            elif isinstance(val, dict) and ("tracks" in val or "claim" in val or "name" in val):
+                yield key, val
+
+
+def _label(entry, group=""):
+    return entry.get("id") or entry.get("name") or entry.get("org") or entry.get("claim", "?")[:40] or group
+
+
+def collect(vault, track):
+    """Every entry a resume on `track` may draw on, correctly ranked.
+
+    RANKING (this is the whole game):
+        1. track-specific claims BEFORE `any` claims
+        2. then by strength (lead -> solid -> supporting)
+
+    Do NOT sort by strength alone. An `any`+`lead` claim (the AI-pipeline one) will
+    otherwise outrank every claim that is actually ABOUT THE JOB -- sorted naively, an
+    audio resume opens with AI tooling.
+    """
+    out = {}
+    for sec in TRACKED_SECTIONS:
+        hits = []
+        for group, e in _iter_entries(vault.get(sec, {})):
+            tr = e.get("tracks") or []
+            if track in tr or "any" in tr:
+                hits.append((track not in tr, RANK.get(e.get("strength", "supporting"), 2), group, e))
+        hits.sort(key=lambda h: (h[0], h[1]))
+        out[sec] = hits
+    return out
 
 
 def check_vault(path: Path):
@@ -44,58 +116,72 @@ def check_vault(path: Path):
     tracks = {k for k in v.get("roleTracks", {}) if not k.startswith("_")}
     if not tracks:
         errors.append("roleTracks: no tracks defined")
+        return errors, warnings
 
-    # (4) every track needs an angle -- the framing /make-resume reads
+    # Every track needs an angle -- the framing /make-resume reads.
     for t in sorted(tracks):
         spec = v["roleTracks"][t]
         if not isinstance(spec, dict):
             errors.append(f"roleTracks.{t}: must be an object with `covers` + `angle`")
-        elif "angle" not in spec:
-            errors.append(f"roleTracks.{t}: missing `angle` (leadWith/demote) -- /make-resume has no framing for this track")
+        elif "angle" not in spec and "clusters" not in spec:
+            errors.append(f"roleTracks.{t}: no `angle` -- /make-resume has no framing for this track")
 
-    # (1)(2)(3)(6) claims
+    # --- validate EVERY tracked section, not just skills ---------------------
     seen_ids = {}
-    for group, claims in v.get("skills", {}).items():
-        if group.startswith("_") or not isinstance(claims, list):
-            continue
-        for c in claims:
-            cid = c.get("id", "<no id>")
-            where = f"skills.{group}.{cid}"
+    for sec in TRACKED_SECTIONS:
+        for group, e in _iter_entries(v.get(sec, {})):
+            where = f"{sec}.{group + '.' if group else ''}{_label(e, group)}"
 
-            if cid in seen_ids:
-                errors.append(f"{where}: duplicate claim id (also in {seen_ids[cid]})")
-            seen_ids[cid] = where
+            cid = e.get("id")
+            if cid:
+                if cid in seen_ids:
+                    errors.append(f"{where}: duplicate id (also {seen_ids[cid]})")
+                seen_ids[cid] = where
 
-            if not c.get("source"):
-                errors.append(f"{where}: missing `source` -- source-backed only")
-            if not c.get("confidence"):
-                errors.append(f"{where}: missing `confidence`")
+            tr = e.get("tracks")
+            if not tr:
+                # credits/clients sometimes legitimately carry no tracks (they're cited
+                # via a parent rule) -- only skills/employment MUST be reachable.
+                if sec in ("skills", "employment"):
+                    errors.append(f"{where}: no `tracks` -- this can NEVER be selected. It is invisible.")
+                continue
 
-            st = c.get("strength")
-            if st not in STRENGTHS:
-                errors.append(f"{where}: strength {st!r} not in {sorted(STRENGTHS)}")
+            for t in tr:
+                if t != "any" and t not in tracks:
+                    errors.append(
+                        f"{where}: tracks has {t!r}, which is NOT A REAL TRACK -- this entry is "
+                        f"INVISIBLE and will never appear on any resume. Real tracks: {sorted(tracks)}"
+                    )
 
-            ct = c.get("tracks")
-            if not ct:
-                errors.append(f"{where}: missing `tracks` -- it will never be selected")
-            else:
-                for t in ct:
-                    if t != "any" and t not in tracks:
-                        errors.append(
-                            f"{where}: tracks has {t!r}, which is not a real track "
-                            f"-- this claim is INVISIBLE. Real tracks: {sorted(tracks)}"
-                        )
+            if sec == "skills":
+                if not e.get("source"):
+                    errors.append(f"{where}: no `source` -- source-backed only")
+                if not e.get("confidence"):
+                    errors.append(f"{where}: no `confidence`")
+                if e.get("strength") not in STRENGTHS:
+                    errors.append(f"{where}: strength {e.get('strength')!r} not in {sorted(STRENGTHS)}")
 
-    # (5) the verification ledger -- the Maya/ZBrush check
+    # --- COVERAGE: is any track too thin to build a good resume from? --------
+    for t in sorted(tracks):
+        got = collect(v, t)
+        specific = sum(1 for h in got["skills"] if not h[0])
+        total = len(got["skills"])
+        if specific < THIN_TRACK:
+            warnings.append(
+                f"THIN TRACK `{t}`: only {specific} track-specific skill claim(s) "
+                f"({total} incl. `any`). A resume on this track will be generic. "
+                f"Either tag more claims with `{t}`, or don't use this track."
+            )
+
+    # --- the verification ledger (the Maya/ZBrush check) ---------------------
     dnc = v.get("doNotClaim", {})
-    tools = dnc.get("tools", [])
     unverified = []
-    for t in tools:
+    for t in dnc.get("tools", []):
         if isinstance(t, str):
             errors.append(
-                f"doNotClaim.tools: {t!r} is a bare string. It MUST be an object with a "
-                f"`status` -- a flat blocklist cannot tell 'nobody asked' from 'she doesn't "
-                f"have it', which is exactly how Maya and ZBrush got wrongly forbidden."
+                f"doNotClaim.tools: {t!r} is a bare string. It MUST be an object with a `status` -- "
+                f"a flat blocklist cannot tell 'we asked and they don't have it' from 'nobody ever "
+                f"checked', which is exactly how two tools they DO have got wrongly forbidden."
             )
             continue
         name, status = t.get("name", "?"), t.get("status")
@@ -104,23 +190,94 @@ def check_vault(path: Path):
         elif status == "unverified":
             unverified.append(name)
         elif status == "confirmed-have":
-            errors.append(f"doNotClaim.tools.{name}: status is `confirmed-have` -- move it to `skills`")
+            errors.append(f"doNotClaim.tools.{name}: `confirmed-have` -- move it to `skills`")
 
     if unverified:
         warnings.append(
-            f"{len(unverified)} tool(s) are UNVERIFIED -- nobody has asked about them. "
-            f"They are NOT gaps and must not be written off in an application: "
-            f"{', '.join(unverified)}"
+            f"{len(unverified)} tool(s) UNVERIFIED -- nobody has asked. NOT gaps; do not write them "
+            f"off in an application: {', '.join(unverified)}"
         )
 
     return errors, warnings
 
 
+def explain(user: str, track: str, verbose: bool = False) -> int:
+    """Print exactly what a resume on this track WILL contain, ranked. Before you build it."""
+    path = Path("storage") / user / "resume-source.json"
+    if not path.exists():
+        print(f"no vault at {path}")
+        return 2
+    v = json.loads(path.read_text(encoding="utf-8"))
+
+    tracks = {k for k in v.get("roleTracks", {}) if not k.startswith("_")}
+    if track not in tracks:
+        print(f"'{track}' is not a track for {user}. Available: {sorted(tracks)}")
+        return 2
+
+    spec = v["roleTracks"][track]
+    print(f"\n{'=' * 78}")
+    print(f"  {user.upper()}  ·  track: {track}")
+    print(f"{'=' * 78}")
+    print(f"\n{spec.get('covers', '')}\n")
+
+    angle = spec.get("angle", {})
+    if angle.get("leadWith"):
+        print("LEAD WITH:")
+        for x in angle["leadWith"]:
+            print(f"   * {x}")
+    if angle.get("demote"):
+        print("\nDEMOTE:")
+        for x in angle["demote"]:
+            print(f"   - {x}")
+    if spec.get("clusters"):
+        print("\nCLUSTERS (reorder by what the listing names):")
+        for cname, c in spec["clusters"].items():
+            print(f"   [{cname}] {', '.join(c.get('titles', [])[:3])}")
+
+    got = collect(v, track)
+    print(f"\n{'-' * 78}")
+    print("  EVERY CLAIM THIS RESUME MAY DRAW ON, IN RANK ORDER")
+    print("  (track-specific first, THEN by strength -- never strength alone)")
+    print(f"{'-' * 78}")
+
+    for sec in TRACKED_SECTIONS:
+        hits = got[sec]
+        if not hits:
+            continue
+        specific = sum(1 for h in hits if not h[0])
+        print(f"\n{sec.upper()}  ({len(hits)} available, {specific} track-specific)")
+        for is_any, _, group, e in hits:
+            tag = "any " if is_any else "**  "
+            st = (e.get("strength") or "")[:4]
+            txt = e.get("claim") or e.get("summary") or e.get("name") or e.get("org") or ""
+            cid = e.get("id") or e.get("name") or ""
+            print(f"   {tag}[{st:4}] {str(cid)[:22]:22} {txt[:44]}")
+
+    total = sum(len(got[s]) for s in TRACKED_SECTIONS)
+    spec_n = sum(1 for h in got["skills"] if not h[0])
+    print(f"\n{'-' * 78}")
+    print(f"  {total} entries available.  '**' = track-specific (lead with these).")
+    print(f"  '{track}' has {spec_n} track-specific SKILL claims.", end="  ")
+    print("THIN -- resume will be generic." if spec_n < THIN_TRACK else "Healthy.")
+    print(f"{'-' * 78}")
+    print("\n  If something you EXPECT is missing from this list, it is tagged wrong in the")
+    print("  vault and WILL NOT appear on the resume. Fix the tags, not the resume.\n")
+    return 0
+
+
 def main(argv):
+    if "--explain" in argv:
+        i = argv.index("--explain")
+        rest = [a for a in argv[i + 1:] if not a.startswith("-")]
+        if len(rest) < 2:
+            print("usage: --explain <user> <track>")
+            return 2
+        return explain(rest[0], rest[1], verbose="--verbose" in argv)
+
     if "--all" in argv:
         paths = sorted(Path("storage").glob("*/resume-source.json"))
         if not paths:
-            print("no vaults found under storage/*/resume-source.json")
+            print("no vaults under storage/*/resume-source.json")
             return 2
     else:
         paths = [Path(a) for a in argv if not a.startswith("-")]
@@ -135,7 +292,7 @@ def main(argv):
         for e in errors:
             print(f"  ERROR  {e}")
         for w in warnings:
-            print(f"  ask    {w}")
+            print(f"  warn   {w}")
         if errors:
             failed += 1
         elif not warnings:
