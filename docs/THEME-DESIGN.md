@@ -45,14 +45,30 @@ theme variable contract:
 | `--bg` | document/app background |
 | `--surface` | page or primary surface |
 | `--elevated` | raised card/section surface |
+| `--elevated-2` | a second raised level (nested card, table stripe) |
 | `--text` | primary text |
 | `--dim` | secondary text |
 | `--dim2` | muted text |
 | `--border` | subtle rule/border |
+| `--border2` | stronger rule/border |
 | `--primary` | main brand/accent |
 | `--secondary` | secondary accent |
 | `--accent` | contrast accent |
 | `--support` | optional support/tech accent |
+
+**13 tokens — this table is the contract.** It matches `preview.py`'s `_TOKEN_MAP` exactly; if
+you add a token to one, add it to the other. *(`--elevated-2` and `--border2` were live in the
+code but missing from this table — a contract doc that under-reports the contract is worse than
+no contract doc.)*
+
+### ⚠ The one color rule that outranks everything
+
+**No brown. No mustard. No puke/lime green.** Amber has **no readable dark form on white paper**
+— darken it for print and it turns brown. On the light palette, hand the amber role to another
+hue.
+
+This is **enforced on every export** (`html_to_pdf` refuses to render a violating document).
+Full rule and rationale: [`../themes/PALETTE-RULES.md`](../themes/PALETTE-RULES.md).
 
 Geometry tokens are not brand tokens. Do not change paper size, page margins,
 or page-break strategy during palette sync unless the destination explicitly
@@ -124,26 +140,24 @@ PDF and PNG exports must remain static, deterministic, and physically sized.
 Do not let animation timing, viewport-height effects, sticky elements, or
 scroll-triggered states control printed layout.
 
-## React UI Roadmap
+## The UI boundary (whatever the UI turns out to be)
 
-If pdf-designer gets a React preview/customizer later, keep the boundary clear:
+The **Design Hub** already exists as a local web app ([`PREVIEWER.md`](PREVIEWER.md)), and the
+plan is to wrap it in **pywebview** — not React, not Electron. *(An earlier version of this doc
+recommended a React module tree; that predates the pywebview decision and is gone.)*
 
-- React owns controls, saved-profile import, live token editing, and preview
-  animation.
-- `pdf_tool` owns deterministic HTML to PDF, PDF merging, and PNG rendering.
-- Profiles own which theme, source data, document HTML, and export paths are
-  active.
+What matters isn't the framework — it's the boundary, which holds for any UI:
 
-Recommended React modules:
+| Layer | Owns |
+|---|---|
+| **UI** | Controls, live token editing, the preview shell |
+| **`pdf_tool`** | Deterministic HTML → PDF, merging, PNG rendering. **The only renderer.** |
+| **Profiles** | Which theme, which data, which document, which export paths |
 
-- `ThemeProvider` - writes normalized tokens to CSS custom properties.
-- `ThemeProfileLoader` - imports saved theme/profile JSON and normalizes it.
-- `PreviewShell` - renders animated screen preview with page wrappers.
-- `ExportPanel` - calls light PDF, dark PDF, bundle PDF, and PNG commands.
-- `ProfileInspector` - shows active profile, source vault, and export mode.
-
-Use `prefers-reduced-motion` and a profile-level motion flag so animated resume
-hub pages can be expressive without making the core document inaccessible.
+**The rule that makes previews trustworthy:** a UI layer *never re-implements rendering.* It
+shows the same HTML file the exporter prints, in the same browser engine — so what you preview
+is byte-for-byte what exports. UI layers may come and go; the documents and the CLI keep
+working without them.
 
 ## Default Resume Profile
 

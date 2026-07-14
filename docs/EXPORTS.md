@@ -76,12 +76,24 @@ explicitly asks for 8.5 x 14 inches.
 
 ## Palette Guard — no brown, no mustard, no lime
 
-`pdf_tool.check_palette` rejects banned colors before you export.
+**The guard runs automatically on every export.** `html_to_pdf` refuses to render a document
+that uses a banned color — you don't have to remember it, and you can't forget it.
+
+```bash
+python -m pdf_tool.html_to_pdf resume.html        # guard runs; BLOCKS on a violation
+python -m pdf_tool.html_to_pdf resume.html --skip-palette-check   # override (say why)
+```
+
+Run it standalone to check without exporting:
 
 ```bash
 python -m pdf_tool.check_palette resume.html
 python -m pdf_tool.check_palette --scan .          # walk a whole tree
 ```
+
+> It used to be *only* the standalone command, with docs telling you to run it first — and a
+> brown light-mode accent shipped into a shared palette anyway. "Remember to run the guard" is
+> not a guarantee, it's a hope. Now it's a gate.
 
 **House rule:** no brown, no mustard, no puke/lime green. Yellow and orange are
 allowed only as **bright, clean** tones; any other green is fine.
@@ -118,9 +130,21 @@ the space left on page 1 gets pushed onto a sheet of its own — and shoves page
 content to page 3. If a section keeps orphaning, **move it to the next page** in
 the markup rather than fighting the CSS.
 
-**Measure before trimming copy.** At `margin: 0.45in 0.5in 0.55in`, the printable
-budget is **960px** per page. Check the real print-mode content height (not the
-screen layout — screen `min-height`/padding will lie to you) before cutting text.
+**Measure before trimming copy.** At the locked geometry — `@page { size: Letter;
+margin: 0.5in 0.55in 0.78in; }` — the printable budget is:
+
+| | |
+|---|---|
+| **Height** | 11in − 0.5 − 0.78 = **9.72in = 933px** per page |
+| **Width** | 8.5in − (0.55 × 2) = **7.4in = 710px** |
+
+Check the real *print-mode* content height before cutting text — the screen layout will lie to
+you (screen `min-height` and padding don't apply in print).
+
+> ⚠ This doc used to quote **960px**, derived from a margin set (`0.45in 0.5in 0.55in`) the repo
+> does not use. That's 27px of budget that doesn't exist — enough to silently push a two-page
+> résumé onto a third sheet. The margins above are the contract; they're also in
+> [`ARCHITECTURE.md`](ARCHITECTURE.md) and [`../AGENTS.md`](../AGENTS.md).
 
 ## Verify, always
 

@@ -1,53 +1,103 @@
-# applications/ — One Folder Per Job Application
+# One folder per job application
 
-Every job listing you tailor a resume for gets **its own folder**, so there is
-always one obvious place to drop everything about that gig: the listing link,
-screenshots, notes, the tailored resume/cover letter, and the final exports.
+The workflow for going after a job without ever inventing a claim.
 
-## Where real applications live
+> **This is the public example.** Your real applications live in `storage/applications/`
+> (gitignored). Copy `example-application/` as the starting point.
 
-Real applications are private. Keep them in the gitignored local workspace:
+---
+
+## Two rules, both blocking
+
+### 🔗 1. Capture the apply link BEFORE you build
+
+**A perfectly tailored application you can't submit is worthless.**
+
+If a listing arrives with no URL — **ask for it.** One question costs nothing; a dead
+application costs the whole build. Status stays **`BLOCKED`** until an apply URL or an apply
+email exists. This has already burned us twice.
+
+> **Trap:** a company page showing *"no open jobs"* does **not** mean the posting is dead.
+> Board postings frequently never appear on the employer's own page. **Only the direct job
+> link is authoritative** — fetch it before concluding anything.
+
+### 🛑 2. Ask about gaps BEFORE you build
+
+For every listing requirement with **no vault backing** — **ask the applicant first.**
+
+The vault records what they have *told* you. It is **not the limit of what they can do.** On a
+real application, four requirements looked like gaps and *all four* turned out to be
+long-standing strengths nobody had thought to ask about. Two industry-standard tools sat on a
+"never claim" list for months while the applicants had years of experience with each.
+
+**Only a *confirmed* absence is a gap.** Then — and only then — name the honest equivalent and
+address it once, plainly, in the cover letter. That candor wins credibility.
+
+---
+
+## Folder anatomy
+
+Folders are keyed by **role track**, *not* by date — so each new job in a track is a
+copy-and-tweak of the last one rather than a rebuild.
 
 ```text
-storage/applications/<yyyy-mm-dd>-<company>-<role>/
+storage/applications/
+  3D-Visualizer/            ← the TRACK, not a date
+    Company.md              research · verified links · pay verdict · evidence map · the listing verbatim
+    application.json        the machine record: apply URL · pay · status · who applied
+    theme.json              the palette derived from THIS COMPANY's real brand CSS
+    *.html                  the résumé + cover-letter SOURCES
+    evidence/               screenshots of the live posting
+  Backend/
+  …
 ```
 
-Example: `storage/applications/2026-07-10-disney-systems-designer/`
-
-The date prefix keeps folders sorted by when you started the application, and
-the company + role slug makes each one findable at a glance.
-
-## Folder contents (copy `example-application/`)
+**⭐ No PDFs in here.** Finished PDFs and PNGs go to **`storage/<user>/_exports/<Track>/`** —
+per *person*, so everything one applicant needs to send sits in one place:
 
 ```text
-<yyyy-mm-dd>-<company>-<role>/
-  application.md                 the hub page: link, status, notes, checklist
-  job-listing-capture.md         filled copy of ../job-listing-capture.example.md
-  screenshots/                   listing screenshots, portal pages, anything visual
-  resume.html                    tailored copy of your base resume render
-  cover-letter.html              employer-specific framing lives HERE, not in the resume
-  _exports/                      generated PDFs/PNGs (gitignored everywhere)
+storage/jenni/_exports/3D-Visualizer/     one applicant's PDFs for that job
+storage/shade/_exports/3D-Visualizer/     the other's, for the same job
 ```
 
-Only `application.md` is mandatory — add the rest as the application progresses.
+Facts about the *job* (the apply link, the pay, the company palette) belong to the *job* — so
+two people applying to the same posting share **one** record and it can never drift apart
+between them.
 
-## Workflow
+## Templates in this folder
 
-1. **Capture** — create the folder, copy
-   [`example-application/application.md`](example-application/application.md)
-   into it, paste the job URL, drop in screenshots.
-2. **Analyze** — fill `job-listing-capture.md` (keywords, requirements, match
-   notes) from the listing.
-3. **Tailor** — copy your base resume render (e.g. from
-   `storage/<your-id>/`), adjust emphasis using ONLY claims from your
-   resume-source vault. Employer-specific language goes in the cover letter.
-4. **Export** — light PDF for submission, dark PDF for reference, bundle if
-   the portal takes one file. See [`../../docs/EXPORTS.md`](../../docs/EXPORTS.md).
-5. **Log** — record in `application.md` what you submitted, where, and when,
-   with the exact export filename. Future you will thank you.
+| Copy this | To | For |
+|---|---|---|
+| [`Company.example.md`](example-application/Company.example.md) | `<Track>/<Company>.md` | Research — links, checks, the requirement→evidence map, the verbatim listing |
+| [`application.example.json`](example-application/application.example.json) | `<Track>/application.json` | The machine record — apply URL, pay verdict, status, applicants |
+| [`theme.example.json`](example-application/theme.example.json) | `<Track>/theme.json` | The company-derived palette — with split accent runs when two people apply |
 
-## Principles (inherited from the repo root)
+---
 
-- Source-backed only — a tailored resume never claims anything not in the vault.
-- Employer-specific framing lives in the cover letter, never the resume body.
-- No auto-submission, ever.
+## Build it
+
+```bash
+/make-resume <user> storage/applications/<Track>
+```
+
+One command runs the routine end to end: capture the apply link → verify remote + pay →
+**gap-check and ask** → research the company → derive a theme from their real brand CSS →
+write → export light + dark for both documents → merge the bundle → log it.
+
+📖 [`.claude/commands/make-resume.md`](../../.claude/commands/make-resume.md) — and it is
+**agent-agnostic**: plain markdown, no vendor APIs. Any assistant, or a human with a terminal,
+can follow it.
+
+## Then log it — three places
+
+1. `<Track>/application.json` — the machine record
+2. `storage/applications/README.md` — the human index, with the status and any ⚠ caveat
+3. `<Track>/<Company>.md` — the status line + the materials index
+
+*A finished application nobody can find in a month wasn't finished.*
+
+## Principles
+
+- **Source-backed only** — a tailored résumé never claims anything not in the vault.
+- **Employer-specific framing lives in the cover letter**, never in the résumé body.
+- **No auto-submission, ever.** The tool prepares; the human submits.

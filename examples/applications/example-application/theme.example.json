@@ -1,0 +1,89 @@
+{
+  "_README": [
+    "THE COMPANY PALETTE. Copy to storage/applications/<Track>/theme.json.",
+    "",
+    "This palette belongs to the COMPANY, not to a person — which is why it lives with",
+    "the application. Two people applying to the same posting render from this ONE file",
+    "with SPLIT ACCENT RUNS: same grid, same typography, different accent order. They",
+    "read as a matched pair from one studio rather than two copies of one document.",
+    "",
+    "HOW TO DERIVE IT — pull their real brand CSS, don't guess:",
+    "  curl -sL https://<company>/ -o /tmp/c.html",
+    "  grep -oiE 'href=\"[^\"]*\\.css[^\"]*\"' /tmp/c.html",
+    "  curl -sL '<that stylesheet>' | grep -oiE '#[0-9a-f]{6}\\b' | sort | uniq -c | sort -rn | head -15",
+    "",
+    "Then give the palette a CONCEPT tied to what the company actually IS. The worked",
+    "example below is real: a large-format PRINTING house, whose site palette is literally",
+    "a CMYK ink set on white. An ink-primaries resume reads as fluency in their medium —",
+    "the palette becomes part of the pitch, not decoration.",
+    "",
+    "No usable signal? Fall back to the applicant's own brandTheme (users/<user>.json)."
+  ],
+
+  "company": "Company Name",
+  "paletteSource": "https://company.com/path/to/their/style.css — their REAL brand CSS",
+  "concept": "One sentence: why THIS palette, for THIS company. If you can't write this sentence, you picked colors instead of deriving them.",
+
+  "sourceHexes": {
+    "_note": "The raw hexes you pulled from their site, before mapping into the token contract.",
+    "magenta": "#e12c6e",
+    "orange": "#ff4b33",
+    "amber": "#fcb72f",
+    "blue": "#2775ba"
+  },
+
+  "accentRuns": {
+    "_why": "Same grid, same type, different accent ORDER. Two documents from one studio, not two copies.",
+    "applicant-a": "warm run — magenta lead -> orange -> amber",
+    "applicant-b": "cool run — blue lead -> amber -> magenta"
+  },
+
+  "tokens": {
+    "applicant-a": {
+      "dark": {
+        "--bg": "#0E0B10",
+        "--surface": "#171319",
+        "--elevated": "#211B24",
+        "--text": "#F2ECEF",
+        "--primary": "#F04B87",
+        "--secondary": "#FF6B4F",
+        "--accent": "#FCB72F",
+        "--support": "#4E9BD8",
+        "--heading-grad": "linear-gradient(135deg, #e12c6e, #ff4b33, #fcb72f)"
+      },
+      "light": {
+        "_note": "Light overrides TEXT + ACCENTS only — backgrounds stay the print defaults (white paper).",
+        "--text": "#231F26",
+        "--primary": "#C41F5E",
+        "--secondary": "#D93B22",
+        "--accent": "#1F5F96",
+        "--support": "#2775ba",
+        "--heading-grad": "linear-gradient(135deg, #e12c6e, #ff4b33)"
+      }
+    },
+    "applicant-b": {
+      "dark": {
+        "--bg": "#0A0D12",
+        "--surface": "#12171F",
+        "--elevated": "#1A2230",
+        "--text": "#E9EFF5",
+        "--primary": "#4E9BD8",
+        "--secondary": "#FCB72F",
+        "--accent": "#F04B87",
+        "--support": "#FF6B4F",
+        "--heading-grad": "linear-gradient(135deg, #2775ba, #4E9BD8, #fcb72f)"
+      },
+      "light": {
+        "_⚠note": "Look at --secondary: it is a TEAL here, not the amber from dark mode. That is the house rule in action — amber has NO readable dark form on white paper. Darkened, it turns brown. So on light, the amber ROLE is handed to another hue from the palette. Do NOT 'fix' this back to gold.",
+        "--text": "#1C2430",
+        "--primary": "#1F5F96",
+        "--secondary": "#0E7C8C",
+        "--accent": "#C41F5E",
+        "--support": "#D93B22",
+        "--heading-grad": "linear-gradient(135deg, #2775ba, #1F5F96)"
+      }
+    }
+  },
+
+  "houseRule": "No brown. No mustard. No puke/lime green. Yellow and orange only as BRIGHT, clean tones. Amber cannot be darkened for white paper without turning brown — on light, hand the amber role to another hue. ENFORCED ON EVERY EXPORT (html_to_pdf refuses to render a document that violates it; --skip-palette-check overrides). Full rule: themes/PALETTE-RULES.md"
+}

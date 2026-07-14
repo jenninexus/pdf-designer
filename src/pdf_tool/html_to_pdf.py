@@ -115,9 +115,42 @@ def export_html_to_pdf(
     return out_path
 
 
+def _guard_palette(input_html: str) -> None:
+    """Refuse to export a document that violates the house palette rule.
+
+    This runs BY DEFAULT, on every export. It used to be a separate command the
+    docs told you to remember -- and a brown light-mode accent shipped anyway,
+    because "run the guard first" is not a guarantee, it is a hope. A rule that
+    is only enforced when someone remembers it is not enforced.
+
+    Escape hatch: --skip-palette-check (say why in the commit).
+    """
+    try:
+        from .check_palette import check_file
+    except ImportError:
+        return  # guard unavailable -- never block an export on the guard's own bug
+
+    hits = check_file(Path(input_html))
+    if not hits:
+        return
+
+    print(f"\nBLOCKED: {input_html} uses banned colors.\n", file=sys.stderr)
+    for line_no, hex6, label in hits:
+        print(f"  line {line_no}: {hex6}  <-  {label}", file=sys.stderr)
+    print(
+        "\nHouse rule: no brown, no mustard, no lime/puke green.\n"
+        "On WHITE, amber has no readable dark form -- it turns brown. Give the amber\n"
+        "role to another hue from the palette instead. See themes/PALETTE-RULES.md.\n"
+        "\nTo export anyway (rare, and say why): --skip-palette-check\n",
+        file=sys.stderr,
+    )
+    raise SystemExit(2)
+
+
 def main() -> None:
     raw_args = sys.argv[1:]
     force = any(a in ("--force", "-f") for a in raw_args)
+    skip_palette = "--skip-palette-check" in raw_args
     pdf_theme = None
     output_dir = None
     args = []
@@ -127,6 +160,8 @@ def main() -> None:
             skip_next = False
             continue
         if arg in ("--force", "-f"):
+            continue
+        if arg == "--skip-palette-check":
             continue
         if arg == "--pdf-theme":
             if index + 1 >= len(raw_args):
@@ -154,6 +189,9 @@ def main() -> None:
 
     input_html = args[0]
     output_pdf = args[1] if len(args) > 1 else None
+
+    if not skip_palette:
+        _guard_palette(input_html)
 
     try:
         result = export_html_to_pdf(

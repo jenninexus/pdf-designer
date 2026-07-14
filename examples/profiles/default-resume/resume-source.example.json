@@ -1,65 +1,190 @@
 {
   "_meta": {
-    "description": "Example resume/company source vault. One entry per verified claim, each with provenance (source_file) and a confidence level, so tailored resumes only ever draw from source-backed facts instead of invented ones. Copy this file, replace every value with your own real, verifiable claims, and keep it out of version control if it contains anything private (see .gitignore). Multi-profile note: every claim carries an `applies_to` array naming which profile(s) may use it - see `examples/profiles/*/profile.json` for what each profile is. A claim missing a given profile's id must never appear in that profile's output, even if it's true.",
-    "applicant": "Jane Example",
-    "entity": "Example Studio LLC",
-    "profiles": {
-      "default-resume": "The single default example profile in this folder.",
-      "co-founder-solo": "A second, hypothetical solo profile for a co-founder applying alone - not built out here, referenced only to show how applies_to scopes a claim away from a profile it doesn't belong to."
-    },
-    "last_updated": "2026-01-01"
+    "schema": "vault/v2",
+    "whatThisIs": "THE CLAIM VAULT — layer ② of four, and the brain of the whole system. The single source of truth for everything one person may truthfully claim on a resume or cover letter.",
+
+    "theOneIdea": "A RESUME IS A QUERY AGAINST THIS FILE — not a document you rewrite each time. Select the claims that fit the job, rewrite them in that job's vocabulary, and leave the rest out. A resume that dumps the whole vault is a bad resume.",
+
+    "copyTo": "storage/<you>/resume-source.json  (gitignored — THIS file is the tracked shape)",
+
+    "howToQuery": [
+      "1. Read the listing. Its literal vocabulary is the ATS surface.",
+      "2. Pick the TRACK that matches, and read roleTracks.<track>.angle — it says what to lead with and what to demote.",
+      "3. ASK about any requirement with no vault backing. (See doNotClaim. This is the step people skip, and it is the one that costs jobs.)",
+      "4. Select claims whose `tracks` include that track (or `any`), then RANK THEM:",
+      "      ① track-specific claims BEFORE `any` claims",
+      "      ② then by `strength` (lead -> solid -> supporting)",
+      "   Do NOT sort by strength alone — an `any`+`lead` claim will outrank every claim that is actually about the job. Sorted naively, an audio resume opens with AI tooling.",
+      "5. Cut to two pages. Choosing well IS the craft.",
+      "6. Match the `voice` block. It matters as much as the facts."
+    ],
+
+    "howToExtend": "Add the fact to the right section. Every entry needs `source` and `confidence`. If the person states it in conversation, that IS a valid source — record it as `owner directive <YYYY-MM-DD>`.",
+
+    "validate": "python -m pdf_tool.check_vault storage/<you>/resume-source.json",
+
+    "hardRule": "SOURCE-BACKED ONLY. Never write a resume claim that isn't backed by an entry here. But this is NOT a gag order — the job is to elaborate PERSUASIVELY on what genuinely matches: take a real skill and show precisely why it is valuable to THIS employer. That isn't spin, it's translation."
   },
-  "claims": [
-    {
-      "source_id": "founder-role",
-      "person_or_entity": "Jane Example / Example Studio LLC",
-      "claim": "Founder and lead developer of Example Studio LLC, 2015-present; ships and maintains a small catalog of web and mobile games.",
-      "evidence_type": "resume",
-      "source_file": "path/to/your/resume.pdf",
-      "tags": ["founder", "leadership"],
-      "confidence": "source-backed",
-      "applies_to": ["default-resume"]
+
+  "roleTracks": {
+    "_note": "The job families this person applies for. Every claim's `tracks` array says which it serves (`any` = everywhere). Each track carries an ANGLE — the proven framing for that family. This is why there are no per-track profile FILES: the framing lives here, right next to the facts it frames.",
+
+    "your-track-a": {
+      "covers": "One line: what kind of job this is.",
+      "theme": "company-derived",
+      "angle": {
+        "leadWith": [
+          "The single most compelling thing this person offers for THIS kind of role",
+          "The RARE skill — the one most applicants cannot claim at all",
+          "The proof: shipped work, not adjectives"
+        ],
+        "demote": [
+          "Genuinely true, but irrelevant here — it costs space and dilutes the pitch"
+        ]
+      }
     },
-    {
-      "source_id": "flagship-title",
-      "person_or_entity": "Example Studio LLC",
-      "claim": "Flagship Game Title is the studio's most popular release: browser multiplayer game distributed on Steam and itch.io.",
-      "evidence_type": "resume + internal ranking",
-      "source_file": "path/to/your/resume.pdf",
-      "tags": ["shipped-game", "flagship"],
-      "confidence": "source-backed",
-      "applies_to": ["default-resume", "co-founder-solo"]
-    },
-    {
-      "source_id": "toolset-gap-example",
-      "person_or_entity": "Jane Example",
-      "claim": "No verified production experience with Engine X yet. Do not claim it without separate verification.",
-      "evidence_type": "internal gap note",
-      "source_file": "path/to/your/job-listing-capture.md",
-      "tags": ["honest-gap"],
-      "confidence": "explicitly-unverified",
-      "applies_to": ["default-resume"]
-    },
-    {
-      "source_id": "education-example-scoped-out",
-      "person_or_entity": "Jane Example",
-      "claim": "Jane's own alma mater / personal education fact.",
-      "evidence_type": "resume",
-      "source_file": "path/to/your/resume.pdf",
-      "tags": ["education"],
-      "confidence": "source-backed",
-      "applies_to": ["default-resume"],
-      "note": "Worked example of the applies_to rule: this is real and true, but it's Jane's personal history, not the co-founder's - it's deliberately scoped to default-resume only so a hypothetical co-founder-solo profile never borrows it. The same pattern applies to any founder-specific fact (an engine you personally authored, a school only you attended, etc.) that shouldn't leak into a teammate's solo application."
-    },
-    {
-      "source_id": "generation-policy-example",
-      "person_or_entity": "Example Studio LLC",
-      "claim": "Generated resume text stays in one applicant voice, and target-employer names stay out of the resume body (they belong in the cover letter instead).",
-      "evidence_type": "internal policy",
-      "source_file": "path/to/your/policy-notes.md",
-      "tags": ["generation-policy", "tailoring-rule"],
-      "confidence": "policy",
-      "applies_to": ["default-resume", "co-founder-solo"]
+
+    "your-track-b": {
+      "covers": "A different job family — same person, different framing.",
+      "theme": "company-derived",
+      "angle": {
+        "leadWith": ["What leads on THIS track (probably not what led on the last one)"],
+        "demote": ["What led on the other track, but would mislead here"]
+      }
     }
-  ]
+  },
+
+  "voice": {
+    "_note": "HOW this person SOUNDS. Match it — it's what makes a cover letter read like a human who wants the job instead of a template that got filled in.",
+    "person": "First person. Warm and direct / assured and reflective / whatever is TRUE.",
+    "tone": "Two or three adjectives that are actually distinguishing.",
+    "signatureMoves": [
+      "The rhetorical habits that make this person sound like themselves",
+      "e.g. 'names the honest gap rather than papering over it — it builds trust fast'"
+    ],
+    "avoid": ["Corporate jargon", "Buzzword stacking", "Claiming seniority they don't have"],
+
+    "leadIdentityByTrack": {
+      "_note": "OPTIONAL, but powerful. If the person's LEAD IDENTITY changes by track — 'AI specialist' for one kind of role, 'artist' for another — say so here. Getting this wrong makes a resume feel aimed at the wrong job.",
+      "your-track-a": "Who they are FIRST on this track.",
+      "your-track-b": "A different lead identity. Same person, same facts, different order."
+    }
+  },
+
+  "skills": {
+    "_note": "Grouped by DOMAIN, so a resume can pull the relevant cluster whole. `strength` = lead | solid | supporting.",
+
+    "your-domain": [
+      {
+        "id": "sk-example",
+        "claim": "The claim, phrased the way it would actually appear on a resume.",
+        "strength": "lead",
+        "tracks": ["your-track-a", "your-track-b"],
+        "source": "where it's provable — a prior resume, a live URL, a repo, or 'owner directive 2026-01-01'",
+        "confidence": "verified",
+        "note": "OPTIONAL. Why this claim wins, or when to lead with it."
+      },
+      {
+        "id": "sk-universal",
+        "claim": "Something true regardless of the role — it serves every track.",
+        "strength": "solid",
+        "tracks": ["any"],
+        "source": "owner directive 2026-01-01",
+        "confidence": "verified"
+      }
+    ]
+  },
+
+  "employment": [
+    {
+      "id": "emp-example",
+      "org": "Company Name",
+      "role": "Your Title",
+      "dates": "2020 – Present",
+      "duration": "5+ years",
+      "⚠durationNote": "If the COMPANY is older than YOUR TIME AT IT, state both numbers here and never let a resume blur them. Someone who joined a 25-year-old studio in its 10th year has 15 years of tenure, not 25. Both facts are true; they are different numbers.",
+      "summary": "What you did there, in two sentences.",
+      "bullets": ["Concrete", "Specific", "Evidence, not adjectives"],
+      "tracks": ["any"],
+      "strength": "lead",
+      "source": "…",
+      "confidence": "verified"
+    }
+  ],
+
+  "credits": {
+    "_note": "Shipped work. The most persuasive section you have — the only one that proves you FINISH things.",
+    "titles": [
+      {
+        "name": "The Thing You Shipped",
+        "status": "shipped",
+        "yourRole": "What YOU specifically did. An interviewer WILL ask.",
+        "tracks": ["your-track-a"],
+        "strength": "lead"
+      }
+    ],
+    "⚠whoseCreditIsIt": "If you work with other people, a TEAM credit is not automatically YOUR credit. Before a credit goes on a document, know which human performed it and whether that human is the one applying. An interviewer asking 'tell me about that project' must get a first-person answer — a credit you cannot speak to is a liability, not an asset."
+  },
+
+  "metrics": {
+    "_note": "Only PUBLICLY VERIFIABLE numbers — a live site, a store page. If you can't point at it, don't print it.",
+    "source": "the URL where these are published",
+    "confidence": "verified",
+    "⚠rule": "NEVER invent or round up a number. Not play counts, not revenue, not community size. Use them verbatim."
+  },
+
+  "education": [
+    {
+      "id": "edu-example",
+      "claim": "School / program / credential.",
+      "tracks": ["any"],
+      "strength": "supporting",
+      "source": "…",
+      "confidence": "verified"
+    }
+  ],
+
+  "doNotClaim": {
+    "_note": "⚠ A VERIFICATION LEDGER — *NOT* A BLOCKLIST. A tool listed here is NOT necessarily a tool this person lacks. It is a tool whose status has been RECORDED. Nothing may be treated as a gap until its `status` is `confirmed-absent`.",
+
+    "_why": [
+      "This structure exists because of a real, expensive failure.",
+      "",
+      "Two industry-standard tools sat on a flat 'never claim' list for MONTHS and were",
+      "forbidden on real resumes — while both applicants had YEARS of experience with each.",
+      "Nobody had ever asked. A flat list of strings cannot distinguish",
+      "",
+      "      'we asked, and they don't have it'   FROM   'nobody ever checked'",
+      "",
+      "...so it silently collapsed into the second one, and quietly cost real opportunities.",
+      "The `status` field makes that failure structurally impossible. `check_vault` enforces it."
+    ],
+
+    "_statusValues": {
+      "unverified": "⚠ NOBODY HAS ASKED. Not a gap. Not claimable either. ASK THE PERSON, then move it.",
+      "confirmed-absent": "Asked; they genuinely don't use it. THE ONLY STATUS THAT MAY EVER BE TREATED AS A GAP.",
+      "confirmed-have": "Should never appear here — a confirmed tool belongs in `skills`."
+    },
+
+    "tools": [
+      { "name": "SomeToolNobodyAskedAbout", "status": "unverified", "askedOn": null }
+    ],
+
+    "resolved": [
+      {
+        "name": "AToolTheyTurnedOutToHave",
+        "status": "confirmed-have",
+        "askedOn": "2026-01-01",
+        "movedTo": "skills.your-domain.sk-example",
+        "note": "Was wrongly blocklisted for months. Ask first."
+      }
+    ],
+
+    "honestEquivalents": {
+      "_useWhen": "⚠ ONLY once a tool's status is `confirmed-absent`. Reaching for an equivalent while the status is still `unverified` means you're working around a tool they may actually have.",
+      "TheToolTheyWant": "The honest thing we DO have that does the same job"
+    },
+
+    "_theHonestGap": "When a gap is CONFIRMED: put the honest equivalent on the resume, and name the gap ONCE, plainly, in the cover letter. Then move on. Never hide it; never fake it. That candor wins credibility — repeatedly."
+  }
 }

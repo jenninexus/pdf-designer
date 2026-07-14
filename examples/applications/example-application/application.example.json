@@ -1,0 +1,90 @@
+{
+  "_README": [
+    "THE APPLICATION RECORD — layer ④ of four. Answers: WHAT are we applying to?",
+    "",
+    "Copy to storage/applications/<Track>/application.json alongside the listing doc.",
+    "",
+    "Facts about the JOB belong to the JOB — not to a person's profile. Two people",
+    "applying to the same posting share ONE of these files, so the apply link, the pay",
+    "verdict, and the company palette can never drift apart between them.",
+    "",
+    "Folders are keyed by ROLE TRACK (3D-Visualizer/, Backend/), not by date — so each",
+    "new job in a track is a copy-and-tweak of the last, not a rebuild."
+  ],
+
+  "track": "your-track",
+  "roleTitle": "The Exact Job Title From The Listing",
+  "company": "Company Name",
+
+  "status": "BLOCKED — no apply link",
+  "_statusValues": {
+    "BLOCKED — no apply link": "⚠ THE DEFAULT. See links.applyUrl below — this is a HARD GATE.",
+    "IN PROGRESS": "Researching / writing.",
+    "READY TO SUBMIT": "Materials generated, bundled, and verified. Apply link confirmed live.",
+    "SUBMITTED": "Sent. Record the date.",
+    "CLOSED": "Rejected, withdrawn, or the posting died."
+  },
+
+  "listing": "Company-Name.md",
+
+  "links": {
+    "_⚠BLOCKING": [
+      "CAPTURE THE APPLY URL BEFORE YOU BUILD ANYTHING.",
+      "A perfectly tailored application you cannot submit is worthless. This has already",
+      "happened twice: a listing was pasted as raw text, nobody recorded where it came",
+      "from, and by the time the resume was finished the posting could not be found.",
+      "",
+      "If a listing arrives with no URL -> ASK FOR IT. One question costs nothing.",
+      "Status stays BLOCKED until an apply URL or apply email exists.",
+      "",
+      "TRAP: a company page showing 'no open jobs' does NOT mean the posting is dead.",
+      "Board postings often never appear on the employer's own page. Only the DIRECT",
+      "job link is authoritative — fetch it before concluding anything.",
+      "",
+      "TRAP: job-alert emails wrap the URL in tracking cruft. Keep only the job key;",
+      "the session tokens rot and can leak how you found the job."
+    ],
+    "applyUrl": null,
+    "jobId": null,
+    "howToApply": "portal / email address / job board. If a board hosts the application: upload the LIGHT (ATS) resume PDF, never the merged bundle — a parser fed the bundle reads your cover letter as resume content. Two applicants => two accounts.",
+    "postingVerified": null,
+    "companySite": null
+  },
+
+  "terms": {
+    "_note": "Verify these EARLY and say so LOUDLY if they are bad. Finding out the pay is below market after building the whole application is a waste of a day.",
+    "remote": null,
+    "pay": null,
+    "payVerdict": "Convert to hourly AND annual, compare to market for the role and region, and state the verdict plainly. If it is below market, SAY SO.",
+    "type": "Full-time / Contract / Freelance",
+    "duration": null
+  },
+
+  "applicants": [
+    {
+      "user": "yourname",
+      "resume": "yourname-company-track-resume.html",
+      "coverLetter": "yourname-company-track-cover-letter.html",
+      "exports": "../../yourname/_exports/<Track>/",
+      "bundle": "../../yourname/_exports/<Track>/FINAL-Your-Name-<Role>-Cover-Letter-and-Resume.pdf",
+      "accentRun": "warm"
+    }
+  ],
+
+  "theme": "theme.json",
+
+  "gapCheck": {
+    "_⚠BLOCKING": [
+      "For every listing requirement with NO vault backing: ASK THE PERSON BEFORE BUILDING.",
+      "",
+      "The vault records what they have TOLD you. It is NOT the limit of what they can do.",
+      "On a real application, four requirements looked like gaps — and all four turned out",
+      "to be long-standing strengths nobody had thought to ask about.",
+      "",
+      "Only a CONFIRMED absence is a gap. Then: name the honest equivalent on the resume,",
+      "and address it once, plainly, in the cover letter. That candor wins credibility."
+    ],
+    "askedAbout": [],
+    "confirmedGaps": []
+  }
+}
