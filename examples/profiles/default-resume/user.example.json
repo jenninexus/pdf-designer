@@ -27,7 +27,15 @@
     "signatureName": "Your Full Name",
     "signatureTitle": "Your Title",
     "emailPersonal": "you@gmail.com",
-    "emailPolicy": "Use you@yourdomain.com by DEFAULT on applications (professional, your own domain). The personal gmail is a fallback — avoid it on applications."
+
+    "emailPolicy": "⭐ DEFAULT = you@yourdomain.com. Use it on EVERY resume, cover letter, and application unless the person explicitly says otherwise in that conversation. Do not ask; do not deliberate; just use it.",
+    "emailRules": {
+      "_note": "Exactly ONE address is the default. An agent uses it automatically, every time. The others exist to be RECOGNIZED, not selected.",
+      "default": "you@yourdomain.com — professional, on your own domain. THE DEFAULT, always.",
+      "studioContext": "you@yourcompany.com — ONLY if you have a SEPARATE company address AND are applying as the company. Omit this key if your default already IS the company domain.",
+      "personal": "you@gmail.com — a VALID address, just not the preferred one. Recorded as a reference/recovery address (job boards, signups, 2FA). NEVER auto-select it on a resume or cover letter.",
+      "⚠whyItIsRecorded": "It is listed so an agent can RECOGNIZE it — spot it on an old resume and flag it, or match a job-board account. NOT so an agent can use it. Presence in this file is not permission. Only the person naming it, in that conversation, overrides the default."
+    }
   },
 
   "vault": "../yourname/resume-source.json",
