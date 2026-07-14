@@ -154,5 +154,5 @@ design-system pattern that is **not public** and **not a dependency**. Keep any 
 trail in gitignored local notes only.
 
 **Nothing tracked in this repo may link to, or assume access to, a private repository.** *(Two
-`themes/brand-*.json` files briefly violated this by citing a private sibling repo as their
+brand-palette files briefly violated this by citing a private sibling repo as their
 provenance; they were made self-contained on 2026-07-13.)*

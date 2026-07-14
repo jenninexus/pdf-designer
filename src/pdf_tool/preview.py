@@ -16,7 +16,7 @@ Usage:
     python -m pdf_tool.preview --port 9000
 
 Palettes offered by the swapper come from themes/*.json (public) and
-storage/themes/*.json (private, gitignored) — drop another theme file there
+storage/brands/*.json (private, gitignored) — drop another palette file there
 to audition more color combos. Palette preview is WYSIWYG for export: the
 chosen palette is injected into the PDF/PNG via html_to_pdf's css_vars hook.
 """
@@ -65,9 +65,9 @@ def scan_documents(root: Path) -> list[dict]:
 
 
 def load_palettes() -> list[dict]:
-    """Every dark/light block from themes/*.json + storage/themes/*.json."""
+    """Every dark/light block from themes/*.json (public) + storage/brands/*.json (private)."""
     palettes = []
-    for theme_dir in (_REPO_ROOT / "themes", _REPO_ROOT / "storage" / "themes"):
+    for theme_dir in (_REPO_ROOT / "themes", _REPO_ROOT / "storage" / "brands"):
         if not theme_dir.is_dir():
             continue
         for f in sorted(theme_dir.glob("*.json")):

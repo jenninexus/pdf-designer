@@ -54,7 +54,7 @@ intended agent feedback loop.
 | `src/pdf_tool/` | the engine (html_to_pdf, merge_pdfs, pdf_to_png, check_palette, collage, preview) |
 | `themes/default-resume.{json,css}` | public default theme — JSON is the token SSOT, CSS is its mirror |
 | `themes/PALETTE-RULES.md` | ⭐ **the color rule** (no brown/mustard/lime) + how the guard enforces it |
-| `themes/brand-*.json` | brand token maps (jenninexus · synagen · martian) — light+dark, guard-clean |
+| `storage/brands/*.json` | ⛔ PRIVATE brand palettes (gitignored). The previewer reads them alongside `themes/`. |
 | `themes/default-collage.json` | collage canvas presets + tokens ([`docs/COLLAGE-DESIGN.md`](docs/COLLAGE-DESIGN.md)) |
 | `examples/profiles/<id>/` | one profile per document type: `profile.json` + reference `.html` render + example data |
 | `examples/applications/` | one-folder-per-job-application workflow + copyable template |
