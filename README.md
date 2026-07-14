@@ -1,173 +1,117 @@
 <div align="center">
 
-# pdf-designer
+# 🖨️ pdf-designer
+
+**Design it in HTML. Print it like a browser. Never invent a claim.**
 
 ![MIT](https://img.shields.io/badge/license-MIT-9b5cf6?style=flat-square&labelColor=1a1a2e)
 ![Runtime](https://img.shields.io/badge/runtime-python%20%2B%20playwright-63b3ed?style=flat-square&labelColor=1a1a2e)
-![Dependencies](https://img.shields.io/badge/dependencies-headless%20chromium-42f4c8?style=flat-square&labelColor=1a1a2e)
-![Mode](https://img.shields.io/badge/mode-local--first-ffaa00?style=flat-square&labelColor=1a1a2e)
+![Engine](https://img.shields.io/badge/engine-headless%20chromium-42f4c8?style=flat-square&labelColor=1a1a2e)
+![Local](https://img.shields.io/badge/local--first-no%20SaaS-ff6ec4?style=flat-square&labelColor=1a1a2e)
 
-## Fill forms. Export PDFs.
-## Never invent a claim.
+A local-first toolkit for turning HTML into **print-perfect PDFs** — résumés, cover letters, collages —
+with an optional job-application layer that tailors every document from *your own verified facts*.
 
-A local-first toolkit for filling PDF forms and generating polished HTML → PDF documents (resumes, cover letters, application forms) — with an optional job-application layer that tailors output from your own verified facts instead of inventing anything.
+**Your data never leaves your machine.** No SaaS. No auto-submission. Ever.
 
 </div>
 
-Not a SaaS. Your data stays on your machine. See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for the full design, [`docs/THEME-DESIGN.md`](docs/THEME-DESIGN.md) for the theme/profile contract, and [`docs/EXPORTS.md`](docs/EXPORTS.md) for light/dark PDF, bundle, and PNG export commands.
-
-- Real headless-browser PDF export — CSS grid/flex and `@media print` render exactly like a browser's own Print → Save as PDF.
-- Profiles separate theme, data, and rendered HTML so one theme can back many documents.
-- Source-backed only — generated content never outruns your own verified claims.
-- No auto-submission, ever.
-
 ---
 
-## What's here today
+## ✨ What it does
 
-- **`src/pdf_tool/html_to_pdf.py`** — render any HTML file to PDF with a real headless browser (Playwright + Chromium), so CSS grid/flex layout and `@media print` rules render exactly like a browser's own Print → Save as PDF.
-- **`src/pdf_tool/merge_pdfs.py`** — combine cover letters, resumes, and supporting PDFs into one upload bundle, with optional US Letter validation.
-- **`src/pdf_tool/pdf_to_png.py`** — render exported PDFs to one PNG per page for previews, review artifacts, or web images.
-- **`themes/default-resume.css`** (+ `default-resume.json` as the same tokens in data form) — a generic professional theme with intentional dark preview/brand-export mode, light ATS/submission mode, and US Letter print geometry.
-- **`examples/profiles/default-resume/`** — a full example profile, mirroring the pattern below: `profile.json` (metadata + which theme/render/data it uses), `default-resume.html` (the reference render), `resume-source.example.json` (the claim-vault schema, one entry per verified fact).
-- **`examples/job-listing-capture.example.md`** — a template for capturing a job listing before tailoring anything toward it.
-- **`examples/applications/`** — the one-folder-per-job-application workflow: where to drop the listing link, screenshots, and gig details, and how to track what was actually submitted. Copy `example-application/` per gig.
-- **`src/pdf_tool/collage.py`** — the collage layout generator: point it at a directory of images and it writes one candidate layout per family (uniform grid, hero mosaic, masonry, filmstrip, spotlight+caption, frame scatter) plus an `index.html` picker gallery to compare them side by side, PowerPoint-Designer style. `--png` renders each candidate to an image. Design SSOT: [`docs/COLLAGE-DESIGN.md`](docs/COLLAGE-DESIGN.md); example profile: `examples/profiles/default-collage/`.
-- **`src/pdf_tool/preview.py`** — the **Design Hub**: a local previewer (`python -m pdf_tool.preview`) with a PowerPoint-style sidebar of live thumbnails for every document, a palette swapper to audition color schemes, and one-click export of the selected document. Design + app roadmap (pywebview shell, drag-and-drop canvas editor, collage books): [`docs/PREVIEWER.md`](docs/PREVIEWER.md).
-- **`AGENTS.md`** — the machine/agent-facing capability map of this repo, for any AI coding assistant (not tied to one vendor).
+| | |
+|---|---|
+| 📄 **HTML → PDF** | Real headless Chromium. CSS grid, flex, and `@media print` render exactly like a browser's own *Print → Save as PDF*. |
+| 🌗 **Light + dark, one source** | Every document exports an ATS-safe light PDF **and** a branded dark one — same geometry, same pagination. |
+| 🎨 **Themeable** | Palettes are data. Swap a token map, keep the layout. A guard rejects colors that print badly. |
+| 🖼️ **Collages** | Point it at a folder of images → six layout families + a picker gallery, PowerPoint-Designer style. |
+| 🔍 **Design Hub** | A local previewer with live thumbnails, a palette swapper, and one-click export. |
+| 🔐 **Source-backed** | The résumé layer can only claim what's in your vault. It elaborates; it never fabricates. |
 
-### Profiles
+## 🚀 Quick start
 
-Each use case (a resume, a specific cover-letter style, a different document type) is a **profile**: a folder under `examples/profiles/<id>/` containing `profile.json`, a reference `.html` render, and its own example data file — same shape as `themes/` + `profiles/` in dashboard-style projects, so a theme can be reused across multiple profiles without duplicating the palette. Copy `examples/profiles/default-resume/` as the starting point for a new profile.
+```bash
+pip install -e .            # makes `pdf_tool` importable from the repo root
+playwright install chromium
+```
 
-## What's planned
+```bash
+python -m pdf_tool.preview                        # 🎨 Design Hub — browse, theme, export
+python -m pdf_tool.html_to_pdf doc.html           # 📄 light / ATS PDF
+python -m pdf_tool.html_to_pdf doc.html --pdf-theme dark   # 🌙 branded dark PDF
+python -m pdf_tool.merge_pdfs out.pdf a.pdf b.pdf --require-letter
+python -m pdf_tool.pdf_to_png doc.pdf             # 👀 verify by eye
+python -m pdf_tool.check_palette doc.html         # 🚦 palette guard — run before every export
+python -m pdf_tool.collage ./images --layout auto --png
+```
 
-AcroForm PDF field filling, flat-PDF overlay filling, job-listing keyword extraction, a match-score report (strong / partial / missing, with evidence links), resume tailoring from verified claims only, browser-form autofill mapping, and an optional React preview/customizer layer that can apply saved theme profiles through the token adapter contract. See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for the full roadmap.
+Exports land in `_exports/` beside the source and **never overwrite** (auto `-v2`, `-v3`).
 
-## Default canvas sizes
+## 📚 Docs
 
-Print documents default to **US Letter (8.5 × 11 in)**. Collage/image layouts additionally target the standard social canvases (preset data: [`themes/default-collage.json`](themes/default-collage.json), design notes: [`docs/COLLAGE-DESIGN.md`](docs/COLLAGE-DESIGN.md)):
+| Doc | What's in it |
+|---|---|
+| [`AGENTS.md`](AGENTS.md) | **Agent capability map** — every command, the repo map, and the contracts that must not break. Vendor-neutral. |
+| [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) | How the pieces fit; the roadmap. |
+| [`docs/THEME-DESIGN.md`](docs/THEME-DESIGN.md) | The theme/profile contract and the token names. |
+| [`docs/EXPORTS.md`](docs/EXPORTS.md) | Export paths, the palette guard, pagination traps. |
+| [`docs/PREVIEWER.md`](docs/PREVIEWER.md) | The Design Hub + its app roadmap. |
+| [`docs/COLLAGE-DESIGN.md`](docs/COLLAGE-DESIGN.md) | The six collage families and the canvas presets. |
+| [`themes/PALETTE-RULES.md`](themes/PALETTE-RULES.md) | 🚦 **The color rule** — no brown, no mustard, no lime — and the guard that enforces it. |
+
+## 🧠 The résumé layer *(optional)*
+
+The interesting part. A résumé is a **query against a vault**, not a document you rewrite each time.
+
+```
+storage/                        ← gitignored; your real data never ships
+  users/<you>.json              WHO is applying — contact, brand, naming
+  <you>/resume-source.json      ⭐ THE VAULT — every fact you may truthfully claim,
+                                   each with a source, a strength, and its role tracks
+  profiles/<you>-resume.json    HOW it renders — layout, exports, cover-letter policy
+  applications/<Role>/          THE JOB — the listing, the apply link, the company palette
+```
+
+**The rule:** never write a claim that isn't in the vault. But *do* elaborate persuasively on what
+genuinely matches — take a real skill and show precisely why it's valuable *to this employer*.
+That's not spin, it's translation.
+
+**The other rule:** if a listing asks for something the vault doesn't have — **ask the human before
+calling it a gap.** The vault records what they've *told* you; it is not the limit of what they can do.
+
+Then one command runs the whole routine — capture the apply link, verify remote status and pay,
+research the company, derive a theme from their real brand CSS, write, export light + dark, merge the
+bundle:
+
+```
+/make-resume <user> storage/applications/<Role>
+```
+
+📖 [`.claude/commands/make-resume.md`](.claude/commands/make-resume.md) — and it's **agent-agnostic**:
+plain markdown, no vendor APIs. Any assistant (or human) can follow it.
+
+## 🎨 Canvas sizes
+
+Print defaults to **US Letter (8.5 × 11in)**. Collages also target the standard social canvases:
 
 | Ratio | Pixels | Use |
 |---|---|---|
-| 8.5 × 11 in (portrait/landscape) | 2550 × 3300 @300dpi | Print / PDF one-sheet |
-| 16:9 | 1920 × 1080 or 1280 × 720 | YouTube, slides, banners |
-| 9:16 | 1080 × 1920 or 720 × 1280 | Stories, Reels, Shorts |
-| 4:3 / 3:4 | 1440 × 1080 / 1080 × 1440 | Classic photo layouts |
-| 4:5 | 1080 × 1350 | Instagram portrait post |
-| 1:1 | 1024 × 1024 (or 1000², 512²) | Instagram square, avatars |
+| 8.5 × 11in | 2550 × 3300 @300dpi | Print / PDF one-sheet |
+| 16:9 | 1920 × 1080 | YouTube, slides, banners |
+| 9:16 | 1080 × 1920 | Stories, Reels, Shorts |
+| 4:5 | 1080 × 1350 | Instagram portrait |
+| 1:1 | 1024 × 1024 | Square posts, avatars |
 
-## Quick start
+Presets: [`themes/default-collage.json`](themes/default-collage.json)
 
-One-time setup, then **run every command from the `src/` directory** (that's what puts `pdf_tool` on the module path):
+## 🧭 Principles
 
-```
-pip install playwright pymupdf
-playwright install chromium
-cd src
-```
+- **Local-first.** No SaaS, no upload, no telemetry. `storage/` is gitignored and stays home.
+- **Source-backed.** Generated content never outruns verified claims.
+- **No auto-submission.** The tool prepares; the human submits.
+- **Geometry is locked.** Palettes change color — never paper size, margins, or pagination.
 
-### Preview & pick — the Design Hub
+## 📄 License
 
-```
-python -m pdf_tool.preview
-```
-
-Opens `http://127.0.0.1:8787`: a sidebar of live thumbnails for every `.html` document in the repo (resume renders, collage candidates, cover letters), grouped by folder. Click one to preview it full size, audition color schemes with the **palette** dropdown, then **Export selected** to PDF (light/dark) or PNG pages into any folder. Full guide + app roadmap: [`docs/PREVIEWER.md`](docs/PREVIEWER.md).
-
-### Make a collage from a folder of images
-
-```
-python -m pdf_tool.collage path/to/images --title "My Showcase" --png
-python -m pdf_tool.collage path/to/images --canvas hd-landscape --px 1280x720 --png   # 16:9 social size
-```
-
-Writes one candidate per layout family into `path/to/images/_candidates/<canvas>-<W>x<H>/` (each canvas size gets its own folder — nothing is overwritten) plus an `index.html` picker to compare them all. Layout families + canvas presets: [`docs/COLLAGE-DESIGN.md`](docs/COLLAGE-DESIGN.md).
-
-### Export documents
-
-```
-python -m pdf_tool.html_to_pdf path/to/your-document.html                    # light/ATS PDF
-python -m pdf_tool.html_to_pdf path/to/your-document.html --pdf-theme dark   # dark branded PDF
-python -m pdf_tool.merge_pdfs final-application.pdf cover-letter.pdf resume.pdf --require-letter
-python -m pdf_tool.pdf_to_png path/to/your-document.pdf                      # one PNG per page
-```
-
-Re-running against the same HTML never overwrites a previous export by default — it writes `your-document-v2.pdf`, `-v3.pdf`, and so on, so you always keep the last version you actually sent somewhere. Default exports go into `_exports` next to the source HTML. Pass an explicit output path, `--output-dir`, or `--force` to control the export location/overwrite behavior.
-
-By default, `html_to_pdf.py` renders **US Letter, 8.5 x 11 inches**. For resume templates, make that explicit in the HTML too:
-
-```css
-@media print {
-  @page {
-    size: Letter;
-    margin: 0.5in 0.55in 0.72in;
-  }
-}
-```
-
-Use `@page` margins for real printed page padding. If you need a repeated footer, add a `position: fixed` footer inside `@media print`; Chromium repeats fixed print elements on each generated page.
-
-When a job portal only accepts one upload, create a cover-letter-plus-resume bundle after exporting each source document:
-
-```text
-python -m pdf_tool.merge_pdfs final-application.pdf cover-letter.pdf resume.pdf --require-letter
-```
-
-`--require-letter` fails the merge if any page is not 8.5 x 11 inches, which keeps mixed page sizes out of application uploads.
-
-For a branded dark PDF while keeping the same Letter pagination, add dark print overrides in the template:
-
-```css
-@media print {
-  html[data-pdf-theme="dark"] {
-    --bg: #0b0d12;
-    --surface: #10131a;
-    --text: rgba(240,242,246,0.94);
-  }
-}
-```
-
-Then export with `--pdf-theme dark`.
-
-The default theme intentionally defines both modes:
-
-- Light print/submission: white surfaces, dark text, restrained teal/gold/violet accents for ATS-safe PDFs.
-- Dark preview/branded export: near-black surfaces, light text, the same teal/gold/violet accent roles for portfolio PDFs/PNGs.
-
-### Theme and palette sync
-
-`themes/default-resume.json` is the data SSOT and `themes/default-resume.css` is the CSS mirror. To use another palette system, map its tokens into the same names used here (`primary`, `secondary`, `accent`, `support`, `bg`, `surface`, `text`, `dim`, `border`) and keep the document geometry unchanged unless the target explicitly asks for another paper size. This lets external theme kits swap the look without changing resume layout, page breaks, or ATS-safe print behavior.
-
-## Using this for your own resume/applications
-
-1. Copy `examples/profiles/default-resume/` to `examples/profiles/<your-id>/` (or anywhere outside the repo) and fill in `resume-source.example.json` → your own real, verifiable claims.
-2. Copy `examples/job-listing-capture.example.md` per job listing you're targeting.
-3. Adapt `default-resume.html` (or build your own) against `themes/default-resume.css`, keeping any target-employer-specific language in a separate cover letter, not the resume body.
-4. Render to PDF with `html_to_pdf.py`.
-
-Keep your real, filled-in files out of version control unless you deliberately want them public — see `.gitignore` (it already ignores non-`.example.` resume-source/job-listing files).
-
-## Principles
-
-- Source-backed only — no invented claims.
-- Honest gaps stay honest — an unverified skill is marked unverified, not upgraded.
-- One generation voice per document, decided explicitly, not left ambiguous.
-- Employer-specific framing lives in the cover letter, never baked into the reusable resume.
-- No auto-submission, ever — this speeds up your own review, it doesn't replace it.
-
-## License
-
-`LICENSE` is currently MIT as a **placeholder, not a final decision** — if a paid tier is genuinely planned, read [`docs/LICENSING-NOTES.md`](docs/LICENSING-NOTES.md) before the first public push.
-
----
-
-<div align="center">
-
-If this helps you build something useful:
-
-[Star this repo](https://github.com/jenninexus/pdf-designer) · [Links](https://jenninexus.com/links) · [Patreon](https://www.patreon.com/c/JenniNexus) · [Paypal](https://paypal.me/jenninexus)
-
-Published by [Jenni](https://github.com/jenninexus) at [Monofinity Studio](https://github.com/monofinitystudio).
-
-</div>
+MIT — see [`LICENSE`](LICENSE). Third-party notes: [`docs/LICENSING-NOTES.md`](docs/LICENSING-NOTES.md).

@@ -1,0 +1,35 @@
+{
+  "_meta": {
+    "description": "Synagen brand token map for pdf-designer resume/cover-letter exports. Magenta/violet/cyan on deep violet-black.",
+    "source": "Synagen brand tokens; the light map is the already-proven print counterpart (it deliberately hands the amber role to a teal).",
+    "lastUpdated": "2026-07-13",
+    "paletteRules": "themes/PALETTE-RULES.md"
+  },
+  "_paletteRuleNote": "HOUSE RULE: no brown, no mustard, no puke/lime green. The dark 'gold' token (f0b25a, hue ~33deg) has NO readable dark form on white paper — darkening it for print drives it straight into brown. Per the rule, on LIGHT the gold role is handed to ANOTHER HUE from the palette: the deep teal 0e6e7a, derived from the accent cyan 4fd8e8. Do NOT 'fix' the light gold back to a dark amber — that reintroduces the brown. Dark mode keeps the bright gold; it is legal there. Hexes in this note omit the leading # on purpose so check_palette does not flag its own documentation.",
+  "tokens": {
+    "dark": {
+      "--bg": "#0B0510",
+      "--surface": "#150A21",
+      "--elevated": "#1F0E30",
+      "--text": "#EDE4F2",
+      "--primary": "#B44FD0",
+      "--secondary": "#E44FD0",
+      "--accent": "#4FD8E8",
+      "--support": "#8F9BE8",
+      "--gold": "#F0B25A",
+      "--heading-grad": "linear-gradient(135deg, #E44FD0, #B44FD0, #7B6BF0, #4FD8E8)"
+    },
+    "light": {
+      "--bg": "#faf8fc",
+      "--surface": "#ffffff",
+      "--elevated": "#f3eef8",
+      "--text": "#2A2230",
+      "--primary": "#7A2E96",
+      "--secondary": "#B0187E",
+      "--accent": "#0E7C8C",
+      "--support": "#3D4AA0",
+      "--gold": "#0E6E7A",
+      "--heading-grad": "linear-gradient(135deg, #B0187E, #7A2E96, #0E7C8C)"
+    }
+  }
+}

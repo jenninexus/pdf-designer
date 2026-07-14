@@ -3,6 +3,14 @@
 Design SSOT: [`../../docs/PREVIEWER.md`](../../docs/PREVIEWER.md). This file
 is the working checklist; check items off as phases land.
 
+> **Status 2026-07-13: STILL ACTIVE.** Phase 1 shipped. Phases 2–5 are unstarted —
+> verified against the source (no `--variants` flag, no `pdf_tool/app.py`, no canvas
+> drag-and-drop, no multi-page collage book). **Do not archive this plan.**
+>
+> Unrelated work that landed since (2026-07-13, not part of this roadmap): the résumé
+> vault restructure, `themes/PALETTE-RULES.md` + the `check_palette` guard, brand token
+> maps, and `pyproject.toml` (so `python -m pdf_tool.*` runs from the repo root).
+
 ## Phase 1 — local previewer ✅ (2026-07-11)
 
 - [x] `src/pdf_tool/preview.py` — Design Hub server (sidebar thumbnails,

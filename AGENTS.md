@@ -19,36 +19,54 @@ Local-first PDF/document toolkit. Two layers:
 ## Commands an agent can run
 
 ```bash
-pip install playwright pymupdf && playwright install chromium   # one-time setup
+pip install -e . && playwright install chromium                 # one-time setup
 
 python -m pdf_tool.html_to_pdf <doc>.html                       # light/ATS PDF (default)
 python -m pdf_tool.html_to_pdf <doc>.html --pdf-theme dark      # dark branded PDF, same pagination
 python -m pdf_tool.html_to_pdf <doc>.html --output-dir <dir>    # control export location
 python -m pdf_tool.merge_pdfs out.pdf a.pdf b.pdf --require-letter   # bundle, validate 8.5x11
 python -m pdf_tool.pdf_to_png <doc>.pdf                         # one PNG per page (visual verify)
+python -m pdf_tool.check_palette <doc>.html                     # ⭐ palette guard — run before EVERY export
+python -m pdf_tool.check_palette --scan storage/                #    sweep a whole tree
 python -m pdf_tool.collage <imagesDir> --layout auto --png      # collage candidates + picker gallery
 #   → writes to <imagesDir>/_candidates/<canvas>-<W>x<H>/ (never overwrites other sizes)
 #   --canvas <preset> --px WxH --hero <file> --title "..." --theme light|dark
 python -m pdf_tool.preview --no-open --port 8787                # Design Hub server (127.0.0.1; docs/PREVIEWER.md)
 ```
 
-Run from `src/` (or with `src/` on `PYTHONPATH`). Exports default to
-`_exports/` beside the source HTML and never overwrite (auto `-v2`, `-v3`).
-**Verification without a screen:** export, then `pdf_to_png.py` and read the
-PNGs — that is the intended agent feedback loop.
+`pip install -e .` makes `pdf_tool` importable **from the repo root**. (Without it you must run from
+`src/` or set `PYTHONPATH=src` — the older docs' failure mode.)
+
+Exports default to `_exports/` beside the source HTML and **never overwrite** (auto `-v2`, `-v3`).
+**Verification without a screen:** export, then `pdf_to_png` and *read* the PNGs — that is the
+intended agent feedback loop.
 
 ## Repo map
 
 | Path | What it is |
 |---|---|
-| `src/pdf_tool/` | the engine (html_to_pdf, merge_pdfs, pdf_to_png; more planned) |
+| `src/pdf_tool/` | the engine (html_to_pdf, merge_pdfs, pdf_to_png, check_palette, collage, preview) |
 | `themes/default-resume.{json,css}` | public default theme — JSON is the token SSOT, CSS is its mirror |
+| `themes/PALETTE-RULES.md` | ⭐ **the color rule** (no brown/mustard/lime) + how the guard enforces it |
+| `themes/brand-*.json` | brand token maps (jenninexus · synagen · martian) — light+dark, guard-clean |
 | `themes/default-collage.json` | collage canvas presets + tokens ([`docs/COLLAGE-DESIGN.md`](docs/COLLAGE-DESIGN.md)) |
 | `examples/profiles/<id>/` | one profile per document type: `profile.json` + reference `.html` render + example data |
 | `examples/applications/` | one-folder-per-job-application workflow + copyable template |
-| `examples/job-listing-capture.example.md` | job-listing capture template |
-| `docs/` | ARCHITECTURE, THEME-DESIGN, EXPORTS, COLLAGE-DESIGN, LICENSING-NOTES |
-| `storage/` | **gitignored** local workspace: real profiles, real applications, real image sets |
+| `docs/` | ARCHITECTURE, THEME-DESIGN, EXPORTS, COLLAGE-DESIGN, PREVIEWER, LICENSING-NOTES |
+| `storage/` | **gitignored** local workspace: the vaults, real applications, real image sets |
+
+### The application workflow lives in `storage/` (gitignored)
+
+Four layers, each answering one question. **The vault is the brain.**
+
+| Layer | File | Answers |
+|---|---|---|
+| Person | `storage/users/<user>.json` | **who** is applying |
+| **Vault** ⭐ | `storage/<user>/resume-source.json` | **what may be truthfully claimed** · how they sound · the angle per role track |
+| Profile | `storage/profiles/<user>-resume.json` | **how** it renders (one per person — no per-track files) |
+| Application | `storage/applications/<Track>/` | **the job** — listing, apply link, pay, company palette |
+
+Read [`storage/VAULT.md`](storage/VAULT.md) before authoring any resume claim.
 
 ## Contracts (do not break)
 
@@ -62,10 +80,20 @@ PNGs — that is the intended agent feedback loop.
 - **Token names.** `--bg, --surface, --elevated, --text, --dim, --dim2,
   --border, --border2, --primary, --secondary, --accent, --support`.
   External palettes get *mapped into* these names ([`docs/THEME-DESIGN.md`](docs/THEME-DESIGN.md)).
+- **Palette rule.** **No brown, no mustard, no puke/lime green.** Amber has no
+  readable dark form on white — darkening it turns it brown; on the light
+  palette hand that role to another hue. Enforced by
+  `python -m pdf_tool.check_palette` — **run it before every export.**
+  Full rule: [`themes/PALETTE-RULES.md`](themes/PALETTE-RULES.md).
 - **Source-backed only.** Never write a resume claim that isn't in the
-  user's resume-source vault (`resume-source.json`). Unverified stays marked
-  unverified. Employer-specific framing goes in the cover letter, never the
-  resume body.
+  user's vault (`storage/<user>/resume-source.json`). Employer-specific framing
+  goes in the cover letter, never the resume body.
+- **🛑 Ask before calling something a gap.** The vault records what the user has
+  *told* you — it is **not** the limit of what they can do. If a listing needs
+  something the vault lacks, **ask them first**; if they have it, write it into
+  the vault, then use it. (`doNotClaim` means *"not yet confirmed"*, not
+  *"can't do it"* — Maya and ZBrush sat there for months while both founders had
+  years of experience with each.)
 - **No auto-submission.** Prepare materials; the human submits.
 - **Privacy split.** `storage/`, `*.pdf`, `*.png`, `_exports/`,
   non-`.example` source/capture files are gitignored. Never move real
@@ -74,16 +102,19 @@ PNGs — that is the intended agent feedback loop.
 
 ## Common tasks → recipes
 
-- **New job application:** create
-  `storage/applications/<yyyy-mm-dd>-<company>-<role>/`, copy
-  `examples/applications/example-application/`, follow
-  [`examples/applications/README.md`](examples/applications/README.md).
+- **New job application:** run **`/make-resume <user> <application-dir>`** — it runs the whole
+  routine (capture the apply link → verify remote/pay → **gap-check and ask** → derive the theme →
+  write → export light+dark → merge the bundle → log it). Folders are keyed by **role track**
+  (`storage/applications/3D-Visualizer/`), not by date. Protocol:
+  [`storage/JOB-ASSESSMENT.md`](storage/JOB-ASSESSMENT.md).
+- **Tailor a resume by hand:** read the listing → pick the role track → read the vault's
+  `roleTracks.<track>.angle` → select claims whose `tracks` match, ordered by `strength` → cut to two
+  pages → export light PDF → **verify by reading the PNG**.
 - **New document type / profile:** copy `examples/profiles/default-resume/`
   (or `default-collage/`) to a new `examples/profiles/<id>/` (public example)
   or under `storage/` (real/private), point `profile.json` at the right theme.
-- **Tailor a resume:** read the application folder's
-  `job-listing-capture.md`, adjust the resume HTML emphasis using only vault
-  claims, export light PDF, verify via PNG.
+- **Add a person:** `storage/users/<name>.json` + `storage/<name>/resume-source.json` +
+  `storage/profiles/<name>-resume.json`. See [`storage/README.md`](storage/README.md).
 - **Collage:** put images in `storage/collages/<project>/`, run
   `python -m pdf_tool.collage <dir> --layout auto --png`, open
   `<dir>/_candidates/index.html` to compare all six layout families, then
