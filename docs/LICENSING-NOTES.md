@@ -1,14 +1,15 @@
 # Licensing
 
-**Status: MIT, and now honestly so.** `LICENSE` is MIT, the README says MIT, and — as of
-2026-07-13 — **every dependency is permissive**, so that claim is finally true without a caveat.
+**Settled 2026-07-13: MIT + open core.** © Jenni Nexus, sole copyright holder.
+`LICENSE` is MIT, the README says MIT, **every dependency is permissive**, and the paid-vs-open
+question is **decided** (below) rather than left hanging.
 
 | | |
 |---|---|
 | [The AGPL problem](#the-problem-we-had-an-agpl-dependency) | What was actually broken, and why it mattered |
 | [How it was fixed](#how-it-was-fixed) | PyMuPDF removed; nothing lost |
 | [The dependency audit](#the-dependency-audit) | Every dep, every license |
-| [Is MIT the right license?](#is-mit-the-right-license-still-a-business-call) | Still an open business question |
+| **[The decision: MIT + open core](#the-decision-mit--open-core)** | **Why, and the one rule that keeps your options open** |
 | [Theme provenance](#theme-provenance) | The one other thing to keep clean |
 
 ---
@@ -85,40 +86,66 @@ anyone's source-disclosure obligations.
 > python -c "import importlib.metadata as m; d=m.metadata('PKG'); print(d.get('License-Expression') or d.get('License'))"
 > ```
 
-## Is MIT the right license? (still a business call)
+## The decision: MIT + open core
 
-Resolved above: MIT is now *coherent*. Whether it's *optimal* is a separate question, and it is
-still open — the repo is private, so nothing is locked in.
+**Decided 2026-07-13. This repo stays MIT. Anything paid lives in a separate private repo.**
 
-MIT and Apache-2.0 are simple and contributor-friendly, but they let anyone — including a
-well-funded competitor — take the code, host it, and sell it back to your own future customers
-owing you nothing. That's a fine trade for a utility library. It's a worse trade for "open core
-now, paid product later," because by the time there's something worth competing over, the
-permissive license already gave away the ability to stop it.
+This section used to be a three-option menu with a hedge at the bottom. A menu isn't a decision,
+and an undecided license is a decision to be surprised later. So — decided.
 
-**You are the sole copyright holder**, which preserves the **dual-licensing** option: offer the
-community one license, and separately sell a commercial license to companies that don't want the
-community terms. That option survives only if contributors don't dilute copyright ownership
-without a CLA — worth remembering if this ever takes outside contributions.
+### Why MIT and not something more defensive
 
-### The options
+The instinct to protect the code is real, and the fear is legitimate: a permissive license lets a
+well-funded competitor take this, host it, and sell it back to your own future customers owing you
+nothing. BSL and AGPL exist precisely to stop that.
 
-1. **Open core (the current path, and a reasonable default).** Keep this repo permissive — MIT, or
-   Apache-2.0 if you want an explicit patent grant. Build anything paid as a **separate private
-   repo** that depends on this one. Simplest to execute; keeps every door open.
-2. **Source-available with a commercial carve-out** (BSL / Functional Source License). Public and
-   inspectable, free for personal and non-production use, but running it as a competing commercial
-   service requires a commercial license; auto-converts to Apache/MIT after 2–4 years. More legal
-   overhead, and it isn't OSI-approved "open source," which costs casual adoption.
-3. **AGPL-3.0 + commercial dual license.** Deters silent SaaS forks; you'd still sell companies a
-   commercial license waiving the AGPL terms (the MySQL/Qt model). But many companies **ban AGPL
-   dependencies outright**, and you'd have to administer the dual license.
+**But they guard against the wrong risk for this project.**
 
-**Recommendation (non-binding — this is a business decision, not a technical one):** stay with
-**option 1** unless a concrete paid feature is already planned, in which case decide *where it
-lives* (a separate private repo) **before** the first public push. Revisit 2–3 only if
-clone-and-resell becomes an observed problem rather than a hypothetical one — they cost real
-adoption friction to guard against a risk that may never arrive.
+- **The moat isn't the code — it's the vault.** The engine is ~1,400 lines of Playwright glue.
+  Anyone competent could rewrite it in a weekend; it is not what makes this valuable. What makes it
+  valuable is the *system* around it — the claim vault, the role-track angles, the guards, the
+  accumulated judgment about what actually wins a job. **That's data and doctrine, and it is
+  already private.** Licensing the engine defensively protects the part nobody wants to steal.
+- **Nobody clones an unknown repo.** BSL and AGPL solve a problem you get *after* traction. Right
+  now the scarce resource is people finding this useful at all — and both licenses actively cost
+  you that. Many companies **ban AGPL dependencies outright**; BSL isn't OSI-approved, so it reads
+  as "not really open source" and suppresses casual adoption and contribution.
+- **You're paying legal overhead today to insure a hypothetical.** Administering a dual license is
+  real, ongoing work. Do it when there's something to defend, not before.
+- **MIT is reversible in the direction that matters.** You are the **sole copyright holder** (the
+  `LICENSE` names you, deliberately). That means you can *always* relicense future versions,
+  dual-license, or sell a commercial license later. What you can't do is retroactively claw back
+  the version you already published — so the only real cost of MIT is that any single released
+  version stays MIT forever. That is a cheap price for adoption.
+
+### What "open core" means in practice
+
+| Layer | Where it lives | License |
+|---|---|---|
+| **The engine** — `pdf_tool`, themes, examples, the docs | this repo | **MIT**, public |
+| **The vault + your real applications** | `storage/` | **gitignored, never published** |
+| **Anything paid later** — hosted service, cloud sync, team features, premium theme packs | **a separate private repo** that depends on this one | your choice, decided then |
+
+The split already exists — `storage/` is gitignored and the guards keep real data out of tracked
+paths. **Open core isn't a future migration; it's the shape the repo is already in.**
+
+### The one rule that keeps the option open
+
+**Don't take outside contributions without a CLA.** The moment a contributor's copyright lands in
+the tree without an assignment or license agreement, you lose the unilateral right to relicense or
+dual-license — that option depends on *sole* ownership. If someone offers a PR and this ever
+matters to you, get a CLA signed first, or rewrite the contribution yourself.
+
+### When to revisit
+
+Revisit **only on evidence**, not on anxiety:
+
+- Someone is actually running a competing hosted version of this. *(Then: AGPL + commercial dual
+  license, for future versions.)*
+- You are actually about to ship a paid product. *(Then: decide where it lives — a separate private
+  repo — **before** the first public push of this one, not after.)*
+
+Until one of those is true, this section is closed.
 
 ## Theme provenance
 
