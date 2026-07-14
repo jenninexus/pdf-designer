@@ -35,6 +35,14 @@ def classify(hex6: str):
     if s < 0.18:
         return "ok", "neutral"
 
+    # Very dark = a BACKGROUND, not a decorative accent. A warm-tinted near-black
+    # (MG's #080604, #160e08) is a legitimate brand background: at this lightness it
+    # reads as black, not as brown. The rule targets accents that go muddy, so let
+    # near-blacks through regardless of hue — otherwise every warm dark theme fails
+    # the guard on its own backgrounds and people start ignoring the guard.
+    if l < 0.12:
+        return "ok", "near-black background"
+
     # --- BROWN / MUSTARD -----------------------------------------------------
     # Orange-to-yellow hues that are too DARK read as brown or mustard on paper.
     # A clean amber must stay bright; once lightness drops it goes muddy.

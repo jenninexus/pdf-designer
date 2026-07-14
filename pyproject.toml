@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pdf-designer"
+version = "0.4.0"
+description = "HTML -> print-perfect PDF/PNG toolkit: themed resumes, cover letters, collages, and a live design previewer."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { file = "LICENSE" }
+
+dependencies = [
+    "playwright>=1.40",
+    "pymupdf>=1.23",
+    "pypdf>=4.0",
+    "Pillow>=10.0",
+]
+
+[project.scripts]
+pdf-designer-preview = "pdf_tool.preview:main"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+[tool.setuptools.packages.find]
+where = ["src"]

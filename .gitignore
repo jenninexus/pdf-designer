@@ -7,6 +7,11 @@ pdf-designer.code-workspace
 private/
 notes/
 storage/
+
+# Localized commands/docs — the TRACKED <name>.md is the generalized, shareable version;
+# <name>.local.md is your copy with real company names, clients, and lessons in it.
+*.local.md
+**/*.local.md
 resume-source.json
 **/resume-source.json
 collage-source.json
@@ -34,6 +39,8 @@ __pycache__/
 .venv/
 venv/
 .pytest_cache/
+*.egg-info/
+.eggs/
 
 # Node (if a future browser-extension/UI layer is added)
 node_modules/
