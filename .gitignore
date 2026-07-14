@@ -4,6 +4,13 @@ pdf-designer.code-workspace
 # Personal/private data — anything real (not *.example.*) that could name you, an employer,
 # or contain unverified/sensitive claims stays local only. Applies at the repo root AND inside
 # any examples/profiles/<your-id>/ folder you create from the default-resume template.
+#
+# storage/ holds EVERYTHING private: the claim vaults, the real applications, the exported
+# PDFs, and (since 2026-07-14) storage/brands/ — the private brand palettes.
+#
+# ⚠ themes/ is deliberately NOT ignored. It is the PUBLIC engine's default theme + the palette
+# RULE, which the code and docs depend on; a fresh clone must be able to render. Private brand
+# palettes live in storage/brands/, which the previewer reads alongside themes/.
 private/
 notes/
 storage/

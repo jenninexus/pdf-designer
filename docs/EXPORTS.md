@@ -140,6 +140,18 @@ the space left on page 1 gets pushed onto a sheet of its own — and shoves page
 content to page 3. If a section keeps orphaning, **move it to the next page** in
 the markup rather than fighting the CSS.
 
+**3. The unbreakable column.** `break-inside: avoid` on a *column wrapper* (`.cols > div`) makes the
+entire multi-entry column one atomic block. It then can't fit in what's left of the page and gets
+orphaned onto a sheet of its own — silently turning a 2-page résumé into 3. Put `break-inside: avoid`
+on the **entries**, never on the column that holds them.
+
+**⚠ Measure the PDF, not the browser.** `getBoundingClientRect()` in print-emulation mode does NOT
+predict the real pagination — it reports the screen box. The only truth is the exported PDF:
+
+```bash
+python -c "from pypdf import PdfReader; print(len(PdfReader('out.pdf').pages), 'pages')"
+```
+
 **Measure before trimming copy.** At the locked geometry — `@page { size: Letter;
 margin: 0.5in 0.55in 0.78in; }` — the printable budget is:
 
