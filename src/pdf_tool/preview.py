@@ -7,7 +7,7 @@ and one-click export of the selected document to PDF (light/dark) or PNG —
 into whatever output folder you choose.
 
 Zero new dependencies: stdlib http.server for the app shell; exports reuse
-html_to_pdf.py / pdf_to_png.py (Playwright + PyMuPDF, already required).
+html_to_pdf.py / pdf_to_png.py (Playwright only -- no other engine needed).
 Bound to 127.0.0.1 only.
 
 Usage:
@@ -30,7 +30,7 @@ from pathlib import Path
 from urllib.parse import unquote, urlparse
 
 from .html_to_pdf import export_html_to_pdf
-from .pdf_to_png import render_pdf_to_png
+from .pdf_to_png import render_to_png
 
 _REPO_ROOT = Path(__file__).resolve().parents[2]
 EXCLUDE_PARTS = {"_exports", "node_modules", ".git", "__pycache__", ".venv", "venv"}
@@ -269,12 +269,19 @@ def make_handler(root: Path, docs: list[dict], palettes: list[dict]):
                 fmt = req.get("format", "pdf-light")
                 pdf_theme = "dark" if fmt.endswith("-dark") else None
                 out_dir = req.get("outDir") or None
-                pdf = export_html_to_pdf(
-                    str(doc), output_dir=out_dir, pdf_theme=pdf_theme, css_vars=req.get("cssVars"),
-                )
-                outputs = [str(pdf)]
                 if fmt.startswith("png"):
-                    outputs = [str(p) for p in render_pdf_to_png(str(pdf))]
+                    # PNGs render straight from the HTML -- no PDF round-trip. (They used
+                    # to be rasterized out of the exported PDF by PyMuPDF, which is AGPL
+                    # and had to go; see docs/LICENSING-NOTES.md.)
+                    outputs = [
+                        str(p)
+                        for p in render_to_png(str(doc), out_dir, pdf_theme=pdf_theme)
+                    ]
+                else:
+                    pdf = export_html_to_pdf(
+                        str(doc), output_dir=out_dir, pdf_theme=pdf_theme, css_vars=req.get("cssVars"),
+                    )
+                    outputs = [str(pdf)]
                 self._send(200, json.dumps({"ok": True, "outputs": outputs}).encode(), "application/json")
             except Exception as exc:  # surfaced to the UI status line
                 self._send(200, json.dumps({"ok": False, "error": str(exc)}).encode(), "application/json")

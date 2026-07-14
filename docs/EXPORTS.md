@@ -51,12 +51,22 @@ python -m pdf_tool.merge_pdfs _exports/final/application-dark.pdf _exports/final
 
 ## PNG Preview
 
-Render the final PDF to one PNG per page for visual QA or portfolio previews.
+One PNG per page, for visual QA — **this is how an agent sees its own output.**
+
+It renders the **HTML source**, not the PDF: it screenshots each `.page` element in the same
+headless Chromium, in the same print media mode, that `html_to_pdf` prints from. Same DOM, same
+engine, so the image is exact.
 
 ```powershell
-python -m pdf_tool.pdf_to_png _exports/final/application.pdf
-python -m pdf_tool.pdf_to_png _exports/final/application-dark.pdf _exports/final/application-dark-preview
+python -m pdf_tool.pdf_to_png resume.html
+python -m pdf_tool.pdf_to_png resume.html _exports/preview --pdf-theme dark --scale 2
 ```
+
+> **Why HTML and not the PDF?** It used to rasterize the exported PDF with **PyMuPDF — which is
+> AGPL-3.0.** An MIT project cannot carry a mandatory AGPL dependency without the license claim
+> becoming incoherent, so it's gone. Screenshotting the `.page` elements needs no second
+> rasterizer, adds no dependency, and is exact rather than approximate. See
+> [`LICENSING-NOTES.md`](LICENSING-NOTES.md).
 
 ## Required Resume Geometry
 
@@ -154,7 +164,7 @@ page count:
 ```bash
 python -m pdf_tool.pdf_to_png _exports/resume-light.pdf
 
-python -c "import fitz; d=fitz.open('_exports/resume-light.pdf'); print(d.page_count,'pages', d[0].rect)"
+python -c "from pypdf import PdfReader; r=PdfReader('_exports/resume-light.pdf'); b=r.pages[0].mediabox; print(len(r.pages),'pages', f'{float(b.width)/72:.2f}x{float(b.height)/72:.2f}in')"
 ```
 
 A two-page resume that silently became three pages is the single most common
