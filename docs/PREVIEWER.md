@@ -35,7 +35,7 @@ The PowerPoint-style picker, generalized to the whole repo:
 - **Export selected** → PDF (light/dark) or PNG pages, to any output folder
   (default `_exports` next to the doc). A swapped palette is *included* in
   the export via `html_to_pdf`'s `css_vars` injection — preview is WYSIWYG.
-- Zero new dependencies (stdlib server; exports reuse Playwright/PyMuPDF).
+- Zero new dependencies (stdlib server; exports reuse Playwright).
   Binds to 127.0.0.1 only.
 
 Typical flows:

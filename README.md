@@ -121,4 +121,18 @@ Presets: [`themes/default-collage.json`](themes/default-collage.json)
 
 ## 📄 License
 
-MIT — see [`LICENSE`](LICENSE). Third-party notes: [`docs/LICENSING-NOTES.md`](docs/LICENSING-NOTES.md).
+**MIT** — see [`LICENSE`](LICENSE). © 2026 Jenni Nexus.
+
+And it's an *honest* MIT: **every dependency is permissive**, so there's no copyleft hiding in the
+tree and nothing you have to disclose downstream.
+
+| Dependency | License |
+|---|---|
+| playwright | Apache-2.0 |
+| pypdf | BSD-3-Clause |
+| Pillow | MIT-CMU |
+
+> PyMuPDF (**AGPL-3.0**) was removed in July 2026 — a mandatory AGPL dependency makes an MIT claim
+> incoherent, because you can't grant rights you don't hold. It only rasterized PDF pages, and
+> Chromium (already shipping) does that better. The full story:
+> [`docs/LICENSING-NOTES.md`](docs/LICENSING-NOTES.md).
