@@ -12,7 +12,8 @@
 A local-first toolkit for turning HTML into **print-perfect PDFs** — résumés, cover letters, collages —
 with an optional job-application layer that tailors every document from *your own verified facts*.
 
-**Your data never leaves your machine.** No SaaS. No auto-submission. Ever.
+**Zero network calls. Zero environment variables. Zero telemetry.**
+Not a promise — a property of the code. There's nothing to configure and nowhere for your data to go.
 
 </div>
 
@@ -38,12 +39,18 @@ playwright install chromium
 
 ```bash
 python -m pdf_tool.preview                        # 🎨 Design Hub — browse, theme, export
-python -m pdf_tool.html_to_pdf doc.html           # 📄 light / ATS PDF
+python -m pdf_tool.html_to_pdf doc.html           # 📄 light / ATS PDF   (palette guard runs automatically)
 python -m pdf_tool.html_to_pdf doc.html --pdf-theme dark   # 🌙 branded dark PDF
 python -m pdf_tool.merge_pdfs out.pdf a.pdf b.pdf --require-letter
 python -m pdf_tool.pdf_to_png doc.pdf             # 👀 verify by eye
-python -m pdf_tool.check_palette doc.html         # 🚦 palette guard — run before every export
 python -m pdf_tool.collage ./images --layout auto --png
+```
+
+**The guards** — they fail loudly, so nothing quietly ships broken:
+
+```bash
+python -m pdf_tool.check_palette --scan .   # 🚦 no brown / mustard / lime  (also BLOCKS every export)
+python -m pdf_tool.check_vault --all        # 🧠 vault schema — catches claims that would be invisible
 ```
 
 Exports land in `_exports/` beside the source and **never overwrite** (auto `-v2`, `-v3`).

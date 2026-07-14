@@ -52,7 +52,9 @@ build/
 Thumbs.db
 .vscode/*.log
 
-# Secrets
+# Secrets — defensive only.
+# This tool reads NO environment variables and makes NO network calls; there is nothing
+# for a .env to hold, which is why no .env.example ships (it would document a fiction).
+# These lines stay purely so a future contributor's stray .env can never be committed.
 .env
 .env.*
-!.env.example

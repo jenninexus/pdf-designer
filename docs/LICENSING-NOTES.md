@@ -1,6 +1,13 @@
 # Licensing Notes
 
-**Status: not finalized.** `LICENSE` in the repo root is currently MIT as a placeholder — reconsider it before the first public push if a paid tier is actually planned, not just "maybe someday."
+**Current state (2026-07-13):** the repo ships an **MIT `LICENSE`**, and `README.md` advertises MIT.
+The repo is **private**, so *"the first public push"* has not happened yet — **the decision below is
+still genuinely open, and this is the moment to make it deliberately.**
+
+> Previously this file said *"not finalized… MIT as a placeholder"* while the README stated MIT
+> flatly and shipped an MIT badge. That's a contradiction about a **legal** fact, which is the
+> worst kind to leave lying around. Either the analysis below persuades you to change the license
+> **before** going public, or MIT is the real answer and the README is right. **Pick one.**
 
 ## Why this needs a real decision, not a default
 

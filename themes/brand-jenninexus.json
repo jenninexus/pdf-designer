@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "JenniNexus brand token map for pdf-designer resume/cover-letter exports. Purple/pink/turquoise on deep purple-black, with aurora-gradient headings.",
-    "source": "storage/users/jenni.json -> brandTheme.tokens (dark); light counterpart derived here for white paper.",
+    "source": "The JenniNexus brand. Dark tokens are the brand's own; the light counterpart is derived here for white paper. Self-contained on purpose — a tracked file must not depend on a private path to be understood.",
     "lastUpdated": "2026-07-13",
     "paletteRules": "themes/PALETTE-RULES.md"
   },

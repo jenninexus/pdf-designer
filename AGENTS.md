@@ -10,11 +10,17 @@ per section.
 
 Local-first PDF/document toolkit. Two layers:
 
-1. **`pdf_tool`** — render HTML → PDF via headless Chromium, merge PDFs,
-   render PDF → PNG. Deterministic; what a browser prints is what you get.
-2. **`application_assistant`** (partly planned) — job-application workflow on
-   top: claim vault, job-listing capture, per-application folders, tailored
-   resumes that never invent a claim.
+1. **`pdf_tool`** — the engine. Render HTML → PDF via headless Chromium, merge
+   PDFs, render PDF → PNG, guard the palette, validate a vault, build collages,
+   serve a previewer. Deterministic: what a browser prints is what you get.
+2. **The résumé layer** — a *protocol*, not a module. The job-application
+   workflow lives in [`.claude/commands/make-resume.md`](.claude/commands/make-resume.md)
+   (agent-agnostic markdown), backed by plain JSON in `storage/` and two guards.
+   The judgment can't be coded; the data is the product. See
+   [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
+
+**Reads no environment variables. Makes no network calls.** Every knob is a CLI
+flag or a constant — which is why there is no `.env` (one would be a fiction).
 
 ## Commands an agent can run
 

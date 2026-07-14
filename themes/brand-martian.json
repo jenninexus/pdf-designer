@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Martian Games brand token map for pdf-designer resume/cover-letter exports. Orange/amber with violet + cyan support, on warm near-black.",
-    "source": "www-theme-kit/palettes/resume-palettes.json -> palettes.martian-resume. The light values here MUST stay in sync with that palette's light block.",
+    "source": "The Martian Games brand. Dark tokens are the brand's own; the light counterpart is derived here for white paper. NOTE the light accents are deliberately NOT orange/amber — see _paletteRuleNote. Self-contained on purpose — a tracked file must not depend on a private or sibling-repo path to be understood.",
     "lastUpdated": "2026-07-13",
     "paletteRules": "themes/PALETTE-RULES.md"
   },
