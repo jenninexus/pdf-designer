@@ -41,6 +41,8 @@ job-listing-capture-*.md
 output/
 _exports/
 **/_exports/
+_variants/
+**/_variants/
 
 # Python
 __pycache__/

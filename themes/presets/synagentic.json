@@ -1,0 +1,40 @@
+{
+  "_meta": {
+    "id": "synagentic",
+    "name": "Synagentic Glass",
+    "description": "Teal + violet glass — the Syna ecosystem default, dialed for long-form resume reading.",
+    "aesthetic": "AI / platforms / agent tooling — signature Syna look without product chrome noise.",
+    "lineage": "syna-theme-kit skins synagentic-glass + palettes/synabrain (accents mapped)",
+    "paletteRules": "themes/PALETTE-RULES.md"
+  },
+  "tokens": {
+    "dark": {
+      "--bg": "#0a0a12",
+      "--surface": "#12121c",
+      "--elevated": "#1a1a28",
+      "--text": "#ece8f5",
+      "--dim": "rgba(236, 232, 245, 0.68)",
+      "--dim2": "rgba(236, 232, 245, 0.44)",
+      "--border": "rgba(45, 212, 191, 0.20)",
+      "--border2": "rgba(168, 85, 247, 0.35)",
+      "--primary": "#2dd4bf",
+      "--secondary": "#a855f7",
+      "--accent": "#ec4899",
+      "--support": "#6366f1"
+    },
+    "light": {
+      "--bg": "#f5f3fb",
+      "--surface": "#ffffff",
+      "--elevated": "#eeeaf8",
+      "--text": "#16121f",
+      "--dim": "rgba(22, 18, 31, 0.70)",
+      "--dim2": "rgba(22, 18, 31, 0.46)",
+      "--border": "rgba(22, 18, 31, 0.12)",
+      "--border2": "rgba(22, 18, 31, 0.26)",
+      "--primary": "#0f766e",
+      "--secondary": "#7e22ce",
+      "--accent": "#be185d",
+      "--support": "#4338ca"
+    }
+  }
+}

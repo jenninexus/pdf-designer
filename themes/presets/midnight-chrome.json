@@ -1,0 +1,40 @@
+{
+  "_meta": {
+    "id": "midnight-chrome",
+    "name": "Midnight Chrome",
+    "description": "Midnight-blue professional chrome — sharp, modern, engineer-forward.",
+    "aesthetic": "Staff+ eng / architecture — cool chrome on deep blue-black.",
+    "lineage": "syna-theme-kit skins midnight-chrome (accents mapped for resume reading)",
+    "paletteRules": "themes/PALETTE-RULES.md"
+  },
+  "tokens": {
+    "dark": {
+      "--bg": "#070b14",
+      "--surface": "#0d1422",
+      "--elevated": "#152033",
+      "--text": "#e6ecf8",
+      "--dim": "rgba(230, 236, 248, 0.68)",
+      "--dim2": "rgba(230, 236, 248, 0.44)",
+      "--border": "rgba(99, 102, 241, 0.22)",
+      "--border2": "rgba(56, 189, 248, 0.35)",
+      "--primary": "#818cf8",
+      "--secondary": "#38bdf8",
+      "--accent": "#a78bfa",
+      "--support": "#22d3ee"
+    },
+    "light": {
+      "--bg": "#f1f4fa",
+      "--surface": "#ffffff",
+      "--elevated": "#e8edf6",
+      "--text": "#0c1220",
+      "--dim": "rgba(12, 18, 32, 0.70)",
+      "--dim2": "rgba(12, 18, 32, 0.46)",
+      "--border": "rgba(12, 18, 32, 0.12)",
+      "--border2": "rgba(12, 18, 32, 0.26)",
+      "--primary": "#3730a3",
+      "--secondary": "#0369a1",
+      "--accent": "#6d28d9",
+      "--support": "#0e7490"
+    }
+  }
+}

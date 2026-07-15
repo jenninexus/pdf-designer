@@ -3,8 +3,19 @@
 This file is the machine/agent-facing overview of the repo. It is
 **vendor-neutral**: any AI coding assistant (Claude, Codex, Cursor, Copilot,
 local models, none at all) should be able to drive this toolkit from this one
-page. Human-facing docs: [`README.md`](README.md). Deep design docs are linked
-per section.
+page. Human-facing docs: [`README.md`](README.md). **SSOT dashboard:**
+[`docs/SSOT.md`](docs/SSOT.md). White-label (public-only) path:
+[`docs/WHITE-LABEL.md`](docs/WHITE-LABEL.md). Deep design docs are linked
+per section. Voice map/public cards: `C:\Github\voice-seed` (deep edit stays in `storage/`).
+
+## Session start (read this first)
+
+1. Read [`docs/SSOT.md`](docs/SSOT.md).
+2. Design Hub: `python -m pdf_tool.preview` on :8787 (workspace folder-open task runs
+   `scripts/ensure-design-hub.ps1` — starts the hub if needed, then opens the browser).
+   First open may ask to allow automatic tasks — accept it.
+3. Before resume work: `check_vault --explain`, `check_palette` before export, `check_ats` after light PDF.
+4. Private data lives in `storage/` only — never promote it into tracked paths.
 
 ## What this repo does
 
@@ -15,8 +26,8 @@ Local-first PDF/document toolkit. Two layers:
    serve a previewer. Deterministic: what a browser prints is what you get.
 2. **The résumé layer** — a *protocol*, not a module. The job-application
    workflow lives in [`.claude/commands/make-resume.md`](.claude/commands/make-resume.md)
-   (agent-agnostic markdown), backed by plain JSON in `storage/` and two guards.
-   The judgment can't be coded; the data is the product. See
+   (agent-agnostic markdown), backed by plain JSON in `storage/` and guards
+   (`check_vault`, `check_ats`, `check_palette`). The judgment can't be coded; the data is the product. See
    [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 
 **Reads no environment variables. Makes no network calls.** Every knob is a CLI
@@ -27,23 +38,35 @@ flag or a constant — which is why there is no `.env` (one would be a fiction).
 ```bash
 pip install -e . && playwright install chromium                 # one-time setup
 
+python -m pdf_tool                                              # engine hub — list commands
 python -m pdf_tool.html_to_pdf <doc>.html                       # light/ATS PDF (default)
 python -m pdf_tool.html_to_pdf <doc>.html --pdf-theme dark      # dark branded PDF, same pagination
 python -m pdf_tool.html_to_pdf <doc>.html --output-dir <dir>    # control export location
+python -m pdf_tool.html_to_pdf <doc>.html --variants            # light PDF per public palette → _variants/<stem>/
+python -m pdf_tool.variants <doc>.html                          # same as --variants
 python -m pdf_tool.merge_pdfs out.pdf a.pdf b.pdf --require-letter   # bundle, validate 8.5x11
 python -m pdf_tool.pdf_to_png <doc>.pdf                         # one PNG per page (visual verify)
 python -m pdf_tool.check_palette <doc>.html                     # ⭐ palette guard — run before EVERY export
 python -m pdf_tool.check_palette --scan storage/                #    sweep a whole tree
+python -m pdf_tool.check_vault --all                            # vault schema — catches invisible claims
+python -m pdf_tool.check_vault --explain <user> <track>         # ranked claims preview (blocks on schema/thin)
+python -m pdf_tool.check_vault --coverage <user> <track> <listing.md>  # listing gap-check
+python -m pdf_tool.check_ats <resume-light.pdf>                 # ATS text-layer guard
+python -m pdf_tool.tracker list                                 # scan storage/applications/**/application.json
+python -m pdf_tool.tracker status                               # status breakdown (optional filter arg)
 python -m pdf_tool.collage <imagesDir> --layout auto --png      # collage candidates + picker gallery
 #   → writes to <imagesDir>/_candidates/<canvas>-<W>x<H>/ (never overwrites other sizes)
 #   --canvas <preset> --px WxH --hero <file> --title "..." --theme light|dark
 python -m pdf_tool.preview --no-open --port 8787                # Design Hub server (127.0.0.1; docs/PREVIEWER.md)
+node scripts/wcag-resume-palettes.mjs                           # optional WCAG contrast spot-check (add --strict to fail)
 ```
 
 `pip install -e .` makes `pdf_tool` importable **from the repo root**. (Without it you must run from
 `src/` or set `PYTHONPATH=src` — the older docs' failure mode.)
 
 Exports default to `_exports/` beside the source HTML and **never overwrite** (auto `-v2`, `-v3`).
+Default dual-mode names: `<stem>-light.pdf` (ATS) and `<stem>-dark.pdf` (branded) when you
+pass `--output-dir` / omit an explicit path — `--pdf-theme dark` selects the dark file.
 **Verification without a screen:** export, then `pdf_to_png` and *read* the PNGs — that is the
 intended agent feedback loop.
 
@@ -51,16 +74,20 @@ intended agent feedback loop.
 
 | Path | What it is |
 |---|---|
-| `src/pdf_tool/` | the engine (html_to_pdf, merge_pdfs, pdf_to_png, check_palette, collage, preview) |
+| `src/pdf_tool/` | the engine (html_to_pdf, variants, tracker, merge_pdfs, pdf_to_png, check_palette, check_vault, check_ats, collage, preview) |
 | `themes/default-resume.{json,css}` | public default theme — JSON is the token SSOT, CSS is its mirror |
+| `themes/presets/*.json` | public audition palettes (Design Hub swapper) |
 | `themes/PALETTE-RULES.md` | ⭐ **the color rule** (no brown/mustard/lime) + how the guard enforces it |
 | `examples/brands/` | tracked **template** for private brand maps (copy → `storage/brands/`) |
 | `storage/brands/*.json` | ⛔ PRIVATE **pdf-designer color SSOT** per person/studio (gitignored). One file each — see [`docs/STORAGE.md`](docs/STORAGE.md). Website kits inspire; do not keep a second hex map in `users/*.json`. |
+| `docs/SSOT.md` · `WHITE-LABEL.md` | SSOT dashboard · public-only reusable path |
 | `docs/STORAGE.md` · `VAULT.md` · `JOB-ASSESSMENT.md` | Tracked protocol (fresh clones). `storage/*.md` stubs only point here. |
+| `.config/mcp-pdf-designer.json` | Project config — **breakpoint SSOT pointer** + Design Hub / palette / voice pointers |
+| `Plans/_Active/` | ⭐ Working roadmap (one file) — see [`Plans/README.md`](Plans/README.md) |
 | `themes/default-collage.json` | collage canvas presets + tokens ([`docs/COLLAGE-DESIGN.md`](docs/COLLAGE-DESIGN.md)) |
 | `examples/profiles/<id>/` | one profile per document type: `profile.json` + reference `.html` render + example data |
 | `examples/applications/` | one-folder-per-job-application workflow + copyable template |
-| `docs/` | ARCHITECTURE, STORAGE, VAULT, JOB-ASSESSMENT, THEME-DESIGN, EXPORTS, COLLAGE-DESIGN, PREVIEWER, LICENSING-NOTES |
+| `docs/` | ARCHITECTURE, SSOT, WHITE-LABEL, STORAGE, VAULT, JOB-ASSESSMENT, THEME-DESIGN, EXPORTS, COLLAGE-DESIGN, PREVIEWER, LICENSING-NOTES |
 | `storage/` | **gitignored** local workspace: vaults, real applications, real image sets, private brands |
 
 ### Privacy split (do not blur this)
@@ -81,12 +108,13 @@ Four layers, each answering one question. **The vault is the brain.**
 
 | Layer | File | Answers |
 |---|---|---|
-| Person | `storage/users/<user>.json` | **who** is applying |
-| **Vault** ⭐ | `storage/<user>/resume-source.json` | **what may be truthfully claimed** · how they sound · the angle per role track |
+| Person | `storage/users/<user>.json` | **who** — contact, `brandTheme.ssot`, **`characterVoice`**, `hardFacts` |
+| **Vault** ⭐ | `storage/<user>/resume-source.json` | **what may be truthfully claimed** · application `voice` · roleTracks |
 | Profile | `storage/profiles/<user>-resume.json` | **how** it renders (one per person — no per-track files) |
 | Application | `storage/applications/<Track>/` | **the job** — listing, apply link, pay, company palette |
 
-Read [`docs/VAULT.md`](docs/VAULT.md) before authoring any resume claim.
+Read [`docs/VAULT.md`](docs/VAULT.md) before authoring any resume claim.  
+Next engineering work: [`Plans/_Active/2026-07-14-professional-product-roadmap.md`](Plans/_Active/2026-07-14-professional-product-roadmap.md).
 
 ## Contracts (do not break)
 

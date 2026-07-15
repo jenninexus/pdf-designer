@@ -17,12 +17,17 @@ Usage:
     python -m pdf_tool.html_to_pdf path/to/document.html --output-dir path/to/_exports
     python -m pdf_tool.html_to_pdf path/to/document.html --force
     python -m pdf_tool.html_to_pdf path/to/document.html --pdf-theme dark
+    python -m pdf_tool.html_to_pdf path/to/document.html --variants
 
 By default, re-running against the same document.html does NOT overwrite a
 previous export - it writes document-v2.pdf, document-v3.pdf, etc., so you
 always keep the last version you sent somewhere. Default exports go under an
 _exports directory next to the source HTML. Pass an explicit output path
 (second positional arg), --output-dir, or --force to control that behavior.
+
+``--variants`` exports a light PDF for each public palette (default-resume +
+``themes/presets/``) into ``_variants/<stem>/`` — same as
+``python -m pdf_tool.variants <doc>.html``.
 """
 
 import sys
@@ -83,7 +88,10 @@ def export_html_to_pdf(
     else:
         export_dir = Path(output_dir).resolve() if output_dir else html_path.parent / "_exports"
         export_dir.mkdir(parents=True, exist_ok=True)
-        default_path = export_dir / f"{html_path.stem}.pdf"
+        # Dual-mode convention: stem-light.pdf (ATS) / stem-dark.pdf (branded).
+        # Explicit pdf_path still wins when the caller wants a custom name.
+        theme_label = (pdf_theme or "light").strip().lower() or "light"
+        default_path = export_dir / f"{html_path.stem}-{theme_label}.pdf"
         out_path = default_path if force else _next_available_path(default_path)
 
     with sync_playwright() as p:
@@ -151,6 +159,7 @@ def main() -> None:
     raw_args = sys.argv[1:]
     force = any(a in ("--force", "-f") for a in raw_args)
     skip_palette = "--skip-palette-check" in raw_args
+    want_variants = "--variants" in raw_args
     pdf_theme = None
     output_dir = None
     args = []
@@ -162,6 +171,8 @@ def main() -> None:
         if arg in ("--force", "-f"):
             continue
         if arg == "--skip-palette-check":
+            continue
+        if arg == "--variants":
             continue
         if arg == "--pdf-theme":
             if index + 1 >= len(raw_args):
@@ -188,6 +199,22 @@ def main() -> None:
         raise SystemExit(1)
 
     input_html = args[0]
+
+    if want_variants:
+        from .variants import export_variants
+
+        try:
+            export_variants(input_html, skip_palette=skip_palette)
+        except ModuleNotFoundError:
+            print(
+                "Playwright is not installed yet. Run:\n"
+                "  pip install playwright\n"
+                "  playwright install chromium\n"
+                "then re-run this command."
+            )
+            raise SystemExit(1)
+        return
+
     output_pdf = args[1] if len(args) > 1 else None
 
     if not skip_palette:

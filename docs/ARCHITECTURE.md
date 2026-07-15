@@ -29,9 +29,17 @@ built versus planned.
 | `merge_pdfs` | Cover letter + résumé → one bundle. `--require-letter` validates US Letter. | ✅ built |
 | `pdf_to_png` | One PNG per page. **This is the agent's eyes** — export, render, *read the PNG*. | ✅ built |
 | `check_palette` | The palette guard. Rejects brown / mustard / lime. | ✅ built |
-| `check_vault` | The vault guard. Validates claim schema; catches *invisible* claims. | ✅ built |
+| `check_vault` | The vault guard. Validates claim schema; catches *invisible* claims. `--explain`, `--coverage`. | ✅ built |
+| `check_ats` | ATS text-layer guard. Shows what PDF parsers read; fails on thin text. | ✅ built |
 | `collage` | Six layout families from a folder of images, plus a picker gallery. | ✅ built |
 | `preview` | The **Design Hub** — local previewer, live thumbnails, palette swapper, export. | ✅ built |
+
+### Breakpoints
+
+**One project reference:** [`.config/mcp-pdf-designer.json#breakpoints`](../.config/mcp-pdf-designer.json).  
+Numbers are not redefined there — they resolve through `C:\mcp\.config\mcp-breakpoints.json` → set
+`bootstrap_5_3_8_extended_390_4k` → `www-theme-kit/scss/_breakpoint-tokens.scss` (syna mirror).  
+Design Hub hard-codes the same `.98px` ceilings in `static/hub.css` (CSS `@media` cannot use `var()`).
 
 ### No network. No environment variables.
 
@@ -89,16 +97,21 @@ while a perfectly good palette checker sat right there, as an optional command n
 | **Palette** | **Automatically, on every `html_to_pdf` export** | **Blocks the export.** `--skip-palette-check` overrides. |
 | **US Letter** | `merge_pdfs --require-letter` | Refuses to bundle |
 | **Vault schema** | `python -m pdf_tool.check_vault --all` | Non-zero exit |
+| **Vault explain** | `/make-resume` step 0: `check_vault --explain` | Blocks on schema / thin track |
+| **Listing coverage** | `/make-resume` step 4a: `check_vault --coverage` | Unbacked rows → ask user |
+| **ATS text layer** | `/make-resume` step 8a: `check_ats` on light PDF | Exit 1 if < 40 words |
 | **Never overwrite** | Always | Writes `-v2`, `-v3` instead of clobbering |
 
-`check_vault` is not yet automatic — run it after editing a vault. *(It earned its keep on its
-very first run: it found five claims tagged with a role track that didn't exist. They were
-silently invisible, and a résumé would have quietly shipped without them.)*
+`check_vault` is wired into `/make-resume` at step 0 (`--explain` blocks on schema errors and
+thin tracks) and step 4a (`--coverage` feeds the gap-check). `check_ats` runs on the light PDF
+after export. *(The vault guard earned its keep on its very first run: five claims tagged with a
+role track that didn't exist — silently invisible, and a résumé would have quietly shipped
+without them.)*
 
 ## Repo map
 
 ```text
-src/pdf_tool/                 the engine (7 modules — see the table above)
+src/pdf_tool/                 the engine (9 modules — see the table above)
 themes/
   PALETTE-RULES.md            ⭐ the color rule, and why it exists
   default-resume.{json,css}   the public default theme (JSON is the token SSOT; CSS mirrors it)
@@ -110,7 +123,8 @@ examples/
   applications/               the one-folder-per-application workflow + its templates
 docs/                         you are here
 storage/                      ⛔ GITIGNORED — the real vaults, applications, exports
-Plans/_Active/                live roadmap checklists
+Plans/_Active/                ⭐ one live product roadmap
+Plans/_Archive/               shipped / parked plans
 .claude/commands/             the /make-resume protocol (agent-agnostic markdown)
 pyproject.toml                `pip install -e .` → `pdf_tool` importable from the repo root
 ```
@@ -139,7 +153,7 @@ Honest status — nothing below exists yet.
 
 | What | Status |
 |---|---|
-| **Design Hub app** — pywebview shell around the existing previewer; variant generation; canvas editor | Roadmapped. The previewer already works; the shell is polish. See [`PREVIEWER.md`](PREVIEWER.md) and `Plans/_Active/`. |
+| **Design Hub app** — pywebview shell around the existing previewer; variant generation; canvas editor | Parked / mid-term. See [`PREVIEWER.md`](PREVIEWER.md) and [`../Plans/_Active/2026-07-14-professional-product-roadmap.md`](../Plans/_Active/2026-07-14-professional-product-roadmap.md). |
 | **PDF form filling** — AcroForm field filling, flat-PDF overlay filling | **Deferred indefinitely.** This was the repo's *original* premise and has never once been needed — every real document has been HTML → PDF. Don't build it until something actually demands it. |
 
 > The previous version of this document described a `src/application_assistant/` package

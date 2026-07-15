@@ -10,7 +10,8 @@ families, the candidates output, the `index.html` picker gallery, and `--png`
 rendering. This doc remains the design SSOT; the example profile lives at
 [`../examples/profiles/default-collage/`](../examples/profiles/default-collage/).
 Canvas presets below are mirrored in the root
-[`README.md`](../README.md#default-canvas-sizes).
+[`README.md`](../README.md#-canvas-sizes) and defined in
+[`themes/default-collage.json`](../themes/default-collage.json).
 
 ## The feature in one flow
 

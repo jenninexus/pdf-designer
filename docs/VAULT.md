@@ -5,6 +5,7 @@ Codex, Cursor, or a human should all be able to work from this page alone.
 
 > **Tracked protocol** (this file). Private data lives under gitignored `storage/`.
 > Layout + brand SSOT: [`STORAGE.md`](STORAGE.md). Job capture: [`JOB-ASSESSMENT.md`](JOB-ASSESSMENT.md).
+> Engineering next-steps (one active plan): [`../Plans/_Active/2026-07-14-professional-product-roadmap.md`](../Plans/_Active/2026-07-14-professional-product-roadmap.md).
 
 ---
 
@@ -42,6 +43,12 @@ metrics, *and their writing voice*.
 | Tone, signatureMoves, avoid, leadIdentityByTrack, resume vs coverLetter | `<user>/resume-source.json#voice` | How résumés and cover letters *sound* |
 
 Socials `format-manifest.json` voice strings and bot STYLE-SPECs are **marketing registers** — emoji and post format only. Never the application prose SSOT.
+
+> **Network map (not deep edit):** [`C:\Github\voice-seed`](../../voice-seed) holds the human
+> voice **map**, public cards (`characters/humans/*.md`), and seed template
+> (`templates/character-voice.seed.json`). Deep edit of applicant voice stays in
+> **this** repo’s `storage/` (`characterVoice` + vault `voice`). Agency agents are
+> fiction — **never** use them as applicant voice.
 
 **One profile per person.** The per-role framing is **not** a separate file — it lives in the vault at
 `roleTracks.<track>.angle`. (Per-track profiles were retired 2026-07-13: they duplicated the vault and drifted.)
@@ -113,19 +120,26 @@ palette passes — and the best evidence its owner has just isn't on the page.
 instruction that already failed, three times. So it is now a **guard**:
 
 ```bash
-# BEFORE you write a word — what can this résumé even say?
+# BEFORE you write a word — what can this résumé even say? (blocks on schema + thin track)
 python -m pdf_tool.check_vault --explain <user> <track>
 
-# AFTER you build it — what did you leave out?
-python -m pdf_tool.audit_resume <user> <track> <resume>.html
+# AFTER listing captured — mechanical requirement → claim map (unbacked = ask first)
+python -m pdf_tool.check_vault --coverage <user> <track> <listing.md>
+
+# AFTER light PDF export — what does an ATS parser read?
+python -m pdf_tool.check_ats <resume-light.pdf>
 ```
 
-- **`--explain`** prints every claim the track can reach, in rank order. **If something you'd
-  expect is missing from that list, it is tagged wrong and will never appear on any résumé.**
-  Fix the tags, not the résumé. It also warns **THIN TRACK** when a track has too few claims to
-  build a good résumé from — Jenni's `ai` track once had exactly **one**.
-- **`audit_resume`** diffs the finished document against the vault. A missing **`lead`** claim
-  is almost always a mistake; it exits non-zero so you can't ship past it by accident.
+- **`--explain`** prints every claim the track can reach, in rank order. **Exits 1** on vault
+  schema errors or when the **target track is THIN** (< 5 narrative claims + employment + credits).
+  **Exits 2** if the vault or track is missing. If something you'd expect is missing from that
+  list, it is tagged wrong and will never appear on any résumé. Fix the tags, not the résumé.
+- **`--coverage`** extracts requirement bullets from the listing doc (Requirements/Qualifications
+  headers + verbatim listing section) and matches them against vault claims reachable on that
+  track. **COVERED** = vault-backed. **UNBACKED** = ask before calling it a gap — exit 0 with
+  unbacked rows is normal. Exit 1 = thin target track or schema errors. Exit 2 = missing files
+  or no requirements found.
+- **`check_ats`** shows the PDF text layer, word count, and section cues. Exit 1 if < 40 words.
 
 And `check_vault --all` now validates **every** section — skills, employment, credits, education,
 clients. A track typo anywhere is an error, not a silent omission.

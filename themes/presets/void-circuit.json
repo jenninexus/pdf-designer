@@ -1,0 +1,40 @@
+{
+  "_meta": {
+    "id": "void-circuit",
+    "name": "Void Circuit",
+    "description": "Muted violet circuits on near-black — technical without arcade heat.",
+    "aesthetic": "Systems / infra / research — quiet hacker elegance.",
+    "lineage": "syna-theme-kit/palettes/syna-palettes.json#void-circuit",
+    "paletteRules": "themes/PALETTE-RULES.md"
+  },
+  "tokens": {
+    "dark": {
+      "--bg": "#08080e",
+      "--surface": "#101018",
+      "--elevated": "#181822",
+      "--text": "#e4e8f0",
+      "--dim": "rgba(228, 232, 240, 0.68)",
+      "--dim2": "rgba(228, 232, 240, 0.44)",
+      "--border": "rgba(139, 106, 255, 0.22)",
+      "--border2": "rgba(61, 216, 216, 0.35)",
+      "--primary": "#8b6aff",
+      "--secondary": "#3dd8d8",
+      "--accent": "#5a8af0",
+      "--support": "#3dd8a8"
+    },
+    "light": {
+      "--bg": "#f3f2f8",
+      "--surface": "#ffffff",
+      "--elevated": "#ebe9f4",
+      "--text": "#14121c",
+      "--dim": "rgba(20, 18, 28, 0.70)",
+      "--dim2": "rgba(20, 18, 28, 0.46)",
+      "--border": "rgba(20, 18, 28, 0.12)",
+      "--border2": "rgba(20, 18, 28, 0.26)",
+      "--primary": "#5b21b6",
+      "--secondary": "#0e7490",
+      "--accent": "#3730a3",
+      "--support": "#0f766e"
+    }
+  }
+}
