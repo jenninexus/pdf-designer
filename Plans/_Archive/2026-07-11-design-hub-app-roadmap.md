@@ -1,4 +1,10 @@
-# Roadmap (started 2026-07-11 · re-prioritized 2026-07-13 · housekeeping 2026-07-14)
+# Roadmap (ARCHIVED 2026-07-14)
+
+> **Superseded by** [`../_Active/2026-07-14-professional-product-roadmap.md`](../_Active/2026-07-14-professional-product-roadmap.md).
+> Phase 1 Design Hub shipped; remaining pipeline items live on the active product roadmap.
+> Parked pywebview/canvas: [`2026-07-11-design-hub-parked-phases.md`](2026-07-11-design-hub-parked-phases.md).
+
+---
 
 Design SSOT: [`../../docs/PREVIEWER.md`](../../docs/PREVIEWER.md). Protocol SSOT:
 [`../../docs/STORAGE.md`](../../docs/STORAGE.md) · [`../../docs/VAULT.md`](../../docs/VAULT.md) ·
@@ -37,6 +43,7 @@ multi-page collage book).
 - [x] Verified against real résumé + collage candidates
 - [x] **Hub chrome tokens** — `static/hub.css` (dashboard-token lineage); www profile `pdf-designer.json`
 - [x] **Library filters** — kind · folder · person · search (Jobright-style; each HTML = one template)
+- [x] **Compact toolbar** — single ~44px bar (Syqo/Synagen density); output path under ⋯ menu
 
 ## ✅ Guards (2026-07-13)
 

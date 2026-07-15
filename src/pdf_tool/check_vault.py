@@ -7,37 +7,34 @@ job -- so the resume is quietly built without the best evidence its owner has.
 
 Nobody sees an error. They just get a worse resume, and never find out why.
 
-That has now happened three times:
-  * Five claims (Photoshop, Figma, Affinity, Adobe CS, UX/UI) were tagged `ui-ux` on a
-    vault that had no `ui-ux` track. A UI/UX resume would have shipped without her
-    entire design toolkit.
-  * Five engine claims (WebGPU, multiplayer, WWISE, Unreal/Unity, platforms) were
-    tagged `game-dev` only -- so an ENGINE-RESEARCH resume built on the `ai` track
-    couldn't see any of them.
-  * Two industry-standard tools sat in `doNotClaim` for months while both applicants
-    had years of experience with each.
-
-The lesson each time: you cannot fix this with discipline. "Remember to check the
-vault" is exactly the instruction that already failed. It has to be a GUARD.
-
-THE THREE LAYERS
-  1. VALIDATE  -- every section, not just skills. A track typo anywhere is now an error.
-  2. COVERAGE  -- warn when a track is THIN (few claims reachable). A thin track means
-                  a weak resume, and it is invisible without this check.
-  3. EXPLAIN   -- print exactly what a resume WILL contain, ranked, BEFORE you build it.
+THE THREE GUARD MODES
+  1. VALIDATE  -- schema check on every tracked section (not just skills). A track typo
+                  anywhere is an error. Thin tracks and unverified tools are warnings.
+  2. EXPLAIN   -- print exactly what a resume WILL contain, ranked, BEFORE you build it.
                   You should never have to render a PDF to find out what it says.
+  3. LISTING-COVERAGE -- mechanical gap-check: listing requirements vs vault claims on
+                  a track. Unbacked rows are questions (ASK BEFORE GAPS), not failures.
 
 Usage:
-    python -m pdf_tool.check_vault --all                     # validate + coverage
-    python -m pdf_tool.check_vault --explain shade ai        # what an `ai` resume gets
+    python -m pdf_tool.check_vault --all                     # VALIDATE all vaults
+    python -m pdf_tool.check_vault --explain shade ai        # ranked claims for track
     python -m pdf_tool.check_vault --explain jenni 3d-viz --verbose
+    python -m pdf_tool.check_vault --coverage shade 3d-viz examples/applications/example-application/Company.example.md
     python -m pdf_tool.check_vault storage/shade/resume-source.json
 
-Exit non-zero on any error. Warnings (unverified tools, thin tracks) do not fail the
-run -- they are reported so you know what to ask about.
+Exit codes:
+  0  PASS
+  1  FAIL -- VALIDATE: schema errors; EXPLAIN: schema errors OR thin TARGET track;
+             COVERAGE: schema errors OR thin target track
+  2  usage / missing vault / unknown track / unreadable listing
+
+VALIDATE warnings (unverified tools, thin tracks on sibling tracks) do NOT fail --all.
+EXPLAIN / COVERAGE treat a thin *target* track as exit 1 so you never build on an empty story.
+COVERAGE unbacked listing rows return 0 -- they are questions, not hard fails.
 """
 
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -46,22 +43,41 @@ STATUSES = {"unverified", "confirmed-absent", "confirmed-have"}
 RANK = {"lead": 0, "solid": 1, "supporting": 2}
 
 # Every section whose entries carry `tracks` and therefore feed a resume.
-# `skills` used to be the only one validated -- which meant a typo'd track on a CREDIT
-# or an EMPLOYMENT entry failed just as silently, and nothing ever caught it.
 TRACKED_SECTIONS = ("skills", "employment", "credits", "education", "clients")
 
 # A track with fewer than this many track-specific claims will produce a thin,
 # generic resume. Not an error -- but you should know before you build.
 THIN_TRACK = 5
 
+_REQ_HEADER = re.compile(
+    r"^(?:#+\s*)?(?:requirements?|qualifications?|what you.ll need|what we.re looking for)\b",
+    re.I,
+)
+_VERBATIM_HEADER = re.compile(r"listing.*verbatim|verbatim.*listing", re.I)
+_BULLET = re.compile(r"^\s*(?:[-*•]|\d+[.)])\s+(.+)")
+_TOKEN = re.compile(r"[a-z0-9]{3,}", re.I)
+_STOP = frozenset(
+    "the and for with you our are will have this that from your experience years ability".split()
+)
+
+
+def _configure_stdout():
+    """Avoid Windows cp1252 crashes on unicode (e.g. ≈) in vault text."""
+    for stream in (sys.stdout, sys.stderr):
+        if hasattr(stream, "reconfigure"):
+            try:
+                stream.reconfigure(encoding="utf-8", errors="replace")
+            except (OSError, ValueError):
+                pass
+
+
+def _out(*args, **kwargs):
+    """Safe print — utf-8 with replacement on broken consoles."""
+    print(*args, **kwargs)
+
 
 def _iter_entries(node):
-    """Yield (label, entry) for every dict entry in a vault section, whatever its shape.
-
-    Sections are inconsistent by design (skills is grouped by domain, employment is a
-    flat list, credits nests titles/outsourcerCredits/ownTitles). Walk them all rather
-    than special-casing, so a new section can't quietly escape validation.
-    """
+    """Yield (label, entry) for every dict entry in a vault section, whatever its shape."""
     if isinstance(node, list):
         for e in node:
             if isinstance(e, dict):
@@ -83,16 +99,7 @@ def _label(entry, group=""):
 
 
 def collect(vault, track):
-    """Every entry a resume on `track` may draw on, correctly ranked.
-
-    RANKING (this is the whole game):
-        1. track-specific claims BEFORE `any` claims
-        2. then by strength (lead -> solid -> supporting)
-
-    Do NOT sort by strength alone. An `any`+`lead` claim (the AI-pipeline one) will
-    otherwise outrank every claim that is actually ABOUT THE JOB -- sorted naively, an
-    audio resume opens with AI tooling.
-    """
+    """Every entry a resume on `track` may draw on, correctly ranked."""
     out = {}
     for sec in TRACKED_SECTIONS:
         hits = []
@@ -103,6 +110,134 @@ def collect(vault, track):
         hits.sort(key=lambda h: (h[0], h[1]))
         out[sec] = hits
     return out
+
+
+def track_depth(vault, track):
+    """Return (narrative_depth, tool_count) for a track — shared by check_vault + explain."""
+    got = collect(vault, track)
+    narrative = [h for h in got["skills"] if h[3].get("kind") != "tool"]
+    tools = len(got["skills"]) - len(narrative)
+    depth = len(narrative) + len(got["employment"]) + len(got["credits"])
+    return depth, tools
+
+
+def _claim_text(entry):
+    """Flatten one vault entry into searchable text."""
+    parts = []
+    for key in ("claim", "summary", "name", "org", "role", "yourRole", "id"):
+        val = entry.get(key)
+        if val:
+            parts.append(str(val))
+    bullets = entry.get("bullets")
+    if isinstance(bullets, list):
+        parts.extend(str(b) for b in bullets)
+    return " ".join(parts).lower()
+
+
+def _track_claim_corpus(vault, track):
+    """All claim text reachable on `track`, with ids for reporting."""
+    corpus = []
+    for sec in TRACKED_SECTIONS:
+        for _g, e in _iter_entries(vault.get(sec, {})):
+            tr = e.get("tracks") or []
+            if track in tr or "any" in tr:
+                cid = e.get("id") or e.get("name") or _label(e)
+                corpus.append((cid, _claim_text(e)))
+    return corpus
+
+
+def extract_requirements(text: str):
+    """Pull requirement bullets from Requirements/Qualifications + verbatim listing sections."""
+    lines = text.splitlines()
+    reqs = []
+    section = None
+    in_fence = False
+
+    for line in lines:
+        stripped = line.strip()
+        if stripped.startswith("#"):
+            header = stripped.lstrip("#").strip()
+            if _REQ_HEADER.search(header):
+                section = "req"
+                in_fence = False
+                continue
+            if _VERBATIM_HEADER.search(header):
+                section = "verbatim"
+                in_fence = False
+                continue
+            if section and stripped.startswith("##"):
+                section = None
+                in_fence = False
+                continue
+
+        if section == "verbatim" and stripped.startswith("```"):
+            in_fence = not in_fence
+            continue
+
+        if section not in ("req", "verbatim"):
+            continue
+
+        m = _BULLET.match(line)
+        if m:
+            text = m.group(1).strip()
+            if not text.endswith(":"):
+                reqs.append(text)
+            continue
+
+        if section == "verbatim" and in_fence:
+            continue  # verbatim section: bullets only (handled above)
+
+    # De-dupe while preserving order
+    seen = set()
+    out = []
+    for r in reqs:
+        key = r.lower()
+        if key not in seen:
+            seen.add(key)
+            out.append(r)
+    return out
+
+
+def _tokens_align(req_t, claim_tokens):
+    """True if req token matches any claim token (exact, substring, or 4-char prefix)."""
+    for ct in claim_tokens:
+        if req_t == ct:
+            return True
+        if len(req_t) >= 4 and len(ct) >= 4:
+            if req_t[:4] == ct[:4]:
+                return True
+            if req_t in ct or ct in req_t:
+                return True
+    return False
+
+
+def match_requirement(requirement: str, corpus):
+    """Match one listing requirement against vault claim text (substring + token overlap)."""
+    req_lower = requirement.lower()
+    req_tokens = [t for t in _TOKEN.findall(req_lower) if t not in _STOP]
+    if not req_tokens:
+        return None
+
+    best = None
+    best_score = 0.0
+    best_overlap = 0
+    for cid, text in corpus:
+        if req_lower in text or text in req_lower:
+            return cid
+
+        claim_tokens = list(_TOKEN.findall(text))
+        if not claim_tokens:
+            continue
+        overlap = sum(1 for t in req_tokens if _tokens_align(t, claim_tokens))
+        score = overlap / len(req_tokens)
+        if overlap > best_overlap or (overlap == best_overlap and score > best_score):
+            best_overlap = overlap
+            best_score = score
+            best = cid
+
+    if best and (best_score >= 0.4 or best_overlap >= 2):
+        return best
+    return None
 
 
 def check_vault(path: Path):
@@ -118,7 +253,6 @@ def check_vault(path: Path):
         errors.append("roleTracks: no tracks defined")
         return errors, warnings
 
-    # Every track needs an angle -- the framing /make-resume reads.
     for t in sorted(tracks):
         spec = v["roleTracks"][t]
         if not isinstance(spec, dict):
@@ -126,7 +260,6 @@ def check_vault(path: Path):
         elif "angle" not in spec and "clusters" not in spec:
             errors.append(f"roleTracks.{t}: no `angle` -- /make-resume has no framing for this track")
 
-    # --- validate EVERY tracked section, not just skills ---------------------
     seen_ids = {}
     for sec in TRACKED_SECTIONS:
         for group, e in _iter_entries(v.get(sec, {})):
@@ -140,8 +273,6 @@ def check_vault(path: Path):
 
             tr = e.get("tracks")
             if not tr:
-                # credits/clients sometimes legitimately carry no tracks (they're cited
-                # via a parent rule) -- only skills/employment MUST be reachable.
                 if sec in ("skills", "employment"):
                     errors.append(f"{where}: no `tracks` -- this can NEVER be selected. It is invisible.")
                 continue
@@ -161,22 +292,8 @@ def check_vault(path: Path):
                 if e.get("strength") not in STRENGTHS:
                     errors.append(f"{where}: strength {e.get('strength')!r} not in {sorted(STRENGTHS)}")
 
-    # --- COVERAGE: is any track too thin to build a good resume from? --------
-    #
-    # Count only NARRATIVE claims -- the ones that say what this person DID and can DO.
-    # Tools (`kind: "tool"`) are deliberately `any`: a tool you know is a tool you know, and
-    # a game-dev or AI listing may absolutely ask about 3ds Max. Hiding a tool behind a track
-    # tag is how one vault's game-dev track ended up seeing 4 of its 12 software claims.
-    # So tools are selectable everywhere and RANKED by the track's `toolbeltOrder` -- which
-    # means counting them here would mask a genuinely empty track behind a full toolbelt.
     for t in sorted(tracks):
-        got = collect(v, t)
-        narrative = [h for h in got["skills"] if h[3].get("kind") != "tool"]
-        tools = len(got["skills"]) - len(narrative)
-        # `any` narrative claims are real evidence too -- they just aren't track-exclusive.
-        # What actually makes a resume thin is having no STORY to tell, so count the whole
-        # narrative pool (plus employment + credits, which carry the shipped work).
-        depth = len(narrative) + len(got["employment"]) + len(got["credits"])
+        depth, tools = track_depth(v, t)
         if depth < THIN_TRACK:
             warnings.append(
                 f"THIN TRACK `{t}`: only {depth} narrative claims + employment + credits "
@@ -190,7 +307,6 @@ def check_vault(path: Path):
                 f"for this job family, so the resume may open its toolbelt with the wrong ones."
             )
 
-    # --- the verification ledger (the Maya/ZBrush check) ---------------------
     dnc = v.get("doNotClaim", {})
     unverified = []
     for t in dnc.get("tools", []):
@@ -222,40 +338,48 @@ def explain(user: str, track: str, verbose: bool = False) -> int:
     """Print exactly what a resume on this track WILL contain, ranked. Before you build it."""
     path = Path("storage") / user / "resume-source.json"
     if not path.exists():
-        print(f"no vault at {path}")
+        _out(f"no vault at {path}")
         return 2
-    v = json.loads(path.read_text(encoding="utf-8"))
 
+    errors, warnings = check_vault(path)
+    if errors:
+        _out(f"\n{path}")
+        for e in errors:
+            _out(f"  ERROR  {e}")
+        _out("\nFAIL: vault has schema errors -- fix before building.")
+        return 1
+
+    v = json.loads(path.read_text(encoding="utf-8"))
     tracks = {k for k in v.get("roleTracks", {}) if not k.startswith("_")}
     if track not in tracks:
-        print(f"'{track}' is not a track for {user}. Available: {sorted(tracks)}")
+        _out(f"'{track}' is not a track for {user}. Available: {sorted(tracks)}")
         return 2
 
     spec = v["roleTracks"][track]
-    print(f"\n{'=' * 78}")
-    print(f"  {user.upper()}  ·  track: {track}")
-    print(f"{'=' * 78}")
-    print(f"\n{spec.get('covers', '')}\n")
+    _out(f"\n{'=' * 78}")
+    _out(f"  {user.upper()}  ·  track: {track}")
+    _out(f"{'=' * 78}")
+    _out(f"\n{spec.get('covers', '')}\n")
 
     angle = spec.get("angle", {})
     if angle.get("leadWith"):
-        print("LEAD WITH:")
+        _out("LEAD WITH:")
         for x in angle["leadWith"]:
-            print(f"   * {x}")
+            _out(f"   * {x}")
     if angle.get("demote"):
-        print("\nDEMOTE:")
+        _out("\nDEMOTE:")
         for x in angle["demote"]:
-            print(f"   - {x}")
+            _out(f"   - {x}")
     if spec.get("clusters"):
-        print("\nCLUSTERS (reorder by what the listing names):")
+        _out("\nCLUSTERS (reorder by what the listing names):")
         for cname, c in spec["clusters"].items():
-            print(f"   [{cname}] {', '.join(c.get('titles', [])[:3])}")
+            _out(f"   [{cname}] {', '.join(c.get('titles', [])[:3])}")
 
     got = collect(v, track)
-    print(f"\n{'-' * 78}")
-    print("  EVERY CLAIM THIS RESUME MAY DRAW ON, IN RANK ORDER")
-    print("  (track-specific first, THEN by strength -- never strength alone)")
-    print(f"{'-' * 78}")
+    _out(f"\n{'-' * 78}")
+    _out("  EVERY CLAIM THIS RESUME MAY DRAW ON, IN RANK ORDER")
+    _out("  (track-specific first, THEN by strength -- never strength alone)")
+    _out(f"{'-' * 78}")
 
     for sec in TRACKED_SECTIONS:
         hits = got[sec]
@@ -265,84 +389,174 @@ def explain(user: str, track: str, verbose: bool = False) -> int:
             narrative = [h for h in hits if h[3].get("kind") != "tool"]
             tools = [h for h in hits if h[3].get("kind") == "tool"]
             specific = sum(1 for h in narrative if not h[0])
-            print(f"\nSKILLS — narrative  ({len(narrative)} available, {specific} track-specific)")
-            print("   what she DID and can DO. This is the story; lead with it.")
+            _out(f"\nSKILLS — narrative  ({len(narrative)} available, {specific} track-specific)")
+            _out("   what she DID and can DO. This is the story; lead with it.")
             for is_any, _, _g, e in narrative:
                 tag = "any " if is_any else "**  "
-                print(f"   {tag}[{(e.get('strength') or '')[:4]:4}] {str(e.get('id'))[:22]:22} "
-                      f"{(e.get('claim') or '')[:44]}")
+                _out(f"   {tag}[{(e.get('strength') or '')[:4]:4}] {str(e.get('id'))[:22]:22} "
+                     f"{(e.get('claim') or '')[:44]}")
 
             if tools:
-                print(f"\nTOOLBELT  ({len(tools)} tools — selectable from EVERY track)")
+                _out(f"\nTOOLBELT  ({len(tools)} tools — selectable from EVERY track)")
                 order = spec.get("toolbeltOrder") or []
                 if order:
-                    print(f"   LEAD WITH, on this track: {' · '.join(order)}")
-                print("   A tool you know is a tool you know. Every tool below is claimable on")
-                print("   this track — `toolbeltOrder` says which ones OPEN the section.")
+                    _out(f"   LEAD WITH, on this track: {' · '.join(order)}")
+                _out("   A tool you know is a tool you know. Every tool below is claimable on")
+                _out("   this track — `toolbeltOrder` says which ones OPEN the section.")
                 for _ia, _r, _g, e in tools:
-                    print(f"        [{(e.get('strength') or '')[:4]:4}] {str(e.get('id'))[:22]:22} "
-                          f"{(e.get('claim') or '')[:44]}")
+                    _out(f"        [{(e.get('strength') or '')[:4]:4}] {str(e.get('id'))[:22]:22} "
+                         f"{(e.get('claim') or '')[:44]}")
             continue
 
         specific = sum(1 for h in hits if not h[0])
-        print(f"\n{sec.upper()}  ({len(hits)} available, {specific} track-specific)")
+        _out(f"\n{sec.upper()}  ({len(hits)} available, {specific} track-specific)")
         for is_any, _, group, e in hits:
             tag = "any " if is_any else "**  "
             st = (e.get("strength") or "")[:4]
             txt = e.get("claim") or e.get("summary") or e.get("name") or e.get("org") or ""
             cid = e.get("id") or e.get("name") or ""
-            print(f"   {tag}[{st:4}] {str(cid)[:22]:22} {txt[:44]}")
+            _out(f"   {tag}[{st:4}] {str(cid)[:22]:22} {txt[:44]}")
 
     total = sum(len(got[s]) for s in TRACKED_SECTIONS)
+    depth, _tools = track_depth(v, track)
     narrative = [h for h in got["skills"] if h[3].get("kind") != "tool"]
     spec_n = sum(1 for h in narrative if not h[0])
-    print(f"\n{'-' * 78}")
-    print(f"  {total} entries available.  '**' = track-specific (lead with these).")
-    print(f"  '{track}' has {spec_n} track-specific NARRATIVE claims.", end="  ")
-    print("THIN -- toolbelt with no story." if spec_n < THIN_TRACK else "Healthy.")
-    print(f"{'-' * 78}")
-    print("\n  If something you EXPECT is missing from this list, it is tagged wrong in the")
-    print("  vault and WILL NOT appear on the resume. Fix the tags, not the resume.\n")
+    _out(f"\n{'-' * 78}")
+    _out(f"  {total} entries available.  '**' = track-specific (lead with these).")
+    _out(f"  '{track}' has {spec_n} track-specific NARRATIVE claims.", end="  ")
+    _out("THIN -- toolbelt with no story." if depth < THIN_TRACK else "Healthy.")
+    _out(f"{'-' * 78}")
+    _out("\n  If something you EXPECT is missing from this list, it is tagged wrong in the")
+    _out("  vault and WILL NOT appear on the resume. Fix the tags, not the resume.\n")
+
+    if verbose and warnings:
+        _out("  Vault warnings:")
+        for w in warnings:
+            _out(f"    warn  {w}")
+
+    if depth < THIN_TRACK:
+        return 1
+    return 0
+
+
+def coverage(user: str, track: str, listing_path: Path) -> int:
+    """Mechanical gap-check: listing requirements vs vault claims on this track."""
+    vault_path = Path("storage") / user / "resume-source.json"
+    if not vault_path.exists():
+        _out(f"no vault at {vault_path}")
+        return 2
+    if not listing_path.exists():
+        _out(f"no listing at {listing_path}")
+        return 2
+
+    errors, _warnings = check_vault(vault_path)
+    if errors:
+        _out(f"\n{vault_path}")
+        for e in errors:
+            _out(f"  ERROR  {e}")
+        _out("\nFAIL: vault has schema errors -- fix before coverage check.")
+        return 1
+
+    try:
+        listing_text = listing_path.read_text(encoding="utf-8")
+    except OSError as e:
+        _out(f"cannot read listing: {e}")
+        return 2
+
+    v = json.loads(vault_path.read_text(encoding="utf-8"))
+    tracks = {k for k in v.get("roleTracks", {}) if not k.startswith("_")}
+    if track not in tracks:
+        _out(f"'{track}' is not a track for {user}. Available: {sorted(tracks)}")
+        return 2
+
+    depth, _tools = track_depth(v, track)
+    if depth < THIN_TRACK:
+        _out(f"THIN TRACK `{track}`: only {depth} narrative claims -- tag more before applying.")
+        return 1
+
+    requirements = extract_requirements(listing_text)
+    if not requirements:
+        _out("no requirements found -- add bullets under Requirements/Qualifications or The listing, verbatim")
+        return 2
+
+    corpus = _track_claim_corpus(v, track)
+    covered, unbacked = [], []
+
+    _out(f"\n{'=' * 78}")
+    _out(f"  COVERAGE  ·  {user}  ·  track: {track}")
+    _out(f"  listing: {listing_path}")
+    _out(f"{'=' * 78}\n")
+
+    for req in requirements:
+        match = match_requirement(req, corpus)
+        if match:
+            covered.append((req, match))
+        else:
+            unbacked.append(req)
+
+    if covered:
+        _out("COVERED (vault-backed):")
+        for req, cid in covered:
+            _out(f"  ✅  {req[:70]}")
+            _out(f"      → {cid}")
+
+    if unbacked:
+        _out("\nUNBACKED — ASK BEFORE GAPS (not confirmed absent):")
+        for req in unbacked:
+            _out(f"  ⚠   {req}")
+
+    _out(f"\n  {len(covered)} covered · {len(unbacked)} unbacked · {len(requirements)} total")
+    _out("  Unbacked rows are questions, not failures. Ask the applicant before building.\n")
     return 0
 
 
 def main(argv):
+    _configure_stdout()
+
     if "--explain" in argv:
         i = argv.index("--explain")
         rest = [a for a in argv[i + 1:] if not a.startswith("-")]
         if len(rest) < 2:
-            print("usage: --explain <user> <track>")
+            _out("usage: --explain <user> <track>")
             return 2
         return explain(rest[0], rest[1], verbose="--verbose" in argv)
+
+    if "--coverage" in argv:
+        i = argv.index("--coverage")
+        rest = [a for a in argv[i + 1:] if not a.startswith("-")]
+        if len(rest) < 3:
+            _out("usage: --coverage <user> <track> <listing.md>")
+            return 2
+        return coverage(rest[0], rest[1], Path(rest[2]))
 
     if "--all" in argv:
         paths = sorted(Path("storage").glob("*/resume-source.json"))
         if not paths:
-            print("no vaults under storage/*/resume-source.json")
+            _out("no vaults under storage/*/resume-source.json")
             return 2
     else:
         paths = [Path(a) for a in argv if not a.startswith("-")]
     if not paths:
-        print(__doc__)
+        _out(__doc__)
         return 2
 
     failed = 0
     for p in paths:
         errors, warnings = check_vault(p)
-        print(f"\n{p}")
+        _out(f"\n{p}")
         for e in errors:
-            print(f"  ERROR  {e}")
+            _out(f"  ERROR  {e}")
         for w in warnings:
-            print(f"  warn   {w}")
+            _out(f"  warn   {w}")
         if errors:
             failed += 1
         elif not warnings:
-            print("  OK")
+            _out("  OK")
 
     if failed:
-        print(f"\nFAIL: {failed} vault(s) have errors.")
+        _out(f"\nFAIL: {failed} vault(s) have errors.")
         return 1
-    print("\nPASS: all vaults valid.")
+    _out("\nPASS: all vaults valid.")
     return 0
 
 

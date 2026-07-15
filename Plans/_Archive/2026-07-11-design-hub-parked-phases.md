@@ -12,6 +12,8 @@ Not cancelled — revive when there is real demand.
 pywebview remains the right call (~1 MB, Python engine, hub already localhost).
 A native window is polish — the browser works today.
 
+**2026-07-14 judgment: stay parked — localhost Design Hub is enough; pywebview is optional polish only.**
+
 ## Phases 4–5 — canvas editor & collage books
 
 - [ ] Canvas-size preset picker · drag-and-drop image tray · layout families

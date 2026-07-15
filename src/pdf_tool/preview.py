@@ -145,9 +145,13 @@ def _vars_from_token_map(block: dict) -> dict:
 
 
 def load_palettes() -> list[dict]:
-    """themes/*.json (public) + storage/brands/*.json (private brand SSOT)."""
+    """themes/*.json + themes/presets/*.json (public) + storage/brands/*.json (private)."""
     palettes = []
-    for theme_dir in (_REPO_ROOT / "themes", _REPO_ROOT / "storage" / "brands"):
+    for theme_dir in (
+        _REPO_ROOT / "themes",
+        _REPO_ROOT / "themes" / "presets",
+        _REPO_ROOT / "storage" / "brands",
+    ):
         if not theme_dir.is_dir():
             continue
         for f in sorted(theme_dir.glob("*.json")):
@@ -165,7 +169,9 @@ def load_palettes() -> list[dict]:
                     if isinstance(block, dict):
                         vars_ = _vars_from_nested_mode(block)
                 if vars_:
-                    palettes.append({"name": f"{f.stem} · {mode}", "vars": vars_})
+                    label = data.get("_meta", {}).get("name") if isinstance(data.get("_meta"), dict) else None
+                    name = f"{label} · {mode}" if label else f"{f.stem} · {mode}"
+                    palettes.append({"name": name, "vars": vars_, "id": f.stem, "mode": mode})
     return palettes
 
 
@@ -178,52 +184,39 @@ APP_HTML = """<!doctype html>
 <link rel="stylesheet" href="/_hub/hub.css">
 </head>
 <body>
-<header class="hub-top">
-  <div class="hub-brand">
-    <h1>Design Hub</h1>
-    <div class="sub" title="__ROOT__">__ROOT__</div>
-  </div>
-  <div class="hub-actions">
-    <label>palette
-      <select id="palette"><option value="">(document default)</option></select>
-    </label>
-    <label>export
-      <select id="fmt">
-        <option value="pdf-light">PDF · light/print</option>
-        <option value="pdf-dark">PDF · dark/branded</option>
-        <option value="png-light">PNG pages · light</option>
-        <option value="png-dark">PNG pages · dark</option>
-      </select>
-    </label>
-    <label>to
-      <input id="outdir" type="text" size="22" placeholder="_exports next to doc">
-    </label>
-    <button class="primary" id="exportBtn" type="button">Export selected</button>
-    <span id="status"></span>
-  </div>
-</header>
-
-<section class="hub-filters" aria-label="Library filters">
-  <div class="stats" id="stats"></div>
+<header class="hub-bar" aria-label="Design Hub toolbar">
+  <h1 class="hub-brand" title="__ROOT__">Design Hub</h1>
   <div class="chips" id="kindChips" role="tablist" aria-label="Document kind"></div>
-  <label style="display:flex;align-items:center;gap:6px;font-size:var(--dash-fs-xs);color:var(--dash-text-dim);text-transform:uppercase;letter-spacing:.06em">
-    folder
-    <select id="folderFilter"><option value="">all folders</option></select>
-  </label>
-  <label style="display:flex;align-items:center;gap:6px;font-size:var(--dash-fs-xs);color:var(--dash-text-dim);text-transform:uppercase;letter-spacing:.06em">
-    who
-    <select id="personFilter">
-      <option value="">anyone</option>
-      <option value="jenni">jenni</option>
-      <option value="shade">shade</option>
-    </select>
-  </label>
-  <input class="grow" id="search" type="search" placeholder="Search name or path…" autocomplete="off">
-</section>
+  <div class="hub-spacer"></div>
+  <input id="search" type="search" placeholder="Search…" autocomplete="off" title="Search name or path" aria-label="Search">
+  <select id="folderFilter" title="Folder" aria-label="Folder"><option value="">all folders</option></select>
+  <select id="personFilter" title="Who" aria-label="Person">
+    <option value="">anyone</option>
+    <option value="jenni">jenni</option>
+    <option value="shade">shade</option>
+  </select>
+  <select id="palette" title="Palette" aria-label="Palette"><option value="">doc default</option></select>
+  <select id="fmt" title="Export format" aria-label="Export format">
+    <option value="pdf-light">PDF light</option>
+    <option value="pdf-dark">PDF dark</option>
+    <option value="png-light">PNG light</option>
+    <option value="png-dark">PNG dark</option>
+  </select>
+  <details class="hub-more">
+    <summary title="More export options">⋯</summary>
+    <div class="hub-more-panel">
+      <label>Output folder
+        <input id="outdir" type="text" placeholder="_exports next to doc">
+      </label>
+    </div>
+  </details>
+  <button class="primary" id="exportBtn" type="button">Export</button>
+  <span id="status"></span>
+</header>
 
 <main class="hub-main">
   <aside class="library">
-    <div class="library-head">Template library <span id="visibleCount">0</span></div>
+    <div class="library-head">Library <span id="visibleCount">0</span></div>
     <div class="library-scroll" id="sidebar"></div>
   </aside>
   <div class="stage">
@@ -274,18 +267,7 @@ function counts() {
   return c;
 }
 
-function buildStats() {
-  const c = counts();
-  const el = document.getElementById("stats");
-  el.innerHTML = "";
-  for (const k of ["resume","cover-letter","collage","example"]) {
-    if (!c[k]) continue;
-    const s = document.createElement("div");
-    s.className = "stat";
-    s.innerHTML = `<strong>${c[k]}</strong>${KIND_LABEL[k]}`;
-    el.appendChild(s);
-  }
-}
+function buildStats() { /* counts live on kind chips — no separate stats row */ }
 
 function buildKindChips() {
   const c = counts();
@@ -349,6 +331,9 @@ function renderLibrary() {
   const docs = filteredDocs();
   document.getElementById("visibleCount").textContent = String(docs.length);
   sidebar.innerHTML = "";
+  if (selected && !docs.some(d => d.path === selected.path)) {
+    // Selection hidden by filters — keep preview, drop false sidebar highlight
+  }
   if (!docs.length) {
     sidebar.innerHTML = '<div class="empty">No templates match these filters.</div>';
     return;

@@ -1,11 +1,12 @@
 {
   "_meta": {
     "description": "Default brand-neutral professional theme for pdf-designer resume and cover-letter templates.",
-    "version": "0.3.0",
-    "last_updated": "2026-07-05",
+    "version": "0.4.0",
+    "last_updated": "2026-07-14",
     "css_mirror": "themes/default-resume.css",
     "mode_contract": "Light and dark are both intentional. Default print/PDF is light for ATS/submission safety; `--pdf-theme dark` keeps the same Letter pagination while rendering the dark branded variant.",
-    "privacy_note": "This public theme is generalized and contains no personal brand names, private paths, or project-specific values."
+    "privacy_note": "This public theme is generalized and contains no personal brand names, private paths, or project-specific values.",
+    "version_note": "0.4.0 — document.signature + layout_prefs SSOT: bottom-right page-footer pin via .page / .page-main / .page-sig (not mid-page after content)."
   },
   "document": {
     "paper": "Letter",
@@ -17,9 +18,23 @@
       "margin_top_in": 0.5,
       "margin_x_in": 0.55,
       "margin_bottom_in": 0.78,
-      "footer_bottom_in": 0.25
+      "footer_bottom_in": 0.28,
+      "content_box_height_in": 9.72,
+      "_note": "content_box_height_in = 11 − margin_top − margin_bottom. Print CSS gives .page that fixed height so flex pin (.page-sig { margin-top:auto }) lands on the bottom of the Letter content box. footer_bottom_in aligns absolute fallback with the same visual band."
     },
-    "footer_rule": "Fixed print footers are supported, but templates must reserve bottom space through @page margins and deliberate page breaks."
+    "signature": {
+      "placement": "bottom-right",
+      "pin": "page-footer",
+      "rule": "Signature/logo sits at the BOTTOM of each Letter page — not mid-page after content. Use .page as flex column; wrap body in .page-main; .page-sig { margin-top:auto; align-self:flex-end }. In print, give .page a fixed content height so flex pin works. No large empty gap between last content and signature; signature is the page footer."
+    },
+    "layout_prefs": {
+      "paper": "Letter",
+      "width_in": 8.5,
+      "height_in": 11,
+      "content_fills_page": true,
+      "signature_not_midpage": true
+    },
+    "footer_rule": "Prefer document.signature pin (`.page` + `.page-main` + `.page-sig`) so the name/email mark is the page footer on every sheet. Absolute/fixed footers remain an optional fallback — keep them inside the content box aligned with print_geometry.footer_bottom_in, and still reserve @page bottom margin so nothing clips."
   },
   "paths": {
     "default_export_dir": "_exports",
@@ -75,19 +90,19 @@
   },
   "brand": {
     "primary": "#4fd1c9",
-    "secondary": "#e3b559",
-    "accent": "#9d8cd9",
-    "support": "#6aa7ff",
-    "description": "Cool teal primary, restrained gold secondary, soft violet accent, and professional blue support. Generic enough for a public default while avoiding a single-hue palette."
+    "secondary": "#94a3b8",
+    "accent": "#a78bfa",
+    "support": "#38bdf8",
+    "description": "Cool teal primary, slate secondary (not gold — avoids mustard/brown trap on light paper), soft violet accent, sky support. Public default for examples and first-run Design Hub."
   },
   "mode_summary": {
     "light": {
-      "background": "#ffffff",
+      "background": "#f4f6f9",
       "surface": "#ffffff",
-      "text": "#171b24",
-      "primary": "#087c78",
-      "secondary": "#0E6E7A",
-      "accent": "#6f57c2",
+      "text": "#0f172a",
+      "primary": "#0f766e",
+      "secondary": "#334155",
+      "accent": "#5b21b6",
       "use": "ATS-safe submission PDFs and ordinary print."
     },
     "dark": {
@@ -95,8 +110,8 @@
       "surface": "#10131a",
       "text": "rgba(240, 242, 246, 0.94)",
       "primary": "#4fd1c9",
-      "secondary": "#e3b559",
-      "accent": "#9d8cd9",
+      "secondary": "#94a3b8",
+      "accent": "#a78bfa",
       "use": "Browser preview, branded PDF exports, and PNG preview artifacts."
     }
   },
@@ -118,9 +133,9 @@
     },
     "accents": {
       "primary": "#4fd1c9",
-      "secondary": "#e3b559",
-      "accent": "#9d8cd9",
-      "support": "#6aa7ff"
+      "secondary": "#94a3b8",
+      "accent": "#a78bfa",
+      "support": "#38bdf8"
     },
     "glass": {
       "background": "rgba(11, 13, 18, 0.60)",
@@ -129,25 +144,25 @@
   },
   "light": {
     "backgrounds": {
-      "body": "#f5f7fa",
+      "body": "#f4f6f9",
       "surface": "#ffffff",
-      "elevated": "#f0f3f7",
-      "elevated_2": "#e8edf3"
+      "elevated": "#eef2f7",
+      "elevated_2": "#e5ebf2"
     },
     "text": {
-      "primary": "#171b24",
-      "secondary": "rgba(23, 27, 36, 0.72)",
-      "muted": "rgba(23, 27, 36, 0.50)"
+      "primary": "#0f172a",
+      "secondary": "rgba(15, 23, 42, 0.72)",
+      "muted": "rgba(15, 23, 42, 0.48)"
     },
     "borders": {
-      "subtle": "rgba(23, 27, 36, 0.14)",
-      "strong": "rgba(23, 27, 36, 0.28)"
+      "subtle": "rgba(15, 23, 42, 0.12)",
+      "strong": "rgba(15, 23, 42, 0.26)"
     },
     "accents": {
-      "primary": "#087c78",
-      "secondary": "#0E6E7A",
-      "accent": "#6f57c2",
-      "support": "#2b65b8"
+      "primary": "#0f766e",
+      "secondary": "#334155",
+      "accent": "#5b21b6",
+      "support": "#0369a1"
     }
   },
   "fonts": {

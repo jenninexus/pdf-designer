@@ -29,7 +29,18 @@ python -m pdf_tool.preview --port 9000 --no-open
 | Layer | Where | Purpose |
 |---|---|---|
 | **Hub chrome** | `src/pdf_tool/static/hub.css` | App shell (filters, library, stage). Vendored `--dash-*` from www-theme-kit dashboard tokens + glass. Profile: `www-theme-kit/profiles/pdf-designer.json`. |
-| **Document brands** | `themes/*.json` + `storage/brands/brand-*.json` | Palette swapper / WYSIWYG export. Personal SSOT — see [`STORAGE.md`](STORAGE.md). |
+| **Document brands** | `themes/*.json` + `themes/presets/*.json` + `storage/brands/brand-*.json` | Palette swapper / WYSIWYG export. Personal SSOT — see [`STORAGE.md`](STORAGE.md). |
+
+### Breakpoints (one project reference)
+
+| Pointer | Role |
+|---|---|
+| [`.config/mcp-pdf-designer.json#breakpoints`](../.config/mcp-pdf-designer.json) | ⭐ **THE** pdf-designer breakpoint SSOT (set name + paths — not duplicate numbers) |
+| `C:\mcp\.config\mcp-breakpoints.json` | Global cross-PC cache → `bootstrap_5_3_8_extended_390_4k` |
+| `www-theme-kit/scss/_breakpoint-tokens.scss` | Shared numeric tokens / mixins (syna mirror identical) |
+| `hub.css` `@media` | Hard-codes the same `.98px` maxes (CSS cannot `var()` inside `@media`) |
+
+Hub layout: stacks below **991.98px** (md-max); comfortable from **1200px** (xl); widescreen from **1400px** (xxl).
 
 Each `.html` file is its **own template** in the library (one card = one file).
 
@@ -97,8 +108,10 @@ way, because everything speaks HTTP to the same engine.
 
 The interactive collage/composition surface, still engine-backed:
 
-- **Canvas with size presets** (the README table: Letter, 16:9, 9:16, 4:3,
-  4:5, 1:1) — pick a size, get a live canvas at that geometry.
+- **Canvas with size presets** — full table in
+  [`COLLAGE-DESIGN.md`](COLLAGE-DESIGN.md#default-canvas-sizes) (`letter-portrait`,
+  `hd-landscape`, `hd-portrait`, `standard-landscape`, `standard-portrait`, `ig-portrait`,
+  `square`, …) — pick a size, get a live canvas at that geometry.
 - **Add images** by dragging files onto the canvas *or* pointing at a
   directory (the current `collage.py` input), thumbnails appear in a tray.
 - **Arrange**: apply any layout family as the starting point, then drag to
@@ -120,4 +133,5 @@ book. Same pattern as cover-letter + resume bundles.
 - [`COLLAGE-DESIGN.md`](COLLAGE-DESIGN.md) — layout families + canvas presets
 - [`THEME-DESIGN.md`](THEME-DESIGN.md) — token contract the palette swapper relies on
 - [`EXPORTS.md`](EXPORTS.md) — export command reference
-- `Plans/_Active/` — the live phase checklist
+- [`Plans/_Active/2026-07-14-professional-product-roadmap.md`](../Plans/_Active/2026-07-14-professional-product-roadmap.md) — ⭐ live product checklist
+- [`Plans/README.md`](../Plans/README.md) — active vs archive index

@@ -24,13 +24,26 @@ dependencies = [
 ]
 
 [project.scripts]
+pdf-designer = "pdf_tool.__main__:entry_hub"
 pdf-designer-preview = "pdf_tool.preview:main"
+pdf-designer-check-palette = "pdf_tool.__main__:entry_check_palette"
+pdf-designer-check-vault = "pdf_tool.__main__:entry_check_vault"
+pdf-designer-check-ats = "pdf_tool.__main__:entry_check_ats"
+pdf-designer-tracker = "pdf_tool.__main__:entry_tracker"
+pdf-designer-variants = "pdf_tool.__main__:entry_variants"
 
 [tool.setuptools]
 package-dir = { "" = "src" }
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[project.optional-dependencies]
+dev = ["pytest>=7.0"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
 
 [tool.setuptools.package-data]
 pdf_tool = ["static/*"]

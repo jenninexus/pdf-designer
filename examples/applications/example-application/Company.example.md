@@ -95,10 +95,27 @@ Anything the next person to touch this application needs to know.*
 
 ---
 
+## Requirements
+
+- Experience with systems design and core development
+- Shipped titles with proven delivery and source-backed credits
+- Proficiency with FictionalToolXYZ (demo unbacked row for `--coverage`)
+
 ## The listing, verbatim
 
 *Paste it below, unedited. Postings get taken down; this is the only copy that survives.*
 
 ```
-<the original listing text, exactly as posted>
+Example Studio LLC — Lead Developer
+
+We're looking for someone who can ship titles and write resume claims from verified facts.
+
+Requirements:
+- Strong systems design and core development skills
+- Demonstrated experience shipping titles with proven delivery
+- Comfortable presenting work via portfolio links and demo reels
+
+Nice to have:
+- Proficiency with FictionalToolXYZ
+- Experience with ObscureFramework 9000
 ```

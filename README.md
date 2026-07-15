@@ -38,12 +38,17 @@ playwright install chromium
 ```
 
 ```bash
+python -m pdf_tool                                # engine hub — list every command
 python -m pdf_tool.preview                        # 🎨 Design Hub — browse, theme, export
 python -m pdf_tool.html_to_pdf doc.html           # 📄 light / ATS PDF   (palette guard runs automatically)
 python -m pdf_tool.html_to_pdf doc.html --pdf-theme dark   # 🌙 branded dark PDF
+python -m pdf_tool.html_to_pdf doc.html --variants         # 🎛️ light PDF per public palette → _variants/<stem>/
+python -m pdf_tool.variants doc.html              # same as --variants
 python -m pdf_tool.merge_pdfs out.pdf a.pdf b.pdf --require-letter
 python -m pdf_tool.pdf_to_png doc.pdf             # 👀 verify by eye
 python -m pdf_tool.collage ./images --layout auto --png
+python -m pdf_tool.tracker list                   # 📋 scan storage/applications/**/application.json
+python -m pdf_tool.tracker status                 # status breakdown
 ```
 
 **The guards** — they fail loudly, so nothing quietly ships broken:
@@ -51,14 +56,21 @@ python -m pdf_tool.collage ./images --layout auto --png
 ```bash
 python -m pdf_tool.check_palette --scan .   # 🚦 no brown / mustard / lime  (also BLOCKS every export)
 python -m pdf_tool.check_vault --all        # 🧠 vault schema — catches claims that would be invisible
+python -m pdf_tool.check_vault --explain <user> <track>   # ranked claims (blocks on schema/thin)
+python -m pdf_tool.check_vault --coverage <user> <track> <listing.md>  # gap-check input
+python -m pdf_tool.check_ats <resume-light.pdf>         # ATS text layer
+node scripts/wcag-resume-palettes.mjs       # optional WCAG contrast spot-check (`--strict` to fail CI)
 ```
 
 Exports land in `_exports/` beside the source and **never overwrite** (auto `-v2`, `-v3`).
+Palette shopping exports land in `_variants/<stem>/` the same way.
 
 ## 📚 Docs
 
 | Doc | What's in it |
 |---|---|
+| [`docs/SSOT.md`](docs/SSOT.md) | **SSOT dashboard** — what this repo owns vs pointers elsewhere. |
+| [`docs/WHITE-LABEL.md`](docs/WHITE-LABEL.md) | Public-only path — engine + themes, no private vaults required. |
 | [`AGENTS.md`](AGENTS.md) | **Agent capability map** — every command, the repo map, and the contracts that must not break. Vendor-neutral. |
 | [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) | How the pieces fit; the roadmap. |
 | [`docs/STORAGE.md`](docs/STORAGE.md) | Private workspace layout + brand color SSOT. |
@@ -69,6 +81,7 @@ Exports land in `_exports/` beside the source and **never overwrite** (auto `-v2
 | [`docs/PREVIEWER.md`](docs/PREVIEWER.md) | The Design Hub + its app roadmap. |
 | [`docs/COLLAGE-DESIGN.md`](docs/COLLAGE-DESIGN.md) | The six collage families and the canvas presets. |
 | [`themes/PALETTE-RULES.md`](themes/PALETTE-RULES.md) | 🚦 **The color rule** — no brown, no mustard, no lime — and the guard that enforces it. |
+| [`Plans/`](Plans/) | Working roadmap — **active:** [`Plans/_Active/2026-07-14-professional-product-roadmap.md`](Plans/_Active/2026-07-14-professional-product-roadmap.md) |
 
 ## 🧠 The résumé layer *(optional)*
 
@@ -76,7 +89,7 @@ The interesting part. A résumé is a **query against a vault**, not a document 
 
 ```
 storage/                        ← gitignored; your real data never ships
-  users/<you>.json              WHO is applying — contact, brand, naming
+  users/<you>.json              WHO — contact, brandTheme.ssot, characterVoice, naming
   <you>/resume-source.json      ⭐ THE VAULT — every fact you may truthfully claim,
                                    each with a source, a strength, and its role tracks
   profiles/<you>-resume.json    HOW it renders — layout, exports, cover-letter policy
@@ -86,6 +99,9 @@ storage/                        ← gitignored; your real data never ships
 **The rule:** never write a claim that isn't in the vault. But *do* elaborate persuasively on what
 genuinely matches — take a real skill and show precisely why it's valuable *to this employer*.
 That's not spin, it's translation.
+
+Voice map / public cards live in `C:\Github\voice-seed`; deep applicant voice stays in `storage/`
+(see [`docs/VAULT.md`](docs/VAULT.md)). Agency fiction agents are not applicants.
 
 **The other rule:** if a listing asks for something the vault doesn't have — **ask the human before
 calling it a gap.** The vault records what they've *told* you; it is not the limit of what they can do.
@@ -103,17 +119,18 @@ plain markdown, no vendor APIs. Any assistant (or human) can follow it.
 
 ## 🎨 Canvas sizes
 
-Print defaults to **US Letter (8.5 × 11in)**. Collages also target the standard social canvases:
+**SSOT:** [`docs/COLLAGE-DESIGN.md`](docs/COLLAGE-DESIGN.md) (full table) + [`themes/default-collage.json`](themes/default-collage.json) (`canvas_presets`).
 
-| Ratio | Pixels | Use |
-|---|---|---|
-| 8.5 × 11in | 2550 × 3300 @300dpi | Print / PDF one-sheet |
-| 16:9 | 1920 × 1080 | YouTube, slides, banners |
-| 9:16 | 1080 × 1920 | Stories, Reels, Shorts |
-| 4:5 | 1080 × 1350 | Instagram portrait |
-| 1:1 | 1024 × 1024 | Square posts, avatars |
-
-Presets: [`themes/default-collage.json`](themes/default-collage.json)
+| Preset id | Ratio | Pixels | Use |
+|---|---|---|---|
+| `letter-portrait` | 8.5 × 11 in | 2550 × 3300 @300dpi | Print page, PDF one-sheet |
+| `letter-landscape` | 11 × 8.5 in | 3300 × 2550 @300dpi | Print landscape |
+| `hd-landscape` | 16:9 | 1920 × 1080 | YouTube thumbnail, slides, banners |
+| `hd-portrait` | 9:16 | 1080 × 1920 | Stories, Reels, Shorts |
+| `standard-landscape` | 4:3 | 1440 × 1080 | Classic photo layout |
+| `standard-portrait` | 3:4 | 1080 × 1440 | Portrait photo layout |
+| `ig-portrait` | 4:5 | 1080 × 1350 | Instagram portrait post |
+| `square` | 1:1 | 1024 × 1024 | Square posts, avatars |
 
 ## 🧭 Principles
 

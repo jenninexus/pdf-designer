@@ -1,0 +1,40 @@
+{
+  "_meta": {
+    "id": "ocean-breeze",
+    "name": "Ocean Breeze",
+    "description": "Calm ocean blues and teals — focused technical resume without gaming heat.",
+    "aesthetic": "Product / eng / data — cool and clear.",
+    "lineage": "syna-theme-kit/palettes/syna-palettes.json#ocean (mapped to pdf-designer resume tokens)",
+    "paletteRules": "themes/PALETTE-RULES.md"
+  },
+  "tokens": {
+    "dark": {
+      "--bg": "#071018",
+      "--surface": "#0c1a24",
+      "--elevated": "#122634",
+      "--text": "#e6f4fa",
+      "--dim": "rgba(230, 244, 250, 0.68)",
+      "--dim2": "rgba(230, 244, 250, 0.44)",
+      "--border": "rgba(6, 182, 212, 0.22)",
+      "--border2": "rgba(6, 182, 212, 0.40)",
+      "--primary": "#22d3ee",
+      "--secondary": "#38bdf8",
+      "--accent": "#818cf8",
+      "--support": "#2dd4bf"
+    },
+    "light": {
+      "--bg": "#f0f7fa",
+      "--surface": "#ffffff",
+      "--elevated": "#e7f2f6",
+      "--text": "#0c1920",
+      "--dim": "rgba(12, 25, 32, 0.70)",
+      "--dim2": "rgba(12, 25, 32, 0.46)",
+      "--border": "rgba(12, 25, 32, 0.12)",
+      "--border2": "rgba(12, 25, 32, 0.26)",
+      "--primary": "#0e7490",
+      "--secondary": "#0369a1",
+      "--accent": "#4f46e5",
+      "--support": "#0f766e"
+    }
+  }
+}

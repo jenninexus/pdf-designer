@@ -1,0 +1,23 @@
+{
+  "_README": [
+    "OPTIONAL consolidated tracker shape — not required.",
+    "Prefer scanning storage/applications/**/application.json via:",
+    "  python -m pdf_tool.tracker list",
+    "  python -m pdf_tool.tracker status",
+    "",
+    "If you want a single flat file, copy this to storage/applications/tracker.json",
+    "(gitignored). The CLI still prefers the per-folder application.json scan."
+  ],
+  "jobs": [
+    {
+      "id": "3D-Visualizer-ColorX",
+      "company": "Color X, Inc.",
+      "role": "Associate 3D Visualization Designer",
+      "track": "3d-viz",
+      "status": "IN PROGRESS",
+      "applyUrl": "https://example.com/jobs/123",
+      "pay": "$X–$Y/hr",
+      "updated": "2026-07-14"
+    }
+  ]
+}

@@ -9,8 +9,12 @@ Tracked default theme files:
 
 - `themes/default-resume.json` - token data and export contract.
 - `themes/default-resume.css` - CSS custom-property mirror.
+- `themes/presets/*.json` - **6 public audition palettes** (slate-ink, ocean-breeze, synagentic, void-circuit, cinematic-studio, midnight-chrome). Loaded by Design Hub.
 - `examples/profiles/default-resume/profile.json` - default resume profile.
 - `examples/profiles/default-resume/default-resume.html` - reference render.
+
+Kit catalog (mirrors + Martian private map): `www-theme-kit/palettes/resume-palettes.json` (8 entries).
+Contrast spot-check: `node scripts/wcag-resume-palettes.mjs`.
 
 The public default is intentionally brand-neutral. It supports:
 
@@ -20,6 +24,13 @@ The public default is intentionally brand-neutral. It supports:
 - US Letter output, 8.5 x 11 inches
 - `_exports` output folders
 - cover-letter + resume bundles through `merge_pdfs.py --require-letter`
+
+**Page signature (layout SSOT):** `themes/default-resume.json#document.signature` pins the
+name/email (or brand mark) at the **bottom-right of each Letter page** — the page footer, not a
+block floating mid-page after the last section. Templates use `.page` (flex column) + `.page-main`
+(body) + `.page-sig` (`margin-top: auto; align-self: flex-end`); print CSS gives `.page` a fixed
+content-box height so the flex pin works. See also `document.layout_prefs` and the reusable
+classes in `themes/default-resume.css`.
 
 ## Private Profiles
 

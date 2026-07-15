@@ -1,6 +1,7 @@
 {
   "folders": [
     {
+      "name": "pdf-designer",
       "path": "."
     }
   ],
@@ -16,6 +17,8 @@
       "**/_exports/**": true
     },
     "python.analysis.typeCheckingMode": "basic",
+    "task.allowAutomaticTasks": "on",
+    "task.autoDetect": "on",
     "window.title": "PDF Designer - ${activeEditorShort}"
   },
   "extensions": {

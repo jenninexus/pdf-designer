@@ -1,4 +1,10 @@
-# Character Voice Design SSOT (started 2026-07-14)
+# Character Voice Design SSOT (ARCHIVED 2026-07-14)
+
+> **Shipped.** Live rules: [`docs/VAULT.md`](../../docs/VAULT.md) (voice layers) ·
+> `storage/users/<user>.json#characterVoice` · vault `#voice` · `/make-resume` step 0b.
+> Optional leftover (agency Discord catalogue pointer) is out of scope for pdf-designer.
+
+---
 
 Protocol SSOT: [`../../docs/STORAGE.md`](../../docs/STORAGE.md) ·
 [`../../docs/VAULT.md`](../../docs/VAULT.md) ·
@@ -59,12 +65,13 @@ Voice was already split by purpose across the network. What was missing: a
 - [x] `content/jenninexus/format-manifest.json` → `_meta.voiceSsot`
 - [x] `content/martiangames/format-manifest.json` → `_meta.voiceSsot`
 - [x] `content/README.md` — Voice layers note
+- [ ] Agency Discord chatVoice catalogue pointer (jenni-bot `agency-profiles.json`) — linked from socials voice note; agents stay audit characters
 
 ---
 
 ## Out of scope
 
-- Agency agent personalities stay site-audit characters
+- Agency agent personalities stay site-audit characters (Discord chatVoice is a *separate* community register on the bot catalogue — still not human/resume voice)
 - Studio / martian voices stay on `profiles/studio-resume.json` / `martian-resume.json`
 - No emoji on ATS light PDFs
 - No SEGO↔BEE vault merges

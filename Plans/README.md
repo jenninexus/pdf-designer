@@ -1,0 +1,24 @@
+# Plans
+
+Working plans for pdf-designer. Keep **one** active product roadmap; archive completed waves.
+
+| Folder | Rule |
+|---|---|
+| [`_Active/`](_Active/) | Current working checklist only — preferably a single file |
+| [`_Archive/`](_Archive/) | Shipped or parked plans (history; do not treat as next-steps) |
+
+## Active
+
+| Plan | Status |
+|---|---|
+| [`_Active/2026-07-14-professional-product-roadmap.md`](_Active/2026-07-14-professional-product-roadmap.md) | ⭐ **THE** roadmap — maintenance / PyPI when public; pywebview parked |
+
+## Archive (recent)
+
+| Plan | Why archived |
+|---|---|
+| [`2026-07-11-design-hub-app-roadmap.md`](_Archive/2026-07-11-design-hub-app-roadmap.md) | Phase 1 + hub UX shipped; open items folded into product roadmap |
+| [`2026-07-11-design-hub-parked-phases.md`](_Archive/2026-07-11-design-hub-parked-phases.md) | pywebview / canvas — parked on demand |
+| [`2026-07-14-character-voice-ssot.md`](_Archive/2026-07-14-character-voice-ssot.md) | Voice layers shipped into users + vault + docs |
+
+Protocol for agents lives in `docs/` and `AGENTS.md` — not in Plans.

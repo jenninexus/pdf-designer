@@ -1,0 +1,40 @@
+{
+  "_meta": {
+    "id": "slate-ink",
+    "name": "Slate Ink",
+    "description": "Classic professional — deep navy ink on cool paper. ATS-friendly light mode; quiet dark for portfolio review.",
+    "aesthetic": "Law / consulting / senior IC — restrained, high contrast, no neon.",
+    "lineage": "pdf-designer public preset (inspired by traditional CV typography, not a Syna UI skin)",
+    "paletteRules": "themes/PALETTE-RULES.md"
+  },
+  "tokens": {
+    "dark": {
+      "--bg": "#0c1017",
+      "--surface": "#141a24",
+      "--elevated": "#1c2433",
+      "--text": "#e8edf5",
+      "--dim": "rgba(232, 237, 245, 0.68)",
+      "--dim2": "rgba(232, 237, 245, 0.44)",
+      "--border": "rgba(148, 163, 184, 0.22)",
+      "--border2": "rgba(148, 163, 184, 0.40)",
+      "--primary": "#93c5fd",
+      "--secondary": "#cbd5e1",
+      "--accent": "#a5b4fc",
+      "--support": "#67e8f9"
+    },
+    "light": {
+      "--bg": "#f4f6f9",
+      "--surface": "#ffffff",
+      "--elevated": "#eef2f7",
+      "--text": "#0f172a",
+      "--dim": "rgba(15, 23, 42, 0.72)",
+      "--dim2": "rgba(15, 23, 42, 0.48)",
+      "--border": "rgba(15, 23, 42, 0.12)",
+      "--border2": "rgba(15, 23, 42, 0.28)",
+      "--primary": "#1e3a5f",
+      "--secondary": "#334155",
+      "--accent": "#4338ca",
+      "--support": "#0e7490"
+    }
+  }
+}
