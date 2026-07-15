@@ -55,17 +55,25 @@
   },
 
   "voice": {
-    "_note": "HOW this person SOUNDS. Match it — it's what makes a cover letter read like a human who wants the job instead of a template that got filled in.",
+    "_note": "HOW this person SOUNDS on applications. Personality / contrast / emoji / social registers live on the person file at users/<you>.json#characterVoice. This block is the application-writing SSOT — match it.",
     "person": "First person. Warm and direct / assured and reflective / whatever is TRUE.",
     "tone": "Two or three adjectives that are actually distinguishing.",
+    "personality": "One short line: who they are as a maker (not a job title).",
     "signatureMoves": [
       "The rhetorical habits that make this person sound like themselves",
       "e.g. 'names the honest gap rather than papering over it — it builds trust fast'"
     ],
+    "backgroundFlavor": "Where they came from creatively — the color behind the claims.",
+    "vsPartner": [
+      "OPTIONAL. If two people apply from one studio: 2–4 bullets so agents do not flatten them.",
+      "Tenure, specialty tells, who opens arts→tech vs DO→shipped."
+    ],
+    "resume": "Claim-dense, track-angled, company-agnostic within the track. No social emoji register.",
+    "coverLetter": "Warmer and company-specific. Sample openings may live on users/<you>.json#characterVoice.sampleLines.",
     "avoid": ["Corporate jargon", "Buzzword stacking", "Claiming seniority they don't have"],
 
     "leadIdentityByTrack": {
-      "_note": "OPTIONAL, but powerful. If the person's LEAD IDENTITY changes by track — 'AI specialist' for one kind of role, 'artist' for another — say so here. Getting this wrong makes a resume feel aimed at the wrong job.",
+      "_note": "OPTIONAL, but powerful. If the person's LEAD IDENTITY changes by track — 'AI specialist' for one kind of role, 'artist' for another — say so here. Getting this wrong makes a resume feel aimed at the wrong job. Profiles only POINT here; do not duplicate the map on the profile.",
       "your-track-a": "Who they are FIRST on this track.",
       "your-track-b": "A different lead identity. Same person, same facts, different order."
     }

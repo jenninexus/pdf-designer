@@ -61,6 +61,9 @@ Exports land in `_exports/` beside the source and **never overwrite** (auto `-v2
 |---|---|
 | [`AGENTS.md`](AGENTS.md) | **Agent capability map** — every command, the repo map, and the contracts that must not break. Vendor-neutral. |
 | [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) | How the pieces fit; the roadmap. |
+| [`docs/STORAGE.md`](docs/STORAGE.md) | Private workspace layout + brand color SSOT. |
+| [`docs/VAULT.md`](docs/VAULT.md) | Claim rules — read before writing any resume. |
+| [`docs/JOB-ASSESSMENT.md`](docs/JOB-ASSESSMENT.md) | Listing capture / verify / gap-check protocol. |
 | [`docs/THEME-DESIGN.md`](docs/THEME-DESIGN.md) | The theme/profile contract and the token names. |
 | [`docs/EXPORTS.md`](docs/EXPORTS.md) | Export paths, the palette guard, pagination traps. |
 | [`docs/PREVIEWER.md`](docs/PREVIEWER.md) | The Design Hub + its app roadmap. |
@@ -114,7 +117,8 @@ Presets: [`themes/default-collage.json`](themes/default-collage.json)
 
 ## 🧭 Principles
 
-- **Local-first.** No SaaS, no upload, no telemetry. `storage/` is gitignored and stays home.
+- **Local-first.** No SaaS, no upload, no telemetry. `storage/` is gitignored and stays home (vaults, applications, private brand maps).
+- **Public themes ≠ personal brands.** `themes/` is the engine default; real brands map from www-theme-kit / syna-theme-kit into `storage/brands/` (see `examples/brands/`).
 - **Source-backed.** Generated content never outruns verified claims.
 - **No auto-submission.** The tool prepares; the human submits.
 - **Geometry is locked.** Palettes change color — never paper size, margins, or pagination.

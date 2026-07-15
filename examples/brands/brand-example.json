@@ -1,0 +1,35 @@
+{
+  "_meta": {
+    "description": "EXAMPLE brand token map for pdf-designer. Copy to storage/brands/brand-<yours>.json and replace values. Contains no personal data.",
+    "source": "Replace with a pointer to your website profile, e.g. www-theme-kit/profiles/<site>.json",
+    "paletteRules": "themes/PALETTE-RULES.md",
+    "privacy": "This file is tracked on purpose as a template. Real brand maps belong in gitignored storage/brands/."
+  },
+  "_paletteRuleNote": "On LIGHT, do not darken warm amber/gold accents — that turns brown. Hand the warm-highlight role to another hue already in the palette (violet, teal, blue, magenta).",
+  "tokens": {
+    "dark": {
+      "--bg": "#0c0a12",
+      "--surface": "#161320",
+      "--elevated": "#211c2b",
+      "--text": "#f5f0ff",
+      "--primary": "#FF6B00",
+      "--secondary": "#FF4500",
+      "--accent": "#8B5CF6",
+      "--support": "#42F4C8",
+      "--gold": "#FF6B00",
+      "--heading-grad": "linear-gradient(135deg, #FF6B00, #FF4500, #8B5CF6)"
+    },
+    "light": {
+      "--bg": "#f7f4fb",
+      "--surface": "#ffffff",
+      "--elevated": "#f3eef9",
+      "--text": "#1a1224",
+      "--primary": "#c2410c",
+      "--secondary": "#6d3fd4",
+      "--accent": "#5b21b6",
+      "--support": "#1db88e",
+      "--gold": "#6d3fd4",
+      "--heading-grad": "linear-gradient(135deg, #c2410c, #6d3fd4, #1db88e)"
+    }
+  }
+}

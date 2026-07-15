@@ -54,12 +54,26 @@ intended agent feedback loop.
 | `src/pdf_tool/` | the engine (html_to_pdf, merge_pdfs, pdf_to_png, check_palette, collage, preview) |
 | `themes/default-resume.{json,css}` | public default theme — JSON is the token SSOT, CSS is its mirror |
 | `themes/PALETTE-RULES.md` | ⭐ **the color rule** (no brown/mustard/lime) + how the guard enforces it |
-| `storage/brands/*.json` | ⛔ PRIVATE brand palettes (gitignored). The previewer reads them alongside `themes/`. |
+| `examples/brands/` | tracked **template** for private brand maps (copy → `storage/brands/`) |
+| `storage/brands/*.json` | ⛔ PRIVATE **pdf-designer color SSOT** per person/studio (gitignored). One file each — see [`docs/STORAGE.md`](docs/STORAGE.md). Website kits inspire; do not keep a second hex map in `users/*.json`. |
+| `docs/STORAGE.md` · `VAULT.md` · `JOB-ASSESSMENT.md` | Tracked protocol (fresh clones). `storage/*.md` stubs only point here. |
 | `themes/default-collage.json` | collage canvas presets + tokens ([`docs/COLLAGE-DESIGN.md`](docs/COLLAGE-DESIGN.md)) |
 | `examples/profiles/<id>/` | one profile per document type: `profile.json` + reference `.html` render + example data |
 | `examples/applications/` | one-folder-per-job-application workflow + copyable template |
-| `docs/` | ARCHITECTURE, THEME-DESIGN, EXPORTS, COLLAGE-DESIGN, PREVIEWER, LICENSING-NOTES |
-| `storage/` | **gitignored** local workspace: the vaults, real applications, real image sets |
+| `docs/` | ARCHITECTURE, STORAGE, VAULT, JOB-ASSESSMENT, THEME-DESIGN, EXPORTS, COLLAGE-DESIGN, PREVIEWER, LICENSING-NOTES |
+| `storage/` | **gitignored** local workspace: vaults, real applications, real image sets, private brands |
+
+### Privacy split (do not blur this)
+
+| Public / tracked (safe to clone) | Private / gitignored (`storage/`) |
+|---|---|
+| `src/pdf_tool/`, `themes/`, `examples/`, `docs/`, `AGENTS.md` | `users/`, `*/resume-source.json`, `profiles/*-resume.json`, `applications/`, `brands/`, `_exports/` |
+| Brand-neutral default theme | Real brand maps (`brand-jenninexus`, `brand-martian`, `brand-synagen`) |
+| Example brand shape (`examples/brands/`) | Real vault claims, contacts, employer research |
+
+Website kits own **live site** colors. For résumé exports, the mapped file under
+`storage/brands/brand-*.json` is the **only** pdf-designer color SSOT — `users/*.json`
+points via `brandTheme.ssot`; never duplicate hex there.
 
 ### The application workflow lives in `storage/` (gitignored)
 
@@ -72,7 +86,7 @@ Four layers, each answering one question. **The vault is the brain.**
 | Profile | `storage/profiles/<user>-resume.json` | **how** it renders (one per person — no per-track files) |
 | Application | `storage/applications/<Track>/` | **the job** — listing, apply link, pay, company palette |
 
-Read [`storage/VAULT.md`](storage/VAULT.md) before authoring any resume claim.
+Read [`docs/VAULT.md`](docs/VAULT.md) before authoring any resume claim.
 
 ## Contracts (do not break)
 
@@ -112,7 +126,7 @@ Read [`storage/VAULT.md`](storage/VAULT.md) before authoring any resume claim.
   routine (capture the apply link → verify remote/pay → **gap-check and ask** → derive the theme →
   write → export light+dark → merge the bundle → log it). Folders are keyed by **role track**
   (`storage/applications/3D-Visualizer/`), not by date. Protocol:
-  [`storage/JOB-ASSESSMENT.md`](storage/JOB-ASSESSMENT.md).
+  [`docs/JOB-ASSESSMENT.md`](docs/JOB-ASSESSMENT.md).
 - **Tailor a resume by hand:** read the listing → pick the role track → read the vault's
   `roleTracks.<track>.angle` → select claims whose `tracks` match, ordered by `strength` → cut to two
   pages → export light PDF → **verify by reading the PNG**.
@@ -120,7 +134,7 @@ Read [`storage/VAULT.md`](storage/VAULT.md) before authoring any resume claim.
   (or `default-collage/`) to a new `examples/profiles/<id>/` (public example)
   or under `storage/` (real/private), point `profile.json` at the right theme.
 - **Add a person:** `storage/users/<name>.json` + `storage/<name>/resume-source.json` +
-  `storage/profiles/<name>-resume.json`. See [`storage/README.md`](storage/README.md).
+  `storage/profiles/<name>-resume.json`. See [`docs/STORAGE.md`](docs/STORAGE.md).
 - **Collage:** put images in `storage/collages/<project>/`, run
   `python -m pdf_tool.collage <dir> --layout auto --png`, open
   `<dir>/_candidates/index.html` to compare all six layout families, then

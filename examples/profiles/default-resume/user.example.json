@@ -48,7 +48,41 @@
     "headline": "What you are, in six words",
     "company": "Your Company",
     "role": "Your Role",
-    "voice": "One line on how you sound. The full voice spec lives in the vault."
+    "voice": "One-line summary. Full personality → characterVoice below; application prose SSOT → vault voice."
+  },
+
+  "characterVoice": {
+    "_ssot": "Personality + register map. Application prose SSOT = vault voice (see registers.application).",
+    "personality": {
+      "traits": ["Trait one", "Trait two", "Trait three"],
+      "coreDrive": "One sentence: what they are trying to make / why they work.",
+      "catchphrase": "Optional short line that captures them.",
+      "backgroundFlavor": "Where they came from creatively."
+    },
+    "contrastWithPartner": {
+      "_note": "OPTIONAL — use when two people from one studio both apply. Prevents flattened 'same voice' résumés.",
+      "partnerId": "partner-id",
+      "weShare": ["Shared tools", "Shared studio framing rules"],
+      "ILeadWith": ["What makes THIS applicant sound like themselves"],
+      "TheyLeadWith": ["What the partner leads with — so agents do not copy it here"],
+      "neverConflate": ["Tenure numbers", "Specialty that belongs only to one person"]
+    },
+    "registers": {
+      "application": "../yourname/resume-source.json#voice",
+      "socialPersonal": "(optional path to a socials format-manifest voice string)",
+      "socialStudio": "(optional path to studio 'we' voice)",
+      "discordVisual": "(optional path to a Discord STYLE-SPEC — emoji/visual only)"
+    },
+    "emojiPreferences": {
+      "_note": "Social/Discord only — never on ATS resume PDFs.",
+      "primary": ["optional", "emoji"],
+      "avoidOnProfessional": ["bot faces as applicant identity", "custom Discord emoji IDs"]
+    },
+    "sampleLines": {
+      "coverLetterOpen": "1–2 example openings in their real voice.",
+      "coverLetterClose": "Example close.",
+      "resumeSummaryFlavor": "How a summary line should feel."
+    }
   },
 
   "brandTheme": {

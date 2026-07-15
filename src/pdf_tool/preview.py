@@ -1,27 +1,26 @@
 """Design Hub — local previewer for every renderable document in the repo.
 
-The PowerPoint-style picker, generalized: a sidebar of live thumbnails for
-every .html document it finds (resume renders, collage candidates, cover
-letters), a large preview pane, a palette swapper to audition color schemes,
-and one-click export of the selected document to PDF (light/dark) or PNG —
-into whatever output folder you choose.
+Jobright-style library + PowerPoint-style picker: filterable sidebar of live
+thumbnails (resumes, cover letters, collages, examples), large preview pane,
+palette swapper, one-click export.
 
-Zero new dependencies: stdlib http.server for the app shell; exports reuse
-html_to_pdf.py / pdf_to_png.py (Playwright only -- no other engine needed).
-Bound to 127.0.0.1 only.
+Chrome tokens live in ``static/hub.css`` (vendored from www-theme-kit dashboard
+tokens + syna glass). Document brand palettes still come from ``themes/`` +
+``storage/brands/``.
+
+Zero new dependencies: stdlib http.server; exports reuse html_to_pdf / pdf_to_png.
+Binds to 127.0.0.1 only. No MCP / always-on server required.
 
 Usage:
     python -m pdf_tool.preview                     # scan the repo, serve on :8787
     python -m pdf_tool.preview path/to/dir         # scan any directory instead
-    python -m pdf_tool.preview --port 9000
-
-Palettes offered by the swapper come from themes/*.json (public) and
-storage/brands/*.json (private, gitignored) — drop another palette file there
-to audition more color combos. Palette preview is WYSIWYG for export: the
-chosen palette is injected into the PDF/PNG via html_to_pdf's css_vars hook.
+    python -m pdf_tool.preview --port 9000 --no-open
 """
 
+from __future__ import annotations
+
 import json
+import re
 import sys
 import threading
 import webbrowser
@@ -33,7 +32,10 @@ from .html_to_pdf import export_html_to_pdf
 from .pdf_to_png import render_to_png
 
 _REPO_ROOT = Path(__file__).resolve().parents[2]
+_STATIC_DIR = Path(__file__).resolve().parent / "static"
 EXCLUDE_PARTS = {"_exports", "node_modules", ".git", "__pycache__", ".venv", "venv"}
+
+KINDS = ("resume", "cover-letter", "collage", "gallery", "example", "other")
 
 # theme-JSON block -> pdf-designer CSS custom properties
 _TOKEN_MAP = [
@@ -53,19 +55,97 @@ _TOKEN_MAP = [
 ]
 
 
+def classify_document(rel: str, stem: str) -> dict:
+    """Tag each HTML for filters — kind / bucket / person / group folder."""
+    path = rel.replace("\\", "/")
+    path_l = path.lower()
+    name_l = stem.lower()
+    parts = path_l.split("/")
+
+    if name_l == "index" and ("_candidates" in parts or "collage" in path_l):
+        kind = "gallery"
+    elif "_candidates" in parts or "/collages/" in path_l or "collage" in name_l:
+        kind = "collage"
+    elif "cover" in name_l:
+        kind = "cover-letter"
+    elif "resume" in name_l:
+        kind = "resume"
+    elif path_l.startswith("examples/"):
+        kind = "example"
+    else:
+        kind = "other"
+
+    if path_l.startswith("storage/applications/"):
+        bucket = "applications"
+    elif path_l.startswith("examples/"):
+        bucket = "examples"
+    elif "collage" in path_l or "_candidates" in parts:
+        bucket = "collages"
+    elif any(path_l.startswith(f"storage/{u}/") for u in ("jenni", "shade")):
+        bucket = "vault-renders"
+    else:
+        bucket = "other"
+
+    person = None
+    if name_l.startswith("jenni"):
+        person = "jenni"
+    elif name_l.startswith("shade"):
+        person = "shade"
+
+    group = str(Path(path).parent).replace("\\", "/")
+    if group == ".":
+        group = "(root)"
+
+    # Short template label for the stage bar
+    label = stem.replace("-", " ")
+
+    return {
+        "path": path,
+        "name": stem,
+        "label": label,
+        "group": group,
+        "kind": kind,
+        "bucket": bucket,
+        "person": person,
+        "template": True,  # each HTML file is its own selectable template
+    }
+
+
 def scan_documents(root: Path) -> list[dict]:
     docs = []
     for p in sorted(root.rglob("*.html")):
         rel = p.relative_to(root)
         if EXCLUDE_PARTS.intersection(rel.parts):
             continue
-        group = str(rel.parent).replace("\\", "/")
-        docs.append({"path": str(rel).replace("\\", "/"), "name": p.stem, "group": "." if group == "." else group})
+        # Skip the hub's own static HTML if ever added under src/
+        if "pdf_tool" in rel.parts and "static" in rel.parts:
+            continue
+        docs.append(classify_document(str(rel).replace("\\", "/"), p.stem))
     return docs
 
 
+def _vars_from_nested_mode(block: dict) -> dict:
+    vars_ = {}
+    for var, section, key in _TOKEN_MAP:
+        value = block.get(section, {}).get(key) if isinstance(block.get(section), dict) else None
+        if value:
+            vars_[var] = value
+    return vars_
+
+
+def _vars_from_token_map(block: dict) -> dict:
+    vars_ = {}
+    for key, value in block.items():
+        if not (isinstance(key, str) and key.startswith("--") and isinstance(value, str)):
+            continue
+        if "gradient" in value.lower():
+            continue
+        vars_[key] = value
+    return vars_
+
+
 def load_palettes() -> list[dict]:
-    """Every dark/light block from themes/*.json (public) + storage/brands/*.json (private)."""
+    """themes/*.json (public) + storage/brands/*.json (private brand SSOT)."""
     palettes = []
     for theme_dir in (_REPO_ROOT / "themes", _REPO_ROOT / "storage" / "brands"):
         if not theme_dir.is_dir():
@@ -75,147 +155,293 @@ def load_palettes() -> list[dict]:
                 data = json.loads(f.read_text(encoding="utf-8"))
             except Exception:
                 continue
+            tokens_root = data.get("tokens") if isinstance(data.get("tokens"), dict) else None
             for mode in ("dark", "light"):
-                block = data.get(mode)
-                if not isinstance(block, dict):
-                    continue
                 vars_ = {}
-                for var, section, key in _TOKEN_MAP:
-                    value = block.get(section, {}).get(key)
-                    if value:
-                        vars_[var] = value
+                if tokens_root and isinstance(tokens_root.get(mode), dict):
+                    vars_ = _vars_from_token_map(tokens_root[mode])
+                else:
+                    block = data.get(mode)
+                    if isinstance(block, dict):
+                        vars_ = _vars_from_nested_mode(block)
                 if vars_:
                     palettes.append({"name": f"{f.stem} · {mode}", "vars": vars_})
     return palettes
 
 
 APP_HTML = """<!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark" data-bs-theme="dark">
 <head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>pdf-designer — Design Hub</title>
-<style>
-  :root { --bg:#0b0d12; --surface:#10131a; --line:rgba(79,209,201,0.16); --line2:rgba(79,209,201,0.5);
-          --text:rgba(240,242,246,0.94); --dim:rgba(240,242,246,0.6); --teal:#4fd1c9; --gold:#e3b559; }
-  * { box-sizing: border-box; }
-  body { margin:0; height:100vh; display:flex; flex-direction:column; background:var(--bg); color:var(--text);
-         font-family:'Inter',ui-sans-serif,system-ui,sans-serif; font-size:13px; }
-  header { display:flex; align-items:center; gap:14px; padding:10px 16px; border-bottom:1px solid var(--line);
-           background:var(--surface); flex-wrap:wrap; }
-  header h1 { font-size:14px; margin:0; letter-spacing:0.08em; color:var(--teal); text-transform:uppercase; }
-  header .root { color:var(--dim); font-size:11px; }
-  select,input,button { background:#171b24; color:var(--text); border:1px solid var(--line); border-radius:7px;
-                        padding:6px 9px; font-size:12px; font-family:inherit; }
-  button { cursor:pointer; } button:hover { border-color:var(--line2); }
-  button.primary { background:var(--teal); color:#08211f; font-weight:700; border-color:transparent; }
-  #status { font-size:11.5px; color:var(--gold); max-width:340px; }
-  main { flex:1; display:flex; min-height:0; }
-  aside { width:262px; overflow-y:auto; border-right:1px solid var(--line); background:var(--surface); padding:12px; }
-  aside h2 { font-size:10.5px; letter-spacing:0.12em; text-transform:uppercase; color:var(--dim); margin:14px 0 8px; }
-  .thumb { display:block; width:100%; border:1px solid var(--line); border-radius:9px; overflow:hidden;
-           margin-bottom:10px; background:#000; cursor:pointer; position:relative; }
-  .thumb.sel { border-color:var(--line2); box-shadow:0 0 0 2px var(--line2); }
-  .thumb .frame { height:150px; overflow:hidden; position:relative; pointer-events:none; }
-  .thumb iframe { border:0; transform-origin:top left; position:absolute; top:0; left:0; }
-  .thumb .cap { padding:6px 9px; font-size:11px; color:var(--teal); border-top:1px solid var(--line);
-                background:var(--surface); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  #stage { flex:1; min-width:0; display:flex; flex-direction:column; }
-  #stage iframe { flex:1; border:0; width:100%; background:#333; }
-  #stagebar { padding:6px 14px; font-size:11.5px; color:var(--dim); border-bottom:1px solid var(--line); }
-</style>
+<link rel="stylesheet" href="/_hub/hub.css">
 </head>
 <body>
-<header>
-  <h1>Design Hub</h1>
-  <span class="root">__ROOT__</span>
-  <label>palette <select id="palette"><option value="">(document default)</option></select></label>
-  <label>export <select id="fmt">
-    <option value="pdf-light">PDF · light/print</option>
-    <option value="pdf-dark">PDF · dark/branded</option>
-    <option value="png-light">PNG pages · light</option>
-    <option value="png-dark">PNG pages · dark</option>
-  </select></label>
-  <label>to <input id="outdir" size="28" placeholder="(default: _exports next to doc)"></label>
-  <button class="primary" id="exportBtn">Export selected</button>
-  <span id="status"></span>
+<header class="hub-top">
+  <div class="hub-brand">
+    <h1>Design Hub</h1>
+    <div class="sub" title="__ROOT__">__ROOT__</div>
+  </div>
+  <div class="hub-actions">
+    <label>palette
+      <select id="palette"><option value="">(document default)</option></select>
+    </label>
+    <label>export
+      <select id="fmt">
+        <option value="pdf-light">PDF · light/print</option>
+        <option value="pdf-dark">PDF · dark/branded</option>
+        <option value="png-light">PNG pages · light</option>
+        <option value="png-dark">PNG pages · dark</option>
+      </select>
+    </label>
+    <label>to
+      <input id="outdir" type="text" size="22" placeholder="_exports next to doc">
+    </label>
+    <button class="primary" id="exportBtn" type="button">Export selected</button>
+    <span id="status"></span>
+  </div>
 </header>
-<main>
-  <aside id="sidebar"></aside>
-  <div id="stage">
-    <div id="stagebar">select a document on the left</div>
-    <iframe id="main" src="about:blank"></iframe>
+
+<section class="hub-filters" aria-label="Library filters">
+  <div class="stats" id="stats"></div>
+  <div class="chips" id="kindChips" role="tablist" aria-label="Document kind"></div>
+  <label style="display:flex;align-items:center;gap:6px;font-size:var(--dash-fs-xs);color:var(--dash-text-dim);text-transform:uppercase;letter-spacing:.06em">
+    folder
+    <select id="folderFilter"><option value="">all folders</option></select>
+  </label>
+  <label style="display:flex;align-items:center;gap:6px;font-size:var(--dash-fs-xs);color:var(--dash-text-dim);text-transform:uppercase;letter-spacing:.06em">
+    who
+    <select id="personFilter">
+      <option value="">anyone</option>
+      <option value="jenni">jenni</option>
+      <option value="shade">shade</option>
+    </select>
+  </label>
+  <input class="grow" id="search" type="search" placeholder="Search name or path…" autocomplete="off">
+</section>
+
+<main class="hub-main">
+  <aside class="library">
+    <div class="library-head">Template library <span id="visibleCount">0</span></div>
+    <div class="library-scroll" id="sidebar"></div>
+  </aside>
+  <div class="stage">
+    <div class="stagebar" id="stagebar">
+      <span>Select a template in the library →</span>
+    </div>
+    <iframe id="main" title="Document preview" src="about:blank"></iframe>
   </div>
 </main>
+
 <script>
 const DOCS = __DOCS__;
 const PALETTES = __PALETTES__;
+const KIND_ORDER = ["all","resume","cover-letter","collage","gallery","example","other"];
+const KIND_LABEL = {
+  all: "All",
+  resume: "Resumes",
+  "cover-letter": "Cover letters",
+  collage: "Collages",
+  gallery: "Galleries",
+  example: "Examples",
+  other: "Other",
+};
+
 let selected = null;
+let kindFilter = "all";
 
-const paletteSel = document.getElementById('palette');
-PALETTES.forEach((p,i)=>{ const o=document.createElement('option'); o.value=i; o.textContent=p.name; paletteSel.appendChild(o); });
+const paletteSel = document.getElementById("palette");
+PALETTES.forEach((p, i) => {
+  const o = document.createElement("option");
+  o.value = i;
+  o.textContent = p.name;
+  paletteSel.appendChild(o);
+});
 
-function applyPalette(iframe){
+function applyPalette(iframe) {
   const idx = paletteSel.value;
-  const doc = iframe.contentDocument; if(!doc) return;
+  const doc = iframe.contentDocument;
+  if (!doc) return;
   const st = doc.documentElement.style;
-  // clear previous overrides, then apply
-  for(const p of PALETTES) for(const k of Object.keys(p.vars)) st.removeProperty(k);
-  if(idx !== '') for(const [k,v] of Object.entries(PALETTES[idx].vars)) st.setProperty(k,v);
+  for (const p of PALETTES) for (const k of Object.keys(p.vars)) st.removeProperty(k);
+  if (idx !== "") for (const [k, v] of Object.entries(PALETTES[idx].vars)) st.setProperty(k, v);
 }
 
-const sidebar = document.getElementById('sidebar');
-const groups = {};
-DOCS.forEach(d => { (groups[d.group] ||= []).push(d); });
-const THUMB_W = 236;
-for(const [group, docs] of Object.entries(groups)){
-  const h = document.createElement('h2'); h.textContent = group; sidebar.appendChild(h);
-  for(const d of docs){
-    const el = document.createElement('div'); el.className='thumb'; el.dataset.path=d.path;
-    el.innerHTML = `<div class="frame"><iframe loading="lazy" src="/${d.path}" scrolling="no" tabindex="-1"></iframe></div><div class="cap">${d.name}</div>`;
-    const ifr = el.querySelector('iframe');
-    ifr.addEventListener('load', ()=>{
-      const w = ifr.contentDocument?.body?.scrollWidth || 850;
-      const s = THUMB_W / Math.max(w, 320);
-      ifr.style.width = Math.max(w,320)+'px'; ifr.style.height = (150/s)+'px'; ifr.style.transform = `scale(${s})`;
-      applyPalette(ifr);
-    });
-    el.addEventListener('click', ()=> select(d, el));
-    sidebar.appendChild(el);
+function counts() {
+  const c = { all: DOCS.length };
+  for (const d of DOCS) c[d.kind] = (c[d.kind] || 0) + 1;
+  return c;
+}
+
+function buildStats() {
+  const c = counts();
+  const el = document.getElementById("stats");
+  el.innerHTML = "";
+  for (const k of ["resume","cover-letter","collage","example"]) {
+    if (!c[k]) continue;
+    const s = document.createElement("div");
+    s.className = "stat";
+    s.innerHTML = `<strong>${c[k]}</strong>${KIND_LABEL[k]}`;
+    el.appendChild(s);
   }
 }
 
-const main = document.getElementById('main');
-main.addEventListener('load', ()=> applyPalette(main));
-paletteSel.addEventListener('change', ()=>{
-  applyPalette(main);
-  document.querySelectorAll('.thumb iframe').forEach(f=>applyPalette(f));
-});
-
-function select(d, el){
-  selected = d;
-  document.querySelectorAll('.thumb').forEach(t=>t.classList.remove('sel'));
-  el.classList.add('sel');
-  document.getElementById('stagebar').textContent = d.path;
-  main.src = '/' + d.path;
+function buildKindChips() {
+  const c = counts();
+  const wrap = document.getElementById("kindChips");
+  wrap.innerHTML = "";
+  for (const k of KIND_ORDER) {
+    if (k !== "all" && !c[k]) continue;
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "chip" + (kindFilter === k ? " on" : "");
+    b.dataset.kind = k;
+    b.setAttribute("role", "tab");
+    b.setAttribute("aria-selected", kindFilter === k ? "true" : "false");
+    b.innerHTML = `${KIND_LABEL[k]}<span class="n">${c[k] || 0}</span>`;
+    b.addEventListener("click", () => {
+      kindFilter = k;
+      buildKindChips();
+      renderLibrary();
+    });
+    wrap.appendChild(b);
+  }
 }
 
-document.getElementById('exportBtn').addEventListener('click', async ()=>{
-  const status = document.getElementById('status');
-  if(!selected){ status.textContent = 'select a document first'; return; }
-  status.textContent = 'exporting…';
+function uniqueFolders() {
+  return [...new Set(DOCS.map(d => d.group))].sort();
+}
+
+function buildFolderSelect() {
+  const sel = document.getElementById("folderFilter");
+  const cur = sel.value;
+  sel.innerHTML = '<option value="">all folders</option>';
+  for (const g of uniqueFolders()) {
+    const o = document.createElement("option");
+    o.value = g;
+    o.textContent = g;
+    sel.appendChild(o);
+  }
+  if ([...sel.options].some(o => o.value === cur)) sel.value = cur;
+}
+
+function filteredDocs() {
+  const q = document.getElementById("search").value.trim().toLowerCase();
+  const folder = document.getElementById("folderFilter").value;
+  const person = document.getElementById("personFilter").value;
+  return DOCS.filter(d => {
+    if (kindFilter !== "all" && d.kind !== kindFilter) return false;
+    if (folder && d.group !== folder) return false;
+    if (person && d.person !== person) return false;
+    if (q) {
+      const hay = `${d.path} ${d.name} ${d.label} ${d.group} ${d.kind}`.toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
+    return true;
+  });
+}
+
+const THUMB_W = 248;
+const sidebar = document.getElementById("sidebar");
+
+function renderLibrary() {
+  const docs = filteredDocs();
+  document.getElementById("visibleCount").textContent = String(docs.length);
+  sidebar.innerHTML = "";
+  if (!docs.length) {
+    sidebar.innerHTML = '<div class="empty">No templates match these filters.</div>';
+    return;
+  }
+  const groups = {};
+  for (const d of docs) (groups[d.group] ||= []).push(d);
+  for (const [group, list] of Object.entries(groups)) {
+    const det = document.createElement("details");
+    det.className = "group";
+    det.open = true;
+    const sum = document.createElement("summary");
+    sum.innerHTML = `<span class="path" title="${group}">${group}</span><span class="count">${list.length}</span>`;
+    det.appendChild(sum);
+    for (const d of list) {
+      const el = document.createElement("div");
+      el.className = "thumb" + (selected && selected.path === d.path ? " sel" : "");
+      el.dataset.path = d.path;
+      const badges = [`<span class="badge kind-${d.kind}">${d.kind}</span>`];
+      if (d.person) badges.push(`<span class="badge person-${d.person}">${d.person}</span>`);
+      if (d.bucket === "examples") badges.push('<span class="badge">template</span>');
+      el.innerHTML =
+        `<div class="frame"><iframe loading="lazy" src="/${d.path}" scrolling="no" tabindex="-1" title=""></iframe></div>` +
+        `<div class="meta"><div class="name" title="${d.path}">${d.name}</div><div class="badges">${badges.join("")}</div></div>`;
+      const ifr = el.querySelector("iframe");
+      ifr.addEventListener("load", () => {
+        try {
+          const w = ifr.contentDocument?.body?.scrollWidth || 850;
+          const s = THUMB_W / Math.max(w, 320);
+          ifr.style.width = Math.max(w, 320) + "px";
+          ifr.style.height = (132 / s) + "px";
+          ifr.style.transform = `scale(${s})`;
+          applyPalette(ifr);
+        } catch (_) { /* cross-origin unlikely on localhost */ }
+      });
+      el.addEventListener("click", () => select(d, el));
+      det.appendChild(el);
+    }
+    sidebar.appendChild(det);
+  }
+}
+
+const main = document.getElementById("main");
+main.addEventListener("load", () => applyPalette(main));
+paletteSel.addEventListener("change", () => {
+  applyPalette(main);
+  document.querySelectorAll(".thumb iframe").forEach(f => applyPalette(f));
+});
+
+function select(d, el) {
+  selected = d;
+  document.querySelectorAll(".thumb").forEach(t => t.classList.remove("sel"));
+  if (el) el.classList.add("sel");
+  const bar = document.getElementById("stagebar");
+  bar.innerHTML =
+    `<span class="badge kind-${d.kind}">${d.kind}</span>` +
+    (d.person ? `<span class="badge person-${d.person}">${d.person}</span>` : "") +
+    `<span class="badge">${d.bucket}</span>` +
+    `<span class="path" title="${d.path}">${d.path}</span>`;
+  main.src = "/" + d.path;
+}
+
+document.getElementById("folderFilter").addEventListener("change", renderLibrary);
+document.getElementById("personFilter").addEventListener("change", renderLibrary);
+document.getElementById("search").addEventListener("input", renderLibrary);
+
+document.getElementById("exportBtn").addEventListener("click", async () => {
+  const status = document.getElementById("status");
+  if (!selected) { status.textContent = "select a template first"; return; }
+  status.textContent = "exporting…";
   const idx = paletteSel.value;
   const body = {
     doc: selected.path,
-    format: document.getElementById('fmt').value,
-    outDir: document.getElementById('outdir').value || null,
-    cssVars: idx === '' ? null : PALETTES[idx].vars,
+    format: document.getElementById("fmt").value,
+    outDir: document.getElementById("outdir").value || null,
+    cssVars: idx === "" ? null : PALETTES[idx].vars,
   };
   try {
-    const r = await fetch('/api/export', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body)});
+    const r = await fetch("/api/export", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
     const data = await r.json();
-    status.textContent = data.ok ? ('saved: ' + data.outputs.join(' · ')) : ('error: ' + data.error);
-  } catch(e){ status.textContent = 'error: ' + e; }
+    status.textContent = data.ok ? ("saved: " + data.outputs.join(" · ")) : ("error: " + data.error);
+  } catch (e) {
+    status.textContent = "error: " + e;
+  }
 });
+
+buildStats();
+buildKindChips();
+buildFolderSelect();
+renderLibrary();
 </script>
 </body>
 </html>
@@ -245,14 +471,37 @@ def make_handler(root: Path, docs: list[dict], palettes: list[dict]):
             if path in ("/", "/index.html"):
                 self._send(200, app_page.encode("utf-8"), "text/html; charset=utf-8")
                 return
+            if path.startswith("/_hub/"):
+                name = path[len("/_hub/") :]
+                if not re.fullmatch(r"[A-Za-z0-9._-]+", name or ""):
+                    self._send(404, b"not found", "text/plain")
+                    return
+                target = (_STATIC_DIR / name).resolve()
+                if not str(target).startswith(str(_STATIC_DIR.resolve())) or not target.is_file():
+                    self._send(404, b"not found", "text/plain")
+                    return
+                ctype = {
+                    ".css": "text/css; charset=utf-8",
+                    ".js": "text/javascript; charset=utf-8",
+                    ".svg": "image/svg+xml",
+                }.get(target.suffix.lower(), "application/octet-stream")
+                self._send(200, target.read_bytes(), ctype)
+                return
             target = (root / path.lstrip("/")).resolve()
-            if not str(target).startswith(str(root)) or not target.is_file():
+            if not str(target).startswith(str(root.resolve())) or not target.is_file():
                 self._send(404, b"not found", "text/plain")
                 return
             ctype = {
-                ".html": "text/html; charset=utf-8", ".css": "text/css", ".js": "text/javascript",
-                ".json": "application/json", ".png": "image/png", ".jpg": "image/jpeg",
-                ".jpeg": "image/jpeg", ".webp": "image/webp", ".gif": "image/gif", ".svg": "image/svg+xml",
+                ".html": "text/html; charset=utf-8",
+                ".css": "text/css",
+                ".js": "text/javascript",
+                ".json": "application/json",
+                ".png": "image/png",
+                ".jpg": "image/jpeg",
+                ".jpeg": "image/jpeg",
+                ".webp": "image/webp",
+                ".gif": "image/gif",
+                ".svg": "image/svg+xml",
             }.get(target.suffix.lower(), "application/octet-stream")
             self._send(200, target.read_bytes(), ctype)
 
@@ -264,26 +513,26 @@ def make_handler(root: Path, docs: list[dict], palettes: list[dict]):
                 length = int(self.headers.get("Content-Length", 0))
                 req = json.loads(self.rfile.read(length))
                 doc = (root / req["doc"]).resolve()
-                if not str(doc).startswith(str(root)) or not doc.is_file():
+                if not str(doc).startswith(str(root.resolve())) or not doc.is_file():
                     raise ValueError(f"bad doc path: {req['doc']}")
                 fmt = req.get("format", "pdf-light")
                 pdf_theme = "dark" if fmt.endswith("-dark") else None
                 out_dir = req.get("outDir") or None
                 if fmt.startswith("png"):
-                    # PNGs render straight from the HTML -- no PDF round-trip. (They used
-                    # to be rasterized out of the exported PDF by PyMuPDF, which is AGPL
-                    # and had to go; see docs/LICENSING-NOTES.md.)
                     outputs = [
                         str(p)
                         for p in render_to_png(str(doc), out_dir, pdf_theme=pdf_theme)
                     ]
                 else:
                     pdf = export_html_to_pdf(
-                        str(doc), output_dir=out_dir, pdf_theme=pdf_theme, css_vars=req.get("cssVars"),
+                        str(doc),
+                        output_dir=out_dir,
+                        pdf_theme=pdf_theme,
+                        css_vars=req.get("cssVars"),
                     )
                     outputs = [str(pdf)]
                 self._send(200, json.dumps({"ok": True, "outputs": outputs}).encode(), "application/json")
-            except Exception as exc:  # surfaced to the UI status line
+            except Exception as exc:
                 self._send(200, json.dumps({"ok": False, "error": str(exc)}).encode(), "application/json")
 
     return Handler
@@ -297,8 +546,14 @@ def serve(root: str | None = None, port: int = 8787, open_browser: bool = True):
     palettes = load_palettes()
     server = ThreadingHTTPServer(("127.0.0.1", port), make_handler(root_path, docs, palettes))
     url = f"http://127.0.0.1:{port}/"
-    print(f"Design Hub: {url}  ({len(docs)} documents, {len(palettes)} palettes, root: {root_path})")
-    print("Ctrl+C to stop.")
+    by_kind = {}
+    for d in docs:
+        by_kind[d["kind"]] = by_kind.get(d["kind"], 0) + 1
+    kind_summary = ", ".join(f"{k}={v}" for k, v in sorted(by_kind.items()))
+    print(f"Design Hub: {url}")
+    print(f"  {len(docs)} templates ({kind_summary})")
+    print(f"  {len(palettes)} palettes · root: {root_path}")
+    print("  Filters: kind · folder · person · search — Ctrl+C to stop.")
     if open_browser:
         threading.Timer(0.4, lambda: webbrowser.open(url)).start()
     try:
@@ -318,13 +573,15 @@ def main() -> None:
     while i < len(args):
         a = args[i]
         if a == "--port":
-            port = int(args[i + 1]); i += 1
+            port = int(args[i + 1])
+            i += 1
         elif a.startswith("--port="):
             port = int(a.split("=", 1)[1])
         elif a == "--no-open":
             open_browser = False
         elif a in ("-h", "--help"):
-            print(__doc__); raise SystemExit(0)
+            print(__doc__)
+            raise SystemExit(0)
         else:
             root = a
         i += 1
