@@ -25,17 +25,16 @@
     "reason": "Real personal resume data. storage/ is gitignored."
   },
 
-  "voice": "One line. The full voice spec — tone, signature moves, what to avoid — lives in the vault's `voice` block. Read it; it matters as much as the facts.",
+  "voice": "One line pointer. Full application voice → vault `voice`. Personality / contrast → users/<you>.json#characterVoice. Network map → C:\\Github\\voice-seed\\registry.json.",
 
   "leadIdentity": {
-    "_note": "OPTIONAL, but powerful. If your lead identity CHANGES by track (e.g. 'AI specialist' for one kind of role, 'artist' for another), say so here and in the vault's voice.leadIdentityByTrack. Getting this wrong makes a resume feel aimed at the wrong job.",
-    "your-track-a": "Who you are FIRST on this track.",
-    "your-track-b": "A different lead identity — same person, different framing."
+    "rule": "OPTIONAL. If lead identity CHANGES by track, put the map in the vault ONLY — profile keeps a pointer.",
+    "source": "../yourname/resume-source.json#voice.leadIdentityByTrack",
+    "_note": "Do not duplicate per-track lines here (they drift). See shade-resume.json for the live pattern."
   },
 
   "roleTracks": {
-    "_note": "Defined in the VAULT, not here. This is a pointer, not a second copy.",
-    "available": ["your-track-a", "your-track-b"],
+    "_note": "Defined in the VAULT, not here. Pointer only — do not copy the available[] list.",
     "source": "../yourname/resume-source.json#roleTracks"
   },
 

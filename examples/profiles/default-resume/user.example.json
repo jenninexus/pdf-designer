@@ -48,7 +48,8 @@
     "headline": "What you are, in six words",
     "company": "Your Company",
     "role": "Your Role",
-    "voice": "One-line summary. Full personality → characterVoice below; application prose SSOT → vault voice."
+    "voice": "One-line summary. Full personality → characterVoice below; application prose SSOT → vault voice.",
+    "background": "Optional short bio. Prefer characterVoice.personality.backgroundFlavor as the deeper SSOT — keep this one line or omit."
   },
 
   "characterVoice": {
