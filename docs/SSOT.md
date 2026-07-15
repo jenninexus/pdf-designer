@@ -79,8 +79,12 @@ Also after `pip install -e .`: `pdf-designer`, `pdf-designer-preview`,
 
 ## Related docs
 
+Full index: [`README.md`](README.md) (docs hub). Root [`../README.md`](../README.md) is the
+short public-facing entry.
+
 | Doc | Role |
 |---|---|
+| [`EXPORTS.md`](EXPORTS.md) | Commands + export / pagination SSOT |
 | [`WHITE-LABEL.md`](WHITE-LABEL.md) | Public-only reusable path (no private vaults) |
 | [`VAULT.md`](VAULT.md) | Claim + voice rules |
 | [`PREVIEWER.md`](PREVIEWER.md) | Design Hub how-to |

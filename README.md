@@ -2,158 +2,78 @@
 
 # 🖨️ pdf-designer
 
-**Design it in HTML. Print it like a browser. Never invent a claim.**
+## Design it in HTML.
+## Print it like a browser.
 
 ![MIT](https://img.shields.io/badge/license-MIT-9b5cf6?style=flat-square&labelColor=1a1a2e)
 ![Runtime](https://img.shields.io/badge/runtime-python%20%2B%20playwright-63b3ed?style=flat-square&labelColor=1a1a2e)
 ![Engine](https://img.shields.io/badge/engine-headless%20chromium-42f4c8?style=flat-square&labelColor=1a1a2e)
 ![Local](https://img.shields.io/badge/local--first-no%20SaaS-ff6ec4?style=flat-square&labelColor=1a1a2e)
 
-A local-first toolkit for turning HTML into **print-perfect PDFs** — résumés, cover letters, collages —
-with an optional job-application layer that tailors every document from *your own verified facts*.
+Local-first toolkit that turns HTML into **print-perfect PDFs** — résumés, cover letters,
+collages — with an optional vault-backed job-application layer that never invents a claim.
 
 **Zero network calls. Zero environment variables. Zero telemetry.**
-Not a promise — a property of the code. There's nothing to configure and nowhere for your data to go.
 
 </div>
 
+- 📄 **HTML → PDF** via real headless Chromium — what the browser prints is what you get
+- 🌗 **Light + dark** from one source — ATS-safe light PDF and branded dark, same pagination
+- 🎨 **Themeable** palettes with a guard that rejects colors that print badly
+- 🔍 **Design Hub** — local preview, palette swap, one-click export (`python -m pdf_tool.preview`)
+
+> **Status:** private for now. Structure and docs are shaped for a future public release
+> (MIT engine + public themes; private vaults stay gitignored). See [`docs/WHITE-LABEL.md`](docs/WHITE-LABEL.md).
+
 ---
-
-## ✨ What it does
-
-| | |
-|---|---|
-| 📄 **HTML → PDF** | Real headless Chromium. CSS grid, flex, and `@media print` render exactly like a browser's own *Print → Save as PDF*. |
-| 🌗 **Light + dark, one source** | Every document exports an ATS-safe light PDF **and** a branded dark one — same geometry, same pagination. |
-| 🎨 **Themeable** | Palettes are data. Swap a token map, keep the layout. A guard rejects colors that print badly. |
-| 🖼️ **Collages** | Point it at a folder of images → six layout families + a picker gallery, PowerPoint-Designer style. |
-| 🔍 **Design Hub** | A local previewer with live thumbnails, a palette swapper, and one-click export. |
-| 🔐 **Source-backed** | The résumé layer can only claim what's in your vault. It elaborates; it never fabricates. |
 
 ## 🚀 Quick start
 
 ```bash
-pip install -e .            # makes `pdf_tool` importable from the repo root
+pip install -e .
 playwright install chromium
+
+python -m pdf_tool                 # list every command
+python -m pdf_tool.preview         # Design Hub → http://127.0.0.1:8787/
+python -m pdf_tool.html_to_pdf doc.html
+python -m pdf_tool.html_to_pdf doc.html --pdf-theme dark
 ```
 
-```bash
-python -m pdf_tool                                # engine hub — list every command
-python -m pdf_tool.preview                        # 🎨 Design Hub — browse, theme, export
-python -m pdf_tool.html_to_pdf doc.html           # 📄 light / ATS PDF   (palette guard runs automatically)
-python -m pdf_tool.html_to_pdf doc.html --pdf-theme dark   # 🌙 branded dark PDF
-python -m pdf_tool.html_to_pdf doc.html --variants         # 🎛️ light PDF per public palette → _variants/<stem>/
-python -m pdf_tool.variants doc.html              # same as --variants
-python -m pdf_tool.merge_pdfs out.pdf a.pdf b.pdf --require-letter
-python -m pdf_tool.pdf_to_png doc.pdf             # 👀 verify by eye
-python -m pdf_tool.collage ./images --layout auto --png
-python -m pdf_tool.tracker list                   # 📋 scan storage/applications/**/application.json
-python -m pdf_tool.tracker status                 # status breakdown
-```
+Exports land in `_exports/` as `<stem>-light.pdf` / `<stem>-dark.pdf` and **never
+overwrite** (`-v2`, `-v3`). Full command list, guards, pagination traps →
+[`docs/EXPORTS.md`](docs/EXPORTS.md).
 
-**The guards** — they fail loudly, so nothing quietly ships broken:
-
-```bash
-python -m pdf_tool.check_palette --scan .   # 🚦 no brown / mustard / lime  (also BLOCKS every export)
-python -m pdf_tool.check_vault --all        # 🧠 vault schema — catches claims that would be invisible
-python -m pdf_tool.check_vault --explain <user> <track>   # ranked claims (blocks on schema/thin)
-python -m pdf_tool.check_vault --coverage <user> <track> <listing.md>  # gap-check input
-python -m pdf_tool.check_ats <resume-light.pdf>         # ATS text layer
-node scripts/wcag-resume-palettes.mjs       # optional WCAG contrast spot-check (`--strict` to fail CI)
-```
-
-Exports land in `_exports/` beside the source and **never overwrite** (auto `-v2`, `-v3`).
-Palette shopping exports land in `_variants/<stem>/` the same way.
+---
 
 ## 📚 Docs
 
-| Doc | What's in it |
+| Start here | |
 |---|---|
-| [`docs/SSOT.md`](docs/SSOT.md) | **SSOT dashboard** — what this repo owns vs pointers elsewhere. |
-| [`docs/WHITE-LABEL.md`](docs/WHITE-LABEL.md) | Public-only path — engine + themes, no private vaults required. |
-| [`AGENTS.md`](AGENTS.md) | **Agent capability map** — every command, the repo map, and the contracts that must not break. Vendor-neutral. |
-| [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) | How the pieces fit; the roadmap. |
-| [`docs/STORAGE.md`](docs/STORAGE.md) | Private workspace layout + brand color SSOT. |
-| [`docs/VAULT.md`](docs/VAULT.md) | Claim rules — read before writing any resume. |
-| [`docs/JOB-ASSESSMENT.md`](docs/JOB-ASSESSMENT.md) | Listing capture / verify / gap-check protocol. |
-| [`docs/THEME-DESIGN.md`](docs/THEME-DESIGN.md) | The theme/profile contract and the token names. |
-| [`docs/EXPORTS.md`](docs/EXPORTS.md) | Export paths, the palette guard, pagination traps. |
-| [`docs/PREVIEWER.md`](docs/PREVIEWER.md) | The Design Hub + its app roadmap. |
-| [`docs/COLLAGE-DESIGN.md`](docs/COLLAGE-DESIGN.md) | The six collage families and the canvas presets. |
-| [`themes/PALETTE-RULES.md`](themes/PALETTE-RULES.md) | 🚦 **The color rule** — no brown, no mustard, no lime — and the guard that enforces it. |
-| [`Plans/`](Plans/) | Working roadmap — **active:** [`Plans/_Active/2026-07-14-professional-product-roadmap.md`](Plans/_Active/2026-07-14-professional-product-roadmap.md) |
+| [`docs/README.md`](docs/README.md) | **Docs index** — where every topic lives |
+| [`docs/SSOT.md`](docs/SSOT.md) | What this repo owns vs pointers elsewhere |
+| [`docs/WHITE-LABEL.md`](docs/WHITE-LABEL.md) | Public-only path (no private vaults) |
+| [`AGENTS.md`](AGENTS.md) | Agent capability map + contracts |
 
-## 🧠 The résumé layer *(optional)*
-
-The interesting part. A résumé is a **query against a vault**, not a document you rewrite each time.
-
-```
-storage/                        ← gitignored; your real data never ships
-  users/<you>.json              WHO — contact, brandTheme.ssot, characterVoice, naming
-  <you>/resume-source.json      ⭐ THE VAULT — every fact you may truthfully claim,
-                                   each with a source, a strength, and its role tracks
-  profiles/<you>-resume.json    HOW it renders — layout, exports, cover-letter policy
-  applications/<Role>/          THE JOB — the listing, the apply link, the company palette
-```
-
-**The rule:** never write a claim that isn't in the vault. But *do* elaborate persuasively on what
-genuinely matches — take a real skill and show precisely why it's valuable *to this employer*.
-That's not spin, it's translation.
-
-Voice map / public cards live in `C:\Github\voice-seed`; deep applicant voice stays in `storage/`
-(see [`docs/VAULT.md`](docs/VAULT.md)). Agency fiction agents are not applicants.
-
-**The other rule:** if a listing asks for something the vault doesn't have — **ask the human before
-calling it a gap.** The vault records what they've *told* you; it is not the limit of what they can do.
-
-Then one command runs the whole routine — capture the apply link, verify remote status and pay,
-research the company, derive a theme from their real brand CSS, write, export light + dark, merge the
-bundle:
-
-```
-/make-resume <user> storage/applications/<Role>
-```
-
-📖 [`.claude/commands/make-resume.md`](.claude/commands/make-resume.md) — and it's **agent-agnostic**:
-plain markdown, no vendor APIs. Any assistant (or human) can follow it.
-
-## 🎨 Canvas sizes
-
-**SSOT:** [`docs/COLLAGE-DESIGN.md`](docs/COLLAGE-DESIGN.md) (full table) + [`themes/default-collage.json`](themes/default-collage.json) (`canvas_presets`).
-
-| Preset id | Ratio | Pixels | Use |
-|---|---|---|---|
-| `letter-portrait` | 8.5 × 11 in | 2550 × 3300 @300dpi | Print page, PDF one-sheet |
-| `letter-landscape` | 11 × 8.5 in | 3300 × 2550 @300dpi | Print landscape |
-| `hd-landscape` | 16:9 | 1920 × 1080 | YouTube thumbnail, slides, banners |
-| `hd-portrait` | 9:16 | 1080 × 1920 | Stories, Reels, Shorts |
-| `standard-landscape` | 4:3 | 1440 × 1080 | Classic photo layout |
-| `standard-portrait` | 3:4 | 1080 × 1440 | Portrait photo layout |
-| `ig-portrait` | 4:5 | 1080 × 1350 | Instagram portrait post |
-| `square` | 1:1 | 1024 × 1024 | Square posts, avatars |
+---
 
 ## 🧭 Principles
 
-- **Local-first.** No SaaS, no upload, no telemetry. `storage/` is gitignored and stays home (vaults, applications, private brand maps).
-- **Public themes ≠ personal brands.** `themes/` is the engine default; real brands map from www-theme-kit / syna-theme-kit into `storage/brands/` (see `examples/brands/`).
-- **Source-backed.** Generated content never outruns verified claims.
-- **No auto-submission.** The tool prepares; the human submits.
-- **Geometry is locked.** Palettes change color — never paper size, margins, or pagination.
+- **Local-first** — no SaaS, no upload, no telemetry; `storage/` is gitignored
+- **Source-backed** — generated copy never outruns verified claims
+- **No auto-submission** — the tool prepares; the human submits
+- **Geometry is locked** — palettes change color, never paper size or pagination
+
+---
 
 ## 📄 License
 
-**MIT** — see [`LICENSE`](LICENSE). © 2026 Jenni Nexus.
+MIT — use, fork, customize. See [`LICENSE`](LICENSE). © 2026 Jenni Nexus.
 
-And it's an *honest* MIT: **every dependency is permissive**, so there's no copyleft hiding in the
-tree and nothing you have to disclose downstream.
+Honest MIT: every dependency is permissive (playwright, pypdf, Pillow). AGPL history →
+[`docs/LICENSING-NOTES.md`](docs/LICENSING-NOTES.md).
 
-| Dependency | License |
-|---|---|
-| playwright | Apache-2.0 |
-| pypdf | BSD-3-Clause |
-| Pillow | MIT-CMU |
+<div align="center">
 
-> PyMuPDF (**AGPL-3.0**) was removed in July 2026 — a mandatory AGPL dependency makes an MIT claim
-> incoherent, because you can't grant rights you don't hold. It only rasterized PDF pages, and
-> Chromium (already shipping) does that better. The full story:
-> [`docs/LICENSING-NOTES.md`](docs/LICENSING-NOTES.md).
+Published by [Jenni](https://github.com/jenninexus) at [Monofinity Studio](https://github.com/monofinitystudio).
+
+</div>
