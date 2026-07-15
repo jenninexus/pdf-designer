@@ -22,29 +22,50 @@ python -m pdf_tool.preview path/to/dir    # scan any directory (e.g. one applica
 python -m pdf_tool.preview --port 9000 --no-open
 ```
 
-The PowerPoint-style picker, generalized to the whole repo:
+**No MCP / always-on server.** Optional temporary localhost only. CLI export works without it.
 
-- **Sidebar of live thumbnails** for every `.html` document found (resume
-  renders, collage candidates, cover letters), grouped by folder — like
-  PowerPoint Designer's side column, but for all your documents.
-- **Click a thumbnail** → full-size preview in the main pane.
-- **Palette swapper**: audition color combos live. Palettes are read from
-  `themes/*.json` (public) and `storage/themes/*.json` (private) — drop in
-  another theme file to get more options. Works on any template that uses
-  the token contract (`--bg`, `--primary`, …).
-- **Export selected** → PDF (light/dark) or PNG pages, to any output folder
-  (default `_exports` next to the doc). A swapped palette is *included* in
-  the export via `html_to_pdf`'s `css_vars` injection — preview is WYSIWYG.
-- Zero new dependencies (stdlib server; exports reuse Playwright).
+### Chrome vs document tokens
+
+| Layer | Where | Purpose |
+|---|---|---|
+| **Hub chrome** | `src/pdf_tool/static/hub.css` | App shell (filters, library, stage). Vendored `--dash-*` from www-theme-kit dashboard tokens + glass. Profile: `www-theme-kit/profiles/pdf-designer.json`. |
+| **Document brands** | `themes/*.json` + `storage/brands/brand-*.json` | Palette swapper / WYSIWYG export. Personal SSOT — see [`STORAGE.md`](STORAGE.md). |
+
+Each `.html` file is its **own template** in the library (one card = one file).
+
+### Filters (Jobright-style library)
+
+Adapted from `D:\Resume\Jobright\jobright-feature-review.md` — local-first library + filters, not cloud match scores:
+
+- **Kind chips:** All · Resumes · Cover letters · Collages · Galleries · Examples
+- **Folder:** e.g. `storage/applications/3D-Artist`, `examples/profiles/default-resume`
+- **Person:** jenni / shade (from filename prefix)
+- **Search:** name or path substring
+
+Sidebar groups stay collapsible by folder. Stage bar shows kind · person · bucket · path.
+
+### Features
+
+- **Live thumbnails** for every renderable `.html` (excludes `_exports/`, etc.)
+- **Palette swapper** → injects CSS vars into the previewed document (and into export)
+- **Export selected** → PDF light/dark or PNG pages
+- Zero new deps (stdlib server; Playwright only for export/render)
   Binds to 127.0.0.1 only.
 
 Typical flows:
 
-- **"Which resume style?"** — copy your resume HTML into 2–3 variants (or
-  keep one HTML and audition palettes with the swapper), open the hub,
-  compare side by side, export the winner.
-- **"Which collage?"** — run `pdf_tool.collage`, open the hub (or the
-  generated `_candidates/index.html`), pick, export.
+- **"Hide old cover letters"** — click **Resumes** (or filter folder to one application track).
+- **"Only collages"** — click **Collages**.
+- **"Which resume style?"** — filter Examples / vault renders, audition palettes, export.
+- **"Which collage?"** — Collages filter, or open `_candidates/index.html` (gallery kind).
+
+## Lineage (D:\Resume → pdf-designer)
+
+| Keep / adapt in pdf-designer | Leave private on D:\Resume |
+|---|---|
+| Engine, Design Hub, protocol docs, examples | Disney finals, personal vaults, Jobright screenshots |
+| Jobright *library + filter* UX ideas | Jobright match scores / autofill / extension |
+| Brand maps under `storage/brands/` | Historical prompt logs |
 
 ## Roadmap
 

@@ -76,7 +76,7 @@ That is a deliberate architectural choice, not an unfinished module:
   this claim reference a real track?* Both are guards; both fail loudly. Everything else is
   protocol.
 
-The four data layers are documented in [`../storage/README.md`](../storage/README.md).
+The four data layers are documented in [`STORAGE.md`](STORAGE.md).
 
 ## Guards — what is actually enforced
 
@@ -150,7 +150,7 @@ Honest status — nothing below exists yet.
 
 ## See also
 
-[`../storage/README.md`](../storage/README.md) — the four data layers ·
+[`STORAGE.md`](STORAGE.md) — the four data layers ·
 [`EXPORTS.md`](EXPORTS.md) — export commands and pagination traps ·
 [`THEME-DESIGN.md`](THEME-DESIGN.md) — the token contract ·
 [`../themes/PALETTE-RULES.md`](../themes/PALETTE-RULES.md) — the color rule ·

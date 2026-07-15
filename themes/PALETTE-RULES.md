@@ -10,7 +10,7 @@ The one rule every theme, palette, and export in this repo must satisfy. Enforce
 | [Run the guard](#run-the-guard) | `check_palette` usage |
 | [The fix pattern](#the-fix-pattern) | Hand the amber role to another hue |
 | [Limitations](#known-limitations) | What the guard cannot see |
-| Related | [`../storage/VAULT.md`](../storage/VAULT.md) · [`../.claude/commands/make-resume.md`](../.claude/commands/make-resume.md) · [`check_palette.py`](../src/pdf_tool/check_palette.py) |
+| Related | [`../docs/VAULT.md`](../docs/VAULT.md) · [`../.claude/commands/make-resume.md`](../.claude/commands/make-resume.md) · [`check_palette.py`](../src/pdf_tool/check_palette.py) |
 
 ## The rule
 
@@ -67,14 +67,16 @@ Exit **0** = clean. Exit **1** = it prints every offending hex, what it is, the 
 
 The palettes already ship this pattern:
 
-| Theme | Dark gold/amber | → Light stand-in |
+| Theme | Dark warm highlight | → Light stand-in |
 |---|---|---|
-| `default-resume.json` | `#e3b559` gold | `#0E6E7A` teal |
-| `brand-synagen.json` | `#F0B25A` gold | `#0E6E7A` teal |
-| `brand-martian.json` | `#FFAA00` amber | `#0e7c8c` teal |
-| `brand-jenninexus.json` | `#fff06b` yellow | `#1D5FA8` blue |
+| `default-resume.json` | `e3b559` gold | `0E6E7A` teal |
+| `brand-synagen.json` | `F0B25A` gold | `0E6E7A` teal |
+| `brand-martian.json` | molten orange `FF6B00` / hot `FF4500` (live MG; **not** amber) | violet `6d3fd4` (brand purple) — print primary stays orange-RED `c2410c` |
+| `brand-jenninexus.json` | `fff06b` yellow | `1D5FA8` blue |
 
-Pick the stand-in from a hue the palette *already contains* (its cyan, its violet, its magenta) so the light document still reads as the same brand — and pick one the sibling tokens aren't already using, so the roles stay visually distinct. Dark mode is untouched: it keeps the bright amber.
+Pick the stand-in from a hue the palette *already contains* (its cyan, its violet, its magenta) so the light document still reads as the same brand — and pick one the sibling tokens aren't already using, so the roles stay visually distinct. Dark mode is untouched for legal bright warms.
+
+**Martian note (2026-07-14):** live `martiangames.com` is **orange + violet**, not amber + teal. Resume dark tokens mirror `www-theme-kit/profiles/martiangames.json`. Light secondary is violet (not teal) so the print pair stays recognizably MG. Private map: `storage/brands/brand-martian.json` (gitignored); kit mirror: `www-theme-kit/palettes/resume-palettes.json#martian-resume`.
 
 ## Known limitations
 
