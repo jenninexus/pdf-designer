@@ -69,9 +69,11 @@ Each layer answers exactly one question.
 
 | Layer | Path | Edit when… |
 |---|---|---|
+| **Network map / public cards** | `C:\Github\voice-seed\` (`registry.json`, `characters/`) | New character, register map changes, public overview refresh |
 | **Character / personality** | `users/<user>.json#characterVoice` | Traits, partner contrast, emoji prefs, pointers to socials/bots |
 | **Application prose** | `<user>/resume-source.json#voice` | How résumés and cover letters sound (tone, signatureMoves, leadIdentity) |
 | **Marketing (not applications)** | `socials/content/*/format-manifest.json` + bot STYLE-SPECs | Post format + Discord emoji — inspire only |
+| **Agency loft (fiction)** | `agency/docs/STUDIO-VOICE.md` + `agents/*.md` | Site-audit / Discord agent characters — never applicant voice |
 
 Protocol deep-dives (tracked):
 
