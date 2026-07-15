@@ -21,16 +21,19 @@ built versus planned.
 
 ## The engine
 
-`src/pdf_tool/` — seven modules, ~1,400 lines, no framework.
+`src/pdf_tool/` — CLI modules, no framework. Full command recipes: [`EXPORTS.md`](EXPORTS.md).
 
 | Module | Does | |
 |---|---|---|
-| `html_to_pdf` | HTML → PDF via headless Chromium. Light (default) and dark (`--pdf-theme dark`) from one source. Injects palette overrides as CSS vars. | ✅ built |
+| `html_to_pdf` | HTML → PDF via headless Chromium. Light / dark from one source (`<stem>-light.pdf` / `-dark.pdf`). Optional `--variants`. | ✅ built |
+| `variants` | One light PDF per public palette → `_variants/<stem>/`. | ✅ built |
 | `merge_pdfs` | Cover letter + résumé → one bundle. `--require-letter` validates US Letter. | ✅ built |
-| `pdf_to_png` | One PNG per page. **This is the agent's eyes** — export, render, *read the PNG*. | ✅ built |
+| `pdf_to_png` | One PNG per `.page`. **This is the agent's eyes** — export, render, *read the PNG*. | ✅ built |
 | `check_palette` | The palette guard. Rejects brown / mustard / lime. | ✅ built |
-| `check_vault` | The vault guard. Validates claim schema; catches *invisible* claims. `--explain`, `--coverage`. | ✅ built |
-| `check_ats` | ATS text-layer guard. Shows what PDF parsers read; fails on thin text. | ✅ built |
+| `check_vault` | Vault schema / `--explain` / `--coverage`. | ✅ built |
+| `check_ats` | ATS text-layer guard on light PDF. | ✅ built |
+| `audit_resume` | Diff rendered HTML vs vault (lead omissions). | ✅ built |
+| `tracker` | List / status over `storage/applications/**/application.json`. | ✅ built |
 | `collage` | Six layout families from a folder of images, plus a picker gallery. | ✅ built |
 | `preview` | The **Design Hub** — local previewer, live thumbnails, palette swapper, export. | ✅ built |
 
@@ -164,6 +167,7 @@ Honest status — nothing below exists yet.
 
 ## See also
 
+[`README.md`](README.md) — docs index ·
 [`STORAGE.md`](STORAGE.md) — the four data layers ·
 [`EXPORTS.md`](EXPORTS.md) — export commands and pagination traps ·
 [`THEME-DESIGN.md`](THEME-DESIGN.md) — the token contract ·

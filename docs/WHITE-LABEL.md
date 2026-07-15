@@ -43,7 +43,8 @@ python -m pdf_tool.preview
 python -m pdf_tool.collage path/to/images --layout auto --png
 ```
 
-Hub help: `python -m pdf_tool`. Full agent map: [`AGENTS.md`](../AGENTS.md).
+Hub help: `python -m pdf_tool`. Full recipes: [`EXPORTS.md`](EXPORTS.md).
+Docs index: [`README.md`](README.md). Agent map: [`AGENTS.md`](../AGENTS.md).
 SSOT dashboard: [`SSOT.md`](SSOT.md).
 
 ---

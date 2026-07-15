@@ -80,7 +80,8 @@ intended agent feedback loop.
 | `themes/PALETTE-RULES.md` | ⭐ **the color rule** (no brown/mustard/lime) + how the guard enforces it |
 | `examples/brands/` | tracked **template** for private brand maps (copy → `storage/brands/`) |
 | `storage/brands/*.json` | ⛔ PRIVATE **pdf-designer color SSOT** per person/studio (gitignored). One file each — see [`docs/STORAGE.md`](docs/STORAGE.md). Website kits inspire; do not keep a second hex map in `users/*.json`. |
-| `docs/SSOT.md` · `WHITE-LABEL.md` | SSOT dashboard · public-only reusable path |
+| `docs/README.md` | Docs index — humans start at root README, detail lives under `docs/` |
+| `docs/SSOT.md` · `WHITE-LABEL.md` · `EXPORTS.md` | SSOT dashboard · public-only path · command/export recipes |
 | `docs/STORAGE.md` · `VAULT.md` · `JOB-ASSESSMENT.md` | Tracked protocol (fresh clones). `storage/*.md` stubs only point here. |
 | `.config/mcp-pdf-designer.json` | Project config — **breakpoint SSOT pointer** + Design Hub / palette / voice pointers |
 | `Plans/_Active/` | ⭐ Working roadmap (one file) — see [`Plans/README.md`](Plans/README.md) |
