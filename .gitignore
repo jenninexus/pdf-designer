@@ -63,6 +63,10 @@ build/
 Thumbs.db
 .vscode/*.log
 
+# Personal VS Code MCP wiring (contains local machine paths). The tracked
+# .vscode/mcp.json.example is the agnostic template; the repo needs no MCP to run.
+.vscode/mcp.json
+
 # Secrets — defensive only.
 # This tool reads NO environment variables and makes NO network calls; there is nothing
 # for a .env to hold, which is why no .env.example ships (it would document a fiction).

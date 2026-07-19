@@ -124,6 +124,47 @@ def scan_documents(root: Path) -> list[dict]:
     return docs
 
 
+# File suffixes the auto-refresh watcher tracks. HTML sources change the doc
+# list; PDFs/PNGs land in _exports/ when a resume is exported and are what the
+# "refresh when I output a new resume" feature keys on.
+_WATCH_SUFFIXES = {".html", ".pdf", ".png", ".jpg", ".jpeg", ".webp"}
+# _exports is excluded from the DOC scan but MUST be watched for new outputs.
+_WATCH_EXCLUDE = EXCLUDE_PARTS - {"_exports"}
+
+
+def tree_signature(root: Path) -> str:
+    """Cheap change token over the doc tree + _exports outputs.
+
+    Returns a string that changes whenever a watched file is added, removed, or
+    modified — the client polls /api/version and refreshes when it changes.
+    Deliberately coarse (count + newest mtime + total size) so it is fast on a
+    large tree and never touches file contents.
+    """
+    count = 0
+    newest = 0.0
+    total = 0
+    for p in root.rglob("*"):
+        if p.suffix.lower() not in _WATCH_SUFFIXES:
+            continue
+        try:
+            rel_parts = p.relative_to(root).parts
+        except ValueError:
+            continue
+        if _WATCH_EXCLUDE.intersection(rel_parts):
+            continue
+        if "pdf_tool" in rel_parts and "static" in rel_parts:
+            continue
+        try:
+            st = p.stat()
+        except OSError:
+            continue
+        count += 1
+        total += st.st_size
+        if st.st_mtime > newest:
+            newest = st.st_mtime
+    return f"{count}:{newest:.3f}:{total}"
+
+
 def _vars_from_nested_mode(block: dict) -> dict:
     vars_ = {}
     for var, section, key in _TOKEN_MAP:
@@ -228,7 +269,7 @@ APP_HTML = """<!doctype html>
 </main>
 
 <script>
-const DOCS = __DOCS__;
+let DOCS = __DOCS__;
 const PALETTES = __PALETTES__;
 const KIND_ORDER = ["all","resume","cover-letter","collage","gallery","example","other"];
 const KIND_LABEL = {
@@ -427,6 +468,70 @@ buildStats();
 buildKindChips();
 buildFolderSelect();
 renderLibrary();
+
+/* ---- Auto-refresh watcher ----
+   Polls /api/version; when the tree signature changes (a new resume exported,
+   an HTML source edited), refresh the library, reload the open preview, and
+   flash a subtle toast. No manual restart needed. */
+(function autoRefresh() {
+  let sig = null;
+  let busy = false;
+  const INTERVAL = 1500;
+
+  function toast(msg) {
+    let t = document.getElementById("refreshToast");
+    if (!t) {
+      t = document.createElement("div");
+      t.id = "refreshToast";
+      t.style.cssText =
+        "position:fixed;bottom:16px;right:16px;z-index:9999;padding:8px 14px;" +
+        "border-radius:999px;font:600 12px/1 'Inter',system-ui,sans-serif;" +
+        "background:rgba(20,20,22,0.92);color:#fff;border:1px solid rgba(255,255,255,0.18);" +
+        "box-shadow:0 6px 24px rgba(0,0,0,0.4);opacity:0;transition:opacity .25s;pointer-events:none;";
+      document.body.appendChild(t);
+    }
+    t.textContent = msg;
+    t.style.opacity = "1";
+    clearTimeout(t._h);
+    t._h = setTimeout(() => { t.style.opacity = "0"; }, 2200);
+  }
+
+  async function tick() {
+    if (busy) return;
+    busy = true;
+    try {
+      const r = await fetch("/api/version", { cache: "no-store" });
+      if (r.ok) {
+        const data = await r.json();
+        if (sig === null) {
+          sig = data.sig;
+        } else if (data.sig !== sig) {
+          sig = data.sig;
+          const prevCount = DOCS.length;
+          DOCS = data.docs;
+          // keep the current selection if it still exists
+          if (selected) {
+            const still = DOCS.find(d => d.path === selected.path);
+            selected = still || null;
+          }
+          buildKindChips();
+          buildFolderSelect();
+          renderLibrary();
+          // reload the open preview so an edited source repaints
+          if (selected) { try { main.src = "/" + selected.path + "?t=" + Date.now(); } catch (_) {} }
+          const delta = DOCS.length - prevCount;
+          toast(delta > 0 ? ("＋" + delta + " document" + (delta > 1 ? "s" : "")) :
+                delta < 0 ? (delta + " document" + (delta < -1 ? "s" : "")) :
+                "updated");
+        }
+      }
+    } catch (_) { /* server down mid-poll — ignore, retry next tick */ }
+    finally { busy = false; }
+  }
+
+  tick();
+  setInterval(tick, INTERVAL);
+})();
 </script>
 </body>
 </html>
@@ -455,6 +560,14 @@ def make_handler(root: Path, docs: list[dict], palettes: list[dict]):
             path = unquote(urlparse(self.path).path)
             if path in ("/", "/index.html"):
                 self._send(200, app_page.encode("utf-8"), "text/html; charset=utf-8")
+                return
+            if path == "/api/version":
+                # Auto-refresh poll: current tree signature + a fresh doc list.
+                # Re-scanning docs here keeps the sidebar live when HTML sources
+                # or _exports outputs change, without restarting the server.
+                sig = tree_signature(root)
+                payload = {"sig": sig, "docs": scan_documents(root)}
+                self._send(200, json.dumps(payload).encode("utf-8"), "application/json")
                 return
             if path.startswith("/_hub/"):
                 name = path[len("/_hub/") :]

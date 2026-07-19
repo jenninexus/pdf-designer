@@ -48,6 +48,7 @@ python -m pdf_tool.merge_pdfs out.pdf a.pdf b.pdf --require-letter   # bundle, v
 python -m pdf_tool.pdf_to_png <doc>.pdf                         # one PNG per page (visual verify)
 python -m pdf_tool.check_palette <doc>.html                     # ⭐ palette guard — run before EVERY export
 python -m pdf_tool.check_palette --scan storage/                #    sweep a whole tree
+python -m pdf_tool.check_overflow <doc>.html --pdf-theme dark   # ⭐ overflow guard — page fits its box (pinned footer won't collide); auto-warns on export
 python -m pdf_tool.check_vault --all                            # vault schema — catches invisible claims
 python -m pdf_tool.check_vault --explain <user> <track>         # ranked claims preview (blocks on schema/thin)
 python -m pdf_tool.check_vault --coverage <user> <track> <listing.md>  # listing gap-check
@@ -82,6 +83,7 @@ intended agent feedback loop.
 | `storage/brands/*.json` | ⛔ PRIVATE **pdf-designer color SSOT** per person/studio (gitignored). One file each — see [`docs/STORAGE.md`](docs/STORAGE.md). Website kits inspire; do not keep a second hex map in `users/*.json`. |
 | `docs/README.md` | Docs index — humans start at root README, detail lives under `docs/` |
 | `docs/SSOT.md` · `WHITE-LABEL.md` · `EXPORTS.md` | SSOT dashboard · public-only path · command/export recipes |
+| `docs/LAYOUT-SYSTEM.md` | ⭐ Shared page model — equal margins, pinned footer, per-doc spec, work-samples build |
 | `docs/STORAGE.md` · `VAULT.md` · `JOB-ASSESSMENT.md` | Tracked protocol (fresh clones). `storage/*.md` stubs only point here. |
 | `.config/mcp-pdf-designer.json` | Project config — **breakpoint SSOT pointer** + Design Hub / palette / voice pointers |
 | `Plans/_Active/` | ⭐ Working roadmap (one file) — see [`Plans/README.md`](Plans/README.md) |
@@ -119,9 +121,11 @@ Next engineering work: [`Plans/_Active/2026-07-14-professional-product-roadmap.m
 
 ## Contracts (do not break)
 
-- **Geometry is locked.** Resumes/letters are US Letter 8.5×11 with
-  `@page { size: Letter; margin: 0.5in 0.55in 0.78in; }`. Palette changes
-  never change paper size, margins, or page-break strategy.
+- **Geometry is locked.** Resumes/letters are US Letter 8.5×11 with **equal margins on all four
+  edges** — the default is `@page { size: Letter; margin: 0.65in; }` (a doc may open it wider, e.g.
+  0.75in for a formal cover letter, but it must stay equal). Palette changes never change paper size,
+  margins, or page-break strategy. **Layout model** (equal frame + header-flows/footer-pins):
+  [`docs/LAYOUT-SYSTEM.md`](docs/LAYOUT-SYSTEM.md).
 - **Dual mode is intentional.** Every document supports light print
   (`@media print` default, ATS-safe) AND dark branded
   (`html[data-pdf-theme="dark"]` overrides). Keep both working when editing

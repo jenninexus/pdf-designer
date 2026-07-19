@@ -24,6 +24,16 @@ python -m pdf_tool.preview --port 9000 --no-open
 
 **No MCP / always-on server.** Optional temporary localhost only. CLI export works without it.
 
+### Auto-refresh (no restart when you export)
+
+The hub **refreshes itself** when documents change — you don't restart it after exporting a new resume
+or editing a source. A client poller hits **`GET /api/version`** (~every 1.5s), which returns a cheap
+tree *signature* (count + newest mtime + total size over `*.html` sources **and** `_exports/**` outputs)
+plus a fresh document list. When the signature changes, the sidebar re-renders, the open preview reloads
+(cache-busted), and a small toast flashes (`＋1 document`). So the loop is simply: **export or edit → the
+hub updates on its own.** The signature is coarse and content-free (never reads file bytes), so it stays
+fast on a large tree. If the server is briefly down mid-poll, the client just retries the next tick.
+
 ### Chrome vs document tokens
 
 | Layer | Where | Purpose |

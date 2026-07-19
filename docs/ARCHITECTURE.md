@@ -134,8 +134,10 @@ pyproject.toml                `pip install -e .` → `pdf_tool` importable from 
 
 ## Contracts — do not break these
 
-- **Geometry is locked.** US Letter, `@page { size: Letter; margin: 0.5in 0.55in 0.78in; }`.
-  A palette change never alters paper size, margins, or pagination.
+- **Geometry is locked.** US Letter with **equal margins on all four edges** — default
+  `@page { size: Letter; margin: 0.65in; }` (a doc may open it wider, e.g. 0.75in for a formal cover
+  letter, but it stays equal). A palette change never alters paper size, margins, or pagination.
+  Page model: [`LAYOUT-SYSTEM.md`](LAYOUT-SYSTEM.md).
 - **Dual mode is intentional.** Every document renders light (print / ATS — the default) *and*
   dark (`html[data-pdf-theme="dark"]`). Keep both working when you touch a template.
 - **The token contract** between a theme and a document:

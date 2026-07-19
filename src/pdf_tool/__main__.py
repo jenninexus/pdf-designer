@@ -12,6 +12,7 @@ _COMMANDS: tuple[tuple[str, str], ...] = (
     ("merge_pdfs", "Merge PDFs into one bundle"),
     ("pdf_to_png", "Screenshot each .page for visual verify"),
     ("check_palette", "Reject brown / mustard / lime"),
+    ("check_overflow", "Catch page overflow / pinned-footer collision"),
     ("check_vault", "Vault schema / --explain / --coverage"),
     ("check_ats", "ATS text-layer guard on light PDF"),
     ("audit_resume", "Diff rendered HTML vs vault omissions"),

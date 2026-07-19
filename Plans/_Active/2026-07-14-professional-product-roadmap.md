@@ -59,10 +59,25 @@ the only renderer. No MCP / always-on server required for core value.
 
 ---
 
+## Shipped recently (2026-07-15 → 07-16) — private collage workspace
+
+- [x] **meet-jenni-bot collage pack** under `storage/collages/meet-jenni-bot/` (same family pattern as syn-themes): uniform-grid HD fave + hero-mosaic / filmstrip / square / masonry alts
+- [x] Source frames from jenni-bot `storage/screenshots/` (socials `:8777` previewer captures) + exported into JN blog gallery assets
+- [x] Collage SSOT unchanged: `docs/COLLAGE-DESIGN.md` + canvas presets — engine already owns layout families
+
+## Shipped recently (2026-07-19) — layout system + live previewer
+
+- [x] **Shared page layout system** — [`docs/LAYOUT-SYSTEM.md`](../../docs/LAYOUT-SYSTEM.md). **Equal margins on all four edges** (default `@page { margin: 0.65in }`); header flows at the top, footer/signature pins to the bottom (`margin-top:auto`). Codified in `themes/default-resume.{json,css}` (one knob `--resume-page-margin`) + the public example resume; applied to the Netflix templates.
+- [x] **Content-fit rule + `check_overflow` guard** — each page's content must fit its box (9.7in default) or the pinned signature collides with the last lines. New `pdf_tool.check_overflow` measures every `.page`'s rendered height vs its print box in headless Chromium and fails on overflow; it also auto-warns on every `html_to_pdf` export. Caught a real latent overflow in the public example resume. (Fixed the 2026-07-19 signature-overlap bug so it can never ship again.)
+- [x] **Design Hub auto-refresh** — `GET /api/version` (tree signature over HTML + `_exports/**`) + client poller; the previewer re-renders + reloads the open doc when you export a new resume. No restart. (`docs/PREVIEWER.md`.)
+- [x] **GitHub-readiness** — `examples/README.md` first-run guide; `.vscode/mcp.json` → gitignored + `.vscode/mcp.json.example`; `ensure-design-hub.ps1` launches hidden + agnostic (`python` from PATH); `.vscode/tasks.json` uses `${workspaceFolder}` (no hardcoded paths).
+- [x] **Work-samples doc type** — visual portfolio PDF (self-contained base64 images) for "Additional Documents" uploads; profile contract in `profiles/<user>-resume.json#workSamples`.
+
 ## Next — maintenance / PyPI when going public ← **priority**
 
 - [ ] PyPI / installer for non-dev users (when going public)
 - [ ] Keep SSOT + white-label docs honest as the engine evolves
+- [ ] Optional: document meet-jenni-bot / syn-themes collage recipes in `docs/COLLAGE-DESIGN.md` examples (paths stay private under `storage/`)
 
 ## Later / parked
 

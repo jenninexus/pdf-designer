@@ -15,12 +15,22 @@
   "exampleData": "resume-source.example.json",
   "includeFilter": { "applies_to": "default-resume" },
   "layout": {
+    "_note": "⭐ THE SHARED LAYOUT SYSTEM — every profile that `extends` this one inherits it (jenni, shade, martian, studio). SSOT: themes/default-resume.json#document + docs/LAYOUT-SYSTEM.md.",
     "paper": "Letter",
     "widthIn": 8.5,
     "heightIn": 11,
-    "printCssRequired": "@page { size: Letter; margin: ... }",
-    "screenPreview": "Use visible Letter-sized wrappers (8.5in x 11in) so page breaks can be reviewed before export.",
-    "footer": "Optional fixed print footer. Reserve bottom space through @page margins and page breaks."
+    "system": {
+      "equalMargins": true,
+      "marginIn": 0.65,
+      "marginRule": "EQUAL on all four edges (top = right = bottom = left). Default 0.65in via `@page { size: Letter; margin: 0.65in }` and the CSS knob `--resume-page-margin`. A doc may open the frame WIDER for a specific look (e.g. a formal cover letter at 0.75in) but must keep it equal — never asymmetric.",
+      "contentBox": "7.2in wide x 9.7in tall at the 0.65in default (8.5-2*0.65, 11-2*0.65).",
+      "headerFlowsFooterPins": "The header flows at the top inside the equal margin; the body region (.page-main / .letter-main) grows with flex:1; the footer/signature pins to the bottom with margin-top:auto. .page-sig = résumé bottom-right; .letter-sign = cover-letter bottom-left; .page-foot = work-samples footer row. Reusable classes live in themes/default-resume.css.",
+      "printHeight": "Give the print .page a fixed height of `calc(11in - 2 * margin)` so the flex footer pins to the page bottom.",
+      "contentFitRule": "⚠ EACH PAGE's content must FIT its box or the pinned footer collides with the last lines (the 2026-07-19 overlap bug). If a page overflows, MOVE a section to the next page or tighten that page's rhythm — never shrink the equal margin. VERIFY with `python -m pdf_tool.check_overflow <doc>.html --pdf-theme dark` (also runs automatically as a warning on every html_to_pdf export)."
+    },
+    "printCssRequired": "@page { size: Letter; margin: 0.65in; }",
+    "screenPreview": "Use visible Letter-sized wrappers (8.5in x 11in) with the equal margin as padding so page breaks + framing can be reviewed before export.",
+    "footer": "Footer/signature pins to the bottom via .page-sig / .letter-sign / .page-foot (margin-top:auto). The equal @page margin frames all four edges."
   },
   "paths": {
     "defaultExportDir": "_exports",

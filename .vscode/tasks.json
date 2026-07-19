@@ -4,8 +4,8 @@
     {
       "label": "Design Hub: ensure running + open",
       "type": "shell",
-      "command": "pwsh -NoProfile -File \"${workspaceFolder:pdf-designer}/scripts/ensure-design-hub.ps1\"",
-      "options": { "cwd": "${workspaceFolder:pdf-designer}" },
+      "command": "pwsh -NoProfile -File \"${workspaceFolder}/scripts/ensure-design-hub.ps1\"",
+      "options": { "cwd": "${workspaceFolder}" },
       "runOptions": { "runOn": "folderOpen" },
       "presentation": { "reveal": "silent", "panel": "dedicated", "showReuseMessage": false },
       "problemMatcher": []
@@ -13,8 +13,8 @@
     {
       "label": "Design Hub (manual)",
       "type": "shell",
-      "command": "pwsh -NoProfile -File \"C:\\Github\\pdf-designer\\scripts\\ensure-design-hub.ps1\"",
-      "options": { "cwd": "C:\\Github\\pdf-designer" },
+      "command": "pwsh -NoProfile -File \"${workspaceFolder}/scripts/ensure-design-hub.ps1\"",
+      "options": { "cwd": "${workspaceFolder}" },
       "presentation": { "reveal": "always", "panel": "dedicated", "showReuseMessage": false },
       "problemMatcher": []
     }

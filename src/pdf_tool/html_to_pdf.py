@@ -155,10 +155,49 @@ def _guard_palette(input_html: str) -> None:
     raise SystemExit(2)
 
 
+def _warn_overflow(input_html: str, pdf_theme: str | None) -> None:
+    """Warn (do not block) if any .page overflows its fixed print box.
+
+    A pinned footer sits at the bottom of a fixed-height .page; if the content
+    is taller than the box it collides with the last lines (the 2026-07-19
+    overlap bug). This is advisory — some templates legitimately differ — but a
+    surprised author beats a shipped collision. Escape hatch: --skip-overflow-check.
+    """
+    try:
+        from .check_overflow import check_overflow
+    except ImportError:
+        return
+    try:
+        problems = check_overflow(input_html, pdf_theme=pdf_theme)
+    except Exception:
+        return  # never fail an export on the guard's own error
+    if not problems:
+        return
+    print(
+        f"\n⚠ OVERFLOW: {len(problems)} page(s) exceed the print box — the pinned "
+        "footer/signature may collide with the last lines.",
+        file=sys.stderr,
+    )
+    for pr in problems:
+        bits = []
+        if pr.get("overflow_px", 0) > 0:
+            bits.append(f"content {pr['content']}px > box {pr['box']}px")
+        if pr.get("footerCollision"):
+            bits.append("footer overlaps content")
+        print(f"  • page {pr['index']}: " + "; ".join(bits), file=sys.stderr)
+    print(
+        "  Move a section to the next page or tighten this page's rhythm "
+        "(docs/LAYOUT-SYSTEM.md § content-fit). "
+        "python -m pdf_tool.check_overflow <doc>.html for detail.\n",
+        file=sys.stderr,
+    )
+
+
 def main() -> None:
     raw_args = sys.argv[1:]
     force = any(a in ("--force", "-f") for a in raw_args)
     skip_palette = "--skip-palette-check" in raw_args
+    skip_overflow = "--skip-overflow-check" in raw_args
     want_variants = "--variants" in raw_args
     pdf_theme = None
     output_dir = None
@@ -171,6 +210,8 @@ def main() -> None:
         if arg in ("--force", "-f"):
             continue
         if arg == "--skip-palette-check":
+            continue
+        if arg == "--skip-overflow-check":
             continue
         if arg == "--variants":
             continue
@@ -238,6 +279,9 @@ def main() -> None:
         raise SystemExit(1)
 
     print(f"Saved: {result}")
+
+    if not skip_overflow:
+        _warn_overflow(input_html, pdf_theme)
 
 
 if __name__ == "__main__":
