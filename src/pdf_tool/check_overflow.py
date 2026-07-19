@@ -1,15 +1,27 @@
-"""check_overflow — the pinned-footer overlap guard.
+"""check_overflow — the page-fit guard for the pinned-footer layout.
 
 The layout system pins the footer/signature to the bottom of a FIXED-HEIGHT
-`.page` (via `margin-top:auto`). If a page's content is TALLER than that box,
-the content overflows and the pinned signature lands on top of the last lines —
-the 2026-07-19 overlap bug. A page-count check does NOT catch this (the PDF still
-has the right number of pages; the last one just has garbage stacked on it).
+`.page`. Two things protect against the 2026-07-19 overlap bug (a section bleeding
+past the page edge onto the next sheet and overlapping it):
 
-This guard renders the document in the SAME headless Chromium the exporter uses,
-in `print` media, and for every `.page` / `.page-sheet` compares the content's
-`scrollHeight` to the box's `clientHeight`. Any page whose content overflows is
-reported; the command exits non-zero so it can gate an export in CI or a script.
+1. **`overflow: hidden` on the print `.page` (the structural guarantee).** Any
+   content taller than the box is CLIPPED at the page edge instead of bleeding
+   onto the next sheet. Overlap can no longer happen visually — worst case, a
+   too-tall page's tail is cut off, which is loud and obvious. This lives in
+   `themes/default-resume.css` and every template.
+
+2. **This guard (the authoring signal).** It renders the document in the SAME
+   headless Chromium the exporter uses, neutralizes the fixed-height/flex clamp
+   (so the real content height becomes measurable), and for each page compares
+   its body's natural height + footer against the box. A page whose OWN content
+   exceeds its box is reported; exit is non-zero so it can gate an export.
+
+⚠ Scope / honest limitation: DOM measurement cannot perfectly predict Chromium's
+print pagination — a `break-inside: avoid` block that gets relocated to the next
+page is handled by (1) `overflow: hidden`, not by this measurement. This guard
+reliably catches the common, important case (a single page packed taller than its
+box → content would clip → data loss). For a definitive check, render the exported
+PDF to an image and read it (`pdf_to_png`, or pypdfium2) — that is ground truth.
 
 Usage:
     python -m pdf_tool.check_overflow document.html
@@ -23,33 +35,44 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-# JS run inside the print-media page. Returns one record per .page element with
-# the box height (clientHeight) and the content height (scrollHeight). A page
-# overflows when scrollHeight > clientHeight + tolerance.
-_MEASURE_JS = r"""
-() => {
-  const pages = Array.from(document.querySelectorAll('.page, .page-sheet'));
-  return pages.map((el, i) => {
-    // Height of the fixed print box vs. the height the content actually needs.
-    const box = el.clientHeight;
-    const content = el.scrollHeight;
-    // Also detect a pinned footer sitting visually on top of prior content:
-    // if the last-child footer's top is above the previous element's bottom.
-    let footerCollision = false;
-    const footer = el.querySelector(':scope > .page-sig, :scope > .page-foot, :scope > .letter-sign, :scope > .signature');
-    if (footer) {
-      const fr = footer.getBoundingClientRect();
-      // previous meaningful sibling (the last content block)
-      let prev = footer.previousElementSibling;
-      while (prev && prev.getBoundingClientRect().height === 0) prev = prev.previousElementSibling;
-      if (prev) {
-        const pr = prev.getBoundingClientRect();
-        if (fr.top < pr.bottom - 1) footerCollision = true;
-      }
-    }
-    return { index: i + 1, box: Math.round(box), content: Math.round(content), footerCollision };
-  });
-}
+# Records the fixed print-box height BEFORE we neutralize the layout.
+_BOX_JS = r"""
+() => Array.from(document.querySelectorAll('.page, .page-sheet'))
+        .map(el => Math.round(el.clientHeight))
+"""
+
+# ⚠ The core difficulty: in the print layout a `.page` has a FIXED height and its
+# `.page-main` is `flex:1`, so the browser CLIPS overflow — `scrollHeight` is
+# clamped to the box and the overflow is invisible to the DOM. To see the true
+# content height we must first NEUTRALIZE the constraint: make every `.page`
+# height:auto/overflow:visible and every flex body `flex:none`. Then each page's
+# natural `scrollHeight` reveals how tall it really wants to be. Compare that to
+# the box height captured beforehand.
+_NEUTRALIZE_CSS = r"""
+  .page, .page-sheet {
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+  .page-main, .letter-main {
+    flex: none !important;
+    min-height: 0 !important;
+  }
+"""
+
+# After neutralizing, measure the page-main body's natural height PLUS the pinned
+# footer's height — that sum is what the page actually needs. (Measuring the whole
+# .page is wrong: its margin-top:auto footer collapses to 0 in an auto-height box
+# and under-reports.)
+_NATURAL_JS = r"""
+() => Array.from(document.querySelectorAll('.page, .page-sheet')).map(el => {
+  const body = el.querySelector(':scope > .page-main, :scope > .letter-main') || el;
+  const foot = el.querySelector(':scope > .page-sig, :scope > .page-foot, :scope > .letter-sign, :scope > .signature');
+  const bodyH = body.scrollHeight;
+  const footH = foot ? foot.getBoundingClientRect().height + 12 : 0;  // +12 ≈ its padding-top gap
+  return Math.round(bodyH + footH);
+});
 """
 
 
@@ -75,16 +98,22 @@ def check_overflow(html_path: str, pdf_theme: str | None = None, tolerance: int 
                 pdf_theme,
             )
         page.emulate_media(media="print")
-        # Force layout to settle in print media before measuring.
         page.evaluate("() => document.body.getBoundingClientRect().height")
-        records = page.evaluate(_MEASURE_JS)
+        # 1) box heights while the fixed print layout is still in force
+        boxes = page.evaluate(_BOX_JS)
+        # 2) neutralize the height/flex clamp, then read the true content heights
+        page.add_style_tag(content=_NEUTRALIZE_CSS)
+        page.evaluate("() => document.body.getBoundingClientRect().height")
+        naturals = page.evaluate(_NATURAL_JS)
         browser.close()
 
     problems = []
-    for r in records:
-        overflow_px = r["content"] - r["box"]
-        if overflow_px > tolerance or r["footerCollision"]:
-            problems.append({**r, "overflow_px": overflow_px})
+    for i, (box, content) in enumerate(zip(boxes, naturals)):
+        overflow_px = content - box
+        if overflow_px > tolerance:
+            problems.append(
+                {"index": i + 1, "box": box, "content": content, "overflow_px": overflow_px, "footerCollision": False}
+            )
     return problems
 
 

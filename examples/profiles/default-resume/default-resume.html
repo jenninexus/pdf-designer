@@ -217,6 +217,8 @@
       box-shadow: none;
       display: flex;
       flex-direction: column;
+      /* clip overflow at the page edge — never bleed onto the next sheet */
+      overflow: hidden;
     }
 
     .page-main { flex: 1 1 auto; min-height: 0; }
