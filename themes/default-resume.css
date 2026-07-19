@@ -227,6 +227,25 @@
   align-items: flex-end;
 }
 
+/* Stacked footer: an extra line (e.g. a portfolio/links line) ABOVE the
+   name/email row, both pinned together. Put such a line INSIDE the pinned
+   footer — never as a loose <p> at the end of .page-main, or it drifts to the
+   page bottom and collides with the signature when the page fills. */
+.page-foot--stacked {
+  display: block;
+}
+.page-foot--stacked .foot-line {
+  text-align: center;
+  margin: 0 0 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+.page-foot--stacked .foot-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
 .letter-sign {
   margin-top: auto;
   flex: 0 0 auto;
