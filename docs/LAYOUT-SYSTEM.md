@@ -58,6 +58,16 @@ carry it in print.** `check_overflow` is the authoring *warning*; `overflow: hid
 pagination fix, rasterize the actual PDF and read it (`pdf_to_png`, or `pypdfium2`) — `check_overflow`'s
 DOM measurement is a fast pre-flight, not a substitute for looking at the real output.
 
+### ⚠ A line that belongs above the footer goes INSIDE the footer
+
+A second failure mode (fixed 2026-07-19, work-samples last page): a loose `<p>` — e.g. a "full
+portfolio · links" line — placed at the **end of `.page-main`, just before the pinned footer**, drifts
+to the very bottom when the page fills and **collides with the signature**. `.page-main` grows to fill;
+its last child ends up flush against the `margin-top:auto` footer. **Fix:** put that line *inside* the
+pinned footer block, above the name/email row. Use the shared `.page-foot--stacked` pattern
+(`.foot-line` above a `.foot-row`) in `themes/default-resume.css` — the line and the signature are then
+pinned together and can never overlap.
+
 ---
 
 ## Equal margins — the professional frame
