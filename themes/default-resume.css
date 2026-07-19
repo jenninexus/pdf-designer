@@ -253,6 +253,12 @@
     padding: 0;
     display: flex;
     flex-direction: column;
+    /* ⭐ Clip overflow at the page edge. Without this, a section that can't fit
+       the remaining space on a fixed-height sheet bleeds onto the NEXT sheet and
+       overlaps its content (the 2026-07-19 overlap bug). Clipping makes that
+       impossible visually, and makes check_overflow's height check authoritative.
+       If you see content clipped, MOVE a section to the next page. */
+    overflow: hidden;
   }
 
   .page-main,

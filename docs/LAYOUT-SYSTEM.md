@@ -27,15 +27,36 @@ reads as "finished and deliberate." The résumé already did this (bottom-right 
 **cover letter and work-samples now do too**.
 
 The **print** rule must repeat the flex declaration (some engines drop it when `.page` is restyled for
-`@media print`):
+`@media print`) **and set `overflow: hidden`** — the second half of the fix:
 
 ```css
 @media print {
-  .page { display: flex; flex-direction: column; height: <content-box>in; }
+  .page {
+    display: flex; flex-direction: column;
+    height: <content-box>in;   /* = 11in − 2 × equal-margin */
+    overflow: hidden;          /* ⭐ clip; never bleed onto the next sheet */
+  }
   .page-main, .letter-main { flex: 1 1 auto; min-height: 0; }
   .footer, .signature { margin-top: auto; }
 }
 ```
+
+### ⚠ `overflow: hidden` is not optional — it's what makes the bug impossible
+
+**The 2026-07-19 overlap bug, understood properly.** With multiple manual `.page` divs (a 2-page
+résumé) each at a fixed height, if a `break-inside: avoid` section can't fit the space left on page 1,
+Chromium's print engine pushes that whole block onto page 2 — but page 2 is its *own* fixed-height sheet
+that also starts at the top, so the bumped block lands **on top of** page 2's header and content. Neither
+a page-count check nor a DOM height measurement catches this (page 1 "fits"; the PDF still has 2 pages).
+
+`overflow: hidden` on the fixed-height `.page` makes it **structurally impossible**: any content past the
+page edge is clipped, never rendered onto the next sheet. Worst case becomes a visibly cut-off tail
+(loud, obvious — move a section), instead of a silent overlap. **Every `.page` in every template must
+carry it in print.** `check_overflow` is the authoring *warning*; `overflow: hidden` is the *guarantee*.
+
+**Ground truth is the exported PDF, not a DOM measurement or an HTML re-render.** When verifying a
+pagination fix, rasterize the actual PDF and read it (`pdf_to_png`, or `pypdfium2`) — `check_overflow`'s
+DOM measurement is a fast pre-flight, not a substitute for looking at the real output.
 
 ---
 
