@@ -111,12 +111,14 @@ For normal resumes and cover letters, keep US Letter output:
 @media print {
   @page {
     size: Letter;
-    margin: 0.5in 0.55in 0.78in;
+    margin: 0.65in;   /* EQUAL on all four edges — the default frame */
   }
 }
 ```
 
-Letter is 8.5 x 11 inches. Do not switch to Legal unless the receiving system
+Letter is 8.5 x 11 inches. Margins are **equal on all four edges** (default `0.65in`); a doc may open
+the frame wider (e.g. `0.75in` for a formal cover letter) but must keep it equal — never asymmetric.
+Full model: [`LAYOUT-SYSTEM.md`](LAYOUT-SYSTEM.md). Do not switch to Legal unless the receiving system
 explicitly asks for 8.5 x 14 inches.
 
 ## Palette Guard — no brown, no mustard, no lime
@@ -187,20 +189,24 @@ predict the real pagination — it reports the screen box. The only truth is the
 python -c "from pypdf import PdfReader; print(len(PdfReader('out.pdf').pages), 'pages')"
 ```
 
-**Measure before trimming copy.** At the locked geometry — `@page { size: Letter;
-margin: 0.5in 0.55in 0.78in; }` — the printable budget is:
+**Measure before trimming copy.** At the default equal geometry — `@page { size: Letter;
+margin: 0.65in; }` — the printable budget is:
 
 | | |
 |---|---|
-| **Height** | 11in − 0.5 − 0.78 = **9.72in = 933px** per page |
-| **Width** | 8.5in − (0.55 × 2) = **7.4in = 710px** |
+| **Height** | 11in − (0.65 × 2) = **9.7in = 931px** per page |
+| **Width** | 8.5in − (0.65 × 2) = **7.2in = 691px** |
+
+For a doc that opens the frame wider (e.g. a formal cover letter at `0.75in`): height 9.5in, width
+7.0in. Set the print `.page { height }` to exactly `11in − 2 × margin`.
 
 Check the real *print-mode* content height before cutting text — the screen layout will lie to
 you (screen `min-height` and padding don't apply in print).
 
-> ⚠ This doc used to quote **960px**, derived from a margin set (`0.45in 0.5in 0.55in`) the repo
-> does not use. That's 27px of budget that doesn't exist — enough to silently push a two-page
-> résumé onto a third sheet. The margins above are the contract; they're also in
+> ⚠ **Each page's content must FIT this box.** The footer/signature is pinned with `margin-top:auto`
+> inside a fixed-height `.page`; if a page overflows, the signature collides with the last lines
+> (the 2026-07-19 overlap bug). Tighten that page's rhythm — never shrink the equal margin. Full
+> model + safe dense-résumé rhythm: [`LAYOUT-SYSTEM.md`](LAYOUT-SYSTEM.md). The margins are also in
 > [`ARCHITECTURE.md`](ARCHITECTURE.md) and [`../AGENTS.md`](../AGENTS.md).
 
 ## Verify, always

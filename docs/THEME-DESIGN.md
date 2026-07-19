@@ -25,12 +25,19 @@ The public default is intentionally brand-neutral. It supports:
 - `_exports` output folders
 - cover-letter + resume bundles through `merge_pdfs.py --require-letter`
 
-**Page signature (layout SSOT):** `themes/default-resume.json#document.signature` pins the
-name/email (or brand mark) at the **bottom-right of each Letter page** — the page footer, not a
-block floating mid-page after the last section. Templates use `.page` (flex column) + `.page-main`
-(body) + `.page-sig` (`margin-top: auto; align-self: flex-end`); print CSS gives `.page` a fixed
-content-box height so the flex pin works. See also `document.layout_prefs` and the reusable
-classes in `themes/default-resume.css`.
+**Page layout (SSOT):** [`docs/LAYOUT-SYSTEM.md`](LAYOUT-SYSTEM.md) + `themes/default-resume.json#document`.
+Two rules define the professional frame:
+
+1. **Equal margins on all four edges.** Default `@page { size: Letter; margin: 0.65in }` — top = right =
+   bottom = left, so content is framed identically. `themes/default-resume.css` derives every edge from
+   one knob (`--resume-page-margin`); a doc may open it wider (0.75in for a formal letter) but must stay
+   equal. Never asymmetric.
+2. **Header flows, footer pins.** `.page` is a flex column; the header flows at the top inside the equal
+   margin; the body region (`.page-main` / `.letter-main`) grows with `flex: 1`; the footer/signature
+   (`.page-sig` bottom-right for résumés, `.letter-sign` bottom-left for letters, `.page-foot` for work
+   samples) pins to the bottom with `margin-top: auto`. Print CSS gives `.page` a fixed content-box
+   height `calc(11in − 2 × margin)` so the flex pin lands on the page bottom. Reusable classes live in
+   `themes/default-resume.css`; see also `document.layout_prefs` / `document.layout_system`.
 
 ## Private Profiles
 

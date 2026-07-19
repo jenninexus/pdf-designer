@@ -25,7 +25,9 @@ Compact map of what this repo owns vs what it only points at. Agents: start here
 |---|---|---|
 | Engine | `src/pdf_tool/` | HTML→PDF, guards, collage, Design Hub, tracker |
 | Public themes | `themes/default-resume.{json,css}`, `themes/presets/*` | Token SSOT + audition palettes |
+| Page layout | `docs/LAYOUT-SYSTEM.md` + `themes/default-resume.{json,css}#document` | ⭐ Equal margins (0.65in default) + header-flows/footer-pins; one knob `--resume-page-margin`; content-fit rule |
 | Page signature | `themes/default-resume.json#document.signature` | Bottom-right page-footer pin (`.page` / `.page-main` / `.page-sig`) |
+| Previewer | `src/pdf_tool/preview.py` (`docs/PREVIEWER.md`) | Design Hub; **auto-refreshes** via `/api/version` on new exports |
 | Palette rule | `themes/PALETTE-RULES.md` | No brown / mustard / lime — enforced by `check_palette` |
 | Protocol docs | `docs/{STORAGE,VAULT,JOB-ASSESSMENT,ARCHITECTURE}.md` | Claim rules + workflow |
 | Agent map | `AGENTS.md` | Capability / command SSOT for assistants |

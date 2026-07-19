@@ -10,6 +10,7 @@ public-facing; **detail lives here**. Agent contracts: [`../AGENTS.md`](../AGENT
 | [`ARCHITECTURE.md`](ARCHITECTURE.md) | How the engine fits; guards; planned vs built |
 | [`EXPORTS.md`](EXPORTS.md) | Commands, export paths, light/dark, guards, pagination traps |
 | [`THEME-DESIGN.md`](THEME-DESIGN.md) | Token names, dual mode, page signature pin |
+| [`LAYOUT-SYSTEM.md`](LAYOUT-SYSTEM.md) | ⭐ Shared page model — pinned footer, per-doc margins/rhythm, work-samples build |
 | [`PREVIEWER.md`](PREVIEWER.md) | Design Hub how-to |
 | [`COLLAGE-DESIGN.md`](COLLAGE-DESIGN.md) | Layout families + canvas presets (SSOT table) |
 | [`STORAGE.md`](STORAGE.md) | Private workspace layout + brand color SSOT |

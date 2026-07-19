@@ -62,6 +62,10 @@ overwrite** (`-v2`, `-v3`). Full command list, guards, pagination traps →
 - **Source-backed** — generated copy never outruns verified claims
 - **No auto-submission** — the tool prepares; the human submits
 - **Geometry is locked** — palettes change color, never paper size or pagination
+- **Consistent, professional frame** — every document uses **equal margins on all four edges**
+  (default `0.65in`), the header flows at the top, and the footer/signature pins to the bottom.
+  One shared layout system → [`docs/LAYOUT-SYSTEM.md`](docs/LAYOUT-SYSTEM.md)
+- **The Design Hub auto-refreshes** — export a new resume and the previewer updates itself, no restart
 
 ---
 

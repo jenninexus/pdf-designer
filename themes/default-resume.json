@@ -1,40 +1,48 @@
 {
   "_meta": {
     "description": "Default brand-neutral professional theme for pdf-designer resume and cover-letter templates.",
-    "version": "0.4.0",
-    "last_updated": "2026-07-14",
+    "version": "0.5.0",
+    "last_updated": "2026-07-19",
     "css_mirror": "themes/default-resume.css",
     "mode_contract": "Light and dark are both intentional. Default print/PDF is light for ATS/submission safety; `--pdf-theme dark` keeps the same Letter pagination while rendering the dark branded variant.",
     "privacy_note": "This public theme is generalized and contains no personal brand names, private paths, or project-specific values.",
-    "version_note": "0.4.0 — document.signature + layout_prefs SSOT: bottom-right page-footer pin via .page / .page-main / .page-sig (not mid-page after content)."
+    "version_note": "0.5.0 — EQUAL-MARGIN page frame (0.65in on all 4 edges) is now the reusable default across resume / cover-letter / work-samples. Header flows at the top inside the equal margin; footer/signature pins to the bottom via .page / .page-main / .page-sig (margin-top:auto). Content is identically padded on all four edges so every document reads as a professional matched set. Prior 0.4.0 used asymmetric margins (0.5/0.55/0.78) — superseded. Full model: docs/LAYOUT-SYSTEM.md."
   },
   "document": {
     "paper": "Letter",
     "width_in": 8.5,
     "height_in": 11,
     "playwright_format": "Letter",
-    "page_css": "@page { size: Letter; margin: 0.5in 0.55in 0.78in; }",
+    "page_css": "@page { size: Letter; margin: 0.65in; }",
     "print_geometry": {
-      "margin_top_in": 0.5,
-      "margin_x_in": 0.55,
-      "margin_bottom_in": 0.78,
-      "footer_bottom_in": 0.28,
-      "content_box_height_in": 9.72,
-      "_note": "content_box_height_in = 11 − margin_top − margin_bottom. Print CSS gives .page that fixed height so flex pin (.page-sig { margin-top:auto }) lands on the bottom of the Letter content box. footer_bottom_in aligns absolute fallback with the same visual band."
+      "margin_in": 0.65,
+      "margin_top_in": 0.65,
+      "margin_x_in": 0.65,
+      "margin_bottom_in": 0.65,
+      "footer_bottom_in": 0.65,
+      "content_box_width_in": 7.2,
+      "content_box_height_in": 9.7,
+      "_note": "⭐ EQUAL MARGINS: 0.65in on ALL FOUR edges (top = sides = bottom). content_box_width_in = 8.5 − 2×0.65 = 7.2. content_box_height_in = 11 − 2×0.65 = 9.7. Print CSS gives .page this fixed height so the flex pin (.page-sig { margin-top:auto }) lands on the bottom of the content box, and the equal @page margin guarantees identical padding around all four edges. A doc may open the margin wider for a specific look (e.g. a formal cover letter at 0.75in) but must keep it EQUAL on all four edges — never asymmetric."
     },
     "signature": {
       "placement": "bottom-right",
       "pin": "page-footer",
-      "rule": "Signature/logo sits at the BOTTOM of each Letter page — not mid-page after content. Use .page as flex column; wrap body in .page-main; .page-sig { margin-top:auto; align-self:flex-end }. In print, give .page a fixed content height so flex pin works. No large empty gap between last content and signature; signature is the page footer."
+      "rule": "Signature/logo sits at the BOTTOM of each Letter page — not mid-page after content. Use .page as flex column; wrap body in .page-main; .page-sig { margin-top:auto; align-self:flex-end } (résumés) or a bottom-left/full-width footer (cover letters / work-samples). In print, give .page a fixed content height so flex pin works. No large empty gap between last content and signature; signature is the page footer."
     },
     "layout_prefs": {
       "paper": "Letter",
       "width_in": 8.5,
       "height_in": 11,
+      "equal_margins": true,
       "content_fills_page": true,
-      "signature_not_midpage": true
+      "signature_not_midpage": true,
+      "header_flows_footer_pins": true,
+      "content_box_height_in": 9.7,
+      "content_fit_rule": "⚠ EACH PAGE's content must FIT its content box (9.7in at the 0.65in default). The footer/signature is pinned with margin-top:auto INSIDE a fixed-height .page; if a page's content is taller than the box it OVERFLOWS and the pinned signature collides with the last lines (observed 2026-07-19: a dense résumé's signature overlapped the Studio-Capabilities section). Fix by TIGHTENING that page's internal rhythm (section margin, line-height, h2 gap) until the content fits — never by removing the pin or shrinking the equal margin. A section that won't fit belongs on the next page (use .page + .page { break-before: page } and move it). Verify by rendering the PNG and confirming no text sits on top of the signature.",
+      "safe_rhythm_dense_resume": "For a claim-dense 11px résumé at the 0.65in default: line-height ~1.46, section margin ~13px, header margin ~15px, h2 margin-bottom ~9px. Looser values (line-height 1.5, section 19px) overflow the box — they were the cause of the 2026-07-19 overlap."
     },
-    "footer_rule": "Prefer document.signature pin (`.page` + `.page-main` + `.page-sig`) so the name/email mark is the page footer on every sheet. Absolute/fixed footers remain an optional fallback — keep them inside the content box aligned with print_geometry.footer_bottom_in, and still reserve @page bottom margin so nothing clips."
+    "footer_rule": "Prefer document.signature pin (`.page` + `.page-main` + `.page-sig`) so the name/email mark is the page footer on every sheet. Absolute/fixed footers remain an optional fallback — keep them inside the content box aligned with print_geometry.footer_bottom_in, and still reserve @page bottom margin so nothing clips.",
+    "layout_system": "⭐ SHARED PINNED-FOOTER SYSTEM (all doc types): .page is a flex column; the body region (.page-main / .letter-main) grows with flex:1; the footer/signature pins to the bottom with margin-top:auto. The header flows at the top inside the equal margin. The equal @page margin frames content identically on all four edges. Full spec + per-doc guidance: docs/LAYOUT-SYSTEM.md."
   },
   "paths": {
     "default_export_dir": "_exports",

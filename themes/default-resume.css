@@ -22,10 +22,14 @@
   --resume-paper: Letter;
   --resume-page-width: 8.5in;
   --resume-page-height: 11in;
-  --resume-page-margin-top: 0.5in;
-  --resume-page-margin-x: 0.55in;
-  --resume-page-margin-bottom: 0.78in;
-  --resume-footer-bottom: 0.28in;
+  /* ⭐ EQUAL MARGINS on all four edges — the reusable professional default.
+     One knob (--resume-page-margin) frames content identically top/right/bottom/left.
+     A document may override it wider (e.g. a formal cover letter) but MUST keep it equal. */
+  --resume-page-margin: 0.65in;
+  --resume-page-margin-top: var(--resume-page-margin);
+  --resume-page-margin-x: var(--resume-page-margin);
+  --resume-page-margin-bottom: var(--resume-page-margin);
+  --resume-footer-bottom: var(--resume-page-margin);
 
   --bg: #0b0d12;
   --surface: #10131a;
@@ -122,7 +126,8 @@
 @media print {
   @page {
     size: Letter;
-    margin: 0.5in 0.55in 0.78in;
+    /* EQUAL margins on all four edges — see --resume-page-margin */
+    margin: 0.65in;
   }
 
   :root {
@@ -169,30 +174,63 @@
 }
 
 /* ============================================================
-   Page sheet + bottom-right signature pin
-   SSOT: themes/default-resume.json#document.signature
+   SHARED PAGE MODEL — equal-margin frame + header-flows / footer-pins.
+   One system for resumes, cover letters, and work samples so every
+   document reads as a professional matched set.
+   SSOT: themes/default-resume.json#document (layout_system / signature)
+   Full spec: docs/LAYOUT-SYSTEM.md
    ============================================================ */
 
+/* The sheet is a flex column. On SCREEN it carries the equal margin as
+   padding so the previewer frames content exactly like the printed page;
+   in PRINT the @page margin supplies the frame and padding is dropped. */
 .page,
 .page-sheet {
   display: flex;
   flex-direction: column;
   width: var(--resume-page-width);
   min-height: var(--resume-page-height);
+  padding: var(--resume-page-margin);
   box-sizing: border-box;
 }
 
-.page-main {
+/* Header flows at the top inside the equal margin (natural document order). */
+.page-head {
+  flex: 0 0 auto;
+}
+
+/* Body region grows to fill, pushing the footer/signature to the bottom. */
+.page-main,
+.letter-main {
   flex: 1 1 auto;
   min-height: 0;
 }
 
+/* Footer variants — all pin to the bottom via margin-top:auto.
+   .page-sig  = résumé bottom-RIGHT signature
+   .page-foot = generic footer row (work samples: name left, links right)
+   .letter-sign = cover-letter bottom-LEFT sign-off block */
 .page-sig {
   margin-top: auto;
   align-self: flex-end;
   text-align: right;
-  padding-top: 10px;
+  padding-top: 18px;
   flex: 0 0 auto;
+}
+
+.page-foot {
+  margin-top: auto;
+  flex: 0 0 auto;
+  padding-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.letter-sign {
+  margin-top: auto;
+  flex: 0 0 auto;
+  padding-top: 30px;
 }
 
 /* Absolute fallback — optional when a template cannot use flex pin */
@@ -207,26 +245,28 @@
 @media print {
   .page,
   .page-sheet {
-    /* Fixed content-box height so margin-top:auto pins .page-sig to page bottom */
-    height: calc(
-      var(--resume-page-height) - var(--resume-page-margin-top) - var(--resume-page-margin-bottom)
-    );
+    /* Fixed content-box height so margin-top:auto pins the footer to the page
+       bottom; @page supplies the equal frame, so drop the screen padding. */
+    height: calc(var(--resume-page-height) - 2 * var(--resume-page-margin));
     min-height: 0;
     width: auto;
+    padding: 0;
     display: flex;
     flex-direction: column;
   }
 
-  .page-main {
+  .page-main,
+  .letter-main {
     flex: 1 1 auto;
     min-height: 0;
   }
 
-  .page-sig {
+  .page-sig,
+  .page-foot,
+  .letter-sign {
     margin-top: auto;
-    align-self: flex-end;
-    position: static;
   }
+  .page-sig { align-self: flex-end; position: static; }
 }
 
 /* Portfolio / YouTube-poster pattern (mirrors examples/profiles/default-resume/default-resume.html) */
