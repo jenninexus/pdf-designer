@@ -86,6 +86,15 @@ the only renderer. No MCP / always-on server required for core value.
 - [x] **`/jen:roadmap` wired** — `docs/ROADMAP.md` pointer resolves to this plan (no duplicate roadmap).
 - [x] **gitignore hardened** — `dev-log-*.yaml` (per-machine private log) now ignored.
 
+## Shipped recently (2026-07-20) — Netflix apps (both founders) + magenta ban + guards
+
+- [x] **`check_overflow` guard + `overflow:hidden` structural fix.** New `pdf_tool.check_overflow` (headless-Chromium page-fit check, auto-warns on export). The real fix for the pinned-footer overlap is `overflow:hidden` on the print `.page` (clips at the edge, can't bleed onto the next sheet). Ground truth = rasterize the real PDF (pypdfium2), not an HTML re-render. `docs/LAYOUT-SYSTEM.md` updated.
+- [x] **Magenta/pink ban** — `check_palette --no-magenta` (opt-in, hue ~290–345°, scoped to Shade + Martian; Jenni's pink is legit). Rebuilt `brand-synagen.json` violet+cyan (was magenta). Tests added. `PALETTE-RULES.md` documents it.
+- [x] **Netflix application for BOTH founders** — Jenni submitted 2026-07-19 (portal); Shade's full set built (resume + cover + work-samples, cool-cyan matched-pair run, magenta-free). Split accent runs in the app `theme.json`. `applied-index.md` submission log added.
+- [x] **Netflix "spectrum curtain" accent** — magenta-free pure-CSS rainbow band on Shade's docs; ported to `www-theme-kit` `$brand-netflix-spectrum`.
+- [x] **Design Hub ↻ Refresh button** — manual re-scan alongside the auto-poll (a tab opened pre-poll could miss new docs).
+- [x] **`.page-foot--stacked`** shared theme pattern — a line above the footer lives INSIDE the pinned footer so it can't collide with the signature.
+
 ## Next — maintenance / PyPI when going public ← **priority**
 
 - [ ] PyPI / installer for non-dev users (when going public)
