@@ -160,8 +160,19 @@ examples/profiles/default-collage/
   profile.json                     which theme/canvas/layout the profile uses
   default-collage.html             reference render (hero mosaic, 6 images, Letter)
   collage-source.example.json      the input schema: image list + text blocks + options
-storage/collages/<project>/        your real image sets + generated candidates (gitignored)
+storage/collages/<project>/
+  images/                          your source images + collage-source.json
+  _candidates/                     ALL generated variants, one flat dir
+storage/collages/layouts/          published picks across every project,
+                                   prefixed <project>__<family>__<variant>.png
+                                   + index.html picker (gitignored)
 ```
+
+`storage/collages/layouts/` is the shared, flat shelf for finished collages —
+one directory for every project, kept apart by the `<project>__` filename
+prefix rather than by nesting. Serve it through the Design Hub
+(`python -m pdf_tool.preview` → <http://127.0.0.1:8787/storage/collages/layouts/index.html>);
+opening the file over `file://` is not the supported path.
 
 `collage-source.json` schema (see the example file for a filled version):
 
@@ -188,10 +199,20 @@ python -m pdf_tool.collage <imagesDir> --hero best.png --title "Showcase" --them
 ```
 
 - Default (`--layout auto`) writes one candidate HTML per family into
-  **`<imagesDir>/_candidates/<canvas>-<W>x<H>/`** plus **`index.html` — the
-  PowerPoint-Designer-style picker**: every candidate side by side as live
-  scaled previews; click one to open it full size. Each canvas size gets its
-  own subfolder, so a new size/ratio run never overwrites earlier candidates.
+  **`<project>/_candidates/`** — a single flat directory beside `images/`,
+  never nested inside it — plus an `index__<variant>.html` picker showing
+  every candidate side by side as live scaled previews.
+- **Output is flat: no per-canvas or per-background subfolders.** Everything
+  that would have been a directory level is encoded in the filename instead:
+
+  ```text
+  <family>__<canvas>-<W>x<H>[__<background>][__contain].html/.png
+  uniform-grid__hd-landscape-1920x1080__discord-slate__contain.png
+  ```
+
+  Variants therefore coexist in one directory and still never overwrite each
+  other. A raw CSS gradient (not a preset id) is hashed to a short `css-xxxxxx`
+  tag so the filename stays valid.
 - `--px WIDTHxHEIGHT` overrides a preset's pixel size (e.g. `hd-landscape`
   at 1280×720 instead of the default 1920×1080).
 - `--png` also screenshots each candidate at the canvas pixel size (that's how
