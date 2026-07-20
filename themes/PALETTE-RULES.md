@@ -16,9 +16,27 @@ The one rule every theme, palette, and export in this repo must satisfy. Enforce
 
 > **No brown. No mustard. No puke/lime green.** Yellow and orange are allowed ONLY as bright, clean tones. Any other green is fine.
 >
-> **The trap:** darkening amber/gold for white paper TURNS IT BROWN. Amber has no readable dark form on white. On the LIGHT/print palette, give the amber role to ANOTHER HUE from the palette (a blue, teal, or magenta). Dark mode keeps the bright amber — it's fine there.
+> **The trap:** darkening amber/gold for white paper TURNS IT BROWN. Amber has no readable dark form on white. On the LIGHT/print palette, give the amber role to ANOTHER HUE from the palette (a blue, teal, or violet). Dark mode keeps the bright amber — it's fine there.
 
 Owner directive, 2026-07-13.
+
+### Plus, for Shade + Martian Games: no magenta / no pink
+
+> **⛔ NO MAGENTA, NO PINK** in any **Shade** or **Martian Games** document — any theme, any mode
+> (owner directive 2026-07-20).
+
+**Opt-in, brand-scoped** (Jenni's brand legitimately uses pink, so it's never a global default). Enforced by
+the `--no-magenta` flag, which flags the magenta/pink hue band (~290–345°):
+
+```bash
+python -m pdf_tool.check_palette --no-magenta <doc>.html   # ALSO ban magenta/pink
+```
+
+Shade's Synagen palette (`storage/brands/brand-synagen.json`) was rebuilt magenta-free — orchid-**violet**
++ iridescent-**cyan**, heading gradient violet → blue-violet → cyan. The old magenta secondary
+(`E44FD0`/`B0187E`) and the magenta-led gradient are gone. If pink ever reappears in a Shade/Martian doc,
+replace it with **violet (< 290°)** or **cyan** — never pink. (In the "fix pattern" table below, use a
+violet/teal/blue stand-in for Shade/Martian, never the magenta option.)
 
 ## Why it exists — the amber trap
 
