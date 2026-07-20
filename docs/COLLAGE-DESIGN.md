@@ -5,6 +5,12 @@ images** and get back a set of **collage layout options** to compare and pick
 from — the same experience as dropping photos into PowerPoint and having it
 offer a handful of arrangement candidates.
 
+Consumers:
+- Print / PDF / social collage pages (this repo)
+- Live web: Martian Games `/news/{slug}` collage CSS mirrors these family names
+  (`filmstrip`, `hero-mosaic`, …) — see `mg/storage/docs/NEWS.md` → Collage layouts.
+  Optional `collage_image:` on a news post accepts a `--png` export from this tool.
+
 Status: **v1 built** — `src/pdf_tool/collage.py` implements all six layout
 families, the candidates output, the `index.html` picker gallery, and `--png`
 rendering. This doc remains the design SSOT; the example profile lives at
@@ -98,7 +104,53 @@ Rules of thumb baked into every family:
 - Respect orientation: portrait images prefer tall cells, landscape wide
   cells — the generator scores candidate cell assignments by fit.
 - Optional page background from theme tokens (dark full-color or light print,
-  same dual-mode contract as resumes).
+  same dual-mode contract as resumes) — see [Page backgrounds](#page-backgrounds)
+  for the gradient presets.
+
+## Page backgrounds
+
+A collage does not have to sit on flat white or flat dark. `--bg` sets the page
+background to a **named gradient preset** or any raw CSS color/gradient string,
+which is passed through verbatim.
+
+Presets are defined in
+[`themes/default-collage.json#backgrounds`](../themes/default-collage.json) (the
+SSOT; `collage.py` carries a matching fallback table). The Discord family is
+sampled from the real client chrome — chat `#313338`, sidebar `#2b2d31`, embed
+card `#1e1f22`, shell `#111214` — with the Martian orange `#f0561d` and embed
+link blue `#00a8fc` as accents:
+
+| Preset | Look |
+|---|---|
+| `discord-slate` | Default Discord grey, diagonal — safest choice |
+| `discord-deep` | Darker vertical fade; keeps bright screenshots dominant |
+| `discord-radial` | Center-top glow; suits hero-mosaic and spotlight |
+| `discord-ember` | Grey warming into the Martian orange |
+| `discord-signal` | Grey cooling into the embed link blue |
+| `martian-ember` | Strongest brand lean |
+| `flat-dark` / `flat-white` | The pre-gradient flat defaults |
+
+```bash
+python -m pdf_tool.collage <dir> --bg discord-slate
+python -m pdf_tool.collage <dir> --bg "linear-gradient(180deg,#2b2d31,#111214)"
+```
+
+The gradient is painted on `.canvas` so it spans the page **once** rather than
+repeating per cell, and print CSS sets `print-color-adjust: exact` so Chromium
+keeps it when exporting to PDF (without it, gradients silently drop).
+
+## Fit: cover vs contain
+
+`--fit` controls how an image fills its cell:
+
+- **`cover` (default)** — center-crop to fill. Right for photos.
+- **`contain`** — fit the whole image, letterboxed. **Required for screenshots,
+  diagrams, and UI captures**, where a crop cuts off content. When contain is
+  active, cells get a subtle translucent backing so the gradient shows through
+  the letterbox area instead of a flat block.
+
+A tall screenshot in a wide 16:9 cell loses most of its text under `cover` —
+reach for `contain` whenever the images carry readable content.
 
 ## Profile + theme structure (same contract as resumes)
 
@@ -119,6 +171,10 @@ storage/collages/<project>/        your real image sets + generated candidates (
 - `hero` — optional filename to force as the featured image
 - `text` — optional array of `{type: "title"|"caption"|"card", content, cell}`
 - `theme` — `dark` (default full-color) or `light` (print counterpart)
+- `background` — a preset id from [Page backgrounds](#page-backgrounds), or a
+  raw CSS color/gradient string
+- `fit` — `cover` (default, center-crop) or `contain` (fit whole image; use for
+  screenshots) — see [Fit: cover vs contain](#fit-cover-vs-contain)
 
 ## The module
 

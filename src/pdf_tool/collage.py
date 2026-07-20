@@ -15,6 +15,7 @@ Usage:
     python -m pdf_tool.collage path/to/images --canvas square --layout hero-mosaic
     python -m pdf_tool.collage path/to/images --hero best-shot.png --title "Project Showcase"
     python -m pdf_tool.collage path/to/images --canvas hd-landscape --px 1280x720 --png
+    python -m pdf_tool.collage path/to/images --bg discord-slate --png
     python -m pdf_tool.collage path/to/images --png     # also screenshot each candidate
 
 Candidates are written to <imagesDir>/_candidates/<canvas>-<W>x<H>/ (or
@@ -22,9 +23,15 @@ Candidates are written to <imagesDir>/_candidates/<canvas>-<W>x<H>/ (or
 overwrite earlier candidates. --px WIDTHxHEIGHT overrides a preset's pixel
 size (e.g. hd-landscape at 1280x720 instead of 1920x1080). If a
 collage-source.json exists in the images directory, its canvas/layout/hero/
-title/theme values are used as defaults (CLI flags win). Same inputs always
-produce the same layouts — no RNG; frame-scatter jitter is hashed from
+title/theme/background values are used as defaults (CLI flags win). Same inputs
+always produce the same layouts — no RNG; frame-scatter jitter is hashed from
 filenames.
+
+--bg sets the page background instead of the theme's flat color. It takes a
+named preset from themes/default-collage.json#backgrounds (discord-slate,
+discord-deep, discord-ember, discord-signal, discord-radial, martian-ember,
+flat-dark, flat-white) or any raw CSS color/gradient string, which is passed
+through verbatim.
 """
 
 import hashlib
@@ -43,6 +50,38 @@ MODES = {
     "dark": {"bg": "#0b0d12", "text": "rgba(240,242,246,0.94)", "dim": "rgba(240,242,246,0.68)", "border": "rgba(79,209,201,0.14)"},
     "light": {"bg": "#ffffff", "text": "#171b24", "dim": "rgba(23,27,36,0.72)", "border": "rgba(23,27,36,0.14)"},
 }
+
+# Named page backgrounds (flat color or gradient). Mirrors
+# themes/default-collage.json#backgrounds — that file is the SSOT; this is the
+# fallback used when the theme file is unavailable.
+BACKGROUNDS = {
+    "discord-slate":  "linear-gradient(160deg, #313338 0%, #2b2d31 45%, #1e1f22 100%)",
+    "discord-deep":   "linear-gradient(180deg, #2b2d31 0%, #1e1f22 60%, #111214 100%)",
+    "discord-ember":  "linear-gradient(145deg, #313338 0%, #2b2d31 55%, #3a2622 100%)",
+    "discord-signal": "linear-gradient(145deg, #313338 0%, #26323d 60%, #1b2733 100%)",
+    "discord-radial": "radial-gradient(120% 90% at 50% 0%, #3a3d44 0%, #2b2d31 45%, #1a1b1e 100%)",
+    "martian-ember":  "linear-gradient(150deg, #2b2d31 0%, #3a2622 55%, #f0561d 190%)",
+    "flat-dark":      "#0b0d12",
+    "flat-white":     "#ffffff",
+}
+
+
+def resolve_background(value, mode):
+    """Resolve a --bg value to a CSS background.
+
+    Accepts a named preset id, a raw CSS color/gradient string (passed through
+    verbatim), or None to fall back to the theme mode's flat background.
+    Preset ids are read from the theme file when present so the JSON stays SSOT.
+    """
+    if not value:
+        return mode["bg"]
+    presets = dict(BACKGROUNDS)
+    try:
+        theme = json.loads(_THEME_PATH.read_text(encoding="utf-8"))
+        presets.update({k: v["css"] for k, v in theme.get("backgrounds", {}).items() if "css" in v})
+    except (OSError, ValueError, KeyError, TypeError):
+        pass  # theme file missing or malformed — built-in presets still work
+    return presets.get(value, value)
 
 
 # ---------------------------------------------------------------- image dims
@@ -246,6 +285,10 @@ BUILDERS = {
 def render_candidate(family: str, images, canvas, opts) -> str:
     mode = MODES["light" if opts.get("theme") == "light" else "dark"]
     alt = MODES["light" if opts.get("theme") != "light" else "dark"]
+    page_bg = resolve_background(opts.get("background"), mode)
+    # "contain" letterboxes the whole image instead of center-cropping it —
+    # required for screenshots/diagrams, where a crop cuts off content.
+    fit = "contain" if opts.get("fit") == "contain" else "cover"
     body = BUILDERS[family](images, canvas, opts.get("src_prefix", "../"), opts)
     print_css = ""
     if canvas["print_in"]:
@@ -253,10 +296,11 @@ def render_candidate(family: str, images, canvas, opts) -> str:
         print_css = f"""
   @page {{ size: {w_in}in {h_in}in; margin: 0; }}
   @media print {{
-    :root {{ --bg: {alt["bg"]}; --text: {alt["text"]}; --dim: {alt["dim"]}; --border: {alt["border"]}; }}
-    html[data-pdf-theme="dark"] {{ --bg: {MODES["dark"]["bg"]}; --text: {MODES["dark"]["text"]}; --dim: {MODES["dark"]["dim"]}; --border: {MODES["dark"]["border"]}; }}
+    :root {{ --bg: {alt["bg"]}; --page-bg: {alt["bg"]}; --text: {alt["text"]}; --dim: {alt["dim"]}; --border: {alt["border"]}; }}
+    html[data-pdf-theme="dark"] {{ --bg: {MODES["dark"]["bg"]}; --page-bg: {page_bg}; --text: {MODES["dark"]["text"]}; --dim: {MODES["dark"]["dim"]}; --border: {MODES["dark"]["border"]}; }}
     body {{ margin: 0; }}
-    .canvas {{ width: {w_in}in; height: {h_in}in; margin: 0; box-shadow: none; }}
+    .canvas {{ width: {w_in}in; height: {h_in}in; margin: 0; box-shadow: none;
+               -webkit-print-color-adjust: exact; print-color-adjust: exact; }}
   }}"""
     return f"""<!doctype html>
 <html lang="en">
@@ -264,22 +308,24 @@ def render_candidate(family: str, images, canvas, opts) -> str:
 <meta charset="utf-8">
 <title>{family} — collage candidate</title>
 <style>
-  :root {{ --bg: {mode["bg"]}; --text: {mode["text"]}; --dim: {mode["dim"]}; --border: {mode["border"]};
+  :root {{ --bg: {mode["bg"]}; --page-bg: {page_bg}; --text: {mode["text"]}; --dim: {mode["dim"]}; --border: {mode["border"]};
            --gutter: 12px; --radius: 10px; }}
   * {{ box-sizing: border-box; }}
-  body {{ margin: 0; background: var(--bg); color: var(--text);
+  body {{ margin: 0; background: var(--page-bg); color: var(--text);
          font-family: 'Inter', ui-sans-serif, system-ui, sans-serif; }}
+  /* Gradient lives on .canvas so it spans the page once, not per-cell. */
   .canvas {{ width: {canvas["px_w"]}px; height: {canvas["px_h"]}px; margin: 0 auto; overflow: hidden;
-             background: var(--bg); padding: var(--gutter); position: relative; }}
+             background: var(--page-bg); padding: var(--gutter); position: relative; }}
   .grid {{ display: grid; gap: var(--gutter); width: 100%; height: 100%; grid-auto-rows: 1fr; grid-auto-flow: dense; }}
-  .cell {{ border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); min-height: 0; min-width: 0; }}
-  .cell img {{ width: 100%; height: 100%; object-fit: cover; display: block; }}
+  .cell {{ border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); min-height: 0; min-width: 0;
+           {"background: rgba(0,0,0,0.16);" if fit == "contain" else ""} }}
+  .cell img {{ width: 100%; height: 100%; object-fit: {fit}; display: block; }}
   .masonry {{ display: flex; gap: var(--gutter); width: 100%; height: 100%; }}
   .mcol {{ flex: 1 1 0; display: flex; flex-direction: column; gap: var(--gutter); min-height: 0; }}
   .filmstrip {{ display: flex; flex-direction: column; gap: var(--gutter); width: 100%; height: 100%; }}
   .frow {{ flex: 1 1 0; display: flex; gap: var(--gutter); min-height: 0; }}
   .textcard {{ display: flex; align-items: center; justify-content: center; text-align: center;
-               background: var(--bg); color: var(--text); padding: 8%; }}
+               background: rgba(0,0,0,0.22); color: var(--text); padding: 8%; }}
   .textcard h2 {{ margin: 0 0 6px; font-size: 20px; color: var(--text); }}
   .textcard p {{ margin: 0; font-size: 12px; color: var(--dim); }}
   .scatter {{ position: relative; width: 100%; height: 100%; }}
@@ -341,7 +387,7 @@ def render_index(families, images, canvas, out_dir: Path, opts) -> str:
 # ---------------------------------------------------------------- generation
 
 def generate(images_dir, canvas_name=None, layout=None, hero=None, title=None,
-             theme=None, out_dir=None, png=False, px=None):
+             theme=None, out_dir=None, png=False, px=None, background=None, fit=None):
     images_dir = Path(images_dir).resolve()
     if not images_dir.is_dir():
         raise FileNotFoundError(images_dir)
@@ -357,6 +403,8 @@ def generate(images_dir, canvas_name=None, layout=None, hero=None, title=None,
         "hero": hero or source.get("hero"),
         "title": title or (source.get("text", [{}])[0].get("content") if source.get("text") else None),
         "theme": theme or source.get("theme") or "dark",
+        "background": background or source.get("background"),
+        "fit": fit or source.get("fit"),
     }
 
     images = scan_images(images_dir)
@@ -408,7 +456,7 @@ def generate(images_dir, canvas_name=None, layout=None, hero=None, title=None,
 
 def main() -> None:
     raw = sys.argv[1:]
-    flags = {"--canvas": None, "--layout": None, "--hero": None, "--title": None, "--theme": None, "--out": None, "--px": None}
+    flags = {"--canvas": None, "--layout": None, "--hero": None, "--title": None, "--theme": None, "--out": None, "--px": None, "--bg": None, "--fit": None}
     png = False
     args = []
     i = 0
@@ -443,6 +491,8 @@ def main() -> None:
             out_dir=flags["--out"],
             png=png,
             px=flags["--px"],
+            background=flags["--bg"],
+            fit=flags["--fit"],
         )
     except ModuleNotFoundError:
         print(
