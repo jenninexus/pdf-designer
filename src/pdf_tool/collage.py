@@ -65,6 +65,29 @@ BACKGROUNDS = {
     "flat-white":     "#ffffff",
 }
 
+# Polaroid border color per background (frame-scatter). Mirrors
+# themes/default-collage.json#backgrounds[*].frame — that file is the SSOT.
+FRAMES = {
+    "discord-slate": "#3f434b", "discord-deep": "#383b42", "discord-ember": "#5a3a2c",
+    "discord-signal": "#2f4457", "discord-radial": "#454951", "martian-ember": "#f0561d",
+    "flat-dark": "#2a2e36", "flat-white": "#ffffff",
+}
+
+
+def resolve_frame(value, mode):
+    """Polaroid border color for the chosen background.
+
+    Falls back to the mode's cell border, so a raw CSS background (or none)
+    still gets a palette-consistent frame rather than a hardcoded white.
+    """
+    frames = dict(FRAMES)
+    try:
+        theme = json.loads(_THEME_PATH.read_text(encoding="utf-8"))
+        frames.update({k: v["frame"] for k, v in theme.get("backgrounds", {}).items() if "frame" in v})
+    except (OSError, ValueError, KeyError, TypeError):
+        pass
+    return frames.get(value) or mode["border"]
+
 
 def variant_stem(canvas, opts) -> str:
     """Filename suffix encoding every axis that used to be a directory level.
@@ -288,22 +311,63 @@ def body_spotlight_caption(images, canvas, src, opts):
 
 
 def body_frame_scatter(images, canvas, src, opts):
+    """Polaroid scatter. Tiles are sized by AREA, not width.
+
+    Sizing by width alone made a tall image tower over the others and
+    overflow the canvas (a 0.46-ratio phone screenshot became ~2x the
+    height of its cell). Solving each tile for equal area keeps every
+    image at comparable visual weight whatever its shape, and the result
+    is clamped so nothing spills past the frame.
+    """
     n = len(images)
     cols = max(2, min(5, round(n ** 0.5)))
     rows = -(-n // cols)
+    canvas_ar = canvas["px_w"] / canvas["px_h"]
+    # Target area per tile, in % of canvas^2, with a slight overlap factor.
+    cell_w, cell_h = 100 / cols, 100 / rows
+    # Modest overlap only. A large factor buries whole screenshots under their
+    # neighbours — decorative for photos, destructive for readable content.
+    target_area = cell_w * cell_h * 1.05
+    # Damp the aspect difference (sqrt) so a very tall image doesn't tower:
+    # pure equal-area makes a 0.46-ratio phone shot ~2x the height of a wide
+    # one. Damping keeps areas close while pulling extremes toward the mean.
+    damp = 0.5
+    # Narrow tiles stack above wide ones: a tall image occupies little width
+    # and is otherwise the first to disappear under a neighbour.
+    order = sorted(range(n), key=lambda i: images[i]["w"] / images[i]["h"], reverse=True)
+    z_of = {img_i: rank + 1 for rank, img_i in enumerate(order)}
     tiles = ""
     for idx, im in enumerate(images):
         r, c = divmod(idx, cols)
-        jx = (_hash01(im["file"] + "x") - 0.5) * 8
-        jy = (_hash01(im["file"] + "y") - 0.5) * 8
-        rot = (_hash01(im["file"] + "r") - 0.5) * 12
+        jx = (_hash01(im["file"] + "x") - 0.5) * 5
+        jy = (_hash01(im["file"] + "y") - 0.5) * 5
+        rot = (_hash01(im["file"] + "r") - 0.5) * 9
+        # Tile height in % of canvas height, derived from the image ratio so
+        # w_pct * h_pct == target_area. ar is width/height in canvas units.
+        ar = (im["w"] / im["h"]) / canvas_ar
+        # The frame always keeps the image's TRUE ratio, so no letterbox slab
+        # of border color shows around the screenshot. Only the tile's AREA is
+        # damped toward the mean, so an extreme shape doesn't tower.
+        area = target_area * (ar ** damp if ar >= 1 else (1 / ar) ** -damp)
+        w_pct = (area * ar) ** 0.5
+        h_pct = w_pct / ar
+        if w_pct > cell_w * 1.6:  # too wide — rescale, preserving ratio
+            w_pct, h_pct = cell_w * 1.6, cell_w * 1.6 / ar
+        if h_pct > cell_h * 1.7:  # too tall — rescale, preserving ratio
+            h_pct, w_pct = cell_h * 1.7, cell_h * 1.7 * ar
         left = (c + 0.5) / cols * 100 + jx
         top = (r + 0.5) / rows * 100 + jy
-        w = 100 / cols * 1.18
+        # Keep the whole tile (plus its rotation swing) inside the canvas.
+        pad_x, pad_y = w_pct / 2 + 1.5, h_pct / 2 + 1.5
+        left = max(pad_x, min(100 - pad_x, left))
+        top = max(pad_y, min(100 - pad_y, top))
+        # Height is set explicitly (not left to the image's natural ratio) so
+        # the computed equal-area sizing actually holds and tall images can't
+        # grow their frame past the canvas.
         tiles += (
-            f'<div class="polaroid" style="left:{left:.1f}%;top:{top:.1f}%;width:{w:.1f}%;'
-            f'transform:translate(-50%,-50%) rotate({rot:.1f}deg);z-index:{idx + 1};">'
-            f'{_img(src, im)}</div>'
+            f'<div class="polaroid" style="left:{left:.1f}%;top:{top:.1f}%;width:{w_pct:.1f}%;'
+            f'height:{h_pct:.1f}%;transform:translate(-50%,-50%) rotate({rot:.1f}deg);'
+            f'z-index:{z_of[idx]};">{_img(src, im)}</div>'
         )
     return f'<div class="scatter">{tiles}</div>'
 
@@ -324,6 +388,7 @@ def render_candidate(family: str, images, canvas, opts) -> str:
     mode = MODES["light" if opts.get("theme") == "light" else "dark"]
     alt = MODES["light" if opts.get("theme") != "light" else "dark"]
     page_bg = resolve_background(opts.get("background"), mode)
+    frame = resolve_frame(opts.get("background"), mode)
     # "contain" letterboxes the whole image instead of center-cropping it —
     # required for screenshots/diagrams, where a crop cuts off content.
     fit = "contain" if opts.get("fit") == "contain" else "cover"
@@ -346,7 +411,7 @@ def render_candidate(family: str, images, canvas, opts) -> str:
 <meta charset="utf-8">
 <title>{family} — collage candidate</title>
 <style>
-  :root {{ --bg: {mode["bg"]}; --page-bg: {page_bg}; --text: {mode["text"]}; --dim: {mode["dim"]}; --border: {mode["border"]};
+  :root {{ --bg: {mode["bg"]}; --page-bg: {page_bg}; --frame: {frame}; --text: {mode["text"]}; --dim: {mode["dim"]}; --border: {mode["border"]};
            --gutter: 12px; --radius: 10px; }}
   * {{ box-sizing: border-box; }}
   body {{ margin: 0; background: var(--page-bg); color: var(--text);
@@ -367,9 +432,13 @@ def render_candidate(family: str, images, canvas, opts) -> str:
   .textcard h2 {{ margin: 0 0 6px; font-size: 20px; color: var(--text); }}
   .textcard p {{ margin: 0; font-size: 12px; color: var(--dim); }}
   .scatter {{ position: relative; width: 100%; height: 100%; }}
-  .polaroid {{ position: absolute; background: #fff; padding: 8px 8px 22px;
-               box-shadow: 0 8px 24px rgba(0,0,0,0.35); }}
-  .polaroid img {{ width: 100%; display: block; }}
+  /* Frame color comes from the background's palette, never hardcoded white. */
+  .polaroid {{ position: absolute; background: var(--frame); padding: 7px 7px 18px;
+               border-radius: 3px; box-shadow: 0 10px 30px rgba(0,0,0,0.45);
+               box-sizing: border-box; }}
+  /* Fit the whole screenshot inside its frame — cropping here would cut off
+     exactly the content the collage exists to show. */
+  .polaroid img {{ width: 100%; height: 100%; object-fit: {fit}; display: block; }}
   {print_css}
 </style>
 </head>
