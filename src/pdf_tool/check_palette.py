@@ -12,6 +12,11 @@ unless something checks. This module is that check.
 Usage:
     python -m pdf_tool.check_palette <file.html> [more.html ...]
     python -m pdf_tool.check_palette --scan storage/          # walk a tree
+    python -m pdf_tool.check_palette --no-magenta <file.html> # ALSO ban magenta/pink
+
+The --no-magenta flag adds an opt-in ban on magenta/pink (hue ~290-345°, owner
+directive 2026-07-20). It is OPT-IN because Jenni's brand legitimately uses pink;
+it applies to Shade and Martian Games documents, where magenta/pink is forbidden.
 
 Exits non-zero if any banned color is found, and prints the offending hex,
 what it is, the file, and the line.
@@ -23,6 +28,25 @@ import sys
 from pathlib import Path
 
 HEX_RE = re.compile(r"#([0-9a-fA-F]{6})\b")
+
+
+def is_magenta(hex6: str) -> bool:
+    """True if a 6-digit hex reads as magenta / pink (hue ~290-345°, saturated
+    enough to register as pink rather than a near-neutral or a blue-violet).
+
+    OPT-IN only (see --no-magenta): Jenni's brand legitimately uses pink, so this
+    is never part of the default house rule. It exists to keep magenta/pink out of
+    Shade + Martian Games documents (owner directive 2026-07-20). Violet/indigo
+    (hue < 290) is NOT magenta and stays allowed.
+    """
+    r, g, b = (int(hex6[i : i + 2], 16) / 255 for i in (0, 2, 4))
+    h, l, s = colorsys.rgb_to_hls(r, g, b)
+    hue = h * 360
+    if s < 0.20:          # near-neutral — not a pink
+        return False
+    if l < 0.12 or l > 0.94:  # near-black / near-white — not a decorative pink
+        return False
+    return 290 <= hue <= 345
 
 
 def classify(hex6: str):
@@ -66,8 +90,11 @@ def classify(hex6: str):
     return "ok", "allowed"
 
 
-def check_file(path: Path):
-    """Yield (line_no, hex, label) for each banned color in the file."""
+def check_file(path: Path, no_magenta: bool = False):
+    """Yield (line_no, hex, label) for each banned color in the file.
+
+    When no_magenta is True, magenta/pink (hue ~290-345°) is also flagged.
+    """
     hits = []
     try:
         text = path.read_text(encoding="utf-8", errors="replace")
@@ -79,11 +106,14 @@ def check_file(path: Path):
             verdict, label = classify(hx)
             if verdict == "banned":
                 hits.append((n, "#" + hx, label))
+            elif no_magenta and is_magenta(hx):
+                hits.append((n, "#" + hx, "MAGENTA/PINK (banned for shade + martian)"))
     return hits
 
 
 def main(argv):
-    args = [a for a in argv if a != "--scan"]
+    no_magenta = "--no-magenta" in argv
+    args = [a for a in argv if a not in ("--scan", "--no-magenta")]
     scan = "--scan" in argv
     if not args:
         print(__doc__)
@@ -103,16 +133,21 @@ def main(argv):
 
     total = 0
     for f in sorted(set(targets)):
-        for n, hx, label in check_file(f):
+        for n, hx, label in check_file(f, no_magenta=no_magenta):
             total += 1
             print(f"{f}:{n}: {hx}  <-  {label}")
 
     if total:
-        print(f"\nFAIL: {total} banned color(s). House rule: no brown, no mustard, no lime/puke green.")
+        rule = "no brown, no mustard, no lime/puke green" + (
+            ", no magenta/pink" if no_magenta else ""
+        )
+        print(f"\nFAIL: {total} banned color(s). House rule: {rule}.")
+        if no_magenta:
+            print("Fix: magenta/pink is banned for Shade + Martian Games — use violet (<290°) or cyan.")
         print("Fix: on WHITE, amber has no readable dark form — use another hue from the palette instead.")
         return 1
 
-    print("PASS: no banned colors.")
+    print("PASS: no banned colors" + (" (incl. magenta/pink)." if no_magenta else "."))
     return 0
 
 

@@ -10,7 +10,7 @@ The one rule every theme, palette, and export in this repo must satisfy. Enforce
 | [Run the guard](#run-the-guard) | `check_palette` usage |
 | [The fix pattern](#the-fix-pattern) | Hand the amber role to another hue |
 | [Limitations](#known-limitations) | What the guard cannot see |
-| Related | [`../docs/VAULT.md`](../docs/VAULT.md) · [`../.claude/commands/make-resume.md`](../.claude/commands/make-resume.md) · [`check_palette.py`](../src/pdf_tool/check_palette.py) |
+| Related | [`../docs/VAULT.md`](../docs/VAULT.md) · [`../.claude/commands/make-resume.md`](../.claude/commands/make-resume.example.md) · [`check_palette.py`](../src/pdf_tool/check_palette.py) |
 
 ## The rule
 
@@ -76,7 +76,7 @@ The palettes already ship this pattern:
 
 Pick the stand-in from a hue the palette *already contains* (its cyan, its violet, its magenta) so the light document still reads as the same brand — and pick one the sibling tokens aren't already using, so the roles stay visually distinct. Dark mode is untouched for legal bright warms.
 
-**Martian note (2026-07-14):** live `martiangames.com` is **orange + violet**, not amber + teal. Resume dark tokens mirror `www-theme-kit/profiles/martiangames.json`. Light secondary is violet (not teal) so the print pair stays recognizably MG. Private map: `storage/brands/brand-martian.json` (gitignored); kit mirror: `www-theme-kit/palettes/resume-palettes.json#martian-resume`.
+**Martian note (2026-07-16):** live `martiangames.com` roles are **primary `#FF6B00` · secondary `#8B5CF6` · accent `#FF4500`** on ember-nebula `#0c0a12` — not amber + teal, and **no brown chrome**. Resume dark tokens mirror `www-theme-kit/profiles/martiangames.json` (+ `#no_brown_rule`). Light secondary stays violet. Private map: `storage/brands/brand-martian.json` (gitignored); kit mirror: `www-theme-kit/palettes/resume-palettes.json#martian-resume`. Copilot/Portal/bot: same rule via `syna-theme-kit/profiles/martian-portal.json` + `martian-bot/docs/STYLE-SPEC.md`.
 
 ## Known limitations
 
