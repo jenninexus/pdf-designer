@@ -1,0 +1,174 @@
+{
+  "_meta": {
+    "description": "TEMPLATE — copy to mcp-pdf-designer.json and replace the <PLACEHOLDER> paths with your own. The repo runs WITHOUT this file; it only enriches agents and tools with pointers. Nothing here is a secret.",
+    "project": "pdf-designer",
+    "repo": "<REPO_ROOT>",
+    "updated": "2026-07-14",
+    "kit_parallel": {
+      "www": "<WWW_THEME_KIT>",
+      "syna": "<SYNA_THEME_KIT>"
+    },
+    "template": true,
+    "setup": {
+      "1": "cp .config/mcp-pdf-designer.example.json .config/mcp-pdf-designer.json",
+      "2": "Replace <REPO_ROOT> with this clone’s absolute path.",
+      "3": "External pointers (<WWW_THEME_KIT>, <SYNA_THEME_KIT>, <VOICE_SEED>, <MCP_CONFIG_DIR>) may be deleted if you don’t have those repos — nothing breaks."
+    }
+  },
+  "ssot": "docs/SSOT.md",
+  "engine": {
+    "hub": "python -m pdf_tool",
+    "modules": {
+      "html_to_pdf": "HTML -> PDF (light/dark; optional --variants)",
+      "variants": "Light PDF per public palette -> _variants/",
+      "merge_pdfs": "Merge PDFs into one bundle",
+      "pdf_to_png": "Screenshot each .page for visual verify",
+      "check_palette": "Reject brown / mustard / lime",
+      "check_vault": "Vault schema / --explain / --coverage",
+      "check_ats": "ATS text-layer guard on light PDF",
+      "audit_resume": "Diff rendered HTML vs vault omissions",
+      "tracker": "List / status over storage/applications",
+      "collage": "Collage candidates + picker gallery",
+      "preview": "Design Hub (localhost previewer)"
+    }
+  },
+  "voice": {
+    "map": "<VOICE_SEED>",
+    "public_cards": "voice-seed/characters/humans/",
+    "seed_template": "voice-seed/templates/character-voice.seed.json",
+    "characterVoice": "storage/users/<user>.json#characterVoice",
+    "applicationVoice": "storage/<user>/resume-source.json#voice",
+    "rule": "voice-seed = map/public overview; pdf-designer storage = deep edit SSOT; agency agents ≠ applicants"
+  },
+  "external": {
+    "breakpoints": "<MCP_CONFIG_DIR>\\mcp-breakpoints.json",
+    "www_kit": "<WWW_THEME_KIT>",
+    "syna_kit": "<SYNA_THEME_KIT>",
+    "voice_seed": "<VOICE_SEED>"
+  },
+  "breakpoints": {
+    "_role": "⭐ THE ONE pdf-designer breakpoint reference. Numbers live in the global cache + theme-kit SCSS — this block only names the set and where consumers look.",
+    "set": "bootstrap_5_3_8_extended_390_4k",
+    "framework": "Bootstrap 5.3.8 extended (xxs + HD/2K/4K)",
+    "global_ssot": "<MCP_CONFIG_DIR>\\mcp-breakpoints.json",
+    "global_ssot_path": "breakpoint_sets.bootstrap_5_3_8_extended_390_4k",
+    "shared_token_reference": "<WWW_THEME_KIT>\\scss\\_breakpoint-tokens.scss",
+    "syna_mirror": "<SYNA_THEME_KIT>\\scss\\_breakpoint-tokens.scss + tokens/breakpoint-tokens.ts",
+    "hub_css": "src/pdf_tool/static/hub.css (hard-codes the same .98px maxes — CSS cannot var() inside @media)",
+    "viewport_floor": "390x844",
+    "nav_switch": "lg (992px)",
+    "hub_layout_switch": {
+      "compact_below": "991.98px (md-max) — library stacks above stage",
+      "comfortable_from": "1200px (xl) — wider library + filter row spreads",
+      "widescreen_from": "1400px (xxl) — max content breathing room"
+    },
+    "key_maxes": {
+      "xxs": "389.98px",
+      "xs": "575.98px",
+      "sm": "767.98px",
+      "md": "991.98px",
+      "lg": "1199.98px",
+      "xl": "1399.98px",
+      "xxl": "1919.98px"
+    },
+    "display_refs": {
+      "hd": "1920px",
+      "2k": "2560px",
+      "4k": "3840px"
+    },
+    "qa_matrix": [
+      390,
+      576,
+      768,
+      992,
+      1200,
+      1400,
+      1920
+    ]
+  },
+  "design_hub": {
+    "entry": "python -m pdf_tool.preview",
+    "url": "http://127.0.0.1:8787/",
+    "port": 8787,
+    "env_var": "PDF_DESIGNER_PREVIEW_PORT",
+    "bind": "127.0.0.1",
+    "port_ssot": "<MCP_CONFIG_DIR>\\mcp-portmap.json → python_services.8787",
+    "chrome_tokens": "src/pdf_tool/static/hub.css",
+    "chrome_layout": "single ~44px toolbar (.hub-bar) — Syqo/Synagen density",
+    "www_profile": "www-theme-kit/profiles/pdf-designer.json",
+    "document_palettes": [
+      "themes/default-resume.json",
+      "themes/presets/*.json",
+      "storage/brands/brand-*.json"
+    ],
+    "users_dir": "storage/users/",
+    "person_files": {
+      "jenni": "storage/users/jenni.json",
+      "shade": "storage/users/shade.json"
+    }
+  },
+  "palette_registry": {
+    "_role": "COLOR. Structure lives in `layouts` below — the two compose.",
+    "public_presets": "themes/presets/",
+    "kit_registry": "www-theme-kit/palettes/resume-palettes.json",
+    "private_brands": "storage/brands/",
+    "rules": "themes/PALETTE-RULES.md"
+  },
+  "layouts": {
+    "_role": "⭐ STRUCTURE — where things sit on the page. Tracked and reusable, the counterpart to `palette_registry` (color). Never store a reusable layout in storage/.",
+    "root": "layouts/",
+    "index": "layouts/README.md",
+    "collage": "layouts/collage/",
+    "resume": "layouts/resume/",
+    "discover": "python -m pdf_tool.collage --list-recipes",
+    "use": "python -m pdf_tool.collage <imagesDir> --recipe <id>",
+    "precedence": "CLI flag > --recipe > collage-source.json > built-in default",
+    "recipe_schema": {
+      "id": "matches the filename stem; used on the CLI",
+      "family": "a layout family from docs/COLLAGE-DESIGN.md",
+      "canvas": "canvas preset id (themes/default-collage.json#canvas_presets)",
+      "px": "optional explicit WIDTHxHEIGHT override",
+      "fit": "cover (photos) | contain (screenshots — never crop content)",
+      "background": "preset id from themes/default-collage.json#backgrounds, or raw CSS",
+      "bestFor": "human guidance — when to reach for this recipe"
+    }
+  },
+  "collage": {
+    "_role": "Collage document type — the sibling of the resume routine.",
+    "design_doc": "docs/COLLAGE-DESIGN.md",
+    "theme": "themes/default-collage.json",
+    "canvas_presets": "themes/default-collage.json#canvas_presets",
+    "backgrounds": "themes/default-collage.json#backgrounds",
+    "frames": "themes/default-collage.json#backgrounds[*].frame",
+    "recipes": "layouts/collage/",
+    "command": ".claude/commands/make-collage.md",
+    "example_source": "examples/profiles/default-collage/collage-source.example.json",
+    "workspace": "storage/collages/<project>/",
+    "output": "storage/collages/<project>/_candidates/ (ONE FLAT DIR — canvas/bg/fit encoded in the filename)",
+    "shelf": "storage/collages/layouts/ (finished picks, <project>__ prefixed)",
+    "rules": [
+      "Screenshots and any image carrying text render with fit=contain — cropping destroys the content.",
+      "Output stays flat: no per-canvas or per-background subfolders.",
+      "Reusable layouts are tracked in layouts/collage/, never in gitignored storage/."
+    ]
+  },
+  "plans": {
+    "active": "Plans/_Active/2026-07-14-professional-product-roadmap.md",
+    "index": "Plans/README.md",
+    "archive": "Plans/_Archive/",
+    "next": "white-label path + SSOT map (maintenance); pywebview stays parked"
+  },
+  "protocol": {
+    "storage": "docs/STORAGE.md",
+    "vault": "docs/VAULT.md",
+    "job_assessment": "docs/JOB-ASSESSMENT.md",
+    "agents": "AGENTS.md",
+    "make_resume": ".claude/commands/make-resume.md",
+    "make_collage": ".claude/commands/make-collage.md",
+    "layout_system": "docs/LAYOUT-SYSTEM.md",
+    "collage_design": "docs/COLLAGE-DESIGN.md",
+    "layouts": "layouts/README.md",
+    "ssot": "docs/SSOT.md",
+    "white_label": "docs/WHITE-LABEL.md"
+  }
+}

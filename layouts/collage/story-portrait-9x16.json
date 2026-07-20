@@ -1,0 +1,11 @@
+{
+  "id": "story-portrait-9x16",
+  "family": "hero-mosaic",
+  "canvas": "hd-portrait",
+  "px": "1080x1920",
+  "fit": "contain",
+  "background": "discord-deep",
+  "bestFor": "Stories / Reels / TikTok / Shorts. Vertical canvas with one hero above supporting tiles.",
+  "notes": "Portrait canvas flips the grid to 3 columns. Favor portrait or square source images here — a wide landscape hero letterboxes heavily on a 9:16 sheet.",
+  "_source": "Canvas preset from docs/COLLAGE-DESIGN.md; background chosen so bright screenshots stay dominant on a tall sheet."
+}

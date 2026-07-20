@@ -55,9 +55,15 @@ python -m pdf_tool.check_vault --coverage <user> <track> <listing.md>  # listing
 python -m pdf_tool.check_ats <resume-light.pdf>                 # ATS text-layer guard
 python -m pdf_tool.tracker list                                 # scan storage/applications/**/application.json
 python -m pdf_tool.tracker status                               # status breakdown (optional filter arg)
-python -m pdf_tool.collage <imagesDir> --layout auto --png      # collage candidates + picker gallery
-#   → writes to <imagesDir>/_candidates/<canvas>-<W>x<H>/ (never overwrites other sizes)
+python -m pdf_tool.collage --list-recipes                       # named layout recipes (layouts/collage/)
+python -m pdf_tool.collage <imagesDir> --recipe <id> --png      # render a named recipe
+python -m pdf_tool.collage <imagesDir> --layout auto --png      # every family + picker gallery
+#   → writes to <project>/_candidates/ — ONE FLAT DIR; canvas/background/fit are encoded
+#     in the filename (<family>__<canvas>-<W>x<H>[__<bg>][__contain].png), so variants
+#     coexist without colliding and without nested subfolders
 #   --canvas <preset> --px WxH --hero <file> --title "..." --theme light|dark
+#   --bg <preset|css>  page background (themes/default-collage.json#backgrounds)
+#   --fit contain      fit whole image — REQUIRED for screenshots; cover crops content
 python -m pdf_tool.preview --no-open --port 8787                # Design Hub server (127.0.0.1; docs/PREVIEWER.md)
 node scripts/wcag-resume-palettes.mjs                           # optional WCAG contrast spot-check (add --strict to fail)
 ```
@@ -85,9 +91,10 @@ intended agent feedback loop.
 | `docs/SSOT.md` · `WHITE-LABEL.md` · `EXPORTS.md` | SSOT dashboard · public-only path · command/export recipes |
 | `docs/LAYOUT-SYSTEM.md` | ⭐ Shared page model — equal margins, pinned footer, per-doc spec, work-samples build |
 | `docs/STORAGE.md` · `VAULT.md` · `JOB-ASSESSMENT.md` | Tracked protocol (fresh clones). `storage/*.md` stubs only point here. |
-| `.config/mcp-pdf-designer.json` | Project config — **breakpoint SSOT pointer** + Design Hub / palette / voice pointers |
+| `.config/mcp-pdf-designer.json` | Project config — **breakpoint SSOT pointer** + Design Hub / palette / layouts / collage / voice pointers. Clone-safe template: `.config/mcp-pdf-designer.example.json` |
 | `Plans/_Active/` | ⭐ Working roadmap (one file) — see [`Plans/README.md`](Plans/README.md) |
-| `themes/default-collage.json` | collage canvas presets + tokens ([`docs/COLLAGE-DESIGN.md`](docs/COLLAGE-DESIGN.md)) |
+| `themes/default-collage.json` | collage canvas presets, `backgrounds` (gradients) + per-background `frame` colors ([`docs/COLLAGE-DESIGN.md`](docs/COLLAGE-DESIGN.md)) |
+| `layouts/` | ⭐ **STRUCTURE registry** — reusable layout recipes (`collage/`, `resume/`). The counterpart to `themes/` (color); the two compose. Discover with `--list-recipes`. See [`layouts/README.md`](layouts/README.md). |
 | `examples/profiles/<id>/` | one profile per document type: `profile.json` + reference `.html` render + example data |
 | `examples/applications/` | one-folder-per-job-application workflow + copyable template |
 | `docs/` | ARCHITECTURE, SSOT, WHITE-LABEL, STORAGE, VAULT, JOB-ASSESSMENT, THEME-DESIGN, EXPORTS, COLLAGE-DESIGN, PREVIEWER, LICENSING-NOTES |
@@ -168,8 +175,12 @@ Next engineering work: [`Plans/_Active/2026-07-14-professional-product-roadmap.m
   or under `storage/` (real/private), point `profile.json` at the right theme.
 - **Add a person:** `storage/users/<name>.json` + `storage/<name>/resume-source.json` +
   `storage/profiles/<name>-resume.json`. See [`docs/STORAGE.md`](docs/STORAGE.md).
-- **Collage:** put images in `storage/collages/<project>/`, run
-  `python -m pdf_tool.collage <dir> --layout auto --png`, open
-  `<dir>/_candidates/index.html` to compare all six layout families, then
-  export the winner (PNG for social canvases, `html_to_pdf.py` for print).
-  Design + families: [`docs/COLLAGE-DESIGN.md`](docs/COLLAGE-DESIGN.md).
+- **Collage:** put images in `storage/collages/<project>/images/`, then either name a
+  recipe (`--recipe <id>`, see `--list-recipes`) or generate every family
+  (`--layout auto --png`). Renders land flat in `<project>/_candidates/`; serve the
+  picker through the Design Hub
+  (`http://127.0.0.1:8787/storage/collages/<project>/_candidates/index.html`) rather
+  than handing over a file path. **Screenshots need `--fit contain`** — the default
+  `cover` crops away the content. Routine: [`/make-collage`](.claude/commands/make-collage.md).
+  Families + backgrounds: [`docs/COLLAGE-DESIGN.md`](docs/COLLAGE-DESIGN.md).
+  Reusable recipes: [`layouts/README.md`](layouts/README.md).

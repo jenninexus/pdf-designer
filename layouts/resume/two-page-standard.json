@@ -1,0 +1,30 @@
+{
+  "id": "two-page-standard",
+  "docType": "resume",
+  "spec": "../../docs/LAYOUT-SYSTEM.md",
+  "page": {
+    "size": "Letter",
+    "margin": "0.65in",
+    "marginRule": "Equal on all four edges. One knob: --resume-page-margin. Never shrink it to fix overflow — move a section to the next page instead."
+  },
+  "contentBox": {
+    "heightIn": 9.7,
+    "widthIn": 7.2,
+    "heightPx": 931,
+    "widthPx": 691,
+    "rule": "Each page's content must FIT this box. Overflow makes the pinned signature collide with the last lines."
+  },
+  "pageModel": {
+    "container": ".page { display: flex; flex-direction: column; }",
+    "body": ".page-main { flex: 1 1 auto; min-height: 0; }",
+    "footer": ".footer, .signature { margin-top: auto; }",
+    "rule": "Header flows at the top; footer/signature pins to the bottom. Print CSS must repeat the flex declaration and set overflow: hidden."
+  },
+  "pagination": {
+    "break": ".page + .page { break-before: page }",
+    "trap": "A trailing break-after: page emits a phantom blank sheet."
+  },
+  "expectedPages": { "resume": 2, "coverLetter": 1, "workSamples": 3 },
+  "guards": ["check_overflow", "check_palette", "check_ats"],
+  "bestFor": "Every standard application document. This is the house page model — deviate only with a reason."
+}

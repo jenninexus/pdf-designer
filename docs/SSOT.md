@@ -3,11 +3,12 @@
 ```
 SSOT Dashboard — pdf-designer
 ─────────────────────────────
-Config:    .config/mcp-pdf-designer.json ✓
+Config:    .config/mcp-pdf-designer.json ✓  (+ .example.json template ✓)
 Env:       none by design (no .env) ✓
-Protocol:  AGENTS.md → docs/{STORAGE,VAULT,JOB-ASSESSMENT,ARCHITECTURE}.md → /make-resume
-Theme:     themes/default-resume.{json,css} + themes/presets/* + PALETTE-RULES.md
-Private:   storage/brands, users, vaults (gitignored)
+Protocol:  AGENTS.md → docs/{STORAGE,VAULT,JOB-ASSESSMENT,ARCHITECTURE}.md → /make-resume · /make-collage
+Theme:     themes/default-{resume,collage}.json + themes/presets/* + PALETTE-RULES.md   ← COLOR
+Layouts:   layouts/collage/* + layouts/resume/*  (python -m pdf_tool.collage --list-recipes)  ← STRUCTURE
+Private:   storage/brands, users, vaults, collages (gitignored)
 Hub:       python -m pdf_tool.preview → :8787 (workspace auto-starts via scripts/ensure-design-hub.ps1)
 Engine:    python -m pdf_tool  (hub) / individual modules
 Plans:     Plans/_Active/2026-07-14-professional-product-roadmap.md
@@ -24,7 +25,9 @@ Compact map of what this repo owns vs what it only points at. Agents: start here
 | Surface | Path | Role |
 |---|---|---|
 | Engine | `src/pdf_tool/` | HTML→PDF, guards, collage, Design Hub, tracker |
-| Public themes | `themes/default-resume.{json,css}`, `themes/presets/*` | Token SSOT + audition palettes |
+| Public themes | `themes/default-resume.{json,css}`, `themes/presets/*` | ⭐ **COLOR** — token SSOT + audition palettes |
+| Collage theme | `themes/default-collage.json` | Canvas presets + `backgrounds` (gradients) + per-background `frame` colors |
+| **Layouts** | `layouts/collage/*`, `layouts/resume/*` | ⭐ **STRUCTURE** — reusable layout recipes; the counterpart to themes. `--list-recipes` to discover, `--recipe <id>` to use |
 | Page layout | `docs/LAYOUT-SYSTEM.md` + `themes/default-resume.{json,css}#document` | ⭐ Equal margins (0.65in default) + header-flows/footer-pins; one knob `--resume-page-margin`; content-fit rule |
 | Page signature | `themes/default-resume.json#document.signature` | Bottom-right page-footer pin (`.page` / `.page-main` / `.page-sig`) |
 | Previewer | `src/pdf_tool/preview.py` (`docs/PREVIEWER.md`) | Design Hub; **auto-refreshes** via `/api/version` on new exports |
@@ -32,9 +35,29 @@ Compact map of what this repo owns vs what it only points at. Agents: start here
 | Protocol docs | `docs/{STORAGE,VAULT,JOB-ASSESSMENT,ARCHITECTURE}.md` | Claim rules + workflow |
 | Agent map | `AGENTS.md` | Capability / command SSOT for assistants |
 | Make-resume | `.claude/commands/make-resume.md` | Job-application routine |
+| Make-collage | `.claude/commands/make-collage.md` | Multi-image collage routine |
 | Public examples | `examples/profiles/`, `examples/brands/`, `examples/applications/` | Clone-safe templates |
 | Project config | `.config/mcp-pdf-designer.json` | Breakpoint pointer, hub, voice/external pointers |
 | Active plan | `Plans/_Active/2026-07-14-professional-product-roadmap.md` | What to build next |
+
+---
+
+## The two axes: color vs structure
+
+Design lives in **two tracked, composable registries**. Any layout renders in any theme.
+
+| Axis | Owns | Where | Discover |
+|---|---|---|---|
+| **Color** | tokens, palettes, gradients, frame colors | `themes/` + `themes/presets/` | `themes/default-collage.json#backgrounds` |
+| **Structure** | family, canvas, fit, margins, page model | `layouts/collage/` + `layouts/resume/` | `python -m pdf_tool.collage --list-recipes` |
+
+> **Neither belongs in `storage/`.** `storage/` is *private content* — real images, vaults,
+> finished exports. A layout or palette you'd reuse is **tracked**, so it survives, is
+> discoverable, and ships with a fresh clone. Content is private; design is shared.
+
+Both are reachable from one machine-readable file:
+[`.config/mcp-pdf-designer.json`](../.config/mcp-pdf-designer.json) → `layouts`, `collage`,
+`palette_registry`. Clone-safe template: `.config/mcp-pdf-designer.example.json`.
 
 ---
 

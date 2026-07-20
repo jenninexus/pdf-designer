@@ -1,0 +1,11 @@
+{
+  "id": "scatter-showcase-16x9",
+  "family": "frame-scatter",
+  "canvas": "hd-landscape",
+  "px": "1920x1080",
+  "fit": "contain",
+  "background": "discord-slate",
+  "bestFor": "3-6 UI screenshots of the same feature across surfaces (desktop / mobile / chat). The angled frames read as a showcase rather than a spec sheet.",
+  "notes": "Frames take each image's true aspect ratio, so mixed portrait/landscape sets stay uncropped with no letterbox slabs. Narrow tiles stack above wide ones so a tall phone screenshot can't be buried.",
+  "_source": "Validated on the Martian Games poll set (Discord embed + mobile Copilot + web), 2026-07-19."
+}
