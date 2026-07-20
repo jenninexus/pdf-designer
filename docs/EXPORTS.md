@@ -20,6 +20,8 @@ python -m pdf_tool.merge_pdfs out.pdf a.pdf b.pdf --require-letter
 python -m pdf_tool.pdf_to_png <doc>.html                        # one PNG per .page (visual QA)
 python -m pdf_tool.check_palette <doc>.html                     # palette guard (also auto on export)
 python -m pdf_tool.check_palette --scan <dir>
+python -m pdf_tool.check_palette --no-magenta <doc>.html        # + magenta/pink ban (Shade + Martian docs)
+python -m pdf_tool.check_overflow <doc>.html --pdf-theme dark   # page-fit guard (also auto-warns on export)
 python -m pdf_tool.check_vault --all
 python -m pdf_tool.check_vault --explain <user> <track>
 python -m pdf_tool.check_vault --coverage <user> <track> <listing.md>
@@ -211,17 +213,30 @@ you (screen `min-height` and padding don't apply in print).
 
 ## Verify, always
 
-Exporting is not finishing. Render the PDF to PNG and *look at it*, and assert the
-page count:
+Exporting is not finishing. Run the guards, assert the page count, and *look at it*.
+**These apply to EVERY document in every project — not just personal résumés.**
 
 ```bash
-python -m pdf_tool.pdf_to_png _exports/resume-light.pdf
+# 1) OVERFLOW GUARD — every doc, always. A page that overflows its box makes the
+#    pinned footer collide with the last lines. Also auto-warns on every export.
+python -m pdf_tool.check_overflow _exports/../resume.html --pdf-theme dark
 
+# 2) MAGENTA guard — Shade + Martian docs only (Jenni's brand legitimately uses pink)
+python -m pdf_tool.check_palette --no-magenta resume.html
+
+# 3) page count + paper size from the ACTUAL PDF (ground truth, never an HTML re-render)
 python -c "from pypdf import PdfReader; r=PdfReader('_exports/resume-light.pdf'); b=r.pages[0].mediabox; print(len(r.pages),'pages', f'{float(b.width)/72:.2f}x{float(b.height)/72:.2f}in')"
+
+# 4) eyeball it
+python -m pdf_tool.pdf_to_png _exports/resume-light.pdf
 ```
 
 A two-page resume that silently became three pages is the single most common
-regression; the page-count assertion catches it in one line.
+regression; the page-count assertion catches it in one line. The **overflow guard**
+catches the subtler pinned-footer collision that page-count does NOT (the PDF still
+has the right number of pages — the last one just has content stacked on it). When
+verifying a pagination/overlap fix, rasterize the **actual exported PDF** (pypdfium2),
+not an HTML re-render. Full model: [`LAYOUT-SYSTEM.md`](LAYOUT-SYSTEM.md).
 
 ## Note: exports never overwrite
 

@@ -55,6 +55,36 @@ Socials `format-manifest.json` voice strings and bot STYLE-SPECs are **marketing
 
 ---
 
+## ⭐ Work-samples / portfolio — PER-USER SSOT (read before building one)
+
+The visual **work-samples / "Additional Documents" portfolio** (`/make-work-examples`) is **not**
+generic. Each person declares their OWN portfolio in **two per-user blocks** — never copy another
+person's structure or assets:
+
+| Block | File | Declares |
+|---|---|---|
+| **`workSamples`** | `profiles/<user>-resume.json#workSamples` | Page **structure** (which 3 beats, in what order), build pattern, flagship beats, `referenceBuild` |
+| **`portfolio`** | `users/<user>.json#portfolio` | **Asset sources** (`workSampleAssets`: hero/banner, image grids), `flagshipTalkingPoints`, live portfolio links |
+
+> **Hard rule — a work-samples page must be built from the applicant's OWN `workSamples` + `portfolio`.**
+> If either block is **missing**, do **not** fall back to another user's page. Stop and author the block
+> first (or ask which pieces to feature). Copying jenni's structure onto shade is exactly the bug that put
+> **jenni's Agency agent grid** and the **Agency banner** onto a Shade portfolio (2026-07-20).
+
+**Per-person content differs by identity — do not blur:**
+
+| | Jenni | Shade |
+|---|---|---|
+| **Hero / banner** | Agency creative-technologist banner | **Synagen / Martian Games** content (NOT Agency) |
+| **Page-2 showcase** | Agency agentic-AI **agent grid** (she designed it) | **Shipped Multiplayer Games** (Martian Games) — elaborated; **Synagen brand promo thumbnails**. **NO** full agency-agent grid |
+| **Flagship** | Synagen (contributed) + Agency + Air Wars/Tank Off | Synagen (**lead dev**) + Shipped multiplayer + AAA tools credits |
+
+Jenni's is the **reference build** and is considered correct/complete — do not change it. Shade's blocks
+were added 2026-07-20 to stop the wrong-content recurrence. Reference build + build mechanics:
+[`../.claude/commands/make-work-examples.md`](../.claude/commands/make-work-examples.md).
+
+---
+
 ## 🧰 A TOOL YOU KNOW IS A TOOL YOU KNOW
 
 **Software claims are selectable from EVERY track.** Not `3d-art` only, not `ui-ux` only — every

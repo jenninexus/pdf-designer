@@ -14,6 +14,23 @@
   "render": "default-resume.html",
   "exampleData": "resume-source.example.json",
   "includeFilter": { "applies_to": "default-resume" },
+  "verify": {
+    "_note": "⭐ SHARED VERIFICATION CONTRACT — every profile that `extends` this one inherits it (jenni · shade · martian · studio). Run these guards on EVERY generated doc (resume · cover letter · work-samples), for EVERY applicant, before it ships. Both are also documented repo-wide in AGENTS.md and docs/EXPORTS.md.",
+    "overflowGuard": {
+      "rule": "UNIVERSAL — applies to every applicant and every doc. Each page's content must FIT its box or the pinned footer collides with the last lines. Verify: `python -m pdf_tool.check_overflow <doc>.html --pdf-theme dark` (exits non-zero on overflow; also auto-warns on every html_to_pdf export). The structural guarantee is `overflow: hidden` on the print `.page` (clips instead of bleeding). If it warns, MOVE a section to the next page — never shrink the equal margin. Full model: docs/LAYOUT-SYSTEM.md.",
+      "groundTruth": "Verify a pagination/overlap fix against the ACTUAL exported PDF (rasterize with pypdfium2), not an HTML re-render — pdf_to_png re-renders the HTML and can disagree with page.pdf() pagination."
+    },
+    "magentaGuard": {
+      "rule": "BRAND-SCOPED opt-in. Run `python -m pdf_tool.check_palette --no-magenta <doc>.html` for applicants whose brand bans magenta/pink (see perApplicant). Flags the magenta/pink hue band (~290-345°). The plain `check_palette` (no flag) always runs (no brown/mustard/lime).",
+      "perApplicant": {
+        "shade": "⛔ NO magenta/pink — ALWAYS run --no-magenta. brand-synagen is violet+cyan; magenta is banned (owner directive 2026-07-20).",
+        "martian": "⛔ NO magenta/pink — ALWAYS run --no-magenta. brand-martian is orange/violet/cyan.",
+        "studio": "⛔ NO magenta/pink — run --no-magenta (studio speaks for Martian Games / can include Shade).",
+        "jenni": "✅ magenta/pink IS allowed — do NOT run --no-magenta. brand-jenninexus legitimately uses pink; the ban does not apply to her."
+      }
+    },
+    "otherGuards": "check_palette (always) · check_vault --explain/--coverage (step 0/4a) · check_ats (light PDF). See AGENTS.md § Guards."
+  },
   "layout": {
     "_note": "⭐ THE SHARED LAYOUT SYSTEM — every profile that `extends` this one inherits it (jenni, shade, martian, studio). SSOT: themes/default-resume.json#document + docs/LAYOUT-SYSTEM.md.",
     "paper": "Letter",
