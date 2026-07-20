@@ -66,6 +66,23 @@ BACKGROUNDS = {
 }
 
 
+def variant_stem(canvas, opts) -> str:
+    """Filename suffix encoding every axis that used to be a directory level.
+
+    Keeps output flat (one dir per project) while guaranteeing that a
+    different canvas size, background, or fit never overwrites an earlier
+    render. E.g. "__hd-landscape-1920x1080__discord-slate__contain".
+    """
+    parts = [f"{canvas['id']}-{canvas['px_w']}x{canvas['px_h']}"]
+    bg = opts.get("background")
+    if bg:
+        # A raw CSS gradient isn't filename-safe — hash it to a short tag.
+        parts.append(bg if bg in BACKGROUNDS else "css-" + hashlib.sha1(bg.encode()).hexdigest()[:6])
+    if opts.get("fit") == "contain":
+        parts.append("contain")
+    return "__" + "__".join(parts)
+
+
 def resolve_background(value, mode):
     """Resolve a --bg value to a CSS background.
 
@@ -342,16 +359,16 @@ def render_candidate(family: str, images, canvas, opts) -> str:
 """
 
 
-def render_index(families, images, canvas, out_dir: Path, opts) -> str:
+def render_index(families, images, canvas, out_dir: Path, opts, stem: str = "") -> str:
     """PowerPoint-Designer-style picker: every candidate side by side."""
     scale = 320 / canvas["px_w"]
     thumb_h = canvas["px_h"] * scale
     cards = ""
     for fam in families:
         cards += f"""
-  <a class="card" href="{fam}.html" target="_blank">
+  <a class="card" href="{fam}{stem}.html" target="_blank">
     <div class="thumb" style="height:{thumb_h:.0f}px;">
-      <iframe src="{fam}.html" style="width:{canvas["px_w"]}px;height:{canvas["px_h"]}px;transform:scale({scale:.4f});" scrolling="no" tabindex="-1"></iframe>
+      <iframe src="{fam}{stem}.html" style="width:{canvas["px_w"]}px;height:{canvas["px_h"]}px;transform:scale({scale:.4f});" scrolling="no" tabindex="-1"></iframe>
     </div>
     <div class="label">{fam}</div>
   </a>"""
@@ -411,10 +428,12 @@ def generate(images_dir, canvas_name=None, layout=None, hero=None, title=None,
     if not images:
         raise SystemExit(f"No images found in {images_dir} (looked for {', '.join(sorted(IMAGE_EXTS))})")
 
-    # Each canvas gets its own subfolder, so a new size/ratio run never
-    # overwrites earlier candidates (letter-portrait vs hd-landscape etc.).
-    default_out = images_dir / "_candidates" / f"{canvas['id']}-{canvas['px_w']}x{canvas['px_h']}"
-    out = Path(out_dir).resolve() if out_dir else default_out
+    # Flat output: one directory, no per-canvas/per-background subfolders.
+    # Everything that used to be a folder level is encoded in the filename
+    # instead, so variants still never collide. Default sits beside the
+    # images dir (<project>/_candidates/), not inside it.
+    project_dir = images_dir.parent if images_dir.name == "images" else images_dir
+    out = Path(out_dir).resolve() if out_dir else project_dir / "_candidates"
     out.mkdir(parents=True, exist_ok=True)
     import os
 
@@ -425,16 +444,18 @@ def generate(images_dir, canvas_name=None, layout=None, hero=None, title=None,
     if unknown:
         raise SystemExit(f"Unknown layout {unknown}. Options: auto, {', '.join(FAMILIES)}")
 
+    stem = variant_stem(canvas, opts)
+
     written = []
     for fam in families:
-        path = out / f"{fam}.html"
+        path = out / f"{fam}{stem}.html"
         path.write_text(render_candidate(fam, images, canvas, opts), encoding="utf-8")
         written.append(path)
         print(f"Saved: {path}")
 
     if layout == "auto":
-        index = out / "index.html"
-        index.write_text(render_index(families, images, canvas, out, opts), encoding="utf-8")
+        index = out / f"index{stem}.html"
+        index.write_text(render_index(families, images, canvas, out, opts, stem), encoding="utf-8")
         written.append(index)
         print(f"Saved: {index}  <- open this to compare all candidates")
 
@@ -445,8 +466,8 @@ def generate(images_dir, canvas_name=None, layout=None, hero=None, title=None,
             browser = p.chromium.launch()
             page = browser.new_page(viewport={"width": canvas["px_w"], "height": canvas["px_h"]})
             for fam in families:
-                page.goto((out / f"{fam}.html").as_uri())
-                png_path = out / f"{fam}.png"
+                page.goto((out / f"{fam}{stem}.html").as_uri())
+                png_path = out / f"{fam}{stem}.png"
                 page.locator(".canvas").screenshot(path=str(png_path))
                 print(f"Saved: {png_path}")
             browser.close()
