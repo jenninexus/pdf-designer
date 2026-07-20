@@ -11,8 +11,8 @@
     "template": true,
     "setup": {
       "1": "cp .config/mcp-pdf-designer.example.json .config/mcp-pdf-designer.json",
-      "2": "Replace <REPO_ROOT> with this clone’s absolute path.",
-      "3": "External pointers (<WWW_THEME_KIT>, <SYNA_THEME_KIT>, <VOICE_SEED>, <MCP_CONFIG_DIR>) may be deleted if you don’t have those repos — nothing breaks."
+      "2": "Replace <REPO_ROOT> with this clone's absolute path.",
+      "3": "External pointers (<WWW_THEME_KIT>, <SYNA_THEME_KIT>, <VOICE_SEED>, <MCP_CONFIG_DIR>) may be deleted if you don't have those repos — nothing breaks."
     }
   },
   "ssot": "docs/SSOT.md",
@@ -120,9 +120,14 @@
     "index": "layouts/README.md",
     "collage": "layouts/collage/",
     "resume": "layouts/resume/",
+    "archive": "layouts/collage/_archive/",
     "discover": "python -m pdf_tool.collage --list-recipes",
     "use": "python -m pdf_tool.collage <imagesDir> --recipe <id>",
+    "promote": "python -m pdf_tool.collage <imagesDir> --layout <family> --promote <id> --best-for \"...\" --png",
+    "retire": "python -m pdf_tool.collage --archive <id>",
+    "shelve": "python -m pdf_tool.collage <imagesDir> --recipe <id> --png --shelve",
     "precedence": "CLI flag > --recipe > collage-source.json > built-in default",
+    "what_earns_a_recipe": "Structure only — family, canvas, or fit. A background composes at render time via --bg, so a color-only variant is a flag, not a recipe. Archive duplicates rather than deleting them.",
     "recipe_schema": {
       "id": "matches the filename stem; used on the CLI",
       "family": "a layout family from docs/COLLAGE-DESIGN.md",
@@ -149,7 +154,8 @@
     "rules": [
       "Screenshots and any image carrying text render with fit=contain — cropping destroys the content.",
       "Output stays flat: no per-canvas or per-background subfolders.",
-      "Reusable layouts are tracked in layouts/collage/, never in gitignored storage/."
+      "Reusable layouts are tracked in layouts/collage/, never in gitignored storage/.",
+      "Promote with --promote, collect renders with --shelve, retire with --archive. Never copy files by hand — a hand-copied layout is a one-off the next project won't find."
     ]
   },
   "plans": {
