@@ -193,8 +193,21 @@ def _img(src_prefix: str, image: dict) -> str:
 
 
 def _grid_cols(n: int, canvas) -> int:
+    """Columns for an n-image grid, preferring an exact fit over dead cells.
+
+    The ratio-ideal column count often leaves a partly-empty final row (4
+    images on 16:9 -> 3 cols = 2 blank cells). When a divisor of n sits close
+    to the ideal, use it so every cell is filled.
+    """
     ideal = (n * canvas["px_w"] / canvas["px_h"]) ** 0.5
-    return max(1, min(6, round(ideal)))
+    best = max(1, min(6, round(ideal)))
+    if n % best:
+        exact = [c for c in range(1, min(6, n) + 1) if n % c == 0]
+        # Closest exact divisor, but don't distort the grid to get one.
+        divisor = min(exact, key=lambda c: abs(c - ideal))
+        if abs(divisor - ideal) <= 1.0:
+            return divisor
+    return best
 
 
 def body_uniform_grid(images, canvas, src, opts):
@@ -216,6 +229,14 @@ def body_hero_mosaic(images, canvas, src, opts, text_card: str | None = None):
     rest = [im for im in images if im is not hero]
     cols = 3 if canvas["px_h"] >= canvas["px_w"] else 4
     extra = 1 if text_card else 0
+    # The hero spans 2x2, so a row holds (cols - 2) supporting cells beside it.
+    # Prefer the column count that leaves no dead cells in the support tiles.
+    side = len(rest) + extra
+    if side and canvas["px_w"] > canvas["px_h"]:
+        for c in (3, 4):
+            if side % max(1, c - 2) == 0:
+                cols = c
+                break
     rows = max(2, -(-(4 + len(rest) + extra) // cols))
     cells = [f'<div class="cell" style="grid-column:span 2;grid-row:span 2;">{_img(src, hero)}</div>']
     if text_card:
