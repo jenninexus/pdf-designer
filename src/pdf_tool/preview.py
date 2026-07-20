@@ -251,6 +251,7 @@ APP_HTML = """<!doctype html>
       </label>
     </div>
   </details>
+  <button id="refreshBtn" type="button" title="Re-scan the repo for new/changed documents">&#8635; Refresh</button>
   <button class="primary" id="exportBtn" type="button">Export</button>
   <span id="status"></span>
 </header>
@@ -496,6 +497,20 @@ renderLibrary();
     t._h = setTimeout(() => { t.style.opacity = "0"; }, 2200);
   }
 
+  function applyDocs(data) {
+    const prevCount = DOCS.length;
+    DOCS = data.docs;
+    if (selected) {
+      const still = DOCS.find(d => d.path === selected.path);
+      selected = still || null;
+    }
+    buildKindChips();
+    buildFolderSelect();
+    renderLibrary();
+    if (selected) { try { main.src = "/" + selected.path + "?t=" + Date.now(); } catch (_) {} }
+    return DOCS.length - prevCount;
+  }
+
   async function tick() {
     if (busy) return;
     busy = true;
@@ -507,19 +522,7 @@ renderLibrary();
           sig = data.sig;
         } else if (data.sig !== sig) {
           sig = data.sig;
-          const prevCount = DOCS.length;
-          DOCS = data.docs;
-          // keep the current selection if it still exists
-          if (selected) {
-            const still = DOCS.find(d => d.path === selected.path);
-            selected = still || null;
-          }
-          buildKindChips();
-          buildFolderSelect();
-          renderLibrary();
-          // reload the open preview so an edited source repaints
-          if (selected) { try { main.src = "/" + selected.path + "?t=" + Date.now(); } catch (_) {} }
-          const delta = DOCS.length - prevCount;
+          const delta = applyDocs(data);
           toast(delta > 0 ? ("＋" + delta + " document" + (delta > 1 ? "s" : "")) :
                 delta < 0 ? (delta + " document" + (delta < -1 ? "s" : "")) :
                 "updated");
@@ -528,6 +531,23 @@ renderLibrary();
     } catch (_) { /* server down mid-poll — ignore, retry next tick */ }
     finally { busy = false; }
   }
+
+  // Manual refresh — re-scan on demand (always re-render, even if the signature
+  // is unchanged), so the button is a reliable "show me what's on disk now".
+  async function forceRefresh() {
+    try {
+      const r = await fetch("/api/version", { cache: "no-store" });
+      if (!r.ok) { toast("refresh failed"); return; }
+      const data = await r.json();
+      sig = data.sig;
+      const delta = applyDocs(data);
+      toast(delta === 0 ? ("refreshed · " + DOCS.length + " docs")
+            : (delta > 0 ? "＋" : "") + delta + " · " + DOCS.length + " docs");
+    } catch (_) { toast("refresh failed"); }
+  }
+
+  const rb = document.getElementById("refreshBtn");
+  if (rb) rb.addEventListener("click", forceRefresh);
 
   tick();
   setInterval(tick, INTERVAL);
