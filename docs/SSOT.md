@@ -34,7 +34,7 @@ Compact map of what this repo owns vs what it only points at. Agents: start here
 | Palette rule | `themes/PALETTE-RULES.md` | No brown / mustard / lime — enforced by `check_palette` |
 | Protocol docs | `docs/{STORAGE,VAULT,JOB-ASSESSMENT,ARCHITECTURE}.md` | Claim rules + workflow |
 | Agent map | `AGENTS.md` | Capability / command SSOT for assistants |
-| Make-resume | `.claude/commands/make-resume.md` | Job-application routine |
+| Make-resume | `.claude/commands/make-resume.example.md` | Job-application routine (public seed; personal `make-resume.md` is gitignored) |
 | Make-collage | `.claude/commands/make-collage.md` | Multi-image collage routine |
 | Public examples | `examples/profiles/`, `examples/brands/`, `examples/applications/` | Clone-safe templates |
 | Project config | `.config/mcp-pdf-designer.json` | Breakpoint pointer, hub, voice/external pointers |

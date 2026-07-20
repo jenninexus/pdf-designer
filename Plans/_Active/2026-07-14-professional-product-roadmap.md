@@ -73,6 +73,19 @@ the only renderer. No MCP / always-on server required for core value.
 - [x] **GitHub-readiness** — `examples/README.md` first-run guide; `.vscode/mcp.json` → gitignored + `.vscode/mcp.json.example`; `ensure-design-hub.ps1` launches hidden + agnostic (`python` from PATH); `.vscode/tasks.json` uses `${workspaceFolder}` (no hardcoded paths).
 - [x] **Work-samples doc type** — visual portfolio PDF (self-contained base64 images) for "Additional Documents" uploads; profile contract in `profiles/<user>-resume.json#workSamples`.
 
+## Shipped recently (2026-07-20) — repo org for public seed
+
+- [x] **Command surface split for GitHub.** Public seed = `*.example.md` (tracked); personal copies =
+  bare `<name>.md` (gitignored). Retired the `.local.md` convention. `make-resume.md` untracked
+  (`git rm --cached`); added personal `/make-cover-letter` + `/make-work-examples` (reuse make-resume).
+  `/make-resume` default is now the full application (résumé + cover letter + work samples), owner directive.
+- [x] **Single agent SSOT.** Consolidated `AGENTS.md` + `CLAUDE.md` + `.claude/commands/README.md` into one
+  `AGENTS.md`; the other two are thin pointers. Fixes the "root files go stale" problem — one file to edit.
+- [x] **`.codex/` retired.** Stale generated `SKILL.md` mirrors removed; `.codex/` gitignored — no more
+  dual-maintenance of Codex + Claude copies. Codex reads `.claude/commands/*.md` directly.
+- [x] **`/jen:roadmap` wired** — `docs/ROADMAP.md` pointer resolves to this plan (no duplicate roadmap).
+- [x] **gitignore hardened** — `dev-log-*.yaml` (per-machine private log) now ignored.
+
 ## Next — maintenance / PyPI when going public ← **priority**
 
 - [ ] PyPI / installer for non-dev users (when going public)

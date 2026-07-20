@@ -86,7 +86,7 @@ One command runs the routine end to end: capture the apply link → verify remot
 **gap-check and ask** → research the company → derive a theme from their real brand CSS →
 write → export light + dark for both documents → merge the bundle → log it.
 
-📖 [`.claude/commands/make-resume.md`](../.claude/commands/make-resume.md) — and it is
+📖 [`.claude/commands/make-resume.md`](../.claude/commands/make-resume.example.md) — and it is
 **agent-agnostic**: plain markdown, no vendor APIs. Any assistant, or a human with a terminal,
 can follow it.
 

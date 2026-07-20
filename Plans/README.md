@@ -13,6 +13,9 @@ Working plans for pdf-designer. Keep **one** active product roadmap; archive com
 |---|---|
 | [`_Active/2026-07-14-professional-product-roadmap.md`](_Active/2026-07-14-professional-product-roadmap.md) | ⭐ **THE** roadmap — maintenance / PyPI when public; pywebview parked |
 
+> **`/jen:roadmap` entry point:** [`../docs/ROADMAP.md`](../docs/ROADMAP.md) is a thin pointer to the plan
+> above (that command discovers `docs/ROADMAP.md`). One roadmap, two doors — never a second copy.
+
 ## Archive (recent)
 
 | Plan | Why archived |

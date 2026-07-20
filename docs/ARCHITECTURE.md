@@ -71,7 +71,7 @@ go; the documents and the CLI keep working without them.
 **There is no `application_assistant` module — and there shouldn't be.**
 
 The job-application workflow (the claim vault, company research, gap-checking, tailoring,
-theming) lives in [`../.claude/commands/make-resume.md`](../.claude/commands/make-resume.md): a
+theming) lives in [`../.claude/commands/make-resume.md`](../.claude/commands/make-resume.example.md): a
 **markdown protocol** an agent — or a human — follows, backed by plain JSON under `storage/` and
 two Python guards.
 
