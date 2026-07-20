@@ -18,6 +18,10 @@ Usage:
     python -m pdf_tool.collage path/to/images --bg discord-slate --png
     python -m pdf_tool.collage --list-recipes            # what layouts exist?
     python -m pdf_tool.collage path/to/images --recipe scatter-showcase-16x9 --png
+    python -m pdf_tool.collage path/to/images --layout hero-mosaic --fit contain \
+        --promote my-layout-16x9 --best-for "When to use it." --png   # save it for reuse
+    python -m pdf_tool.collage --archive my-layout-16x9  # retire (file survives)
+    python -m pdf_tool.collage path/to/images --recipe <id> --png --shelve  # collect renders
     python -m pdf_tool.collage path/to/images --png     # also screenshot each candidate
 
 Candidates are written to <imagesDir>/_candidates/<canvas>-<W>x<H>/ (or
@@ -33,6 +37,15 @@ filenames.
 family + canvas + fit + background). Precedence, strongest first:
 CLI flag > --recipe > collage-source.json > default. --list-recipes prints
 every available recipe with what it's best for.
+
+--promote <id> saves the settings that produced this render as a new tracked
+recipe (validated before rendering, written after it succeeds), so a layout you
+liked is never a one-off. Pair it with --best-for "<when to use it>".
+--archive <id> retires a recipe to layouts/collage/_archive/ — it leaves the
+listing but the file survives. Archive color-only duplicates: a background
+composes at render time via --bg, so it is a flag, not a layout.
+--shelve copies this run's PNGs to storage/collages/layouts/, prefixed by
+project, replacing copying finished renders around by hand.
 
 --bg sets the page background instead of the theme's flat color. It takes a
 named preset from themes/default-collage.json#backgrounds (discord-slate,
@@ -53,6 +66,74 @@ FAMILIES = ["uniform-grid", "hero-mosaic", "masonry", "filmstrip", "spotlight-ca
 _REPO_ROOT = Path(__file__).resolve().parents[2]
 _THEME_PATH = _REPO_ROOT / "themes" / "default-collage.json"
 _LAYOUTS_DIR = _REPO_ROOT / "layouts" / "collage"
+_ARCHIVE_DIR = _LAYOUTS_DIR / "_archive"
+
+
+def promote_recipe(name: str, canvas, opts, layout: str, best_for: str = "", notes: str = "") -> Path:
+    """Save the settings that produced a render as a tracked, reusable recipe.
+
+    This is the whole point of layouts/: a layout you liked becomes something
+    future projects can name, instead of a one-off you'd have to reconstruct
+    from a shell command you no longer have.
+    """
+    if layout == "auto":
+        raise SystemExit(
+            "--promote needs ONE layout, not 'auto'. Re-run with --layout <family> "
+            "(or --recipe <id>) so there is a single result to save."
+        )
+    _LAYOUTS_DIR.mkdir(parents=True, exist_ok=True)
+    path = _LAYOUTS_DIR / f"{name}.json"
+    if path.exists():
+        raise SystemExit(
+            f"Recipe {name!r} already exists ({path}).\n"
+            f"Pick another name, edit that file, or archive it first: --archive {name}"
+        )
+    recipe = {"id": name, "family": layout, "canvas": canvas["id"]}
+    if [canvas["px_w"], canvas["px_h"]] != list(canvas.get("preset_px") or []):
+        recipe["px"] = f"{canvas['px_w']}x{canvas['px_h']}"
+    for key in ("fit", "background", "theme"):
+        if opts.get(key):
+            recipe[key] = opts[key]
+    recipe["bestFor"] = best_for or "TODO — describe when to reach for this layout."
+    if notes:
+        recipe["notes"] = notes
+    path.write_text(json.dumps(recipe, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    return path
+
+
+def shelve_renders(out_dir: Path, project: str, shelf: Path) -> list:
+    """Copy finished PNGs to the cross-project shelf, prefixed by project.
+
+    Replaces copying files by hand after every render. The shelf is one flat
+    directory of finished picks across every project — filenames keep them
+    apart, so nothing nests and nothing collides.
+    """
+    import shutil
+
+    shelf.mkdir(parents=True, exist_ok=True)
+    copied = []
+    for png in sorted(out_dir.glob("*.png")):
+        dest = shelf / f"{project}__{png.name}"
+        shutil.copy2(png, dest)
+        copied.append(dest)
+    return copied
+
+
+def archive_recipe(name: str) -> Path:
+    """Retire a recipe to layouts/collage/_archive/ instead of deleting it.
+
+    Archived recipes stop showing up in --list-recipes and can't be rendered by
+    name, but the file survives so a layout is never lost to a snap judgment.
+    """
+    path = _LAYOUTS_DIR / f"{name}.json"
+    if not path.exists():
+        raise SystemExit(f"No active recipe named {name!r} in {_LAYOUTS_DIR}")
+    _ARCHIVE_DIR.mkdir(parents=True, exist_ok=True)
+    dest = _ARCHIVE_DIR / path.name
+    if dest.exists():
+        raise SystemExit(f"{dest} already exists — remove or rename it first.")
+    path.rename(dest)
+    return dest
 
 
 def load_recipe(name: str) -> dict:
@@ -232,12 +313,21 @@ def load_canvas_preset(name: str, px_override: str | None = None):
     if p.get("unit") == "in":
         # Letter presets: use half of the 300dpi pixel size (150dpi) on screen.
         px_w, px_h = px_w // 2, px_h // 2
+    default_w, default_h = px_w, px_h
     if px_override:
         try:
             px_w, px_h = (int(v) for v in px_override.lower().split("x"))
         except ValueError:
             raise SystemExit(f"--px expects WIDTHxHEIGHT (e.g. 1280x720), got '{px_override}'")
-    return {"id": name, "px_w": px_w, "px_h": px_h, "print_in": (p.get("width"), p.get("height")) if p.get("unit") == "in" else None}
+    return {
+        "id": name,
+        "px_w": px_w,
+        "px_h": px_h,
+        # The preset's own size before any --px override, so promote_recipe can
+        # tell "this is just the preset" from "this size was chosen explicitly".
+        "preset_px": [default_w, default_h],
+        "print_in": (p.get("width"), p.get("height")) if p.get("unit") == "in" else None,
+    }
 
 
 def _hash01(text: str) -> float:
@@ -533,7 +623,7 @@ def render_index(families, images, canvas, out_dir: Path, opts, stem: str = "") 
 
 def generate(images_dir, canvas_name=None, layout=None, hero=None, title=None,
              theme=None, out_dir=None, png=False, px=None, background=None, fit=None,
-             recipe=None):
+             recipe=None, promote=None, best_for=None, shelve=False):
     images_dir = Path(images_dir).resolve()
     if not images_dir.is_dir():
         raise FileNotFoundError(images_dir)
@@ -580,6 +670,20 @@ def generate(images_dir, canvas_name=None, layout=None, hero=None, title=None,
     if unknown:
         raise SystemExit(f"Unknown layout {unknown}. Options: auto, {', '.join(FAMILIES)}")
 
+    # Validate promotion BEFORE rendering — refusing after a full render (and a
+    # Playwright pass) wastes the whole job for a name you could reject up front.
+    if promote:
+        if layout == "auto":
+            raise SystemExit(
+                "--promote needs ONE layout, not 'auto'. Re-run with --layout <family> "
+                "(or --recipe <id>) so there is a single result to save."
+            )
+        if (_LAYOUTS_DIR / f"{promote}.json").exists():
+            raise SystemExit(
+                f"Recipe {promote!r} already exists ({_LAYOUTS_DIR / (promote + '.json')}).\n"
+                f"Pick another name, edit that file, or archive it first: --archive {promote}"
+            )
+
     stem = variant_stem(canvas, opts)
 
     written = []
@@ -608,14 +712,34 @@ def generate(images_dir, canvas_name=None, layout=None, hero=None, title=None,
                 print(f"Saved: {png_path}")
             browser.close()
 
+    if shelve:
+        if not png:
+            print("\nWARNING: --shelve had nothing to copy: add --png to render images first.")
+        else:
+            shelf = project_dir.parent / "layouts"
+            copied = shelve_renders(out, project_dir.name, shelf)
+            print(f"\nShelved {len(copied)} render(s) to {shelf}")
+
+    # Promote only after a successful render, so a saved recipe is always a
+    # settings combination that actually produced something.
+    if promote:
+        saved = promote_recipe(promote, canvas, opts, layout, best_for=best_for or "")
+        print(f"\nPromoted to reusable recipe: {saved}")
+        print(f"  Reuse anywhere:  python -m pdf_tool.collage <imagesDir> --recipe {promote}")
+        if not best_for:
+            print("  WARNING: set --best-for next time (or edit `bestFor`) - a recipe")
+            print("    nobody can tell apart from its neighbours is noise.")
+
     return written
 
 
 def main() -> None:
     raw = sys.argv[1:]
     flags = {"--canvas": None, "--layout": None, "--hero": None, "--title": None, "--theme": None,
-             "--out": None, "--px": None, "--bg": None, "--fit": None, "--recipe": None}
+             "--out": None, "--px": None, "--bg": None, "--fit": None, "--recipe": None,
+             "--promote": None, "--best-for": None, "--archive": None}
     png = False
+    shelve = False
     args = []
     i = 0
     while i < len(raw):
@@ -633,6 +757,8 @@ def main() -> None:
             raise SystemExit(0)
         if arg == "--png":
             png = True
+        elif arg == "--shelve":
+            shelve = True
         elif arg in flags:
             if i + 1 >= len(raw):
                 raise SystemExit(f"{arg} requires a value")
@@ -644,6 +770,12 @@ def main() -> None:
         else:
             args.append(arg)
         i += 1
+
+    # --archive is a registry operation: it needs no images directory.
+    if flags["--archive"]:
+        dest = archive_recipe(flags["--archive"])
+        print(f"Archived: {dest}\n(Still on disk - move it back to un-retire it.)")
+        raise SystemExit(0)
 
     if len(args) != 1:
         print(__doc__)
@@ -663,6 +795,9 @@ def main() -> None:
             background=flags["--bg"],
             fit=flags["--fit"],
             recipe=flags["--recipe"],
+            promote=flags["--promote"],
+            best_for=flags["--best-for"],
+            shelve=shelve,
         )
     except ModuleNotFoundError:
         print(

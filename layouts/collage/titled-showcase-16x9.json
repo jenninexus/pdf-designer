@@ -1,0 +1,9 @@
+{
+  "id": "titled-showcase-16x9",
+  "family": "spotlight-caption",
+  "canvas": "hd-landscape",
+  "fit": "contain",
+  "background": "discord-slate",
+  "theme": "dark",
+  "bestFor": "A collage that needs a headline on it - release notes, a feature announcement, a slide. Reserves a text cell for the title from collage-source.json."
+}

@@ -57,6 +57,10 @@ python -m pdf_tool.tracker list                                 # scan storage/a
 python -m pdf_tool.tracker status                               # status breakdown (optional filter arg)
 python -m pdf_tool.collage --list-recipes                       # named layout recipes (layouts/collage/)
 python -m pdf_tool.collage <imagesDir> --recipe <id> --png      # render a named recipe
+python -m pdf_tool.collage <imagesDir> --layout <family> --promote <id> --best-for "..." --png
+#   → saves these settings as a REUSABLE recipe; never hand-copy a layout you liked
+python -m pdf_tool.collage --archive <id>                       # retire a recipe (file survives)
+python -m pdf_tool.collage <imagesDir> --recipe <id> --png --shelve  # renders → storage/collages/layouts/
 python -m pdf_tool.collage <imagesDir> --layout auto --png      # every family + picker gallery
 #   → writes to <project>/_candidates/ — ONE FLAT DIR; canvas/background/fit are encoded
 #     in the filename (<family>__<canvas>-<W>x<H>[__<bg>][__contain].png), so variants

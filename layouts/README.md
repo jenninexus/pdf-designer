@@ -47,8 +47,51 @@ Recipe fields (all optional except `id`, `family`, `canvas`):
 
 CLI flags always win over the recipe, so a recipe is a starting point, never a cage.
 
-## Adding one
+## The lifecycle — promote, reuse, archive
 
-Copy the closest existing file, change `id` to match the new filename, and record
-`bestFor` honestly — a recipe nobody can tell apart from its neighbour is noise. Delete
-recipes that stop earning their place; they are cheap to recreate from a render you liked.
+**Never hand-copy a layout you liked.** Save it from the render that produced it:
+
+```bash
+# 1. Render something you like
+python -m pdf_tool.collage <dir> --layout frame-scatter --fit contain --bg discord-slate --png
+
+# 2. Promote those exact settings into a reusable recipe
+python -m pdf_tool.collage <dir> --layout frame-scatter --fit contain --bg discord-slate \
+  --promote my-layout-16x9 --best-for "When to reach for this." --png
+
+# 3. Any future project just names it
+python -m pdf_tool.collage <other-project>/images --recipe my-layout-16x9 --png
+
+# 4. Retire it when it stops earning its place (the file survives)
+python -m pdf_tool.collage --archive my-layout-16x9
+```
+
+`--promote` validates **before** rendering (needs one `--layout`, not `auto`; refuses to
+overwrite an existing name) and writes the recipe **after** a successful render — so a
+saved recipe is always a combination that actually worked. It omits `px` when the size is
+just the canvas preset's default, keeping recipes minimal.
+
+### What earns a recipe
+
+A recipe must be **distinguishable by structure** — family, canvas, or fit. Those can't be
+recovered from a flag later.
+
+> **Color is not structure.** Backgrounds compose at render time (`--bg <preset>`), so
+> "the same layout in orange" is a flag, not a recipe. Adding one anyway is how a registry
+> turns into noise — see [`collage/_archive/README.md`](collage/_archive/README.md).
+
+Archiving is preferred over deleting: retired recipes leave `--list-recipes` but stay on
+disk in `collage/_archive/`, so nothing is lost to a snap judgment.
+
+### Finished renders (not recipes)
+
+The PNGs themselves are per-project output and stay in gitignored `storage/`. To collect a
+project's finished picks onto the cross-project shelf:
+
+```bash
+python -m pdf_tool.collage <dir> --recipe <id> --png --shelve
+```
+
+`--shelve` copies every render to `storage/collages/layouts/`, prefixed `<project>__`, in
+one flat directory. The **recipe** is the reusable artifact; the PNG is just a picture of
+one project's images.
