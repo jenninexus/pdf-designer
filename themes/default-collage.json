@@ -36,5 +36,21 @@
   "modes": {
     "dark": { "bg": "#0b0d12", "caption_text": "rgba(240,242,246,0.94)", "caption_dim": "rgba(240,242,246,0.68)", "cell_border": "rgba(79,209,201,0.14)" },
     "light": { "bg": "#ffffff", "caption_text": "#171b24", "caption_dim": "rgba(23,27,36,0.72)", "cell_border": "rgba(23,27,36,0.14)" }
+  },
+
+  "_background_meta": {
+    "description": "Named page backgrounds for collage canvases — a flat color or a CSS gradient instead of the mode's flat bg. Selected with `--bg <id>` or `background` in collage-source.json. Any raw CSS color/gradient string is also accepted verbatim.",
+    "palette_source": "Discord client chrome as captured in storage/collages/Screenshot 2026-07-19 2*.png — chat #313338, sidebar #2b2d31, embed card #1e1f22, app shell #111214; accents: Martian orange #f0561d (embed bar), link blue #00a8fc.",
+    "usage": "python -m pdf_tool.collage <dir> --bg discord-slate"
+  },
+  "backgrounds": {
+    "discord-slate":  { "css": "linear-gradient(160deg, #313338 0%, #2b2d31 45%, #1e1f22 100%)", "use": "Default Discord grey — matches the client chrome the screenshots came from" },
+    "discord-deep":   { "css": "linear-gradient(180deg, #2b2d31 0%, #1e1f22 60%, #111214 100%)", "use": "Darker vertical fade, keeps bright screenshots dominant" },
+    "discord-ember":  { "css": "linear-gradient(145deg, #313338 0%, #2b2d31 55%, #3a2622 100%)", "use": "Discord grey warming into the Martian orange accent" },
+    "discord-signal": { "css": "linear-gradient(145deg, #313338 0%, #26323d 60%, #1b2733 100%)", "use": "Discord grey cooling into the embed link blue" },
+    "discord-radial": { "css": "radial-gradient(120% 90% at 50% 0%, #3a3d44 0%, #2b2d31 45%, #1a1b1e 100%)", "use": "Center-top glow, good for hero-mosaic and spotlight layouts" },
+    "martian-ember":  { "css": "linear-gradient(150deg, #2b2d31 0%, #3a2622 55%, #f0561d 190%)", "use": "Strongest Martian Games brand lean" },
+    "flat-dark":      { "css": "#0b0d12", "use": "Original flat dark — the pre-gradient default" },
+    "flat-white":     { "css": "#ffffff", "use": "Print / light mode flat" }
   }
 }
