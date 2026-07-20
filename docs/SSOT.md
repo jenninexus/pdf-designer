@@ -33,6 +33,7 @@ Compact map of what this repo owns vs what it only points at. Agents: start here
 | Previewer | `src/pdf_tool/preview.py` (`docs/PREVIEWER.md`) | Design Hub; **auto-refreshes** via `/api/version` on new exports |
 | Palette rule | `themes/PALETTE-RULES.md` | No brown / mustard / lime — enforced by `check_palette` |
 | Protocol docs | `docs/{STORAGE,VAULT,JOB-ASSESSMENT,ARCHITECTURE}.md` | Claim rules + workflow |
+| **Work-samples SSOT** | `profiles/<user>-resume.json#workSamples` + `users/<user>.json#portfolio` | ⭐ **PER-USER** portfolio structure + assets — never copy another person's page ([VAULT.md](VAULT.md) § Work-samples) |
 | Agent map | `AGENTS.md` | Capability / command SSOT for assistants |
 | Make-resume | `.claude/commands/make-resume.example.md` | Job-application routine (public seed; personal `make-resume.md` is gitignored) |
 | Make-collage | `.claude/commands/make-collage.md` | Multi-image collage routine |
