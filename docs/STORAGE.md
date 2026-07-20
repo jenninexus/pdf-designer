@@ -81,7 +81,7 @@ Protocol deep-dives (tracked):
 |---|---|
 | [`VAULT.md`](VAULT.md) | What may be claimed; voice; capability matrix |
 | [`JOB-ASSESSMENT.md`](JOB-ASSESSMENT.md) | Capture → verify → gap-check before writing |
-| [`.claude/commands/make-resume.md`](../.claude/commands/make-resume.md) | End-to-end build routine |
+| [`.claude/commands/make-resume.md`](../.claude/commands/make-resume.example.md) | End-to-end build routine |
 
 ---
 

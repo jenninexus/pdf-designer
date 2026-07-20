@@ -17,6 +17,8 @@ public-facing; **detail lives here**. Agent contracts: [`../AGENTS.md`](../AGENT
 | [`VAULT.md`](VAULT.md) | Claim rules, voice layers, role tracks |
 | [`JOB-ASSESSMENT.md`](JOB-ASSESSMENT.md) | Listing capture / pay / gap-check protocol |
 | [`APPLICATIONS.md`](APPLICATIONS.md) | One-folder-per-job workflow |
+| [`SSOT.md`](SSOT.md) · [`WHITE-LABEL.md`](WHITE-LABEL.md) | SSOT dashboard · public-only reusable path |
+| [`ROADMAP.md`](ROADMAP.md) | Pointer to the active plan (`/jen:roadmap` entry point) |
 | [`LICENSING-NOTES.md`](LICENSING-NOTES.md) | MIT honesty + AGPL removal story |
 
 ### Also (tracked, outside `docs/`)
@@ -26,7 +28,8 @@ public-facing; **detail lives here**. Agent contracts: [`../AGENTS.md`](../AGENT
 | [`../themes/PALETTE-RULES.md`](../themes/PALETTE-RULES.md) | No brown / mustard / lime + guard |
 | [`../layouts/README.md`](../layouts/README.md) | ⭐ Layout recipes — structure (themes own color) |
 | [`../Plans/`](../Plans/) | Working roadmap (one active file) |
-| [`../.claude/commands/make-resume.md`](../.claude/commands/make-resume.md) | `/make-resume` routine (agent-agnostic) |
+| [`../.claude/commands/make-resume.example.md`](../.claude/commands/make-resume.example.md) | `/make-resume` routine (public seed; agent-agnostic) |
+| [`../AGENTS.md`](../AGENTS.md) | ⭐ Single agent SSOT — capability map + contracts + command surface |
 | [`../.claude/commands/make-collage.md`](../.claude/commands/make-collage.md) | `/make-collage` routine (agent-agnostic) |
 
 ### Privacy

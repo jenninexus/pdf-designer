@@ -1,6 +1,10 @@
 # Personal workspace (contains private machine paths) — the .example version is tracked instead
 pdf-designer.code-workspace
 
+# Per-machine private session log (names private storage paths + related repos) — local only
+dev-log-sego.yaml
+dev-log-*.yaml
+
 # Personal/private data — anything real (not *.example.*) that could name you, an employer,
 # or contain unverified/sensitive claims stays local only. Applies at the repo root AND inside
 # any examples/profiles/<your-id>/ folder you create from the default-resume template.
@@ -29,6 +33,17 @@ job-listing-capture-*.md
 **/job-listing-capture-*.md
 !**/*.example.json
 !**/*.example.md
+
+# Personal slash commands — the PUBLIC seed is the .example.md; the bare <name>.md
+# is YOUR copy with real company/client specifics. Track only the .example versions.
+# (make-collage.md and README.md carry no private data and stay tracked below.)
+.claude/commands/make-resume.md
+.claude/commands/make-cover-letter.md
+.claude/commands/make-work-examples.md
+
+# Codex skill mirrors — generated duplicates of .claude/commands/*.md (SKILL.md format).
+# We don't dual-maintain them; Codex users read .claude/commands/*.md directly (see AGENTS.md).
+.codex/
 
 # Generated output + personal images (collage sets, screenshots) — real image
 # files stay local; a future tracked example image needs an explicit ! exception

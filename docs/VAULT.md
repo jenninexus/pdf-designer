@@ -390,4 +390,4 @@ Persuasion is the goal; fabrication is never the method.
 
 Build an application with **`/make-resume <user> <application-dir>`** — it runs this whole
 routine, plus company research, remote/pay verification, theming, export, and the bundle.
-The command lives in the repo at [`.claude/commands/make-resume.md`](../.claude/commands/make-resume.md).
+The command lives in the repo at [`.claude/commands/make-resume.md`](../.claude/commands/make-resume.example.md).
