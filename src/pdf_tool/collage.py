@@ -16,6 +16,8 @@ Usage:
     python -m pdf_tool.collage path/to/images --hero best-shot.png --title "Project Showcase"
     python -m pdf_tool.collage path/to/images --canvas hd-landscape --px 1280x720 --png
     python -m pdf_tool.collage path/to/images --bg discord-slate --png
+    python -m pdf_tool.collage --list-recipes            # what layouts exist?
+    python -m pdf_tool.collage path/to/images --recipe scatter-showcase-16x9 --png
     python -m pdf_tool.collage path/to/images --png     # also screenshot each candidate
 
 Candidates are written to <imagesDir>/_candidates/<canvas>-<W>x<H>/ (or
@@ -26,6 +28,11 @@ collage-source.json exists in the images directory, its canvas/layout/hero/
 title/theme/background values are used as defaults (CLI flags win). Same inputs
 always produce the same layouts — no RNG; frame-scatter jitter is hashed from
 filenames.
+
+--recipe names a reusable layout from layouts/collage/<id>.json (structure:
+family + canvas + fit + background). Precedence, strongest first:
+CLI flag > --recipe > collage-source.json > default. --list-recipes prints
+every available recipe with what it's best for.
 
 --bg sets the page background instead of the theme's flat color. It takes a
 named preset from themes/default-collage.json#backgrounds (discord-slate,
@@ -45,6 +52,37 @@ FAMILIES = ["uniform-grid", "hero-mosaic", "masonry", "filmstrip", "spotlight-ca
 
 _REPO_ROOT = Path(__file__).resolve().parents[2]
 _THEME_PATH = _REPO_ROOT / "themes" / "default-collage.json"
+_LAYOUTS_DIR = _REPO_ROOT / "layouts" / "collage"
+
+
+def load_recipe(name: str) -> dict:
+    """Load a named layout recipe from layouts/collage/<name>.json.
+
+    Recipes are tracked, reusable bundles of layout settings (family, canvas,
+    fit, background) — the structure counterpart to themes/, which owns color.
+    """
+    path = _LAYOUTS_DIR / f"{name}.json"
+    if not path.exists():
+        available = sorted(p.stem for p in _LAYOUTS_DIR.glob("*.json")) if _LAYOUTS_DIR.is_dir() else []
+        raise SystemExit(
+            f"Unknown recipe {name!r}. Available: {', '.join(available) or '(none found)'}\n"
+            f"Recipes live in {_LAYOUTS_DIR}"
+        )
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def list_recipes() -> list:
+    """Every available recipe as (id, family, canvas, bestFor)."""
+    if not _LAYOUTS_DIR.is_dir():
+        return []
+    out = []
+    for path in sorted(_LAYOUTS_DIR.glob("*.json")):
+        try:
+            r = json.loads(path.read_text(encoding="utf-8"))
+        except ValueError:
+            continue
+        out.append((r.get("id", path.stem), r.get("family", "?"), r.get("canvas", "?"), r.get("bestFor", "")))
+    return out
 
 MODES = {
     "dark": {"bg": "#0b0d12", "text": "rgba(240,242,246,0.94)", "dim": "rgba(240,242,246,0.68)", "border": "rgba(79,209,201,0.14)"},
@@ -494,7 +532,8 @@ def render_index(families, images, canvas, out_dir: Path, opts, stem: str = "") 
 # ---------------------------------------------------------------- generation
 
 def generate(images_dir, canvas_name=None, layout=None, hero=None, title=None,
-             theme=None, out_dir=None, png=False, px=None, background=None, fit=None):
+             theme=None, out_dir=None, png=False, px=None, background=None, fit=None,
+             recipe=None):
     images_dir = Path(images_dir).resolve()
     if not images_dir.is_dir():
         raise FileNotFoundError(images_dir)
@@ -504,14 +543,21 @@ def generate(images_dir, canvas_name=None, layout=None, hero=None, title=None,
     if source_file.exists():
         source = json.loads(source_file.read_text(encoding="utf-8"))
 
-    canvas = load_canvas_preset(canvas_name or source.get("canvas") or "letter-portrait", px_override=px)
-    layout = layout or source.get("layout") or "auto"
+    # Precedence, strongest first: CLI flag > --recipe > collage-source.json >
+    # built-in default. A recipe is a starting point, never a cage.
+    rec = load_recipe(recipe or source.get("recipe")) if (recipe or source.get("recipe")) else {}
+
+    canvas = load_canvas_preset(
+        canvas_name or rec.get("canvas") or source.get("canvas") or "letter-portrait",
+        px_override=px or rec.get("px"),
+    )
+    layout = layout or rec.get("family") or source.get("layout") or "auto"
     opts = {
         "hero": hero or source.get("hero"),
         "title": title or (source.get("text", [{}])[0].get("content") if source.get("text") else None),
-        "theme": theme or source.get("theme") or "dark",
-        "background": background or source.get("background"),
-        "fit": fit or source.get("fit"),
+        "theme": theme or rec.get("theme") or source.get("theme") or "dark",
+        "background": background or rec.get("background") or source.get("background"),
+        "fit": fit or rec.get("fit") or source.get("fit"),
     }
 
     images = scan_images(images_dir)
@@ -567,12 +613,24 @@ def generate(images_dir, canvas_name=None, layout=None, hero=None, title=None,
 
 def main() -> None:
     raw = sys.argv[1:]
-    flags = {"--canvas": None, "--layout": None, "--hero": None, "--title": None, "--theme": None, "--out": None, "--px": None, "--bg": None, "--fit": None}
+    flags = {"--canvas": None, "--layout": None, "--hero": None, "--title": None, "--theme": None,
+             "--out": None, "--px": None, "--bg": None, "--fit": None, "--recipe": None}
     png = False
     args = []
     i = 0
     while i < len(raw):
         arg = raw[i]
+        if arg in ("--list-recipes", "--recipes"):
+            rows = list_recipes()
+            if not rows:
+                print(f"No recipes found in {_LAYOUTS_DIR}")
+            else:
+                print(f"Layout recipes ({_LAYOUTS_DIR}):\n")
+                for rid, fam, canv, best in rows:
+                    # ASCII separator: the Windows console is cp1252 and mangles
+                    # non-ASCII, which also breaks piping this listing to a file.
+                    print(f"  {rid}\n      {fam} | {canv}\n      {best}\n")
+            raise SystemExit(0)
         if arg == "--png":
             png = True
         elif arg in flags:
@@ -604,6 +662,7 @@ def main() -> None:
             px=flags["--px"],
             background=flags["--bg"],
             fit=flags["--fit"],
+            recipe=flags["--recipe"],
         )
     except ModuleNotFoundError:
         print(

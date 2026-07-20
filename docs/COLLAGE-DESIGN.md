@@ -50,6 +50,22 @@ Print presets are physical (inches + `@page`); social presets are pixel
 canvases rendered 1:1 via PNG export. One collage layout should be able to
 re-target another preset — the layout adapts, the image set stays.
 
+## Named recipes — the shortcut
+
+A **recipe** bundles the flags for a layout that already worked, so you name the
+intent instead of retyping five flags:
+
+```bash
+python -m pdf_tool.collage --list-recipes                    # what exists + what each is for
+python -m pdf_tool.collage <imagesDir> --recipe scatter-showcase-16x9 --png
+```
+
+Recipes are tracked in [`../layouts/collage/`](../layouts/collage/) — see
+[`../layouts/README.md`](../layouts/README.md) for the schema and how to add one.
+**Structure lives in `layouts/`; color lives in `themes/`** — they compose, so any
+recipe renders in any background. Precedence: CLI flag > `--recipe` >
+`collage-source.json` > default.
+
 ## Layout families (the "PowerPoint options" study)
 
 PowerPoint's Designer offers a handful of *layout families* per image count

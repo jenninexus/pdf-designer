@@ -12,7 +12,7 @@ public-facing; **detail lives here**. Agent contracts: [`../AGENTS.md`](../AGENT
 | [`THEME-DESIGN.md`](THEME-DESIGN.md) | Token names, dual mode, page signature pin |
 | [`LAYOUT-SYSTEM.md`](LAYOUT-SYSTEM.md) | ⭐ Shared page model — pinned footer, per-doc margins/rhythm, work-samples build |
 | [`PREVIEWER.md`](PREVIEWER.md) | Design Hub how-to |
-| [`COLLAGE-DESIGN.md`](COLLAGE-DESIGN.md) | Layout families + canvas presets (SSOT table) |
+| [`COLLAGE-DESIGN.md`](COLLAGE-DESIGN.md) | Layout families, canvas presets, backgrounds, cover-vs-contain fit |
 | [`STORAGE.md`](STORAGE.md) | Private workspace layout + brand color SSOT |
 | [`VAULT.md`](VAULT.md) | Claim rules, voice layers, role tracks |
 | [`JOB-ASSESSMENT.md`](JOB-ASSESSMENT.md) | Listing capture / pay / gap-check protocol |
@@ -24,8 +24,10 @@ public-facing; **detail lives here**. Agent contracts: [`../AGENTS.md`](../AGENT
 | Path | Owns |
 |---|---|
 | [`../themes/PALETTE-RULES.md`](../themes/PALETTE-RULES.md) | No brown / mustard / lime + guard |
+| [`../layouts/README.md`](../layouts/README.md) | ⭐ Layout recipes — structure (themes own color) |
 | [`../Plans/`](../Plans/) | Working roadmap (one active file) |
 | [`../.claude/commands/make-resume.md`](../.claude/commands/make-resume.md) | `/make-resume` routine (agent-agnostic) |
+| [`../.claude/commands/make-collage.md`](../.claude/commands/make-collage.md) | `/make-collage` routine (agent-agnostic) |
 
 ### Privacy
 

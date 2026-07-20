@@ -1,0 +1,11 @@
+{
+  "id": "screenshot-grid-16x9",
+  "family": "uniform-grid",
+  "canvas": "hd-landscape",
+  "px": "1920x1080",
+  "fit": "contain",
+  "background": "discord-slate",
+  "bestFor": "2, 4, 6, 8 or 9 screenshots of equal importance — a feature matrix or a before/after set. The safest default when no single image should dominate.",
+  "notes": "Column count prefers an exact divisor of the image count, so 4 renders as a clean 2x2 rather than 3x2 with two empty cells. Counts that are prime (5, 7) leave one gap by necessity — add or drop an image to avoid it.",
+  "_source": "Martian Games poll set, 2026-07-19."
+}

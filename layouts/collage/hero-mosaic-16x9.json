@@ -1,0 +1,11 @@
+{
+  "id": "hero-mosaic-16x9",
+  "family": "hero-mosaic",
+  "canvas": "hd-landscape",
+  "px": "1920x1080",
+  "fit": "contain",
+  "background": "discord-slate",
+  "bestFor": "One clearly most-important image plus 2-4 supporting ones. The hero takes a 2x2 block; set it explicitly with --hero rather than letting resolution decide.",
+  "notes": "Column count is chosen so the supporting tiles divide evenly beside the hero — no dead cells. Pair with a wide landscape hero; a tall hero leaves the support column cramped.",
+  "_source": "Martian Games poll set, 2026-07-19."
+}
