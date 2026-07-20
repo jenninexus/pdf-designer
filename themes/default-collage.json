@@ -44,13 +44,17 @@
     "usage": "python -m pdf_tool.collage <dir> --bg discord-slate"
   },
   "backgrounds": {
-    "discord-slate":  { "css": "linear-gradient(160deg, #313338 0%, #2b2d31 45%, #1e1f22 100%)", "use": "Default Discord grey — matches the client chrome the screenshots came from" },
-    "discord-deep":   { "css": "linear-gradient(180deg, #2b2d31 0%, #1e1f22 60%, #111214 100%)", "use": "Darker vertical fade, keeps bright screenshots dominant" },
-    "discord-ember":  { "css": "linear-gradient(145deg, #313338 0%, #2b2d31 55%, #3a2622 100%)", "use": "Discord grey warming into the Martian orange accent" },
-    "discord-signal": { "css": "linear-gradient(145deg, #313338 0%, #26323d 60%, #1b2733 100%)", "use": "Discord grey cooling into the embed link blue" },
-    "discord-radial": { "css": "radial-gradient(120% 90% at 50% 0%, #3a3d44 0%, #2b2d31 45%, #1a1b1e 100%)", "use": "Center-top glow, good for hero-mosaic and spotlight layouts" },
-    "martian-ember":  { "css": "linear-gradient(150deg, #2b2d31 0%, #3a2622 55%, #f0561d 190%)", "use": "Strongest Martian Games brand lean" },
-    "flat-dark":      { "css": "#0b0d12", "use": "Original flat dark — the pre-gradient default" },
-    "flat-white":     { "css": "#ffffff", "use": "Print / light mode flat" }
+    "discord-slate":  { "css": "linear-gradient(160deg, #313338 0%, #2b2d31 45%, #1e1f22 100%)", "frame": "#3f434b", "use": "Default Discord grey — matches the client chrome the screenshots came from" },
+    "discord-deep":   { "css": "linear-gradient(180deg, #2b2d31 0%, #1e1f22 60%, #111214 100%)", "frame": "#383b42", "use": "Darker vertical fade, keeps bright screenshots dominant" },
+    "discord-ember":  { "css": "linear-gradient(145deg, #313338 0%, #2b2d31 55%, #3a2622 100%)", "frame": "#5a3a2c", "use": "Discord grey warming into the Martian orange accent" },
+    "discord-signal": { "css": "linear-gradient(145deg, #313338 0%, #26323d 60%, #1b2733 100%)", "frame": "#2f4457", "use": "Discord grey cooling into the embed link blue" },
+    "discord-radial": { "css": "radial-gradient(120% 90% at 50% 0%, #3a3d44 0%, #2b2d31 45%, #1a1b1e 100%)", "frame": "#454951", "use": "Center-top glow, good for hero-mosaic and spotlight layouts" },
+    "martian-ember":  { "css": "linear-gradient(150deg, #2b2d31 0%, #3a2622 55%, #f0561d 190%)", "frame": "#f0561d", "use": "Strongest Martian Games brand lean" },
+    "flat-dark":      { "css": "#0b0d12", "frame": "#2a2e36", "use": "Original flat dark — the pre-gradient default" },
+    "flat-white":     { "css": "#ffffff", "frame": "#ffffff", "use": "Print / light mode flat" }
+  },
+
+  "_frame_meta": {
+    "description": "`frame` is the polaroid border color for the frame-scatter layout, per background. Replaces the hardcoded white, which fought every dark palette. Defaults to the mode's cell_border when a background declares no frame."
   }
 }
