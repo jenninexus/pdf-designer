@@ -95,6 +95,41 @@ the only renderer. No MCP / always-on server required for core value.
 - [x] **Design Hub ↻ Refresh button** — manual re-scan alongside the auto-poll (a tab opened pre-poll could miss new docs).
 - [x] **`.page-foot--stacked`** shared theme pattern — a line above the footer lives INSIDE the pinned footer so it can't collide with the signature.
 
+## Shipped recently (2026-07-21) — generation QA subsystem + the real brown fix + storage restructure
+
+> **Governing lesson:** a guard that inspects the SOURCE only catches defects that exist in the source.
+> Three defects shipped while every guard said PASS. The QA contract is now *judge the artifact* —
+> see the principle box at the top of [`docs/QA.md`](../../docs/QA.md).
+
+- [x] **`pdf_tool.check_generation` — ONE QA gate** for any generated doc: palette · rgba-magenta ·
+      casing · image-overlay · signature-pin · equal-margins · page-bg · rendered-color · overflow ·
+      footer-collision. Per-user aware (Shade ⇒ no-magenta) and per-doc-type aware (cover letters
+      sign off in flow; resumes/work-samples pin bottom-right). CLI + console script; exit 1 on FAIL.
+- [x] **`pdf_tool.check_rendered_color` — the brown that isn't in the source.** Renders the page and
+      judges PIXELS plus the average of large FLAT background tiles. Ignores text antialiasing (2× +
+      greyscale AA + neighbour clustering) and artwork interiors (game art is legitimately amber).
+      Control-tested: FAILS the old background, PASSES the fixed one.
+- [x] **Root-caused the recurring "it looks brown".** (1) A red-tinted dark-grey background averaged
+      `2c2224`/`291c1d` over large areas — every pixel "neutral" to a hex guard, brown to the eye.
+      (2) Alpha layers over warm gradients manufactured real brown pixels (`a08251`, `7f4c04`).
+      Fix: strictly neutral backgrounds; red only as saturated small accents; **never** an overlay on
+      a warm gradient. Documented in `GENERATION-RULES.md` §3b.
+- [x] **`check_overflow` was measuring at the wrong page width.** Playwright's default 1280px viewport
+      vs Letter's 816px made the same page measure 726px instead of 940px — the guard reported 205px
+      of headroom on a page 9px OVER, and a footer overlap shipped. Now pinned to `_LETTER_PX = 816`.
+- [x] **Storage restructure** — `applications/`→`_job-listings/`, `brands/`→`brand-design/` (code paths,
+      docs, configs, public example fixtures); per-user `resources/images/{martiangames,agency}` +
+      `logos/` so every used image travels with the vault; per-user `defaults/` holding a ready-to-send
+      resume + cover letter + work-samples; `_archive`/`_exports`/`_submitted` marked never-clean.
+- [x] **`themes/GENERATION-RULES.md`** — house rules for ALL generated docs: names/company never
+      all-lowercase, no neon over images (dark scrim only), 16:9 no-crop framing, neutral backgrounds,
+      one page-background per applicant set.
+- [x] **Per-user work-samples SSOT** (`#workSamples` + `#portfolio`) documented in `docs/VAULT.md` — a
+      portfolio is built from the applicant's OWN assets (this is what put Jenni's Agency grid on a
+      Shade doc).
+- [x] **Palette-preview approval gate** — `make-resume` / `make-work-examples` must show the swatch
+      table and get a yes BEFORE generating, so a wrong-colour set is never built twice.
+
 ## Next — maintenance / PyPI when going public ← **priority**
 
 - [ ] PyPI / installer for non-dev users (when going public)
