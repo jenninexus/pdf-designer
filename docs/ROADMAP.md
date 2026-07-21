@@ -12,6 +12,7 @@ Pulled from the active plan — keep in sync there, this is a quick view:
 - [ ] **PyPI / installer** for non-dev users (when going public) ← priority
 - [ ] Keep the **SSOT + white-label docs** honest as the engine evolves ([`docs/SSOT.md`](SSOT.md) · [`docs/WHITE-LABEL.md`](WHITE-LABEL.md))
 - [ ] Optional: document meet-jenni-bot / syn-themes **collage recipes** in [`docs/COLLAGE-DESIGN.md`](COLLAGE-DESIGN.md) examples (paths stay private under `storage/`)
+- [ ] Optional: drop Synagen **engine** promo screenshots into `storage/shade/resources/images/synagen/` when available (enrich Shade work-samples)
 
 ### Parked
 
