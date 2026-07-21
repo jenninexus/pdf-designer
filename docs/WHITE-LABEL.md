@@ -23,21 +23,43 @@ You do **not** need `storage/users`, vaults, or `storage/brand-design` to export
 
 ---
 
+## 5-minute checklist (stranger / fresh clone)
+
+Do this in order. Every step uses **tracked** paths only.
+
+| Step | Command | Pass means |
+|---|---|---|
+| 1. Install | `pip install -e ".[dev]" && playwright install chromium` | `python -m pdf_tool` prints the hub |
+| 2. Smoke | `python scripts/smoke-white-label.py` | exit 0 — QA + light/dark PDF + ATS |
+| 3. Hub | `python -m pdf_tool.preview` | http://127.0.0.1:8787/ opens the example |
+| 4. (Optional) variants | `python -m pdf_tool.variants examples/profiles/default-resume/default-resume.html` | one light PDF per public palette |
+
+The smoke script:
+
+- runs `check_generation` on `examples/profiles/default-resume/default-resume.html`
+- exports light + dark PDFs (2 pages each)
+- runs `check_ats` on the light PDF
+- copies PDFs into `examples/profiles/default-resume/_exports/` (gitignored)
+
+**If smoke fails on a clean clone, the public product path is broken — fix before anything else.**
+
+---
+
 ## Commands
 
 ```bash
-pip install -e . && playwright install chromium
+pip install -e ".[dev]" && playwright install chromium
 
-# Guard colors before every export
-python -m pdf_tool.check_palette examples/profiles/default-resume/*.html
+# One-shot proof (preferred)
+python scripts/smoke-white-label.py
 
-# Light (ATS) + dark branded — same pagination
-python -m pdf_tool.html_to_pdf path/to/doc.html
-python -m pdf_tool.html_to_pdf path/to/doc.html --pdf-theme dark
+# Or step-by-step:
+python -m pdf_tool.check_generation examples/profiles/default-resume/default-resume.html
+python -m pdf_tool.html_to_pdf examples/profiles/default-resume/default-resume.html
+python -m pdf_tool.html_to_pdf examples/profiles/default-resume/default-resume.html --pdf-theme dark
 
 # Palette shopping — one light PDF per public palette
-python -m pdf_tool.variants path/to/doc.html
-# or: python -m pdf_tool.html_to_pdf path/to/doc.html --variants
+python -m pdf_tool.variants examples/profiles/default-resume/default-resume.html
 
 # Design Hub — browse, swap presets, export
 python -m pdf_tool.preview
@@ -48,7 +70,7 @@ python -m pdf_tool.collage path/to/images --layout auto --png
 
 Hub help: `python -m pdf_tool`. Full recipes: [`EXPORTS.md`](EXPORTS.md).
 Docs index: [`README.md`](README.md). Agent map: [`AGENTS.md`](../AGENTS.md).
-SSOT dashboard: [`SSOT.md`](SSOT.md).
+SSOT dashboard: [`SSOT.md`](SSOT.md). Product direction: [`PRODUCT.md`](PRODUCT.md).
 
 ---
 

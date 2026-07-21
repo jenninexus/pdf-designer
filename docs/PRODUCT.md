@@ -39,6 +39,7 @@ brand maps, images) stays gitignored. The public repo must stay clone-safe and d
 - Design Hub previewer
 - Collage / layout recipes (`layouts/`, `themes/default-collage.json`)
 - Documented contracts ([`AGENTS.md`](../AGENTS.md), [`SSOT.md`](SSOT.md), [`WHITE-LABEL.md`](WHITE-LABEL.md))
+- A stranger-proof demo: `python scripts/smoke-white-label.py` (tracked `examples/` only)
 
 ## What a future paid app could add (without forking the engine)
 

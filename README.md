@@ -23,25 +23,36 @@ collages — with an optional vault-backed job-application layer that never inve
 - 🔍 **Design Hub** — local preview, palette swap, one-click export (`python -m pdf_tool.preview`)
 
 > **Status:** private for now. Structure and docs are shaped for a future public release
-> (MIT engine + public themes; private vaults stay gitignored). See [`docs/WHITE-LABEL.md`](docs/WHITE-LABEL.md).
+> (MIT engine + public themes; private vaults stay gitignored). Product direction:
+> [`docs/PRODUCT.md`](docs/PRODUCT.md). Public clone path: [`docs/WHITE-LABEL.md`](docs/WHITE-LABEL.md).
 
 ---
 
-## 🚀 Quick start
+## 🚀 5-minute path (fresh clone, no private data)
+
+Works from **tracked files only** — `examples/` + `themes/`. No `storage/` required.
 
 ```bash
-pip install -e .
+pip install -e ".[dev]"
 playwright install chromium
 
-python -m pdf_tool                 # list every command
-python -m pdf_tool.preview         # Design Hub → http://127.0.0.1:8787/
-python -m pdf_tool.html_to_pdf doc.html
-python -m pdf_tool.html_to_pdf doc.html --pdf-theme dark
+# Prove the public path (QA + light/dark PDF + ATS text layer)
+python scripts/smoke-white-label.py
+
+# Design Hub — browse the example resume, swap palettes, export
+python -m pdf_tool.preview         # → http://127.0.0.1:8787/
+```
+
+Or export by hand:
+
+```bash
+python -m pdf_tool.html_to_pdf examples/profiles/default-resume/default-resume.html
+python -m pdf_tool.html_to_pdf examples/profiles/default-resume/default-resume.html --pdf-theme dark
 ```
 
 Exports land in `_exports/` as `<stem>-light.pdf` / `<stem>-dark.pdf` and **never
-overwrite** (`-v2`, `-v3`). Full command list, guards, pagination traps →
-[`docs/EXPORTS.md`](docs/EXPORTS.md).
+overwrite** (`-v2`, `-v3`). Full command list → [`docs/EXPORTS.md`](docs/EXPORTS.md).
+Ship gate → [`docs/QA.md`](docs/QA.md) (`python -m pdf_tool.check_generation …`).
 
 ---
 
@@ -50,6 +61,7 @@ overwrite** (`-v2`, `-v3`). Full command list, guards, pagination traps →
 | Start here | |
 |---|---|
 | [`docs/README.md`](docs/README.md) | **Docs index** — where every topic lives |
+| [`docs/PRODUCT.md`](docs/PRODUCT.md) | Free GitHub core vs future paid app |
 | [`docs/SSOT.md`](docs/SSOT.md) | What this repo owns vs pointers elsewhere |
 | [`docs/WHITE-LABEL.md`](docs/WHITE-LABEL.md) | Public-only path (no private vaults) |
 | [`AGENTS.md`](AGENTS.md) | Agent capability map + contracts |
