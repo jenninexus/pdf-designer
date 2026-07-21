@@ -159,10 +159,10 @@
     ]
   },
   "plans": {
-    "active": "Plans/_Active/2026-07-14-professional-product-roadmap.md",
+    "active": "Plans/_Active/2026-07-21-next-agent-product-prompt.md",
     "index": "Plans/README.md",
     "archive": "Plans/_Archive/",
-    "next": "white-label path + SSOT map (maintenance); pywebview stays parked"
+    "next": "TestPyPI dry-run + Hub recipe-gallery UX; pywebview stays parked"
   },
   "protocol": {
     "storage": "docs/STORAGE.md",

@@ -5,7 +5,7 @@ Codex, Cursor, or a human should all be able to work from this page alone.
 
 > **Tracked protocol** (this file). Private data lives under gitignored `storage/`.
 > Layout + brand SSOT: [`STORAGE.md`](STORAGE.md). Job capture: [`JOB-ASSESSMENT.md`](JOB-ASSESSMENT.md).
-> Engineering next-steps (one active plan): [`../Plans/_Active/2026-07-14-professional-product-roadmap.md`](../Plans/_Active/2026-07-14-professional-product-roadmap.md).
+> Engineering next-steps (one active plan): [`../Plans/_Active/2026-07-21-next-agent-product-prompt.md`](../Plans/_Active/2026-07-21-next-agent-product-prompt.md).
 
 ---
 

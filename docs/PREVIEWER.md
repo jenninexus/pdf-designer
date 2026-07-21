@@ -142,5 +142,5 @@ book. Same pattern as cover-letter + resume bundles.
 - [`COLLAGE-DESIGN.md`](COLLAGE-DESIGN.md) — layout families + canvas presets
 - [`THEME-DESIGN.md`](THEME-DESIGN.md) — token contract the palette swapper relies on
 - [`EXPORTS.md`](EXPORTS.md) — export command reference
-- [`Plans/_Active/2026-07-14-professional-product-roadmap.md`](../Plans/_Active/2026-07-14-professional-product-roadmap.md) — ⭐ live product checklist
+- [`Plans/_Active/2026-07-21-next-agent-product-prompt.md`](../Plans/_Active/2026-07-21-next-agent-product-prompt.md) — ⭐ live product checklist
 - [`Plans/README.md`](../Plans/README.md) — active vs archive index

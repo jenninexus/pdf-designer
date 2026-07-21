@@ -37,7 +37,10 @@ folder task runs `scripts/ensure-design-hub.ps1` — starts the hub if needed, o
 direction (free GitHub vs paid app): [`docs/PRODUCT.md`](docs/PRODUCT.md). Packaging / wheel gate:
 [`docs/PACKAGING.md`](docs/PACKAGING.md) · `python scripts/check-wheel-assets.py`.
 
-**Active plan (one):** [`Plans/_Active/2026-07-14-professional-product-roadmap.md`](Plans/_Active/2026-07-14-professional-product-roadmap.md) · next-agent handoff [`Plans/_Active/2026-07-21-next-agent-product-prompt.md`](Plans/_Active/2026-07-21-next-agent-product-prompt.md) · index [`Plans/README.md`](Plans/README.md).
+**Active plan (one):** [`Plans/_Active/2026-07-21-next-agent-product-prompt.md`](Plans/_Active/2026-07-21-next-agent-product-prompt.md) (checklist + paste-ready handoff) · index [`Plans/README.md`](Plans/README.md). Prior wave: [`Plans/_Archive/2026-07-14-professional-product-roadmap.md`](Plans/_Archive/2026-07-14-professional-product-roadmap.md).
+
+**Netflix — CLOSED:** both founders submitted. Keep any `storage/_job-listings/Netflix*` schemas —
+do not delete. Do not reopen/rebuild/re-apply unless the human explicitly asks.
 
 ---
 
