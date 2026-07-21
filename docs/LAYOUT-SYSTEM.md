@@ -128,7 +128,7 @@ fully self-contained — no external image hosts:
 3. Export light + dark to `storage/<user>/_exports/<App>/`. **Upload the dark version** for impact;
    keep the ATS `resume-light` as the primary Resume upload.
 
-Worked example: `storage/applications/Netflix-App/jenni-netflix-genai-work-samples.template.html`.
+Worked example: `storage/_job-listings/Netflix-App/jenni-netflix-genai-work-samples.template.html`.
 Profile contract: `storage/profiles/jenni-resume.json → workSamples`. Asset sources + flagship beats:
 `storage/users/jenni.json → portfolio`.
 

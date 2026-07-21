@@ -6,7 +6,7 @@ palette swapper, one-click export.
 
 Chrome tokens live in ``static/hub.css`` (vendored from www-theme-kit dashboard
 tokens + syna glass). Document brand palettes still come from ``themes/`` +
-``storage/brands/``.
+``storage/brand-design/``.
 
 Zero new dependencies: stdlib http.server; exports reuse html_to_pdf / pdf_to_png.
 Binds to 127.0.0.1 only. No MCP / always-on server required.
@@ -75,8 +75,8 @@ def classify_document(rel: str, stem: str) -> dict:
     else:
         kind = "other"
 
-    if path_l.startswith("storage/applications/"):
-        bucket = "applications"
+    if path_l.startswith("storage/_job-listings/"):
+        bucket = "_job-listings"
     elif path_l.startswith("examples/"):
         bucket = "examples"
     elif "collage" in path_l or "_candidates" in parts:
@@ -186,12 +186,12 @@ def _vars_from_token_map(block: dict) -> dict:
 
 
 def load_palettes() -> list[dict]:
-    """themes/*.json + themes/presets/*.json (public) + storage/brands/*.json (private)."""
+    """themes/*.json + themes/presets/*.json (public) + storage/brand-design/*.json (private)."""
     palettes = []
     for theme_dir in (
         _REPO_ROOT / "themes",
         _REPO_ROOT / "themes" / "presets",
-        _REPO_ROOT / "storage" / "brands",
+        _REPO_ROOT / "storage" / "brand-design",
     ):
         if not theme_dir.is_dir():
             continue

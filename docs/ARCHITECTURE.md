@@ -33,7 +33,7 @@ built versus planned.
 | `check_vault` | Vault schema / `--explain` / `--coverage`. | ✅ built |
 | `check_ats` | ATS text-layer guard on light PDF. | ✅ built |
 | `audit_resume` | Diff rendered HTML vs vault (lead omissions). | ✅ built |
-| `tracker` | List / status over `storage/applications/**/application.json`. | ✅ built |
+| `tracker` | List / status over `storage/_job-listings/**/application.json`. | ✅ built |
 | `collage` | Six layout families from a folder of images, plus a picker gallery. | ✅ built |
 | `preview` | The **Design Hub** — local previewer, live thumbnails, palette swapper, export. | ✅ built |
 
@@ -125,7 +125,7 @@ themes/
 examples/
   profiles/default-resume/    a worked profile + the .example shapes for user / profile / vault
   profiles/default-collage/
-  applications/               the one-folder-per-application workflow + its templates
+  _job-listings/              the one-folder-per-application workflow + its templates
 docs/                         you are here
 storage/                      ⛔ GITIGNORED — the real vaults, applications, exports
 Plans/_Active/                ⭐ one live product roadmap

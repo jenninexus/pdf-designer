@@ -1,6 +1,6 @@
 {
   "_README": [
-    "THE COMPANY PALETTE. Copy to storage/applications/<Track>/theme.json.",
+    "THE COMPANY PALETTE. Copy to storage/_job-listings/<Track>/theme.json.",
     "",
     "This palette belongs to the COMPANY, not to a person — which is why it lives with",
     "the application. Two people applying to the same posting render from this ONE file",

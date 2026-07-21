@@ -13,11 +13,11 @@ Everything under `storage/` is **local only**. It holds career data, application
 
 | Tracked in the repo (safe to clone) | Private in `storage/` (gitignored) | Lives in theme kits (website SSOT) |
 |---|---|---|
-| `src/`, `themes/`, `examples/`, `docs/`, `AGENTS.md` | `users/`, `*/resume-source.json`, `profiles/`, `applications/`, `brands/`, `_exports/` | `www-theme-kit/profiles/…`, `syna-theme-kit/profiles/…` |
-| Brand-neutral default theme + `examples/brands/` | Real brand maps + vaults + contacts | Live site primary/secondary/accent |
+| `src/`, `themes/`, `examples/`, `docs/`, `AGENTS.md` | `users/`, `*/resume-source.json`, `profiles/`, `_job-listings/`, `brand-design/`, `_exports/` | `www-theme-kit/profiles/…`, `syna-theme-kit/profiles/…` |
+| Brand-neutral default theme + `examples/brand-design/` | Real brand maps + vaults + contacts | Live site primary/secondary/accent |
 
 **Website kits own live site colors.** pdf-designer stores a **mapped copy** under
-`storage/brands/brand-*.json` for exports and the Design Hub. That mapped file is the
+`storage/brand-design/brand-*.json` for exports and the Design Hub. That mapped file is the
 **pdf-designer SSOT** for personal/studio résumé colors — edit it here, point everything else at it.
 
 ---
@@ -26,14 +26,14 @@ Everything under `storage/` is **local only**. It holds career data, application
 
 | Who / what | Single file to edit | Pointed at by |
 |---|---|---|
-| **Jenni** personal | `storage/brands/brand-jenninexus.json` | `users/jenni.json` → `brandTheme.ssot`, `profiles/jenni-resume.json` |
-| **Shade** personal (Synagen) | `storage/brands/brand-synagen.json` | `users/shade.json` → `brandTheme.ssot`, `profiles/shade-resume.json` |
-| **Martian Games** studio | `storage/brands/brand-martian.json` | `profiles/martian-resume.json`, `profiles/studio-resume.json` |
+| **Jenni** personal | `storage/brand-design/brand-jenninexus.json` | `users/jenni.json` → `brandTheme.ssot`, `profiles/jenni-resume.json` |
+| **Shade** personal (Synagen) | `storage/brand-design/brand-synagen.json` | `users/shade.json` → `brandTheme.ssot`, `profiles/shade-resume.json` |
+| **Martian Games** studio | `storage/brand-design/brand-martian.json` | `profiles/martian-resume.json`, `profiles/studio-resume.json` |
 
 Do **not** keep a second hex map in `users/*.json`. Upstream website profiles are
 **inspiration / sync source**, not a second résumé SSOT.
 
-Tracked template for new users: [`../examples/brands/`](../examples/brands/).
+Tracked template for new users: [`../examples/brand-design/`](../examples/brand-design/).
 
 ---
 
@@ -43,7 +43,7 @@ Each layer answers exactly one question.
 
 ```
   ① WHO ─────────────  users/<user>.json
-                       contact · emails · brandTheme.ssot → brands/brand-*.json
+                       contact · emails · brandTheme.ssot → brand-design/brand-*.json
                        characterVoice  ← personality · contrast · register map
                                     │
                                     ▼
@@ -58,12 +58,41 @@ Each layer answers exactly one question.
                        (+ martian-resume / studio-resume for studio voice)
                                     │
                                     ▼
-  ④ THE JOB ─────────  applications/<Track>/
+  ④ THE JOB ─────────  _job-listings/<Track>/
                        <Company>.md · application.json · theme.json · *.html
                                     │
                                     ▼
   → OUT ─────────────  <user>/_exports/<Track>/
 ```
+
+### Per-user directory layout (`storage/jenni/`, `storage/shade/`)
+
+Each person's folder holds their vault + their **go-to default deliverables** + reusable assets and
+finished-run history. Updated architecture 2026-07-20:
+
+```
+storage/<user>/
+  resume-source.json        ⭐ THE VAULT (root — stays here)
+  <user>-resume.html / shade-default-resume.html   the favorite/default source HTML (root)
+  defaults/                 ⭐ GO-TO reusable PDFs — the generic "best-of" resume, cover letter,
+                            and work-examples (light + dark), ready to submit to a NEW listing
+                            without re-generating. NO template placeholders ([address] etc.) —
+                            generic and submittable as-is.
+  resources/                reusable user assets (NOT job-specific)
+      logos/                brand marks — synagen-logo-16-9.png, etc.
+      refrence/             source CVs + owner quote docs (mg_cv_2025.pdf, Self-Described.md, …)
+  _exports/<Track>/         per-listing generated PDFs (one subdir per job)
+  _archive/                 ⛔ retired/superseded material — DO NOT DELETE on a "clean stale" pass
+  _submitted/               (shade) sent-application record — DO NOT DELETE on a "clean stale" pass
+```
+
+> **⛔ `_archive/`, `_exports/`, and `_submitted/` are protected.** Never delete their contents during
+> a "clean stale" / dangling-reference sweep — they are history and finished work the owner keeps on
+> purpose. Stale-cleaning applies to broken *pointers*, not to these directories.
+>
+> **`defaults/` vs `_exports/`.** `_exports/<Track>/` is per-job output; **`defaults/` is the one place
+> to grab a ready-to-send generic resume/cover/work-samples** so the owner never has to sort through
+> `_exports/` or re-generate for a fresh listing. Keep `defaults/` current with the best-of vault.
 
 ### Voice SSOT (hybrid)
 

@@ -9,7 +9,7 @@
     "  ① users/<you>.json          WHO      <- you are here",
     "  ② <you>/resume-source.json  WHAT     the VAULT (see resume-source.example.json)",
     "  ③ profiles/<you>-resume.json HOW     (see profile.example.json)",
-    "  ④ applications/<Track>/      THE JOB (see examples/applications/)"
+    "  ④ _job-listings/<Track>/      THE JOB (see examples/_job-listings/)"
   ],
 
   "id": "yourname",
@@ -89,7 +89,7 @@
   },
 
   "brandTheme": {
-    "_note": "Your fallback palette — used when a target company gives no usable color signal. Otherwise the palette is derived from THEIR brand CSS (see applications/<Track>/theme.json).",
+    "_note": "Your fallback palette — used when a target company gives no usable color signal. Otherwise the palette is derived from THEIR brand CSS (see _job-listings/<Track>/theme.json).",
     "name": "Your Brand",
     "tokens": {
       "bg": "#0B0510",

@@ -1,5 +1,5 @@
 ---
-description: Build a tailored, source-backed resume + cover letter for a job application. Researches the company, verifies REMOTE status and PAY RATE, derives a theme from the company's real brand colors, renders light+dark PDFs into storage/<user>/_exports/<App>/, and merges a submission bundle. Use for "/make-resume", "make me a resume", "tailor my resume for this job", "apply to this listing", "new job application", "resume for jenni/shade", or whenever a job listing lands in storage/applications/. Handles one person or both (matched-pair themes).
+description: Build a tailored, source-backed resume + cover letter for a job application. Researches the company, verifies REMOTE status and PAY RATE, derives a theme from the company's real brand colors, renders light+dark PDFs into storage/<user>/_exports/<App>/, and merges a submission bundle. Use for "/make-resume", "make me a resume", "tailor my resume for this job", "apply to this listing", "new job application", "resume for jenni/shade", or whenever a job listing lands in storage/_job-listings/. Handles one person or both (matched-pair themes).
 argument-hint: <user> <application-dir> [profile.json] [theme.css]
 ---
 
@@ -10,13 +10,13 @@ Repo-local command for **`C:\Github\pdf-designer`**. Real data lives under `stor
 ## Usage
 
 ```
-/make-resume jenni  storage/applications/3D-Visualizer
-/make-resume shade  storage/applications/3D-Visualizer
-/make-resume both   storage/applications/3D-Visualizer    # matched-pair themes
-/make-resume studio storage/applications/<App>            # studio voice — capabilities
-/make-resume martian storage/applications/<App>           # studio voice — games
-/make-resume jenni  storage/applications/3D-Visualizer dark      # DARK PDF ONLY (skip light/ATS file)
-/make-resume jenni  storage/applications/3D-Visualizer <profile.json> <theme.css>
+/make-resume jenni  storage/_job-listings/3D-Visualizer
+/make-resume shade  storage/_job-listings/3D-Visualizer
+/make-resume both   storage/_job-listings/3D-Visualizer    # matched-pair themes
+/make-resume studio storage/_job-listings/<App>            # studio voice — capabilities
+/make-resume martian storage/_job-listings/<App>           # studio voice — games
+/make-resume jenni  storage/_job-listings/3D-Visualizer dark      # DARK PDF ONLY (skip light/ATS file)
+/make-resume jenni  storage/_job-listings/3D-Visualizer <profile.json> <theme.css>
 ```
 
 Only `<user>` and `<application-dir>` are required. `both` = build for Jenni AND Shade off one
@@ -187,7 +187,7 @@ storage/
   <user>/resume-source.json      ⭐ THE VAULT — claims + voice + roleTracks[].angle
   profiles/<user>-resume.json    HOW it renders  (layout, exports, cover-letter policy)
                                  ↳ exactly 4: jenni · shade · martian (games) · studio (capabilities)
-  applications/<App-Dir>/        THE JOB
+  _job-listings/<App-Dir>/       THE JOB
     <Company>.md                   research + the verbatim listing
     application.json               apply URL · pay · status · who applied
     theme.json                     the COMPANY-derived palette (shared, split accent runs)
@@ -305,12 +305,25 @@ ink-primaries resume reads as fluency in their medium). No usable signal → fal
 `brandTheme`.
 
 Save the derived palette to **`<App>/theme.json`** — it belongs to the *company*, and both applicants
-render from it. Worked example: [`storage/applications/3D-Visualizer/theme.json`](../../storage/applications/3D-Visualizer/theme.json)
+render from it. Worked example: [`storage/_job-listings/3D-Visualizer/theme.json`](../../storage/_job-listings/3D-Visualizer/theme.json)
 (Color X is a printing house → their palette is a CMYK ink set → an ink-primaries resume reads as
 fluency in their medium; Jenni takes the warm run, Shade the cool one).
 
 Brand fallbacks when a company gives no usable signal:
-`storage/brands/brand-{jenninexus,synagen,martian}.json` (private, gitignored)
+`storage/brand-design/brand-{jenninexus,synagen,martian}.json` (private, gitignored)
+
+### 🏛 HOUSE GENERATION RULES — apply to EVERY generated doc
+
+📖 **One-page SSOT: [`themes/GENERATION-RULES.md`](../../themes/GENERATION-RULES.md).** Must-always-be-true
+rules for resume + cover letter + work-samples:
+
+- **⛔ Names & company names are NEVER all-lowercase** in display text (headings, signature, body). A
+  stylized UPPERCASE header or a wordmark image is fine; all-lowercase reads as a typo and is a defect.
+- **⛔ Never wash a bright/neon/primary color over a banner, hero, or photo.** For text over an image use a
+  **black → transparent gradient scrim** (or a dark solid at low opacity), never a saturated brand fill.
+  Brand color goes on text/rules/borders/panels *beside* the image.
+- **16:9, no-crop framing** for image galleries — `object-fit: contain` on a dark mat or a true-16:9
+  source; never crop the subject off. Logos sized to look good, not huge.
 
 ### 🚫 HOUSE PALETTE RULE — NO EXCEPTIONS
 
@@ -326,7 +339,7 @@ Dark mode keeps the bright amber — it's fine there.
 **Enforced — run before every export:**
 
 ```bash
-python -m pdf_tool.check_palette storage/applications/<App>/<doc>.html
+python -m pdf_tool.check_palette storage/_job-listings/<App>/<doc>.html
 python -m pdf_tool.check_palette --scan storage/          # sweep everything
 ```
 
@@ -342,7 +355,7 @@ Exits non-zero and names the offending hex + line. **Fix it; don't override it.*
 
 ```bash
 cd C:/Github/pdf-designer/src
-APP=../storage/applications/<App-Dir>
+APP=../storage/_job-listings/<App-Dir>
 O=../storage/<user>/_exports/<App-Dir>          # ⭐ per-USER, not per-application
 mkdir -p "$O"
 
@@ -412,7 +425,7 @@ Resume = **exactly 2 pages** · cover letter = **1** · work-samples = **3** · 
 ## 📝 Log it (step 9) — three places, no exceptions
 
 1. **`<App>/application.json`** — the machine record: apply URL, pay, status, who applied, export paths.
-2. **`storage/applications/README.md`** — the human index, with the status and any ⚠ caveat.
+2. **`storage/_job-listings/README.md`** — the human index, with the status and any ⚠ caveat.
 3. **`<App>/<Company>.md`** — the research doc: status line + materials index.
 
 A finished application that isn't logged is one nobody can find in a month.

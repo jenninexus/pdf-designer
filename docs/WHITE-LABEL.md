@@ -14,9 +14,9 @@ are the product.
 | Default theme | `themes/default-resume.{json,css}` | Token SSOT + CSS mirror |
 | Audition palettes | `themes/presets/*.json` | Design Hub / `--variants` shopping |
 | Palette rule | [`themes/PALETTE-RULES.md`](../themes/PALETTE-RULES.md) | No brown / mustard / lime |
-| Brand template (optional) | `examples/brands/` | Copy shape only — not real hex maps |
+| Brand template (optional) | `examples/brand-design/` | Copy shape only — not real hex maps |
 
-You do **not** need `storage/users`, vaults, or `storage/brands` to export PDFs.
+You do **not** need `storage/users`, vaults, or `storage/brand-design` to export PDFs.
 
 ---
 
@@ -52,7 +52,7 @@ SSOT dashboard: [`SSOT.md`](SSOT.md).
 ## Brand maps
 
 - **Stay public:** use `themes/default-resume.json` + `themes/presets/*` (and the Hub swapper).
-- **Go private later:** copy `examples/brands/` → your local `storage/brands/brand-*.json`
+- **Go private later:** copy `examples/brand-design/` → your local `storage/brand-design/brand-*.json`
   (gitignored). That file becomes the color SSOT for that person/studio — see
   [`STORAGE.md`](STORAGE.md).
 
@@ -67,8 +67,8 @@ them to be public.
 |---|---|
 | `storage/users/*.json` | Contact, hard facts, `characterVoice` |
 | `storage/<user>/resume-source.json` | Claim vault + application voice |
-| `storage/applications/` | Real listings, pay, apply links |
-| `storage/brands/brand-*.json` | Studio / personal palettes |
+| `storage/_job-listings/` | Real listings, pay, apply links |
+| `storage/brand-design/brand-*.json` | Studio / personal palettes |
 | Real PII in any form | Never commit; never move into `examples/` |
 
 The résumé *protocol* (vault → tailor → export) is documented and optional. The

@@ -1,6 +1,9 @@
-# Palette Rules — the house SSOT
+# Palette Rules — the house SSOT (color)
 
-The one rule every theme, palette, and export in this repo must satisfy. Enforced by a guard, not by good intentions.
+The one **color** rule every theme, palette, and export in this repo must satisfy. Enforced by a guard, not by good intentions.
+
+> **Broader generation rules** (name/company casing, no neon over images, 16:9 no-crop framing) live in
+> the sibling hub [`GENERATION-RULES.md`](GENERATION-RULES.md). This file is color only.
 
 | | |
 |---|---|
@@ -32,7 +35,7 @@ the `--no-magenta` flag, which flags the magenta/pink hue band (~290–345°):
 python -m pdf_tool.check_palette --no-magenta <doc>.html   # ALSO ban magenta/pink
 ```
 
-Shade's Synagen palette (`storage/brands/brand-synagen.json`) was rebuilt magenta-free — orchid-**violet**
+Shade's Synagen palette (`storage/brand-design/brand-synagen.json`) was rebuilt magenta-free — orchid-**violet**
 + iridescent-**cyan**, heading gradient violet → blue-violet → cyan. The old magenta secondary
 (`E44FD0`/`B0187E`) and the magenta-led gradient are gone. If pink ever reappears in a Shade/Martian doc,
 replace it with **violet (< 290°)** or **cyan** — never pink. (In the "fix pattern" table below, use a
@@ -94,7 +97,7 @@ The palettes already ship this pattern:
 
 Pick the stand-in from a hue the palette *already contains* (its cyan, its violet, its magenta) so the light document still reads as the same brand — and pick one the sibling tokens aren't already using, so the roles stay visually distinct. Dark mode is untouched for legal bright warms.
 
-**Martian note (2026-07-16):** live `martiangames.com` roles are **primary `#FF6B00` · secondary `#8B5CF6` · accent `#FF4500`** on ember-nebula `#0c0a12` — not amber + teal, and **no brown chrome**. Resume dark tokens mirror `www-theme-kit/profiles/martiangames.json` (+ `#no_brown_rule`). Light secondary stays violet. Private map: `storage/brands/brand-martian.json` (gitignored); kit mirror: `www-theme-kit/palettes/resume-palettes.json#martian-resume`. Copilot/Portal/bot: same rule via `syna-theme-kit/profiles/martian-portal.json` + `martian-bot/docs/STYLE-SPEC.md`.
+**Martian note (2026-07-16):** live `martiangames.com` roles are **primary `#FF6B00` · secondary `#8B5CF6` · accent `#FF4500`** on ember-nebula `#0c0a12` — not amber + teal, and **no brown chrome**. Resume dark tokens mirror `www-theme-kit/profiles/martiangames.json` (+ `#no_brown_rule`). Light secondary stays violet. Private map: `storage/brand-design/brand-martian.json` (gitignored); kit mirror: `www-theme-kit/palettes/resume-palettes.json#martian-resume`. Copilot/Portal/bot: same rule via `syna-theme-kit/profiles/martian-portal.json` + `martian-bot/docs/STYLE-SPEC.md`.
 
 ## Known limitations
 

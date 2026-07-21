@@ -23,8 +23,8 @@ multi-page collage book).
 **2026-07-14 housekeeping done**
 
 - [x] Protocol docs moved to tracked `docs/` (`STORAGE`, `VAULT`, `JOB-ASSESSMENT`); `storage/` keeps stubs + private data only
-- [x] Brand color SSOT = one file each under `storage/brands/`; `users/*.json` only pointers
-- [x] Previewer reads `storage/brands/` (not the never-existed `storage/themes/`)
+- [x] Brand color SSOT = one file each under `storage/brand-design/`; `users/*.json` only pointers
+- [x] Previewer reads `storage/brand-design/` (not the never-existed `storage/themes/`)
 - [x] React-vs-pywebview conflict already resolved in `THEME-DESIGN.md`
 
 **Why the re-prioritization.** The résumé pipeline is the product. Collage app work stays parked.

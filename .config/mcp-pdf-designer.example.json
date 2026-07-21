@@ -27,7 +27,7 @@
       "check_vault": "Vault schema / --explain / --coverage",
       "check_ats": "ATS text-layer guard on light PDF",
       "audit_resume": "Diff rendered HTML vs vault omissions",
-      "tracker": "List / status over storage/applications",
+      "tracker": "List / status over storage/_job-listings",
       "collage": "Collage candidates + picker gallery",
       "preview": "Design Hub (localhost previewer)"
     }
@@ -99,7 +99,7 @@
     "document_palettes": [
       "themes/default-resume.json",
       "themes/presets/*.json",
-      "storage/brands/brand-*.json"
+      "storage/brand-design/brand-*.json"
     ],
     "users_dir": "storage/users/",
     "person_files": {
@@ -111,7 +111,7 @@
     "_role": "COLOR. Structure lives in `layouts` below — the two compose.",
     "public_presets": "themes/presets/",
     "kit_registry": "www-theme-kit/palettes/resume-palettes.json",
-    "private_brands": "storage/brands/",
+    "private_brands": "storage/brand-design/",
     "rules": "themes/PALETTE-RULES.md"
   },
   "layouts": {

@@ -4,8 +4,8 @@ One folder per job — how to go after a job without ever inventing a claim.
 
 The workflow for going after a job without ever inventing a claim.
 
-> Your real applications live in `storage/applications/` (gitignored). The copyable templates live
-> in [`../examples/applications/example-application/`](../examples/applications/example-application/).
+> Your real applications live in `storage/_job-listings/` (gitignored). The copyable templates live
+> in [`../examples/_job-listings/example-application/`](../examples/_job-listings/example-application/).
 
 ---
 
@@ -43,7 +43,7 @@ Folders are keyed by **role track**, *not* by date — so each new job in a trac
 copy-and-tweak of the last one rather than a rebuild.
 
 ```text
-storage/applications/
+storage/_job-listings/
   3D-Visualizer/            ← the TRACK, not a date
     Company.md              research · verified links · pay verdict · evidence map · the listing verbatim
     application.json        the machine record: apply URL · pay · status · who applied
@@ -70,16 +70,16 @@ between them.
 
 | Copy this | To | For |
 |---|---|---|
-| [`Company.example.md`](../examples/applications/example-application/Company.example.md) | `<Track>/<Company>.md` | Research — links, checks, the requirement→evidence map, the verbatim listing |
-| [`application.example.json`](../examples/applications/example-application/application.example.json) | `<Track>/application.json` | The machine record — apply URL, pay verdict, status, applicants |
-| [`theme.example.json`](../examples/applications/example-application/theme.example.json) | `<Track>/theme.json` | The company-derived palette — with split accent runs when two people apply |
+| [`Company.example.md`](../examples/_job-listings/example-application/Company.example.md) | `<Track>/<Company>.md` | Research — links, checks, the requirement→evidence map, the verbatim listing |
+| [`application.example.json`](../examples/_job-listings/example-application/application.example.json) | `<Track>/application.json` | The machine record — apply URL, pay verdict, status, applicants |
+| [`theme.example.json`](../examples/_job-listings/example-application/theme.example.json) | `<Track>/theme.json` | The company-derived palette — with split accent runs when two people apply |
 
 ---
 
 ## Build it
 
 ```bash
-/make-resume <user> storage/applications/<Track>
+/make-resume <user> storage/_job-listings/<Track>
 ```
 
 One command runs the routine end to end: capture the apply link → verify remote + pay →
@@ -93,7 +93,7 @@ can follow it.
 ## Then log it — three places
 
 1. `<Track>/application.json` — the machine record
-2. `storage/applications/README.md` — the human index, with the status and any ⚠ caveat
+2. `storage/_job-listings/README.md` — the human index, with the status and any ⚠ caveat
 3. `<Track>/<Company>.md` — the status line + the materials index
 
 *A finished application nobody can find in a month wasn't finished.*

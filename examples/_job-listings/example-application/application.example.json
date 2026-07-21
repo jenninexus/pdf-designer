@@ -2,7 +2,7 @@
   "_README": [
     "THE APPLICATION RECORD — layer ④ of four. Answers: WHAT are we applying to?",
     "",
-    "Copy to storage/applications/<Track>/application.json alongside the listing doc.",
+    "Copy to storage/_job-listings/<Track>/application.json alongside the listing doc.",
     "",
     "Facts about the JOB belong to the JOB — not to a person's profile. Two people",
     "applying to the same posting share ONE of these files, so the apply link, the pay",

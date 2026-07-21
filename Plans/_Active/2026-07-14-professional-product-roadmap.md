@@ -36,7 +36,7 @@ the only renderer. No MCP / always-on server required for core value.
 - [x] Design Hub Phase 1 — preview, filters, palette swap, export
 - [x] Compact ~44px toolbar (Syqo/Synagen density)
 - [x] Protocol docs in tracked `docs/`; `storage/` private + stubs
-- [x] Brand SSOT = `storage/brands/brand-*.json`; users only point
+- [x] Brand SSOT = `storage/brand-design/brand-*.json`; users only point
 - [x] Public presets (6) + polished `default-resume` + kit catalog
 - [x] Breakpoint pointer: `.config/mcp-pdf-designer.json#breakpoints`
 - [x] Character voice layers (`users#characterVoice` + vault `#voice`) — see archive
@@ -49,7 +49,7 @@ the only renderer. No MCP / always-on server required for core value.
 - [x] pytest for `check_palette.classify()` + vault ranking + coverage helpers
 - [x] Canvas-preset tables reconciled (SSOT: `COLLAGE-DESIGN.md` + `default-collage.json`)
 - [x] License decided: MIT (see `LICENSING-NOTES.md`)
-- [x] Application tracker CLI (scan `storage/applications/**/application.json`) — `python -m pdf_tool.tracker list|status` (UI stays later / Jobright-inspired)
+- [x] Application tracker CLI (scan `storage/_job-listings/**/application.json`) — `python -m pdf_tool.tracker list|status` (UI stays later / Jobright-inspired)
 - [x] Match / coverage report against listing — CLI: `check_vault --coverage` (UI stays with tracker)
 - [x] `--variants` palette shopping → `_variants/` (`python -m pdf_tool.variants` / `html_to_pdf --variants`)
 - [x] Optional WCAG gate (`node scripts/wcag-resume-palettes.mjs` — document in README/AGENTS; no package.json yet)
@@ -117,7 +117,7 @@ the only renderer. No MCP / always-on server required for core value.
 |---|---|
 | Breakpoints | `.config/mcp-pdf-designer.json#breakpoints` → mcp-breakpoints → www SCSS |
 | Public palettes | `themes/` + `themes/presets/` |
-| Private brands | `storage/brands/` |
+| Private brands | `storage/brand-design/` |
 | Claims + app voice | `storage/<user>/resume-source.json` |
 | Personality / registers | `storage/users/<user>.json#characterVoice` |
 | Voice map / public cards | `C:\Github\voice-seed` (deep edit stays in storage/) |

@@ -1,6 +1,6 @@
 # <Company> — <Role Title>
 
-> **The research doc.** Copy to `storage/applications/<Track>/<Company>.md`.
+> **The research doc.** Copy to `storage/_job-listings/<Track>/<Company>.md`.
 > Its sibling `application.json` is the *machine* record (apply URL, pay, status);
 > this file is the *human* one — what they do, what they want, and whether we're a fit.
 >

@@ -33,7 +33,7 @@ metrics, *and their writing voice*.
 | **Person** | `users/<user>.json` | *Who is applying* — contact, emails, brand palette, **`characterVoice`** (personality / contrast / register map), quick `hardFacts` |
 | **Vault** ⭐ | `<user>/resume-source.json` | *What may be truthfully claimed* · *how application prose sounds* (`voice`) · *the angle for each role track* |
 | **Profile** | `profiles/<user>-resume.json` | *How it renders* — layout, exports, cover-letter policy (voice = pointer only) |
-| **Application** | `applications/<Track>/` | *The job* — listing, apply link, pay, company palette |
+| **Application** | `_job-listings/<Track>/` | *The job* — listing, apply link, pay, company palette |
 
 **Voice is two layers (hybrid SSOT):**
 
