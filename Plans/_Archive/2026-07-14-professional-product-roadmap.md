@@ -1,19 +1,20 @@
-# Product roadmap — pdf-designer (ACTIVE)
+# Product roadmap — pdf-designer (ARCHIVED 2026-07-21)
 
-**Single active plan.** Started 2026-07-14 · consolidated 2026-07-14.
+> **Wave complete.** Public path, QA subsystem, packaging spike, and paid-app design
+> shipped. Open follow-ups (TestPyPI · Hub recipe gallery · optional polish) live in
+> [`../_Active/2026-07-21-next-agent-product-prompt.md`](../_Active/2026-07-21-next-agent-product-prompt.md).
+> Do not treat this file as next-steps.
+
+Started 2026-07-14 · archived 2026-07-21.
 
 | Pointer | Role |
 |---|---|
-| **This file** | Working checklist — what to build next |
-| [`docs/SSOT.md`](../../docs/SSOT.md) | SSOT dashboard (owns vs points elsewhere) |
-| [`docs/PRODUCT.md`](../../docs/PRODUCT.md) | ⭐ Free GitHub vs future paid app (business direction) |
-| [`docs/WHITE-LABEL.md`](../../docs/WHITE-LABEL.md) | Public-only reuse how-to (not the business plan) |
-| [`docs/QA.md`](../../docs/QA.md) | Ship gate — judge the artifact |
-| [`docs/PREVIEWER.md`](../../docs/PREVIEWER.md) | Design Hub how-to |
-| [`docs/STORAGE.md`](../../docs/STORAGE.md) · [`VAULT.md`](../../docs/VAULT.md) · [`JOB-ASSESSMENT.md`](../../docs/JOB-ASSESSMENT.md) | Protocol SSOT |
-| [`2026-07-21-next-agent-product-prompt.md`](2026-07-21-next-agent-product-prompt.md) | ⭐ Paste-ready next-agent handoff (remaining: TestPyPI / Hub recipe gallery) |
+| **This file** | Historical checklist (shipped wave) |
+| **Active plan** | [`../_Active/2026-07-21-next-agent-product-prompt.md`](../_Active/2026-07-21-next-agent-product-prompt.md) |
+| [`docs/SSOT.md`](../../docs/SSOT.md) | SSOT dashboard |
+| [`docs/PRODUCT.md`](../../docs/PRODUCT.md) | Free GitHub vs future paid app |
 | [`docs/PACKAGING.md`](../../docs/PACKAGING.md) | PyPI / wheel asset rules |
-| [`../_Archive/`](../_Archive/) | Completed / parked plans (hub Phase 1, character voice, pywebview) |
+| [`docs/QA.md`](../../docs/QA.md) | Ship gate — judge the artifact |
 
 ---
 
@@ -92,6 +93,9 @@ the only renderer. No MCP / always-on server required for core value.
 
 ## Shipped recently (2026-07-20) — Netflix apps (both founders) + magenta ban + guards
 
+> **Netflix CLOSED (2026-07-21):** both founders submitted. Keep `storage/_job-listings/Netflix*`
+> schemas/templates — do not delete. Future agents: ignore Netflix unless the human explicitly asks.
+
 - [x] **`check_overflow` guard + `overflow:hidden` structural fix.** New `pdf_tool.check_overflow` (headless-Chromium page-fit check, auto-warns on export). The real fix for the pinned-footer overlap is `overflow:hidden` on the print `.page` (clips at the edge, can't bleed onto the next sheet). Ground truth = rasterize the real PDF (pypdfium2), not an HTML re-render. `docs/LAYOUT-SYSTEM.md` updated.
 - [x] **Magenta/pink ban** — `check_palette --no-magenta` (opt-in, hue ~290–345°, scoped to Shade + Martian; Jenni's pink is legit). Rebuilt `brand-synagen.json` violet+cyan (was magenta). Tests added. `PALETTE-RULES.md` documents it.
 - [x] **Netflix application for BOTH founders** — Jenni submitted 2026-07-19 (portal); Shade's full set built (resume + cover + work-samples, cool-cyan matched-pair run, magenta-free). Split accent runs in the app `theme.json`. `applied-index.md` submission log added.
@@ -162,23 +166,19 @@ the only renderer. No MCP / always-on server required for core value.
 - [x] **Paid-app spike (design)** — shell-over-Hub architecture in [`docs/PRODUCT.md`](../../docs/PRODUCT.md):
       installer launches Design Hub; recipe gallery = Hub chrome over existing registries; pywebview stays parked.
 
-## Next — public GitHub + product packaging ← **priority**
+## Next (rolled forward 2026-07-21 → active plan)
 
-See [`docs/PRODUCT.md`](../../docs/PRODUCT.md) for free-vs-paid thesis. Engineering checklist:
+Wave goals below are **done**. Remaining checkboxes moved to
+[`../_Active/2026-07-21-next-agent-product-prompt.md`](../_Active/2026-07-21-next-agent-product-prompt.md).
 
 - [x] **Public-repo readiness (demo path)** — README 5-minute path + smoke script from `examples/` only
 - [x] **PyPI / wheel spike** — path resolve + share sync + wheel gate ([`PACKAGING.md`](../../docs/PACKAGING.md))
 - [x] **White-label smoke** — `scripts/smoke-white-label.py` + [`WHITE-LABEL.md`](../../docs/WHITE-LABEL.md) checklist
 - [x] **Paid-app spike (design)** — shell-over-Hub in PRODUCT.md (not a second renderer)
-- [ ] **TestPyPI dry-run** — version bump + upload + fresh-venv install proof
-- [ ] **Hub recipe-gallery UX** — browse `layouts/` + `themes/presets/` inside Design Hub (paid-shell precursor)
-- [ ] Keep SSOT + QA docs honest as the engine evolves
-- [ ] Optional: document meet-jenni-bot / syn-themes collage recipes in `docs/COLLAGE-DESIGN.md` examples (paths stay private under `storage/`)
-- [ ] Optional: Synagen engine promo screenshots → `storage/shade/resources/images/synagen/` (Shade work-samples)
 
-## Later / parked
+## Later / parked (still parked — see active plan)
 
-- [ ] pywebview shell — **parked.** Paid plan is shell-over-Hub (browser → Design Hub); revive native window only on demand ([archived detail](../_Archive/2026-07-11-design-hub-parked-phases.md))
+- [ ] pywebview shell — **parked.** ([archived detail](2026-07-11-design-hub-parked-phases.md))
 
 ## Never
 

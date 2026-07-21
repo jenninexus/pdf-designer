@@ -9,7 +9,7 @@ It is **not** the white-label how-to — that stays in [`WHITE-LABEL.md`](WHITE-
 | Free / open core | Engine + themes + layouts + guards + Design Hub + public docs |
 | Paid later (hypothesis) | Packaged desktop app, templates marketplace, guided “studio” UX |
 | Inspiration | PowerPoint / Canva-class **layout + collage** tools — see collage engine + Design Hub |
-| Active engineering checklist | [`../Plans/_Active/2026-07-14-professional-product-roadmap.md`](../Plans/_Active/2026-07-14-professional-product-roadmap.md) |
+| Active engineering checklist | [`../Plans/_Active/2026-07-21-next-agent-product-prompt.md`](../Plans/_Active/2026-07-21-next-agent-product-prompt.md) |
 | QA contract | [`QA.md`](QA.md) — judge the artifact |
 
 ---

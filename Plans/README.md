@@ -11,18 +11,18 @@ Working plans for pdf-designer. Keep **one** active product roadmap; archive com
 
 | Plan | Status |
 |---|---|
-| [`_Active/2026-07-14-professional-product-roadmap.md`](_Active/2026-07-14-professional-product-roadmap.md) | ⭐ **THE** roadmap — C/P spikes shipped; next = TestPyPI / Hub recipe gallery |
-| [`_Active/2026-07-21-next-agent-product-prompt.md`](_Active/2026-07-21-next-agent-product-prompt.md) | ⭐ Paste-ready next-agent handoff (TestPyPI / gallery / optional D) |
+| [`_Active/2026-07-21-next-agent-product-prompt.md`](_Active/2026-07-21-next-agent-product-prompt.md) | ⭐ **THE** roadmap + paste-ready next-agent handoff (TestPyPI / Hub gallery) |
 
 > **`/jen:roadmap` entry point:** [`../docs/ROADMAP.md`](../docs/ROADMAP.md) is a thin pointer to the plan
-> above (that command discovers `docs/ROADMAP.md`). One roadmap, two doors — never a second copy.
+> above. One roadmap, two doors — never a second copy.
 > **Business direction:** [`../docs/PRODUCT.md`](../docs/PRODUCT.md) (WHITE-LABEL is the public how-to only).
 
 ## Archive (recent)
 
 | Plan | Why archived |
 |---|---|
-| [`2026-07-11-design-hub-app-roadmap.md`](_Archive/2026-07-11-design-hub-app-roadmap.md) | Phase 1 + hub UX shipped; open items folded into product roadmap |
+| [`2026-07-14-professional-product-roadmap.md`](_Archive/2026-07-14-professional-product-roadmap.md) | Wave complete — public path, QA, packaging spike, paid-app design; follow-ups → active 7-21 plan |
+| [`2026-07-11-design-hub-app-roadmap.md`](_Archive/2026-07-11-design-hub-app-roadmap.md) | Phase 1 + hub UX shipped |
 | [`2026-07-11-design-hub-parked-phases.md`](_Archive/2026-07-11-design-hub-parked-phases.md) | pywebview / canvas — parked on demand |
 | [`2026-07-14-character-voice-ssot.md`](_Archive/2026-07-14-character-voice-ssot.md) | Voice layers shipped into users + vault + docs |
 
