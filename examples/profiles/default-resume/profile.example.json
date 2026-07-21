@@ -42,7 +42,7 @@
     "base": "../../themes/default-resume.css",
     "default": "Your brand palette — see users/yourname.json -> brandTheme.",
     "mode": "company-derived",
-    "modeNote": "Derive the palette from the TARGET COMPANY's real brand CSS when they give a usable signal; store it at applications/<Track>/theme.json (it belongs to the company, not to you). Fall back to your brandTheme otherwise.",
+    "modeNote": "Derive the palette from the TARGET COMPANY's real brand CSS when they give a usable signal; store it at _job-listings/<Track>/theme.json (it belongs to the company, not to you). Fall back to your brandTheme otherwise.",
     "pairing": "If two people apply to the SAME company: both render from the company palette with SPLIT accent runs — same grid and type, different accent order — so they read as a matched pair from one studio rather than two copies of one document.",
     "houseRule": "themes/PALETTE-RULES.md — no brown, no mustard, no lime. Enforced on every export."
   },

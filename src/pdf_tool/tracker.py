@@ -1,6 +1,6 @@
 """Application tracker — list/status over existing application.json files.
 
-Scans ``storage/applications/**/application.json`` (gitignored workspace).
+Scans ``storage/_job-listings/**/application.json`` (gitignored workspace).
 No separate SSOT: the per-job application records already hold company, role,
 track, status, apply URL, and pay.
 
@@ -18,7 +18,7 @@ from collections import Counter
 from pathlib import Path
 
 _REPO = Path(__file__).resolve().parents[2]
-_APPS = _REPO / "storage" / "applications"
+_APPS = _REPO / "storage" / "_job-listings"
 
 
 def _load_jobs() -> list[dict]:
@@ -63,7 +63,7 @@ def _load_jobs() -> list[dict]:
 def cmd_list(jobs: list[dict]) -> int:
     if not jobs:
         print(f"no application.json under {_APPS.relative_to(_REPO)}/")
-        print("Copy examples/applications/example-application/ into storage/applications/<Track>/")
+        print("Copy examples/_job-listings/example-application/ into storage/_job-listings/<Track>/")
         return 0
     print(f"{'STATUS':<28} {'COMPANY':<22} {'ROLE':<36} TRACK")
     print("-" * 100)

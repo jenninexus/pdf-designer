@@ -7,8 +7,9 @@ Config:    .config/mcp-pdf-designer.json ✓  (+ .example.json template ✓)
 Env:       none by design (no .env) ✓
 Protocol:  AGENTS.md → docs/{STORAGE,VAULT,JOB-ASSESSMENT,ARCHITECTURE}.md → /make-resume · /make-collage
 Theme:     themes/default-{resume,collage}.json + themes/presets/* + PALETTE-RULES.md   ← COLOR
+Gen-rules: themes/GENERATION-RULES.md   ← ⭐ house rules for ALL generated docs (casing · overlays · framing · no-magenta)
 Layouts:   layouts/collage/* + layouts/resume/*  (python -m pdf_tool.collage --list-recipes)  ← STRUCTURE
-Private:   storage/brands, users, vaults, collages (gitignored)
+Private:   storage/brand-design, users, vaults, collages (gitignored)
 Hub:       python -m pdf_tool.preview → :8787 (workspace auto-starts via scripts/ensure-design-hub.ps1)
 Engine:    python -m pdf_tool  (hub) / individual modules
 Plans:     Plans/_Active/2026-07-14-professional-product-roadmap.md
@@ -32,12 +33,13 @@ Compact map of what this repo owns vs what it only points at. Agents: start here
 | Page signature | `themes/default-resume.json#document.signature` | Bottom-right page-footer pin (`.page` / `.page-main` / `.page-sig`) |
 | Previewer | `src/pdf_tool/preview.py` (`docs/PREVIEWER.md`) | Design Hub; **auto-refreshes** via `/api/version` on new exports |
 | Palette rule | `themes/PALETTE-RULES.md` | No brown / mustard / lime — enforced by `check_palette` |
+| **Generation rules** | `themes/GENERATION-RULES.md` | ⭐ House rules for ALL generated docs: **name/company never all-lowercase**, no neon over images (dark scrim only), 16:9 no-crop framing, no-magenta pointer |
 | Protocol docs | `docs/{STORAGE,VAULT,JOB-ASSESSMENT,ARCHITECTURE}.md` | Claim rules + workflow |
 | **Work-samples SSOT** | `profiles/<user>-resume.json#workSamples` + `users/<user>.json#portfolio` | ⭐ **PER-USER** portfolio structure + assets — never copy another person's page ([VAULT.md](VAULT.md) § Work-samples) |
 | Agent map | `AGENTS.md` | Capability / command SSOT for assistants |
 | Make-resume | `.claude/commands/make-resume.example.md` | Job-application routine (public seed; personal `make-resume.md` is gitignored) |
 | Make-collage | `.claude/commands/make-collage.md` | Multi-image collage routine |
-| Public examples | `examples/profiles/`, `examples/brands/`, `examples/applications/` | Clone-safe templates |
+| Public examples | `examples/profiles/`, `examples/brand-design/`, `examples/_job-listings/` | Clone-safe templates |
 | Project config | `.config/mcp-pdf-designer.json` | Breakpoint pointer, hub, voice/external pointers |
 | Active plan | `Plans/_Active/2026-07-14-professional-product-roadmap.md` | What to build next |
 
@@ -88,7 +90,7 @@ Both are reachable from one machine-readable file:
 | `check_vault` | Vault schema / `--explain` / `--coverage` |
 | `check_ats` | ATS text-layer sanity on light PDF |
 | `audit_resume` | Diff rendered HTML vs vault (lead omissions) |
-| `tracker` | List / status over `storage/applications/**/application.json` |
+| `tracker` | List / status over `storage/_job-listings/**/application.json` |
 | `collage` | Layout candidates + picker gallery from an image folder |
 | `preview` | Design Hub — localhost library + palette swap + export |
 

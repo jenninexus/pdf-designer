@@ -19,7 +19,7 @@ Usage:
     python -m pdf_tool.check_vault --all                     # VALIDATE all vaults
     python -m pdf_tool.check_vault --explain shade ai        # ranked claims for track
     python -m pdf_tool.check_vault --explain jenni 3d-viz --verbose
-    python -m pdf_tool.check_vault --coverage shade 3d-viz examples/applications/example-application/Company.example.md
+    python -m pdf_tool.check_vault --coverage shade 3d-viz examples/_job-listings/example-application/Company.example.md
     python -m pdf_tool.check_vault storage/shade/resume-source.json
 
 Exit codes:

@@ -8,7 +8,7 @@
  * Accents are hub-owned (cyan + violet) so the app chrome stays distinct from
  * document brand palettes (those swap via the palette select → document :root).
  *
- * Edit THIS file to restyle the hub. Document colors live in themes/ + storage/brands/.
+ * Edit THIS file to restyle the hub. Document colors live in themes/ + storage/brand-design/.
  *
  * Breakpoint SSOT:
  *   .config/mcp-pdf-designer.json#breakpoints

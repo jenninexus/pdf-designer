@@ -73,7 +73,7 @@ python -m pdf_tool.check_vault --all                            # vault schema �
 python -m pdf_tool.check_vault --explain <user> <track>         # ranked claims preview (blocks on schema/thin)
 python -m pdf_tool.check_vault --coverage <user> <track> <listing.md>  # listing gap-check
 python -m pdf_tool.check_ats <resume-light.pdf>                 # ATS text-layer guard
-python -m pdf_tool.tracker list                                 # scan storage/applications/**/application.json
+python -m pdf_tool.tracker list                                 # scan storage/_job-listings/**/application.json
 python -m pdf_tool.tracker status                               # status breakdown (optional filter arg)
 python -m pdf_tool.collage --list-recipes                       # named layout recipes (layouts/collage/)
 python -m pdf_tool.collage <imagesDir> --recipe <id> --png      # render a named recipe
@@ -130,9 +130,9 @@ content stays in the gitignored `storage/` vault. (This replaced the older `.loc
 | `themes/PALETTE-RULES.md` | ⭐ **the color rule** (no brown/mustard/lime) + how the guard enforces it |
 | `themes/default-collage.json` | collage canvas presets + `backgrounds` (gradients) + per-bg `frame` colors ([`docs/COLLAGE-DESIGN.md`](docs/COLLAGE-DESIGN.md)) |
 | `layouts/` | ⭐ **STRUCTURE registry** — reusable layout recipes (`collage/`, `resume/`); counterpart to `themes/` (color). See [`layouts/README.md`](layouts/README.md). |
-| `examples/brands/` | tracked **template** for private brand maps (copy → `storage/brands/`) |
+| `examples/brand-design/` | tracked **template** for private brand maps (copy → `storage/brand-design/`) |
 | `examples/profiles/<id>/` | one profile per document type: `profile.json` + reference `.html` + example data |
-| `examples/applications/` | one-folder-per-job-application workflow + copyable template |
+| `examples/_job-listings/` | one-folder-per-job-application workflow + copyable template |
 | `docs/` | ARCHITECTURE · SSOT · WHITE-LABEL · STORAGE · VAULT · JOB-ASSESSMENT · THEME-DESIGN · LAYOUT-SYSTEM · EXPORTS · COLLAGE-DESIGN · PREVIEWER · APPLICATIONS · LICENSING-NOTES ([`docs/README.md`](docs/README.md) is the index) |
 | `.config/mcp-pdf-designer.json` | project config — **breakpoint SSOT pointer** + hub/palette/layout/collage/voice pointers. Clone-safe: `.config/mcp-pdf-designer.example.json` |
 | `Plans/_Active/` | ⭐ the working roadmap (one file) — see [`Plans/README.md`](Plans/README.md) |
@@ -142,14 +142,14 @@ content stays in the gitignored `storage/` vault. (This replaced the older `.loc
 
 | Public / tracked (safe to clone) | Private / gitignored (`storage/`) |
 |---|---|
-| `src/pdf_tool/`, `themes/`, `examples/`, `docs/`, `AGENTS.md`, `*.example.md` | `users/`, `*/resume-source.json`, `profiles/*-resume.json`, `applications/`, `brands/`, `_exports/` |
+| `src/pdf_tool/`, `themes/`, `examples/`, `docs/`, `AGENTS.md`, `*.example.md` | `users/`, `*/resume-source.json`, `profiles/*-resume.json`, `_job-listings/`, `brand-design/`, `_exports/` |
 | Brand-neutral default theme | Real brand maps (`brand-jenninexus`, `brand-martian`, `brand-synagen`) |
-| Example brand shape (`examples/brands/`) | Real vault claims, contacts, employer research |
+| Example brand shape (`examples/brand-design/`) | Real vault claims, contacts, employer research |
 | Public seed commands (`*.example.md`, `make-collage.md`) | Personal commands (bare `make-resume.md` / `make-cover-letter.md` / `make-work-examples.md`), `.codex/`, `dev-log-*.yaml` |
 
 `themes/` is deliberately **public** — it's the engine's default theme + palette rule a fresh clone needs
-to render. Private brand palettes live in `storage/brands/`, read by the previewer alongside `themes/`.
-Website kits own **live-site** colors; for résumé exports the mapped `storage/brands/brand-*.json` is the
+to render. Private brand palettes live in `storage/brand-design/`, read by the previewer alongside `themes/`.
+Website kits own **live-site** colors; for résumé exports the mapped `storage/brand-design/brand-*.json` is the
 **only** pdf-designer color SSOT — `users/*.json` points via `brandTheme.ssot`; never duplicate hex there.
 
 ### The application workflow lives in `storage/` (gitignored)
@@ -161,7 +161,7 @@ Four layers, each answering one question. **The vault is the brain.**
 | Person | `storage/users/<user>.json` | **who** — contact, `brandTheme.ssot`, **`characterVoice`**, `hardFacts` |
 | **Vault** ⭐ | `storage/<user>/resume-source.json` | **what may be truthfully claimed** · application `voice` · roleTracks |
 | Profile | `storage/profiles/<user>-resume.json` | **how** it renders (one per person) · `workSamples` |
-| Application | `storage/applications/<Track>/` | **the job** — listing, apply link, pay, company palette |
+| Application | `storage/_job-listings/<Track>/` | **the job** — listing, apply link, pay, company palette |
 
 Read [`docs/VAULT.md`](docs/VAULT.md) before authoring any resume claim.
 
@@ -203,7 +203,7 @@ Read [`docs/VAULT.md`](docs/VAULT.md) before authoring any resume claim.
 - **Full job application:** run **`/make-resume <user> <application-dir>`** — the whole routine (capture
   the apply link → verify remote/pay → **gap-check and ask** → derive the theme → write → export résumé +
   cover letter + work samples, light+dark → log it). Folders are keyed by **role track**
-  (`storage/applications/3D-Visualizer/`), not by date. Protocol:
+  (`storage/_job-listings/3D-Visualizer/`), not by date. Protocol:
   [`docs/JOB-ASSESSMENT.md`](docs/JOB-ASSESSMENT.md).
 - **Just one document:** `/make-cover-letter` or `/make-work-examples` (personal) rebuild a single
   deliverable when the résumé already exists.

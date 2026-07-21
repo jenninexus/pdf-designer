@@ -48,7 +48,7 @@ local location inside this repo is:
 storage/
   profiles/
     your-profile.json
-  brands/
+  brand-design/
     brand-yours.json          ← private brand token maps (gitignored with storage/)
   users/
     you.json
@@ -60,11 +60,11 @@ storage/
 paths, real output paths, and project-specific palette mappings.
 
 **Website brands stay in the theme kits** (`www-theme-kit/profiles/`, `syna-theme-kit/profiles/`).
-When a resume needs that brand, **map** the kit profile into `storage/brands/brand-*.json`
-(token names in the table below). Tracked starter: [`../examples/brands/`](../examples/brands/).
+When a resume needs that brand, **map** the kit profile into `storage/brand-design/brand-*.json`
+(token names in the table below). Tracked starter: [`../examples/brand-design/`](../examples/brand-design/).
 
 **Worked MG mapping (2026-07-14):** live site orange+violet (`martiangames.json`) →
-`storage/brands/brand-martian.json` + kit mirror `palettes/resume-palettes.json#martian-resume`.
+`storage/brand-design/brand-martian.json` + kit mirror `palettes/resume-palettes.json#martian-resume`.
 Dark = FF6B00 / FF4500 / 8B5CF6 / 42F4C8 on purple-tinted near-black. Light = print-safe
 orange-RED + violet (never darkened amber, never teal-as-secondary).
 

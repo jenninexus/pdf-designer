@@ -190,7 +190,7 @@ bundle will read the cover letter as resume content.
 ## 🗂 What ends up on disk
 
 ```
-storage/applications/<Role-Track>/
+storage/_job-listings/<Role-Track>/
   <Company>.md                       ← the assessment (Tiers 1–5) + verbatim listing below a ---
   evidence/
     <board>-posting-<date>.jpeg      ← screenshot proving it was live, and what it said

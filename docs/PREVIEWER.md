@@ -39,7 +39,7 @@ fast on a large tree. If the server is briefly down mid-poll, the client just re
 | Layer | Where | Purpose |
 |---|---|---|
 | **Hub chrome** | `src/pdf_tool/static/hub.css` | App shell (filters, library, stage). Vendored `--dash-*` from www-theme-kit dashboard tokens + glass. Profile: `www-theme-kit/profiles/pdf-designer.json`. |
-| **Document brands** | `themes/*.json` + `themes/presets/*.json` + `storage/brands/brand-*.json` | Palette swapper / WYSIWYG export. Personal SSOT — see [`STORAGE.md`](STORAGE.md). |
+| **Document brands** | `themes/*.json` + `themes/presets/*.json` + `storage/brand-design/brand-*.json` | Palette swapper / WYSIWYG export. Personal SSOT — see [`STORAGE.md`](STORAGE.md). |
 
 ### Breakpoints (one project reference)
 
@@ -59,7 +59,7 @@ Each `.html` file is its **own template** in the library (one card = one file).
 Adapted from `D:\Resume\Jobright\jobright-feature-review.md` — local-first library + filters, not cloud match scores:
 
 - **Kind chips:** All · Resumes · Cover letters · Collages · Galleries · Examples
-- **Folder:** e.g. `storage/applications/3D-Artist`, `examples/profiles/default-resume`
+- **Folder:** e.g. `storage/_job-listings/3D-Artist`, `examples/profiles/default-resume`
 - **Person:** jenni / shade (from filename prefix)
 - **Search:** name or path substring
 
@@ -86,7 +86,7 @@ Typical flows:
 |---|---|
 | Engine, Design Hub, protocol docs, examples | Disney finals, personal vaults, Jobright screenshots |
 | Jobright *library + filter* UX ideas | Jobright match scores / autofill / extension |
-| Brand maps under `storage/brands/` | Historical prompt logs |
+| Brand maps under `storage/brand-design/` | Historical prompt logs |
 
 ## Roadmap
 

@@ -19,7 +19,7 @@ The Design Hub already renders everything in `examples/` (and it **auto-refreshe
 new document — no restart). To make it yours:
 
 ```bash
-mkdir -p storage/users storage/profiles storage/brands storage/applications
+mkdir -p storage/users storage/profiles storage/brand-design storage/_job-listings
 
 # a person + their claim vault + a render profile
 cp examples/profiles/default-resume/user.example.json         storage/users/me.json
@@ -27,17 +27,17 @@ cp examples/profiles/default-resume/resume-source.example.json storage/me/resume
 cp examples/profiles/default-resume/profile.example.json      storage/profiles/me-resume.json
 
 # your brand palette (colors only — no personal data)
-cp examples/brands/brand-example.json                         storage/brands/brand-me.json
+cp examples/brand-design/brand-example.json                         storage/brand-design/brand-me.json
 
 # a job application folder
-cp -r examples/applications/example-application               storage/applications/My-Role
+cp -r examples/_job-listings/example-application               storage/_job-listings/My-Role
 ```
 
 Then edit those copies with your real details and export:
 
 ```bash
-python -m pdf_tool.html_to_pdf storage/applications/My-Role/my-resume.html          # light / ATS PDF
-python -m pdf_tool.html_to_pdf storage/applications/My-Role/my-resume.html --pdf-theme dark  # branded
+python -m pdf_tool.html_to_pdf storage/_job-listings/My-Role/my-resume.html          # light / ATS PDF
+python -m pdf_tool.html_to_pdf storage/_job-listings/My-Role/my-resume.html --pdf-theme dark  # branded
 ```
 
 ## What's here
@@ -46,8 +46,8 @@ python -m pdf_tool.html_to_pdf storage/applications/My-Role/my-resume.html --pdf
 |---|---|
 | [`profiles/default-resume/`](profiles/default-resume/) | A person: `user.example.json` (who), `resume-source.example.json` (the **claim vault**), `profile.example.json` (how it renders), plus a working `default-resume.html` you can open in the hub |
 | [`profiles/default-collage/`](profiles/default-collage/) | A collage/gallery document |
-| [`brands/`](brands/) | A brand-neutral color palette (`brand-example.json`) — map your real colors into these token names |
-| [`applications/`](applications/) | One-folder-per-job workflow: the listing doc, `application.json`, `theme.json`, and the HTML sources. `tracker.example.json` shows the status roll-up. |
+| [`brand-design/`](brand-design/) | A brand-neutral color palette (`brand-example.json`) — map your real colors into these token names |
+| [`_job-listings/`](_job-listings/) | One-folder-per-job workflow: the listing doc, `application.json`, `theme.json`, and the HTML sources. `tracker.example.json` shows the status roll-up. |
 
 ## The rules that keep it clean
 
