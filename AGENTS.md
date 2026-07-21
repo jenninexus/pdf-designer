@@ -139,12 +139,13 @@ content stays in the gitignored `storage/` vault. (This replaced the older `.loc
 | `.config/mcp-pdf-designer.json` | project config — **breakpoint SSOT pointer** + hub/palette/layout/collage/voice pointers. Clone-safe: `.config/mcp-pdf-designer.example.json` |
 | `Plans/_Active/` | ⭐ the working roadmap (one file) — see [`Plans/README.md`](Plans/README.md) |
 | `storage/` | ⛔ **gitignored** local workspace: vaults, real applications, real image sets, private brands |
+| `storage/studio/resources/images/martiangames/` | ⭐ **shared** MG title gallery (WebP) — both applicants; see [`docs/STORAGE.md`](docs/STORAGE.md) |
 
 ### Privacy split (do not blur this)
 
 | Public / tracked (safe to clone) | Private / gitignored (`storage/`) |
 |---|---|
-| `src/pdf_tool/`, `themes/`, `examples/`, `docs/`, `AGENTS.md`, `*.example.md` | `users/`, `*/resume-source.json`, `profiles/*-resume.json`, `_job-listings/`, `brand-design/`, `_exports/` |
+| `src/pdf_tool/`, `themes/`, `examples/`, `docs/`, `AGENTS.md`, `*.example.md` | `users/`, `*/resume-source.json`, `profiles/*-resume.json`, `_job-listings/`, `brand-design/`, `studio/resources/`, `_exports/` |
 | Brand-neutral default theme | Real brand maps (`brand-jenninexus`, `brand-martian`, `brand-synagen`) |
 | Example brand shape (`examples/brand-design/`) | Real vault claims, contacts, employer research |
 | Public seed commands (`*.example.md`, `make-collage.md`) | Personal commands (bare `make-resume.md` / `make-cover-letter.md` / `make-work-examples.md`), `.codex/`, `dev-log-*.yaml` |

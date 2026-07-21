@@ -65,10 +65,39 @@ Each layer answers exactly one question.
   → OUT ─────────────  <user>/_exports/<Track>/
 ```
 
+### Shared studio assets vs per-user assets (⭐ read before hunting images)
+
+Both founders ship Martian Games title art in work-samples. That gallery is **shared**, not copied
+twice. Personal / brand-identity art stays per-user.
+
+| Asset class | SSOT path | Who |
+|---|---|---|
+| **MG title stills + MG logo** | `storage/studio/resources/images/martiangames/` | Jenni **and** Shade |
+| Agency banner + agent faces | `storage/jenni/resources/images/agency/` | **Jenni only** |
+| Synagen logo / engine shots | `storage/shade/resources/logos/` (+ `images/synagen/` when present) | **Shade lead** (Jenni may reference the logo file under her own `logos/` copy) |
+| Source CVs / owner quotes | `storage/<user>/resources/refrence/` | That person |
+
+```
+storage/studio/resources/images/
+  martiangames/             ⭐ SHARED MG gallery (WebP). README inside.
+  README.md                 what belongs here vs per-user
+
+storage/<user>/resources/images/martiangames/   → Windows JUNCTION → studio/.../martiangames/
+```
+
+**Keep both current:** edit files only under `studio/…/martiangames/`. The junctions mean
+`jenni/.../martiangames/` and `shade/.../martiangames/` always resolve to the same bytes.
+Person files point at the studio path via `users/<user>.json#portfolio.workSampleAssets.mgGallerySsot`.
+Prefer **WebP** for new drops (PNG inlined in HTML balloons PDF size past upload caps).
+
+Refresh MG atlas from: `C:\Users\Owner\Projects\www\mg\html\resources\images\atlas\`
+Air Wars preferred hero source: `…\mg\src\assets\images\airwars\gallery\11b.png` →
+`game-air-wars-sunset.webp`.
+
 ### Per-user directory layout (`storage/jenni/`, `storage/shade/`)
 
 Each person's folder holds their vault + their **go-to default deliverables** + reusable assets and
-finished-run history. Updated architecture 2026-07-20:
+finished-run history. Updated architecture 2026-07-20 / shared gallery 2026-07-21:
 
 ```
 storage/<user>/
@@ -79,7 +108,11 @@ storage/<user>/
                             without re-generating. NO template placeholders ([address] etc.) —
                             generic and submittable as-is.
   resources/                reusable user assets (NOT job-specific)
-      logos/                brand marks — synagen-logo-16-9.png, etc.
+      images/
+        martiangames/       JUNCTION → storage/studio/resources/images/martiangames/ (shared)
+        agency/             (jenni only) Agency showcase
+        synagen/            (shade — when engine screenshots arrive)
+      logos/                brand marks — synagen-logo-16-9.png, etc. (per-user)
       refrence/             source CVs + owner quote docs (mg_cv_2025.pdf, Self-Described.md, …)
   _exports/<Track>/         per-listing generated PDFs (one subdir per job)
   _archive/                 ⛔ retired/superseded material — DO NOT DELETE on a "clean stale" pass

@@ -135,12 +135,18 @@ the only renderer. No MCP / always-on server required for core value.
       `tests/fixtures/known-bad-footer-overlap.html`. Shade defaults re-verified 10/10 PASS.
 - [x] **SSOT sync** — `docs/QA.md` lists all 10 checks; `AGENTS.md` / `docs/SSOT.md` /
       `make-resume.example.md` lead with `check_generation` as the ship gate.
+- [x] **Shared MG gallery SSOT** — `storage/studio/resources/images/martiangames/` (WebP);
+      per-user `images/martiangames/` = junctions; `users/*/portfolio.workSampleAssets` +
+      `docs/STORAGE.md` / `storage/README.md` document the protocol. Air Wars sunset → `.webp`.
+- [x] **Shade Netflix work-samples under 5MB** — JPEG/WebP image pipeline for Chromium PDF
+      (1.09 MB dark); resume already ~0.21 MB.
 
 ## Next — maintenance / PyPI when going public ← **priority**
 
 - [ ] PyPI / installer for non-dev users (when going public)
 - [ ] Keep SSOT + white-label docs honest as the engine evolves
 - [ ] Optional: document meet-jenni-bot / syn-themes collage recipes in `docs/COLLAGE-DESIGN.md` examples (paths stay private under `storage/`)
+- [ ] Optional: Synagen engine promo screenshots → `storage/shade/resources/images/synagen/` (Shade work-samples)
 
 ## Later / parked
 
