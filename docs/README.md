@@ -10,6 +10,7 @@ public-facing; **detail lives here**. Agent contracts: [`../AGENTS.md`](../AGENT
 | [`SSOT.md`](SSOT.md) | ⭐ Dashboard — owns vs points elsewhere; engine CLI map |
 | [`PRODUCT.md`](PRODUCT.md) | ⭐ **Business / product direction** — free GitHub core vs future paid app |
 | [`WHITE-LABEL.md`](WHITE-LABEL.md) | Public-only reuse (examples + themes, **no** vaults) — *not* the business plan |
+| [`PACKAGING.md`](PACKAGING.md) | PyPI / wheel spike — must ship `themes/` + `layouts/` (not just `pdf_tool/*.py`) |
 | [`QA.md`](QA.md) | ⭐ Ship gate — `check_generation` (judge the artifact) |
 | [`ROADMAP.md`](ROADMAP.md) | Pointer to the active plan (`/jen:roadmap` entry point) |
 

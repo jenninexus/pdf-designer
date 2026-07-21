@@ -17,7 +17,9 @@ import sys
 from collections import Counter
 from pathlib import Path
 
-_REPO = Path(__file__).resolve().parents[2]
+from .paths import repo_root
+
+_REPO = repo_root()
 _APPS = _REPO / "storage" / "_job-listings"
 
 
