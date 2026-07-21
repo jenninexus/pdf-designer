@@ -81,6 +81,39 @@ URLs, and file paths, which are legitimately lowercase).
 
 ---
 
+## 3b. Backgrounds — ⛔ NO warm tint in a large dark area (the real "brown" bug)
+
+> **A dark grey with ANY red/warm tint reads as BROWN over a large area — even when every source
+> hex passes the palette guard.** Backgrounds must be **neutral** (chroma ≤ ~8: R, G, B within a
+> few points of each other). Red belongs on **saturated small elements** — text, rules, borders,
+> the spectrum — never as a large dim wash. (Owner directive 2026-07-21, after three docs "passed"
+> the hex guard while looking brown.)
+
+**How brown actually got made** (measured, not guessed):
+
+| Mechanism | Example | Measured result |
+|---|---|---|
+| Red-tinted base gradient + red glows | `linear-gradient(…#1c1416, #2a0e10)` + `rgba(229,9,20,.20)` | page bg averaged **#2c2224 / #291c1d** — a warm dark grey = brown to the eye |
+| Alpha layer over a warm gradient | `rgba(255,255,255,.16)` streaks over red | **#a08251 / #ae906e** — real brown pixels in no stylesheet |
+| Dark alpha over a warm stop | `rgba(0,0,0,.30)` streaks over `#E50914` | **#7f4c04** — darkening a warm hue lands in the brown band |
+| Red-alpha panel fill | `rgba(229,9,20,.06)` over `#0d0d0d` | **#1a0d0d**, chroma 13 — a warm dim panel |
+
+**Rules that follow:**
+
+- **Base background:** neutral only — `linear-gradient(150deg, #000, #0d0d0d, #141414, #1a1a1a)`.
+  No warm stop, no red radial glow spanning a large area.
+- **Never put an alpha layer over a warm gradient.** Streak/texture overlays on a red or rainbow
+  rule are banned — they *manufacture* brown. Keep such rules a flat pure gradient.
+- **Panel fills** use neutral white-alpha (`rgba(255,255,255,.035)`), not red-alpha. Keep the red
+  **border** for brand identity.
+- **Rainbow/spectrum stops** must avoid hue **20–100** (brown/lime) entirely — and, for Shade,
+  hue 290–345 (magenta). A safe run: `#E50914 → #FF6A72 → #FF9FA5 → #C86BFF → #7B5CFF → #1E5BE0 →
+  #2E9BE8 → #3DD6D0 → #9BE8DF`.
+
+**Enforced by `python -m pdf_tool.check_rendered_color`** — it renders the page and judges the
+PIXELS (and the average of large flat background tiles), so it catches brown the hex guard cannot
+see. It runs automatically inside `check_generation`.
+
 ## 4. Color — house palette + no magenta for Shade
 
 The color rules live in their own guard-enforced SSOT — **do not duplicate hexes here:**

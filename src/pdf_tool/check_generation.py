@@ -248,6 +248,32 @@ def check_overflow_render(path: Path):
     return (not msgs), msgs
 
 
+def check_rendered(path: Path):
+    """RENDERED-PIXEL brown + large-area warm cast — catches brown the hex guard cannot see.
+
+    A red-tinted dark grey background is 'neutral' per-pixel but reads BROWN over a large area;
+    alpha layers over warm darks manufacture real brown pixels that appear in no stylesheet.
+    """
+    try:
+        from . import check_rendered_color
+    except Exception as e:
+        return True, [f"(skipped — {e})"]
+    msgs = []
+    try:
+        rep = check_rendered_color.analyze(path)
+    except Exception as e:
+        return True, [f"(skipped render — {e})"]
+    if rep["brown_pct"] > rep["thresholds"]["max_brown_pct"]:
+        msgs.append(f"{rep['brown_pixels']} brown/mustard px ({rep['brown_pct']}%) "
+                    f"> {rep['thresholds']['max_brown_pct']}%")
+        msgs += [f"  {s}" for s in rep["pixel_samples"][:4]]
+    for c in rep["cast_violations"][:4]:
+        msgs.append(c)
+    if rep["cast_violations"]:
+        msgs.append("FIX: remove warm/red tint from the BASE background; red only as saturated accents.")
+    return (not msgs), msgs
+
+
 CHECKS = [
     ("palette", "no brown/mustard/lime (+ no magenta for shade/martian)", check_palette_hex, True),
     ("rgba-magenta", "no magenta/pink smuggled via rgba()/hsl()", check_rgba_magenta, True),
@@ -255,6 +281,7 @@ CHECKS = [
     ("overlay", "no neon/color fill over images (dark scrim only)", check_image_overlay, False),
     ("signature", "signature block present + bottom-pinned", check_signature, False),
     ("margins", "equal/consistent @page margins", check_margins, False),
+    ("rendered-color", "⭐ no brown in the RENDERED pixels / no large-area warm cast", check_rendered, False),
     ("overflow", "no page overflows its print box (render)", check_overflow_render, False),
 ]
 
@@ -266,7 +293,7 @@ def run_file(path: Path, user: str | None = None, do_render: bool = True) -> dic
     no_mag = _no_magenta_for(user)
     results = []
     for key, desc, fn, needs_nomag in CHECKS:
-        if key == "overflow" and not do_render:
+        if key in ("overflow", "rendered-color") and not do_render:
             results.append({"check": key, "ok": True, "skipped": True, "messages": ["(render skipped)"]})
             continue
         if needs_nomag:
