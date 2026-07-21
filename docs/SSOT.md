@@ -6,6 +6,7 @@ SSOT Dashboard — pdf-designer
 Config:    .config/mcp-pdf-designer.json ✓  (+ .example.json template ✓)
 Env:       none by design (no .env) ✓
 Protocol:  AGENTS.md → docs/{STORAGE,VAULT,JOB-ASSESSMENT,ARCHITECTURE}.md → /make-resume · /make-collage
+Product:   docs/PRODUCT.md   ← ⭐ free GitHub core vs future paid app (WHITE-LABEL = public reuse only)
 Theme:     themes/default-{resume,collage}.json + themes/presets/* + PALETTE-RULES.md   ← COLOR
 Gen-rules: themes/GENERATION-RULES.md   ← ⭐ house rules for ALL generated docs (casing · overlays · framing · no-magenta)
 QA gate:   docs/QA.md + python -m pdf_tool.check_generation   ← ⭐ 10 checks; judge the ARTIFACT (render), not the source
@@ -40,6 +41,8 @@ Compact map of what this repo owns vs what it only points at. Agents: start here
 | **Work-samples SSOT** | `profiles/<user>-resume.json#workSamples` + `users/<user>.json#portfolio` | ⭐ **PER-USER** page structure + personal assets — never copy another person's page ([VAULT.md](VAULT.md) § Work-samples) |
 | **Shared MG gallery** | `storage/studio/resources/images/martiangames/` | ⭐ Title stills + MG logo used by **both** applicants; per-user `…/images/martiangames/` junctions here ([STORAGE.md](STORAGE.md)) |
 | Agent map | `AGENTS.md` | Capability / command SSOT for assistants |
+| **Product / business** | [`PRODUCT.md`](PRODUCT.md) | ⭐ Free GitHub toolkit vs future paid app; privacy split |
+| White-label how-to | [`WHITE-LABEL.md`](WHITE-LABEL.md) | Clone without vaults (not the business plan) |
 | Make-resume | `.claude/commands/make-resume.example.md` | Job-application routine (public seed; personal `make-resume.md` is gitignored) |
 | Make-collage | `.claude/commands/make-collage.md` | Multi-image collage routine |
 | Public examples | `examples/profiles/`, `examples/brand-design/`, `examples/_job-listings/` | Clone-safe templates |

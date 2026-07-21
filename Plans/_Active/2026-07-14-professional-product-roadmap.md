@@ -6,7 +6,9 @@
 |---|---|
 | **This file** | Working checklist — what to build next |
 | [`docs/SSOT.md`](../../docs/SSOT.md) | SSOT dashboard (owns vs points elsewhere) |
-| [`docs/WHITE-LABEL.md`](../../docs/WHITE-LABEL.md) | Public-only reusable path |
+| [`docs/PRODUCT.md`](../../docs/PRODUCT.md) | ⭐ Free GitHub vs future paid app (business direction) |
+| [`docs/WHITE-LABEL.md`](../../docs/WHITE-LABEL.md) | Public-only reuse how-to (not the business plan) |
+| [`docs/QA.md`](../../docs/QA.md) | Ship gate — judge the artifact |
 | [`docs/PREVIEWER.md`](../../docs/PREVIEWER.md) | Design Hub how-to |
 | [`docs/STORAGE.md`](../../docs/STORAGE.md) · [`VAULT.md`](../../docs/VAULT.md) · [`JOB-ASSESSMENT.md`](../../docs/JOB-ASSESSMENT.md) | Protocol SSOT |
 | [`../_Archive/`](../_Archive/) | Completed / parked plans (hub Phase 1, character voice, pywebview) |
@@ -141,10 +143,14 @@ the only renderer. No MCP / always-on server required for core value.
 - [x] **Shade Netflix work-samples under 5MB** — JPEG/WebP image pipeline for Chromium PDF
       (1.09 MB dark); resume already ~0.21 MB.
 
-## Next — maintenance / PyPI when going public ← **priority**
+## Next — public GitHub + product packaging ← **priority**
 
-- [ ] PyPI / installer for non-dev users (when going public)
-- [ ] Keep SSOT + white-label docs honest as the engine evolves
+See [`docs/PRODUCT.md`](../../docs/PRODUCT.md) for free-vs-paid thesis. Engineering checklist:
+
+- [ ] **Public-repo readiness** — README demo path that works from a fresh clone (`examples/` only); PyPI / installer for non-dev users
+- [ ] **White-label smoke** — document + script a 5-minute “clone → Design Hub → export” path ([`WHITE-LABEL.md`](../../docs/WHITE-LABEL.md))
+- [ ] **Paid-app spike (later)** — thin desktop shell over the same engine (installer + recipe gallery); do **not** fork the renderer; privacy split stays absolute
+- [ ] Keep SSOT + QA docs honest as the engine evolves
 - [ ] Optional: document meet-jenni-bot / syn-themes collage recipes in `docs/COLLAGE-DESIGN.md` examples (paths stay private under `storage/`)
 - [ ] Optional: Synagen engine promo screenshots → `storage/shade/resources/images/synagen/` (Shade work-samples)
 
