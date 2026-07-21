@@ -228,6 +228,13 @@ Templates should implement this using print CSS:
 }
 ```
 
+**Trap (2026-07-21):** never let `@media (prefers-color-scheme: light)` restyle
+`:root:not([data-theme="dark"])` outside a `screen` qualifier. That selector is
+specificity `(0,2,0)` and **beats** `html[data-pdf-theme="dark"]` `(0,1,1)`, so on
+a light OS preference the dark PDF stays light paper. Use
+`@media screen and (prefers-color-scheme: light)` (see `themes/default-resume.css`
+and the public example resume).
+
 ## Export Flow
 
 See `docs/EXPORTS.md` for exact commands.

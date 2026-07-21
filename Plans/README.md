@@ -11,8 +11,8 @@ Working plans for pdf-designer. Keep **one** active product roadmap; archive com
 
 | Plan | Status |
 |---|---|
-| [`_Active/2026-07-14-professional-product-roadmap.md`](_Active/2026-07-14-professional-product-roadmap.md) | ⭐ **THE** roadmap — public GitHub + packaging; pywebview parked |
-| [`_Active/2026-07-21-next-agent-product-prompt.md`](_Active/2026-07-21-next-agent-product-prompt.md) | Copy-paste handoff for the next agent (product / commercialization) |
+| [`_Active/2026-07-14-professional-product-roadmap.md`](_Active/2026-07-14-professional-product-roadmap.md) | ⭐ **THE** roadmap — A/B public path shipped; next = paid-app / PyPI |
+| [`_Active/2026-07-21-next-agent-product-prompt.md`](_Active/2026-07-21-next-agent-product-prompt.md) | ⭐ Paste-ready next-agent handoff (C / PyPI / optional D) |
 
 > **`/jen:roadmap` entry point:** [`../docs/ROADMAP.md`](../docs/ROADMAP.md) is a thin pointer to the plan
 > above (that command discovers `docs/ROADMAP.md`). One roadmap, two doors — never a second copy.

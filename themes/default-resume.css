@@ -100,7 +100,10 @@
   --support: #38bdf8;
 }
 
-@media (prefers-color-scheme: light) {
+/* SCREEN only — must not outrank @media print dark tokens.
+   `:root:not([data-theme="dark"])` is (0,2,0) and would beat
+   `html[data-pdf-theme="dark"]` (0,1,1), leaving light paper in dark PDFs. */
+@media screen and (prefers-color-scheme: light) {
   :root:not([data-theme="dark"]):not([data-pdf-theme="dark"]) {
     color-scheme: light;
 

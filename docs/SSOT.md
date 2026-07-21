@@ -13,6 +13,7 @@ QA gate:   docs/QA.md + python -m pdf_tool.check_generation   ← ⭐ 10 checks;
 Layouts:   layouts/collage/* + layouts/resume/*  (python -m pdf_tool.collage --list-recipes)  ← STRUCTURE
 Private:   storage/brand-design, users, vaults, studio/resources/images/martiangames (shared MG gallery), collages (gitignored)
 Hub:       python -m pdf_tool.preview → :8787 (workspace auto-starts via scripts/ensure-design-hub.ps1)
+Smoke:     python scripts/smoke-white-label.py   ← ⭐ fresh-clone proof (examples/ only, no storage/)
 Engine:    python -m pdf_tool  (hub) / individual modules
 Plans:     Plans/_Active/2026-07-14-professional-product-roadmap.md
 ```
