@@ -35,6 +35,10 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
+# US Letter at 96dpi = 8.5in × 96 = 816 CSS px. The measurement viewport MUST be this wide;
+# see the note in check_overflow() for why a wider viewport silently hides real overflow.
+_LETTER_PX = 816
+
 # Records the fixed print-box height BEFORE we neutralize the layout.
 _BOX_JS = r"""
 () => Array.from(document.querySelectorAll('.page, .page-sheet'))
@@ -90,7 +94,13 @@ def check_overflow(html_path: str, pdf_theme: str | None = None, tolerance: int 
 
     with sync_playwright() as p:
         browser = p.chromium.launch()
-        page = browser.new_page()
+        # ⚠ CRITICAL: measure at the REAL paper width. In print media the `.page` is
+        # `width: auto`, so it inherits the VIEWPORT width. Playwright's default viewport is
+        # 1280px — far wider than a Letter page's 816px — which makes text wrap into fewer
+        # lines and under-reports content height badly. (Measured on a real doc: 726px at
+        # 1280 vs 940px at 816 — the guard reported 205px of headroom on a page that was
+        # actually 9px OVER, and a footer overlap shipped. Fixed 2026-07-21.)
+        page = browser.new_page(viewport={"width": _LETTER_PX, "height": 1056})
         page.goto(p_html.as_uri())
         if pdf_theme:
             page.evaluate(
