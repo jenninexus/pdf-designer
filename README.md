@@ -25,6 +25,7 @@ collages — with an optional vault-backed job-application layer that never inve
 > **Status:** private for now. Structure and docs are shaped for a future public release
 > (MIT engine + public themes; private vaults stay gitignored). Product direction:
 > [`docs/PRODUCT.md`](docs/PRODUCT.md). Public clone path: [`docs/WHITE-LABEL.md`](docs/WHITE-LABEL.md).
+> Packaging / PyPI spike: [`docs/PACKAGING.md`](docs/PACKAGING.md).
 
 ---
 
@@ -62,6 +63,7 @@ Ship gate → [`docs/QA.md`](docs/QA.md) (`python -m pdf_tool.check_generation �
 |---|---|
 | [`docs/README.md`](docs/README.md) | **Docs index** — where every topic lives |
 | [`docs/PRODUCT.md`](docs/PRODUCT.md) | Free GitHub core vs future paid app |
+| [`docs/PACKAGING.md`](docs/PACKAGING.md) | PyPI / wheel (must ship themes + layouts) |
 | [`docs/SSOT.md`](docs/SSOT.md) | What this repo owns vs pointers elsewhere |
 | [`docs/WHITE-LABEL.md`](docs/WHITE-LABEL.md) | Public-only path (no private vaults) |
 | [`AGENTS.md`](AGENTS.md) | Agent capability map + contracts |

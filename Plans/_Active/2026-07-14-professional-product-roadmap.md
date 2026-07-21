@@ -11,7 +11,8 @@
 | [`docs/QA.md`](../../docs/QA.md) | Ship gate — judge the artifact |
 | [`docs/PREVIEWER.md`](../../docs/PREVIEWER.md) | Design Hub how-to |
 | [`docs/STORAGE.md`](../../docs/STORAGE.md) · [`VAULT.md`](../../docs/VAULT.md) · [`JOB-ASSESSMENT.md`](../../docs/JOB-ASSESSMENT.md) | Protocol SSOT |
-| [`2026-07-21-next-agent-product-prompt.md`](2026-07-21-next-agent-product-prompt.md) | ⭐ Paste-ready next-agent handoff (remaining: paid-app / PyPI) |
+| [`2026-07-21-next-agent-product-prompt.md`](2026-07-21-next-agent-product-prompt.md) | ⭐ Paste-ready next-agent handoff (remaining: TestPyPI / Hub recipe gallery) |
+| [`docs/PACKAGING.md`](../../docs/PACKAGING.md) | PyPI / wheel asset rules |
 | [`../_Archive/`](../_Archive/) | Completed / parked plans (hub Phase 1, character voice, pywebview) |
 
 ---
@@ -152,21 +153,32 @@ the only renderer. No MCP / always-on server required for core value.
 - [x] **Dark PDF on light OS preference** — `@media screen and (prefers-color-scheme: light)` so screen tokens cannot outrank `html[data-pdf-theme="dark"]` print tokens (`default-resume.html` + `themes/default-resume.css`)
 - [x] **`check_footer_collision` hardened** — sample bg inside the content box; `prefer_css_page_size=True` to match `html_to_pdf`
 
+## Shipped recently (2026-07-21) — packaging + paid-app design spike
+
+- [x] **`pdf_tool.paths.repo_root`** — resolve `themes/` + `layouts/` for editable checkout **or**
+      bundled `pdf_tool/share/` (wheel). Callers no longer hard-code `parents[2]`.
+- [x] **Wheel asset pipeline** — `scripts/sync-wheel-share.py` + `scripts/check-wheel-assets.py`;
+      `pyproject.toml` package-data includes `share/**/*`. Documented in [`docs/PACKAGING.md`](../../docs/PACKAGING.md).
+- [x] **Paid-app spike (design)** — shell-over-Hub architecture in [`docs/PRODUCT.md`](../../docs/PRODUCT.md):
+      installer launches Design Hub; recipe gallery = Hub chrome over existing registries; pywebview stays parked.
+
 ## Next — public GitHub + product packaging ← **priority**
 
 See [`docs/PRODUCT.md`](../../docs/PRODUCT.md) for free-vs-paid thesis. Engineering checklist:
 
 - [x] **Public-repo readiness (demo path)** — README 5-minute path + smoke script from `examples/` only
-- [ ] **PyPI / installer** — package for non-dev users (spike when ready)
+- [x] **PyPI / wheel spike** — path resolve + share sync + wheel gate ([`PACKAGING.md`](../../docs/PACKAGING.md))
 - [x] **White-label smoke** — `scripts/smoke-white-label.py` + [`WHITE-LABEL.md`](../../docs/WHITE-LABEL.md) checklist
-- [ ] **Paid-app spike (later)** — thin desktop shell over the same engine (installer + recipe gallery); do **not** fork the renderer; privacy split stays absolute
+- [x] **Paid-app spike (design)** — shell-over-Hub in PRODUCT.md (not a second renderer)
+- [ ] **TestPyPI dry-run** — version bump + upload + fresh-venv install proof
+- [ ] **Hub recipe-gallery UX** — browse `layouts/` + `themes/presets/` inside Design Hub (paid-shell precursor)
 - [ ] Keep SSOT + QA docs honest as the engine evolves
 - [ ] Optional: document meet-jenni-bot / syn-themes collage recipes in `docs/COLLAGE-DESIGN.md` examples (paths stay private under `storage/`)
 - [ ] Optional: Synagen engine promo screenshots → `storage/shade/resources/images/synagen/` (Shade work-samples)
 
 ## Later / parked
 
-- [ ] pywebview shell — **parked.** Design Hub browser (`python -m pdf_tool.preview`) is the interactive SSOT; revive only on demand ([archived detail](../_Archive/2026-07-11-design-hub-parked-phases.md))
+- [ ] pywebview shell — **parked.** Paid plan is shell-over-Hub (browser → Design Hub); revive native window only on demand ([archived detail](../_Archive/2026-07-11-design-hub-parked-phases.md))
 
 ## Never
 

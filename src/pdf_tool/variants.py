@@ -20,9 +20,10 @@ import sys
 from pathlib import Path
 
 from .html_to_pdf import _guard_palette, _next_available_path, export_html_to_pdf
+from .paths import repo_root
 
 _HEX = re.compile(r"#([0-9a-fA-F]{6})\b")
-_REPO = Path(__file__).resolve().parents[2]
+_REPO = repo_root()
 
 # Nested theme-JSON block -> pdf-designer CSS custom properties (mirrors preview.py)
 _TOKEN_MAP = [

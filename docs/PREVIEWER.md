@@ -97,22 +97,21 @@ One command that renders N palette/layout variants of the same document into
 hand-copying files. Resume color-combo shopping becomes: generate variants →
 open hub → pick → export.
 
-### Phase 3 — windowed app (pywebview first, Electron if outgrown)
+### Phase 3 — paid shell (shell-over-Hub first; pywebview optional)
 
-Recommendation: **pywebview**, not Electron, as the first app shell.
+**Product decision (2026-07-21):** the paid app is a thin installer / launcher
+around **this** Design Hub — not a second renderer. See [`PRODUCT.md`](PRODUCT.md)
+§ shell-over-Hub. Native window (pywebview) stays **parked** until a non-browser
+shell is actually needed.
 
-| | pywebview | Electron | Tauri |
+| | shell-over-Hub (chosen) | pywebview (parked) | Electron / Tauri |
 |---|---|---|---|
-| Fits this stack | ✅ engine is Python; one `pip install pywebview` | ❌ adds Node/Chromium bundle + IPC to Python | ❌ adds Rust toolchain |
-| App size | ~1 MB (uses OS webview) | ~150 MB+ | small |
-| Native file dialogs, drag-drop | ✅ | ✅ | ✅ |
-| Distribution to non-Python users | weaker | ✅ strongest | ✅ |
+| Fits this stack | ✅ Hub already ships | ✅ ~1 MB OS webview | ❌ heavy / new toolchain |
+| First milestone | installer + recipe gallery chrome | native window polish | only if Python install is a blocker |
+| Engine | same `pdf_tool.preview` HTTP | same | same |
 
-The hub is already a localhost web app, so the shell is trivial: pywebview
-window pointed at the same server = same UI, native window, real file-picker
-dialogs for "export to…". Revisit Electron/Tauri only when distributing to
-users who won't install Python — the UI code carries over unchanged either
-way, because everything speaks HTTP to the same engine.
+Recipe gallery = Hub UI over tracked `layouts/` + `themes/presets/`. Packaging
+precursor: [`PACKAGING.md`](PACKAGING.md).
 
 ### Phase 4 — canvas editor (drag & drop)
 

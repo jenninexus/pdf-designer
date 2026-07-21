@@ -14,6 +14,7 @@ Layouts:   layouts/collage/* + layouts/resume/*  (python -m pdf_tool.collage --l
 Private:   storage/brand-design, users, vaults, studio/resources/images/martiangames (shared MG gallery), collages (gitignored)
 Hub:       python -m pdf_tool.preview → :8787 (workspace auto-starts via scripts/ensure-design-hub.ps1)
 Smoke:     python scripts/smoke-white-label.py   ← ⭐ fresh-clone proof (examples/ only, no storage/)
+Package:   docs/PACKAGING.md + scripts/check-wheel-assets.py  ← wheel must include themes/layouts
 Engine:    python -m pdf_tool  (hub) / individual modules
 Plans:     Plans/_Active/2026-07-14-professional-product-roadmap.md
 ```
@@ -42,7 +43,8 @@ Compact map of what this repo owns vs what it only points at. Agents: start here
 | **Work-samples SSOT** | `profiles/<user>-resume.json#workSamples` + `users/<user>.json#portfolio` | ⭐ **PER-USER** page structure + personal assets — never copy another person's page ([VAULT.md](VAULT.md) § Work-samples) |
 | **Shared MG gallery** | `storage/studio/resources/images/martiangames/` | ⭐ Title stills + MG logo used by **both** applicants; per-user `…/images/martiangames/` junctions here ([STORAGE.md](STORAGE.md)) |
 | Agent map | `AGENTS.md` | Capability / command SSOT for assistants |
-| **Product / business** | [`PRODUCT.md`](PRODUCT.md) | ⭐ Free GitHub toolkit vs future paid app; privacy split |
+| **Product / business** | [`PRODUCT.md`](PRODUCT.md) | ⭐ Free GitHub toolkit vs future paid app; shell-over-Hub; privacy split |
+| Packaging / PyPI | [`PACKAGING.md`](PACKAGING.md) | Wheel must ship public `themes/` + `layouts/` via `pdf_tool/share/` |
 | White-label how-to | [`WHITE-LABEL.md`](WHITE-LABEL.md) | Clone without vaults (not the business plan) |
 | Make-resume | `.claude/commands/make-resume.example.md` | Job-application routine (public seed; personal `make-resume.md` is gitignored) |
 | Make-collage | `.claude/commands/make-collage.md` | Multi-image collage routine |

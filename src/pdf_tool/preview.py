@@ -29,9 +29,10 @@ from pathlib import Path
 from urllib.parse import unquote, urlparse
 
 from .html_to_pdf import export_html_to_pdf
+from .paths import repo_root
 from .pdf_to_png import render_to_png
 
-_REPO_ROOT = Path(__file__).resolve().parents[2]
+_REPO_ROOT = repo_root()
 _STATIC_DIR = Path(__file__).resolve().parent / "static"
 EXCLUDE_PARTS = {"_exports", "node_modules", ".git", "__pycache__", ".venv", "venv"}
 

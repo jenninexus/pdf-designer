@@ -10,16 +10,18 @@
 Pulled from the active plan — keep in sync there, this is a quick view:
 
 - [x] **White-label demo path** — README 5-minute path + `scripts/smoke-white-label.py` ([`WHITE-LABEL.md`](WHITE-LABEL.md))
-- [ ] **PyPI / installer** — package for non-dev users ← remaining public-readiness item
-- [x] **Product direction** — free MIT core vs future paid app shell ([`PRODUCT.md`](PRODUCT.md)); paid-app spike still open
+- [x] **PyPI / wheel spike** — `paths.repo_root` + `share/` sync + `check-wheel-assets.py` ([`PACKAGING.md`](PACKAGING.md)); TestPyPI upload still open
+- [x] **Paid-app spike (design)** — shell-over-Hub in [`PRODUCT.md`](PRODUCT.md); next = Hub recipe-gallery UX (not a second renderer)
+- [ ] **TestPyPI dry-run** — publish + fresh-venv install after version bump
 - [ ] Keep **SSOT + QA docs** honest as the engine evolves ([`SSOT.md`](SSOT.md) · [`QA.md`](QA.md))
 - [ ] Optional: document meet-jenni-bot / syn-themes **collage recipes** in [`docs/COLLAGE-DESIGN.md`](COLLAGE-DESIGN.md) examples (paths stay private under `storage/`)
 - [ ] Optional: Synagen **engine** promo screenshots → `storage/shade/resources/images/synagen/`
+- [ ] Optional: Design Hub **recipe gallery** chrome over `layouts/` + `themes/presets/` (paid-shell precursor)
 
 ### Parked
 
-- [ ] **pywebview shell** — parked; the Design Hub browser (`python -m pdf_tool.preview`) is the
-  interactive SSOT. Revive on demand ([archived detail](../Plans/_Archive/2026-07-11-design-hub-parked-phases.md)).
+- [ ] **pywebview shell** — parked; shell-over-Hub (browser → Design Hub) is the paid-app plan.
+  Revive native window on demand ([archived detail](../Plans/_Archive/2026-07-11-design-hub-parked-phases.md)).
 
 ### Never
 
