@@ -114,6 +114,21 @@ URLs, and file paths, which are legitimately lowercase).
 PIXELS (and the average of large flat background tiles), so it catches brown the hex guard cannot
 see. It runs automatically inside `check_generation`.
 
+## 3c. One application = one page background (the PDF border colour)
+
+> **Every document in one applicant's set must use the SAME `@page` background.** That value paints
+> the PDF's **margin/border area**, so a doc with a different one looks visibly mismatched the moment
+> the files sit side by side.
+
+Caught 2026-07-21: the Netflix work-samples used `#000000` while the resume and cover letter still
+carried a stale `#0B0B0D` (a blue-tinted near-black) — the letter's border read as a different colour.
+
+- Keep `@page { background }`, `@page dark-letter { background }`, `--bg`, `--surface`, and the
+  `.page` gradient **identical across the resume, cover letter, and work-samples** of one applicant.
+- **Two applicants may differ** — Jenni and Shade legitimately render split accent runs off one
+  company palette. The rule is per-applicant, not per-folder.
+- Enforced by the `page-bg` check in `check_generation` (compares against same-prefix siblings).
+
 ## 4. Color — house palette + no magenta for Shade
 
 The color rules live in their own guard-enforced SSOT — **do not duplicate hexes here:**
