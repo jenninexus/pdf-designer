@@ -8,7 +8,7 @@ a drifting margin, an unpinned signature, or a neon color painted over a photo.
 python -m pdf_tool.check_generation <doc>.html            # auto-detects the user; runs all checks
 python -m pdf_tool.check_generation <doc>.html --user shade   # force per-user rules (no-magenta)
 python -m pdf_tool.check_generation --scan storage/shade/defaults   # sweep a folder of .html
-python -m pdf_tool.check_generation <doc>.html --no-render     # skip the overflow render (fast)
+python -m pdf_tool.check_generation <doc>.html --no-render     # skip render checks (fast source-only)
 python -m pdf_tool.check_generation <doc>.html --json          # machine-readable
 ```
 
@@ -16,7 +16,7 @@ python -m pdf_tool.check_generation <doc>.html --json          # machine-readabl
 
 | | |
 |---|---|
-| [What it checks](#the-checks) | The 7 rules, and which SSOT owns each |
+| [What it checks](#the-checks) | The 10 rules, and which SSOT owns each |
 | [Per-user / per-doc rules](#per-user--per-doc-awareness) | Why Shade fails on magenta but Jenni doesn't |
 | [Reading a report](#reading-a-report) | PASS/FAIL/skip and how to fix |
 | [When to run](#when-to-run) | Wired into make-resume / make-work-examples |
@@ -47,11 +47,17 @@ python -m pdf_tool.check_generation <doc>.html --json          # machine-readabl
    Render at 2×, use greyscale AA, and require a neighbour cluster before counting a pixel.
 5. **Control-test both directions.** A new guard must be shown to **FAIL the known-bad artifact** and
    **PASS the known-good one**. A check only ever verified against clean input proves nothing.
+   Footer-collision's known-bad lives at
+   [`tests/fixtures/known-bad-footer-overlap.html`](../tests/fixtures/known-bad-footer-overlap.html).
+
+> **Never say "verified" after only checking the source.** Export (or let `check_generation` render),
+> then trust the PASS — or open the PNG / PDF and look. The human eye on the artifact is still the
+> final court of appeal.
 
 ## The checks
 
 `check_generation` is the **one QA pass**. It composes the existing single-purpose guards and adds the
-rules they didn't cover:
+rules they didn't cover (**10 checks**):
 
 | # | Check | Rule | SSOT |
 |---|---|---|---|
@@ -61,10 +67,14 @@ rules they didn't cover:
 | 4 | **overlay** | no bright/neon/primary **fill washed over a banner/hero/photo** — only a black→transparent scrim | GENERATION-RULES §2 |
 | 5 | **signature** | resume + work-samples: signature **bottom-pinned, bottom-right** (`margin-top:auto` + `align-self:flex-end`). Cover letter: a sign-off just needs to exist (natural flow) | LAYOUT-SYSTEM.md |
 | 6 | **margins** | `@page` margins **equal on all four edges** (one value, or a symmetric v/h pair) — no drift | LAYOUT-SYSTEM.md §Equal margins |
-| 7 | **overflow** | no page overflows its print box (the pinned footer won't collide). **Render-based** — needs playwright/pypdfium2; `--no-render` skips it | LAYOUT-SYSTEM.md §content-fit |
+| 7 | **page-bg** | `@page` background (PDF border colour) agrees inside the file **and** with same-applicant sibling docs in the folder | GENERATION-RULES |
+| 8 | **rendered-color** | ⭐ no brown / large-area warm cast in **rendered pixels** (catches composited brown the hex guard cannot see) | GENERATION-RULES · `check_rendered_color` |
+| 9 | **overflow** | no page overflows its print box at **816px** paper width. **Render-based**; `--no-render` skips | LAYOUT-SYSTEM.md §content-fit |
+| 10 | **footer-collision** | ⭐ **PDF ground truth**: nothing overlaps the pinned signature band (catches 2-col text under the script that DOM height can miss) | LAYOUT-SYSTEM.md |
 
-Checks 1 and 7 shell out to the standalone `check_palette` / `check_overflow` so there is one
-implementation of each rule, not two.
+Checks 1 / 8 / 9 shell out to the standalone `check_palette` / `check_rendered_color` / `check_overflow`
+so there is one implementation of each rule, not two. Checks 8–10 need Playwright + pypdfium2;
+`--no-render` skips them (source-only — **not** ship-ready).
 
 ## Per-user / per-doc awareness
 
@@ -98,7 +108,10 @@ an unpinned signature are all cheap to fix and each has bitten a real doc).
   is considered done — it replaces running `check_palette` + `check_overflow` separately.
 - **Before any submission**, run it on the final `.html`.
 - **After a bulk change** (palette swap, dir move), `--scan storage/<user>/defaults` sweeps the go-to set.
+- **Go-to defaults:** after editing `storage/<user>/*-resume.html`, re-export light+dark into
+  `storage/<user>/defaults/` and re-run `check_generation` on the source HTML.
 
 > This tool found and fixed real margin drift in **both** favorite resumes (Shade `0.42/0.48/0.48`,
 > Jenni `0.45/0.5/0.55`) the day it was written — exactly the "consistent margin/padding" class of bug
-> it exists to catch.
+> it exists to catch. The 816px overflow correction later exposed a real jenni-resume footer overlap
+> that the old viewport had hidden; that is now fixed at the source and guarded by check 10.

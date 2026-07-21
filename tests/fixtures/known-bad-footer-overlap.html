@@ -1,0 +1,67 @@
+<!doctype html>
+<!-- Known-BAD control for footer-collision (docs/QA.md rule 5).
+     Body text is painted into the same bottom-right band as the pinned signature —
+     the defect class that shipped when Tools col-2 sat under the script.
+     check_footer_collision MUST FAIL this file. Do not "fix" the HTML. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>known-bad footer overlap</title>
+<style>
+  @page { size: Letter; margin: 0.5in; background: #0a0a0c; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #0a0a0c; color: #e8e8ec; font: 12px/1.35 sans-serif; }
+  .page {
+    display: flex; flex-direction: column;
+    width: 8.5in; min-height: 11in; margin: 0 auto; padding: 0.5in;
+    background: #0a0a0c; position: relative;
+  }
+  .page-main { flex: 1 1 auto; min-height: 0; }
+  h1 { margin: 0 0 8px; font-size: 22px; color: #c080ff; }
+  /* Deliberate collision: dense body text forced into the signature band. */
+  .collide {
+    position: absolute;
+    left: 0.5in;
+    right: 2.1in;
+    bottom: 0.35in;
+    font-size: 11px;
+    line-height: 1.35;
+    color: #ddd;
+  }
+  .page-sig {
+    margin-top: auto; align-self: flex-end; text-align: right; padding-top: 8px;
+    position: relative; z-index: 1;
+  }
+  .page-sig .script { font-family: "Segoe Script", cursive; font-size: 22px; color: #ff6ec4; }
+  .page-sig .mail { font-size: 9px; letter-spacing: .12em; color: #888; text-transform: uppercase; }
+  @media print {
+    .page {
+      width: auto; height: 10in; min-height: 0; margin: 0; padding: 0;
+      background: transparent; overflow: hidden;
+      display: flex; flex-direction: column; position: relative;
+    }
+    .page-main { flex: 1 1 auto; min-height: 0; }
+    .collide { left: 0; right: 1.6in; bottom: 0.15in; }
+    .page-sig { margin-top: auto; align-self: flex-end; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="page-main">
+    <h1>KNOWN BAD CONTROL</h1>
+    <p>This document is a fixture. The block below is forced under the signature on purpose.</p>
+    <div class="collide">
+      Video production: DaVinci Resolve, OBS Studio (live streaming).<br>
+      Web dev: HTML, SASS, JS, PowerShell, VS Code, Cursor.<br>
+      Software suite: Unity, Blender, Photoshop, Reallusion, OBS, FL Studio.<br>
+      AI tools: Stable Diffusion, prompt engineering, ChatGPT, Character Creator 4.
+    </div>
+  </div>
+  <div class="page-sig">
+    <div class="script">Jennifer Sylvester</div>
+    <div class="mail">jenni@jenninexus.com</div>
+  </div>
+</div>
+</body>
+</html>

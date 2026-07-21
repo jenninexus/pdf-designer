@@ -57,6 +57,9 @@ carry it in print.** `check_overflow` is the authoring *warning*; `overflow: hid
 **Ground truth is the exported PDF, not a DOM measurement or an HTML re-render.** When verifying a
 pagination fix, rasterize the actual PDF and read it (`pdf_to_png`, or `pypdfium2`) — `check_overflow`'s
 DOM measurement is a fast pre-flight, not a substitute for looking at the real output.
+`check_generation`'s **footer-collision** check goes further: it exports a real PDF and inspects the
+signature band for body text (the defect DOM height can still miss when a 2-col block sits under the
+script). Ship gate: [`QA.md`](QA.md).
 
 ### ⚠ A line that belongs above the footer goes INSIDE the footer
 

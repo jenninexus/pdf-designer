@@ -336,14 +336,16 @@ Dark mode keeps the bright amber — it's fine there.
 
 📖 **Full rule + the guard's exact bands:** [`themes/PALETTE-RULES.md`](../../themes/PALETTE-RULES.md)
 
-**Enforced — run before every export:**
+**Enforced — run before every export (the one gate):**
 
 ```bash
-python -m pdf_tool.check_palette storage/_job-listings/<App>/<doc>.html
-python -m pdf_tool.check_palette --scan storage/          # sweep everything
+python -m pdf_tool.check_generation storage/_job-listings/<App>/<doc>.html
+python -m pdf_tool.check_generation --scan storage/<user>/defaults
 ```
 
-Exits non-zero and names the offending hex + line. **Fix it; don't override it.**
+`check_generation` runs palette + 9 other house rules (see [`docs/QA.md`](../../docs/QA.md)).
+Exits non-zero and names the defect. **Fix it; don't override it.** Source-only
+`check_palette` is fine as a quick preflight, but it is **not** ship verification.
 
 > Two gotchas: the guard is a raw regex over 6-digit hex, so (a) it can't see `rgba()`/`hsl()`/3-digit
 > colors, and (b) **it will flag a hex you write in a comment** — write example hexes in prose *without*
@@ -374,26 +376,27 @@ python -m pdf_tool.merge_pdfs "$O/FINAL-<Name>-<Role>-Cover-Letter-and-Resume.pd
 > overwrites** — it appends `-v2`, `-v3`. Export into a clean dir. **Dark-only:** run just the
 > `--pdf-theme dark` line.
 
-**VERIFY — don't skip.** Page count + the overflow guard + read the PNGs:
+**VERIFY — don't skip.** Page count + the QA gate + read the PNGs:
 
 ```bash
 python -c "from pypdf import PdfReader; import glob,os
 for f in sorted(glob.glob('$O/*.pdf')):
     print(len(PdfReader(f).pages),'p ',os.path.basename(f))"
-# OVERFLOW GUARD — catches the pinned-footer collision (auto-runs on export too):
-python -m pdf_tool.check_overflow "$APP/<doc>.html" --pdf-theme dark
+# ONE QA GATE — palette · casing · margins · rendered-color · overflow@816px · footer-collision:
+python -m pdf_tool.check_generation "$APP/<doc>.html"
 python -m pdf_tool.pdf_to_png "$APP/<doc>.html" --pdf-theme dark
+# then READ the PNGs — "check_generation PASS" is necessary but looking is still the final court
 ```
 
 Resume = **exactly 2 pages** · cover letter = **1** · work-samples = **3** · bundle = **3** · all US Letter.
 
 > **Layout + the overlap bug.** Equal margins `@page { margin: 0.65in }` on all four edges (cover letter
 > 0.75in, still equal); header flows, footer/signature pins (`margin-top:auto`). **⚠ Each page's content
-> must FIT its box** (9.7in ≈ 931px tall, 7.2in ≈ 691px wide at 0.65in) or the pinned signature collides
-> with the last lines — `check_overflow` catches it. **Fix by moving a section to the next page**, never
-> by shrinking the margin. (That's exactly how the 2026-07-19 Netflix résumé overlap was fixed — Tools &
-> Technologies moved from page 1 to page 2.) Phantom blank page: `.page + .page { break-before: page }`,
-> never a trailing `break-after`. Full model: `docs/LAYOUT-SYSTEM.md`.
+> must FIT its box** (9.7in ≈ 931px tall at 0.65in; measure at **816px** paper width) or the pinned
+> signature collides with the last lines — `check_generation` (overflow + footer-collision) catches it.
+> **Fix by moving a section to the next page**, never by shrinking the margin. Phantom blank page:
+> `.page + .page { break-before: page }`, never a trailing `break-after`. Full model:
+> `docs/LAYOUT-SYSTEM.md` · QA principle: `docs/QA.md`.
 
 ---
 

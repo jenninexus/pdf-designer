@@ -129,6 +129,12 @@ the only renderer. No MCP / always-on server required for core value.
       Shade doc).
 - [x] **Palette-preview approval gate** — `make-resume` / `make-work-examples` must show the swatch
       table and get a yes BEFORE generating, so a wrong-colour set is never built twice.
+- [x] **jenni-resume overflow + signature overlap (816px)** — Studio Capabilities moved to page 2;
+      `overflow: hidden` on print `.page`; defaults re-exported. Footer-collision hardened (signature
+      = bottom-most right cluster, intrusion window to 0.72) + known-bad control at
+      `tests/fixtures/known-bad-footer-overlap.html`. Shade defaults re-verified 10/10 PASS.
+- [x] **SSOT sync** — `docs/QA.md` lists all 10 checks; `AGENTS.md` / `docs/SSOT.md` /
+      `make-resume.example.md` lead with `check_generation` as the ship gate.
 
 ## Next — maintenance / PyPI when going public ← **priority**
 

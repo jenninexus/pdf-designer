@@ -291,31 +291,54 @@ def check_footer_collision(path: Path):
                 b.close()
 
             pdf = pdfium.PdfDocument(str(out))
-            for i in range(len(pdf)):
-                im = pdf[i].render(scale=2).to_pil().convert("RGB")
-                W, H = im.size
-                bg = im.getpixel((6, H // 2))
+            try:
+                for i in range(len(pdf)):
+                    im = pdf[i].render(scale=2).to_pil().convert("RGB")
+                    W, H = im.size
+                    bg = im.getpixel((6, H // 2))
 
-                def lit(px):  # noticeably different from the page background
-                    return sum(abs(a - c) for a, c in zip(px, bg)) > 90
+                    def lit(px):  # noticeably different from the page background
+                        return sum(abs(a - c) for a, c in zip(px, bg)) > 90
 
-                # find the signature band: rows in the bottom 22% holding lit pixels on the right third
-                band = [y for y in range(int(H * 0.78), H, 2)
-                        if any(lit(im.getpixel((x, y))) for x in range(int(W * 0.68), W - 4, 3))]
-                if not band:
-                    continue
-                top, bot = min(band), max(band)
-                # body text intruding on those same rows, left of the signature column
-                intruding = sum(
-                    1 for y in range(top, bot + 1, 2)
-                    for x in range(int(W * 0.08), int(W * 0.62), 3)
-                    if lit(im.getpixel((x, y)))
-                )
-                if intruding > 40:
-                    msgs.append(
-                        f"page {i + 1}: body content overlaps the pinned signature band "
-                        f"(rows {top}-{bot}, {intruding} intruding pixels). Move a section to the "
-                        f"next page — see docs/LAYOUT-SYSTEM.md content-fit rule.")
+                    # Signature is the BOTTOM-MOST contiguous lit cluster in the far-right column.
+                    # Do NOT take every right-column lit row in the bottom 22% — a 2-col Tools
+                    # block also paints there and would inflate the band (false positive). The
+                    # 2026-07-20 jenni miss was the opposite: Tools col-2 under the glyphs with
+                    # a left-only intrusion window that stopped at 0.62 and reported PASS.
+                    sig_x0 = int(W * 0.72)
+                    search_lo = int(H * 0.70)
+                    right_rows = [y for y in range(search_lo, H - 2, 2)
+                                  if any(lit(im.getpixel((x, y))) for x in range(sig_x0, W - 4, 3))]
+                    if not right_rows:
+                        continue
+                    # Walk up from the bottom-most lit row. Allow a short empty run so the
+                    # script name + email line stay one cluster (they often have ~10–16px
+                    # between them). Stop only after a larger gap — that is body content above.
+                    bot = max(right_rows)
+                    top = bot
+                    gap = 0
+                    for y in range(bot, search_lo - 1, -2):
+                        if any(lit(im.getpixel((x, y))) for x in range(sig_x0, W - 4, 3)):
+                            top = y
+                            gap = 0
+                        else:
+                            gap += 1
+                            if gap >= 8:  # ≥16 px empty at scale 2 → above the signature cluster
+                                break
+                    # Body text on those same signature rows, including mid/right columns
+                    # up to the signature (catches col-2 sitting under the script).
+                    intruding = sum(
+                        1 for y in range(top, bot + 1, 2)
+                        for x in range(int(W * 0.08), sig_x0, 3)
+                        if lit(im.getpixel((x, y)))
+                    )
+                    if intruding > 40:
+                        msgs.append(
+                            f"page {i + 1}: body content overlaps the pinned signature band "
+                            f"(rows {top}-{bot}, {intruding} intruding pixels). Move a section to the "
+                            f"next page — see docs/LAYOUT-SYSTEM.md content-fit rule.")
+            finally:
+                pdf.close()
     except Exception as e:
         return True, [f"(skipped — {e})"]
     return (not msgs), msgs
@@ -334,7 +357,7 @@ def check_overflow_render(path: Path):
         except Exception as e:
             return True, [f"(skipped overflow render — {e})"]
         for o in over:
-            msgs.append(f"[{theme or 'light'}] page {o.get('page')}: content {o.get('content')}px "
+            msgs.append(f"[{theme or 'light'}] page {o.get('index')}: content {o.get('content')}px "
                         f"> box {o.get('box')}px")
     return (not msgs), msgs
 

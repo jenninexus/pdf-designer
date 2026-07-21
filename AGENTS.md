@@ -65,10 +65,12 @@ python -m pdf_tool.html_to_pdf <doc>.html --output-dir <dir>    # control export
 python -m pdf_tool.html_to_pdf <doc>.html --variants            # light PDF per public palette → _variants/<stem>/
 python -m pdf_tool.variants <doc>.html                          # same as --variants
 python -m pdf_tool.merge_pdfs out.pdf a.pdf b.pdf --require-letter   # bundle, validate 8.5x11
-python -m pdf_tool.pdf_to_png <doc>.pdf                         # one PNG per page (visual verify)
-python -m pdf_tool.check_palette <doc>.html                     # ⭐ palette guard — run before EVERY export
+python -m pdf_tool.pdf_to_png <doc>.html                        # one PNG per page (visual verify; HTML source)
+python -m pdf_tool.check_generation <doc>.html                  # ⭐ ONE QA gate — 10 checks; run before EVERY ship
+python -m pdf_tool.check_generation --scan storage/<user>/defaults  #    sweep go-to set
+python -m pdf_tool.check_palette <doc>.html                     # palette only (also inside check_generation)
 python -m pdf_tool.check_palette --scan storage/                #    sweep a whole tree
-python -m pdf_tool.check_overflow <doc>.html --pdf-theme dark   # ⭐ overflow guard — page fits its box; auto-warns on export
+python -m pdf_tool.check_overflow <doc>.html --pdf-theme dark   # overflow only (also inside check_generation)
 python -m pdf_tool.check_vault --all                            # vault schema — catches invisible claims
 python -m pdf_tool.check_vault --explain <user> <track>         # ranked claims preview (blocks on schema/thin)
 python -m pdf_tool.check_vault --coverage <user> <track> <listing.md>  # listing gap-check
@@ -124,7 +126,7 @@ content stays in the gitignored `storage/` vault. (This replaced the older `.loc
 
 | Path | What it is |
 |---|---|
-| `src/pdf_tool/` | the engine (html_to_pdf, variants, tracker, merge_pdfs, pdf_to_png, check_palette, check_overflow, check_vault, check_ats, collage, preview) |
+| `src/pdf_tool/` | the engine (html_to_pdf, variants, tracker, merge_pdfs, pdf_to_png, **check_generation**, check_palette, check_overflow, check_rendered_color, check_vault, check_ats, collage, preview) |
 | `themes/default-resume.{json,css}` | public default theme — JSON is the token SSOT, CSS its mirror |
 | `themes/presets/*.json` | public audition palettes (Design Hub swapper) |
 | `themes/PALETTE-RULES.md` | ⭐ **the color rule** (no brown/mustard/lime) + how the guard enforces it |
@@ -183,7 +185,11 @@ Read [`docs/VAULT.md`](docs/VAULT.md) before authoring any resume claim.
   ([`docs/THEME-DESIGN.md`](docs/THEME-DESIGN.md)).
 - **Palette rule.** **No brown, no mustard, no puke/lime green.** Amber has no readable dark form on white
   (darkening turns it brown); hand that role to another hue on the light palette. Enforced by
-  `check_palette` — **run before every export.** Full rule: [`themes/PALETTE-RULES.md`](themes/PALETTE-RULES.md).
+  `check_palette` (and by `check_rendered_color` for brown that only appears after compositing).
+  Full rule: [`themes/PALETTE-RULES.md`](themes/PALETTE-RULES.md).
+- **QA gate.** **`python -m pdf_tool.check_generation <doc>.html` before every ship** — 10 checks
+  including artifact-level rendered-color, overflow @ 816px, and footer-collision. Source-only
+  greps are not "verified." SSOT: [`docs/QA.md`](docs/QA.md).
 - **Source-backed only.** Never write a résumé claim not in the user's vault. Employer-specific framing
   goes in the **cover letter**, never the résumé body.
 - **🛑 Ask before calling something a gap.** The vault records what the user *told* you — not the limit of
