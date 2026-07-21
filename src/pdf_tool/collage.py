@@ -60,10 +60,12 @@ import struct
 import sys
 from pathlib import Path
 
+from .paths import repo_root
+
 IMAGE_EXTS = {".png", ".jpg", ".jpeg", ".webp", ".gif"}
 FAMILIES = ["uniform-grid", "hero-mosaic", "masonry", "filmstrip", "spotlight-caption", "frame-scatter"]
 
-_REPO_ROOT = Path(__file__).resolve().parents[2]
+_REPO_ROOT = repo_root()
 _THEME_PATH = _REPO_ROOT / "themes" / "default-collage.json"
 _LAYOUTS_DIR = _REPO_ROOT / "layouts" / "collage"
 _ARCHIVE_DIR = _LAYOUTS_DIR / "_archive"

@@ -47,4 +47,5 @@ testpaths = ["tests"]
 pythonpath = ["src"]
 
 [tool.setuptools.package-data]
-pdf_tool = ["static/*"]
+# share/ is filled by scripts/sync-wheel-share.py before wheel builds (see docs/PACKAGING.md)
+pdf_tool = ["static/*", "share/**/*"]

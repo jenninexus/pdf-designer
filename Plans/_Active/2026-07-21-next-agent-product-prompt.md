@@ -1,7 +1,7 @@
 # Handoff prompt — next agent (copy into a new chat)
 
-> **Status:** ready to paste (refreshed 2026-07-21 wrap). Workstreams **A + B shipped**.
-> Pick **C** (paid-app spike) and/or **PyPI/installer**; optional **D** (recipe polish).
+> **Status:** ready to paste (refreshed 2026-07-21 wrap #2). Workstreams **A + B + C(design) + P(spike)** shipped.
+> Pick **TestPyPI dry-run** and/or **Hub recipe-gallery UX**; optional collage recipe polish (D).
 > Private Netflix/application records stay in gitignored `storage/`. Do not re-apply Netflix.
 
 ---
@@ -19,12 +19,13 @@ split or inventing a second renderer.
 ## Read first (in order)
 1. AGENTS.md
 2. docs/SSOT.md
-3. docs/PRODUCT.md          ← business direction SSOT (free GitHub vs paid app)
-4. docs/WHITE-LABEL.md      ← public clone path ONLY (not the business plan)
-5. docs/QA.md               ← judge the ARTIFACT; check_generation is the ship gate
-6. docs/ROADMAP.md → Plans/_Active/2026-07-14-professional-product-roadmap.md
-7. docs/STORAGE.md          ← shared MG gallery under storage/studio/resources/images/martiangames/
-8. docs/THEME-DESIGN.md     ← trap: prefers-color-scheme must be screen-scoped
+3. docs/PRODUCT.md          ← business direction + shell-over-Hub paid-app spike
+4. docs/PACKAGING.md        ← PyPI/wheel rules (themes+layouts must ship in the wheel)
+5. docs/WHITE-LABEL.md      ← public clone path ONLY (not the business plan)
+6. docs/QA.md               ← judge the ARTIFACT; check_generation is the ship gate
+7. docs/ROADMAP.md → Plans/_Active/2026-07-14-professional-product-roadmap.md
+8. docs/STORAGE.md          ← shared MG gallery under storage/studio/resources/images/martiangames/
+9. docs/THEME-DESIGN.md     ← trap: prefers-color-scheme must be screen-scoped
 
 ## Product constraints (do not violate)
 - MIT engine stays free; storage/ vaults + real applications stay gitignored forever.
@@ -40,27 +41,34 @@ split or inventing a second renderer.
 - Dark-PDF fix: @media screen and (prefers-color-scheme: light) so OS light preference
   cannot outrank html[data-pdf-theme="dark"] print tokens
 - Public example resume is 2 pages and passes check_generation
+- Paid-app DESIGN spike: shell-over-Hub in docs/PRODUCT.md (pywebview stays parked)
+- PyPI/wheel SPIKE: pdf_tool.paths.repo_root + scripts/sync-wheel-share.py +
+  scripts/check-wheel-assets.py + docs/PACKAGING.md (wheel must include share/themes+layouts)
 
 ## Prove public path still green (30s)
 python scripts/smoke-white-label.py
+# Packaging gate (when touching install/wheel):
+python scripts/check-wheel-assets.py
 
 ## Suggested workstream (pick 1–2, finish, verify)
-C. Paid-app spike (design only or thin prototype): installer + recipe gallery over Design Hub —
-   document in PRODUCT.md / active plan; do not ship secrets. pywebview shell is parked —
-   prefer documenting the shell-over-Hub approach first.
-P. PyPI / installer spike for non-dev users (remaining public-readiness item).
+T. TestPyPI dry-run — bump version if needed, check-wheel-assets PASS, upload TestPyPI,
+   fresh-venv install proof. Do not claim production PyPI until that works.
+G. Design Hub recipe-gallery UX — browse layouts/ + themes/presets/ inside the Hub
+   (paid-shell precursor; still one renderer).
 D. Collage/resume recipe polish that strengthens the “layout studio” story for both free + paid.
 
 ## Verification
 - python -m pdf_tool.check_generation on any doc you touch
 - For public path: python scripts/smoke-white-label.py (tracked files only)
-- Commit tracked docs/code only; never commit storage/
+- For packaging: python scripts/check-wheel-assets.py
+- Commit tracked docs/code only; never commit storage/ or generated src/pdf_tool/share/{themes,layouts,examples}/
 - Windows consoles are often cp1252 — keep script print() ASCII
 
 ## Out of scope this session
 - Rebuilding Netflix materials
 - Moving real PII into tracked paths
 - Auto-applying to jobs
+- Re-opening pywebview vs Electron debates (decision: shell-over-Hub first)
 ```
 
 ---
@@ -72,4 +80,5 @@ D. Collage/resume recipe polish that strengthens the “layout studio” story f
 | Is WHITE-LABEL the business plan? | **No.** It’s the public reuse how-to. Business direction = `docs/PRODUCT.md`. |
 | Where are applications logged? | `storage/_job-listings/applied-index.md` + each `application.json` + `pdf_tool.tracker` |
 | Active engineering plan | `Plans/_Active/2026-07-14-professional-product-roadmap.md` |
+| Packaging SSOT | `docs/PACKAGING.md` — naive wheels without `themes/` are broken |
 | Observable public proof | `python scripts/smoke-white-label.py` → PASS; Hub at http://127.0.0.1:8787/ |

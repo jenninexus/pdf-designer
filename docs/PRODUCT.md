@@ -45,11 +45,44 @@ brand maps, images) stays gitignored. The public repo must stay clone-safe and d
 
 Ideas only — not commitments. Prefer thin shells over a second renderer.
 
-1. **Installer + desktop window** (pywebview or similar was parked; Design Hub browser is today’s shell)
+1. **Installer that launches Design Hub** (shell-over-Hub — see below)
 2. **Template / recipe gallery** with one-click “make my resume / collage”
 3. **Guided job-application wizard** (capture listing → gap-check → export) for non-agents
 4. **Cloud-optional sync** of *layouts/themes only* — never require cloud for vaults
 5. **Pro presets / print packs** as paid content while the engine stays MIT
+
+## Paid-app spike — shell-over-Hub (design decision)
+
+**Do not fork the renderer.** The paid product is a thin distribution + UX layer
+around the same `pdf_tool` engine and the same Design Hub HTTP UI that already
+ships free.
+
+```
+┌─────────────────────────────────────────────────────────┐
+│  Paid shell (future)                                     │
+│  • OS installer / start menu                             │
+│  • starts `pdf_tool.preview` on 127.0.0.1                │
+│  • opens Hub (browser today; native window optional)     │
+│  • recipe gallery chrome + guided export flows           │
+└──────────────────────────┬──────────────────────────────┘
+                           │ localhost HTTP (unchanged)
+┌──────────────────────────▼──────────────────────────────┐
+│  Free MIT core (ships today)                             │
+│  Design Hub + pdf_tool + themes/ + layouts/ + QA gates   │
+└─────────────────────────────────────────────────────────┘
+```
+
+| Decision | Choice | Why |
+|---|---|---|
+| First shell | **Browser → Design Hub** (`python -m pdf_tool.preview`) | Already the interactive SSOT; zero new deps |
+| Native window | **pywebview parked** | Optional polish only ([archived](../Plans/_Archive/2026-07-11-design-hub-parked-phases.md)); revive when packaging for non-Python users |
+| Recipe gallery | Hub surface over tracked `layouts/` + `themes/presets/` | Structure + color registries already exist — UI, not a second engine |
+| Data | Local `storage/` stays private / optional | Paid app never requires cloud vaults |
+| Packaging precursor | PyPI / wheel with public assets | [`PACKAGING.md`](PACKAGING.md) — must ship `themes/` + `layouts/` inside the wheel |
+
+**Spike done when:** this section + PACKAGING path resolution are honest, and the
+next build step is either (a) Hub recipe-gallery UX or (b) TestPyPI dry-run —
+not another architecture debate.
 
 ## Non-goals
 
@@ -63,6 +96,7 @@ Ideas only — not commitments. Prefer thin shells over a second renderer.
 | Question | Doc |
 |---|---|
 | How do I clone and use it publicly? | [`WHITE-LABEL.md`](WHITE-LABEL.md) |
+| How do non-devs install (PyPI / wheel)? | [`PACKAGING.md`](PACKAGING.md) |
 | What do we build next (engineering)? | Active plan under `Plans/_Active/` |
 | What may be claimed / how applications work? | [`VAULT.md`](VAULT.md) · [`JOB-ASSESSMENT.md`](JOB-ASSESSMENT.md) |
 | Where is private data? | [`STORAGE.md`](STORAGE.md) |
@@ -70,5 +104,5 @@ Ideas only — not commitments. Prefer thin shells over a second renderer.
 
 ---
 
-*Last clarified 2026-07-21 — product direction was previously implied by the roadmap + white-label
-split; this file makes the free-vs-paid story explicit so agents stop treating WHITE-LABEL as a business plan.*
+*Last updated 2026-07-21 — free-vs-paid story + shell-over-Hub spike; WHITE-LABEL stays the
+public how-to only; PACKAGING owns the wheel/PyPI path.*

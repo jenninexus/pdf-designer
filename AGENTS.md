@@ -34,7 +34,8 @@ folder task runs `scripts/ensure-design-hub.ps1` — starts the hub if needed, o
 
 **Public-path smoke (no `storage/`):** `python scripts/smoke-white-label.py` — QA + light/dark PDF + ATS on
 `examples/profiles/default-resume/`. Checklist: [`docs/WHITE-LABEL.md`](docs/WHITE-LABEL.md). Product
-direction (free GitHub vs paid app): [`docs/PRODUCT.md`](docs/PRODUCT.md).
+direction (free GitHub vs paid app): [`docs/PRODUCT.md`](docs/PRODUCT.md). Packaging / wheel gate:
+[`docs/PACKAGING.md`](docs/PACKAGING.md) · `python scripts/check-wheel-assets.py`.
 
 **Active plan (one):** [`Plans/_Active/2026-07-14-professional-product-roadmap.md`](Plans/_Active/2026-07-14-professional-product-roadmap.md) · next-agent handoff [`Plans/_Active/2026-07-21-next-agent-product-prompt.md`](Plans/_Active/2026-07-21-next-agent-product-prompt.md) · index [`Plans/README.md`](Plans/README.md).
 
@@ -139,7 +140,7 @@ content stays in the gitignored `storage/` vault. (This replaced the older `.loc
 | `examples/brand-design/` | tracked **template** for private brand maps (copy → `storage/brand-design/`) |
 | `examples/profiles/<id>/` | one profile per document type: `profile.json` + reference `.html` + example data |
 | `examples/_job-listings/` | one-folder-per-job-application workflow + copyable template |
-| `docs/` | ARCHITECTURE · SSOT · WHITE-LABEL · STORAGE · VAULT · JOB-ASSESSMENT · THEME-DESIGN · LAYOUT-SYSTEM · EXPORTS · COLLAGE-DESIGN · PREVIEWER · APPLICATIONS · LICENSING-NOTES ([`docs/README.md`](docs/README.md) is the index) |
+| `docs/` | ARCHITECTURE · SSOT · PRODUCT · PACKAGING · WHITE-LABEL · STORAGE · VAULT · JOB-ASSESSMENT · THEME-DESIGN · LAYOUT-SYSTEM · EXPORTS · COLLAGE-DESIGN · PREVIEWER · APPLICATIONS · LICENSING-NOTES ([`docs/README.md`](docs/README.md) is the index) |
 | `.config/mcp-pdf-designer.json` | project config — **breakpoint SSOT pointer** + hub/palette/layout/collage/voice pointers. Clone-safe: `.config/mcp-pdf-designer.example.json` |
 | `Plans/_Active/` | ⭐ the working roadmap (one file) — see [`Plans/README.md`](Plans/README.md) |
 | `storage/` | ⛔ **gitignored** local workspace: vaults, real applications, real image sets, private brands |
