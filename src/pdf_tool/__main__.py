@@ -11,6 +11,7 @@ _COMMANDS: tuple[tuple[str, str], ...] = (
     ("variants", "Light PDF per public palette -> _variants/"),
     ("merge_pdfs", "Merge PDFs into one bundle"),
     ("pdf_to_png", "Screenshot each .page for visual verify"),
+    ("check_generation", "** ONE QA pass: palette+casing+overlay+signature+margins+overflow"),
     ("check_palette", "Reject brown / mustard / lime"),
     ("check_overflow", "Catch page overflow / pinned-footer collision"),
     ("check_vault", "Vault schema / --explain / --coverage"),
@@ -70,6 +71,12 @@ def entry_hub() -> None:
 
 
 # --- console_scripts wrappers (mains that require argv=) ---
+
+
+def entry_check_generation() -> None:
+    from .check_generation import main as _main
+
+    raise SystemExit(_main(sys.argv[1:]))
 
 
 def entry_check_palette() -> None:
