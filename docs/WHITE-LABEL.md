@@ -4,6 +4,9 @@ Shippable story for anyone cloning this repo **without** private vaults, PII, or
 studio brand maps. No new themes invented here — the public defaults and presets
 are the product.
 
+> **Not the business plan.** Free-vs-paid / GitHub-vs-app direction lives in
+> [`PRODUCT.md`](PRODUCT.md). This page is only *how to use the public surface*.
+
 ---
 
 ## What you need
