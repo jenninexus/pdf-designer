@@ -22,6 +22,32 @@ python -m pdf_tool.check_generation <doc>.html --json          # machine-readabl
 | [When to run](#when-to-run) | Wired into make-resume / make-work-examples |
 | Related | [`../themes/GENERATION-RULES.md`](../themes/GENERATION-RULES.md) · [`../themes/PALETTE-RULES.md`](../themes/PALETTE-RULES.md) · [`LAYOUT-SYSTEM.md`](LAYOUT-SYSTEM.md) |
 
+## ⭐ The governing principle — judge the ARTIFACT, not the source
+
+> **A guard that inspects the source can only catch defects that exist in the source.**
+> The reader sees a rendered PDF. Three defects shipped in 2026-07-21 precisely because every guard
+> was reading CSS while the bug lived in the render:
+
+| Guard | Measured | Missed |
+|---|---|---|
+| `check_palette` | source hex | brown **composited** at render time — a red-tinted dark grey averaging `2c2224`, and alpha layers producing `a08251` (no brown hex exists anywhere in the file) |
+| `check_overflow` | DOM height at Playwright's **1280px** default viewport | real overflow at the **816px** paper width — measured 726px vs the true 940px, so a 9px overflow read as 205px of headroom and a footer overlap shipped |
+| *(none existed)* | — | `@page` background drift between sibling docs — invisible on screen, visible as a mismatched PDF border |
+
+**Rules that follow — apply these when writing ANY new check:**
+
+1. **Render, then measure.** If a rule is about what the page *looks* like, the check must rasterize
+   (Playwright screenshot or `pypdfium2` on the exported PDF) and inspect pixels.
+2. **Measure at real paper width.** US Letter = **816 CSS px** (8.5in × 96dpi). In print media `.page`
+   is `width: auto` and inherits the viewport, so a wide viewport silently under-reports height.
+   `check_overflow._LETTER_PX` exists for this reason — never measure page fit at a default viewport.
+3. **Exempt artwork.** Colors inside `<img>` regions belong to the photo, not the palette
+   (`check_rendered_color` skips image boxes). A rule that fails on game art is a rule people disable.
+4. **Discount antialiasing.** Subpixel text fringing produces off-hue pixels on every rendered page.
+   Render at 2×, use greyscale AA, and require a neighbour cluster before counting a pixel.
+5. **Control-test both directions.** A new guard must be shown to **FAIL the known-bad artifact** and
+   **PASS the known-good one**. A check only ever verified against clean input proves nothing.
+
 ## The checks
 
 `check_generation` is the **one QA pass**. It composes the existing single-purpose guards and adds the
