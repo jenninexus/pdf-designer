@@ -71,6 +71,11 @@ person's structure or assets:
 > first (or ask which pieces to feature). Copying jenni's structure onto shade is exactly the bug that put
 > **jenni's Agency agent grid** and the **Agency banner** onto a Shade portfolio (2026-07-20).
 
+**Shared vs personal files (assets, not structure):** Martian Games **title stills** live once at
+`storage/studio/resources/images/martiangames/` — both people point there via
+`portfolio.workSampleAssets.mgGallerySsot`. Agency art stays under `jenni/…`; Synagen logo/engine
+shots under `shade/…`. See [`STORAGE.md`](STORAGE.md) § Shared studio assets.
+
 **Per-person content differs by identity — do not blur:**
 
 | | Jenni | Shade |
