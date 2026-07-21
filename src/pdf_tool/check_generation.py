@@ -211,6 +211,35 @@ def check_signature(path: Path):
 
 
 # @page margins equal on all four edges (consistent padding).
+# The @page background paints the PDF's MARGIN/BORDER area. If sibling docs in one application
+# disagree (e.g. 0B0B0D on the letter vs 000000 on the samples), the set looks mismatched when the
+# PDFs sit side by side — the reader sees a different-coloured border on one file. Caught 2026-07-21.
+def check_page_bg(path: Path):
+    html = _read(path)
+    msgs = []
+    bgs = re.findall(r"@page[^{]*\{[^}]*background:\s*(#[0-9a-fA-F]{3,8})", html)
+    uniq = {b.lower() for b in bgs}
+    if len(uniq) > 1:
+        msgs.append(f"@page backgrounds disagree inside this file: {sorted(uniq)}")
+    # Cross-document consistency, scoped to the SAME APPLICANT. Two applicants applying to one
+    # company legitimately render different palettes (split accent runs), so only compare files
+    # that share this doc's user prefix (e.g. shade-* vs shade-*).
+    stem = path.name.split("-")[0].lower()
+    sibs = [p for p in path.parent.glob("*.html")
+            if p != path and not p.name.endswith(".template.html")
+            and p.name.split("-")[0].lower() == stem]
+    for s in sibs:
+        try:
+            sb = re.findall(r"@page[^{]*\{[^}]*background:\s*(#[0-9a-fA-F]{3,8})", _read(s))
+        except OSError:
+            continue
+        su = {b.lower() for b in sb}
+        if su and uniq and su != uniq:
+            msgs.append(f"page background {sorted(uniq)} differs from {s.name} {sorted(su)} "
+                        f"— sibling docs in one application must share the PDF border colour")
+    return (not msgs), msgs
+
+
 def check_margins(path: Path):
     html = _read(path)
     msgs = []
@@ -281,6 +310,7 @@ CHECKS = [
     ("overlay", "no neon/color fill over images (dark scrim only)", check_image_overlay, False),
     ("signature", "signature block present + bottom-pinned", check_signature, False),
     ("margins", "equal/consistent @page margins", check_margins, False),
+    ("page-bg", "PDF border colour matches sibling docs in the same application", check_page_bg, False),
     ("rendered-color", "⭐ no brown in the RENDERED pixels / no large-area warm cast", check_rendered, False),
     ("overflow", "no page overflows its print box (render)", check_overflow_render, False),
 ]
