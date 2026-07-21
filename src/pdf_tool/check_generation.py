@@ -259,6 +259,68 @@ def check_margins(path: Path):
     return (not msgs), msgs
 
 
+def check_footer_collision(path: Path):
+    """GROUND TRUTH: export the PDF and look for content colliding with the pinned signature.
+
+    DOM measurement (check_overflow) sums heights and can still miss a real collision — it did on
+    2026-07-21, when a Toolbelt line rendered *through* the "Shade Muse" signature on page 1 while
+    the guard reported PASS. This renders the actual PDF and inspects the signature band: if
+    non-background pixels appear to the LEFT of the right-aligned signature on the same rows, body
+    text is running into it.
+    """
+    try:
+        import tempfile
+        import pypdfium2 as pdfium
+        from . import html_to_pdf  # noqa: F401  (ensures the export deps exist)
+        from playwright.sync_api import sync_playwright
+    except Exception as e:
+        return True, [f"(skipped — {e})"]
+
+    msgs = []
+    try:
+        with tempfile.TemporaryDirectory() as td:
+            out = Path(td) / "probe.pdf"
+            with sync_playwright() as p:
+                b = p.chromium.launch()
+                pg = b.new_page()
+                pg.goto(path.resolve().as_uri())
+                pg.evaluate("() => document.documentElement.setAttribute('data-pdf-theme','dark')")
+                pg.emulate_media(media="print")
+                pg.wait_for_timeout(400)
+                pg.pdf(path=str(out), format="Letter", print_background=True)
+                b.close()
+
+            pdf = pdfium.PdfDocument(str(out))
+            for i in range(len(pdf)):
+                im = pdf[i].render(scale=2).to_pil().convert("RGB")
+                W, H = im.size
+                bg = im.getpixel((6, H // 2))
+
+                def lit(px):  # noticeably different from the page background
+                    return sum(abs(a - c) for a, c in zip(px, bg)) > 90
+
+                # find the signature band: rows in the bottom 22% holding lit pixels on the right third
+                band = [y for y in range(int(H * 0.78), H, 2)
+                        if any(lit(im.getpixel((x, y))) for x in range(int(W * 0.68), W - 4, 3))]
+                if not band:
+                    continue
+                top, bot = min(band), max(band)
+                # body text intruding on those same rows, left of the signature column
+                intruding = sum(
+                    1 for y in range(top, bot + 1, 2)
+                    for x in range(int(W * 0.08), int(W * 0.62), 3)
+                    if lit(im.getpixel((x, y)))
+                )
+                if intruding > 40:
+                    msgs.append(
+                        f"page {i + 1}: body content overlaps the pinned signature band "
+                        f"(rows {top}-{bot}, {intruding} intruding pixels). Move a section to the "
+                        f"next page — see docs/LAYOUT-SYSTEM.md content-fit rule.")
+    except Exception as e:
+        return True, [f"(skipped — {e})"]
+    return (not msgs), msgs
+
+
 def check_overflow_render(path: Path):
     """Render-based: import lazily (playwright/pypdfium2) so the other checks work without them."""
     try:
@@ -313,6 +375,8 @@ CHECKS = [
     ("page-bg", "PDF border colour matches sibling docs in the same application", check_page_bg, False),
     ("rendered-color", "⭐ no brown in the RENDERED pixels / no large-area warm cast", check_rendered, False),
     ("overflow", "no page overflows its print box (render)", check_overflow_render, False),
+    ("footer-collision", "⭐ PDF ground truth: nothing overlaps the pinned signature",
+     check_footer_collision, False),
 ]
 
 
@@ -323,7 +387,7 @@ def run_file(path: Path, user: str | None = None, do_render: bool = True) -> dic
     no_mag = _no_magenta_for(user)
     results = []
     for key, desc, fn, needs_nomag in CHECKS:
-        if key in ("overflow", "rendered-color") and not do_render:
+        if key in ("overflow", "rendered-color", "footer-collision") and not do_render:
             results.append({"check": key, "ok": True, "skipped": True, "messages": ["(render skipped)"]})
             continue
         if needs_nomag:
