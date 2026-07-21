@@ -16,7 +16,7 @@ Hub:       python -m pdf_tool.preview → :8787 (workspace auto-starts via scrip
 Smoke:     python scripts/smoke-white-label.py   ← ⭐ fresh-clone proof (examples/ only, no storage/)
 Package:   docs/PACKAGING.md + scripts/check-wheel-assets.py  ← wheel must include themes/layouts
 Engine:    python -m pdf_tool  (hub) / individual modules
-Plans:     Plans/_Active/2026-07-14-professional-product-roadmap.md
+Plans:     Plans/_Active/2026-07-21-next-agent-product-prompt.md
 ```
 
 Compact map of what this repo owns vs what it only points at. Agents: start here, then
@@ -50,7 +50,7 @@ Compact map of what this repo owns vs what it only points at. Agents: start here
 | Make-collage | `.claude/commands/make-collage.md` | Multi-image collage routine |
 | Public examples | `examples/profiles/`, `examples/brand-design/`, `examples/_job-listings/` | Clone-safe templates |
 | Project config | `.config/mcp-pdf-designer.json` | Breakpoint pointer, hub, voice/external pointers |
-| Active plan | `Plans/_Active/2026-07-14-professional-product-roadmap.md` | What to build next |
+| Active plan | `Plans/_Active/2026-07-21-next-agent-product-prompt.md` | What to build next (+ paste-ready handoff) |
 
 ---
 
@@ -129,4 +129,4 @@ short public-facing entry.
 | [`VAULT.md`](VAULT.md) | Claim + voice rules |
 | [`PREVIEWER.md`](PREVIEWER.md) | Design Hub how-to |
 | [`STORAGE.md`](STORAGE.md) | Private workspace layout |
-| [`Plans/_Active/…`](../Plans/_Active/2026-07-14-professional-product-roadmap.md) | Working checklist |
+| [`Plans/_Active/…`](../Plans/_Active/2026-07-21-next-agent-product-prompt.md) | Working checklist + handoff |

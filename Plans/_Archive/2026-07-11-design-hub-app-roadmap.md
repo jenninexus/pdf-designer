@@ -1,7 +1,8 @@
 # Roadmap (ARCHIVED 2026-07-14)
 
-> **Superseded by** [`../_Active/2026-07-14-professional-product-roadmap.md`](../_Active/2026-07-14-professional-product-roadmap.md).
-> Phase 1 Design Hub shipped; remaining pipeline items live on the active product roadmap.
+> **Superseded** — see archived wave [`2026-07-14-professional-product-roadmap.md`](2026-07-14-professional-product-roadmap.md);
+> active checklist is [`../_Active/2026-07-21-next-agent-product-prompt.md`](../_Active/2026-07-21-next-agent-product-prompt.md).
+> Phase 1 Design Hub shipped.
 > Parked pywebview/canvas: [`2026-07-11-design-hub-parked-phases.md`](2026-07-11-design-hub-parked-phases.md).
 
 ---
