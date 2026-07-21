@@ -93,6 +93,8 @@ storage/<user>/
 > **`defaults/` vs `_exports/`.** `_exports/<Track>/` is per-job output; **`defaults/` is the one place
 > to grab a ready-to-send generic resume/cover/work-samples** so the owner never has to sort through
 > `_exports/` or re-generate for a fresh listing. Keep `defaults/` current with the best-of vault.
+> After editing `storage/<user>/*-resume.html`, re-export light+dark into `defaults/` and run
+> `python -m pdf_tool.check_generation` on the source (10 checks — see [`QA.md`](QA.md)).
 
 ### Voice SSOT (hybrid)
 

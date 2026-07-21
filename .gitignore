@@ -10,13 +10,13 @@ dev-log-*.yaml
 # any examples/profiles/<your-id>/ folder you create from the default-resume template.
 #
 # storage/ holds EVERYTHING private: the claim vaults, the real applications, the exported
-# PDFs, and (since 2026-07-14) storage/brands/ — the private brand palettes (mapped from
+# PDFs, and (since 2026-07-20) storage/brand-design/ — the private brand palettes (mapped from
 # www-theme-kit / syna-theme-kit profiles; never commit real vaults or personal contacts).
 #
 # ⚠ themes/ is deliberately NOT ignored. It is the PUBLIC engine's default theme + the palette
 # RULE, which the code and docs depend on; a fresh clone must be able to render. Private brand
-# palettes live in storage/brands/, which the previewer reads alongside themes/.
-# Tracked brand TEMPLATE (no personal data): examples/brands/
+# palettes live in storage/brand-design/, which the previewer reads alongside themes/.
+# Tracked brand TEMPLATE (no personal data): examples/brand-design/
 private/
 notes/
 storage/
