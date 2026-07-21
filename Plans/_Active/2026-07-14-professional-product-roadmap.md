@@ -11,6 +11,7 @@
 | [`docs/QA.md`](../../docs/QA.md) | Ship gate — judge the artifact |
 | [`docs/PREVIEWER.md`](../../docs/PREVIEWER.md) | Design Hub how-to |
 | [`docs/STORAGE.md`](../../docs/STORAGE.md) · [`VAULT.md`](../../docs/VAULT.md) · [`JOB-ASSESSMENT.md`](../../docs/JOB-ASSESSMENT.md) | Protocol SSOT |
+| [`2026-07-21-next-agent-product-prompt.md`](2026-07-21-next-agent-product-prompt.md) | ⭐ Paste-ready next-agent handoff (remaining: paid-app / PyPI) |
 | [`../_Archive/`](../_Archive/) | Completed / parked plans (hub Phase 1, character voice, pywebview) |
 
 ---
@@ -143,12 +144,21 @@ the only renderer. No MCP / always-on server required for core value.
 - [x] **Shade Netflix work-samples under 5MB** — JPEG/WebP image pipeline for Chromium PDF
       (1.09 MB dark); resume already ~0.21 MB.
 
+## Shipped recently (2026-07-21) — public 5-minute path + dark-PDF specificity fix
+
+- [x] **White-label smoke** — `scripts/smoke-white-label.py` (QA + light/dark export + ATS; no `storage/` required)
+- [x] **README 5-minute path** — fresh-clone demo from `examples/` only; [`WHITE-LABEL.md`](../../docs/WHITE-LABEL.md) checklist
+- [x] **Public example resume** — 2-page fit (content-fit rule); was overflowing + false footer-collision
+- [x] **Dark PDF on light OS preference** — `@media screen and (prefers-color-scheme: light)` so screen tokens cannot outrank `html[data-pdf-theme="dark"]` print tokens (`default-resume.html` + `themes/default-resume.css`)
+- [x] **`check_footer_collision` hardened** — sample bg inside the content box; `prefer_css_page_size=True` to match `html_to_pdf`
+
 ## Next — public GitHub + product packaging ← **priority**
 
 See [`docs/PRODUCT.md`](../../docs/PRODUCT.md) for free-vs-paid thesis. Engineering checklist:
 
-- [ ] **Public-repo readiness** — README demo path that works from a fresh clone (`examples/` only); PyPI / installer for non-dev users
-- [ ] **White-label smoke** — document + script a 5-minute “clone → Design Hub → export” path ([`WHITE-LABEL.md`](../../docs/WHITE-LABEL.md))
+- [x] **Public-repo readiness (demo path)** — README 5-minute path + smoke script from `examples/` only
+- [ ] **PyPI / installer** — package for non-dev users (spike when ready)
+- [x] **White-label smoke** — `scripts/smoke-white-label.py` + [`WHITE-LABEL.md`](../../docs/WHITE-LABEL.md) checklist
 - [ ] **Paid-app spike (later)** — thin desktop shell over the same engine (installer + recipe gallery); do **not** fork the renderer; privacy split stays absolute
 - [ ] Keep SSOT + QA docs honest as the engine evolves
 - [ ] Optional: document meet-jenni-bot / syn-themes collage recipes in `docs/COLLAGE-DESIGN.md` examples (paths stay private under `storage/`)

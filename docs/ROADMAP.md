@@ -9,8 +9,9 @@
 
 Pulled from the active plan — keep in sync there, this is a quick view:
 
-- [ ] **Public GitHub readiness** — PyPI/installer, README polish, white-label demo path ([`WHITE-LABEL.md`](WHITE-LABEL.md)) ← priority
-- [ ] **Product direction** — free MIT core vs future paid app shell ([`PRODUCT.md`](PRODUCT.md)); decide MVP packaging
+- [x] **White-label demo path** — README 5-minute path + `scripts/smoke-white-label.py` ([`WHITE-LABEL.md`](WHITE-LABEL.md))
+- [ ] **PyPI / installer** — package for non-dev users ← remaining public-readiness item
+- [x] **Product direction** — free MIT core vs future paid app shell ([`PRODUCT.md`](PRODUCT.md)); paid-app spike still open
 - [ ] Keep **SSOT + QA docs** honest as the engine evolves ([`SSOT.md`](SSOT.md) · [`QA.md`](QA.md))
 - [ ] Optional: document meet-jenni-bot / syn-themes **collage recipes** in [`docs/COLLAGE-DESIGN.md`](COLLAGE-DESIGN.md) examples (paths stay private under `storage/`)
 - [ ] Optional: Synagen **engine** promo screenshots → `storage/shade/resources/images/synagen/`

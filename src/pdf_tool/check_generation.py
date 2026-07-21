@@ -287,7 +287,13 @@ def check_footer_collision(path: Path):
                 pg.evaluate("() => document.documentElement.setAttribute('data-pdf-theme','dark')")
                 pg.emulate_media(media="print")
                 pg.wait_for_timeout(400)
-                pg.pdf(path=str(out), format="Letter", print_background=True)
+                # Match html_to_pdf: CSS @page size + painted backgrounds.
+                pg.pdf(
+                    path=str(out),
+                    format="Letter",
+                    print_background=True,
+                    prefer_css_page_size=True,
+                )
                 b.close()
 
             pdf = pdfium.PdfDocument(str(out))
@@ -295,7 +301,11 @@ def check_footer_collision(path: Path):
                 for i in range(len(pdf)):
                     im = pdf[i].render(scale=2).to_pil().convert("RGB")
                     W, H = im.size
-                    bg = im.getpixel((6, H // 2))
+                    # Sample INSIDE the content box — edge pixels are often @page
+                    # chrome (or white margin) and make the whole sheet look "lit".
+                    # 0.65in ≈ 94px at scale 2; use a safe inset past equal margins.
+                    inset = max(120, int(min(W, H) * 0.12))
+                    bg = im.getpixel((inset, H // 2))
 
                     def lit(px):  # noticeably different from the page background
                         return sum(abs(a - c) for a, c in zip(px, bg)) > 90
