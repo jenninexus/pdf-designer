@@ -26,6 +26,7 @@ dependencies = [
 [project.scripts]
 pdf-designer = "pdf_tool.__main__:entry_hub"
 pdf-designer-preview = "pdf_tool.preview:main"
+pdf-designer-check-generation = "pdf_tool.__main__:entry_check_generation"
 pdf-designer-check-palette = "pdf_tool.__main__:entry_check_palette"
 pdf-designer-check-vault = "pdf_tool.__main__:entry_check_vault"
 pdf-designer-check-ats = "pdf_tool.__main__:entry_check_ats"

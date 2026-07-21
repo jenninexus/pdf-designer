@@ -105,6 +105,11 @@ The color rules live in their own guard-enforced SSOT — **do not duplicate hex
 | **Work-samples page-2** | Agency agent grid (hers) | **Shipped Multiplayer Games** + Synagen promo thumbs — **no** agency grid |
 | **Default brand theme** | `storage/brand-design/brand-jenninexus.json` | `storage/brand-design/brand-synagen.json` (violet + cyan) |
 
-Enforcement is partly automated (`check_palette --no-magenta`) and partly discipline (casing, overlays,
-framing). When you touch generation code or a template, fold any new taste rule you discover **back into
-this file** so it stays the one place to look.
+## Enforcement — one QA command
+
+Every rule on this page is checked by **`python -m pdf_tool.check_generation <doc>.html`** — the single QA
+gate (palette · rgba-magenta · casing · overlay · signature-pin · equal-margins · overflow), per-user and
+per-doc aware. Run it before shipping any generation; exit 1 = a rule failed. Full map: [`../docs/QA.md`](../docs/QA.md).
+
+When you touch generation code or a template and discover a new taste rule, fold it into **this file**
+(the human SSOT) **and** add a check to `check_generation` (the machine SSOT) so it can't regress.
