@@ -13,8 +13,26 @@ Tracked default theme files:
 - `examples/profiles/default-resume/profile.json` - default resume profile.
 - `examples/profiles/default-resume/default-resume.html` - reference render.
 
-Kit catalog (mirrors + Martian private map): `www-theme-kit/palettes/resume-palettes.json` (8 entries).
+Kit catalog (mirrors + Martian private map): `www-theme-kit/palettes/resume-palettes.json` (7 public presets + `default-resume` + `martian-resume`).
 Contrast spot-check: `node scripts/wcag-resume-palettes.mjs`.
+
+### Personal palette prefs (Jenni / Shade)
+
+| Layer | Path | Holds |
+|---|---|---|
+| Person pointer | `storage/users/<user>.json#brandTheme.ssot` | Path only — **no hex** |
+| Profile pointer | `storage/profiles/<user>-resume.json#theme.brandMap` | Same path, for make-resume |
+| **Hex SSOT** | `storage/brand-design/brand-*.json` | Tokens Design Hub + exports use |
+| Website upstream | `www-theme-kit/profiles/{jenninexus,martiangames}.json` | Live-site inspiration; map into brand-design when syncing |
+| Kit catalog | `www-theme-kit/palettes/resume-palettes.json` | Public presets + `martian-resume` mirror |
+
+| Who | `brandTheme.ssot` → |
+|---|---|
+| Jenni | `storage/brand-design/brand-jenninexus.json` |
+| Shade (personal / Synagen) | `storage/brand-design/brand-synagen.json` |
+| Shade studio / games voice | `storage/brand-design/brand-martian.json` |
+
+Design Hub `load_palettes()` scans `themes/` + `themes/presets/` + `storage/brand-design/` — the person dropdown only filters the library, it does not auto-apply a brand.
 
 The public default is intentionally brand-neutral. It supports:
 
@@ -63,10 +81,11 @@ paths, real output paths, and project-specific palette mappings.
 When a resume needs that brand, **map** the kit profile into `storage/brand-design/brand-*.json`
 (token names in the table below). Tracked starter: [`../examples/brand-design/`](../examples/brand-design/).
 
-**Worked MG mapping (2026-07-14):** live site orange+violet (`martiangames.json`) →
+**Worked MG mapping (aligned 2026-07-22):** live site roles (`martiangames.json`) →
 `storage/brand-design/brand-martian.json` + kit mirror `palettes/resume-palettes.json#martian-resume`.
-Dark = FF6B00 / FF4500 / 8B5CF6 / 42F4C8 on purple-tinted near-black. Light = print-safe
-orange-RED + violet (never darkened amber, never teal-as-secondary).
+Dark = **primary `#FF6B00` · secondary `#8B5CF6` · accent `#FF4500` · support `#42F4C8`** on
+purple-tinted near-black (same role order as the site — do not swap secondary/accent). Light =
+print-safe orange-RED + violet (never darkened amber, never teal-as-secondary).
 
 ## Token Map Contract
 

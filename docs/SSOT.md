@@ -73,6 +73,32 @@ Both are reachable from one machine-readable file:
 
 ---
 
+## Personal palette prefs (Jenni / Shade)
+
+**One hex map each. Person files only point.**
+
+```
+users/<user>.json#brandTheme.ssot
+        │
+        ▼
+storage/brand-design/brand-*.json   ← ⭐ pdf-designer COLOR SSOT (Design Hub + exports)
+        ▲
+        │  map / sync from (never a second résumé SSOT)
+www-theme-kit/profiles/{jenninexus,martiangames}.json
+```
+
+| Who | Edit this file | Pointed by |
+|---|---|---|
+| Jenni | `storage/brand-design/brand-jenninexus.json` | `users/jenni.json` · `profiles/jenni-resume.json` |
+| Shade (Synagen) | `storage/brand-design/brand-synagen.json` | `users/shade.json` · `profiles/shade-resume.json` |
+| Martian studio | `storage/brand-design/brand-martian.json` | Shade studio/games profiles + kit `#martian-resume` |
+
+Design Hub loads `themes/` + `themes/presets/` + `storage/brand-design/` (`preview.load_palettes`).
+The person filter is library-only — it does **not** auto-select a palette. Full contract:
+[`THEME-DESIGN.md`](THEME-DESIGN.md) · [`STORAGE.md`](STORAGE.md) · [`../themes/PALETTE-RULES.md`](../themes/PALETTE-RULES.md).
+
+---
+
 ## Points elsewhere (never duplicate)
 
 | Concern | Owning SSOT |
@@ -80,6 +106,8 @@ Both are reachable from one machine-readable file:
 | Breakpoints numbers | `C:\mcp\.config\mcp-breakpoints.json` + www-theme-kit SCSS |
 | Resume palette kit catalog | `www-theme-kit/palettes/resume-palettes.json` |
 | Hub chrome profile | `www-theme-kit/profiles/pdf-designer.json` |
+| Live-site brand hex (JN / MG) | `www-theme-kit/profiles/{jenninexus,martiangames}.json` — map into `storage/brand-design/` for résumés |
+| Syna public preset lineage | `syna-theme-kit/palettes/syna-palettes.json` (+ skins) → pdf-designer `themes/presets/` |
 | Human voice map / public cards | `C:\Github\voice-seed` (registry + `characters/humans/*.md`) |
 | Application `characterVoice` + vault `voice` | **THIS** repo `storage/` (private) — voice-seed only points |
 | Agency fiction voices | `agency` — **NOT** applicants |

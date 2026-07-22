@@ -151,7 +151,7 @@ The color rules live in their own guard-enforced SSOT — **do not duplicate hex
 | **Neon over images** | ⛔ banned — dark scrim only | ⛔ banned — dark scrim only |
 | **Work-samples hero** | Agency creative-technologist banner | **Synagen / Martian** (NOT Agency) — see [`../docs/VAULT.md`](../docs/VAULT.md) § Work-samples |
 | **Work-samples page-2** | Agency agent grid (hers) | **Shipped Multiplayer Games** + Synagen promo thumbs — **no** agency grid |
-| **Default brand theme** | `storage/brand-design/brand-jenninexus.json` | `storage/brand-design/brand-synagen.json` (violet + cyan) |
+| **Default brand theme** | `storage/brand-design/brand-jenninexus.json` (via `users/jenni.json#brandTheme.ssot`) | `storage/brand-design/brand-synagen.json` (violet + cyan; via `users/shade.json#brandTheme.ssot`) — studio/games: `brand-martian.json` |
 
 ## Enforcement — one QA command
 
