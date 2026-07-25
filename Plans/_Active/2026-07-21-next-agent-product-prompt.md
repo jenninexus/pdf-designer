@@ -42,6 +42,13 @@ Full history: [`../_Archive/2026-07-14-professional-product-roadmap.md`](../_Arc
 Highlights: `check_generation` (10 checks) · white-label smoke · dark-PDF specificity fix ·
 `paths.repo_root` + wheel share pipeline · shell-over-Hub design in PRODUCT.md.
 
+### Also landed (2026-07-22…24) — docs / ops
+
+- Personal palette prefs: `storage/brand-design/brand-*.json` + `docs/SSOT.md` § Personal palette prefs
+  (MG dark roles lockstep with live site — primary `#FF6B00` · secondary `#8B5CF6` · accent `#FF4500`)
+- Project wrap: `.claude/commands/pdf-wrap.md` (`/jen:wrap` routes here)
+- BEE `C:\p\pdf-designer` GitHub sync via deploy key; private brand maps via SEGO→BEE SMB
+
 ### Netflix — CLOSED (do not touch)
 
 Both founders' Netflix applications are **SUBMITTED**. Keep any `storage/_job-listings/Netflix*`

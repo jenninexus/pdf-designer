@@ -25,7 +25,9 @@ collages — with an optional vault-backed job-application layer that never inve
 > **Status:** private for now. Structure and docs are shaped for a future public release
 > (MIT engine + public themes; private vaults stay gitignored). Product direction:
 > [`docs/PRODUCT.md`](docs/PRODUCT.md). Public clone path: [`docs/WHITE-LABEL.md`](docs/WHITE-LABEL.md).
-> Packaging / PyPI spike: [`docs/PACKAGING.md`](docs/PACKAGING.md).
+> Packaging / PyPI spike: [`docs/PACKAGING.md`](docs/PACKAGING.md). Agent map:
+> [`AGENTS.md`](AGENTS.md). Session wrap: [`.claude/commands/pdf-wrap.md`](.claude/commands/pdf-wrap.md).
+> Personal palette prefs (private): `storage/brand-design/` — see [`docs/SSOT.md`](docs/SSOT.md).
 
 ---
 

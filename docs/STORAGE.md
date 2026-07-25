@@ -33,6 +33,16 @@ Everything under `storage/` is **local only**. It holds career data, application
 Do **not** keep a second hex map in `users/*.json`. Upstream website profiles are
 **inspiration / sync source**, not a second résumé SSOT.
 
+**MG dark role lockstep** (do not swap secondary/accent): primary `#FF6B00` · secondary `#8B5CF6` ·
+accent `#FF4500` · support `#42F4C8` — mirrors `www-theme-kit/profiles/martiangames.json` and
+`www-theme-kit/palettes/resume-palettes.json#martian-resume`. Path is `brand-design/` (never legacy
+`storage/brands/`).
+
+**Cross-PC:** `storage/` is gitignored. After editing brand maps on SEGO, copy
+`storage/brand-design/` → BEE `C:\p\pdf-designer\storage\brand-design\` over SMB
+(`\\BEETHOVEN\p\…`). Tracked docs sync via `git pull` on BEE (pdf-designer uses a deploy key —
+see `/jen/pdf` · `/jen/bee` §11b). Prefs chain: [`SSOT.md`](SSOT.md) § Personal palette prefs.
+
 Tracked template for new users: [`../examples/brand-design/`](../examples/brand-design/).
 
 ---
