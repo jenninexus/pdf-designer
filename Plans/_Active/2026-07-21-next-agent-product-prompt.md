@@ -19,7 +19,8 @@ wave (public path · QA · packaging spike · paid-app design — all shipped).
 
 ## Remaining checklist
 
-- [ ] **TestPyPI dry-run** — bump version if needed → `python scripts/check-wheel-assets.py` PASS → upload TestPyPI → fresh-venv install proof. Do **not** claim production PyPI until that works.
+- [x] **TestPyPI dry-run (local wheel proof)** (2026-07-25) — `scripts/testpypi-dry-run.py`: wheel gate + fresh venv + prove `repo_root()` → site-packages `share/` + `check_generation` on bundled example PASS. Version stays `0.4.0`.
+- [ ] **TestPyPI upload** — needs TestPyPI account/API token (`TESTPYPI_TOKEN`) then `python scripts/testpypi-dry-run.py --upload`. Do **not** claim production PyPI until that works.
 - [x] **Hub recipe-gallery UX** (2026-07-25) — `/recipes` + `GET /api/recipe-gallery` browses `layouts/` + `themes/presets/`; palette deep-link `/?palette=<id>&mode=` (paid-shell precursor; still one renderer)
 - [x] **Hub vault overview** (2026-07-24) — `/vault` + `GET /api/vault-overview` reads users / profiles / `boardSkills` / `goToPacks` (see `2026-07-24-jenni-vault-hub-handoff.md`)
 - [ ] Keep **SSOT + QA docs** honest as the engine evolves
@@ -107,8 +108,8 @@ python scripts/smoke-white-label.py
 python scripts/check-wheel-assets.py
 
 ## Suggested workstream (pick 1–2, finish, verify)
-T. TestPyPI dry-run — version bump if needed, check-wheel-assets PASS, upload TestPyPI,
-   fresh-venv install proof. No production PyPI claim until that works.
+T. ~~Local wheel dry-run~~ — shipped 2026-07-25 (`scripts/testpypi-dry-run.py`).
+   Remaining: create TestPyPI token → `--upload` → fresh-venv from TestPyPI.
 G. ~~Design Hub recipe-gallery UX~~ — shipped 2026-07-25 (`/recipes`).
 D. Optional: collage/resume recipe polish or COLLAGE-DESIGN private-path examples.
 

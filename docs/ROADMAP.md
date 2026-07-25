@@ -11,7 +11,8 @@
 
 Pulled from the active plan — keep in sync there, this is a quick view:
 
-- [ ] **TestPyPI dry-run** — publish + fresh-venv install after version bump ([`PACKAGING.md`](PACKAGING.md))
+- [x] **TestPyPI local-wheel dry-run** (2026-07-25) — `scripts/testpypi-dry-run.py` fresh-venv + bundled `share/` + `check_generation` PASS ([`PACKAGING.md`](PACKAGING.md))
+- [ ] **TestPyPI upload** — create account/token → `python scripts/testpypi-dry-run.py --upload`
 - [ ] Keep **SSOT + QA docs** honest as the engine evolves ([`SSOT.md`](SSOT.md) · [`QA.md`](QA.md))
 - [ ] Optional: document meet-jenni-bot / syn-themes **collage recipes** in [`COLLAGE-DESIGN.md`](COLLAGE-DESIGN.md) (paths stay private under `storage/`)
 - [ ] Optional: Synagen **engine** promo screenshots → `storage/shade/resources/images/synagen/`
