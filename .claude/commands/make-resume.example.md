@@ -22,6 +22,25 @@ Repo-local command for **`C:\Github\pdf-designer`**. Real data lives under `stor
 Only `<user>` and `<application-dir>` are required. `both` = build for Jenni AND Shade off one
 company palette with **split accent runs** (same grid + type; a matched pair, not duplicates).
 
+### 🗣 Argument parsing — accept how a human actually types it
+
+**Do not require rigid positional arguments.** These all mean the same thing:
+
+```
+/make-resume for <user>       /make-resume <user>       make a resume for <user>
+```
+
+**Parse, don't reject.** From `$ARGUMENTS`, extract in this order:
+
+1. **Applicant** — scan for a known user id **anywhere** in the string, case-insensitive, ignoring
+   filler words (`for`, `please`, `a`, `the`, `resume`, `make`, `to`). Accept declared aliases too.
+2. **Application dir** — any path token, or a fuzzy match against an existing `storage/_job-listings/<App>/`.
+3. **Job URL** — any `http(s)://` token → the "pasted job URL with no folder yet" flow.
+4. **Mode** — a bare `dark` · `light` · `full`.
+
+**Missing applicant → ask one short question.** Never guess between two people. **Missing application
+dir but applicant known → list the open (non-`SUBMITTED`) applications and ask**, rather than stopping.
+
 > **This is the public seed** (`make-resume.example.md`, tracked). Copy to `make-resume.md`
 > (gitignored) for personal specifics. The assistant runs the bare file when it exists.
 >
