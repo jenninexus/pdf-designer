@@ -17,6 +17,12 @@ Pulled from the active plan — keep in sync there, this is a quick view:
 - [ ] Optional: document meet-jenni-bot / syn-themes **collage recipes** in [`COLLAGE-DESIGN.md`](COLLAGE-DESIGN.md) (paths stay private under `storage/`)
 - [ ] Optional: Synagen **engine** promo screenshots → `storage/shade/resources/images/synagen/`
 
+### Recently landed (ops / docs — 2026-07-22…24)
+
+- [x] **Personal palette prefs** — `storage/brand-design/brand-*.json` SSOT + docs chain ([`SSOT.md`](SSOT.md) · [`STORAGE.md`](STORAGE.md) · [`THEME-DESIGN.md`](THEME-DESIGN.md)); MG dark roles lockstep with live site
+- [x] **Project wrap** — [`.claude/commands/pdf-wrap.md`](../.claude/commands/pdf-wrap.md) (`/jen:wrap` routes here); wrap must refresh agent docs + `dev-log-sego.yaml`
+- [x] **BEE clone sync** — `C:\p\pdf-designer` pull via deploy key; private `brand-design/` via SEGO→BEE SMB (`/jen/bee` §11b · `/jen/pdf`)
+
 ### Parked
 
 - [ ] **pywebview shell** — parked; shell-over-Hub (browser → Design Hub) is the paid-app plan.
