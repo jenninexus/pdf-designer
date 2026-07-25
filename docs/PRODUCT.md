@@ -80,9 +80,9 @@ ships free.
 | Data | Local `storage/` stays private / optional | Paid app never requires cloud vaults |
 | Packaging precursor | PyPI / wheel with public assets | [`PACKAGING.md`](PACKAGING.md) — must ship `themes/` + `layouts/` inside the wheel |
 
-**Spike done when:** this section + PACKAGING path resolution are honest, and the
-next build step is either (a) Hub recipe-gallery UX or (b) TestPyPI dry-run —
-not another architecture debate.
+**Spike status (2026-07-25):** Hub `/recipes` + local-wheel dry-run both shipped.
+Next packaging step is **TestPyPI upload** (needs account token) — see
+[`PACKAGING.md`](PACKAGING.md). Not another architecture debate.
 
 ## Non-goals
 
@@ -104,5 +104,5 @@ not another architecture debate.
 
 ---
 
-*Last updated 2026-07-21 — free-vs-paid story + shell-over-Hub spike; WHITE-LABEL stays the
-public how-to only; PACKAGING owns the wheel/PyPI path.*
+*Last updated 2026-07-25 — recipe gallery + local-wheel dry-run landed; TestPyPI
+upload still needs a token; WHITE-LABEL stays the public how-to only.*

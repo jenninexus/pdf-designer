@@ -35,7 +35,8 @@ folder task runs `scripts/ensure-design-hub.ps1` — starts the hub if needed, o
 **Public-path smoke (no `storage/`):** `python scripts/smoke-white-label.py` — QA + light/dark PDF + ATS on
 `examples/profiles/default-resume/`. Checklist: [`docs/WHITE-LABEL.md`](docs/WHITE-LABEL.md). Product
 direction (free GitHub vs paid app): [`docs/PRODUCT.md`](docs/PRODUCT.md). Packaging / wheel gate:
-[`docs/PACKAGING.md`](docs/PACKAGING.md) · `python scripts/check-wheel-assets.py`.
+[`docs/PACKAGING.md`](docs/PACKAGING.md) · `python scripts/check-wheel-assets.py` ·
+`python scripts/testpypi-dry-run.py` (local wheel proof; `--upload` needs `TESTPYPI_TOKEN`).
 
 **Active plan (one):** [`Plans/_Active/2026-07-21-next-agent-product-prompt.md`](Plans/_Active/2026-07-21-next-agent-product-prompt.md) (checklist + paste-ready handoff) · index [`Plans/README.md`](Plans/README.md). Prior wave: [`Plans/_Archive/2026-07-14-professional-product-roadmap.md`](Plans/_Archive/2026-07-14-professional-product-roadmap.md).
 
