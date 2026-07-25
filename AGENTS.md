@@ -115,10 +115,22 @@ agent doesn't auto-load them: *"read `.claude/commands/make-resume.md` and follo
 |---|---|---|
 | `make-resume.example.md` | ✅ public seed | Résumé builder — **default = résumé only** (read `profiles/<user>-resume.json#exports.exportPrefs`). Cover letter / work samples are separate opt-in commands. REMOTE + PAY + gap-check + company theme. |
 | `make-collage.md` | ✅ public | General collage / layout builder over the `layouts/` + `themes/` recipes. No private data. |
+| `start.md` | ✅ public | ⭐ **Session start** — `/start` · `/jen:start` route here. Surfaces open applications **with their blocking gate**. |
 | `wrap.md` | ✅ public | ⭐ **Session wrap** — `/wrap` · `/jen:wrap` route here. (`pdf-wrap.md` is a thin alias.) |
-| `README.md` | ✅ public | Local index only — no private prefs. |
+| `README.md` | ✅ public | Local index + the applicant shorthand table + global-command index — no private prefs. |
 | `make-resume.md` | 🔒 personal (gitignored) | Your copy with real specifics. |
 | `make-cover-letter.md` | 🔒 personal (gitignored) | Standalone cover letter — **not** auto-run by make-resume. |
+
+**Applicant shorthand.** `/shade` · `/jenni` · `/studio` · `/martian` · `both` each resolve to that
+applicant's vault, profile, person file, and export dir. Natural phrasing parses too — *"/make-resume
+for shade"*, *"/make-resume shade"*, and *"make a resume for shade"* are one request. Table:
+[`.claude/commands/README.md`](.claude/commands/README.md) § Applicant shorthand.
+
+**Global commands in scope here** (personal, `~/.claude/commands/`, not in this repo): **`/pdf`** —
+this repo's router from any cwd · **`/voice`** — the `application` register that `/make-resume`
+Step 0b blocks on (SSOT lives in `voice-seed`) · `/reflect` (generic loop → local `dev-log-sego.yaml`)
+· `/roadmap` → [`docs/ROADMAP.md`](docs/ROADMAP.md). Index:
+[`.claude/commands/README.md`](.claude/commands/README.md) § Global commands that apply here.
 | `make-work-examples.md` | 🔒 personal (gitignored) | Standalone work-samples / portfolio. |
 
 ### 📎 Public seed vs. personal copy — the `.example` split
