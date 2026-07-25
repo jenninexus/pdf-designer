@@ -39,6 +39,8 @@ direction (free GitHub vs paid app): [`docs/PRODUCT.md`](docs/PRODUCT.md). Packa
 
 **Active plan (one):** [`Plans/_Active/2026-07-21-next-agent-product-prompt.md`](Plans/_Active/2026-07-21-next-agent-product-prompt.md) (checklist + paste-ready handoff) · index [`Plans/README.md`](Plans/README.md). Prior wave: [`Plans/_Archive/2026-07-14-professional-product-roadmap.md`](Plans/_Archive/2026-07-14-professional-product-roadmap.md).
 
+**Session wrap:** read [`.claude/commands/pdf-wrap.md`](.claude/commands/pdf-wrap.md) (or `/jen:wrap` — it routes here). Always append `dev-log-sego.yaml`; refresh docs/agent surfaces the session touched. Palette prefs: [`docs/SSOT.md`](docs/SSOT.md) § Personal palette prefs · private maps in `storage/brand-design/`.
+
 **Netflix — CLOSED:** both founders submitted. Keep any `storage/_job-listings/Netflix*` schemas —
 do not delete. Do not reopen/rebuild/re-apply unless the human explicitly asks.
 
@@ -112,6 +114,7 @@ agent doesn't auto-load them: *"read `.claude/commands/make-resume.md` and follo
 |---|---|---|
 | `make-resume.example.md` | ✅ public seed | The generalized application builder — résumé + (opt-in) cover letter + work-samples. Company research, **REMOTE + PAY verification**, **gap-check (ask, don't assume)**, a company-derived theme, light+dark PDFs. |
 | `make-collage.md` | ✅ public | General collage / layout builder over the `layouts/` + `themes/` recipes. No private data. |
+| `pdf-wrap.md` | ✅ public | ⭐ **Session wrap** — `/jen:wrap` routes here. Checklist: `dev-log-sego.yaml` + `docs/` + `AGENTS.md`/`README`/`CLAUDE.md` + `.claude/commands/` + `storage/` pointers + active plan. |
 | `README.md` | ✅ public | Points here. |
 | `make-resume.md` | 🔒 personal | Your copy of the builder with the real specifics. |
 | `make-cover-letter.md` | 🔒 personal | Standalone cover-letter build (reuses make-resume). |
