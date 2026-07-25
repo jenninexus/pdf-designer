@@ -76,6 +76,11 @@ Sidebar groups stay collapsible by folder. Stage bar shows kind · person · buc
   Pack **Open in library** links use `/?doc=<html-path>` to select that file in the Hub
   library (filters cleared, person chip set, card scrolled into view). Selecting a
   library card also writes `?doc=` into the URL for shareable deep-links.
+- **Recipe gallery** → [http://127.0.0.1:8787/recipes](http://127.0.0.1:8787/recipes) · `GET /api/recipe-gallery`
+  — browse tracked `layouts/collage/` + `layouts/resume/` + `themes/presets/` (structure +
+  public audition palettes). Copy collage CLI (`--recipe <id>`), open raw JSON, or
+  **Try in Hub** via `/?palette=<id>&mode=dark|light` (selects the palette swapper).
+  Discovery chrome only — still one renderer.
 - Zero new deps (stdlib server; Playwright only for export/render)
   Binds to 127.0.0.1 only.
 
@@ -116,8 +121,8 @@ shell is actually needed.
 | First milestone | installer + recipe gallery chrome | native window polish | only if Python install is a blocker |
 | Engine | same `pdf_tool.preview` HTTP | same | same |
 
-Recipe gallery = Hub UI over tracked `layouts/` + `themes/presets/`. Packaging
-precursor: [`PACKAGING.md`](PACKAGING.md).
+Recipe gallery chrome: **shipped** at `/recipes` (see Features above). Packaging
+precursor for installers: [`PACKAGING.md`](PACKAGING.md).
 
 ### Phase 4 — canvas editor (drag & drop)
 

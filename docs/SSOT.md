@@ -35,7 +35,7 @@ Compact map of what this repo owns vs what it only points at. Agents: start here
 | **Layouts** | `layouts/collage/*`, `layouts/resume/*` | ⭐ **STRUCTURE** — reusable layout recipes; the counterpart to themes. `--list-recipes` to discover, `--recipe <id>` to use |
 | Page layout | `docs/LAYOUT-SYSTEM.md` + `themes/default-resume.{json,css}#document` | ⭐ Equal margins (0.65in default) + header-flows/footer-pins; one knob `--resume-page-margin`; content-fit rule |
 | Page signature | `themes/default-resume.json#document.signature` | Bottom-right page-footer pin (`.page` / `.page-main` / `.page-sig`) |
-| Previewer | `src/pdf_tool/preview.py` (`docs/PREVIEWER.md`) | Design Hub; **auto-refreshes** via `/api/version` on new exports |
+| Previewer | `src/pdf_tool/preview.py` (`docs/PREVIEWER.md`) | Design Hub; `/recipes` · `/vault`; **auto-refreshes** via `/api/version` on new exports |
 | Palette rule | `themes/PALETTE-RULES.md` | No brown / mustard / lime — enforced by `check_palette` |
 | **Generation rules** | `themes/GENERATION-RULES.md` | ⭐ House rules for ALL generated docs: **name/company never all-lowercase**, no neon over images (dark scrim only), 16:9 no-crop framing, no-magenta pointer |
 | **QA gate** | `docs/QA.md` + `pdf_tool.check_generation` | ⭐ ONE command · **10 checks** (palette·rgba-magenta·casing·overlay·signature·margins·page-bg·rendered-color·overflow·footer-collision). Per-user + per-doc aware. **Judge the artifact.** Run before shipping. |

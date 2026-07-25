@@ -20,7 +20,7 @@ wave (public path · QA · packaging spike · paid-app design — all shipped).
 ## Remaining checklist
 
 - [ ] **TestPyPI dry-run** — bump version if needed → `python scripts/check-wheel-assets.py` PASS → upload TestPyPI → fresh-venv install proof. Do **not** claim production PyPI until that works.
-- [ ] **Hub recipe-gallery UX** — browse `layouts/` + `themes/presets/` inside Design Hub (paid-shell precursor; still one renderer)
+- [x] **Hub recipe-gallery UX** (2026-07-25) — `/recipes` + `GET /api/recipe-gallery` browses `layouts/` + `themes/presets/`; palette deep-link `/?palette=<id>&mode=` (paid-shell precursor; still one renderer)
 - [x] **Hub vault overview** (2026-07-24) — `/vault` + `GET /api/vault-overview` reads users / profiles / `boardSkills` / `goToPacks` (see `2026-07-24-jenni-vault-hub-handoff.md`)
 - [ ] Keep **SSOT + QA docs** honest as the engine evolves
 - [ ] Optional: document meet-jenni-bot / syn-themes collage recipes in `docs/COLLAGE-DESIGN.md` (paths stay private under `storage/`)
@@ -109,8 +109,7 @@ python scripts/check-wheel-assets.py
 ## Suggested workstream (pick 1–2, finish, verify)
 T. TestPyPI dry-run — version bump if needed, check-wheel-assets PASS, upload TestPyPI,
    fresh-venv install proof. No production PyPI claim until that works.
-G. Design Hub recipe-gallery UX — browse layouts/ + themes/presets/ inside the Hub
-   (paid-shell precursor; still one renderer).
+G. ~~Design Hub recipe-gallery UX~~ — shipped 2026-07-25 (`/recipes`).
 D. Optional: collage/resume recipe polish or COLLAGE-DESIGN private-path examples.
 
 ## Verification
