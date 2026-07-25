@@ -39,7 +39,7 @@ direction (free GitHub vs paid app): [`docs/PRODUCT.md`](docs/PRODUCT.md). Packa
 
 **Active plan (one):** [`Plans/_Active/2026-07-21-next-agent-product-prompt.md`](Plans/_Active/2026-07-21-next-agent-product-prompt.md) (checklist + paste-ready handoff) · index [`Plans/README.md`](Plans/README.md). Prior wave: [`Plans/_Archive/2026-07-14-professional-product-roadmap.md`](Plans/_Archive/2026-07-14-professional-product-roadmap.md).
 
-**Session wrap:** read [`.claude/commands/pdf-wrap.md`](.claude/commands/pdf-wrap.md) (or `/jen:wrap` — it routes here). Always append `dev-log-sego.yaml`; refresh docs/agent surfaces the session touched. Palette prefs: [`docs/SSOT.md`](docs/SSOT.md) § Personal palette prefs · private maps in `storage/brand-design/`.
+**Session wrap:** read [`.claude/commands/wrap.md`](.claude/commands/wrap.md) (`/wrap` · `/jen:wrap` route here). Always append `dev-log-sego.yaml`; refresh docs/agent surfaces the session touched. Palette prefs: [`docs/SSOT.md`](docs/SSOT.md) § Personal palette prefs · private maps in `storage/brand-design/`.
 
 **Netflix — CLOSED:** both founders submitted. Keep any `storage/_job-listings/Netflix*` schemas —
 do not delete. Do not reopen/rebuild/re-apply unless the human explicitly asks.
@@ -112,13 +112,13 @@ agent doesn't auto-load them: *"read `.claude/commands/make-resume.md` and follo
 
 | Command | Tracked? | What it does |
 |---|---|---|
-| `make-resume.example.md` | ✅ public seed | The generalized application builder — résumé + (opt-in) cover letter + work-samples. Company research, **REMOTE + PAY verification**, **gap-check (ask, don't assume)**, a company-derived theme, light+dark PDFs. |
+| `make-resume.example.md` | ✅ public seed | Résumé builder — **default = résumé only** (read `profiles/<user>-resume.json#exports.exportPrefs`). Cover letter / work samples are separate opt-in commands. REMOTE + PAY + gap-check + company theme. |
 | `make-collage.md` | ✅ public | General collage / layout builder over the `layouts/` + `themes/` recipes. No private data. |
-| `pdf-wrap.md` | ✅ public | ⭐ **Session wrap** — `/jen:wrap` routes here. Checklist: `dev-log-sego.yaml` + `docs/` + `AGENTS.md`/`README`/`CLAUDE.md` + `.claude/commands/` + `storage/` pointers + active plan. |
-| `README.md` | ✅ public | Points here. |
-| `make-resume.md` | 🔒 personal | Your copy of the builder with the real specifics. |
-| `make-cover-letter.md` | 🔒 personal | Standalone cover-letter build (reuses make-resume). |
-| `make-work-examples.md` | 🔒 personal | Standalone work-samples / portfolio build. |
+| `wrap.md` | ✅ public | ⭐ **Session wrap** — `/wrap` · `/jen:wrap` route here. (`pdf-wrap.md` is a thin alias.) |
+| `README.md` | ✅ public | Local index only — no private prefs. |
+| `make-resume.md` | 🔒 personal (gitignored) | Your copy with real specifics. |
+| `make-cover-letter.md` | 🔒 personal (gitignored) | Standalone cover letter — **not** auto-run by make-resume. |
+| `make-work-examples.md` | 🔒 personal (gitignored) | Standalone work-samples / portfolio. |
 
 ### 📎 Public seed vs. personal copy — the `.example` split
 
@@ -218,13 +218,14 @@ Read [`docs/VAULT.md`](docs/VAULT.md) before authoring any resume claim.
 
 ## Common tasks → recipes
 
-- **Full job application:** run **`/make-resume <user> <application-dir>`** — the whole routine (capture
-  the apply link → verify remote/pay → **gap-check and ask** → derive the theme → write → export résumé +
-  cover letter + work samples, light+dark → log it). Folders are keyed by **role track**
-  (`storage/_job-listings/3D-Visualizer/`), not by date. Protocol:
-  [`docs/JOB-ASSESSMENT.md`](docs/JOB-ASSESSMENT.md).
-- **Just one document:** `/make-cover-letter` or `/make-work-examples` (personal) rebuild a single
-  deliverable when the résumé already exists.
+- **Job résumé:** run **`/make-resume <user> <application-dir|url>`** — capture apply link → verify
+  remote/pay → **gap-check and ask** → derive theme → write → export per **`exportPrefs`** (Jenni =
+  one dark résumé PDF) → log it. Pasted URL with no folder → create `storage/_job-listings/<App>/`.
+  Protocol: [`docs/JOB-ASSESSMENT.md`](docs/JOB-ASSESSMENT.md).
+- **Cover letter / work samples:** `/make-cover-letter` or `/make-work-examples` (personal) — **not**
+  auto-bundled with make-resume.
+- **`boardSkills`:** when LinkedIn/board tags change → update vault `#boardSkills` (+ claims); preview
+  on Design Hub `/vault`.
 - **New document type / profile:** copy `examples/profiles/default-resume/` (or `default-collage/`) to a
   new `examples/profiles/<id>/` (public example) or under `storage/` (real/private).
 - **Add a person:** `storage/users/<name>.json` + `storage/<name>/resume-source.json` +
