@@ -31,6 +31,7 @@ from urllib.parse import unquote, urlparse
 from .html_to_pdf import export_html_to_pdf
 from .paths import repo_root
 from .pdf_to_png import render_to_png
+from .vault_overview import build_vault_overview
 
 _REPO_ROOT = repo_root()
 _STATIC_DIR = Path(__file__).resolve().parent / "static"
@@ -228,6 +229,7 @@ APP_HTML = """<!doctype html>
 <body>
 <header class="hub-bar" aria-label="Design Hub toolbar">
   <h1 class="hub-brand" title="__ROOT__">Design Hub</h1>
+  <a class="hub-link" href="/vault" title="Readable vault · skills · go-to résumés">Vault</a>
   <div class="chips" id="kindChips" role="tablist" aria-label="Document kind"></div>
   <div class="hub-spacer"></div>
   <input id="search" type="search" placeholder="Search…" autocomplete="off" title="Search name or path" aria-label="Search">
@@ -425,10 +427,14 @@ paletteSel.addEventListener("change", () => {
   document.querySelectorAll(".thumb iframe").forEach(f => applyPalette(f));
 });
 
-function select(d, el) {
+function select(d, el, { pushUrl = true } = {}) {
   selected = d;
   document.querySelectorAll(".thumb").forEach(t => t.classList.remove("sel"));
   if (el) el.classList.add("sel");
+  else {
+    const match = document.querySelector(`.thumb[data-path="${CSS.escape(d.path)}"]`);
+    if (match) match.classList.add("sel");
+  }
   const bar = document.getElementById("stagebar");
   bar.innerHTML =
     `<span class="badge kind-${d.kind}">${d.kind}</span>` +
@@ -436,6 +442,39 @@ function select(d, el) {
     `<span class="badge">${d.bucket}</span>` +
     `<span class="path" title="${d.path}">${d.path}</span>`;
   main.src = "/" + d.path;
+  if (pushUrl) {
+    try {
+      const u = new URL(location.href);
+      u.searchParams.set("doc", d.path);
+      history.replaceState(null, "", u.pathname + u.search);
+    } catch (_) {}
+  }
+}
+
+/** Deep-link: /?doc=storage/jenni/defaults/….html — used by /vault pack links. */
+function openFromQuery() {
+  const raw = new URLSearchParams(location.search).get("doc");
+  if (!raw) return false;
+  const want = String(raw).replace(/^\/+/, "").split("\\\\").join("/");
+  const d = DOCS.find(x => x.path === want || x.path.endsWith("/" + want));
+  if (!d) {
+    document.getElementById("status").textContent = "doc not in library: " + want;
+    return false;
+  }
+  // Clear filters that would hide the target, then select.
+  kindFilter = "all";
+  document.getElementById("folderFilter").value = "";
+  document.getElementById("personFilter").value = d.person || "";
+  document.getElementById("search").value = "";
+  buildKindChips();
+  renderLibrary();
+  select(d, null, { pushUrl: true });
+  // Scroll the library card into view once thumbs paint.
+  requestAnimationFrame(() => {
+    const el = document.querySelector(`.thumb[data-path="${CSS.escape(d.path)}"]`);
+    if (el) el.scrollIntoView({ block: "nearest", behavior: "smooth" });
+  });
+  return true;
 }
 
 document.getElementById("folderFilter").addEventListener("change", renderLibrary);
@@ -470,6 +509,7 @@ buildStats();
 buildKindChips();
 buildFolderSelect();
 renderLibrary();
+openFromQuery();
 
 /* ---- Auto-refresh watcher ----
    Polls /api/version; when the tree signature changes (a new resume exported,
@@ -589,6 +629,17 @@ def make_handler(root: Path, docs: list[dict], palettes: list[dict]):
                 sig = tree_signature(root)
                 payload = {"sig": sig, "docs": scan_documents(root)}
                 self._send(200, json.dumps(payload).encode("utf-8"), "application/json")
+                return
+            if path == "/api/vault-overview":
+                payload = build_vault_overview(root)
+                self._send(200, json.dumps(payload).encode("utf-8"), "application/json")
+                return
+            if path in ("/vault", "/vault.html"):
+                target = (_STATIC_DIR / "vault.html").resolve()
+                if not target.is_file():
+                    self._send(404, b"vault.html missing", "text/plain")
+                    return
+                self._send(200, target.read_bytes(), "text/html; charset=utf-8")
                 return
             if path.startswith("/_hub/"):
                 name = path[len("/_hub/") :]

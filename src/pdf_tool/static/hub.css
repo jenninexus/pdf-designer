@@ -103,6 +103,30 @@ button, [role="button"], summary, .chip, .thumb {
   scrollbar-width: thin;
 }
 
+.hub-link {
+  color: var(--dash-accent, #c46bff);
+  text-decoration: none;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+.hub-link:hover {
+  border-color: var(--dash-border, rgba(165, 99, 209, 0.4));
+  color: var(--dash-text-bright, #f0e6ff);
+}
+.hub-pill {
+  font-size: 0.75rem;
+  opacity: 0.75;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+a.hub-brand {
+  color: inherit;
+  text-decoration: none;
+}
 .hub-brand {
   margin: 0;
   flex-shrink: 0;

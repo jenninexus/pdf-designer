@@ -21,6 +21,7 @@ wave (public path · QA · packaging spike · paid-app design — all shipped).
 
 - [ ] **TestPyPI dry-run** — bump version if needed → `python scripts/check-wheel-assets.py` PASS → upload TestPyPI → fresh-venv install proof. Do **not** claim production PyPI until that works.
 - [ ] **Hub recipe-gallery UX** — browse `layouts/` + `themes/presets/` inside Design Hub (paid-shell precursor; still one renderer)
+- [x] **Hub vault overview** (2026-07-24) — `/vault` + `GET /api/vault-overview` reads users / profiles / `boardSkills` / `goToPacks` (see `2026-07-24-jenni-vault-hub-handoff.md`)
 - [ ] Keep **SSOT + QA docs** honest as the engine evolves
 - [ ] Optional: document meet-jenni-bot / syn-themes collage recipes in `docs/COLLAGE-DESIGN.md` (paths stay private under `storage/`)
 - [ ] Optional: Synagen engine promo screenshots → `storage/shade/resources/images/synagen/`
