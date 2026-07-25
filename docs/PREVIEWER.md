@@ -51,6 +51,7 @@ fast on a large tree. If the server is briefly down mid-poll, the client just re
 | `hub.css` `@media` | Hard-codes the same `.98px` maxes (CSS cannot `var()` inside `@media`) |
 
 Hub layout: stacks below **991.98px** (md-max); comfortable from **1200px** (xl); widescreen from **1400px** (xxl).
+**Vault + Recipes** use the same switch points (shared `hub.css` + `Library | Recipes | Vault` nav). Library is `body.hub-shell` (fixed panes); subpages are `body.hub-page` (document scroll). Tables get a horizontal scroll wrapper below md.
 
 Each `.html` file is its **own template** in the library (one card = one file).
 

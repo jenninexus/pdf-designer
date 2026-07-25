@@ -19,6 +19,7 @@ Pulled from the active plan — keep in sync there, this is a quick view:
 
 ### Recently landed (ops / docs — 2026-07-22…25)
 
+- [x] **Hub vault/recipes responsive chrome** (2026-07-25) — shared `Library | Recipes | Vault` nav; `hub-shell` / `hub-page`; same `991.98`/`1200`/`1400` switches ([`PREVIEWER.md`](PREVIEWER.md) · www-theme-kit `profiles/pdf-designer.json`)
 - [x] **Hub recipe-gallery UX** (2026-07-25) — `/recipes` + `GET /api/recipe-gallery` over `layouts/` + `themes/presets/` ([`PREVIEWER.md`](PREVIEWER.md) · [`PRODUCT.md`](PRODUCT.md) shell-over-Hub)
 
 - [x] **Personal palette prefs** — `storage/brand-design/brand-*.json` SSOT + docs chain ([`SSOT.md`](SSOT.md) · [`STORAGE.md`](STORAGE.md) · [`THEME-DESIGN.md`](THEME-DESIGN.md)); MG dark roles lockstep with live site
