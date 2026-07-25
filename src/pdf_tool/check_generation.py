@@ -265,8 +265,24 @@ def check_footer_collision(path: Path):
     DOM measurement (check_overflow) sums heights and can still miss a real collision — it did on
     2026-07-21, when a Toolbelt line rendered *through* the "Shade Muse" signature on page 1 while
     the guard reported PASS. This renders the actual PDF and inspects the signature band: if
-    non-background pixels appear to the LEFT of the right-aligned signature on the same rows, body
-    text is running into it.
+    non-background pixels appear on the same rows as the signature but in the opposite column,
+    body text is running into it.
+
+    ⚠ SIGNATURE ALIGNMENT IS DETECTED, NOT ASSUMED (fixed 2026-07-25).
+    The original implementation hard-coded a RIGHT-aligned signature (`sig_x0 = W * 0.72`) because
+    that is the résumé pattern (`.page-sig` pins bottom-right). Cover letters sign bottom-LEFT
+    (`.letter-sign` / `.signoff`), so the scan window contained no signature at all — it locked onto
+    the last line of BODY TEXT in the right column, called that the signature, and then flagged the
+    rest of that same line as an intrusion. Every left-signed cover letter therefore failed with a
+    phantom collision that no amount of prose-trimming could fix (each cut just moved the reported
+    band up by the height removed, leaving the intrusion count ~unchanged).
+
+    Measured on the Sony letter: real signature at y=1474 in the 8–40% band; the check was reading
+    body text ending at y=1366 in the 72–100% band. Confirmed on the already-SUBMITTED Netflix
+    letter too (signature left y=1472, body right y=1226) — it fails this check identically.
+
+    Now: find the bottom-most lit cluster on BOTH sides, take whichever sits lower as the real
+    signature, and scan for intruding body text in the OPPOSITE column.
     """
     try:
         import tempfile
@@ -315,31 +331,49 @@ def check_footer_collision(path: Path):
                     # block also paints there and would inflate the band (false positive). The
                     # 2026-07-20 jenni miss was the opposite: Tools col-2 under the glyphs with
                     # a left-only intrusion window that stopped at 0.62 and reported PASS.
-                    sig_x0 = int(W * 0.72)
                     search_lo = int(H * 0.70)
-                    right_rows = [y for y in range(search_lo, H - 2, 2)
-                                  if any(lit(im.getpixel((x, y))) for x in range(sig_x0, W - 4, 3))]
-                    if not right_rows:
+                    left_x0, left_x1 = int(W * 0.08), int(W * 0.40)
+                    right_x0, right_x1 = int(W * 0.72), W - 4
+
+                    def bottom_lit(x0, x1):
+                        rows = [y for y in range(search_lo, H - 2, 2)
+                                if any(lit(im.getpixel((x, y))) for x in range(x0, x1, 3))]
+                        return max(rows) if rows else None
+
+                    left_bot = bottom_lit(left_x0, left_x1)
+                    right_bot = bottom_lit(right_x0, right_x1)
+                    if left_bot is None and right_bot is None:
                         continue
+
+                    # Whichever side reaches LOWER on the page is the signature; the other
+                    # column is where intruding body text would be. A résumé signs bottom-right,
+                    # a cover letter bottom-left — detect it rather than assuming.
+                    if right_bot is not None and (left_bot is None or right_bot >= left_bot):
+                        sig_x0, sig_x1 = right_x0, right_x1
+                        body_x0, body_x1 = int(W * 0.08), right_x0
+                    else:
+                        sig_x0, sig_x1 = left_x0, left_x1
+                        body_x0, body_x1 = left_x1, W - 4
+
                     # Walk up from the bottom-most lit row. Allow a short empty run so the
                     # script name + email line stay one cluster (they often have ~10–16px
                     # between them). Stop only after a larger gap — that is body content above.
-                    bot = max(right_rows)
+                    bot = bottom_lit(sig_x0, sig_x1)
                     top = bot
                     gap = 0
                     for y in range(bot, search_lo - 1, -2):
-                        if any(lit(im.getpixel((x, y))) for x in range(sig_x0, W - 4, 3)):
+                        if any(lit(im.getpixel((x, y))) for x in range(sig_x0, sig_x1, 3)):
                             top = y
                             gap = 0
                         else:
                             gap += 1
                             if gap >= 8:  # ≥16 px empty at scale 2 → above the signature cluster
                                 break
-                    # Body text on those same signature rows, including mid/right columns
-                    # up to the signature (catches col-2 sitting under the script).
+                    # Body text on those same signature rows, in the opposite column
+                    # (catches a 2-col block sitting under the script on a résumé).
                     intruding = sum(
                         1 for y in range(top, bot + 1, 2)
-                        for x in range(int(W * 0.08), sig_x0, 3)
+                        for x in range(body_x0, body_x1, 3)
                         if lit(im.getpixel((x, y)))
                     )
                     if intruding > 40:
