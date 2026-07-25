@@ -12,12 +12,13 @@
 Pulled from the active plan — keep in sync there, this is a quick view:
 
 - [ ] **TestPyPI dry-run** — publish + fresh-venv install after version bump ([`PACKAGING.md`](PACKAGING.md))
-- [ ] **Hub recipe-gallery UX** — browse `layouts/` + `themes/presets/` in Design Hub ([`PRODUCT.md`](PRODUCT.md) shell-over-Hub)
 - [ ] Keep **SSOT + QA docs** honest as the engine evolves ([`SSOT.md`](SSOT.md) · [`QA.md`](QA.md))
 - [ ] Optional: document meet-jenni-bot / syn-themes **collage recipes** in [`COLLAGE-DESIGN.md`](COLLAGE-DESIGN.md) (paths stay private under `storage/`)
 - [ ] Optional: Synagen **engine** promo screenshots → `storage/shade/resources/images/synagen/`
 
-### Recently landed (ops / docs — 2026-07-22…24)
+### Recently landed (ops / docs — 2026-07-22…25)
+
+- [x] **Hub recipe-gallery UX** (2026-07-25) — `/recipes` + `GET /api/recipe-gallery` over `layouts/` + `themes/presets/` ([`PREVIEWER.md`](PREVIEWER.md) · [`PRODUCT.md`](PRODUCT.md) shell-over-Hub)
 
 - [x] **Personal palette prefs** — `storage/brand-design/brand-*.json` SSOT + docs chain ([`SSOT.md`](SSOT.md) · [`STORAGE.md`](STORAGE.md) · [`THEME-DESIGN.md`](THEME-DESIGN.md)); MG dark roles lockstep with live site
 - [x] **Project wrap** — [`.claude/commands/wrap.md`](../.claude/commands/wrap.md) (`/wrap` · `/jen:wrap`); wrap must refresh agent docs + `dev-log-sego.yaml`

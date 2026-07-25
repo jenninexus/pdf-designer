@@ -76,7 +76,7 @@ ships free.
 |---|---|---|
 | First shell | **Browser → Design Hub** (`python -m pdf_tool.preview`) | Already the interactive SSOT; zero new deps |
 | Native window | **pywebview parked** | Optional polish only ([archived](../Plans/_Archive/2026-07-11-design-hub-parked-phases.md)); revive when packaging for non-Python users |
-| Recipe gallery | Hub surface over tracked `layouts/` + `themes/presets/` | Structure + color registries already exist — UI, not a second engine |
+| Recipe gallery | ✅ Hub `/recipes` + `/api/recipe-gallery` over `layouts/` + `themes/presets/` | Structure + color registries already exist — UI, not a second engine |
 | Data | Local `storage/` stays private / optional | Paid app never requires cloud vaults |
 | Packaging precursor | PyPI / wheel with public assets | [`PACKAGING.md`](PACKAGING.md) — must ship `themes/` + `layouts/` inside the wheel |
 

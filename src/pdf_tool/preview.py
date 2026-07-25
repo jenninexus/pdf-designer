@@ -31,6 +31,7 @@ from urllib.parse import unquote, urlparse
 from .html_to_pdf import export_html_to_pdf
 from .paths import repo_root
 from .pdf_to_png import render_to_png
+from .recipe_gallery import build_recipe_gallery
 from .vault_overview import build_vault_overview
 
 _REPO_ROOT = repo_root()
@@ -229,6 +230,7 @@ APP_HTML = """<!doctype html>
 <body>
 <header class="hub-bar" aria-label="Design Hub toolbar">
   <h1 class="hub-brand" title="__ROOT__">Design Hub</h1>
+  <a class="hub-link" href="/recipes" title="Browse layouts/ + themes/presets">Recipes</a>
   <a class="hub-link" href="/vault" title="Readable vault · skills · go-to résumés">Vault</a>
   <div class="chips" id="kindChips" role="tablist" aria-label="Document kind"></div>
   <div class="hub-spacer"></div>
@@ -477,6 +479,24 @@ function openFromQuery() {
   return true;
 }
 
+/** Deep-link: /?palette=slate-ink&mode=dark — used by /recipes "Try in Hub". */
+function openPaletteFromQuery() {
+  const params = new URLSearchParams(location.search);
+  const id = params.get("palette");
+  if (!id) return false;
+  const mode = params.get("mode") || "dark";
+  const idx = PALETTES.findIndex(p => p.id === id && p.mode === mode);
+  if (idx < 0) {
+    document.getElementById("status").textContent = "palette not found: " + id + " · " + mode;
+    return false;
+  }
+  paletteSel.value = String(idx);
+  applyPalette(main);
+  document.querySelectorAll(".thumb iframe").forEach(f => applyPalette(f));
+  document.getElementById("status").textContent = "palette: " + (PALETTES[idx].name || id);
+  return true;
+}
+
 document.getElementById("folderFilter").addEventListener("change", renderLibrary);
 document.getElementById("personFilter").addEventListener("change", renderLibrary);
 document.getElementById("search").addEventListener("input", renderLibrary);
@@ -510,6 +530,7 @@ buildKindChips();
 buildFolderSelect();
 renderLibrary();
 openFromQuery();
+openPaletteFromQuery();
 
 /* ---- Auto-refresh watcher ----
    Polls /api/version; when the tree signature changes (a new resume exported,
@@ -634,10 +655,21 @@ def make_handler(root: Path, docs: list[dict], palettes: list[dict]):
                 payload = build_vault_overview(root)
                 self._send(200, json.dumps(payload).encode("utf-8"), "application/json")
                 return
+            if path == "/api/recipe-gallery":
+                payload = build_recipe_gallery(root)
+                self._send(200, json.dumps(payload).encode("utf-8"), "application/json")
+                return
             if path in ("/vault", "/vault.html"):
                 target = (_STATIC_DIR / "vault.html").resolve()
                 if not target.is_file():
                     self._send(404, b"vault.html missing", "text/plain")
+                    return
+                self._send(200, target.read_bytes(), "text/html; charset=utf-8")
+                return
+            if path in ("/recipes", "/recipes.html"):
+                target = (_STATIC_DIR / "recipes.html").resolve()
+                if not target.is_file():
+                    self._send(404, b"recipes.html missing", "text/plain")
                     return
                 self._send(200, target.read_bytes(), "text/html; charset=utf-8")
                 return

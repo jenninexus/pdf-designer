@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="en" data-theme="dark" data-bs-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>pdf-designer — Recipe gallery</title>
+<link rel="stylesheet" href="/_hub/hub.css">
+<style>
+  .rec-wrap { max-width: 1100px; margin: 0 auto; padding: 20px 24px 48px; }
+  .rec-wrap h1 { margin: 0 0 6px; font-size: 1.45rem; }
+  .rec-lead { color: var(--dash-text-muted, #9a8eab); margin: 0 0 18px; font-size: 0.95rem; max-width: 68ch; }
+  .rec-nav { display: flex; gap: 12px; margin-bottom: 18px; flex-wrap: wrap; }
+  .rec-nav a {
+    color: var(--dash-accent, #c46bff);
+    text-decoration: none;
+    border: 1px solid var(--dash-border, rgba(165,99,209,.35));
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 0.85rem;
+  }
+  .rec-nav a:hover { filter: brightness(1.08); }
+  .section {
+    border: 1px solid var(--dash-border, rgba(165,99,209,.28));
+    border-radius: 14px;
+    padding: 16px 18px;
+    margin-bottom: 18px;
+    background: rgba(18, 10, 28, 0.55);
+  }
+  .section h2 { margin: 0 0 4px; font-size: 1.1rem; }
+  .section .sub { color: var(--dash-text-muted, #9a8eab); font-size: 0.85rem; margin: 0 0 14px; }
+  h3 { margin: 14px 0 8px; font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dash-accent, #c46bff); }
+  table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+  th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid rgba(165,99,209,.18); vertical-align: top; }
+  th { color: var(--dash-text-muted, #9a8eab); font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; }
+  td a { color: var(--dash-accent, #c46bff); text-decoration: none; }
+  code.cmd {
+    display: block;
+    margin-top: 4px;
+    font-size: 0.72rem;
+    color: var(--dash-text-muted, #9a8eab);
+    word-break: break-all;
+    white-space: pre-wrap;
+  }
+  .meta { color: var(--dash-text-muted, #9a8eab); font-size: 0.8rem; }
+  .empty { color: var(--dash-text-muted, #9a8eab); font-style: italic; }
+  #err { color: #ff6b9a; }
+  a.hub-open, button.copy {
+    display: inline-block;
+    margin: 0 6px 4px 0;
+    padding: 3px 10px;
+    border-radius: 999px;
+    border: 1px solid var(--dash-border, rgba(165,99,209,.45));
+    background: rgba(165, 99, 209, 0.18);
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--dash-accent, #c46bff);
+    cursor: pointer;
+    font-family: inherit;
+  }
+  button.copy { color: var(--dash-text, #e0d5eb); background: rgba(255,255,255,0.06); }
+  button.copy:hover, a.hub-open:hover { filter: brightness(1.08); }
+  .swatches { display: flex; gap: 4px; margin: 4px 0; }
+  .swatch {
+    width: 18px; height: 18px; border-radius: 4px;
+    border: 1px solid rgba(255,255,255,0.2);
+  }
+  .palette-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 12px;
+  }
+  .palette-card {
+    border: 1px solid rgba(165,99,209,.22);
+    border-radius: 12px;
+    padding: 12px 14px;
+    background: rgba(0,0,0,0.18);
+  }
+  .palette-card h3 { margin: 0 0 6px; font-size: 0.95rem; letter-spacing: 0; text-transform: none; color: var(--dash-text, #e0d5eb); }
+  .hint {
+    margin-top: 8px;
+    font-size: 0.8rem;
+    color: var(--dash-text-muted, #9a8eab);
+    max-width: 72ch;
+  }
+</style>
+</head>
+<body>
+<header class="hub-bar" aria-label="Recipe gallery toolbar">
+  <a class="hub-brand hub-link" href="/">Design Hub</a>
+  <span class="hub-pill">Recipes</span>
+  <div class="hub-spacer"></div>
+  <button id="refreshBtn" type="button">↻ Refresh</button>
+</header>
+<main class="rec-wrap">
+  <h1>Recipe gallery · Layouts + palettes</h1>
+  <p class="rec-lead">Browse tracked <code>layouts/</code> (structure) and <code>themes/presets/</code> (color). Same registries the CLI already uses — discovery chrome, not a second renderer.</p>
+  <div class="rec-nav">
+    <a href="/">← Library</a>
+    <a href="/vault">Vault</a>
+  </div>
+  <div id="err" class="empty" hidden></div>
+  <div id="root" class="empty">Loading…</div>
+</main>
+<script>
+async function load() {
+  const root = document.getElementById("root");
+  const err = document.getElementById("err");
+  err.hidden = true;
+  try {
+    const r = await fetch("/api/recipe-gallery", { cache: "no-store" });
+    if (!r.ok) throw new Error("HTTP " + r.status);
+    const data = await r.json();
+    const counts = data.counts || {};
+    root.innerHTML = "";
+
+    // Collage recipes
+    const collage = data.collageRecipes || [];
+    root.appendChild(section(
+      `Collage recipes (${counts.collage ?? collage.length})`,
+      "layouts/collage/*.json — <code>python -m pdf_tool.collage --recipe &lt;id&gt;</code>",
+      collageTable(collage)
+    ));
+
+    // Resume layouts
+    const resume = data.resumeLayouts || [];
+    root.appendChild(section(
+      `Resume page models (${counts.resume ?? resume.length})`,
+      "layouts/resume/*.json — house geometry (equal margins, content-fit).",
+      resumeTable(resume)
+    ));
+
+    // Palette presets
+    const palettes = data.palettePresets || [];
+    root.appendChild(section(
+      `Palette presets (${counts.palettes ?? palettes.length})`,
+      "themes/presets/*.json — audition in the Hub swapper (or deep-link below).",
+      paletteGrid(palettes)
+    ));
+
+    if (data.hubHint) {
+      const p = document.createElement("p");
+      p.className = "hint";
+      p.textContent = data.hubHint;
+      root.appendChild(p);
+    }
+    if (data.cli && data.cli.listRecipes) {
+      const p = document.createElement("p");
+      p.className = "hint";
+      p.innerHTML = "CLI list: <code>" + esc(data.cli.listRecipes) + "</code>";
+      root.appendChild(p);
+    }
+  } catch (e) {
+    err.hidden = false;
+    err.textContent = "Failed to load /api/recipe-gallery: " + e.message;
+    root.textContent = "";
+  }
+}
+
+function section(title, sub, bodyEl) {
+  const el = document.createElement("section");
+  el.className = "section";
+  const h = document.createElement("h2");
+  h.textContent = title;
+  const s = document.createElement("p");
+  s.className = "sub";
+  s.innerHTML = sub;
+  el.appendChild(h);
+  el.appendChild(s);
+  el.appendChild(bodyEl);
+  return el;
+}
+
+function collageTable(rows) {
+  if (!rows.length) return emptyNode("No collage recipes found (layouts/collage/).");
+  const wrap = document.createElement("div");
+  wrap.innerHTML = `
+    <table>
+      <thead><tr><th>Id</th><th>Structure</th><th>Best for</th><th>Use</th></tr></thead>
+      <tbody>
+        ${rows.map(r => `
+          <tr>
+            <td><strong>${esc(r.id)}</strong>
+              <span class="meta"><br>${esc(r.path || "")}</span></td>
+            <td><code>${esc(r.family || "?")}</code>
+              <span class="meta"><br>${esc(r.canvas || "")}${r.px ? " · " + esc(r.px) : ""}
+              ${r.fit ? " · fit=" + esc(r.fit) : ""}
+              ${r.background ? " · bg=" + esc(r.background) : ""}</span></td>
+            <td>${esc(r.bestFor || "")}${r.notes ? "<br><span class='meta'>" + esc(r.notes) + "</span>" : ""}</td>
+            <td>
+              <button type="button" class="copy" data-copy="${escAttr(r.cli || "")}">Copy CLI</button>
+              <a class="hub-open" href="/${esc(r.path || "")}" target="_blank" rel="noopener">raw JSON</a>
+              <code class="cmd">${esc(r.cli || "")}</code>
+            </td>
+          </tr>`).join("")}
+      </tbody>
+    </table>`;
+  wrap.querySelectorAll("button.copy").forEach(bindCopy);
+  return wrap;
+}
+
+function resumeTable(rows) {
+  if (!rows.length) return emptyNode("No resume layouts found (layouts/resume/).");
+  const wrap = document.createElement("div");
+  wrap.innerHTML = `
+    <table>
+      <thead><tr><th>Id</th><th>Page</th><th>Best for</th><th>Guards</th></tr></thead>
+      <tbody>
+        ${rows.map(r => `
+          <tr>
+            <td><strong>${esc(r.id)}</strong>
+              <span class="meta"><br>${esc(r.path || "")}</span>
+              <br><a class="hub-open" href="/${esc(r.path || "")}" target="_blank" rel="noopener">raw JSON</a></td>
+            <td>${esc(r.pageSize || "Letter")} · margin ${esc(r.margin || "—")}
+              ${r.contentHeightIn != null ? "<br><span class='meta'>content ≈ " + esc(String(r.contentHeightIn)) + "in tall</span>" : ""}
+              ${r.expectedPages ? "<br><span class='meta'>pages: " + esc(JSON.stringify(r.expectedPages)) + "</span>" : ""}</td>
+            <td>${esc(r.bestFor || "")}</td>
+            <td><span class="meta">${esc((r.guards || []).join(", ") || "—")}</span></td>
+          </tr>`).join("")}
+      </tbody>
+    </table>`;
+  return wrap;
+}
+
+function paletteGrid(rows) {
+  if (!rows.length) return emptyNode("No presets found (themes/presets/).");
+  const wrap = document.createElement("div");
+  wrap.className = "palette-grid";
+  for (const p of rows) {
+    const card = document.createElement("div");
+    card.className = "palette-card";
+    const dark = (p.modes && p.modes.dark) || {};
+    const light = (p.modes && p.modes.light) || {};
+    card.innerHTML = `
+      <h3>${esc(p.name || p.id)}</h3>
+      <p class="meta">${esc(p.description || "")}</p>
+      <p class="meta">${esc(p.aesthetic || "")}</p>
+      <div class="meta" style="margin-top:8px">Dark</div>
+      ${swatchRow(dark.swatches)}
+      <a class="hub-open" href="${esc(dark.hubUrl || "/")}">Try dark in Hub</a>
+      <div class="meta" style="margin-top:8px">Light</div>
+      ${swatchRow(light.swatches)}
+      <a class="hub-open" href="${esc(light.hubUrl || "/")}">Try light in Hub</a>
+      <code class="cmd">${esc(p.path || "")}</code>`;
+    wrap.appendChild(card);
+  }
+  return wrap;
+}
+
+function swatchRow(swatches) {
+  if (!swatches || !Object.keys(swatches).length) return "<span class='empty'>no swatches</span>";
+  const keys = ["--bg", "--primary", "--secondary", "--accent", "--support"];
+  return `<div class="swatches">${keys.filter(k => swatches[k]).map(k =>
+    `<span class="swatch" title="${esc(k)} ${esc(swatches[k])}" style="background:${esc(swatches[k])}"></span>`
+  ).join("")}</div>`;
+}
+
+function emptyNode(msg) {
+  const p = document.createElement("p");
+  p.className = "empty";
+  p.textContent = msg;
+  return p;
+}
+
+function bindCopy(btn) {
+  btn.addEventListener("click", async () => {
+    const text = btn.getAttribute("data-copy") || "";
+    try {
+      await navigator.clipboard.writeText(text);
+      const prev = btn.textContent;
+      btn.textContent = "Copied";
+      setTimeout(() => { btn.textContent = prev; }, 1200);
+    } catch (_) {
+      btn.textContent = "Copy failed";
+    }
+  });
+}
+
+function esc(s) {
+  return String(s ?? "").replace(/[&<>"']/g, c => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+  })[c]);
+}
+function escAttr(s) {
+  return esc(s).replace(/`/g, "&#96;");
+}
+document.getElementById("refreshBtn").onclick = load;
+load();
+</script>
+</body>
+</html>
