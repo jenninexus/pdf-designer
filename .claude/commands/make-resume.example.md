@@ -1,6 +1,6 @@
 ---
-description: Build a tailored, source-backed resume + cover letter for a job application. Researches the company, verifies REMOTE status and PAY RATE, derives a theme from the company's real brand colors, renders light+dark PDFs into storage/<user>/_exports/<App>/, and merges a submission bundle. Use for "/make-resume", "make me a resume", "tailor my resume for this job", "apply to this listing", "new job application", "resume for jenni/shade", or whenever a job listing lands in storage/_job-listings/. Handles one person or both (matched-pair themes).
-argument-hint: <user> <application-dir> [profile.json] [theme.css]
+description: Build a tailored, source-backed résumé for a job application. Researches company, verifies REMOTE + PAY, derives theme, exports per profiles/<user>-resume.json#exports.exportPrefs (default = résumé only; cover letter / work samples are separate opt-in commands). Use for "/make-resume", pasted job URL with no folder yet.
+argument-hint: <user> <application-dir|job-url> [dark|light|full]
 ---
 
 # /make-resume — Tailored Application Builder
@@ -22,52 +22,44 @@ Repo-local command for **`C:\Github\pdf-designer`**. Real data lives under `stor
 Only `<user>` and `<application-dir>` are required. `both` = build for Jenni AND Shade off one
 company palette with **split accent runs** (same grid + type; a matched pair, not duplicates).
 
-> **This is the public seed** (`make-resume.example.md`, tracked). It's the generalized command with no
-> real company names, clients, or contacts — safe to clone and share. Copy it to `make-resume.md`
-> (gitignored) and fill in your own specifics; the assistant runs `make-resume.md` when it exists.
-> You just type **`/make-resume`**.
+> **This is the public seed** (`make-resume.example.md`, tracked). Copy to `make-resume.md`
+> (gitignored) for personal specifics. The assistant runs the bare file when it exists.
 >
-> **One command, all three documents.** This command produces the résumé and — as opt-in outputs — the
-> **cover letter** and **work-samples portfolio**. There's no separate public command for those; ask for
-> them by name ("…and a cover letter", "…with work samples"). See **📦 What you deliver** below.
->
-> **Natural language works:** *"make-resume for jenni for this Netflix application, dark pdf only"*
-> → user `jenni`, the Netflix dir, **dark-only**. Say **"dark only"** anywhere to ship just the dark PDF.
+> **Résumé only by default.** Cover letter and work samples are **separate opt-in commands**
+> (personal copies: `make-cover-letter.md` / `make-work-examples.md`). Never auto-ship a letter
+> unless the human asks or `exportPrefs` says so.
 
 ### Who is applying?
 
 | `<user>` | Profile | Voice |
 |---|---|---|
-| `jenni` | `profiles/jenni-resume.json` | first person, Jenni |
-| `shade` | `profiles/shade-resume.json` | first person, Shade — **lead identity changes by track** |
-| `both` | both of the above | matched pair, one company palette |
-| `studio` | `profiles/studio-resume.json` | Martian Games LLC — **capabilities**: Synagen, AI consulting, custom software, 3D characters, training |
-| `martian` | `profiles/martian-resume.json` | Martian Games LLC — **games**: titles, credits, platforms, community |
+| `<you>` | `profiles/<you>-resume.json` | first person |
+| `both` | matched pair | one company palette, split accent runs |
+| studio voices | optional studio / brand profiles | capabilities vs games |
 
-### 📦 What you deliver — one command, three documents
+### ⭐ Step −1 — READ `exportPrefs`
 
-`/make-resume` builds the full application. Each document renders **light** (ATS/upload) + **dark**
-(branded/direct-email):
+Open **`storage/profiles/<user>-resume.json#exports.exportPrefs`** before exporting.
+That object owns the default deliverable (e.g. dark-only résumé). Do not invent a full pack.
+
+### 📦 What you deliver (default = résumé only)
 
 ```
 storage/<user>/_exports/<Job>/
-    <name>-resume-{light,dark}.pdf         ← always
-    <name>-cover-letter-{light,dark}.pdf   ← company-specific letter (opt-in; on by default)
-    <name>-work-samples-{light,dark}.pdf   ← visual portfolio, profiles/<user>-resume.json#workSamples
+    <name>-resume-dark.pdf      ← common default when exportPrefs.resumeDefault = dark-only
+    <name>-resume-light.pdf     ← only if prefs or human ask for ATS/light
 ```
 
-**Trim or extend on request:**
-
-| Ask | Then produce |
+| Need | How |
 |---|---|
-| *"resume only"* | just `<name>-resume-{light,dark}.pdf` |
-| *"dark only" / "light only"* | only that theme across whatever's built |
-| *"no work samples"* | resume + cover letter |
-| *"bundle it"* / a portal wants one file | `FINAL-<Name>-<Role>-Cover-Letter-and-Resume.pdf` (letter first) |
-| *"show me"* / to verify | PNGs — to the scratchpad, then delete |
+| Cover letter | Ask explicitly, or run personal `/make-cover-letter` |
+| Work samples | Ask explicitly, or run personal `/make-work-examples` |
+| Bundle | Only when a portal wants one file |
 
-There's no separate public command for the letter or portfolio — they're outputs of this one. Flat in the
-exports dir; no PNGs or bundle unless asked.
+### 🔗 Pasted job URL with no folder yet
+
+Create `storage/_job-listings/<App>/` with `<Company>.md` + `application.json` (Links table,
+canonical apply URL) per [`docs/JOB-ASSESSMENT.md`](../../docs/JOB-ASSESSMENT.md), then continue.
 
 ---
 
@@ -76,15 +68,16 @@ exports dir; no PNGs or bundle unless asked.
 📖 **Steps 2–4 are specified in full by [`docs/JOB-ASSESSMENT.md`](../../docs/JOB-ASSESSMENT.md)**
 — the standing protocol for what to capture, verify, and judge on any listing. Read it.
 
-- [ ] **1. Read** the listing + [`docs/VAULT.md`](../../docs/VAULT.md) + `users/<user>.json` + the vault (esp. **`roleTracks.<track>.angle`**) + `profiles/<user>-resume.json`.
+- [ ] **0. Load `exportPrefs`** from `profiles/<user>-resume.json#exports.exportPrefs`. Print what you will ship.
+- [ ] **1. Read** the listing + [`docs/VAULT.md`](../../docs/VAULT.md) + `users/<user>.json` + the vault (esp. **`roleTracks.<track>.angle`**) + `profiles/<user>-resume.json`. If only a URL was pasted → create `_job-listings/<App>/` first.
 - [ ] **2. 🔗 CAPTURE (Tier 1) — BLOCKING.** Apply URL (canonical) · job ID · how-to-apply · **posting live?** (fetch the *direct* link; screenshot to `evidence/`) · source · dates. **No apply URL → no "ready to submit."**
 - [ ] **3. ⚠ RED FLAGS (Tier 2).** **REMOTE?** · **PAY** (→ hourly + annual, compare to market, **say so loudly if below**) · W2/1099? benefits? · duration · company legit? · **portfolio/test?** · seniority mismatch · anything overlooked.
 - [ ] **4. Research (Tier 3) + Evidence map (Tier 4).** What they *actually* do · named clients · what the listing **repeats** · then map every requirement → a real vault claim (✅ / ⚠ unbacked / ❌ never-claim).
 - [ ] **4b. 🛑 GAP CHECK — BLOCKING. ASK THE USER.** See the box below. **Do not build until this is answered.**
 - [ ] **5. Derive the theme** from their **real brand CSS** → save to `<App>/theme.json`. Then run the **palette guard**.
 - [ ] **6. Rewrite the listing doc** (`<App>/<Company>.md`): status → **🔗 Links table** → routine-checks table → pay verdict → research → evidence map → gaps/prep → materials index → original listing verbatim below a `---`.
-- [ ] **7. Write** resume (company-agnostic within the track) + cover letter (all company-specific content, incl. any honest gap paragraph).
-- [ ] **8. Export** the **two default files** (resume light + dark) to **`storage/<user>/_exports/<Job>/`**. Verify the PDF page count — **read it from the PDF, not from the browser** (see the pagination traps). Cover letter / bundle / PNGs ONLY if asked.
+- [ ] **7. Write** the **résumé** only (company-agnostic within the track). Cover letter only if explicitly requested in this turn.
+- [ ] **8. Export** per **`exportPrefs`** to **`storage/<user>/_exports/<Job>/`**. Verify page count from the PDF. Cover letter / work samples / bundle / PNGs ONLY if asked.
 - [ ] **9. Log** it in `<App>/application.json` and the listing doc.
 
 ---
