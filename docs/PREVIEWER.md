@@ -70,6 +70,12 @@ Sidebar groups stay collapsible by folder. Stage bar shows kind · person · buc
 - **Live thumbnails** for every renderable `.html` (excludes `_exports/`, etc.)
 - **Palette swapper** → injects CSS vars into the previewed document (and into export)
 - **Export selected** → PDF light/dark or PNG pages
+- **Vault overview** → [http://127.0.0.1:8787/vault](http://127.0.0.1:8787/vault) · `GET /api/vault-overview`
+  — human-readable `storage/users`, profiles (joined under each person), `boardSkills` tags, and `goToPacks`
+  (which default résumé targets which job family). Read-only; no second renderer.
+  Pack **Open in library** links use `/?doc=<html-path>` to select that file in the Hub
+  library (filters cleared, person chip set, card scrolled into view). Selecting a
+  library card also writes `?doc=` into the URL for shareable deep-links.
 - Zero new deps (stdlib server; Playwright only for export/render)
   Binds to 127.0.0.1 only.
 

@@ -309,7 +309,7 @@ presence. Full sourced detail is in each vault's `skills` block — this is the 
 | **UX / UI** | ⭐ UI implementation in shipped products; design systems | UX partnership (UX Magicians) |
 | **Platforms** | mobile · web · **multiplayer web** · PC · **VR** | same — 15 titles, 12 multiplayer |
 | **AI** | ⭐ Stable Diffusion, prompt engineering, production AI asset pipeline | ⭐⭐ **Principal ML + Research Scientist / Engineer** — 6 yrs memory HRM / novel RAG / associative & dynamic memory / physical-world modeling for robotic intuition; Synagen productization 3 yrs full-time (multi-agent, MCP, agent-first APIs) |
-| **Audio** | FL Studio · Audacity (competent) | ⭐⭐ **THE specialty** — engineering, composition (SF Conservatory), sound design, **3D/spatial audio**, **reactive game audio**, **WWISE** (shipped the WWISE-Unity integration on *Oddworld: Soulstorm*) |
+| **Audio** | ⭐ **VO / narration / game SFX / session engineering** (Audacity · FL Studio · Cool Edit Pro · DJ Pro · DaVinci audio) — voice track go-to | ⭐⭐ **AAA specialty** — composition (SF Conservatory), **3D/spatial**, **reactive**, **WWISE** (*Oddworld: Soulstorm*) |
 | **Video** | DaVinci Resolve · OBS · custom in-house tooling | DaVinci Resolve · custom tooling |
 | **Art direction** | scene layout, lighting, particles, polish | ⭐ art direction; photoreal ↔ stylized |
 | **Engineering** | HTML/SASS/JS · C# · Git · VS Code · Cursor | + PHP, MySQL, Photon, WebGPU, multiplayer architecture |
@@ -319,9 +319,10 @@ presence. Full sourced detail is in each vault's `skills` block — this is the 
 **⚠ The tenure trap.** The studio is **25 years old** (founded 2000). **Jenni's tenure is 15 years.** Both are
 true; they are different numbers. Never write anything implying Jenni has 25 years.
 
-**⚠ The audio trap.** Deep audio — engineering, composition, spatial, reactive, WWISE — is **Shade's**.
-Jenni is competent (FL Studio, Audacity) but an audio-centric listing is a **Shade** application or a
-**studio** one, never a Jenni solo one.
+**⚠ The audio split (updated 2026-07-24).** AAA spatial / WWISE / reactive middleware depth is **Shade's**.
+**Jenni owns** voice acting, narration, game SFX, and session audio engineering — use her **`roleTracks.voice`**
+go-to pack (`storage/jenni/defaults/jenni-default-voice-resume.html`) for VO / AI speech-training jobs.
+Do **not** put Shade's WWISE/spatial claims on Jenni's résumé.
 
 ---
 
