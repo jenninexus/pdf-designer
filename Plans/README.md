@@ -11,7 +11,8 @@ Working plans for pdf-designer. Keep **one** active product roadmap; archive com
 
 | Plan | Status |
 |---|---|
-| [`_Active/2026-07-21-next-agent-product-prompt.md`](_Active/2026-07-21-next-agent-product-prompt.md) | ⭐ **THE** roadmap + paste-ready next-agent handoff (TestPyPI / Hub gallery) |
+| [`_Active/2026-07-21-next-agent-product-prompt.md`](_Active/2026-07-21-next-agent-product-prompt.md) | ⭐ **THE** product roadmap (TestPyPI / Hub gallery) |
+| [`_Active/2026-07-24-jenni-vault-hub-handoff.md`](_Active/2026-07-24-jenni-vault-hub-handoff.md) | Jenni vault · go-to résumés · Hub `/vault` — session handoff |
 
 > **`/jen:roadmap` entry point:** [`../docs/ROADMAP.md`](../docs/ROADMAP.md) is a thin pointer to the plan
 > above. One roadmap, two doors — never a second copy.
