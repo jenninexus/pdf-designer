@@ -227,11 +227,14 @@ APP_HTML = """<!doctype html>
 <title>pdf-designer — Design Hub</title>
 <link rel="stylesheet" href="/_hub/hub.css">
 </head>
-<body>
+<body class="hub-shell">
 <header class="hub-bar" aria-label="Design Hub toolbar">
   <h1 class="hub-brand" title="__ROOT__">Design Hub</h1>
-  <a class="hub-link" href="/recipes" title="Browse layouts/ + themes/presets">Recipes</a>
-  <a class="hub-link" href="/vault" title="Readable vault · skills · go-to résumés">Vault</a>
+  <nav class="hub-nav" aria-label="Hub sections">
+    <a class="hub-link on" href="/" title="Document library" aria-current="page">Library</a>
+    <a class="hub-link" href="/recipes" title="Browse layouts/ + themes/presets">Recipes</a>
+    <a class="hub-link" href="/vault" title="Readable vault · skills · go-to résumés">Vault</a>
+  </nav>
   <div class="chips" id="kindChips" role="tablist" aria-label="Document kind"></div>
   <div class="hub-spacer"></div>
   <input id="search" type="search" placeholder="Search…" autocomplete="off" title="Search name or path" aria-label="Search">

@@ -47,6 +47,9 @@ Netflix **CLOSED**. Do not rebuild Alignerr/Netflix unless human asks.
 
 - http://127.0.0.1:8787/vault · `/?doc=storage/jenni/defaults/jenni-default-voice-resume.html`
 - http://127.0.0.1:8787/recipes · `GET /api/recipe-gallery` · palette try `/?palette=slate-ink&mode=dark`
+- **Responsive chrome (2026-07-25):** shared `Library | Recipes | Vault` `.hub-nav` on all three surfaces;
+  same breakpoints as library (`991.98` / `1200` / `1400`); `body.hub-shell` vs `body.hub-page`;
+  styles in `hub.css` (not per-page inline). See `docs/PREVIEWER.md` + `www-theme-kit/profiles/pdf-designer.json`.
 
 ### Packaging
 
@@ -65,12 +68,12 @@ Netflix **CLOSED**. Do not rebuild Alignerr/Netflix unless human asks.
 
 | | |
 |---|---|
-| **Mode** | pdf-designer |
-| **Observation** | "TestPyPI dry-run" mixed local install proof with upload; no token existed |
-| **Root cause** | Publish checklist assumed an account; agent had no TestPyPI creds |
-| **Chosen improvement** | Automate local-wheel proof + document the human token step |
-| **Landed now** | `scripts/testpypi-dry-run.py` · PACKAGING status · plan checkboxes |
-| **Validated by** | Outside-cwd fresh venv; `repo_root` = site-packages `share/`; check_generation PASS |
+| **Mode** | pdf-designer + theme (www-theme-kit profile) |
+| **Observation** | Vault/recipes shipped as one-off pages: purple JN accents, no shared nav, `body { overflow:hidden }` blocked scroll; kit BREAKPOINTS row said “see mcp cache” |
+| **Root cause** | Subpages grown beside the library shell without adopting hub chrome / shared breakpoint contract |
+| **Chosen improvement** | One `.hub-nav` + `hub-shell`/`hub-page` modes in `hub.css`; pin switch points in kit profile + BREAKPOINTS index |
+| **Landed now** | Shared nav + responsive hub-page styles · vault regex fix · `profiles/pdf-designer.json#breakpoints` · BREAKPOINTS.md row |
+| **Validated by** | Playwright 390–1200: 0 spill, `.on` correct; vault renders after `stripProto` |
 | **Follow-up** | TestPyPI token → `--upload`; boardSkills on new LinkedIn tags |
 
 ---
@@ -78,16 +81,19 @@ Netflix **CLOSED**. Do not rebuild Alignerr/Netflix unless human asks.
 ## Prompt (copy into a new chat)
 
 ```
-Continue pdf-designer from Plans/_Active/2026-07-24-jenni-vault-hub-handoff.md (dev-log s011).
+Continue pdf-designer from Plans/_Active/2026-07-24-jenni-vault-hub-handoff.md (dev-log s012).
 
 Alignerr Voice + AI Red Team are both SUBMITTED — do not rebuild.
-Jenni /make-resume default = one dark résumé (profiles/jenni-resume.json#exports.exportPrefs).
-Cover letter = /make-cover-letter only. /wrap → .claude/commands/wrap.md.
-/jen:pdf is a thin router — open AGENTS.md + docs, don't duplicate.
+Jenni /make-resume default = one dark résumé. Cover letter = /make-cover-letter only.
+/wrap → .claude/commands/wrap.md. /jen:pdf = thin router.
 
-Local-wheel dry-run shipped: python scripts/testpypi-dry-run.py (PASS).
-Next: (A) boardSkills sync if new LinkedIn tags, or (B) create TestPyPI token →
-python scripts/testpypi-dry-run.py --upload (see docs/PACKAGING.md).
+Hub chrome responsive ✅ — Library|Recipes|Vault shared nav; hub-shell vs hub-page;
+same 991.98/1200/1400 switches (PREVIEWER.md · www-theme-kit profiles/pdf-designer.json).
 
-Hub: http://127.0.0.1:8787/vault · recipes: http://127.0.0.1:8787/recipes
+Local-wheel dry-run ✅. Next preferred:
+  (A) boardSkills sync if new LinkedIn tags → storage/jenni/resume-source.json#boardSkills
+  (B) human creates TestPyPI token → python scripts/testpypi-dry-run.py --upload (PACKAGING.md)
+Optional polish: card-stack / recipes tables below 576 if table-scroll still feels cramped.
+
+Hub: http://127.0.0.1:8787/vault · http://127.0.0.1:8787/recipes
 ```
