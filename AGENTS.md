@@ -17,16 +17,20 @@ per section below.
 ## Session start (read in this order)
 
 1. **This file** — capability map + the contracts that must not break.
-2. [`docs/SSOT.md`](docs/SSOT.md) — the SSOT dashboard (what this repo owns vs. points elsewhere).
-3. [`docs/VAULT.md`](docs/VAULT.md) — **the vault**: what may be claimed, how each person sounds
+2. ⭐ [`.memory/README.md`](.memory/) — **the traps already hit here, and why.** Tracked, so it
+   travels with every clone. Read it before your first substantive change: each `lesson-*.md` is a
+   mistake someone already paid for (a guard whose assumption was wrong, a true claim that went
+   invisible, a "gap" nobody had asked about). Cheapest file in the repo.
+3. [`docs/SSOT.md`](docs/SSOT.md) — the SSOT dashboard (what this repo owns vs. points elsewhere).
+4. [`docs/VAULT.md`](docs/VAULT.md) — **the vault**: what may be claimed, how each person sounds
    (`characterVoice` + vault `voice`), the capability matrix, the role tracks.
-4. [`docs/JOB-ASSESSMENT.md`](docs/JOB-ASSESSMENT.md) — how to assess a listing (apply URL is blocking;
+5. [`docs/JOB-ASSESSMENT.md`](docs/JOB-ASSESSMENT.md) — how to assess a listing (apply URL is blocking;
    remote? pay vs. market?; the evidence map).
-5. [`docs/STORAGE.md`](docs/STORAGE.md) — the four private layers and the `storage/` layout.
-6. [`themes/PALETTE-RULES.md`](themes/PALETTE-RULES.md) — the color rule and its guard.
-7. [`docs/LAYOUT-SYSTEM.md`](docs/LAYOUT-SYSTEM.md) — the page model (equal margins, header-flows /
+6. [`docs/STORAGE.md`](docs/STORAGE.md) — the four private layers and the `storage/` layout.
+7. [`themes/PALETTE-RULES.md`](themes/PALETTE-RULES.md) — the color rule and its guard.
+8. [`docs/LAYOUT-SYSTEM.md`](docs/LAYOUT-SYSTEM.md) — the page model (equal margins, header-flows /
    footer-pins, content-fit).
-8. The command you're running — [`.claude/commands/`](.claude/commands/) (see the table below).
+9. The command you're running — [`.claude/commands/`](.claude/commands/) (see the table below).
 
 **Fire up the Design Hub:** `python -m pdf_tool.preview` → http://127.0.0.1:8787/ (on workspace open the
 folder task runs `scripts/ensure-design-hub.ps1` — starts the hub if needed, opens the browser; accept the
@@ -40,7 +44,18 @@ direction (free GitHub vs paid app): [`docs/PRODUCT.md`](docs/PRODUCT.md). Packa
 
 **Active plan (one):** [`Plans/_Active/2026-07-21-next-agent-product-prompt.md`](Plans/_Active/2026-07-21-next-agent-product-prompt.md) (checklist + paste-ready handoff) · index [`Plans/README.md`](Plans/README.md). Prior wave: [`Plans/_Archive/2026-07-14-professional-product-roadmap.md`](Plans/_Archive/2026-07-14-professional-product-roadmap.md).
 
-**Session wrap:** read [`.claude/commands/wrap.md`](.claude/commands/wrap.md) (`/wrap` · `/jen:wrap` route here). Always append `dev-log-sego.yaml`; refresh docs/agent surfaces the session touched. Palette prefs: [`docs/SSOT.md`](docs/SSOT.md) § Personal palette prefs · private maps in `storage/brand-design/`.
+**Session start / wrap:** `/start` → [`.claude/commands/start.md`](.claude/commands/start.md) (open
+applications + their blocking gates). `/wrap` → [`.claude/commands/wrap.md`](.claude/commands/wrap.md)
+(`/jen:wrap` routes here too). Always append `dev-log-sego.yaml`; refresh the docs/agent surfaces the
+session touched. Palette prefs: [`docs/SSOT.md`](docs/SSOT.md) § Personal palette prefs · private maps
+in `storage/brand-design/`.
+
+**Where learnings go — two surfaces, do not confuse them.** `dev-log-sego.yaml` is **gitignored**, so
+a lesson recorded only there is invisible to every other clone and to the next agent. Durable
+lessons — a trap, its root cause, and the guard that now prevents it — go to **tracked**
+[`.memory/lesson-*.md`](.memory/) with a row in [`.memory/README.md`](.memory/README.md). Session
+narrative (what happened today, next steps) stays in the dev-log. If the lesson changes a standing
+rule, edit the owning `docs/` page **as well**.
 
 **Netflix — CLOSED:** both founders submitted. Keep any `storage/_job-listings/Netflix*` schemas —
 do not delete. Do not reopen/rebuild/re-apply unless the human explicitly asks.
@@ -150,6 +165,7 @@ content stays in the gitignored `storage/` vault. (This replaced the older `.loc
 
 | Path | What it is |
 |---|---|
+| `.memory/` | ⭐ **tracked durable learnings** — one `lesson-*.md` per trap already hit here (root cause + the guard that now prevents it) + an index. Read at session start; written at wrap. Travels with every clone, unlike the gitignored dev-log. |
 | `src/pdf_tool/` | the engine (html_to_pdf, variants, tracker, merge_pdfs, pdf_to_png, **check_generation**, check_palette, check_overflow, check_rendered_color, check_vault, check_ats, collage, preview) |
 | `themes/default-resume.{json,css}` | public default theme — JSON is the token SSOT, CSS its mirror |
 | `themes/presets/*.json` | public audition palettes (Design Hub swapper) |
