@@ -57,7 +57,7 @@ python -m pdf_tool.check_generation <doc>.html --json          # machine-readabl
 ## The checks
 
 `check_generation` is the **one QA pass**. It composes the existing single-purpose guards and adds the
-rules they didn't cover (**10 checks**):
+rules they didn't cover (**11 checks**):
 
 | # | Check | Rule | SSOT |
 |---|---|---|---|
@@ -70,11 +70,42 @@ rules they didn't cover (**10 checks**):
 | 7 | **page-bg** | `@page` background (PDF border colour) agrees inside the file **and** with same-applicant sibling docs in the folder | GENERATION-RULES |
 | 8 | **rendered-color** | ⭐ no brown / large-area warm cast in **rendered pixels** (catches composited brown the hex guard cannot see) | GENERATION-RULES · `check_rendered_color` |
 | 9 | **overflow** | no page overflows its print box at **816px** paper width. **Render-based**; `--no-render` skips | LAYOUT-SYSTEM.md §content-fit |
-| 10 | **footer-collision** | ⭐ **PDF ground truth**: nothing overlaps the pinned signature band (catches 2-col text under the script that DOM height can miss) | LAYOUT-SYSTEM.md |
+| 10 | **footer-collision** | ⭐ **PDF ground truth**: nothing overlaps the pinned signature band (catches 2-col text under the script that DOM height can miss). Detects signature alignment (résumé right / letter left) rather than assuming right | LAYOUT-SYSTEM.md |
+| 11 | **letter-geometry** | ⭐ a **cover letter** must never declare a print `.page` `height` **together with** `overflow: hidden` — that combination CLIPS the sign-off at the box boundary while every DOM-based guard passes | [one-page-letter.json](../layouts/resume/one-page-letter.json) · LAYOUT-SYSTEM.md |
 
-Checks 1 / 8 / 9 shell out to the standalone `check_palette` / `check_rendered_color` / `check_overflow`
-so there is one implementation of each rule, not two. Checks 8–10 need Playwright + pypdfium2;
-`--no-render` skips them (source-only — **not** ship-ready).
+Checks 1 / 8 / 9 / 11 shell out to the standalone `check_palette` / `check_rendered_color` /
+`check_overflow` / `check_pagefit` so there is one implementation of each rule, not two.
+Checks 8–10 need Playwright + pypdfium2; `--no-render` skips them (source-only — **not**
+ship-ready). Check 11 is **source-only**, so it runs even with `--no-render`.
+
+> ### ⚠ What check 11 exists for — and the limit of pixel checks
+>
+> On **2026-07-25** a cover letter shipped with *"Founder & CEO, Martian Games LLC"* sliced
+> through the middle and the email line missing entirely, because it had copied the résumé's
+> pinned-footer CSS. **Four checks passed:** `check_overflow` (DOM: content 7.29in inside a
+> 9.6in box, `overflowBy: 0`), `check_generation` 10/10, page count 1, and the text layer —
+> the clipped line still *exists* in it, so a grep succeeds where a human cannot read.
+>
+> **Pixel forensics cannot fix this.** Measured on a clipped export vs a clean one: identical
+> bottom-ink row (y=1438 of 1584) and statistically identical final-line band heights (13px
+> against a 16px median, in *both*). A rasteriser cannot tell "the line ended here" from "the
+> line was cut here". So the defect is refused **at the source** instead — check 11 rejects
+> the CSS pattern that causes it.
+>
+> **The human check that still matters:** rasterise and LOOK at the bottom of the page.
+> `python -m pdf_tool.pdf_to_png <doc>.html --pdf-theme dark`
+
+### Page-fit (separate, for exported PDFs)
+
+```bash
+python -m pdf_tool.check_pagefit <doc>.pdf                 # page count + edge ink + orphan tail
+python -m pdf_tool.check_pagefit <doc>.pdf --expect 1
+python -m pdf_tool.check_pagefit --source <doc>.html       # the letter-geometry rule alone
+```
+
+Asserts the exported page count (letter **1** · résumé **2** · work-samples **3**), that no ink
+runs off the sheet, and that the last page is not an **orphan tail** (a signature stranded alone
+on a final page — unprofessional even when nothing is clipped).
 
 ## Per-user / per-doc awareness
 
