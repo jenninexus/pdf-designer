@@ -83,9 +83,44 @@ through the middle and the email line vanished from the PDF entirely.
 The clip exists **only in the rasterised PDF**. `shade-ai-cover-letter` sets no print height and has
 always rendered correctly; the Netflix letter pins `9.5in` and clips. **Copy the former.**
 
-**If removing the height flows the letter to 2 pages, CUT PROSE** — restoring the height only
-re-hides the overflow. And **always eyeball the bottom 15% of an exported letter**; a DOM-based
-guard cannot see a renderer clip.
+### Why a pixel guard cannot catch this (measured)
+
+Do not try to detect the clip by inspecting the rendered page — it was attempted and it does not work:
+
+| Attempted signal | Result |
+|---|---|
+| Ink touching the **sheet edge** | Clipped and clean exports measured an **identical** bottom-ink row (y=1438 of 1584). The cut happens at the `.page` **box** boundary, ~100px inside the paper margin. |
+| A **short final ink band** (a sliced line keeps its top, loses its body) | Both files ended with a **13px** band against a **16px** median. Statistically indistinguishable. |
+
+A rasteriser cannot distinguish *"the line ended here"* from *"the line was cut here."* So the rule
+is enforced **at the source**: `check_generation` check 11 (**`letter-geometry`**) refuses the CSS
+combination on any file whose name contains `letter`.
+
+```bash
+python -m pdf_tool.check_pagefit --source <doc>.html    # the rule, standalone
+python -m pdf_tool.check_pagefit <doc>.pdf --expect 1   # page count · edge ink · orphan tail
+```
+
+### Fit-to-one-page — the fix order
+
+**If removing the height flows the letter to 2 pages, do NOT restore the height** (that only
+re-hides the overflow and ships a cut file). Fix in this order:
+
+| # | Move | Band |
+|---|---|---|
+| 1 | **Cut prose** — drop the paragraph that duplicates the résumé or restates an earlier point | best fix; the letter gets stronger |
+| 2 | **Tighten the closing** — merge the final two paragraphs | — |
+| 3 | **Reduce body font-size** in 0.25px steps | `11.5px` → `11.0` → `10.75` (floor **10.5px**) |
+| 4 | **Reduce line-height** | `1.55` → `1.5` → `1.45` (floor **1.4**) |
+| 5 | **Widen the margin**, equal on all edges — last resort | `0.7in` → `0.75` → `0.8in` |
+
+**Never** let the sign-off land alone on a second page (an *orphan tail*) — unprofessional even
+though nothing is clipped. `check_pagefit` flags it.
+
+**And always eyeball the bottom 15% of an exported letter** — `pdf_to_png`, then look. A DOM-based
+guard cannot see a renderer clip, which is precisely how this shipped.
+
+Machine-readable contract: [`../layouts/resume/one-page-letter.json`](../layouts/resume/one-page-letter.json).
 
 ### ⚠ A line that belongs above the footer goes INSIDE the footer
 

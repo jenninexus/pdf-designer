@@ -43,6 +43,20 @@ Don't — that just re-hides the overflow. **Cut prose until it fits at its natu
   line-height to buy a line. See [[lesson-overflow-fix-is-move-not-shrink]].
 - **Verify the BOTTOM of every exported letter by eye**, not by guard. Crop the last ~15% of the
   rendered page and look at it. A guard that reads the DOM cannot see a rasteriser clip.
+- **⚠ A PIXEL GUARD CANNOT CATCH THIS — measured, do not re-attempt.** Two detectors were built
+  and both failed: (a) *ink at the sheet edge* — a clipped and a clean export gave an **identical**
+  bottom-ink row (y=1438 of 1584), because the cut happens at the `.page` BOX boundary ~100px
+  inside the paper margin; (b) *a short final ink band* (a sliced line keeps its top, loses its
+  body) — both files ended with a **13px** band against a **16px** median. A rasteriser cannot
+  distinguish "the line ended here" from "the line was cut here".
+  **So the rule is enforced at the SOURCE:** `check_generation` check 11 (`letter-geometry`,
+  implemented in `check_pagefit.check_source_geometry`) refuses the CSS combination outright on any
+  file whose name contains `letter`. Contract: `layouts/resume/one-page-letter.json`.
+- **Fix order when a letter runs long** (never restore the height): cut prose → tighten the closing
+  → font-size 11.5→11.0→10.75px (floor 10.5) → line-height 1.55→1.5→1.45 (floor 1.4) → margin
+  0.75–0.8in, equal on all edges.
+- **Watch for the ORPHAN TAIL too** — a sign-off stranded alone on page 2 is unprofessional even
+  though nothing is clipped. `check_pagefit <doc>.pdf` flags it.
 - Note the diagnostic order that actually worked: measure where the ink ends in the PDF → compare
   to the DOM's reported content height → when they disagree, the *renderer* is clipping, not the
   layout. Same discipline as [[lesson-guard-assumptions-must-be-measured]].

@@ -1,0 +1,58 @@
+{
+  "id": "one-page-letter",
+  "docType": "coverLetter",
+  "spec": "../../docs/LAYOUT-SYSTEM.md",
+  "page": {
+    "size": "Letter",
+    "margin": "0.7in",
+    "marginRule": "Equal on all four edges. A letter may open the frame wider than the résumé's 0.65in (0.7–0.8in reads as a formal letter) but it must stay EQUAL. Never shrink a single edge to win space."
+  },
+  "contentBox": {
+    "heightIn": 9.6,
+    "widthIn": 7.1,
+    "heightPx": 921,
+    "widthPx": 682,
+    "rule": "At 0.7in margins the printable area is 11 - 1.4 = 9.6in tall. Content must fit inside it at its NATURAL height."
+  },
+  "pageModel": {
+    "container": ".page { /* NO display:flex, NO fixed height */ }",
+    "printPage": ".page { width: auto; height: auto; min-height: 0; margin: 0; padding: 0; }",
+    "signoff": ".signoff { margin-top: <18-24px>; break-inside: avoid; page-break-inside: avoid; }",
+    "rule": "The sign-off FLOWS at the end of the body. It is NOT pinned.",
+    "⛔forbidden": [
+      "height: <n>in on .page in print — @page{margin} already insets the printable area, so a .page that also declares a near-full height overflows the sheet",
+      "overflow: hidden on .page in print — combined with a height it CLIPS the sign-off instead of revealing the overflow",
+      "display:flex + margin-top:auto on .signoff — that is the RÉSUMÉ's pinned-footer model; on a letter it reserves a band the closing paragraph is pushed into"
+    ],
+    "why": "Observed 2026-07-25 (Sony letter, shipped): the résumé pattern was copied onto a letter and 'Founder & CEO, Martian Games LLC' was sliced through the middle while the email line vanished. check_overflow reported overflowBy:0, check_generation passed 10/10, the page count was 1, and the clipped text still existed in the text layer. The defect existed ONLY in the rasterised PDF."
+  },
+  "fitToOnePage": {
+    "rule": "A cover letter is EXACTLY 1 page and must never clip. When it does not fit, fix it in THIS order:",
+    "order": [
+      "1. CUT PROSE — remove the paragraph that duplicates the résumé or restates an earlier point. Best fix; the letter gets stronger.",
+      "2. TIGHTEN the closing — merge the final two paragraphs into one.",
+      "3. REDUCE body font-size in 0.25px steps within the allowed band (11.5px -> 11.0px -> 10.75px). Below 10.5px is unreadable in print.",
+      "4. REDUCE line-height within the band (1.55 -> 1.5 -> 1.45). Below 1.4 the paragraph reads cramped.",
+      "5. LAST RESORT: widen @page margin to 0.75in-0.8in (equal on all edges) — this REMOVES space, so it only helps if the body is short and the frame is what pushes the sign-off over."
+    ],
+    "⛔never": [
+      "Never add a fixed height + overflow:hidden to 'make it fit' — that HIDES the overflow instead of fixing it, and ships a clipped document.",
+      "Never let the sign-off land alone on a second page (orphan signature) — unprofessional.",
+      "Never shrink one margin edge; margins stay equal."
+    ],
+    "bands": {
+      "bodyFontPx": { "min": 10.5, "default": 11.5, "max": 12 },
+      "lineHeight": { "min": 1.4, "default": 1.55, "max": 1.65 },
+      "marginIn": { "min": 0.65, "default": 0.7, "max": 0.8 }
+    }
+  },
+  "expectedPages": { "coverLetter": 1 },
+  "guards": [
+    "check_pagefit  ⭐ REQUIRED — asserts exactly 1 page, no ink clipped at the content edge, and no orphan sign-off",
+    "check_generation",
+    "check_palette",
+    "check_ats"
+  ],
+  "verifyByEye": "Rasterise and LOOK at the bottom 15% of the page (`pdf_to_png`). A DOM-based guard cannot see a renderer clip — that is exactly how the 2026-07-25 defect shipped.",
+  "bestFor": "Every cover letter. Counterpart to two-page-standard.json (résumé / work-samples), which DOES pin its footer because its page count is fixed."
+}

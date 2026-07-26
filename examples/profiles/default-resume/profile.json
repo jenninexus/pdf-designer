@@ -13,7 +13,9 @@
   },
   "render": "default-resume.html",
   "exampleData": "resume-source.example.json",
-  "includeFilter": { "applies_to": "default-resume" },
+  "includeFilter": {
+    "applies_to": "default-resume"
+  },
   "verify": {
     "_note": "⭐ SHARED VERIFICATION CONTRACT — every profile that `extends` this one inherits it (jenni · shade · martian · studio). Run these guards on EVERY generated doc (resume · cover letter · work-samples), for EVERY applicant, before it ships. Both are also documented repo-wide in AGENTS.md and docs/EXPORTS.md.",
     "overflowGuard": {
@@ -41,7 +43,7 @@
       "marginIn": 0.65,
       "marginRule": "EQUAL on all four edges (top = right = bottom = left). Default 0.65in via `@page { size: Letter; margin: 0.65in }` and the CSS knob `--resume-page-margin`. A doc may open the frame WIDER for a specific look (e.g. a formal cover letter at 0.75in) but must keep it equal — never asymmetric.",
       "contentBox": "7.2in wide x 9.7in tall at the 0.65in default (8.5-2*0.65, 11-2*0.65).",
-      "headerFlowsFooterPins": "The header flows at the top inside the equal margin; the body region (.page-main / .letter-main) grows with flex:1; the footer/signature pins to the bottom with margin-top:auto. .page-sig = résumé bottom-right; .letter-sign = cover-letter bottom-left; .page-foot = work-samples footer row. Reusable classes live in themes/default-resume.css.",
+      "headerFlowsFooterPins": "Two page models, NOT interchangeable. RÉSUMÉ + WORK-SAMPLES (fixed page count): the header flows at the top inside the equal margin; the body region (.page-main) grows with flex:1; the footer/signature PINS to the bottom with margin-top:auto (.page-sig = résumé bottom-right, .page-foot = work-samples footer row), and print CSS sets an explicit .page height + overflow:hidden so the page count cannot silently grow. COVER LETTER (one page, flowing): the sign-off FLOWS after the body — .page gets height:auto with NO overflow:hidden, because @page{margin} already insets the printable area and a .page that also declares a height overflows the sheet, whereupon overflow:hidden CLIPS the sign-off while every DOM-based guard still passes (this shipped a cut letter on 2026-07-25). Enforced by check_generation's `letter-geometry` check. Contract: layouts/resume/one-page-letter.json. Reusable classes live in themes/default-resume.css.",
       "printHeight": "Give the print .page a fixed height of `calc(11in - 2 * margin)` so the flex footer pins to the page bottom.",
       "contentFitRule": "⚠ EACH PAGE's content must FIT its box or the pinned footer collides with the last lines (the 2026-07-19 overlap bug). If a page overflows, MOVE a section to the next page or tighten that page's rhythm — never shrink the equal margin. VERIFY with `python -m pdf_tool.check_overflow <doc>.html --pdf-theme dark` (also runs automatically as a warning on every html_to_pdf export)."
     },
@@ -60,12 +62,36 @@
     "png": "Render generated PDFs to page PNG files with pdf_to_png.py."
   },
   "sections": [
-    { "id": "header",       "title": "Header",           "data": "applicant + entity + contact links" },
-    { "id": "profile",      "title": "Profile",          "data": "one applicant voice, 3-5 sentence summary, no target-employer name" },
-    { "id": "capabilities", "title": "Core Capabilities","data": "grouped skill categories, pulled from vault claims" },
-    { "id": "credits",      "title": "Selected Credits", "data": "flagship items first (by your own ranking), then supporting credits" },
-    { "id": "about",        "title": "About",            "data": "single bio paragraph, same voice as Profile" },
-    { "id": "technology",   "title": "Technology",       "data": "stack list + an explicit honest-gap note for anything unverified" }
+    {
+      "id": "header",
+      "title": "Header",
+      "data": "applicant + entity + contact links"
+    },
+    {
+      "id": "profile",
+      "title": "Profile",
+      "data": "one applicant voice, 3-5 sentence summary, no target-employer name"
+    },
+    {
+      "id": "capabilities",
+      "title": "Core Capabilities",
+      "data": "grouped skill categories, pulled from vault claims"
+    },
+    {
+      "id": "credits",
+      "title": "Selected Credits",
+      "data": "flagship items first (by your own ranking), then supporting credits"
+    },
+    {
+      "id": "about",
+      "title": "About",
+      "data": "single bio paragraph, same voice as Profile"
+    },
+    {
+      "id": "technology",
+      "title": "Technology",
+      "data": "stack list + an explicit honest-gap note for anything unverified"
+    }
   ],
   "_note": "This profile's live reference render IS default-resume.html. resume-source.example.json documents the claim-vault schema this template's content should be tailored from — copy both, replace with your own verified claims, and keep the real copies out of version control (see ../../../.gitignore)."
 }
