@@ -161,6 +161,10 @@ python -m pdf_tool.check_vault --explain <user> <track>
 # AFTER listing captured — mechanical requirement → claim map (unbacked = ask first)
 python -m pdf_tool.check_vault --coverage <user> <track> <listing.md>
 
+# AFTER listing captured — is what the vault SAYS still TRUE? (urgent rows = exit 1, ask first)
+python -m pdf_tool.check_vault --suspect <user> <listing.md>
+python -m pdf_tool.check_vault --suspect <user>            # periodic health check, no listing
+
 # AFTER light PDF export — what does an ATS parser read?
 python -m pdf_tool.check_ats <resume-light.pdf>
 ```
@@ -174,10 +178,28 @@ python -m pdf_tool.check_ats <resume-light.pdf>
   track. **COVERED** = vault-backed. **UNBACKED** = ask before calling it a gap — exit 0 with
   unbacked rows is normal. Exit 1 = thin target track or schema errors. Exit 2 = missing files
   or no requirements found.
+- **`--suspect`** ⭐ asks the question the other three do not: **is what the vault says still
+  TRUE?** `--all` checks the vault is *well-formed*; `--coverage` checks it *covers this listing*.
+  Neither notices a fact that is simply **stale or never confirmed**. This lists every entry that
+  should be **re-confirmed**, ranked, and ends with a ready-to-paste question. With a listing it
+  reads **only the employer's words** (the verbatim block — not our own "never claimed" notes,
+  which would otherwise match every tool we deliberately excluded) and promotes any `unverified`
+  tool the listing names to **URGENT → exit 1**, blocking the build until someone asks. It matches
+  head words too, because listings rarely write a product name in full. Also reports, non-blocking:
+  **undated sources** (provenance you can no longer age) and **thin tracks**.
 - **`check_ats`** shows the PDF text layer, word count, and section cues. Exit 1 if < 40 words.
 
 And `check_vault --all` now validates **every** section — skills, employment, credits, education,
 clients. A track typo anywhere is an error, not a silent omission.
+
+> **Why `--suspect` exists.** Substance Painter sat `unverified` in **both** vaults for months
+> while both founders had **five years** of production experience with it. Nothing was malformed,
+> so `--all` stayed green; nothing matched a listing, so `--coverage` never raised it. It surfaced
+> on 2026-07-25 only because a listing happened to name it *and* somebody thought to ask — the same
+> way Maya and ZBrush surfaced in July, and four more tools on the Colour X build. **A fact with no
+> routine that re-examines it will go stale silently.** Verified against a reconstructed pre-fix
+> vault: `--suspect shade Sony.md` flags Substance Painter + Designer URGENT and correctly ignores
+> Houdini/Rhino/SketchUp. Run it per application, and periodically without a listing.
 
 ---
 
