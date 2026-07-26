@@ -12,10 +12,44 @@ layout renders in any theme.
 | Dir | Owns | Consumed by |
 |---|---|---|
 | [`collage/`](collage/) | Collage layout recipes — family + canvas + fit + background | `python -m pdf_tool.collage --recipe <id>` · `/make-collage` |
-| [`resume/`](resume/) | Document page models — margins, header/footer, page rhythm | [`../docs/LAYOUT-SYSTEM.md`](../docs/LAYOUT-SYSTEM.md) · `/make-resume` |
+| [`resume/`](resume/) | Document page models — margins, header/footer, page rhythm | [`../docs/LAYOUT-SYSTEM.md`](../docs/LAYOUT-SYSTEM.md) · `/make-resume` · `/make-cover-letter` |
 
 Machine-readable pointers: [`../.config/mcp-pdf-designer.json#layouts`](../.config/mcp-pdf-designer.json).
 Map of every SSOT surface: [`../docs/SSOT.md`](../docs/SSOT.md).
+
+---
+
+## Document page models (`resume/`)
+
+**Two contracts, and they are NOT interchangeable.** Picking the wrong one silently destroys
+a document — see the warning below.
+
+| Recipe | Doc types | Page model | Pages |
+|---|---|---|---|
+| [`two-page-standard.json`](resume/two-page-standard.json) | résumé · work-samples | **Pinned footer** — `.page` is a flex column with a fixed print `height` + `overflow: hidden`; the signature holds the bottom edge | résumé 2 · samples 3 |
+| [`one-page-letter.json`](resume/one-page-letter.json) ⭐ | **cover letter** | **Flowing** — `.page` has `height: auto` and **no** `overflow`; the sign-off flows after the body | letter **1** |
+
+> ### ⛔ Never put the résumé's pinned model on a cover letter
+>
+> The pinned model exists because a résumé's page count is **fixed** — the box must hold the
+> bottom edge so pagination cannot silently grow. On a one-page letter that same CSS
+> **clips content**: `@page { margin }` already insets the printable area, so a `.page` that
+> *also* declares a near-full height overflows the sheet, and `overflow: hidden` truncates
+> the tail instead of revealing it.
+>
+> **Shipped 2026-07-25:** a cover letter went out with *"Founder & CEO, Martian Games LLC"*
+> sliced through the middle and the email line missing — past **four passing guards**
+> (`check_overflow` reported `overflowBy: 0`, `check_generation` 10/10, page count 1, and the
+> clipped text still existed in the text layer). The defect existed only in the rasterised PDF.
+>
+> **Enforced now** by `check_generation`'s **`letter-geometry`** check
+> (`python -m pdf_tool.check_pagefit --source <doc>.html`), which refuses that CSS combination
+> on any file whose name contains `letter`.
+>
+> **If a letter runs long, fix it in this order** — cut prose → tighten the closing →
+> font-size 11.5→11.0→10.75px → line-height 1.55→1.5→1.45 → margin 0.75–0.8in (equal).
+> **Never** restore the height "to make it fit"; that re-hides the overflow and ships a cut file.
+> Full band table: [`one-page-letter.json#fitToOnePage`](resume/one-page-letter.json).
 
 ---
 

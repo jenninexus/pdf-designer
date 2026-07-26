@@ -444,6 +444,9 @@ CHECKS = [
     ("overflow", "no page overflows its print box (render)", check_overflow_render, False),
     ("footer-collision", "⭐ PDF ground truth: nothing overlaps the pinned signature",
      check_footer_collision, False),
+    ("letter-geometry", "⭐ a cover letter never pins a print height (that CLIPS the sign-off)",
+     lambda p: __import__("pdf_tool.check_pagefit", fromlist=["check_source_geometry"])
+     .check_source_geometry(p), False),
 ]
 
 
