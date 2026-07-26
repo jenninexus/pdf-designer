@@ -7,25 +7,35 @@ job -- so the resume is quietly built without the best evidence its owner has.
 
 Nobody sees an error. They just get a worse resume, and never find out why.
 
-THE THREE GUARD MODES
+THE FOUR GUARD MODES
   1. VALIDATE  -- schema check on every tracked section (not just skills). A track typo
                   anywhere is an error. Thin tracks and unverified tools are warnings.
   2. EXPLAIN   -- print exactly what a resume WILL contain, ranked, BEFORE you build it.
                   You should never have to render a PDF to find out what it says.
   3. LISTING-COVERAGE -- mechanical gap-check: listing requirements vs vault claims on
                   a track. Unbacked rows are questions (ASK BEFORE GAPS), not failures.
+  4. SUSPECT   -- which entries look WRONG or STALE and should be RE-CONFIRMED? The other
+                  three ask "is the vault well-formed / does it cover this listing?".
+                  This one asks "is what it says still TRUE?" -- the question that actually
+                  bit us. Substance Painter sat `unverified` in BOTH vaults for months while
+                  both founders had 5 years with it; nothing was malformed, so nothing
+                  complained. With a listing, tools the EMPLOYER names are promoted to
+                  URGENT (exit 1) so the build stops until someone asks.
 
 Usage:
     python -m pdf_tool.check_vault --all                     # VALIDATE all vaults
     python -m pdf_tool.check_vault --explain shade ai        # ranked claims for track
     python -m pdf_tool.check_vault --explain jenni 3d-viz --verbose
     python -m pdf_tool.check_vault --coverage shade 3d-viz examples/_job-listings/example-application/Company.example.md
+    python -m pdf_tool.check_vault --suspect shade                     # what should be re-confirmed?
+    python -m pdf_tool.check_vault --suspect shade <listing>.md        # + urgent for THIS listing
     python -m pdf_tool.check_vault storage/shade/resume-source.json
 
 Exit codes:
   0  PASS
   1  FAIL -- VALIDATE: schema errors; EXPLAIN: schema errors OR thin TARGET track;
-             COVERAGE: schema errors OR thin target track
+             COVERAGE: schema errors OR thin target track;
+             SUSPECT: an UNVERIFIED tool that THIS LISTING NAMES (ask before building)
   2  usage / missing vault / unknown track / unreadable listing
 
 VALIDATE warnings (unverified tools, thin tracks on sibling tracks) do NOT fail --all.
@@ -510,8 +520,192 @@ def coverage(user: str, track: str, listing_path: Path) -> int:
     return 0
 
 
+def _employer_text(raw: str) -> str:
+    """Return only the EMPLOYER's words from a listing doc.
+
+    A finished `<Company>.md` is two documents in one: our assessment (evidence map, prep
+    notes, and the explicit "Never claimed on this resume: Rhino, SketchUp, ..." line) and
+    the verbatim listing below a `---` fence. Scanning the whole file to ask "does the
+    employer want X?" is self-poisoning -- it finds every tool we wrote that we do NOT claim
+    and reports it as a requirement.
+
+    The convention (JOB-ASSESSMENT.md / make-resume step 6) is that the verbatim listing sits
+    under a heading containing "verbatim" or "original listing", below a `---`. Use that when
+    present; otherwise fall back to the whole text, minus the never-claimed line.
+    """
+    lower = raw.lower()
+    for marker in ("## original listing", "## the listing, verbatim", "verbatim listing",
+                   "listing (verbatim", "original listing (verbatim"):
+        i = lower.find(marker)
+        if i != -1:
+            return raw[i:]
+    # No verbatim fence -- strip the lines that enumerate what we deliberately do NOT claim.
+    keep = [ln for ln in raw.splitlines()
+            if "never claim" not in ln.lower() and "do not claim" not in ln.lower()
+            and "donotclaim" not in ln.lower()]
+    return "\n".join(keep)
+
+
+def _tool_named_in(tool: str, text: str) -> bool:
+    """Does the employer's text name this tool?
+
+    Matches the tool's distinctive head word as well as its full name, because listings
+    rarely write the product name in full: the Sony listing said "Substance", not
+    "Substance Painter" -- which is precisely the entry that went unverified for months.
+    A vault tool of "Substance Painter" must therefore match the bare word "Substance".
+    """
+    t = tool.lower().strip()
+    if re.search(rf"\b{re.escape(t)}\b", text):
+        return True
+    head = t.split()[0]
+    # Only trust a head word that is distinctive on its own (avoid 'after' from After Effects).
+    GENERIC = {"after", "3d", "the", "adobe", "auto", "real"}
+    if len(head) >= 5 and head not in GENERIC:
+        return bool(re.search(rf"\b{re.escape(head)}\b", text))
+    return False
+
+
+def suspect(user: str, listing_path: Path = None) -> int:
+    """SUSPECT: which vault entries look WRONG or STALE and should be re-confirmed?
+
+    VALIDATE answers "is the vault well-formed?" and COVERAGE answers "does the vault cover
+    THIS listing?" Neither asks the question that actually bit us: *is what the vault says
+    still true?*
+
+    Substance Painter sat `unverified` in BOTH vaults for months while both founders had five
+    years of production experience with it. Nothing was malformed, so VALIDATE passed. It only
+    surfaced on 2026-07-25 because a listing happened to name it and somebody asked. Maya and
+    ZBrush were the same story in 2026-07-13, and the Colour X build surfaced four more.
+
+    The pattern is always the same: a fact went stale, or was never confirmed, and there was no
+    routine that would ever raise it again. This mode is that routine. It prints a ready-to-ask
+    question list, ranked, so confirming is one message instead of an archaeology session.
+
+    With a listing path, unverified tools the LISTING NAMES are promoted to URGENT -- that is
+    exactly the Substance Painter case, caught mechanically instead of by luck.
+    """
+    vault_path = Path("storage") / user / "resume-source.json"
+    if not vault_path.exists():
+        _out(f"no vault at {vault_path}")
+        return 2
+
+    errors, _w = check_vault(vault_path)
+    if errors:
+        _out(f"\n{vault_path}")
+        for e in errors:
+            _out(f"  ERROR  {e}")
+        _out("\nFAIL: vault has schema errors -- fix those before auditing content.")
+        return 1
+
+    v = json.loads(vault_path.read_text(encoding="utf-8"))
+    listing_text = ""
+    if listing_path:
+        if not listing_path.exists():
+            _out(f"no listing at {listing_path}")
+            return 2
+        raw = listing_path.read_text(encoding="utf-8")
+        # ⚠ Match ONLY the employer's words. A finished listing doc also contains OUR analysis
+        # -- the evidence map, the "Never claimed on this resume:" line, the prep notes -- which
+        # name every tool we deliberately excluded. Scanning the whole file marks Houdini, Rhino,
+        # and SketchUp as "the listing asks for this" purely because we wrote that we do NOT
+        # claim them. Prefer the verbatim listing below the `---` fence when it is present.
+        listing_text = _employer_text(raw).lower()
+
+    urgent, unverified, undated, thin_note = [], [], [], []
+
+    # 1. Unverified tools -- the Substance Painter class.
+    for t in v.get("doNotClaim", {}).get("tools", []):
+        if not isinstance(t, dict) or t.get("status") != "unverified":
+            continue
+        name = t.get("name", "?")
+        if listing_text and _tool_named_in(name, listing_text):
+            urgent.append(name)
+        else:
+            unverified.append(name)
+
+    # 2. Claims with no date anywhere in `source` -- provenance we can no longer age.
+    for sec in TRACKED_SECTIONS:
+        for group, e in _iter_entries(v.get(sec, {})):
+            src = str(e.get("source", ""))
+            if not src:
+                continue
+            if not re.search(r"(19|20)\d{2}", src):
+                undated.append(f"{sec}.{_label(e, group)}  (source: {src[:52]})")
+
+    # 3. Tracks whose story is thin -- a resume there would be a toolbelt with no narrative.
+    for t in sorted(k for k in v.get("roleTracks", {}) if not k.startswith("_")):
+        depth, _tools = track_depth(v, t)
+        if depth < THIN_TRACK:
+            thin_note.append(f"{t} ({depth} narrative claims)")
+
+    _out(f"\n{'=' * 78}")
+    _out(f"  SUSPECT AUDIT  ·  {user}")
+    if listing_path:
+        _out(f"  listing: {listing_path}")
+    _out(f"{'=' * 78}\n")
+    _out("  Entries that may be WRONG or STALE. None of these are errors -- they are")
+    _out("  QUESTIONS TO ASK before the next build. Confirming one permanently improves")
+    _out("  every future application on that track.\n")
+
+    if urgent:
+        _out("!! URGENT -- THIS LISTING NAMES THESE, AND THEY ARE UNVERIFIED")
+        _out("   Ask BEFORE building. This is the exact Substance Painter case:")
+        _out("   'unverified' means NOBODY ASKED -- it does NOT mean they lack the skill.")
+        for n in urgent:
+            _out(f"   ??  {n}")
+        _out("")
+
+    if unverified:
+        _out("-- UNVERIFIED TOOLS (nobody has asked; NOT gaps)")
+        for n in unverified:
+            _out(f"   ?   {n}")
+        _out("")
+
+    if undated:
+        _out(f"-- UNDATED SOURCES ({len(undated)}) -- provenance cannot be aged")
+        for u in undated[:12]:
+            _out(f"   ·   {u}")
+        if len(undated) > 12:
+            _out(f"   ... and {len(undated) - 12} more")
+        _out("")
+
+    if thin_note:
+        _out("-- THIN TRACKS (toolbelt, no story)")
+        for t in thin_note:
+            _out(f"   ·   {t}")
+        _out("")
+
+    total = len(urgent) + len(unverified)
+    if not (urgent or unverified or undated or thin_note):
+        _out("  Nothing suspect. Every tool has been asked about and every source is dated.\n")
+        return 0
+
+    _out(f"{'-' * 78}")
+    if total:
+        _out("  ASK THE APPLICANT, in one message:")
+        names = ", ".join(urgent + unverified)
+        _out(f'    "Do you have experience with any of these? {names}"')
+        _out("")
+        _out("  If YES -> write it into `skills` with source: \"owner directive <today>\",")
+        _out("           move the ledger entry to `resolved` as `confirmed-have`, THEN use it.")
+        _out("  If NO  -> set status `confirmed-absent` with an `askedOn` date. Only THEN")
+        _out("           may it be treated as a gap.")
+    _out(f"{'-' * 78}\n")
+
+    # URGENT is a hard stop: the listing needs it and nobody has asked.
+    return 1 if urgent else 0
+
+
 def main(argv):
     _configure_stdout()
+
+    if "--suspect" in argv:
+        i = argv.index("--suspect")
+        rest = [a for a in argv[i + 1:] if not a.startswith("-")]
+        if not rest:
+            _out("usage: --suspect <user> [listing.md]")
+            return 2
+        return suspect(rest[0], Path(rest[1]) if len(rest) > 1 else None)
 
     if "--explain" in argv:
         i = argv.index("--explain")

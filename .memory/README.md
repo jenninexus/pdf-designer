@@ -58,6 +58,7 @@ codebase · `reference`: pointer to an external resource.
 | [lesson-track-tags-hide-true-claims.md](lesson-track-tags-hide-true-claims.md) | A true claim tagged for the wrong track goes invisible — nothing errors, the evidence just vanishes |
 | [lesson-ask-before-calling-it-a-gap.md](lesson-ask-before-calling-it-a-gap.md) | `doNotClaim` means "not yet confirmed", never "cannot do" — ask before writing anything off |
 | [lesson-overflow-fix-is-move-not-shrink.md](lesson-overflow-fix-is-move-not-shrink.md) | Page overflow is fixed by moving or cutting content, never by shrinking the equal margins |
+| [lesson-fixed-height-clips-content-silently.md](lesson-fixed-height-clips-content-silently.md) | ⚠ A print `height` + `overflow:hidden` on a cover letter CLIPS the sign-off while every guard passes — verify the bottom of the page by eye |
 | [lesson-applicant-fit-before-polish.md](lesson-applicant-fit-before-polish.md) | Decide *who* is applying against the listing's real spine before building anything |
 
 ## Related
