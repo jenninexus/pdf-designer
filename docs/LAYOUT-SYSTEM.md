@@ -61,6 +61,32 @@ DOM measurement is a fast pre-flight, not a substitute for looking at the real o
 signature band for body text (the defect DOM height can still miss when a 2-col block sits under the
 script). Ship gate: [`QA.md`](QA.md).
 
+### ⛔ A COVER LETTER must NOT set a print `height` + `overflow: hidden`
+
+**Per-doc geometry differs, and copying the résumé's pattern onto a letter destroys content.**
+
+| Doc | Print `.page` | Why |
+|---|---|---|
+| **Résumé / work-samples** | `height: 9.7in` + `overflow: hidden` | Page count is **fixed** — the box must hold the bottom edge so pagination cannot silently grow. |
+| **Cover letter** | `height: auto`, **no** `overflow: hidden` | One page, flowing. `@page { margin }` already insets the printable area, so a `.page` that *also* declares a near-full height **overflows the sheet** — and `overflow: hidden` then **clips the tail**. |
+
+**Observed 2026-07-25 (Sony letter, shipped):** "Founder & CEO, Martian Games LLC" was sliced
+through the middle and the email line vanished from the PDF entirely.
+
+**Every guard passed** — this is the important part:
+
+- `check_overflow` → **PASS** (DOM: content 7.29in inside a 9.6in box, `overflowBy: 0`)
+- `check_generation` → **10/10 PASS** (the signature *was* present, merely cut in half)
+- page-count → **PASS** (exactly 1 page)
+- text layer → the clipped line still exists in it, so a grep succeeds even though nobody can read it
+
+The clip exists **only in the rasterised PDF**. `shade-ai-cover-letter` sets no print height and has
+always rendered correctly; the Netflix letter pins `9.5in` and clips. **Copy the former.**
+
+**If removing the height flows the letter to 2 pages, CUT PROSE** — restoring the height only
+re-hides the overflow. And **always eyeball the bottom 15% of an exported letter**; a DOM-based
+guard cannot see a renderer clip.
+
 ### ⚠ A line that belongs above the footer goes INSIDE the footer
 
 A second failure mode (fixed 2026-07-19, work-samples last page): a loose `<p>` — e.g. a "full
