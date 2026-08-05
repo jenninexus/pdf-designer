@@ -402,13 +402,12 @@ python -m pdf_tool.pdf_to_png "$APP/<doc>.html" --pdf-theme dark
 
 Resume = **exactly 2 pages** · cover letter = **1** · work-samples = **3** · bundle = **3** · all US Letter.
 
-> **Layout + the overlap bug.** Equal margins `@page { margin: 0.65in }` on all four edges (cover letter
-> 0.75in, still equal); header flows, footer/signature pins (`margin-top:auto`). **⚠ Each page's content
-> must FIT its box** (9.7in ≈ 931px tall at 0.65in; measure at **816px** paper width) or the pinned
-> signature collides with the last lines — `check_generation` (overflow + footer-collision) catches it.
-> **Fix by moving a section to the next page**, never by shrinking the margin. Phantom blank page:
-> `.page + .page { break-before: page }`, never a trailing `break-after`. Full model:
-> `docs/LAYOUT-SYSTEM.md` · QA principle: `docs/QA.md`.
+> **Layout.** Recipes: résumé → `layouts/resume/two-page-standard.json` (signature **bottom-RIGHT**);
+> cover letter → `layouts/resume/one-page-letter.json` (sign-off **bottom-LEFT**, CZI padding). Equal margins
+> `@page { margin: 0.65in }` résumé / `0.75in` letter. **⚠ Each résumé page must FIT its box** or the pinned
+> signature collides — `check_generation` catches it; **move a section**, never shrink the margin. Letter
+> print uses `min-height` only — never résumé `height` + `overflow:hidden`. Full model:
+> `docs/LAYOUT-SYSTEM.md` · `layouts/README.md` · QA: `docs/QA.md`.
 
 ---
 

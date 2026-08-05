@@ -78,6 +78,9 @@ src/pdf_tool/share/themes/
 src/pdf_tool/share/layouts/
 src/pdf_tool/share/examples/
 
+# Playwright MCP capture dumps (local agent debugging artifacts)
+.playwright-mcp/
+
 # Editor/OS cruft
 .DS_Store
 Thumbs.db
