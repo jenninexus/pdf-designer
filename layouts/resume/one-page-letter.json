@@ -4,27 +4,36 @@
   "spec": "../../docs/LAYOUT-SYSTEM.md",
   "page": {
     "size": "Letter",
-    "margin": "0.7in",
-    "marginRule": "Equal on all four edges. A letter may open the frame wider than the résumé's 0.65in (0.7–0.8in reads as a formal letter) but it must stay EQUAL. Never shrink a single edge to win space."
+    "margin": "0.75in",
+    "marginRule": "Equal on all four edges. Default 0.75in (formal letter). Band 0.65–0.8in. Never shrink a single edge to win space."
   },
   "contentBox": {
-    "heightIn": 9.6,
-    "widthIn": 7.1,
-    "heightPx": 921,
-    "widthPx": 682,
-    "rule": "At 0.7in margins the printable area is 11 - 1.4 = 9.6in tall. Content must fit inside it at its NATURAL height."
+    "heightIn": 9.5,
+    "widthIn": 7.0,
+    "heightPx": 912,
+    "widthPx": 672,
+    "rule": "At 0.75in margins the printable area is 11 − 1.5 = 9.5in tall. Print `.page` uses min-height: 9.5in (NOT fixed height)."
   },
   "pageModel": {
-    "container": ".page { /* NO display:flex, NO fixed height */ }",
-    "printPage": ".page { width: auto; height: auto; min-height: 0; margin: 0; padding: 0; }",
-    "signoff": ".signoff { margin-top: <18-24px>; break-inside: avoid; page-break-inside: avoid; }",
-    "rule": "The sign-off FLOWS at the end of the body. It is NOT pinned.",
+    "container": ".page { display: flex; flex-direction: column; }",
+    "body": ".letter-main { flex: 1 1 auto; min-height: 0; }",
+    "signoff": ".signoff { margin-top: auto; padding-top: 30px; flex: 0 0 auto; text-align: left; break-inside: avoid; }",
+    "printPage": ".page { width: auto; height: auto; min-height: 9.5in; margin: 0; padding: 0; /* NO overflow:hidden */ }",
+    "rule": "⭐ CZI reference (storage/jenni/_exports/CZI/jenni-czi-letter.html): flex column + growing .letter-main + sign-off pinned with margin-top:auto so whitespace sits ABOVE the closing. Sign-off is bottom-LEFT (Warm regards → script → title → email). Résumés pin bottom-RIGHT — do not conflate.",
+    "reference": "CZI letter — position + padding (padding-top: 30px). Copy geometry, not palette.",
     "⛔forbidden": [
-      "height: <n>in on .page in print — @page{margin} already insets the printable area, so a .page that also declares a near-full height overflows the sheet",
-      "overflow: hidden on .page in print — combined with a height it CLIPS the sign-off instead of revealing the overflow",
-      "display:flex + margin-top:auto on .signoff — that is the RÉSUMÉ's pinned-footer model; on a letter it reserves a band the closing paragraph is pushed into"
+      "height: <n>in on .page in print — @page{margin} already insets the printable area; a near-full fixed height overflows the sheet",
+      "overflow: hidden on .page in print — combined with a fixed height it CLIPS the sign-off (Sony 2026-07-25)",
+      "Leaving the sign-off floating mid-page with no margin-top:auto — short letters look unfinished"
     ],
-    "why": "Observed 2026-07-25 (Sony letter, shipped): the résumé pattern was copied onto a letter and 'Founder & CEO, Martian Games LLC' was sliced through the middle while the email line vanished. check_overflow reported overflowBy:0, check_generation passed 10/10, the page count was 1, and the clipped text still existed in the text layer. The defect existed ONLY in the rasterised PDF."
+    "why": "Observed 2026-07-25 (Sony letter): résumé fixed-height + overflow:hidden copied onto a letter sliced the sign-off while every guard passed. Safe pin = flex + min-height (CZI). Unsafe pin = fixed height + overflow:hidden (Netflix/Sony)."
+  },
+  "signature": {
+    "placement": "bottom-left",
+    "pin": "margin-top: auto on .signoff (sibling of .letter-main inside flex .page)",
+    "paddingTop": "30px",
+    "order": ["Warm regards,", "script name", "title", "email (uppercase tracking)"],
+    "not": "Résumé bottom-RIGHT (.page-sig / align-self:flex-end) — that is two-page-standard.json"
   },
   "fitToOnePage": {
     "rule": "A cover letter is EXACTLY 1 page and must never clip. When it does not fit, fix it in THIS order:",
@@ -33,26 +42,27 @@
       "2. TIGHTEN the closing — merge the final two paragraphs into one.",
       "3. REDUCE body font-size in 0.25px steps within the allowed band (11.5px -> 11.0px -> 10.75px). Below 10.5px is unreadable in print.",
       "4. REDUCE line-height within the band (1.55 -> 1.5 -> 1.45). Below 1.4 the paragraph reads cramped.",
-      "5. LAST RESORT: widen @page margin to 0.75in-0.8in (equal on all edges) — this REMOVES space, so it only helps if the body is short and the frame is what pushes the sign-off over."
+      "5. LAST RESORT: widen @page margin to 0.8in (equal on all edges)."
     ],
     "⛔never": [
-      "Never add a fixed height + overflow:hidden to 'make it fit' — that HIDES the overflow instead of fixing it, and ships a clipped document.",
-      "Never let the sign-off land alone on a second page (orphan signature) — unprofessional.",
+      "Never add a fixed height + overflow:hidden to 'make it fit' — that HIDES the overflow instead of fixing it.",
+      "Never let the sign-off land alone on a second page (orphan signature).",
       "Never shrink one margin edge; margins stay equal."
     ],
     "bands": {
       "bodyFontPx": { "min": 10.5, "default": 11.5, "max": 12 },
       "lineHeight": { "min": 1.4, "default": 1.55, "max": 1.65 },
-      "marginIn": { "min": 0.65, "default": 0.7, "max": 0.8 }
+      "marginIn": { "min": 0.65, "default": 0.75, "max": 0.8 },
+      "signoffPaddingTopPx": { "default": 30, "min": 24, "max": 36 }
     }
   },
   "expectedPages": { "coverLetter": 1 },
   "guards": [
     "check_pagefit  ⭐ REQUIRED — asserts exactly 1 page, no ink clipped at the content edge, and no orphan sign-off",
-    "check_generation",
+    "check_generation (incl. letter-geometry + signature pin)",
     "check_palette",
     "check_ats"
   ],
-  "verifyByEye": "Rasterise and LOOK at the bottom 15% of the page (`pdf_to_png`). A DOM-based guard cannot see a renderer clip — that is exactly how the 2026-07-25 defect shipped.",
-  "bestFor": "Every cover letter. Counterpart to two-page-standard.json (résumé / work-samples), which DOES pin its footer because its page count is fixed."
+  "verifyByEye": "Rasterise and LOOK at the bottom 15% of the page (`pdf_to_png`). Confirm sign-off sits at the bottom-LEFT with air above it — not mid-page, not clipped.",
+  "bestFor": "Every cover letter. Counterpart to two-page-standard.json (résumé / work-samples)."
 }

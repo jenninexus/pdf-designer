@@ -38,7 +38,7 @@ fast on a large tree. If the server is briefly down mid-poll, the client just re
 
 | Layer | Where | Purpose |
 |---|---|---|
-| **Hub chrome** | `src/pdf_tool/static/hub.css` | App shell (filters, library, stage). Vendored `--dash-*` from www-theme-kit dashboard tokens + glass. Profile: `www-theme-kit/profiles/pdf-designer.json`. |
+| **Hub chrome** | `src/pdf_tool/static/hub.css` | App shell (filters, library, stage). Vendored `--dash-*` from **www-theme-kit** dashboard tokens + glass. Official profile: [`www-theme-kit/profiles/pdf-designer.json`](../../www-theme-kit/profiles/pdf-designer.json). |
 | **Document brands** | `themes/*.json` + `themes/presets/*.json` + `storage/brand-design/brand-*.json` | Palette swapper / WYSIWYG export. Personal SSOT — see [`STORAGE.md`](STORAGE.md). |
 
 ### Breakpoints (one project reference)
@@ -47,7 +47,7 @@ fast on a large tree. If the server is briefly down mid-poll, the client just re
 |---|---|
 | [`.config/mcp-pdf-designer.json#breakpoints`](../.config/mcp-pdf-designer.json) | ⭐ **THE** pdf-designer breakpoint SSOT (set name + paths — not duplicate numbers) |
 | `C:\mcp\.config\mcp-breakpoints.json` | Global cross-PC cache → `bootstrap_5_3_8_extended_390_4k` |
-| `www-theme-kit/scss/_breakpoint-tokens.scss` | Shared numeric tokens / mixins (syna mirror identical) |
+| `www-theme-kit/scss/_breakpoint-tokens.scss` | Shared numeric tokens / mixins (www-theme-kit is the consumer SSOT for this repo) |
 | `hub.css` `@media` | Hard-codes the same `.98px` maxes (CSS cannot `var()` inside `@media`) |
 
 Hub layout: stacks below **991.98px** (md-max); comfortable from **1200px** (xl); widescreen from **1400px** (xxl).
@@ -59,7 +59,7 @@ Each `.html` file is its **own template** in the library (one card = one file).
 
 Adapted from `D:\Resume\Jobright\jobright-feature-review.md` — local-first library + filters, not cloud match scores:
 
-- **Kind chips:** All · Resumes · Cover letters · Collages · Galleries · Examples
+- **Kind chips (leading, after Who):** All · Resumes · Cover Letters · Work Samples — then Library / Recipes / Vault / search / folder / palette scroll horizontally. **Refresh + Export stay pinned** on the right. Mouse wheel over the header strip scrolls that row horizontally.
 - **Folder:** e.g. `storage/_job-listings/3D-Artist`, `examples/profiles/default-resume`
 - **Person:** jenni / shade (from filename prefix)
 - **Search:** name or path substring

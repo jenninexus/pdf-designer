@@ -229,39 +229,50 @@ APP_HTML = """<!doctype html>
 </head>
 <body class="hub-shell">
 <header class="hub-bar" aria-label="Design Hub toolbar">
-  <h1 class="hub-brand" title="__ROOT__">Design Hub</h1>
-  <nav class="hub-nav" aria-label="Hub sections">
-    <a class="hub-link on" href="/" title="Document library" aria-current="page">Library</a>
-    <a class="hub-link" href="/recipes" title="Browse layouts/ + themes/presets">Recipes</a>
-    <a class="hub-link" href="/vault" title="Readable vault · skills · go-to résumés">Vault</a>
-  </nav>
-  <div class="chips" id="kindChips" role="tablist" aria-label="Document kind"></div>
-  <div class="hub-spacer"></div>
-  <input id="search" type="search" placeholder="Search…" autocomplete="off" title="Search name or path" aria-label="Search">
-  <select id="folderFilter" title="Folder" aria-label="Folder"><option value="">all folders</option></select>
-  <select id="personFilter" title="Who" aria-label="Person">
-    <option value="">anyone</option>
-    <option value="jenni">jenni</option>
-    <option value="shade">shade</option>
-  </select>
-  <select id="palette" title="Palette" aria-label="Palette"><option value="">doc default</option></select>
-  <select id="fmt" title="Export format" aria-label="Export format">
-    <option value="pdf-light">PDF light</option>
-    <option value="pdf-dark">PDF dark</option>
-    <option value="png-light">PNG light</option>
-    <option value="png-dark">PNG dark</option>
-  </select>
-  <details class="hub-more">
-    <summary title="More export options">⋯</summary>
-    <div class="hub-more-panel">
-      <label>Output folder
-        <input id="outdir" type="text" placeholder="_exports next to doc">
-      </label>
+  <div class="hub-bar-scroll" id="hubBarScroll" tabindex="0" title="Scroll horizontally — mouse wheel works here">
+    <div class="hub-group hub-brand-group">
+      <h1 class="hub-brand" title="__ROOT__">Design Hub</h1>
     </div>
-  </details>
-  <button id="refreshBtn" type="button" title="Re-scan the repo for new/changed documents">&#8635; Refresh</button>
-  <button class="primary" id="exportBtn" type="button">Export</button>
-  <span id="status"></span>
+    <div class="hub-group" title="Who">
+      <select id="personFilter" title="Who" aria-label="Who">
+        <option value="">anyone</option>
+        <option value="jenni">jenni</option>
+        <option value="shade">shade</option>
+      </select>
+    </div>
+    <div class="hub-group">
+      <div class="chips" id="kindChips" role="tablist" aria-label="Document kind"></div>
+    </div>
+    <nav class="hub-group hub-nav" aria-label="Hub sections">
+      <a class="hub-link on" href="/" title="Document library" aria-current="page">Library</a>
+      <a class="hub-link" href="/recipes" title="Browse layouts/ + themes/presets">Recipes</a>
+      <a class="hub-link" href="/vault" title="Readable vault · skills · go-to résumés">Vault</a>
+    </nav>
+    <div class="hub-group">
+      <input id="search" type="search" placeholder="Search…" autocomplete="off" title="Search name or path" aria-label="Search">
+      <select id="folderFilter" title="Folder" aria-label="Folder"><option value="">all folders</option></select>
+      <select id="palette" title="Palette" aria-label="Palette"><option value="">doc default</option></select>
+      <select id="fmt" title="Export format" aria-label="Export format">
+        <option value="pdf-light">PDF light</option>
+        <option value="pdf-dark">PDF dark</option>
+        <option value="png-light">PNG light</option>
+        <option value="png-dark">PNG dark</option>
+      </select>
+      <details class="hub-more">
+        <summary title="More export options">⋯</summary>
+        <div class="hub-more-panel">
+          <label>Output folder
+            <input id="outdir" type="text" placeholder="_exports next to doc">
+          </label>
+        </div>
+      </details>
+    </div>
+  </div>
+  <div class="hub-bar-pin" aria-label="Pinned actions">
+    <button id="refreshBtn" type="button" title="Re-scan the repo for new/changed documents">&#8635; Refresh</button>
+    <button class="primary" id="exportBtn" type="button">Export</button>
+    <span id="status"></span>
+  </div>
 </header>
 
 <main class="hub-main">
@@ -280,11 +291,12 @@ APP_HTML = """<!doctype html>
 <script>
 let DOCS = __DOCS__;
 const PALETTES = __PALETTES__;
-const KIND_ORDER = ["all","resume","cover-letter","collage","gallery","example","other"];
+const KIND_ORDER = ["all","resume","cover-letter","work-samples","collage","gallery","example","other"];
 const KIND_LABEL = {
   all: "All",
   resume: "Resumes",
-  "cover-letter": "Cover letters",
+  "cover-letter": "Cover Letters",
+  "work-samples": "Work Samples",
   collage: "Collages",
   gallery: "Galleries",
   example: "Examples",
@@ -293,6 +305,24 @@ const KIND_LABEL = {
 
 let selected = null;
 let kindFilter = "all";
+
+/* Horizontal wheel-scroll on the header strip (and its scrollbar). */
+(function hubBarWheelScroll() {
+  const sc = document.getElementById("hubBarScroll");
+  const bar = document.querySelector(".hub-bar");
+  if (!sc) return;
+  const onWheel = (e) => {
+    if (Math.abs(e.deltaY) < Math.abs(e.deltaX)) return;
+    if (sc.scrollWidth <= sc.clientWidth) return;
+    e.preventDefault();
+    sc.scrollLeft += e.deltaY;
+  };
+  sc.addEventListener("wheel", onWheel, { passive: false });
+  if (bar) bar.addEventListener("wheel", (e) => {
+    if (e.target.closest(".hub-bar-pin")) return;
+    onWheel(e);
+  }, { passive: false });
+})();
 
 const paletteSel = document.getElementById("palette");
 PALETTES.forEach((p, i) => {
