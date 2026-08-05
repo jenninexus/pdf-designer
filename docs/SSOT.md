@@ -105,9 +105,9 @@ The person filter is library-only — it does **not** auto-select a palette. Ful
 |---|---|
 | Breakpoints numbers | `C:\mcp\.config\mcp-breakpoints.json` + www-theme-kit SCSS |
 | Resume palette kit catalog | `www-theme-kit/palettes/resume-palettes.json` |
-| Hub chrome profile | `www-theme-kit/profiles/pdf-designer.json` |
+| Hub chrome profile ⭐ | `www-theme-kit/profiles/pdf-designer.json` |
 | Live-site brand hex (JN / MG) | `www-theme-kit/profiles/{jenninexus,martiangames}.json` — map into `storage/brand-design/` for résumés |
-| Syna public preset lineage | `syna-theme-kit/palettes/syna-palettes.json` (+ skins) → pdf-designer `themes/presets/` |
+| Preset lineage (history only) | Some `themes/presets/*` note syna-theme-kit origins — **runtime kit is www-theme-kit**; do not open syna/syn-themes for hub work |
 | Human voice map / public cards | `C:\Github\voice-seed` (registry + `characters/humans/*.md`) |
 | Application `characterVoice` + vault `voice` | **THIS** repo `storage/` (private) — voice-seed only points |
 | Agency fiction voices | `agency` — **NOT** applicants |

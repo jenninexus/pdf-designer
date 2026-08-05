@@ -302,6 +302,7 @@ Every section entry carries `source` (where it's provable) and `confidence`. Mos
 | `metrics` | Verifiable published numbers (plays, followers, years) | **new public figure** |
 | `education` | Schools, programs, training | **new course or credential** |
 | `studioCapabilities` | What we can *mobilize* (Synagen, the team, distribution) | new studio offering |
+| `petCare` *(Jenni)* | Alice / senior-cat / crowdfunding / caregiver tracker — animal-welfare & donor-UX listings | new pet-care product or care detail |
 | `doNotClaim` | Tools/claims that are off-limits + honest equivalents | **a tool we're asked for but don't have** |
 
 ### Sourcing a new fact

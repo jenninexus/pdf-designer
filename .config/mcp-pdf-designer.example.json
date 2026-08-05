@@ -3,16 +3,17 @@
     "description": "TEMPLATE — copy to mcp-pdf-designer.json and replace the <PLACEHOLDER> paths with your own. The repo runs WITHOUT this file; it only enriches agents and tools with pointers. Nothing here is a secret.",
     "project": "pdf-designer",
     "repo": "<REPO_ROOT>",
-    "updated": "2026-07-14",
-    "kit_parallel": {
-      "www": "<WWW_THEME_KIT>",
-      "syna": "<SYNA_THEME_KIT>"
+    "updated": "2026-08-05",
+    "theme_kit": {
+      "official": "<WWW_THEME_KIT>",
+      "hub_profile": "www-theme-kit/profiles/pdf-designer.json",
+      "note": "www-theme-kit is THE kit. syna-theme-kit = lineage only; syn-themes = VS Code extension — leave alone."
     },
     "template": true,
     "setup": {
       "1": "cp .config/mcp-pdf-designer.example.json .config/mcp-pdf-designer.json",
       "2": "Replace <REPO_ROOT> with this clone's absolute path.",
-      "3": "External pointers (<WWW_THEME_KIT>, <SYNA_THEME_KIT>, <VOICE_SEED>, <MCP_CONFIG_DIR>) may be deleted if you don't have those repos — nothing breaks."
+      "3": "External pointers (<WWW_THEME_KIT>, <VOICE_SEED>, <MCP_CONFIG_DIR>) may be deleted if you don't have those repos — nothing breaks."
     }
   },
   "ssot": "docs/SSOT.md",
@@ -43,7 +44,6 @@
   "external": {
     "breakpoints": "<MCP_CONFIG_DIR>\\mcp-breakpoints.json",
     "www_kit": "<WWW_THEME_KIT>",
-    "syna_kit": "<SYNA_THEME_KIT>",
     "voice_seed": "<VOICE_SEED>"
   },
   "breakpoints": {
@@ -53,7 +53,6 @@
     "global_ssot": "<MCP_CONFIG_DIR>\\mcp-breakpoints.json",
     "global_ssot_path": "breakpoint_sets.bootstrap_5_3_8_extended_390_4k",
     "shared_token_reference": "<WWW_THEME_KIT>\\scss\\_breakpoint-tokens.scss",
-    "syna_mirror": "<SYNA_THEME_KIT>\\scss\\_breakpoint-tokens.scss + tokens/breakpoint-tokens.ts",
     "hub_css": "src/pdf_tool/static/hub.css (hard-codes the same .98px maxes — CSS cannot var() inside @media)",
     "viewport_floor": "390x844",
     "nav_switch": "lg (992px)",

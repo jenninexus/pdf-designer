@@ -178,9 +178,10 @@ def _doc_type(path: Path, html: str) -> str:
     return "resume"
 
 
-# Signature rule is DOC-TYPE aware (GENERATION-RULES / LAYOUT-SYSTEM):
-#   resume + work-samples → signature/footer PINNED to the bottom (margin-top:auto), bottom-RIGHT.
-#   cover letter          → signoff flows after the body (natural), not pinned. Just must exist.
+# Signature rule is DOC-TYPE aware (LAYOUT-SYSTEM / layouts/resume/*):
+#   resume + work-samples → signature PINNED bottom-RIGHT (margin-top:auto + align-self:flex-end).
+#   cover letter          → signoff PINNED bottom-LEFT (margin-top:auto + text-align:left, padding-top ~30px).
+#                           Print uses min-height — NEVER fixed height + overflow:hidden (letter-geometry).
 def check_signature(path: Path):
     html = _read(path)
     style = "\n".join(re.findall(r"<style.*?>(.*?)</style>", html, flags=re.S | re.I))
@@ -191,13 +192,30 @@ def check_signature(path: Path):
         return False, [f"[{dt}] no signature/sign-off element "
                        f"(.page-sig / .signature / .signoff / .footer)"]
 
+    pinned = bool(re.search(
+        r"(page-sig|signature|signoff|footer|page-foot|letter-sign)[^{]*\{[^}]*margin-top:\s*auto",
+        style, re.I | re.S,
+    ))
+
     if dt == "cover-letter":
-        # a signoff just needs to be present (natural flow is correct for a 1-page letter)
+        if not pinned:
+            return False, [
+                f"[{dt}] sign-off is not bottom-pinned "
+                f"(needs margin-top:auto on .signoff — CZI / one-page-letter.json)"
+            ]
+        # bottom-LEFT (explicit right alignment is the résumé pattern)
+        right = bool(re.search(
+            r"\.signoff[^{]*\{[^}]*(align-self:\s*flex-end|text-align:\s*right)",
+            style, re.I | re.S,
+        ))
+        if right:
+            return False, [
+                f"[{dt}] sign-off is right-aligned — cover letters pin bottom-LEFT "
+                f"(text-align:left / default). Résumés use bottom-RIGHT."
+            ]
         return True, []
 
     # resume / work-samples: must be bottom-pinned
-    pinned = bool(re.search(r"(page-sig|signature|signoff|footer|page-foot)[^{]*\{[^}]*margin-top:\s*auto",
-                            style, re.I | re.S))
     if not pinned:
         return False, [f"[{dt}] signature/footer is not bottom-pinned "
                        f"(needs margin-top:auto on its rule — LAYOUT-SYSTEM.md)"]

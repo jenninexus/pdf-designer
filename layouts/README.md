@@ -19,37 +19,39 @@ Map of every SSOT surface: [`../docs/SSOT.md`](../docs/SSOT.md).
 
 ---
 
-## Document page models (`resume/`)
+## Document page models (`resume/`) — start here
 
-**Two contracts, and they are NOT interchangeable.** Picking the wrong one silently destroys
-a document — see the warning below.
+**Protocol (every `/make-resume` · `/make-cover-letter`):**
+
+| Doc | Open this recipe | Signature |
+|---|---|---|
+| **Cover letter** | [`one-page-letter.json`](resume/one-page-letter.json) ⭐ | **Bottom-LEFT**, flex-pinned (`margin-top: auto`, `padding-top: 30px`). Print = `min-height` only — **never** fixed `height` + `overflow: hidden` |
+| **Résumé** | [`two-page-standard.json`](resume/two-page-standard.json) | **Bottom-RIGHT**, flex-pinned. Print = fixed `height` + `overflow: hidden` |
+| **Work samples** | [`two-page-standard.json`](resume/two-page-standard.json) | Footer row bottom (name L / links R) |
+
+Full narrative + bands: [`../docs/LAYOUT-SYSTEM.md`](../docs/LAYOUT-SYSTEM.md).  
+**Visual reference for letter pin/padding:** `storage/jenni/_exports/CZI/jenni-czi-letter.html` (geometry only — not its palette).
 
 | Recipe | Doc types | Page model | Pages |
 |---|---|---|---|
-| [`two-page-standard.json`](resume/two-page-standard.json) | résumé · work-samples | **Pinned footer** — `.page` is a flex column with a fixed print `height` + `overflow: hidden`; the signature holds the bottom edge | résumé 2 · samples 3 |
-| [`one-page-letter.json`](resume/one-page-letter.json) ⭐ | **cover letter** | **Flowing** — `.page` has `height: auto` and **no** `overflow`; the sign-off flows after the body | letter **1** |
+| [`two-page-standard.json`](resume/two-page-standard.json) | résumé · work-samples | Flex column · fixed print `height` + `overflow: hidden` · signature **bottom-RIGHT** | résumé 2 · samples 3 |
+| [`one-page-letter.json`](resume/one-page-letter.json) ⭐ | **cover letter** | Flex column · print `min-height` (no fixed height, no `overflow:hidden`) · sign-off **bottom-LEFT** | letter **1** |
 
-> ### ⛔ Never put the résumé's pinned model on a cover letter
+> ### ⛔ Never put the résumé's *print* model on a cover letter
 >
-> The pinned model exists because a résumé's page count is **fixed** — the box must hold the
-> bottom edge so pagination cannot silently grow. On a one-page letter that same CSS
-> **clips content**: `@page { margin }` already insets the printable area, so a `.page` that
-> *also* declares a near-full height overflows the sheet, and `overflow: hidden` truncates
-> the tail instead of revealing it.
+> Both docs use flex + `margin-top: auto` to pin the sign-off. The difference is **print geometry**:
 >
-> **Shipped 2026-07-25:** a cover letter went out with *"Founder & CEO, Martian Games LLC"*
-> sliced through the middle and the email line missing — past **four passing guards**
-> (`check_overflow` reported `overflowBy: 0`, `check_generation` 10/10, page count 1, and the
-> clipped text still existed in the text layer). The defect existed only in the rasterised PDF.
+> | | Résumé / samples | Cover letter (CZI-safe) |
+> |---|---|---|
+> | Print `.page` | `height: 9.7in` + `overflow: hidden` | `height: auto` · `min-height: 9.5in` · **no** `overflow: hidden` |
+> | Why | Fixed page count must hold the bottom edge | `@page { margin }` already insets; a near-full fixed height + clip **slices the sign-off** |
 >
-> **Enforced now** by `check_generation`'s **`letter-geometry`** check
-> (`python -m pdf_tool.check_pagefit --source <doc>.html`), which refuses that CSS combination
-> on any file whose name contains `letter`.
+> **Shipped 2026-07-25 (Sony):** sign-off cut in half past four passing guards. **Enforced** by
+> `check_generation` → `letter-geometry` (`python -m pdf_tool.check_pagefit --source <doc>.html`).
 >
-> **If a letter runs long, fix it in this order** — cut prose → tighten the closing →
-> font-size 11.5→11.0→10.75px → line-height 1.55→1.5→1.45 → margin 0.75–0.8in (equal).
-> **Never** restore the height "to make it fit"; that re-hides the overflow and ships a cut file.
-> Full band table: [`one-page-letter.json#fitToOnePage`](resume/one-page-letter.json).
+> **If a letter runs long:** cut prose → tighten close → font 11.5→11.0→10.75 → line-height
+> 1.55→1.5→1.45 → margin 0.75→0.8in. **Never** restore fixed height. Bands:
+> [`one-page-letter.json#fitToOnePage`](resume/one-page-letter.json).
 
 ---
 

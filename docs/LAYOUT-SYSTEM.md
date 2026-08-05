@@ -63,12 +63,20 @@ script). Ship gate: [`QA.md`](QA.md).
 
 ### ⛔ A COVER LETTER must NOT set a print `height` + `overflow: hidden`
 
-**Per-doc geometry differs, and copying the résumé's pattern onto a letter destroys content.**
+**Per-doc geometry differs.** Both résumés and letters use flex + `margin-top: auto` to pin the
+sign-off. Letters pin **bottom-LEFT** (CZI reference); résumés pin **bottom-RIGHT**. The clip trap
+is the *print height* pattern — not the flex pin itself.
 
-| Doc | Print `.page` | Why |
-|---|---|---|
-| **Résumé / work-samples** | `height: 9.7in` + `overflow: hidden` | Page count is **fixed** — the box must hold the bottom edge so pagination cannot silently grow. |
-| **Cover letter** | `height: auto`, **no** `overflow: hidden` | One page, flowing. `@page { margin }` already insets the printable area, so a `.page` that *also* declares a near-full height **overflows the sheet** — and `overflow: hidden` then **clips the tail**. |
+| Doc | Print `.page` | Sign-off | Why |
+|---|---|---|---|
+| **Résumé / work-samples** | `height: 9.7in` + `overflow: hidden` | **bottom-RIGHT** | Page count is **fixed** — the box must hold the bottom edge. |
+| **Cover letter** | `height: auto` · `min-height: 9.5in` · **no** `overflow: hidden` | **bottom-LEFT**, `padding-top: 30px` | One page. `@page { margin }` already insets; a near-full fixed height + clip **slices the tail**. |
+
+**Reference letter (geometry / padding):** `storage/jenni/_exports/CZI/jenni-czi-letter.html` —
+flex column · `.letter-main` grows · `.signoff { margin-top: auto; padding-top: 30px }`.
+
+**Machine-readable:** [`../layouts/resume/one-page-letter.json`](../layouts/resume/one-page-letter.json)
+· [`../layouts/resume/two-page-standard.json`](../layouts/resume/two-page-standard.json).
 
 **Observed 2026-07-25 (Sony letter, shipped):** "Founder & CEO, Martian Games LLC" was sliced
 through the middle and the email line vanished from the PDF entirely.
@@ -80,8 +88,8 @@ through the middle and the email line vanished from the PDF entirely.
 - page-count → **PASS** (exactly 1 page)
 - text layer → the clipped line still exists in it, so a grep succeeds even though nobody can read it
 
-The clip exists **only in the rasterised PDF**. `shade-ai-cover-letter` sets no print height and has
-always rendered correctly; the Netflix letter pins `9.5in` and clips. **Copy the former.**
+The clip exists **only in the rasterised PDF**. Copy the **CZI** print model (`min-height`, no
+`overflow: hidden`), never the Netflix/Sony fixed-height letter.
 
 ### Why a pixel guard cannot catch this (measured)
 

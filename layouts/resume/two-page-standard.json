@@ -17,14 +17,20 @@
   "pageModel": {
     "container": ".page { display: flex; flex-direction: column; }",
     "body": ".page-main { flex: 1 1 auto; min-height: 0; }",
-    "footer": ".footer, .signature { margin-top: auto; }",
-    "rule": "Header flows at the top; footer/signature pins to the bottom. Print CSS must repeat the flex declaration and set overflow: hidden."
+    "footer": ".footer, .signature, .page-sig { margin-top: auto; align-self: flex-end; text-align: right; }",
+    "printPage": ".page { height: 9.7in; overflow: hidden; display: flex; flex-direction: column; }",
+    "rule": "Header flows at the top; signature pins bottom-RIGHT. Print CSS must repeat flex + set overflow: hidden (fixed page count)."
+  },
+  "signature": {
+    "placement": "bottom-right",
+    "pin": "margin-top: auto + align-self: flex-end (or text-align: right)",
+    "not": "Cover-letter bottom-LEFT — that is one-page-letter.json (CZI reference)"
   },
   "pagination": {
     "break": ".page + .page { break-before: page }",
     "trap": "A trailing break-after: page emits a phantom blank sheet."
   },
-  "expectedPages": { "resume": 2, "coverLetter": 1, "workSamples": 3 },
-  "guards": ["check_overflow", "check_palette", "check_ats"],
-  "bestFor": "Every standard application document. This is the house page model — deviate only with a reason."
+  "expectedPages": { "resume": 2, "workSamples": 3 },
+  "guards": ["check_overflow", "check_generation", "check_palette", "check_ats"],
+  "bestFor": "Every résumé and work-samples doc. Cover letters use one-page-letter.json — never this print height pattern on a letter."
 }

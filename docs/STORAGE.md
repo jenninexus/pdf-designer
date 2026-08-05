@@ -13,7 +13,7 @@ Everything under `storage/` is **local only**. It holds career data, application
 
 | Tracked in the repo (safe to clone) | Private in `storage/` (gitignored) | Lives in theme kits (website SSOT) |
 |---|---|---|
-| `src/`, `themes/`, `examples/`, `docs/`, `AGENTS.md` | `users/`, `*/resume-source.json`, `profiles/`, `_job-listings/`, `brand-design/`, `_exports/` | `www-theme-kit/profiles/…`, `syna-theme-kit/profiles/…` |
+| `src/`, `themes/`, `examples/`, `docs/`, `AGENTS.md` | `users/`, `*/resume-source.json`, `profiles/`, `_job-listings/`, `brand-design/`, `_exports/` | `www-theme-kit/profiles/…` (official kit) |
 | Brand-neutral default theme + `examples/brand-design/` | Real brand maps + vaults + contacts | Live site primary/secondary/accent |
 
 **Website kits own live site colors.** pdf-designer stores a **mapped copy** under

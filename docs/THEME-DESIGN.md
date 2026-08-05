@@ -3,6 +3,21 @@
 pdf-designer separates public, reusable design defaults from private brand
 profiles.
 
+## Which theme kit? (official)
+
+| Kit | Role for pdf-designer |
+|---|---|
+| **`www-theme-kit`** ⭐ | **THE kit.** Hub chrome profile, resume palette catalog, website brand upstreams, breakpoint SCSS. |
+| `syna-theme-kit` | **Historical lineage only** for some `themes/presets/*` accents — not opened in the pdf workspace; not required to run the hub. |
+| `syn-themes` | **VS Code extension** — unrelated day-to-day. Never edit it for pdf-designer work. |
+
+**Official hub / palette-prefs profile:**
+[`www-theme-kit/profiles/pdf-designer.json`](../../www-theme-kit/profiles/pdf-designer.json)
+(`_meta.ssot` / `kit: www-theme-kit`). Document audition catalog:
+`www-theme-kit/palettes/resume-palettes.json`. Live-site brand inspiration:
+`www-theme-kit/profiles/{jenninexus,martiangames}.json` → map into
+`storage/brand-design/brand-*.json` for exports.
+
 ## Public Defaults
 
 Tracked default theme files:
@@ -77,9 +92,10 @@ storage/
 `storage/` is ignored by git. Use it for local brand profiles, private source
 paths, real output paths, and project-specific palette mappings.
 
-**Website brands stay in the theme kits** (`www-theme-kit/profiles/`, `syna-theme-kit/profiles/`).
+**Website brands stay in `www-theme-kit/profiles/`.**
 When a resume needs that brand, **map** the kit profile into `storage/brand-design/brand-*.json`
 (token names in the table below). Tracked starter: [`../examples/brand-design/`](../examples/brand-design/).
+Do not open `syna-theme-kit` or `syn-themes` for routine pdf-designer palette work.
 
 **Worked MG mapping (aligned 2026-07-22):** live site roles (`martiangames.json`) →
 `storage/brand-design/brand-martian.json` + kit mirror `palettes/resume-palettes.json#martian-resume`.

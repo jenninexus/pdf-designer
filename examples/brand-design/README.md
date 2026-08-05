@@ -7,8 +7,9 @@ This folder is the **tracked template** so a future user (or a fresh clone) know
 
 | Layer | Path | Tracked? | Owns |
 |---|---|---|---|
-| Live website brand | `www-theme-kit/profiles/<site>.json` (or syna-theme-kit) | yes (kit repo) | Production site primary/secondary/accent |
+| Live website brand | `www-theme-kit/profiles/<site>.json` | yes (kit repo) | Production site primary/secondary/accent |
 | Resume kit mirror | `www-theme-kit/palettes/resume-palettes.json` | yes (kit repo) | Print-safe light+dark maps for résumé surfaces |
+| Hub chrome prefs | `www-theme-kit/profiles/pdf-designer.json` ⭐ | yes (kit repo) | Design Hub profile for pdf-designer |
 | pdf-designer private map | `storage/brand-design/brand-<name>.json` | **no** | Token map the Design Hub / exports actually load |
 | pdf-designer public default | `themes/default-resume.{json,css}` | **yes** | Brand-neutral engine default |
 
