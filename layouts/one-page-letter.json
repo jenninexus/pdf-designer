@@ -65,5 +65,5 @@
     "check_ats"
   ],
   "verifyByEye": "Rasterise and LOOK at the bottom 15% of the page (`pdf_to_png`). Confirm sign-off sits at the bottom-LEFT with air above it — not mid-page, not clipped.",
-  "bestFor": "Every cover letter. Counterpart to two-page-standard.json (résumé / work-samples)."
+  "bestFor": "Every cover letter (exactly 1 page). Résumés → two-page-standard.json; work-samples → work-examples.json."
 }
