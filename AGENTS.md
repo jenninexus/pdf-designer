@@ -171,7 +171,7 @@ content stays in the gitignored `storage/` vault. (This replaced the older `.loc
 | `themes/presets/*.json` | public audition palettes (Design Hub swapper) |
 | `themes/PALETTE-RULES.md` | ⭐ **the color rule** (no brown/mustard/lime) + how the guard enforces it |
 | `themes/default-collage.json` | collage canvas presets + `backgrounds` (gradients) + per-bg `frame` colors ([`docs/COLLAGE-DESIGN.md`](docs/COLLAGE-DESIGN.md)) |
-| `layouts/` | ⭐ **STRUCTURE registry** — reusable layout recipes (`collage/`, `resume/`); counterpart to `themes/` (color). See [`layouts/README.md`](layouts/README.md). |
+| `layouts/` | ⭐ **STRUCTURE registry** — document recipes at top level (`one-page-letter`, `two-page-standard`, `work-examples`) + `collage/`; counterpart to `themes/` (color). See [`layouts/README.md`](layouts/README.md). |
 | `examples/brand-design/` | tracked **template** for private brand maps (copy → `storage/brand-design/`) |
 | `examples/profiles/<id>/` | one profile per document type: `profile.json` + reference `.html` + example data |
 | `examples/_job-listings/` | one-folder-per-job-application workflow + copyable template |

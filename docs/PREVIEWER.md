@@ -78,7 +78,7 @@ Sidebar groups stay collapsible by folder. Stage bar shows kind · person · buc
   library (filters cleared, person chip set, card scrolled into view). Selecting a
   library card also writes `?doc=` into the URL for shareable deep-links.
 - **Recipe gallery** → [http://127.0.0.1:8787/recipes](http://127.0.0.1:8787/recipes) · `GET /api/recipe-gallery`
-  — browse tracked `layouts/collage/` + `layouts/resume/` + `themes/presets/` (structure +
+  — browse tracked `layouts/collage/` + `layouts/` + `themes/presets/` (structure +
   public audition palettes). Copy collage CLI (`--recipe <id>`), open raw JSON, or
   **Try in Hub** via `/?palette=<id>&mode=dark|light` (selects the palette swapper).
   Discovery chrome only — still one renderer.

@@ -1,7 +1,8 @@
 {
   "id": "one-page-letter",
   "docType": "coverLetter",
-  "spec": "../../docs/LAYOUT-SYSTEM.md",
+  "spec": "../docs/LAYOUT-SYSTEM.md",
+
   "page": {
     "size": "Letter",
     "margin": "0.75in",
