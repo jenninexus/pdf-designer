@@ -118,7 +118,6 @@
     "root": "layouts/",
     "index": "layouts/README.md",
     "collage": "layouts/collage/",
-    "resume": "layouts/resume/",
     "archive": "layouts/collage/_archive/",
     "discover": "python -m pdf_tool.collage --list-recipes",
     "use": "python -m pdf_tool.collage <imagesDir> --recipe <id>",
@@ -135,7 +134,13 @@
       "fit": "cover (photos) | contain (screenshots — never crop content)",
       "background": "preset id from themes/default-collage.json#backgrounds, or raw CSS",
       "bestFor": "human guidance — when to reach for this recipe"
-    }
+    },
+    "documents": "layouts/",
+    "document_recipes": [
+      "layouts/one-page-letter.json",
+      "layouts/two-page-standard.json",
+      "layouts/work-examples.json"
+    ]
   },
   "collage": {
     "_role": "Collage document type — the sibling of the resume routine.",

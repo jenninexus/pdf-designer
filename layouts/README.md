@@ -9,33 +9,37 @@ layout renders in any theme.
 > `storage/` (gitignored). This directory is tracked so layouts survive, get reused, and
 > ship with a fresh clone — the same way `themes/presets/` does.
 
-| Dir | Owns | Consumed by |
+| Path | Owns | Consumed by |
 |---|---|---|
+| [`*.json`](.) (top-level) | Document page models — margins, header/footer, page rhythm | [`../docs/LAYOUT-SYSTEM.md`](../docs/LAYOUT-SYSTEM.md) · `/make-resume` · `/make-cover-letter` · `/make-work-examples` |
 | [`collage/`](collage/) | Collage layout recipes — family + canvas + fit + background | `python -m pdf_tool.collage --recipe <id>` · `/make-collage` |
-| [`resume/`](resume/) | Document page models — margins, header/footer, page rhythm | [`../docs/LAYOUT-SYSTEM.md`](../docs/LAYOUT-SYSTEM.md) · `/make-resume` · `/make-cover-letter` |
 
 Machine-readable pointers: [`../.config/mcp-pdf-designer.json#layouts`](../.config/mcp-pdf-designer.json).
 Map of every SSOT surface: [`../docs/SSOT.md`](../docs/SSOT.md).
 
+> **Path note (2026-08-08):** document recipes moved from `layouts/resume/` → `layouts/`
+> (flat next to `collage/`). Update any old `layouts/resume/…` pointers.
+
 ---
 
-## Document page models (`resume/`) — start here
+## Document page models — start here
 
-**Protocol (every `/make-resume` · `/make-cover-letter`):**
+**Protocol (every `/make-resume` · `/make-cover-letter` · `/make-work-examples`):**
 
-| Doc | Open this recipe | Signature |
-|---|---|---|
-| **Cover letter** | [`one-page-letter.json`](resume/one-page-letter.json) ⭐ | **Bottom-LEFT**, flex-pinned (`margin-top: auto`, `padding-top: 30px`). Print = `min-height` only — **never** fixed `height` + `overflow: hidden` |
-| **Résumé** | [`two-page-standard.json`](resume/two-page-standard.json) | **Bottom-RIGHT**, flex-pinned. Print = fixed `height` + `overflow: hidden` |
-| **Work samples** | [`two-page-standard.json`](resume/two-page-standard.json) | Footer row bottom (name L / links R) |
+| Doc | Open this recipe | Signature | Pages |
+|---|---|---|---|
+| **Cover letter** | [`one-page-letter.json`](one-page-letter.json) ⭐ | **Bottom-LEFT**, flex-pinned (`margin-top: auto`, `padding-top: 30px`). Print = `min-height` only — **never** fixed `height` + `overflow: hidden` | **1** |
+| **Résumé** | [`two-page-standard.json`](two-page-standard.json) | **Bottom-RIGHT**, flex-pinned. Print = fixed `height` + `overflow: hidden` | **2** |
+| **Work samples** | [`work-examples.json`](work-examples.json) | Footer row (name L / links R). Portfolio URLs in a **body** section — not an extra footer line | **3** |
 
 Full narrative + bands: [`../docs/LAYOUT-SYSTEM.md`](../docs/LAYOUT-SYSTEM.md).  
 **Visual reference for letter pin/padding:** `storage/jenni/_exports/CZI/jenni-czi-letter.html` (geometry only — not its palette).
 
-| Recipe | Doc types | Page model | Pages |
-|---|---|---|---|
-| [`two-page-standard.json`](resume/two-page-standard.json) | résumé · work-samples | Flex column · fixed print `height` + `overflow: hidden` · signature **bottom-RIGHT** | résumé 2 · samples 3 |
-| [`one-page-letter.json`](resume/one-page-letter.json) ⭐ | **cover letter** | Flex column · print `min-height` (no fixed height, no `overflow:hidden`) · sign-off **bottom-LEFT** | letter **1** |
+| Recipe | Doc types | Page model |
+|---|---|---|
+| [`two-page-standard.json`](two-page-standard.json) | résumé | Flex column · fixed print `height` + `overflow: hidden` · signature **bottom-RIGHT** |
+| [`work-examples.json`](work-examples.json) | work-samples / Additional Documents | Flex column · fixed print `height` · footer row · MG **square** logo in games section |
+| [`one-page-letter.json`](one-page-letter.json) ⭐ | **cover letter** | Flex column · print `min-height` (no fixed height, no `overflow:hidden`) · sign-off **bottom-LEFT** |
 
 > ### ⛔ Never put the résumé's *print* model on a cover letter
 >
@@ -43,7 +47,7 @@ Full narrative + bands: [`../docs/LAYOUT-SYSTEM.md`](../docs/LAYOUT-SYSTEM.md).
 >
 > | | Résumé / samples | Cover letter (CZI-safe) |
 > |---|---|---|
-> | Print `.page` | `height: 9.7in` + `overflow: hidden` | `height: auto` · `min-height: 9.5in` · **no** `overflow: hidden` |
+> | Print `.page` | fixed `height` + `overflow: hidden` | `height: auto` · `min-height` · **no** `overflow: hidden` |
 > | Why | Fixed page count must hold the bottom edge | `@page { margin }` already insets; a near-full fixed height + clip **slices the sign-off** |
 >
 > **Shipped 2026-07-25 (Sony):** sign-off cut in half past four passing guards. **Enforced** by
@@ -51,7 +55,7 @@ Full narrative + bands: [`../docs/LAYOUT-SYSTEM.md`](../docs/LAYOUT-SYSTEM.md).
 >
 > **If a letter runs long:** cut prose → tighten close → font 11.5→11.0→10.75 → line-height
 > 1.55→1.5→1.45 → margin 0.75→0.8in. **Never** restore fixed height. Bands:
-> [`one-page-letter.json#fitToOnePage`](resume/one-page-letter.json).
+> [`one-page-letter.json#fitToOnePage`](one-page-letter.json).
 
 ---
 

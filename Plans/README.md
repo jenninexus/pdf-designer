@@ -12,7 +12,6 @@ Working plans for pdf-designer. Keep **one** active product roadmap; archive com
 | Plan | Status |
 |---|---|
 | [`_Active/2026-07-21-next-agent-product-prompt.md`](_Active/2026-07-21-next-agent-product-prompt.md) | ⭐ **THE** product roadmap (TestPyPI / Hub gallery) |
-| [`_Active/2026-07-24-jenni-vault-hub-handoff.md`](_Active/2026-07-24-jenni-vault-hub-handoff.md) | Jenni vault · go-to résumés · Hub `/vault` — session handoff |
 
 > **`/jen:roadmap` entry point:** [`../docs/ROADMAP.md`](../docs/ROADMAP.md) is a thin pointer to the plan
 > above. One roadmap, two doors — never a second copy.
@@ -22,6 +21,7 @@ Working plans for pdf-designer. Keep **one** active product roadmap; archive com
 
 | Plan | Why archived |
 |---|---|
+| [`2026-07-24-jenni-vault-hub-handoff.md`](_Archive/2026-07-24-jenni-vault-hub-handoff.md) | Hub `/vault` + goToPacks shipped; Jenni defaults refresh 2026-08-08 |
 | [`2026-07-14-professional-product-roadmap.md`](_Archive/2026-07-14-professional-product-roadmap.md) | Wave complete — public path, QA, packaging spike, paid-app design; follow-ups → active 7-21 plan |
 | [`2026-07-11-design-hub-app-roadmap.md`](_Archive/2026-07-11-design-hub-app-roadmap.md) | Phase 1 + hub UX shipped |
 | [`2026-07-11-design-hub-parked-phases.md`](_Archive/2026-07-11-design-hub-parked-phases.md) | pywebview / canvas — parked on demand |

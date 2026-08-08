@@ -45,7 +45,7 @@ async function load() {
     const resume = data.resumeLayouts || [];
     root.appendChild(section(
       `Resume page models (${counts.resume ?? resume.length})`,
-      "layouts/resume/*.json — house geometry (equal margins, content-fit).",
+      "layouts/*.json — house geometry (equal margins, content-fit).",
       resumeTable(resume)
     ));
 
@@ -119,7 +119,7 @@ function collageTable(rows) {
 }
 
 function resumeTable(rows) {
-  if (!rows.length) return emptyNode("No resume layouts found (layouts/resume/).");
+  if (!rows.length) return emptyNode("No document layouts found (layouts/*.json).");
   const wrap = document.createElement("div");
   wrap.className = "hub-table-scroll";
   wrap.innerHTML = `

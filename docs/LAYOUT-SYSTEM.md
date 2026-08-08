@@ -75,8 +75,9 @@ is the *print height* pattern — not the flex pin itself.
 **Reference letter (geometry / padding):** `storage/jenni/_exports/CZI/jenni-czi-letter.html` —
 flex column · `.letter-main` grows · `.signoff { margin-top: auto; padding-top: 30px }`.
 
-**Machine-readable:** [`../layouts/resume/one-page-letter.json`](../layouts/resume/one-page-letter.json)
-· [`../layouts/resume/two-page-standard.json`](../layouts/resume/two-page-standard.json).
+**Machine-readable:** [`../layouts/one-page-letter.json`](../layouts/one-page-letter.json)
+· [`../layouts/two-page-standard.json`](../layouts/two-page-standard.json)
+· [`../layouts/work-examples.json`](../layouts/work-examples.json) (work-samples, 3 pages).
 
 **Observed 2026-07-25 (Sony letter, shipped):** "Founder & CEO, Martian Games LLC" was sliced
 through the middle and the email line vanished from the PDF entirely.
@@ -128,7 +129,7 @@ though nothing is clipped. `check_pagefit` flags it.
 **And always eyeball the bottom 15% of an exported letter** — `pdf_to_png`, then look. A DOM-based
 guard cannot see a renderer clip, which is precisely how this shipped.
 
-Machine-readable contract: [`../layouts/resume/one-page-letter.json`](../layouts/resume/one-page-letter.json).
+Machine-readable contract: [`../layouts/one-page-letter.json`](../layouts/one-page-letter.json).
 
 ### ⚠ A line that belongs above the footer goes INSIDE the footer
 

@@ -178,7 +178,7 @@ def _doc_type(path: Path, html: str) -> str:
     return "resume"
 
 
-# Signature rule is DOC-TYPE aware (LAYOUT-SYSTEM / layouts/resume/*):
+# Signature rule is DOC-TYPE aware (LAYOUT-SYSTEM / layouts/*):
 #   resume + work-samples → signature PINNED bottom-RIGHT (margin-top:auto + align-self:flex-end).
 #   cover letter          → signoff PINNED bottom-LEFT (margin-top:auto + text-align:left, padding-top ~30px).
 #                           Print uses min-height — NEVER fixed height + overflow:hidden (letter-geometry).

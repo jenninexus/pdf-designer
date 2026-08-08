@@ -71,7 +71,7 @@ rules they didn't cover (**11 checks**):
 | 8 | **rendered-color** | ⭐ no brown / large-area warm cast in **rendered pixels** (catches composited brown the hex guard cannot see) | GENERATION-RULES · `check_rendered_color` |
 | 9 | **overflow** | no page overflows its print box at **816px** paper width. **Render-based**; `--no-render` skips | LAYOUT-SYSTEM.md §content-fit |
 | 10 | **footer-collision** | ⭐ **PDF ground truth**: nothing overlaps the pinned signature band (catches 2-col text under the script that DOM height can miss). Detects signature alignment (résumé right / letter left) rather than assuming right | LAYOUT-SYSTEM.md |
-| 11 | **letter-geometry** | ⭐ a **cover letter** must never declare a print `.page` `height` **together with** `overflow: hidden` — that combination CLIPS the sign-off at the box boundary while every DOM-based guard passes | [one-page-letter.json](../layouts/resume/one-page-letter.json) · LAYOUT-SYSTEM.md |
+| 11 | **letter-geometry** | ⭐ a **cover letter** must never declare a print `.page` `height` **together with** `overflow: hidden` — that combination CLIPS the sign-off at the box boundary while every DOM-based guard passes | [one-page-letter.json](../layouts/one-page-letter.json) · LAYOUT-SYSTEM.md |
 
 Checks 1 / 8 / 9 / 11 shell out to the standalone `check_palette` / `check_rendered_color` /
 `check_overflow` / `check_pagefit` so there is one implementation of each rule, not two.
