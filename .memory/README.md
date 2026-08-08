@@ -62,6 +62,7 @@ codebase · `reference`: pointer to an external resource.
 | [lesson-applicant-fit-before-polish.md](lesson-applicant-fit-before-polish.md) | Decide *who* is applying against the listing's real spine before building anything |
 | [lesson-work-samples-footer-row-false-collision.md](lesson-work-samples-footer-row-false-collision.md) | Work-samples L/R footer (name·links) false-triggers footer-collision — pin bottom-RIGHT; portfolio URLs in a body panel |
 | [lesson-defaults-export-beside-html.md](lesson-defaults-export-beside-html.md) | Go-to pack PDFs export into `defaults/` next to the HTML — never `_exports/defaults/` |
+| [lesson-utf8-json-roundtrip-on-windows.md](lesson-utf8-json-roundtrip-on-windows.md) | PowerShell/cp1252 round-trips corrupt UTF-8 JSON with ⭐ — surgical Edit + `encoding=utf-8` only |
 
 ## Related
 
