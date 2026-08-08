@@ -1,0 +1,42 @@
+{
+  "id": "work-examples",
+  "docType": "workSamples",
+  "spec": "../docs/LAYOUT-SYSTEM.md",
+  "page": {
+    "size": "Letter",
+    "margin": "0.6in",
+    "marginRule": "Equal on all four edges. Slightly tighter than the résumé so image grids keep width; never shrink a single edge."
+  },
+  "contentBox": {
+    "heightIn": 9.8,
+    "widthIn": 7.3,
+    "heightPx": 941,
+    "widthPx": 701,
+    "rule": "At 0.6in margins the printable area is 11 − 1.2 = 9.8in tall. Print `.page` uses fixed height + overflow:hidden (same family as two-page-standard)."
+  },
+  "pageModel": {
+    "container": ".page { display: flex; flex-direction: column; }",
+    "body": ".page-main { flex: 1 1 auto; min-height: 0; }",
+    "footer": ".footer.page-sig { margin-top: auto; align-self: flex-end; text-align: right; }",
+    "printPage": ".page { height: 9.8in; overflow: hidden; display: flex; flex-direction: column; }",
+    "rule": "Visual portfolio: header flows; signature pins bottom-RIGHT (same as résumé). Portfolio / live-work URLs belong in a body .links-panel — NEVER a L/R footer row (false-triggers footer-collision) and NEVER an extra line above the footer."
+  },
+  "signature": {
+    "placement": "bottom-right",
+    "pin": "margin-top: auto + align-self: flex-end on .footer.page-sig",
+    "not": "Cover-letter bottom-LEFT · L/R footer row with links opposite the script (phantom collision)"
+  },
+  "pagination": {
+    "break": ".page + .page { break-before: page }",
+    "expectedPages": 3,
+    "trap": "A trailing break-after: page emits a phantom blank sheet. A stacked .foot-line above the footer duplicates the portfolio section — put links in the body instead."
+  },
+  "brandAssets": {
+    "mgLogo": "Prefer the SQUARE 1×1 Martian Games mark inside the shipped-games / studio section — not the landscape 16×9 in the page-1 header.",
+    "ssot": "storage/studio/resources/images/martiangames/martiangames-logo-1x1.webp"
+  },
+  "tenureRule": "Studio at a glance: studio age (25 yrs founded 2000) and applicant tenure (Jenni = 15 yrs from Dec 2011) are DIFFERENT. Never tag the glance as 'Martian Games · 25 years' if it reads as the applicant's tenure — prefer 'studio · founded 2000' + a separate '15 yrs with studio' badge.",
+  "expectedPages": { "workSamples": 3 },
+  "guards": ["check_overflow", "check_generation", "check_palette"],
+  "bestFor": "Every work-samples / Additional Documents visual portfolio. Résumés use two-page-standard.json; cover letters use one-page-letter.json."
+}

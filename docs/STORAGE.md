@@ -136,8 +136,12 @@ storage/<user>/
 > **`defaults/` vs `_exports/`.** `_exports/<Track>/` is per-job output; **`defaults/` is the one place
 > to grab a ready-to-send generic resume/cover/work-samples** so the owner never has to sort through
 > `_exports/` or re-generate for a fresh listing. Keep `defaults/` current with the best-of vault.
-> After editing `storage/<user>/*-resume.html`, re-export light+dark into `defaults/` and run
-> `python -m pdf_tool.check_generation` on the source (10 checks — see [`QA.md`](QA.md)).
+>
+> **⭐ Export defaults INTO `defaults/`** — same folder as the HTML (`--output-dir storage/<user>/defaults`
+> or an explicit PDF path under that dir). **Never** write go-to packs to `_exports/defaults/` (that
+> path hid PDFs from the Design Hub defaults picker). Vault `goToPacks.*.exportDir` must point at
+> `storage/<user>/defaults/`. After editing a default HTML, re-export dark (Jenni) / per `exportPrefs`
+> and run `python -m pdf_tool.check_generation` on the source (see [`QA.md`](QA.md)).
 
 ### Voice SSOT (hybrid)
 

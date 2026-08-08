@@ -60,6 +60,8 @@ codebase · `reference`: pointer to an external resource.
 | [lesson-overflow-fix-is-move-not-shrink.md](lesson-overflow-fix-is-move-not-shrink.md) | Page overflow is fixed by moving or cutting content, never by shrinking the equal margins |
 | [lesson-fixed-height-clips-content-silently.md](lesson-fixed-height-clips-content-silently.md) | ⚠ A print `height` + `overflow:hidden` on a cover letter CLIPS the sign-off while every guard passes — verify the bottom of the page by eye |
 | [lesson-applicant-fit-before-polish.md](lesson-applicant-fit-before-polish.md) | Decide *who* is applying against the listing's real spine before building anything |
+| [lesson-work-samples-footer-row-false-collision.md](lesson-work-samples-footer-row-false-collision.md) | Work-samples L/R footer (name·links) false-triggers footer-collision — pin bottom-RIGHT; portfolio URLs in a body panel |
+| [lesson-defaults-export-beside-html.md](lesson-defaults-export-beside-html.md) | Go-to pack PDFs export into `defaults/` next to the HTML — never `_exports/defaults/` |
 
 ## Related
 

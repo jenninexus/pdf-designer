@@ -67,7 +67,11 @@ def _collage_recipes(root: Path) -> list[dict]:
 
 
 def _resume_layouts(root: Path) -> list[dict]:
-    layouts_dir = root / "layouts" / "resume"
+    """Document page models live at layouts/*.json (not layouts/resume/).
+
+    Collage recipes stay under layouts/collage/; only top-level JSON here.
+    """
+    layouts_dir = root / "layouts"
     if not layouts_dir.is_dir():
         return []
     out = []
@@ -81,7 +85,7 @@ def _resume_layouts(root: Path) -> list[dict]:
         out.append(
             {
                 "id": rid,
-                "kind": "resume",
+                "kind": "document",
                 "docType": data.get("docType") or "resume",
                 "bestFor": data.get("bestFor") or "",
                 "pageSize": page.get("size"),

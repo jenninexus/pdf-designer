@@ -1,7 +1,8 @@
 {
   "id": "two-page-standard",
   "docType": "resume",
-  "spec": "../../docs/LAYOUT-SYSTEM.md",
+  "spec": "../docs/LAYOUT-SYSTEM.md",
+
   "page": {
     "size": "Letter",
     "margin": "0.65in",
@@ -30,7 +31,8 @@
     "break": ".page + .page { break-before: page }",
     "trap": "A trailing break-after: page emits a phantom blank sheet."
   },
-  "expectedPages": { "resume": 2, "workSamples": 3 },
+  "expectedPages": { "resume": 2 },
   "guards": ["check_overflow", "check_generation", "check_palette", "check_ats"],
-  "bestFor": "Every résumé and work-samples doc. Cover letters use one-page-letter.json — never this print height pattern on a letter."
+  "bestFor": "Every résumé (exactly 2 pages). Work-samples use work-examples.json (3 pages). Cover letters use one-page-letter.json — never this print height pattern on a letter."
 }
+

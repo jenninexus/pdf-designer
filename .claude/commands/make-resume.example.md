@@ -402,8 +402,8 @@ python -m pdf_tool.pdf_to_png "$APP/<doc>.html" --pdf-theme dark
 
 Resume = **exactly 2 pages** · cover letter = **1** · work-samples = **3** · bundle = **3** · all US Letter.
 
-> **Layout.** Recipes: résumé → `layouts/resume/two-page-standard.json` (signature **bottom-RIGHT**);
-> cover letter → `layouts/resume/one-page-letter.json` (sign-off **bottom-LEFT**, CZI padding). Equal margins
+> **Layout.** Recipes: résumé → `layouts/two-page-standard.json` (signature **bottom-RIGHT**);
+> cover letter → `layouts/one-page-letter.json` (sign-off **bottom-LEFT**, CZI padding). Equal margins
 > `@page { margin: 0.65in }` résumé / `0.75in` letter. **⚠ Each résumé page must FIT its box** or the pinned
 > signature collides — `check_generation` catches it; **move a section**, never shrink the margin. Letter
 > print uses `min-height` only — never résumé `height` + `overflow:hidden`. Full model:

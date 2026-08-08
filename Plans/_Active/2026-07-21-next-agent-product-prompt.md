@@ -140,3 +140,12 @@ D. Optional: collage/resume recipe polish or COLLAGE-DESIGN private-path example
 | Netflix? | **Closed.** Both submitted. Keep schemas; agents ignore unless you ask. |
 | Packaging SSOT | `docs/PACKAGING.md` |
 | Observable proof | `python scripts/smoke-white-label.py` → PASS · Hub http://127.0.0.1:8787/ |
+
+### Also landed (2026-08-08) — Jenni defaults + layout flatten
+
+- Document layouts moved `layouts/resume/` → `layouts/` (+ new `work-examples.json`).
+- Hub `recipe_gallery` scans `layouts/*.json`.
+- Jenni go-to packs rebuilt (branded JN); Red Team AI trainer archived → `storage/jenni/templates/`.
+- Defaults PDFs export **into** `storage/jenni/defaults/` (vault `goToPacks.exportDir`).
+- Vault studio Discord metric → `6,500+` (socials-martiangames.yaml).
+- Archived: `Plans/_Archive/2026-07-24-jenni-vault-hub-handoff.md`.
