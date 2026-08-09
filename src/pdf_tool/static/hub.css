@@ -14,7 +14,7 @@
  *
  * Header contract (2026-08-05):
  *   .hub-bar           — fixed 48px; split into scroll strip + pinned actions.
- *     .hub-bar-scroll  — Design Hub · Who · All/Resumes/Cover Letters/Work Samples · rest.
+ *     .hub-bar-scroll  — Design Hub · Profiles · All/Resumes/… · folders (★ pin) · rest.
  *                        Mouse wheel → horizontal scroll (passive:false on wheel).
  *     .hub-bar-pin     — Refresh + Export stay visible on the right.
  *     .hub-group       — semantic group with 1px dividers.
@@ -146,7 +146,7 @@ button, [role="button"], summary, .chip, .thumb { user-select: none; -webkit-use
 
 /* ── Toolbar shell ─────────────────────────────────────────
    Split: .hub-bar-scroll (wheel → horizontal) | .hub-bar-pin (Refresh + Export stay visible).
-   Order in scroll: Design Hub · Who · All/Resumes/Cover Letters/Work Samples · then the rest. */
+   Order in scroll: Design Hub · Profiles · All/Resumes/Cover Letters/Work Samples · then the rest. */
 .hub-bar {
   display: flex;
   flex-wrap: nowrap;
@@ -404,8 +404,21 @@ a.hub-brand { color: inherit; text-decoration: none; cursor: pointer; }
   border-color: var(--dash-accent);
   box-shadow: 0 0 0 2px rgba(66, 244, 200, 0.18);
 }
-.hub-bar #folderFilter { max-width: 140px; }
-.hub-bar #personFilter { width: 80px; }
+.hub-bar #folderFilter { max-width: 160px; }
+.hub-bar #personFilter { width: 96px; }
+.hub-bar .hub-pin-btn {
+  width: 32px; min-width: 32px; padding: 0;
+  font-size: 14px; line-height: 1;
+  color: var(--dash-text-dim, rgba(255,255,255,0.45));
+}
+.hub-bar .hub-pin-btn:disabled {
+  opacity: 0.35; cursor: not-allowed;
+}
+.hub-bar .hub-pin-btn.on,
+.hub-bar .hub-pin-btn[aria-pressed="true"] {
+  color: #fbbf24;
+  border-color: rgba(251, 191, 36, 0.45);
+}
 .hub-bar #palette { max-width: 150px; }
 .hub-bar #fmt { width: 110px; }
 
@@ -912,6 +925,8 @@ a.hub-brand { color: inherit; text-decoration: none; cursor: pointer; }
 .badge.kind-example { color: #67e8f9; border-color: rgba(103, 232, 249, 0.35); }
 .badge.person-jenni { color: #f472b6; border-color: rgba(244, 114, 182, 0.35); }
 .badge.person-shade { color: #a78bfa; border-color: rgba(167, 139, 250, 0.4); }
+.badge.person-studio { color: #67e8f9; border-color: rgba(103, 232, 249, 0.4); }
+.badge.person-martian { color: #fb923c; border-color: rgba(251, 146, 60, 0.45); }
 
 .empty {
   padding: var(--dash-space-6);

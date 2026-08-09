@@ -156,7 +156,7 @@ A document may open the frame *wider* for a specific look, but it must stay **eq
 |---|---|---|---|---|---|
 | **Résumé** *(the default)* | **0.65in** | 7.2 × 9.7in | `calc(11in − 2×0.65in)` = 9.7in | signature → **bottom-right** | **2** |
 | **Cover letter** | 0.75in *(a notch airier — a formal letter)* | 7.0 × 9.5in | 9.5in | sign-off → **bottom-left** | **1** |
-| **Work samples** | 0.60in *(a notch tighter — images keep width)* | 7.3 × 9.8in | 9.8in | footer row → **bottom** (name L, links R) | **3** |
+| **Work samples** | 0.60in *(a notch tighter — images keep width)* | 7.3 × 9.8in | 9.8in | signature → **bottom-right** (links in body `.links-panel`) | **3** |
 
 **Content-box height math:** `11in − 2 × margin`. Set the print `.page { height }` to exactly this — a
 value that's too tall spills a phantom trailing page (see EXPORTS.md pagination traps).
@@ -169,24 +169,51 @@ Templates that don't `@import` the theme still follow the same equal-margin rule
 
 ### Vertical rhythm (what "airier" meant)
 
-- **Résumé:** `header` bottom-margin ~20px; `section` ~19px; under `h2` ~12px; list items ~4px; column
-  gap ~32px. Signature `padding-top` ~18px.
+- **Résumé:** `header` bottom-margin ~20px; `section` ~16–19px; under `h2` ~10–12px; list items ~4px;
+  column gap ~32px. Signature `padding-top` ~14–18px. Keep section gaps even across both pages —
+  don't pack page 2 tighter than page 1.
 - **Cover letter:** header block sits above a `border-bottom` rule with ~24px gap before the recipient;
-  paragraph gap ~13px; **~30px gap above the sign-off** (plus `margin-top:auto`).
-- **Work samples:** `section` ~20px; callout padding ~14–16px; footer `padding-top` ~20px.
+  paragraph gap ~13px; **~30px gap above the sign-off** (plus `margin-top:auto`). Sign-off stays lean:
+  closing + script name + mailto email (title lives in the header, not a third footer line).
+- **Work samples:** `.page-main` is a flex column with a generous `gap` (~18px) and
+  `padding-bottom` clear of the signature — prefer gap over `justify-content: space-between` (a tall
+  Agency grid + space-between has false-triggered footer-collision). Category `h2` ~13px; callout
+  ~14–16px; footer `padding-top` ~16px. Portfolio URLs stay in a body `.links-panel` (title left,
+  items centered/even in the row) — never a L/R footer row.
 
-### Work-samples imagery — keep height, minimize crop
+### ⚠ Full-row group items (stats · link chips · badge rows)
 
-Portfolio images are the point, so they get real height (they were over-cropped in v1):
+When a row holds **multiple peer items** (studio-at-a-glance stats, Online Community
+badges, Portfolio & live work link cards), those items must **span the full content
+width** — never cluster on the left leaving half a row empty.
 
-| Element | Height |
+| Do | Don't |
 |---|---|
-| Hero (cover) | **252px** |
-| Game shots (2-col grid) | **132px** |
-| Agent cards (3-col grid) | **104px** |
+| `display: grid; grid-template-columns: repeat(N, minmax(0, 1fr)); width: 100%` | `display: flex` without `flex: 1` on children (items shrink to content width) |
+| Equal columns for a fixed count (4 links → `repeat(4, …)`; 5 stats → `repeat(5, …)`) | A wrap that parks the last chip alone on a second row when N still fits |
+| Compact labels (`11K`) so five badges stay one row | Full `11,000` that forces wrap |
 
-`object-fit: cover` still crops to the box — these heights keep enough of each scene to read. If a
-specific image's subject is getting cut, raise that grid's height rather than fighting `object-fit`.
+**Rule:** a multi-item row is either full-bleed across the content box or it is the wrong
+layout. Prefer CSS grid with `1fr` tracks over left-justified flex clusters. Documented in
+[`../layouts/work-examples.json`](../layouts/work-examples.json)#`fullRowGroups` and the
+résumé Online Community pattern.
+
+### Footer email (all three Jenni defaults)
+
+Use `--text` (or brand `--accent`), **≥11px**, `font-weight: 600` — not `--dim2` at 9px. Same treatment
+on résumé `.page-sig .mail`, cover `.signoff .mail`, and work-samples `.footer .mail`. Palette SSOT:
+`storage/brand-design/brand-jenninexus.json`.
+
+### Work-samples imagery — caption below hero; keep height
+
+| Element | Spec |
+|---|---|
+| Hero (cover) | Image in `.frame`; **caption BELOW** (`.hero .cap`) — never overlaid on the photo |
+| Game shots (3-col) | 16:9 frame + label under |
+| Agent cards (3-col) | ~92px image + label under |
+
+`object-fit: cover` / `contain` still crops to the box — raise a grid's height rather than fighting fit.
+Default shipped-games block has **no** Martian Games logo mark (logo optional elsewhere).
 
 ---
 

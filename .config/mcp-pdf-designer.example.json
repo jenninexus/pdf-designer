@@ -103,7 +103,15 @@
     "users_dir": "storage/users/",
     "person_files": {
       "jenni": "storage/users/jenni.json",
-      "shade": "storage/users/shade.json"
+      "shade": "storage/users/shade.json",
+      "_note": "Applicant person files. Studio entity decks have no users/*.json — see profile_files."
+    },
+    "profile_files": {
+      "jenni": "storage/profiles/jenni-resume.json",
+      "shade": "storage/profiles/shade-resume.json",
+      "studio": "storage/profiles/studio-resume.json",
+      "martian": "storage/profiles/martian-resume.json",
+      "_note": "Hub Profiles filter (preview.py) tags docs by path/prefix to these four. studio = Synagen/capabilities; martian = game studio."
     }
   },
   "palette_registry": {

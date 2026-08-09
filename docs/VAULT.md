@@ -187,7 +187,10 @@ python -m pdf_tool.check_ats <resume-light.pdf>
   tool the listing names to **URGENT → exit 1**, blocking the build until someone asks. It matches
   head words too, because listings rarely write a product name in full. Also reports, non-blocking:
   **undated sources** (provenance you can no longer age) and **thin tracks**.
-- **`check_ats`** shows the PDF text layer, word count, and section cues. Exit 1 if < 40 words.
+- **`check_ats`** shows the PDF text layer, word count, and a **required-cue checklist**
+  (`job title` · `work experience` · `education` must be contiguous). Exit 1 if < 40 words **or**
+  a required cue is missing/split. How to know it’s parseable: [`JOB-ASSESSMENT.md`](JOB-ASSESSMENT.md)
+  § Tier 4.5 — same gate for every profile under `storage/profiles/`.
 
 And `check_vault --all` now validates **every** section — skills, employment, credits, education,
 clients. A track typo anywhere is an error, not a silent omission.

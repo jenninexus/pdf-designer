@@ -59,12 +59,12 @@ Each `.html` file is its **own template** in the library (one card = one file).
 
 Adapted from `D:\Resume\Jobright\jobright-feature-review.md` — local-first library + filters, not cloud match scores:
 
-- **Kind chips (leading, after Who):** All · Resumes · Cover Letters · Work Samples — then Library / Recipes / Vault / search / folder / palette scroll horizontally. **Refresh + Export stay pinned** on the right. Mouse wheel over the header strip scrolls that row horizontally.
-- **Folder:** e.g. `storage/_job-listings/3D-Artist`, `examples/profiles/default-resume`
-- **Person:** jenni / shade (from filename prefix)
+- **Kind chips (leading, after Profiles):** All · Resumes · Cover Letters · Work Samples — then Library / Recipes / Vault / search / folder / palette scroll horizontally. **Refresh + Export stay pinned** on the right. Mouse wheel over the header strip scrolls that row horizontally.
+- **Folder:** e.g. `storage/jenni/defaults`, `storage/_job-listings/3D-Artist`. **★ pin** the current folder (button beside the select) — pinned go-tos appear in a **Pinned** optgroup and persist in `localStorage` (`pdf-designer.hub.pinnedFolders`) across Refresh and full reloads.
+- **Profiles** (was “Who”): `all profiles` · **jenni** · **shade** · **studio** · **martian** — from path ownership (`storage/<id>/`) or filename prefix. Matches `storage/profiles/*-resume.json` entity decks (studio = Synagen/capabilities; martian = game studio). Preference kept in `pdf-designer.hub.profileFilter`.
 - **Search:** name or path substring
 
-Sidebar groups stay collapsible by folder. Stage bar shows kind · person · bucket · path.
+Sidebar groups stay collapsible by folder. Stage bar shows kind · profile · bucket · path.
 
 ### Features
 
