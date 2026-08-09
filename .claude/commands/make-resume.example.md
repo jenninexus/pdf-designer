@@ -413,16 +413,23 @@ Resume = **exactly 2 pages** · cover letter = **1** · work-samples = **3** · 
 
 ## 🤖 ATS parse safety — the light PDF is read by a MACHINE
 
+**How you know it’s parseable:** after light export, run
+`python -m pdf_tool.check_ats <resume-light.pdf>` — exit 0 with `[OK] job title`,
+`[OK] work experience`, `[OK] education`, and a text dump you can read. Full checklist:
+[`docs/JOB-ASSESSMENT.md`](../../docs/JOB-ASSESSMENT.md) § Tier 4.5. Same rule for **every**
+profile (`jenni` · `shade` · `studio` · `martian`).
+
 - **🚫 NO two-column bullet lists in the resume body.** Indeed parsed our two-column experience bullets
   *across* the columns and interleaved them into gibberish (*"…camera composition **AI-powered creative
   tooling — ideation →** Photorealistic and stylized rendering… **hair, beauty** Cross-discipline…"*).
   A two-column grid is fine for **tag chips / a tools list / page-2 side-by-side entries**; never for
   prose bullets inside an experience block. **Reading order must equal DOM order.**
-- **Verify the parse before submitting:**
-  `python -c "from pypdf import PdfReader; print(PdfReader('<resume>-light.pdf').pages[0].extract_text())"` — if it reads as
-  nonsense to you, it reads as nonsense to the ATS.
+- **Standard `h2` labels:** `Work Experience` (not bare `Experience`), `Education`, `Skills`, plus a
+  header `Job Title` line. Section `h2` on a system font (`Segoe UI` / Arial) — Montserrat can split
+  `WORK EXPERIENCE` → `W ORK EXPERIENCE` in the text layer.
+- **Job blocks:** title line → company line → dates (never `COMPANY — ROLE` mashed on one line).
 - **Upload the resume-only light PDF**, never the merged bundle (a parser fed the bundle reads the cover
-  letter as resume content).
+  letter as resume content). Prefer light over dark for Jobright / Indeed / LinkedIn.
 - **When a board pre-fills work-experience entries from the upload, hand-fix them** — paste clean,
   single-column, plain-text bullets.
 

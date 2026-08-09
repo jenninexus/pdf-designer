@@ -31,8 +31,13 @@
     "expectedPages": 3,
     "trap": "A trailing break-after: page emits a phantom blank sheet. A stacked .foot-line above the footer duplicates the portfolio section — put links in the body instead."
   },
+  "heroCaption": "Caption sits BELOW the hero image (not overlaid). Structure: .hero > .frame > img, then .hero .cap.",
+  "verticalRhythm": "Pages 1–2 are often image+copy-light: use .page-main flex column with a generous gap (~18px) + padding-bottom clear of the signature band — NOT justify-content:space-between (that plus a tall Agency grid false-triggers footer-collision). Category h2 ~13px with ~14px bottom margin. Shrink agent-card images before moving a whole section.",
+  "fullRowGroups": "Stats rows, link-chip rows, and any peer-item strip MUST span the full content width — use grid repeat(N, minmax(0,1fr)), never a left-clustered flex that leaves half the row empty. Same rule as résumé Online Community badges.",
+  "linksPanel": "Portfolio & live work matches Studio at a glance: section h2 OUTSIDE any card; .link-row = grid repeat(4, 1fr) peer chips (same visual language as .stats). Never wrap the title inside a bordered panel. All URLs real <a href>. Live: lines after Agency are NOT list bullets.",
+  "footerMail": "Signature email uses --text (or --accent), ≥11px, font-weight 600 — never --dim2 at 9px. Same rule across résumé + cover letter + work samples.",
   "brandAssets": {
-    "mgLogo": "Prefer the SQUARE 1×1 Martian Games mark inside the shipped-games / studio section — not the landscape 16×9 in the page-1 header.",
+    "mgLogo": "Optional. Default work-examples omits the MG mark in shipped-games. If used elsewhere, prefer SQUARE 1×1 — not landscape 16×9 in the header.",
     "ssot": "storage/studio/resources/images/martiangames/martiangames-logo-1x1.webp"
   },
   "tenureRule": "Studio at a glance: studio age (25 yrs founded 2000) and applicant tenure (Jenni = 15 yrs from Dec 2011) are DIFFERENT. Never tag the glance as 'Martian Games · 25 years' if it reads as the applicant's tenure — prefer 'studio · founded 2000' + a separate '15 yrs with studio' badge.",
