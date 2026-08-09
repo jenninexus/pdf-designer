@@ -84,16 +84,30 @@ def classify_document(rel: str, stem: str) -> dict:
         bucket = "examples"
     elif "collage" in path_l or "_candidates" in parts:
         bucket = "collages"
-    elif any(path_l.startswith(f"storage/{u}/") for u in ("jenni", "shade")):
+    elif any(path_l.startswith(f"storage/{u}/") for u in ("jenni", "shade", "studio")):
         bucket = "vault-renders"
     else:
         bucket = "other"
 
-    person = None
-    if name_l.startswith("jenni"):
-        person = "jenni"
-    elif name_l.startswith("shade"):
-        person = "shade"
+    # Profile filter (Hub "Profiles" select) — person applicants + studio/martian entity decks.
+    # Prefer path ownership, then filename prefix. `person` kept as alias of `profile` for
+    # older deep-links / badges.
+    profile = None
+    if path_l.startswith("storage/jenni/") or name_l.startswith("jenni"):
+        profile = "jenni"
+    elif path_l.startswith("storage/shade/") or name_l.startswith("shade"):
+        profile = "shade"
+    elif (
+        path_l.startswith("storage/studio/")
+        or name_l.startswith("studio")
+        or "/studio-" in path_l
+    ):
+        profile = "studio"
+    elif name_l.startswith("martian") or "/martian-" in path_l or "martian-games" in name_l:
+        profile = "martian"
+
+    if "work-example" in name_l or "work-sample" in name_l or "work_examples" in name_l:
+        kind = "work-samples"
 
     group = str(Path(path).parent).replace("\\", "/")
     if group == ".":
@@ -109,7 +123,8 @@ def classify_document(rel: str, stem: str) -> dict:
         "group": group,
         "kind": kind,
         "bucket": bucket,
-        "person": person,
+        "profile": profile,
+        "person": profile,  # alias — Hub filter + badges
         "template": True,  # each HTML file is its own selectable template
     }
 
@@ -233,11 +248,13 @@ APP_HTML = """<!doctype html>
     <div class="hub-group hub-brand-group">
       <h1 class="hub-brand" title="__ROOT__">Design Hub</h1>
     </div>
-    <div class="hub-group" title="Who">
-      <select id="personFilter" title="Who" aria-label="Who">
-        <option value="">anyone</option>
+    <div class="hub-group" title="Profiles — applicants + studio entity decks">
+      <select id="personFilter" title="Profiles" aria-label="Profiles">
+        <option value="">all profiles</option>
         <option value="jenni">jenni</option>
         <option value="shade">shade</option>
+        <option value="studio">studio</option>
+        <option value="martian">martian</option>
       </select>
     </div>
     <div class="hub-group">
@@ -250,7 +267,8 @@ APP_HTML = """<!doctype html>
     </nav>
     <div class="hub-group">
       <input id="search" type="search" placeholder="Search…" autocomplete="off" title="Search name or path" aria-label="Search">
-      <select id="folderFilter" title="Folder" aria-label="Folder"><option value="">all folders</option></select>
+      <select id="folderFilter" title="Folder — pin go-tos with ★" aria-label="Folder"><option value="">all folders</option></select>
+      <button type="button" id="pinFolderBtn" class="hub-pin-btn" title="Pin / unpin this folder (kept after Refresh)" aria-label="Pin folder" disabled>★</button>
       <select id="palette" title="Palette" aria-label="Palette"><option value="">doc default</option></select>
       <select id="fmt" title="Export format" aria-label="Export format">
         <option value="pdf-light">PDF light</option>
@@ -305,6 +323,34 @@ const KIND_LABEL = {
 
 let selected = null;
 let kindFilter = "all";
+
+/* ---- Hub prefs (localStorage — survives Refresh + full page reload) ---- */
+const HUB_PIN_KEY = "pdf-designer.hub.pinnedFolders";
+const HUB_FOLDER_KEY = "pdf-designer.hub.folderFilter";
+const HUB_PROFILE_KEY = "pdf-designer.hub.profileFilter";
+
+function loadPinnedFolders() {
+  try {
+    const raw = JSON.parse(localStorage.getItem(HUB_PIN_KEY) || "[]");
+    return Array.isArray(raw) ? raw.map(String).filter(Boolean) : [];
+  } catch (_) { return []; }
+}
+function savePinnedFolders(pins) {
+  try { localStorage.setItem(HUB_PIN_KEY, JSON.stringify([...new Set(pins)])); } catch (_) {}
+}
+function isPinned(folder) {
+  return !!folder && loadPinnedFolders().includes(folder);
+}
+function togglePinFolder(folder) {
+  if (!folder) return;
+  const pins = loadPinnedFolders();
+  const i = pins.indexOf(folder);
+  if (i >= 0) pins.splice(i, 1);
+  else pins.push(folder);
+  savePinnedFolders(pins);
+  buildFolderSelect();
+  syncPinButton();
+}
 
 /* Horizontal wheel-scroll on the header strip (and its scrollbar). */
 (function hubBarWheelScroll() {
@@ -377,27 +423,68 @@ function uniqueFolders() {
 
 function buildFolderSelect() {
   const sel = document.getElementById("folderFilter");
-  const cur = sel.value;
-  sel.innerHTML = '<option value="">all folders</option>';
-  for (const g of uniqueFolders()) {
+  const cur = sel.value || (localStorage.getItem(HUB_FOLDER_KEY) || "");
+  const all = uniqueFolders();
+  const pins = loadPinnedFolders().filter(p => all.includes(p) || p);
+  const pinSet = new Set(pins);
+  sel.innerHTML = "";
+  const allOpt = document.createElement("option");
+  allOpt.value = "";
+  allOpt.textContent = "all folders";
+  sel.appendChild(allOpt);
+
+  const pinnedAlive = pins.filter(p => all.includes(p));
+  if (pinnedAlive.length) {
+    const og = document.createElement("optgroup");
+    og.label = "Pinned";
+    for (const g of pinnedAlive.sort()) {
+      const o = document.createElement("option");
+      o.value = g;
+      o.textContent = "★ " + g;
+      og.appendChild(o);
+    }
+    sel.appendChild(og);
+  }
+
+  const ogAll = document.createElement("optgroup");
+  ogAll.label = "All folders";
+  for (const g of all) {
     const o = document.createElement("option");
     o.value = g;
-    o.textContent = g;
-    sel.appendChild(o);
+    o.textContent = (pinSet.has(g) ? "★ " : "") + g;
+    ogAll.appendChild(o);
   }
+  sel.appendChild(ogAll);
+
   if ([...sel.options].some(o => o.value === cur)) sel.value = cur;
+  else sel.value = "";
+  syncPinButton();
+}
+
+function syncPinButton() {
+  const btn = document.getElementById("pinFolderBtn");
+  const folder = document.getElementById("folderFilter").value;
+  if (!btn) return;
+  btn.disabled = !folder;
+  const on = isPinned(folder);
+  btn.classList.toggle("on", on);
+  btn.title = !folder
+    ? "Select a folder to pin it"
+    : (on ? "Unpin folder (kept in Pinned until you unpin)" : "Pin this folder — survives Refresh");
+  btn.setAttribute("aria-pressed", on ? "true" : "false");
 }
 
 function filteredDocs() {
   const q = document.getElementById("search").value.trim().toLowerCase();
   const folder = document.getElementById("folderFilter").value;
-  const person = document.getElementById("personFilter").value;
+  const profile = document.getElementById("personFilter").value;
   return DOCS.filter(d => {
     if (kindFilter !== "all" && d.kind !== kindFilter) return false;
     if (folder && d.group !== folder) return false;
-    if (person && d.person !== person) return false;
+    const dProfile = d.profile || d.person || null;
+    if (profile && dProfile !== profile) return false;
     if (q) {
-      const hay = `${d.path} ${d.name} ${d.label} ${d.group} ${d.kind}`.toLowerCase();
+      const hay = `${d.path} ${d.name} ${d.label} ${d.group} ${d.kind} ${dProfile || ""}`.toLowerCase();
       if (!hay.includes(q)) return false;
     }
     return true;
@@ -432,7 +519,8 @@ function renderLibrary() {
       el.className = "thumb" + (selected && selected.path === d.path ? " sel" : "");
       el.dataset.path = d.path;
       const badges = [`<span class="badge kind-${d.kind}">${d.kind}</span>`];
-      if (d.person) badges.push(`<span class="badge person-${d.person}">${d.person}</span>`);
+      const prof = d.profile || d.person;
+      if (prof) badges.push(`<span class="badge person-${prof}">${prof}</span>`);
       if (d.bucket === "examples") badges.push('<span class="badge">template</span>');
       el.innerHTML =
         `<div class="frame"><iframe loading="lazy" src="/${d.path}" scrolling="no" tabindex="-1" title=""></iframe></div>` +
@@ -499,9 +587,10 @@ function openFromQuery() {
   // Clear filters that would hide the target, then select.
   kindFilter = "all";
   document.getElementById("folderFilter").value = "";
-  document.getElementById("personFilter").value = d.person || "";
+  document.getElementById("personFilter").value = (d.profile || d.person || "");
   document.getElementById("search").value = "";
   buildKindChips();
+  syncPinButton();
   renderLibrary();
   select(d, null, { pushUrl: true });
   // Scroll the library card into view once thumbs paint.
@@ -530,9 +619,20 @@ function openPaletteFromQuery() {
   return true;
 }
 
-document.getElementById("folderFilter").addEventListener("change", renderLibrary);
-document.getElementById("personFilter").addEventListener("change", renderLibrary);
+document.getElementById("folderFilter").addEventListener("change", () => {
+  try { localStorage.setItem(HUB_FOLDER_KEY, document.getElementById("folderFilter").value); } catch (_) {}
+  syncPinButton();
+  renderLibrary();
+});
+document.getElementById("personFilter").addEventListener("change", () => {
+  try { localStorage.setItem(HUB_PROFILE_KEY, document.getElementById("personFilter").value); } catch (_) {}
+  renderLibrary();
+});
 document.getElementById("search").addEventListener("input", renderLibrary);
+const pinBtn = document.getElementById("pinFolderBtn");
+if (pinBtn) pinBtn.addEventListener("click", () => {
+  togglePinFolder(document.getElementById("folderFilter").value);
+});
 
 document.getElementById("exportBtn").addEventListener("click", async () => {
   const status = document.getElementById("status");
@@ -561,6 +661,15 @@ document.getElementById("exportBtn").addEventListener("click", async () => {
 buildStats();
 buildKindChips();
 buildFolderSelect();
+/* Restore profile filter after folder options exist (folder value restored in buildFolderSelect). */
+(function restoreHubPrefs() {
+  try {
+    const prof = localStorage.getItem(HUB_PROFILE_KEY) || "";
+    const sel = document.getElementById("personFilter");
+    if (prof && [...sel.options].some(o => o.value === prof)) sel.value = prof;
+  } catch (_) {}
+  syncPinButton();
+})();
 renderLibrary();
 openFromQuery();
 openPaletteFromQuery();

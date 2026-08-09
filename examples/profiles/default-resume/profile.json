@@ -31,7 +31,16 @@
         "jenni": "✅ magenta/pink IS allowed — do NOT run --no-magenta. brand-jenninexus legitimately uses pink; the ban does not apply to her."
       }
     },
-    "otherGuards": "check_palette (always) · check_vault --explain/--coverage (step 0/4a) · check_ats (light PDF). See AGENTS.md § Guards."
+    "otherGuards": "check_palette (always) · check_vault --explain/--coverage (step 0/4a) · check_ats (light PDF). See AGENTS.md § Guards.",
+    "atsParse": {
+      "_note": "⭐ SHARED — every profile that extends this one (jenni · shade · martian · studio) must ship an ATS-parseable LIGHT résumé. SSOT: docs/JOB-ASSESSMENT.md § Tier 4.5.",
+      "upload": "Always upload *-resume-light.pdf to boards (Jobright / Indeed / LinkedIn). Dark branded is for humans / email.",
+      "gate": "python -m pdf_tool.check_ats <resume-light.pdf> — exit 0 requires contiguous cues: job title · work experience · education",
+      "requiredHeadings": ["Job Title", "Work Experience", "Education", "Skills"],
+      "jobBlockOrder": "title line → company line → dates (never COMPANY — ROLE on one line)",
+      "sectionHeadingFont": "Segoe UI / Arial / Helvetica on h2 — Montserrat W glyph advances can split WORK EXPERIENCE in the PDF text layer",
+      "banned": ["two-column prose bullets in experience", "creative section titles (My Journey)", "bare Experience without Work", "Education buried as h3 in a side column only", "extreme letter-spacing on ATS-critical words"]
+    }
   },
   "layout": {
     "_note": "⭐ THE SHARED LAYOUT SYSTEM — every profile that `extends` this one inherits it (jenni, shade, martian, studio). SSOT: themes/default-resume.json#document + docs/LAYOUT-SYSTEM.md.",

@@ -73,6 +73,26 @@ Both are reachable from one machine-readable file:
 
 ---
 
+## ATS parseability (every profile)
+
+**How you know a résumé is parseable:** export the PDF → run `python -m pdf_tool.check_ats <file.pdf>` →
+required cues must show `[OK] job title` · `[OK] work experience` · `[OK] education`, and the text dump
+must contain those phrases as **contiguous words**. If *you* cannot find them, Jobright / Indeed will
+not either. Full checklist: [`JOB-ASSESSMENT.md`](JOB-ASSESSMENT.md) § Tier 4.5 · inherited contract:
+`examples/profiles/default-resume/profile.json#verify.atsParse`.
+
+| Myth | Reality |
+|---|---|
+| “Dark is not parseable” | **False.** Light and dark are the **same HTML text layer** — `check_ats` can pass on either. |
+| “Always upload dark” | **Risky.** Boards (Jobright, Indeed, LinkedIn) expect the **light / ATS** PDF. Upload `*-resume-light.pdf`. Keep dark for humans / email / portfolio. |
+| “Section looks fine on screen” | Not enough. Montserrat / letter-spacing can split `WORK EXPERIENCE` → `W ORK EXPERIENCE` in the text layer while the page still looks perfect. |
+
+**Defaults:** ship **both** light and dark for go-to résumés under `storage/<user>/defaults/` so the board
+file and the branded file stay in sync. Per-job `exportPrefs` may still prefer dark-only for email —
+that does not remove the need for a light file when a board will parse the upload.
+
+---
+
 ## Personal palette prefs (Jenni / Shade)
 
 **One hex map each. Person files only point.**
@@ -89,7 +109,7 @@ www-theme-kit/profiles/{jenninexus,martiangames}.json
 
 | Who | Edit this file | Pointed by |
 |---|---|---|
-| Jenni | `storage/brand-design/brand-jenninexus.json` | `users/jenni.json` · `profiles/jenni-resume.json` |
+| Jenni | `storage/brand-design/brand-jenninexus.json` | `users/jenni.json` · `profiles/jenni-resume.json` · defaults triad under `storage/jenni/defaults/` (same footer-mail legibility: `--text` ≥11px) |
 | Shade (Synagen) | `storage/brand-design/brand-synagen.json` | `users/shade.json` · `profiles/shade-resume.json` |
 | Martian studio | `storage/brand-design/brand-martian.json` | Shade studio/games profiles + kit `#martian-resume` |
 
@@ -128,7 +148,7 @@ The person filter is library-only — it does **not** auto-select a palette. Ful
 | `check_rendered_color` | Reject brown that only appears after the browser composites |
 | `check_overflow` | Page-fit at 816px paper width (also auto-warns on export) |
 | `check_vault` | Vault schema / `--explain` / `--coverage` |
-| `check_ats` | ATS text-layer sanity on light PDF |
+| `check_ats` | ATS parse gate — see § ATS parseability below |
 | `audit_resume` | Diff rendered HTML vs vault (lead omissions) |
 | `tracker` | List / status over `storage/_job-listings/**/application.json` |
 | `collage` | Layout candidates + picker gallery from an image folder |

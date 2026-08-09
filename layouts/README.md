@@ -38,7 +38,7 @@ Full narrative + bands: [`../docs/LAYOUT-SYSTEM.md`](../docs/LAYOUT-SYSTEM.md).
 | Recipe | Doc types | Page model |
 |---|---|---|
 | [`two-page-standard.json`](two-page-standard.json) | résumé | Flex column · fixed print `height` + `overflow: hidden` · signature **bottom-RIGHT** |
-| [`work-examples.json`](work-examples.json) | work-samples / Additional Documents | Flex column · fixed print `height` · footer row · MG **square** logo in games section |
+| [`work-examples.json`](work-examples.json) | work-samples / Additional Documents | Flex column · fixed print `height` · signature bottom-right · **full-row** stats/link grids (never half-empty peer rows) |
 | [`one-page-letter.json`](one-page-letter.json) ⭐ | **cover letter** | Flex column · print `min-height` (no fixed height, no `overflow:hidden`) · sign-off **bottom-LEFT** |
 
 > ### ⛔ Never put the résumé's *print* model on a cover letter
