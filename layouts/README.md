@@ -11,51 +11,56 @@ layout renders in any theme.
 
 | Path | Owns | Consumed by |
 |---|---|---|
-| [`*.json`](.) (top-level) | Document page models — margins, header/footer, page rhythm | [`../docs/LAYOUT-SYSTEM.md`](../docs/LAYOUT-SYSTEM.md) · `/make-resume` · `/make-cover-letter` · `/make-work-examples` |
+| [`cover-letter/`](cover-letter/) | Professional cover letters (1 page, bottom-LEFT sign-off) | `/make-cover-letter` · LAYOUT-SYSTEM |
+| [`letter/`](letter/) | Personal / family letterhead (date top-RIGHT, Parisienne sign-off) | personal notes — not ATS |
+| [`resume/`](resume/) | Résumé page model (2 pages, bottom-RIGHT signature) | `/make-resume` |
+| [`work-examples/`](work-examples/) | Work-samples / Additional Documents (3 pages) | `/make-work-examples` |
 | [`collage/`](collage/) | Collage layout recipes — family + canvas + fit + background | `python -m pdf_tool.collage --recipe <id>` · `/make-collage` |
 
 Machine-readable pointers: [`../.config/mcp-pdf-designer.json#layouts`](../.config/mcp-pdf-designer.json).
 Map of every SSOT surface: [`../docs/SSOT.md`](../docs/SSOT.md).
 
-> **Path note (2026-08-08):** document recipes moved from `layouts/resume/` → `layouts/`
-> (flat next to `collage/`). Update any old `layouts/resume/…` pointers.
+> **Path note (2026-08-10):** document recipes live in **category folders**
+> (`cover-letter` · `letter` · `resume` · `work-examples`). Older flat
+> `layouts/*.json` and the brief `layouts/`-only note (2026-08-08) are retired.
 
 ---
 
 ## Document page models — start here
 
-**Protocol (every `/make-resume` · `/make-cover-letter` · `/make-work-examples`):**
+**Protocol (every `/make-resume` · `/make-cover-letter` · `/make-work-examples` · personal letter):**
 
 | Doc | Open this recipe | Signature | Pages |
 |---|---|---|---|
-| **Cover letter** | [`one-page-letter.json`](one-page-letter.json) ⭐ | **Bottom-LEFT**, flex-pinned (`margin-top: auto`, `padding-top: 30px`). Print = `min-height` only — **never** fixed `height` + `overflow: hidden` | **1** |
-| **Résumé** | [`two-page-standard.json`](two-page-standard.json) | **Bottom-RIGHT**, flex-pinned. Print = fixed `height` + `overflow: hidden` | **2** |
-| **Work samples** | [`work-examples.json`](work-examples.json) | Footer row (name L / links R). Portfolio URLs in a **body** section — not an extra footer line | **3** |
+| **Cover letter** | [`cover-letter/one-page-letter.json`](cover-letter/one-page-letter.json) ⭐ | **Bottom-LEFT**, flex-pinned (`margin-top: auto`, `padding-top: 30px`). Print = `min-height` only — **never** fixed `height` + `overflow: hidden` | **1** |
+| **Personal letter** | [`letter/personal-letter.json`](letter/personal-letter.json) | Date **top-RIGHT**; closing + **Parisienne** first name **bottom-LEFT**; soft footer | **1** |
+| **Résumé** | [`resume/two-page-standard.json`](resume/two-page-standard.json) | **Bottom-RIGHT**, flex-pinned. Print = fixed `height` + `overflow: hidden` | **2** |
+| **Work samples** | [`work-examples/work-examples.json`](work-examples/work-examples.json) | Footer row (name L / links R). Portfolio URLs in a **body** section — not an extra footer line | **3** |
 
 Full narrative + bands: [`../docs/LAYOUT-SYSTEM.md`](../docs/LAYOUT-SYSTEM.md).  
-**Visual reference for letter pin/padding:** `storage/jenni/_exports/CZI/jenni-czi-letter.html` (geometry only — not its palette).
+**Visual reference for cover-letter pin/padding:** `storage/jenni/_exports/CZI/jenni-czi-letter.html` (geometry only — not its palette).  
+**Personal letter example:** [`../examples/profiles/default-letter/personal-letter.html`](../examples/profiles/default-letter/personal-letter.html).
 
 | Recipe | Doc types | Page model |
 |---|---|---|
-| [`two-page-standard.json`](two-page-standard.json) | résumé | Flex column · fixed print `height` + `overflow: hidden` · signature **bottom-RIGHT** |
-| [`work-examples.json`](work-examples.json) | work-samples / Additional Documents | Flex column · fixed print `height` · signature bottom-right · **full-row** stats/link grids (never half-empty peer rows) |
-| [`one-page-letter.json`](one-page-letter.json) ⭐ | **cover letter** | Flex column · print `min-height` (no fixed height, no `overflow:hidden`) · sign-off **bottom-LEFT** |
+| [`resume/two-page-standard.json`](resume/two-page-standard.json) | résumé | Flex column · fixed print `height` + `overflow: hidden` · signature **bottom-RIGHT** |
+| [`work-examples/work-examples.json`](work-examples/work-examples.json) | work-samples / Additional Documents | Flex column · fixed print `height` · signature bottom-right · **full-row** stats/link grids |
+| [`cover-letter/one-page-letter.json`](cover-letter/one-page-letter.json) ⭐ | **cover letter** | Flex column · print `min-height` · sign-off **bottom-LEFT** |
+| [`letter/personal-letter.json`](letter/personal-letter.json) | family / friend letter | Letterhead · date top-RIGHT · Parisienne closing · soft footer · same CZI-safe print model |
 
-> ### ⛔ Never put the résumé's *print* model on a cover letter
+> ### ⛔ Never put the résumé's *print* model on a cover letter or personal letter
 >
-> Both docs use flex + `margin-top: auto` to pin the sign-off. The difference is **print geometry**:
+> Both letter types use flex + `margin-top: auto` to pin the sign-off. The difference is **print geometry**:
 >
-> | | Résumé / samples | Cover letter (CZI-safe) |
+> | | Résumé / samples | Cover / personal letter (CZI-safe) |
 > |---|---|---|
 > | Print `.page` | fixed `height` + `overflow: hidden` | `height: auto` · `min-height` · **no** `overflow: hidden` |
 > | Why | Fixed page count must hold the bottom edge | `@page { margin }` already insets; a near-full fixed height + clip **slices the sign-off** |
 >
-> **Shipped 2026-07-25 (Sony):** sign-off cut in half past four passing guards. **Enforced** by
-> `check_generation` → `letter-geometry` (`python -m pdf_tool.check_pagefit --source <doc>.html`).
+> **Enforced** by `check_generation` → `letter-geometry`.
 >
-> **If a letter runs long:** cut prose → tighten close → font 11.5→11.0→10.75 → line-height
-> 1.55→1.5→1.45 → margin 0.75→0.8in. **Never** restore fixed height. Bands:
-> [`one-page-letter.json#fitToOnePage`](one-page-letter.json).
+> **If a letter runs long:** cut prose → tighten close → font steps → line-height → margin 0.75→0.8in.
+> **Never** restore fixed height. Bands: [`cover-letter/one-page-letter.json#fitToOnePage`](cover-letter/one-page-letter.json).
 
 ---
 

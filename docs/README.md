@@ -11,7 +11,7 @@ public-facing; **detail lives here**. Agent contracts: [`../AGENTS.md`](../AGENT
 | [`PRODUCT.md`](PRODUCT.md) | ⭐ **Business / product direction** — free GitHub core vs future paid app |
 | [`WHITE-LABEL.md`](WHITE-LABEL.md) | Public-only reuse (examples + themes, **no** vaults) — *not* the business plan |
 | [`PACKAGING.md`](PACKAGING.md) | PyPI / wheel spike — must ship `themes/` + `layouts/` (not just `pdf_tool/*.py`) |
-| [`../layouts/one-page-letter.json`](../layouts/one-page-letter.json) | ⭐ **Cover-letter page model** — flowing sign-off, fit-to-one-page bands. NOT the résumé's pinned model (that clips a letter) |
+| [`../layouts/cover-letter/one-page-letter.json`](../layouts/cover-letter/one-page-letter.json) | ⭐ **Cover-letter page model** — flowing sign-off, fit-to-one-page bands. NOT the résumé's pinned model (that clips a letter) |
 | [`QA.md`](QA.md) | ⭐ Ship gate — `check_generation` (judge the artifact) |
 | [`ROADMAP.md`](ROADMAP.md) | Pointer to the active plan (`/jen:roadmap` entry point) |
 

@@ -1,0 +1,69 @@
+{
+  "id": "personal-letter",
+  "docType": "personalLetter",
+  "category": "letter",
+  "spec": "../docs/LAYOUT-SYSTEM.md",
+
+  "page": {
+    "size": "Letter",
+    "margin": "0.75in",
+    "marginRule": "Equal on all four edges. Band 0.65–0.8in. Personal tone — same geometry discipline as cover letters, warmer chrome."
+  },
+  "contentBox": {
+    "heightIn": 9.5,
+    "widthIn": 7.0,
+    "heightPx": 912,
+    "widthPx": 672,
+    "rule": "At 0.75in margins the printable area is 9.5in tall. Print `.page` uses min-height: 9.5in (NOT fixed height)."
+  },
+  "pageModel": {
+    "container": ".page { display: flex; flex-direction: column; }",
+    "header": ".letter-head { display:flex; justify-content:space-between; align-items:flex-start; gap: 1rem; }",
+    "date": ".letter-date { text-align: right; flex: 0 0 auto; white-space: nowrap; }",
+    "body": ".letter-main { flex: 1 1 auto; min-height: 0; }",
+    "signoff": ".signoff { margin-top: auto; padding-top: 28px; flex: 0 0 auto; text-align: left; break-inside: avoid; }",
+    "footer": ".letter-foot { margin-top: 1.25rem; padding-top: 0.75rem; border-top: 1px solid var(--border); font-size: 0.78rem; color: var(--dim); }",
+    "printPage": ".page { width: auto; height: auto; min-height: 9.5in; margin: 0; padding: 0; /* NO overflow:hidden */ }",
+    "rule": "Personal letterhead: identity block top-LEFT (name + optional soft rule), DATE pinned top-RIGHT. Greeting + body in .letter-main. Closing + Parisienne script name bottom-LEFT. Soft footer rule under the sign-off. Same CZI-safe print model as cover letters — never fixed height + overflow:hidden.",
+    "⛔forbidden": [
+      "height: <n>in on .page in print",
+      "overflow: hidden on .page in print",
+      "Résumé bottom-RIGHT signature on a personal letter",
+      "Cover-letter job hooks / employer-specific framing — this is family/friends"
+    ]
+  },
+  "header": {
+    "placement": "top",
+    "left": ["display name (Parisienne or brand script optional for first name)", "optional one-line personal tag"],
+    "right": ["date — pinned top-RIGHT"],
+    "inspiredBy": "Résumé header rhythm (identity left / meta right) without ATS chrome or skill rows."
+  },
+  "signature": {
+    "placement": "bottom-left",
+    "pin": "margin-top: auto on .signoff",
+    "paddingTop": "28px",
+    "order": ["Warm closing (Love, / Warmly, / Sincerely,)", "Parisienne script first name (Jenni / Jennifer)", "optional full legal name in smaller roman under the script"],
+    "fonts": {
+      "scriptName": "Parisienne — first-name mark only (same role as résumé/cover script)",
+      "body": "Readable serif or system — personal letters may use a gentle serif; ATS rules do not apply"
+    },
+    "not": "Cover-letter Warm regards + title + EMAIL tracking — keep this human, not application"
+  },
+  "fitToOnePage": {
+    "rule": "Prefer one page. When it runs long: cut prose first, then tighten line-height, then widen margin to 0.8in. Never clip.",
+    "bands": {
+      "bodyFontPx": { "min": 11, "default": 12, "max": 13 },
+      "lineHeight": { "min": 1.45, "default": 1.6, "max": 1.75 },
+      "marginIn": { "min": 0.65, "default": 0.75, "max": 0.8 }
+    }
+  },
+  "expectedPages": { "personalLetter": 1 },
+  "guards": [
+    "check_pagefit — exactly 1 page preferred; no ink clipped",
+    "check_generation (letter-geometry + signature pin)",
+    "check_palette"
+  ],
+  "verifyByEye": "Date sits top-RIGHT. Script name sits bottom-LEFT with air above it. Soft footer does not collide with the closing.",
+  "bestFor": "Family / friend letters (not professional cover letters). Cover letters → layouts/cover-letter/one-page-letter.json. Résumés → layouts/resume/two-page-standard.json.",
+  "example": "examples/profiles/default-letter/personal-letter.html"
+}

@@ -171,7 +171,7 @@ content stays in the gitignored `storage/` vault. (This replaced the older `.loc
 | `themes/presets/*.json` | public audition palettes (Design Hub swapper) |
 | `themes/PALETTE-RULES.md` | ⭐ **the color rule** (no brown/mustard/lime) + how the guard enforces it |
 | `themes/default-collage.json` | collage canvas presets + `backgrounds` (gradients) + per-bg `frame` colors ([`docs/COLLAGE-DESIGN.md`](docs/COLLAGE-DESIGN.md)) |
-| `layouts/` | ⭐ **STRUCTURE registry** — document recipes at top level (`one-page-letter`, `two-page-standard`, `work-examples`) + `collage/`; counterpart to `themes/` (color). See [`layouts/README.md`](layouts/README.md). |
+| `layouts/` | ⭐ **STRUCTURE registry** — document recipes under `layouts/{cover-letter,letter,resume,work-examples}/` + `layouts/collage/`; counterpart to `themes/` (color). See [`layouts/README.md`](layouts/README.md). |
 | `examples/brand-design/` | tracked **template** for private brand maps (copy → `storage/brand-design/`) |
 | `examples/profiles/<id>/` | one profile per document type: `profile.json` + reference `.html` + example data |
 | `examples/_job-listings/` | one-folder-per-job-application workflow + copyable template |
@@ -221,6 +221,13 @@ Read [`docs/VAULT.md`](docs/VAULT.md) before authoring any resume claim.
   section to the next page**, never by shrinking the margin.
 - **Dual mode is intentional.** Every document supports light print (`@media print` default, ATS-safe)
   AND dark branded (`html[data-pdf-theme="dark"]`). Keep both working when editing a template.
+- **Board upload = light PDF (UNIVERSAL).** Every profile (`jenni` · `shade` · `studio` · `martian`)
+  ships `*-resume-light.pdf` + `*-resume-dark.pdf`. Upload **light** to Jobright / Indeed / LinkedIn.
+  Gate: `python -m pdf_tool.check_ats <light.pdf>` (contiguous cues + mid-word splits). Print body +
+  `h2` on a system font. Jobright content rank ≠ parse fail. SSOT:
+  [`docs/JOB-ASSESSMENT.md`](docs/JOB-ASSESSMENT.md) § Tier 4.5 ·
+  `examples/profiles/default-resume/profile.json#verify.atsParse` · each
+  `storage/profiles/<user>-resume.json#exports.exportPrefs`.
 - **Token names.** `--bg, --surface, --elevated, --text, --dim, --dim2, --border, --border2, --primary,
   --secondary, --accent, --support`. External palettes get *mapped into* these
   ([`docs/THEME-DESIGN.md`](docs/THEME-DESIGN.md)).
@@ -248,10 +255,10 @@ Read [`docs/VAULT.md`](docs/VAULT.md) before authoring any resume claim.
 ## Common tasks → recipes
 
 - **Job résumé:** run **`/make-resume <user> <application-dir|url>`** — capture apply link → verify
-  remote/pay → **gap-check and ask** → derive theme → write → export per **`exportPrefs`** (Jenni =
-  one dark résumé PDF) → log it. Pasted URL with no folder → create `storage/_job-listings/<App>/`.
-  Protocol: [`docs/JOB-ASSESSMENT.md`](docs/JOB-ASSESSMENT.md).
-- **Cover letter / work samples:** `/make-cover-letter` or `/make-work-examples` (personal) — **not**
+  remote/pay → **gap-check and ask** → derive theme → write → export per **`exportPrefs`** (**every**
+  profile = **light + dark**; board upload = **light** only) → `check_ats` on the light file → log it.
+  Pasted URL with no folder → create `storage/_job-listings/<App>/`.
+  Protocol: [`docs/JOB-ASSESSMENT.md`](docs/JOB-ASSESSMENT.md) § Tier 4.5 (parse ≠ Jobright content grade).- **Cover letter / work samples:** `/make-cover-letter` or `/make-work-examples` (personal) — **not**
   auto-bundled with make-resume.
 - **`boardSkills`:** when LinkedIn/board tags change → update vault `#boardSkills` (+ claims); preview
   on Design Hub `/vault`.

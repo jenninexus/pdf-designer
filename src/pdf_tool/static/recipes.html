@@ -42,11 +42,11 @@ async function load() {
       collageTable(collage)
     ));
 
-    const resume = data.resumeLayouts || [];
+    const documents = data.documentLayouts || data.resumeLayouts || [];
     root.appendChild(section(
-      `Resume page models (${counts.resume ?? resume.length})`,
-      "layouts/*.json — house geometry (equal margins, content-fit).",
-      resumeTable(resume)
+      `Document page models (${counts.document ?? counts.resume ?? documents.length})`,
+      "layouts/{cover-letter,letter,resume,work-examples}/*.json — house geometry (equal margins, content-fit).",
+      resumeTable(documents)
     ));
 
     const palettes = data.palettePresets || [];
@@ -119,18 +119,19 @@ function collageTable(rows) {
 }
 
 function resumeTable(rows) {
-  if (!rows.length) return emptyNode("No document layouts found (layouts/*.json).");
+  if (!rows.length) return emptyNode("No document layouts found (layouts/{cover-letter,letter,resume,work-examples}/).");
   const wrap = document.createElement("div");
   wrap.className = "hub-table-scroll";
   wrap.innerHTML = `
     <table>
-      <thead><tr><th>Id</th><th>Page</th><th>Best for</th><th>Guards</th></tr></thead>
+      <thead><tr><th>Id</th><th>Category</th><th>Page</th><th>Best for</th><th>Guards</th></tr></thead>
       <tbody>
         ${rows.map(r => `
           <tr>
             <td><strong>${esc(r.id)}</strong>
               <span class="hub-meta"><br>${esc(r.path || "")}</span>
               <br><a class="hub-open" href="/${esc(r.path || "")}" target="_blank" rel="noopener">raw JSON</a></td>
+            <td><code>${esc(r.category || r.docType || "—")}</code></td>
             <td>${esc(r.pageSize || "Letter")} · margin ${esc(r.margin || "—")}
               ${r.contentHeightIn != null ? "<br><span class='hub-meta'>content ≈ " + esc(String(r.contentHeightIn)) + "in tall</span>" : ""}
               ${r.expectedPages ? "<br><span class='hub-meta'>pages: " + esc(JSON.stringify(r.expectedPages)) + "</span>" : ""}</td>

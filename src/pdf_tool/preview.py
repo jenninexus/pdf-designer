@@ -36,7 +36,18 @@ from .vault_overview import build_vault_overview
 
 _REPO_ROOT = repo_root()
 _STATIC_DIR = Path(__file__).resolve().parent / "static"
-EXCLUDE_PARTS = {"_exports", "node_modules", ".git", "__pycache__", ".venv", "venv"}
+EXCLUDE_PARTS = {
+    "_exports",
+    "node_modules",
+    ".git",
+    "__pycache__",
+    ".venv",
+    "venv",
+    "build",
+    "dist",
+    ".eggs",
+    "egg-info",
+}
 
 KINDS = ("resume", "cover-letter", "collage", "gallery", "example", "other")
 
@@ -69,6 +80,8 @@ def classify_document(rel: str, stem: str) -> dict:
         kind = "gallery"
     elif "_candidates" in parts or "/collages/" in path_l or "collage" in name_l:
         kind = "collage"
+    elif "personal-letter" in name_l or name_l.endswith("-letter") and "cover" not in name_l:
+        kind = "letter"
     elif "cover" in name_l:
         kind = "cover-letter"
     elif "resume" in name_l:
@@ -129,11 +142,20 @@ def classify_document(rel: str, stem: str) -> dict:
     }
 
 
+def _is_excluded_rel(rel_parts: tuple[str, ...]) -> bool:
+    if EXCLUDE_PARTS.intersection(rel_parts):
+        return True
+    # setuptools egg-info dirs are named <pkg>.egg-info
+    if any(part.endswith(".egg-info") for part in rel_parts):
+        return True
+    return False
+
+
 def scan_documents(root: Path) -> list[dict]:
     docs = []
     for p in sorted(root.rglob("*.html")):
         rel = p.relative_to(root)
-        if EXCLUDE_PARTS.intersection(rel.parts):
+        if _is_excluded_rel(rel.parts):
             continue
         # Skip the hub's own static HTML if ever added under src/
         if "pdf_tool" in rel.parts and "static" in rel.parts:
@@ -168,7 +190,12 @@ def tree_signature(root: Path) -> str:
             rel_parts = p.relative_to(root).parts
         except ValueError:
             continue
+        # Watch _exports even though scan_documents excludes them.
         if _WATCH_EXCLUDE.intersection(rel_parts):
+            continue
+        if any(part.endswith(".egg-info") for part in rel_parts):
+            continue
+        if part_is_buildish(rel_parts):
             continue
         if "pdf_tool" in rel_parts and "static" in rel_parts:
             continue
@@ -181,6 +208,12 @@ def tree_signature(root: Path) -> str:
         if st.st_mtime > newest:
             newest = st.st_mtime
     return f"{count}:{newest:.3f}:{total}"
+
+
+def part_is_buildish(rel_parts: tuple[str, ...]) -> bool:
+    """Skip build/dist artifacts in the watcher (same as library scan)."""
+    blocked = {"build", "dist", ".eggs"}
+    return bool(blocked.intersection(rel_parts))
 
 
 def _vars_from_nested_mode(block: dict) -> dict:
@@ -260,12 +293,12 @@ APP_HTML = """<!doctype html>
     <div class="hub-group">
       <div class="chips" id="kindChips" role="tablist" aria-label="Document kind"></div>
     </div>
-    <nav class="hub-group hub-nav" aria-label="Hub sections">
+    <nav class="hub-group hub-nav" id="hubNav" aria-label="Hub sections">
       <a class="hub-link on" href="/" title="Document library" aria-current="page">Library</a>
       <a class="hub-link" href="/recipes" title="Browse layouts/ + themes/presets">Recipes</a>
       <a class="hub-link" href="/vault" title="Readable vault · skills · go-to résumés">Vault</a>
     </nav>
-    <div class="hub-group">
+    <div class="hub-group hub-filters">
       <input id="search" type="search" placeholder="Search…" autocomplete="off" title="Search name or path" aria-label="Search">
       <select id="folderFilter" title="Folder — pin go-tos with ★" aria-label="Folder"><option value="">all folders</option></select>
       <button type="button" id="pinFolderBtn" class="hub-pin-btn" title="Pin / unpin this folder (kept after Refresh)" aria-label="Pin folder" disabled>★</button>
@@ -276,22 +309,103 @@ APP_HTML = """<!doctype html>
         <option value="png-light">PNG light</option>
         <option value="png-dark">PNG dark</option>
       </select>
-      <details class="hub-more">
-        <summary title="More export options">⋯</summary>
-        <div class="hub-more-panel">
-          <label>Output folder
-            <input id="outdir" type="text" placeholder="_exports next to doc">
-          </label>
-        </div>
-      </details>
     </div>
   </div>
   <div class="hub-bar-pin" aria-label="Pinned actions">
-    <button id="refreshBtn" type="button" title="Re-scan the repo for new/changed documents">&#8635; Refresh</button>
-    <button class="primary" id="exportBtn" type="button">Export</button>
+    <details class="hub-more" id="hubMore">
+      <summary title="More export options" aria-label="More export options">
+        <svg class="hub-icon" viewBox="0 0 448 512" aria-hidden="true" focusable="false"><path fill="currentColor" d="M8 256a56 56 0 1 1 112 0A56 56 0 1 1 8 256zm160 0a56 56 0 1 1 112 0 56 56 0 1 1 -112 0zm216-56a56 56 0 1 1 0 112 56 56 0 1 1 0-112z"/></svg>
+      </summary>
+      <div class="hub-more-panel">
+        <label>Output folder
+          <input id="outdir" type="text" placeholder="_exports next to doc">
+        </label>
+      </div>
+    </details>
+    <button type="button" class="hub-search-trigger" id="searchTrigger" title="Search (Ctrl/Cmd+K)" aria-label="Search">
+      <svg class="hub-icon" viewBox="0 0 512 512" aria-hidden="true" focusable="false"><path fill="currentColor" d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
+    </button>
+    <button id="refreshBtn" type="button" class="hub-icon-btn" title="Re-scan the repo for new/changed documents" aria-label="Refresh">
+      <svg class="hub-icon" viewBox="0 0 512 512" aria-hidden="true" focusable="false"><path fill="currentColor" d="M105.1 202.6c7.7-21.8 20.2-42.3 37.8-59.8c62.5-62.5 163.8-62.5 226.3 0L386.3 160 352 160c-17.7 0-32 14.3-32 32s14.3 32 32 32l111.5 0c0 0 0 0 0 0l.4 0c17.7 0 32-14.3 32-32l0-112c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 35.2L414.4 97.6c-87.5-87.5-229.3-87.5-316.8 0C73.2 122 55.6 150.7 44.8 181.4c-5.9 16.7 2.9 34.9 19.5 40.8s34.9-2.9 40.8-19.5zM39 289.3c-5 1.5-9.8 4.2-13.7 8.2c-4 4-6.7 8.8-8.1 14c-.3 1.2-.6 2.5-.8 3.8c-.3 1.7-.4 3.4-.4 5.1L16 432c0 17.7 14.3 32 32 32s32-14.3 32-32l0-35.1 17.6 17.5c0 0 0 0 0 0c87.5 87.4 229.3 87.4 316.7 0c24.4-24.4 42.1-53.1 52.9-83.8c5.9-16.7-2.9-34.9-19.5-40.8s-34.9 2.9-40.8 19.5c-7.7 21.8-20.2 42.3-37.8 59.8c-62.5 62.5-163.8 62.5-226.3 0l-.1-.1L125.6 352l34.4 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L48.4 288c-1.6 0-3.2 .1-4.8 .3s-3.1 .5-4.6 1z"/></svg>
+    </button>
+    <button class="primary hub-icon-btn" id="exportBtn" type="button" title="Export selected document" aria-label="Export">
+      <svg class="hub-icon" viewBox="0 0 512 512" aria-hidden="true" focusable="false"><path fill="currentColor" d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 242.7-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7 288 32zM64 352c-35.3 0-64 28.7-64 64l0 32c0 35.3 28.7 64 64 64l384 0c35.3 0 64-28.7 64-64l0-32c0-35.3-28.7-64-64-64l-101.5 0-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352 64 352zm368 56a24 24 0 1 1 0 48 24 24 0 1 1 0-48z"/></svg>
+    </button>
+    <button type="button" class="hub-drawer-toggle" id="drawerToggle" title="Menu" aria-label="Open menu" aria-expanded="false" aria-controls="hubDrawer">
+      <span class="bars" aria-hidden="true"><span></span></span>
+    </button>
     <span id="status"></span>
   </div>
 </header>
+
+<div class="hub-drawer-backdrop" id="hubDrawerBackdrop" hidden></div>
+<aside class="hub-drawer" id="hubDrawer" aria-hidden="true" aria-label="Design Hub menu">
+  <div class="hub-drawer-head">
+    <span class="hub-brand">Design Hub</span>
+    <button type="button" class="hub-drawer-close" id="drawerClose" aria-label="Close menu">&times;</button>
+  </div>
+  <div class="hub-drawer-body">
+    <div class="hub-drawer-section">
+      <span class="hub-drawer-label">Navigate</span>
+      <nav class="hub-nav" id="drawerNav" aria-label="Hub sections (menu)">
+        <a class="hub-link on" href="/">Library</a>
+        <a class="hub-link" href="/recipes">Recipes</a>
+        <a class="hub-link" href="/vault">Vault</a>
+      </nav>
+    </div>
+    <div class="hub-drawer-section">
+      <span class="hub-drawer-label">Kind</span>
+      <div class="chips" id="drawerKindChips" role="tablist" aria-label="Document kind (menu)"></div>
+    </div>
+    <div class="hub-drawer-section">
+      <div class="hub-drawer-field">
+        <label for="drawerPersonFilter">Profiles</label>
+        <select id="drawerPersonFilter" aria-label="Profiles">
+          <option value="">all profiles</option>
+          <option value="jenni">jenni</option>
+          <option value="shade">shade</option>
+          <option value="studio">studio</option>
+          <option value="martian">martian</option>
+        </select>
+      </div>
+      <div class="hub-drawer-field">
+        <label for="drawerFolderFilter">Folder</label>
+        <select id="drawerFolderFilter" aria-label="Folder"><option value="">all folders</option></select>
+      </div>
+      <div class="hub-drawer-field">
+        <label for="drawerPalette">Palette</label>
+        <select id="drawerPalette" aria-label="Palette"><option value="">doc default</option></select>
+      </div>
+      <div class="hub-drawer-field">
+        <label for="drawerFmt">Export format</label>
+        <select id="drawerFmt" aria-label="Export format">
+          <option value="pdf-light">PDF light</option>
+          <option value="pdf-dark">PDF dark</option>
+          <option value="png-light">PNG light</option>
+          <option value="png-dark">PNG dark</option>
+        </select>
+      </div>
+      <div class="hub-drawer-field">
+        <label for="outdirDrawer">Output folder</label>
+        <input id="outdirDrawer" type="text" placeholder="_exports next to doc">
+      </div>
+    </div>
+  </div>
+  <div class="hub-drawer-actions">
+    <button type="button" id="drawerRefresh" class="hub-icon-btn" title="Refresh" aria-label="Refresh">
+      <svg class="hub-icon" viewBox="0 0 512 512" aria-hidden="true" focusable="false"><path fill="currentColor" d="M105.1 202.6c7.7-21.8 20.2-42.3 37.8-59.8c62.5-62.5 163.8-62.5 226.3 0L386.3 160 352 160c-17.7 0-32 14.3-32 32s14.3 32 32 32l111.5 0c0 0 0 0 0 0l.4 0c17.7 0 32-14.3 32-32l0-112c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 35.2L414.4 97.6c-87.5-87.5-229.3-87.5-316.8 0C73.2 122 55.6 150.7 44.8 181.4c-5.9 16.7 2.9 34.9 19.5 40.8s34.9-2.9 40.8-19.5zM39 289.3c-5 1.5-9.8 4.2-13.7 8.2c-4 4-6.7 8.8-8.1 14c-.3 1.2-.6 2.5-.8 3.8c-.3 1.7-.4 3.4-.4 5.1L16 432c0 17.7 14.3 32 32 32s32-14.3 32-32l0-35.1 17.6 17.5c0 0 0 0 0 0c87.5 87.4 229.3 87.4 316.7 0c24.4-24.4 42.1-53.1 52.9-83.8c5.9-16.7-2.9-34.9-19.5-40.8s-34.9 2.9-40.8 19.5c-7.7 21.8-20.2 42.3-37.8 59.8c-62.5 62.5-163.8 62.5-226.3 0l-.1-.1L125.6 352l34.4 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L48.4 288c-1.6 0-3.2 .1-4.8 .3s-3.1 .5-4.6 1z"/></svg>
+    </button>
+  </div>
+  <div class="hub-drawer-foot"><kbd>Esc</kbd> closes</div>
+</aside>
+
+<div class="hub-search-ovl" id="hubSearchOvl" hidden>
+  <div class="hub-search-ovl-inner">
+    <input class="hub-search-ovl-input" id="searchOvlInput" type="search" placeholder="Search name or path…" autocomplete="off" aria-label="Search documents">
+    <div class="hub-search-ovl-results" id="searchOvlResults"></div>
+    <div class="hub-search-ovl-foot"><kbd>Esc</kbd> closes · <kbd>Enter</kbd> opens first</div>
+  </div>
+</div>
 
 <main class="hub-main">
   <aside class="library">
@@ -309,11 +423,12 @@ APP_HTML = """<!doctype html>
 <script>
 let DOCS = __DOCS__;
 const PALETTES = __PALETTES__;
-const KIND_ORDER = ["all","resume","cover-letter","work-samples","collage","gallery","example","other"];
+const KIND_ORDER = ["all","resume","cover-letter","letter","work-samples","collage","gallery","example","other"];
 const KIND_LABEL = {
   all: "All",
   resume: "Resumes",
   "cover-letter": "Cover Letters",
+  letter: "Letters",
   "work-samples": "Work Samples",
   collage: "Collages",
   gallery: "Galleries",
@@ -371,11 +486,13 @@ function togglePinFolder(folder) {
 })();
 
 const paletteSel = document.getElementById("palette");
+const drawerPaletteSel = document.getElementById("drawerPalette");
 PALETTES.forEach((p, i) => {
   const o = document.createElement("option");
   o.value = i;
   o.textContent = p.name;
   paletteSel.appendChild(o);
+  if (drawerPaletteSel) drawerPaletteSel.appendChild(o.cloneNode(true));
 });
 
 function applyPalette(iframe) {
@@ -395,9 +512,9 @@ function counts() {
 
 function buildStats() { /* counts live on kind chips — no separate stats row */ }
 
-function buildKindChips() {
+function fillKindChipHost(wrap) {
+  if (!wrap) return;
   const c = counts();
-  const wrap = document.getElementById("kindChips");
   wrap.innerHTML = "";
   for (const k of KIND_ORDER) {
     if (k !== "all" && !c[k]) continue;
@@ -412,21 +529,22 @@ function buildKindChips() {
       kindFilter = k;
       buildKindChips();
       renderLibrary();
+      closeDrawer();
     });
     wrap.appendChild(b);
   }
+}
+function buildKindChips() {
+  fillKindChipHost(document.getElementById("kindChips"));
+  fillKindChipHost(document.getElementById("drawerKindChips"));
 }
 
 function uniqueFolders() {
   return [...new Set(DOCS.map(d => d.group))].sort();
 }
 
-function buildFolderSelect() {
-  const sel = document.getElementById("folderFilter");
-  const cur = sel.value || (localStorage.getItem(HUB_FOLDER_KEY) || "");
-  const all = uniqueFolders();
-  const pins = loadPinnedFolders().filter(p => all.includes(p) || p);
-  const pinSet = new Set(pins);
+function populateFolderSelect(sel, cur, all, pins, pinSet) {
+  if (!sel) return;
   sel.innerHTML = "";
   const allOpt = document.createElement("option");
   allOpt.value = "";
@@ -458,6 +576,16 @@ function buildFolderSelect() {
 
   if ([...sel.options].some(o => o.value === cur)) sel.value = cur;
   else sel.value = "";
+}
+function buildFolderSelect() {
+  const sel = document.getElementById("folderFilter");
+  const drawerSel = document.getElementById("drawerFolderFilter");
+  const cur = sel.value || (localStorage.getItem(HUB_FOLDER_KEY) || "");
+  const all = uniqueFolders();
+  const pins = loadPinnedFolders().filter(p => all.includes(p) || p);
+  const pinSet = new Set(pins);
+  populateFolderSelect(sel, cur, all, pins, pinSet);
+  populateFolderSelect(drawerSel, cur, all, pins, pinSet);
   syncPinButton();
 }
 
@@ -620,12 +748,18 @@ function openPaletteFromQuery() {
 }
 
 document.getElementById("folderFilter").addEventListener("change", () => {
-  try { localStorage.setItem(HUB_FOLDER_KEY, document.getElementById("folderFilter").value); } catch (_) {}
+  const v = document.getElementById("folderFilter").value;
+  try { localStorage.setItem(HUB_FOLDER_KEY, v); } catch (_) {}
+  const d = document.getElementById("drawerFolderFilter");
+  if (d) d.value = v;
   syncPinButton();
   renderLibrary();
 });
 document.getElementById("personFilter").addEventListener("change", () => {
-  try { localStorage.setItem(HUB_PROFILE_KEY, document.getElementById("personFilter").value); } catch (_) {}
+  const v = document.getElementById("personFilter").value;
+  try { localStorage.setItem(HUB_PROFILE_KEY, v); } catch (_) {}
+  const d = document.getElementById("drawerPersonFilter");
+  if (d) d.value = v;
   renderLibrary();
 });
 document.getElementById("search").addEventListener("input", renderLibrary);
@@ -633,6 +767,165 @@ const pinBtn = document.getElementById("pinFolderBtn");
 if (pinBtn) pinBtn.addEventListener("click", () => {
   togglePinFolder(document.getElementById("folderFilter").value);
 });
+
+function readOutdir() {
+  const a = document.getElementById("outdir");
+  const b = document.getElementById("outdirDrawer");
+  return (a && a.value) || (b && b.value) || null;
+}
+function syncOutdir(fromId) {
+  const a = document.getElementById("outdir");
+  const b = document.getElementById("outdirDrawer");
+  if (!a || !b) return;
+  if (fromId === "outdir") b.value = a.value;
+  else a.value = b.value;
+}
+["outdir", "outdirDrawer"].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener("input", () => syncOutdir(id));
+});
+
+function syncSelectPair(primaryId, drawerId, onChange) {
+  const a = document.getElementById(primaryId);
+  const b = document.getElementById(drawerId);
+  if (!a || !b) return;
+  a.addEventListener("change", () => { b.value = a.value; onChange && onChange(); });
+  b.addEventListener("change", () => { a.value = b.value; a.dispatchEvent(new Event("change")); });
+}
+syncSelectPair("fmt", "drawerFmt");
+syncSelectPair("palette", "drawerPalette", () => {
+  applyPalette(main);
+  document.querySelectorAll(".thumb iframe").forEach(f => applyPalette(f));
+});
+(function wireDrawerPersonFolder() {
+  const dp = document.getElementById("drawerPersonFilter");
+  const df = document.getElementById("drawerFolderFilter");
+  if (dp) dp.addEventListener("change", () => {
+    document.getElementById("personFilter").value = dp.value;
+    document.getElementById("personFilter").dispatchEvent(new Event("change"));
+    closeDrawer();
+  });
+  if (df) df.addEventListener("change", () => {
+    document.getElementById("folderFilter").value = df.value;
+    document.getElementById("folderFilter").dispatchEvent(new Event("change"));
+    closeDrawer();
+  });
+})();
+
+/* ---- Drawer + search overlay (responsive ≤767.98) ---- */
+function openDrawer() {
+  const drawer = document.getElementById("hubDrawer");
+  const backdrop = document.getElementById("hubDrawerBackdrop");
+  const toggle = document.getElementById("drawerToggle");
+  if (!drawer) return;
+  drawer.classList.add("open");
+  drawer.setAttribute("aria-hidden", "false");
+  if (backdrop) { backdrop.hidden = false; backdrop.classList.add("open"); }
+  document.body.classList.add("drawer-open");
+  if (toggle) toggle.setAttribute("aria-expanded", "true");
+}
+function closeDrawer() {
+  const drawer = document.getElementById("hubDrawer");
+  const backdrop = document.getElementById("hubDrawerBackdrop");
+  const toggle = document.getElementById("drawerToggle");
+  if (!drawer) return;
+  drawer.classList.remove("open");
+  drawer.setAttribute("aria-hidden", "true");
+  if (backdrop) { backdrop.classList.remove("open"); backdrop.hidden = true; }
+  document.body.classList.remove("drawer-open");
+  if (toggle) toggle.setAttribute("aria-expanded", "false");
+}
+function openSearchOvl() {
+  const ovl = document.getElementById("hubSearchOvl");
+  const input = document.getElementById("searchOvlInput");
+  if (!ovl) return;
+  ovl.hidden = false;
+  ovl.classList.add("open");
+  if (input) {
+    input.value = document.getElementById("search").value || "";
+    input.focus();
+    input.select();
+  }
+  renderSearchOvl();
+}
+function closeSearchOvl() {
+  const ovl = document.getElementById("hubSearchOvl");
+  if (!ovl) return;
+  ovl.classList.remove("open");
+  ovl.hidden = true;
+}
+function renderSearchOvl() {
+  const box = document.getElementById("searchOvlResults");
+  const input = document.getElementById("searchOvlInput");
+  if (!box || !input) return;
+  const q = input.value.trim().toLowerCase();
+  document.getElementById("search").value = input.value;
+  const hits = !q ? [] : DOCS.filter(d => {
+    const hay = `${d.path} ${d.name} ${d.label} ${d.group} ${d.kind}`.toLowerCase();
+    return hay.includes(q);
+  }).slice(0, 40);
+  box.innerHTML = "";
+  if (!q) {
+    box.innerHTML = '<div class="hub-search-ovl-empty">Type to search the library</div>';
+    return;
+  }
+  if (!hits.length) {
+    box.innerHTML = '<div class="hub-search-ovl-empty">No matches</div>';
+    return;
+  }
+  for (const d of hits) {
+    const row = document.createElement("button");
+    row.type = "button";
+    row.className = "hub-search-ovl-item";
+    row.innerHTML = `<span class="name">${d.name}</span><span class="path">${d.path}</span>`;
+    row.addEventListener("click", () => {
+      closeSearchOvl();
+      kindFilter = "all";
+      buildKindChips();
+      renderLibrary();
+      select(d, null, { pushUrl: true });
+    });
+    box.appendChild(row);
+  }
+}
+(function wireDrawerSearch() {
+  const toggle = document.getElementById("drawerToggle");
+  const closeBtn = document.getElementById("drawerClose");
+  const backdrop = document.getElementById("hubDrawerBackdrop");
+  const searchTrigger = document.getElementById("searchTrigger");
+  const searchOvlInput = document.getElementById("searchOvlInput");
+  const drawerRefresh = document.getElementById("drawerRefresh");
+  if (toggle) toggle.addEventListener("click", () => {
+    const open = document.getElementById("hubDrawer")?.classList.contains("open");
+    if (open) closeDrawer(); else openDrawer();
+  });
+  if (closeBtn) closeBtn.addEventListener("click", closeDrawer);
+  if (backdrop) backdrop.addEventListener("click", closeDrawer);
+  if (searchTrigger) searchTrigger.addEventListener("click", openSearchOvl);
+  if (searchOvlInput) {
+    searchOvlInput.addEventListener("input", () => {
+      renderSearchOvl();
+      renderLibrary();
+    });
+    searchOvlInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        const first = document.querySelector(".hub-search-ovl-item");
+        if (first) first.click();
+      }
+    });
+  }
+  if (drawerRefresh) drawerRefresh.addEventListener("click", () => {
+    document.getElementById("refreshBtn")?.click();
+    closeDrawer();
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") { closeDrawer(); closeSearchOvl(); }
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
+      e.preventDefault();
+      openSearchOvl();
+    }
+  });
+})();
 
 document.getElementById("exportBtn").addEventListener("click", async () => {
   const status = document.getElementById("status");
@@ -642,7 +935,7 @@ document.getElementById("exportBtn").addEventListener("click", async () => {
   const body = {
     doc: selected.path,
     format: document.getElementById("fmt").value,
-    outDir: document.getElementById("outdir").value || null,
+    outDir: readOutdir(),
     cssVars: idx === "" ? null : PALETTES[idx].vars,
   };
   try {

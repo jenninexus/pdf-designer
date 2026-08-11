@@ -10,7 +10,7 @@ Product:   docs/PRODUCT.md   ← ⭐ free GitHub core vs future paid app (WHITE-
 Theme:     themes/default-{resume,collage}.json + themes/presets/* + PALETTE-RULES.md   ← COLOR
 Gen-rules: themes/GENERATION-RULES.md   ← ⭐ house rules for ALL generated docs (casing · overlays · framing · no-magenta)
 QA gate:   docs/QA.md + python -m pdf_tool.check_generation   ← ⭐ 10 checks; judge the ARTIFACT (render), not the source
-Layouts:   layouts/collage/* + layouts/*  (python -m pdf_tool.collage --list-recipes)  ← STRUCTURE
+Layouts:   layouts/{cover-letter,letter,resume,work-examples,collage}/*  (python -m pdf_tool.collage --list-recipes)  ← STRUCTURE
 Private:   storage/brand-design, users, vaults, studio/resources/images/martiangames (shared MG gallery), collages (gitignored)
 Hub:       python -m pdf_tool.preview → :8787 (workspace auto-starts via scripts/ensure-design-hub.ps1)
 Smoke:     python scripts/smoke-white-label.py   ← ⭐ fresh-clone proof (examples/ only, no storage/)
@@ -32,7 +32,7 @@ Compact map of what this repo owns vs what it only points at. Agents: start here
 | Engine | `src/pdf_tool/` | HTML→PDF, guards, collage, Design Hub, tracker |
 | Public themes | `themes/default-resume.{json,css}`, `themes/presets/*` | ⭐ **COLOR** — token SSOT + audition palettes |
 | Collage theme | `themes/default-collage.json` | Canvas presets + `backgrounds` (gradients) + per-background `frame` colors |
-| **Layouts** | `layouts/*.json` (docs) + `layouts/collage/*` | ⭐ **STRUCTURE** — cover=`one-page-letter` · résumé=`two-page-standard` · samples=`work-examples` · collage recipes under `collage/` |
+| **Layouts** | `layouts/{cover-letter,letter,resume,work-examples}/*` + `layouts/collage/*` | ⭐ **STRUCTURE** — cover=`one-page-letter` · résumé=`two-page-standard` · samples=`work-examples` · collage recipes under `collage/` |
 | Page layout | `docs/LAYOUT-SYSTEM.md` + `themes/default-resume.{json,css}#document` | ⭐ Equal margins (0.65in default) + header-flows/footer-pins; one knob `--resume-page-margin`; content-fit rule |
 | Page signature | `themes/default-resume.json#document.signature` | Bottom-right page-footer pin (`.page` / `.page-main` / `.page-sig`) |
 | Previewer | `src/pdf_tool/preview.py` (`docs/PREVIEWER.md`) | Design Hub; `/recipes` · `/vault`; **auto-refreshes** via `/api/version` on new exports |
@@ -75,22 +75,24 @@ Both are reachable from one machine-readable file:
 
 ## ATS parseability (every profile)
 
-**How you know a résumé is parseable:** export the PDF → run `python -m pdf_tool.check_ats <file.pdf>` →
-required cues must show `[OK] job title` · `[OK] work experience` · `[OK] education`, and the text dump
+**How you know a résumé is parseable:** export the **light** PDF → run
+`python -m pdf_tool.check_ats <file.pdf>` → required cues must show `[OK] job title` ·
+`[OK] work experience` · `[OK] education`, **mid-word splits must be ≤ 2**, and the text dump
 must contain those phrases as **contiguous words**. If *you* cannot find them, Jobright / Indeed will
 not either. Full checklist: [`JOB-ASSESSMENT.md`](JOB-ASSESSMENT.md) § Tier 4.5 · inherited contract:
 `examples/profiles/default-resume/profile.json#verify.atsParse`.
 
 | Myth | Reality |
 |---|---|
-| “Dark is not parseable” | **False.** Light and dark are the **same HTML text layer** — `check_ats` can pass on either. |
-| “Always upload dark” | **Risky.** Boards (Jobright, Indeed, LinkedIn) expect the **light / ATS** PDF. Upload `*-resume-light.pdf`. Keep dark for humans / email / portfolio. |
-| “Section looks fine on screen” | Not enough. Montserrat / letter-spacing can split `WORK EXPERIENCE` → `W ORK EXPERIENCE` in the text layer while the page still looks perfect. |
+| “Dark is not parseable” | **False** when print fonts match — light and dark share the HTML. Still upload **light** to boards. |
+| “Always upload dark” | **Wrong for boards.** Jobright / Indeed / LinkedIn expect `*-resume-light.pdf`. Dark = humans / email / portfolio. |
+| “Section looks fine on screen” | Not enough. Montserrat can split `WORK EXPERIENCE` → `W ORK EXPERIENCE` and body words → `Gam es` / `m aterials` while the page looks perfect. **Print body + h2 use a system font.** |
+| “Jobright rank D means unparseable” | **False.** Rank / IMPROVABLE / “Insufficient skills” / “Lack of Accomplishment” is their **content AI**. Missing Job Title / Work Experience / Education is the **parse** warning. Different gates. |
 
 **Defaults:** ship **both** light and dark for go-to résumés under `storage/<user>/defaults/` so the board
-file and the branded file stay in sync. Per-job `exportPrefs` may still prefer dark-only for email —
-that does not remove the need for a light file when a board will parse the upload.
-
+file and the branded file stay in sync. Per-job `exportPrefs` may still emphasize dark for email —
+that does **not** remove the need for a light file when a board will parse the upload. Cover letters
+and work-samples: `check_generation` always; boards still get the light **résumé**, not the portfolio.
 ---
 
 ## Personal palette prefs (Jenni / Shade)

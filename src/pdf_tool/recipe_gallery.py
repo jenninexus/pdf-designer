@@ -12,6 +12,9 @@ from pathlib import Path
 
 _SWATCH_KEYS = ("--bg", "--primary", "--secondary", "--accent", "--support")
 
+# Document layout categories (structure recipes). Collage stays separate.
+_DOC_LAYOUT_DIRS = ("cover-letter", "letter", "resume", "work-examples")
+
 
 def _read_json(path: Path):
     try:
@@ -66,27 +69,43 @@ def _collage_recipes(root: Path) -> list[dict]:
     return out
 
 
-def _resume_layouts(root: Path) -> list[dict]:
-    """Document page models live at layouts/*.json (not layouts/resume/).
+def _document_layouts(root: Path) -> list[dict]:
+    """Document page models under layouts/<category>/*.json (+ legacy top-level).
 
-    Collage recipes stay under layouts/collage/; only top-level JSON here.
+    Categories: cover-letter · letter · resume · work-examples.
+    Collage recipes stay under layouts/collage/ (see _collage_recipes).
     """
-    layouts_dir = root / "layouts"
-    if not layouts_dir.is_dir():
+    layouts_root = root / "layouts"
+    if not layouts_root.is_dir():
         return []
+    paths: list[Path] = []
+    for cat in _DOC_LAYOUT_DIRS:
+        cat_dir = layouts_root / cat
+        if cat_dir.is_dir():
+            paths.extend(sorted(cat_dir.glob("*.json")))
+    # Legacy flat layouts/*.json (pre-category) — keep discoverable if any remain
+    paths.extend(sorted(layouts_root.glob("*.json")))
+
+    seen: set[str] = set()
     out = []
-    for path in sorted(layouts_dir.glob("*.json")):
+    for path in paths:
+        key = str(path.resolve())
+        if key in seen:
+            continue
+        seen.add(key)
         data = _read_json(path)
         if not isinstance(data, dict):
             continue
         page = data.get("page") if isinstance(data.get("page"), dict) else {}
         box = data.get("contentBox") if isinstance(data.get("contentBox"), dict) else {}
         rid = data.get("id") or path.stem
+        category = path.parent.name if path.parent != layouts_root else "document"
         out.append(
             {
                 "id": rid,
                 "kind": "document",
-                "docType": data.get("docType") or "resume",
+                "category": category,
+                "docType": data.get("docType") or category,
                 "bestFor": data.get("bestFor") or "",
                 "pageSize": page.get("size"),
                 "margin": page.get("margin"),
@@ -98,6 +117,10 @@ def _resume_layouts(root: Path) -> list[dict]:
             }
         )
     return out
+
+
+# Back-compat alias for callers that still say "resume layouts"
+_resume_layouts = _document_layouts
 
 
 def _palette_presets(root: Path) -> list[dict]:
@@ -116,7 +139,6 @@ def _palette_presets(root: Path) -> list[dict]:
         for mode in ("dark", "light"):
             block = tokens.get(mode) if isinstance(tokens.get(mode), dict) else None
             if not block:
-                # Older nested shape (rare in presets)
                 nested = data.get(mode)
                 block = nested if isinstance(nested, dict) else None
             modes[mode] = {
@@ -139,16 +161,18 @@ def _palette_presets(root: Path) -> list[dict]:
 def build_recipe_gallery(root: Path) -> dict:
     """Return a JSON-serializable gallery of public layouts + palette presets."""
     collage = _collage_recipes(root)
-    resume = _resume_layouts(root)
+    documents = _document_layouts(root)
     palettes = _palette_presets(root)
     return {
         "ok": True,
         "collageRecipes": collage,
-        "resumeLayouts": resume,
+        "resumeLayouts": documents,  # legacy key — all document page models
+        "documentLayouts": documents,
         "palettePresets": palettes,
         "counts": {
             "collage": len(collage),
-            "resume": len(resume),
+            "resume": len(documents),
+            "document": len(documents),
             "palettes": len(palettes),
         },
         "cli": {
@@ -158,6 +182,7 @@ def build_recipe_gallery(root: Path) -> dict:
         },
         "hubHint": (
             "Palette 'Try in Hub' uses /?palette=<id>&mode=dark|light on the library. "
+            "Document recipes live under layouts/{cover-letter,letter,resume,work-examples}/. "
             "Collage recipes stay CLI (--recipe); this page is discovery, not a second engine."
         ),
     }
