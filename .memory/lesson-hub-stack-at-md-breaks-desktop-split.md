@@ -26,6 +26,9 @@ breakpoint, not missing HTML.
 
 - Toolbar **★** as a separate control: font metrics leave the glyph off-center and wastes header
   space. Pin inside the folder dropdown (ghost ★ on hover → filled when pinned → sort to top).
+- Folder picker menu as `position:absolute` inside `.hub-bar-scroll` (`overflow-y:hidden`) —
+  opens in the DOM but is clipped (looks “dead”). Use `position:fixed` + JS top/left from the
+  trigger rect — same clip class as `hub-more` before it moved into `.hub-bar-pin`.
 - CSS-only drawer contracts without HTML/JS — see `lesson-hub-drawer-css-without-html-clips-more.md`.
 
 ## Guard / SSOT

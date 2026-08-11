@@ -481,6 +481,42 @@ function togglePinFolder(folder) {
 
 const STAR_SVG = '<svg class="hub-icon" viewBox="0 0 576 512" aria-hidden="true" focusable="false"><path fill="currentColor" d="M316.9 18C311.6 7 300.4 0 288.1 0s-23.4 7-28.8 18L195 150.3 51.4 171.5c-12 1.8-22 10.2-25.7 21.7s-.7 24.2 7.9 32.7L137.8 329 113.2 474.7c-2 12 3 24.2 12.9 31.3s23 8 33.8 2.3l128.3-68.5 128.3 68.5c10.8 5.7 23.9 4.9 33.8-2.3s14.9-19.3 12.9-31.3L438.5 329 542.7 225.9c8.6-8.5 11.7-21.2 7.9-32.7s-13.7-19.9-25.7-21.7L381.2 150.3 316.9 18z"/></svg>';
 
+function clearFolderMenuPos(menu) {
+  if (!menu) return;
+  menu.style.top = "";
+  menu.style.left = "";
+  menu.style.minWidth = "";
+  menu.style.maxHeight = "";
+}
+
+function positionFolderMenu(picker, btn, menu) {
+  if (!picker || !btn || !menu) return;
+  if (!picker.classList.contains("open") || picker.closest(".hub-drawer")) {
+    clearFolderMenuPos(menu);
+    return;
+  }
+  const r = btn.getBoundingClientRect();
+  const gap = 4;
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
+  const minW = Math.max(240, Math.round(r.width));
+  const maxW = Math.min(420, Math.floor(vw * 0.7));
+  const width = Math.min(minW, maxW);
+  let left = Math.round(r.left);
+  if (left + width > vw - 8) left = Math.max(8, vw - 8 - width);
+  if (left < 8) left = 8;
+  let top = Math.round(r.bottom + gap);
+  const maxH = Math.min(420, Math.floor(vh * 0.6));
+  if (top + Math.min(maxH, 160) > vh - 8) {
+    /* flip above trigger when not enough room below */
+    top = Math.max(8, Math.round(r.top - gap - maxH));
+  }
+  menu.style.left = left + "px";
+  menu.style.top = top + "px";
+  menu.style.minWidth = width + "px";
+  menu.style.maxHeight = maxH + "px";
+}
+
 function closeFolderPickers(exceptId) {
   document.querySelectorAll(".hub-folder-picker.open").forEach(p => {
     if (exceptId && p.id === exceptId) return;
@@ -488,7 +524,10 @@ function closeFolderPickers(exceptId) {
     const btn = p.querySelector(".hub-folder-trigger");
     const menu = p.querySelector(".hub-folder-menu");
     if (btn) btn.setAttribute("aria-expanded", "false");
-    if (menu) menu.hidden = true;
+    if (menu) {
+      menu.hidden = true;
+      clearFolderMenuPos(menu);
+    }
   });
 }
 
@@ -615,17 +654,30 @@ function wireFolderPicker(pickerId, btnId, menuId) {
     picker.classList.toggle("open", willOpen);
     btn.setAttribute("aria-expanded", willOpen ? "true" : "false");
     menu.hidden = !willOpen;
+    if (willOpen) positionFolderMenu(picker, btn, menu);
+    else clearFolderMenuPos(menu);
   });
 }
 wireFolderPicker("folderPicker", "folderFilterBtn", "folderFilterMenu");
 wireFolderPicker("drawerFolderPicker", "drawerFolderFilterBtn", "drawerFolderFilterMenu");
 document.addEventListener("click", (e) => {
   if (e.target.closest(".hub-folder-picker")) return;
+  if (e.target.closest(".hub-folder-menu")) return;
   closeFolderPickers();
 });
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") closeFolderPickers();
 });
+function repositionOpenFolderMenus() {
+  document.querySelectorAll(".hub-folder-picker.open").forEach(p => {
+    positionFolderMenu(p, p.querySelector(".hub-folder-trigger"), p.querySelector(".hub-folder-menu"));
+  });
+}
+window.addEventListener("resize", repositionOpenFolderMenus);
+const hubBarScrollEl = document.getElementById("hubBarScroll");
+/* Reposition (don't close) on header scroll — close-on-scroll fights
+   scroll-into-view when focusing the trigger and leaves the menu looking dead. */
+if (hubBarScrollEl) hubBarScrollEl.addEventListener("scroll", repositionOpenFolderMenus, { passive: true });
 
 /* Horizontal wheel-scroll on the header strip (and its scrollbar). */
 (function hubBarWheelScroll() {
