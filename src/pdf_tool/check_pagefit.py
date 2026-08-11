@@ -124,7 +124,7 @@ def check_pagefit(pdf_path: Path, expect: int = None):
                 f"A cover letter is ALWAYS 1 page; a resume ALWAYS 2. Fix by CUTTING PROSE or "
                 f"tightening font-size/line-height within the allowed band -- never by adding a "
                 f"fixed height + overflow:hidden, which hides the overflow and ships a clipped file. "
-                f"See layouts/one-page-letter.json 'fitToOnePage'."
+                f"See layouts/cover-letter/one-page-letter.json 'fitToOnePage'."
             )
 
         page_ink_counts = []
@@ -148,7 +148,7 @@ def check_pagefit(pdf_path: Path, expect: int = None):
             #
             # That is why the box-boundary clip is prevented at the SOURCE instead --
             # check_source_geometry() below refuses the CSS pattern that causes it, and the
-            # layout contract (layouts/one-page-letter.json) forbids it. Rasterised
+            # layout contract (layouts/cover-letter/one-page-letter.json) forbids it. Rasterised
             # eyeballing remains the final check for a human: pdf_to_png, then LOOK.
             if max(rows) >= H - EDGE_TOL:
                 msgs.append(
@@ -240,7 +240,7 @@ def check_source_geometry(html_path: Path):
                     "overflow rule, and let the sign-off flow. If the letter then runs to two "
                     "pages, CUT PROSE (or tighten font-size / line-height within the band) --\n"
                     "     never restore the height, which only re-hides the overflow.\n"
-                    "     Contract: layouts/one-page-letter.json"
+                    "     Contract: layouts/cover-letter/one-page-letter.json"
                 )
     return (not msgs), msgs
 

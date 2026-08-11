@@ -71,7 +71,7 @@ rules they didn't cover (**11 checks**):
 | 8 | **rendered-color** | ⭐ no brown / large-area warm cast in **rendered pixels** (catches composited brown the hex guard cannot see) | GENERATION-RULES · `check_rendered_color` |
 | 9 | **overflow** | no page overflows its print box at **816px** paper width. **Render-based**; `--no-render` skips | LAYOUT-SYSTEM.md §content-fit |
 | 10 | **footer-collision** | ⭐ **PDF ground truth**: nothing overlaps the pinned signature band (catches 2-col text under the script that DOM height can miss). Detects signature alignment (résumé right / letter left) rather than assuming right | LAYOUT-SYSTEM.md |
-| 11 | **letter-geometry** | ⭐ a **cover letter** must never declare a print `.page` `height` **together with** `overflow: hidden` — that combination CLIPS the sign-off at the box boundary while every DOM-based guard passes | [one-page-letter.json](../layouts/one-page-letter.json) · LAYOUT-SYSTEM.md |
+| 11 | **letter-geometry** | ⭐ a **cover letter** must never declare a print `.page` `height` **together with** `overflow: hidden` — that combination CLIPS the sign-off at the box boundary while every DOM-based guard passes | [one-page-letter.json](../layouts/cover-letter/one-page-letter.json) · LAYOUT-SYSTEM.md |
 
 Checks 1 / 8 / 9 / 11 shell out to the standalone `check_palette` / `check_rendered_color` /
 `check_overflow` / `check_pagefit` so there is one implementation of each rule, not two.
@@ -139,9 +139,9 @@ an unpinned signature are all cheap to fix and each has bitten a real doc).
   is considered done — it replaces running `check_palette` + `check_overflow` separately.
 - **Before any submission**, run it on the final `.html`.
 - **After a bulk change** (palette swap, dir move), `--scan storage/<user>/defaults` sweeps the go-to set.
-- **Go-to defaults:** after editing `storage/<user>/*-resume.html`, re-export light+dark into
-  `storage/<user>/defaults/` and re-run `check_generation` on the source HTML.
-
+- **Go-to defaults:** after editing `storage/<user>/*-resume.html` (**any** applicant), re-export
+  **light + dark** into `storage/<user>/defaults/`, run `check_generation` on the source HTML, and
+  `python -m pdf_tool.check_ats <defaults/*-resume-light.pdf>` before treating the pack as board-ready.
 > This tool found and fixed real margin drift in **both** favorite resumes (Shade `0.42/0.48/0.48`,
 > Jenni `0.45/0.5/0.55`) the day it was written — exactly the "consistent margin/padding" class of bug
 > it exists to catch. The 816px overflow correction later exposed a real jenni-resume footer overlap

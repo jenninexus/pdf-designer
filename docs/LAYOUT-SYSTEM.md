@@ -75,9 +75,9 @@ is the *print height* pattern — not the flex pin itself.
 **Reference letter (geometry / padding):** `storage/jenni/_exports/CZI/jenni-czi-letter.html` —
 flex column · `.letter-main` grows · `.signoff { margin-top: auto; padding-top: 30px }`.
 
-**Machine-readable:** [`../layouts/one-page-letter.json`](../layouts/one-page-letter.json)
-· [`../layouts/two-page-standard.json`](../layouts/two-page-standard.json)
-· [`../layouts/work-examples.json`](../layouts/work-examples.json) (work-samples, 3 pages).
+**Machine-readable:** [`../layouts/cover-letter/one-page-letter.json`](../layouts/cover-letter/one-page-letter.json)
+· [`../layouts/resume/two-page-standard.json`](../layouts/resume/two-page-standard.json)
+· [`../layouts/work-examples/work-examples.json`](../layouts/work-examples/work-examples.json) (work-samples, 3 pages).
 
 **Observed 2026-07-25 (Sony letter, shipped):** "Founder & CEO, Martian Games LLC" was sliced
 through the middle and the email line vanished from the PDF entirely.
@@ -129,7 +129,7 @@ though nothing is clipped. `check_pagefit` flags it.
 **And always eyeball the bottom 15% of an exported letter** — `pdf_to_png`, then look. A DOM-based
 guard cannot see a renderer clip, which is precisely how this shipped.
 
-Machine-readable contract: [`../layouts/one-page-letter.json`](../layouts/one-page-letter.json).
+Machine-readable contract: [`../layouts/cover-letter/one-page-letter.json`](../layouts/cover-letter/one-page-letter.json).
 
 ### ⚠ A line that belongs above the footer goes INSIDE the footer
 
@@ -195,7 +195,7 @@ width** — never cluster on the left leaving half a row empty.
 
 **Rule:** a multi-item row is either full-bleed across the content box or it is the wrong
 layout. Prefer CSS grid with `1fr` tracks over left-justified flex clusters. Documented in
-[`../layouts/work-examples.json`](../layouts/work-examples.json)#`fullRowGroups` and the
+[`../layouts/work-examples/work-examples.json`](../layouts/work-examples/work-examples.json)#`fullRowGroups` and the
 résumé Online Community pattern.
 
 ### Footer email (all three Jenni defaults)

@@ -4,14 +4,17 @@ Usage:
     python -m pdf_tool.check_ats <resume.pdf>
     python -m pdf_tool.check_ats <resume.pdf> --json
 
-Exits 1 if word count < 40, or if required section cues are missing / split
-(Jobright / Indeed style parsers). Exits 2 on bad args. Exits 0 when healthy.
+Exits 1 if word count < 40, required section cues are missing / split
+(Jobright / Indeed style parsers), or body text shows mid-word glyph
+splits (Montserrat / letter-spacing). Exits 2 on bad args. Exits 0 when healthy.
 
 How to know a résumé is parseable (SSOT: docs/JOB-ASSESSMENT.md § ATS PARSE SAFETY):
   1. Export the LIGHT PDF.
   2. Run this command — read the text layer + the cue checklist.
   3. If YOU cannot find Job Title / Work Experience / Education as contiguous
      phrases in the dump, neither can the board.
+  4. Board upload = *-resume-light.pdf. Jobright's content AI grade (skills count,
+     "quantify bullets") is a separate score — not this gate.
 """
 
 from __future__ import annotations
@@ -44,6 +47,21 @@ _REQUIRED_CUES = (
     "education",
 )
 
+# Mid-word glyph splits (Montserrat / bad tracking). Keep this STRICT —
+# Title-Case phrases ("House of", "Own the") and digit units ("10.8M plays", "3D brand")
+# are NOT splits. Fail only on the patterns we actually ship with bad fonts.
+_MIDWORD_SINGLE = re.compile(
+    # single letter (not a/i) + continuation; not after alnum / digit unit / apostrophe
+    r"(?<![A-Za-z0-9.'’])([b-hj-zB-HJ-Z])\s+([a-z]{2,})\b"
+)
+# Known Cap+tail splits observed with Montserrat (e.g. "Gam es").
+_MIDWORD_KNOWN = re.compile(
+    r"\b(?:Gam\s+es|Pipeli\s+nes|Experi\s+ence|Educa\s+tion)\b",
+    re.IGNORECASE,
+)
+
+_MAX_MIDWORD_HITS = 2  # more than this → FAIL (font / tracking problem)
+
 
 def _configure_stdout():
     for stream in (sys.stdout, sys.stderr):
@@ -62,8 +80,27 @@ def _collapsed(s: str) -> str:
     return re.sub(r"\s+", "", s.lower())
 
 
+def find_midword_splits(text: str) -> list[str]:
+    """Return sample strings that look like glyph-split words in the text layer."""
+    hits: list[str] = []
+    seen: set[str] = set()
+    for m in _MIDWORD_SINGLE.finditer(text):
+        sample = m.group(0)
+        key = sample.lower()
+        if key not in seen:
+            seen.add(key)
+            hits.append(sample)
+    for m in _MIDWORD_KNOWN.finditer(text):
+        sample = m.group(0)
+        key = sample.lower()
+        if key not in seen:
+            seen.add(key)
+            hits.append(sample)
+    return hits
+
+
 def extract_ats_text(pdf_path: Path):
-    """Return (pages, full_text, word_count, section_cues, cue_report)."""
+    """Return (pages, full_text, word_count, section_cues, cue_report, midword_splits)."""
     from pypdf import PdfReader
 
     reader = PdfReader(str(pdf_path))
@@ -90,7 +127,8 @@ def extract_ats_text(pdf_path: Path):
             status = "missing"
         cue_report[cue] = status
 
-    return pages, full_text, word_count, cues, cue_report
+    midword = find_midword_splits(full_text)
+    return pages, full_text, word_count, cues, cue_report, midword
 
 
 def check_ats(pdf_path: Path, as_json: bool = False) -> int:
@@ -99,7 +137,7 @@ def check_ats(pdf_path: Path, as_json: bool = False) -> int:
         return 2
 
     try:
-        pages, full_text, word_count, cues, cue_report = extract_ats_text(pdf_path)
+        pages, full_text, word_count, cues, cue_report, midword = extract_ats_text(pdf_path)
     except Exception as e:
         _out(f"cannot read PDF: {e}")
         return 2
@@ -118,6 +156,8 @@ def check_ats(pdf_path: Path, as_json: bool = False) -> int:
             "required_cues": list(_REQUIRED_CUES),
             "missing_required": missing_required,
             "split_required": split_required,
+            "midword_splits": midword,
+            "midword_split_count": len(midword),
             "text": full_text,
             "per_page": pages,
         }
@@ -135,6 +175,12 @@ def check_ats(pdf_path: Path, as_json: bool = False) -> int:
         soft = [c for c in cues if c not in _REQUIRED_CUES]
         if soft:
             _out(f"  Also found: {', '.join(soft)}")
+        if midword:
+            sample = ", ".join(repr(s) for s in midword[:8])
+            more = f" (+{len(midword) - 8} more)" if len(midword) > 8 else ""
+            _out(f"  Mid-word splits: {len(midword)}  ·  {sample}{more}")
+        else:
+            _out("  Mid-word splits: 0")
         _out(f"\n{'-' * 78}")
         for p in pages:
             preview = p["text"].strip().replace("\n", " ")[:200]
@@ -142,6 +188,7 @@ def check_ats(pdf_path: Path, as_json: bool = False) -> int:
         _out(f"{'-' * 78}")
         _out("  Read the dump above. If Job Title / Work Experience / Education are not")
         _out("  contiguous phrases a human can find, fix the HTML — not the board.")
+        _out("  Upload *-resume-light.pdf to boards. Jobright's content AI grade is separate.")
         _out(f"{'-' * 78}\n")
 
     if word_count < 40:
@@ -164,6 +211,18 @@ def check_ats(pdf_path: Path, as_json: bool = False) -> int:
         _out("FAIL: required ATS section cues not parseable:")
         for p in parts:
             _out(f"  - {p}")
+        return 1
+
+    if len(midword) > _MAX_MIDWORD_HITS:
+        _out(
+            f"FAIL: {len(midword)} mid-word splits in the text layer "
+            f"(threshold {_MAX_MIDWORD_HITS}) — e.g. {midword[:5]!r}."
+        )
+        _out(
+            "  Fix: use a system print font (Segoe UI / Arial / Helvetica) for body text "
+            "in @media print; keep letter-spacing ≤ 0.04em on ATS-critical labels."
+        )
+        _out("  See docs/JOB-ASSESSMENT.md § Tier 4.5 · docs/SSOT.md § ATS parseability.")
         return 1
 
     _out("PASS: text layer looks readable + required section cues are contiguous.")

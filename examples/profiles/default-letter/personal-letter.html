@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en" data-pdf-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Personal letter — example</title>
+<style>
+  /* Public example — Parisienne when brand fonts exist locally; cursive fallback for clones. */
+  @font-face {
+    font-family: "Parisienne";
+    src: url("../../../storage/fonts/Parisienne-Regular.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+  :root {
+    --bg: #faf7f2;
+    --surface: #fffdf9;
+    --text: #2a2420;
+    --dim: #6b625a;
+    --border: #e4d8cc;
+    --primary: #7a5c8a;
+    --accent: #c45c7a;
+    --script: "Parisienne", "Segoe Script", "Brush Script MT", cursive;
+    --body: "Georgia", "Times New Roman", Times, serif;
+  }
+  html[data-pdf-theme="dark"] {
+    --bg: #16131a;
+    --surface: #1e1a24;
+    --text: #f0e8f4;
+    --dim: #b4a8bc;
+    --border: #3a3344;
+    --primary: #c9a0dc;
+    --accent: #f08ab0;
+  }
+  @page { size: Letter; margin: 0.75in; }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--body);
+    font-size: 12px;
+    line-height: 1.6;
+  }
+  .page {
+    display: flex;
+    flex-direction: column;
+    width: auto;
+    min-height: 9.5in;
+    margin: 0 auto;
+    padding: 0;
+    background: var(--surface);
+  }
+  @media screen {
+    body { padding: 24px; }
+    .page {
+      max-width: 8.5in;
+      padding: 0.75in;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.12);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+    }
+  }
+  @media print {
+    body { background: white; }
+    .page {
+      height: auto;
+      min-height: 9.5in;
+      /* no overflow:hidden — CZI-safe */
+    }
+  }
+
+  .letter-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1.25rem;
+    padding-bottom: 0.85rem;
+    margin-bottom: 1.35rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .letter-identity .who {
+    font-family: var(--script);
+    font-size: 2rem;
+    line-height: 1.1;
+    color: var(--primary);
+    margin: 0;
+  }
+  .letter-identity .tag {
+    margin: 0.35rem 0 0;
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--dim);
+    font-family: "Segoe UI", system-ui, sans-serif;
+  }
+  .letter-date {
+    flex: 0 0 auto;
+    text-align: right;
+    font-size: 0.92rem;
+    color: var(--dim);
+    white-space: nowrap;
+    padding-top: 0.35rem;
+  }
+
+  .letter-main { flex: 1 1 auto; min-height: 0; }
+  .greeting { margin: 0 0 1rem; font-size: 1.05rem; }
+  .letter-main p { margin: 0 0 0.95rem; max-width: 38em; }
+  .letter-main p:last-child { margin-bottom: 0; }
+
+  .signoff {
+    margin-top: auto;
+    padding-top: 28px;
+    flex: 0 0 auto;
+    text-align: left;
+    break-inside: avoid;
+  }
+  .signoff .closing { margin: 0 0 0.35rem; }
+  .signoff .script-name {
+    font-family: var(--script);
+    font-size: 1.85rem;
+    line-height: 1.15;
+    color: var(--accent);
+    margin: 0.15rem 0 0.2rem;
+  }
+  .signoff .legal {
+    margin: 0;
+    font-size: 0.78rem;
+    color: var(--dim);
+    font-family: "Segoe UI", system-ui, sans-serif;
+  }
+
+  .letter-foot {
+    margin-top: 1.25rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.78rem;
+    color: var(--dim);
+    font-family: "Segoe UI", system-ui, sans-serif;
+  }
+</style>
+</head>
+<body>
+  <article class="page">
+    <header class="letter-head">
+      <div class="letter-identity">
+        <p class="who">Jenni</p>
+        <p class="tag">A note from me</p>
+      </div>
+      <time class="letter-date" datetime="2026-08-10">August 10, 2026</time>
+    </header>
+
+    <div class="letter-main">
+      <p class="greeting">Dear friend,</p>
+      <p>
+        I wanted to write you a real letter — the kind that sits on paper and doesn’t
+        vanish into a notification stack. Life has been full of builds and launches,
+        but the people I love still get the softest part of my day.
+      </p>
+      <p>
+        I hope this finds you warm, fed, and a little proud of whatever small thing
+        you finished this week. Tell me something ordinary when you write back —
+        ordinary is where the good stories hide.
+      </p>
+      <p>
+        Until then, I’m saving you a seat at the next long dinner.
+      </p>
+    </div>
+
+    <footer class="signoff">
+      <p class="closing">Love,</p>
+      <p class="script-name">Jenni</p>
+      <p class="legal">Jennifer</p>
+    </footer>
+    <div class="letter-foot">Handwritten in spirit · sent with care</div>
+  </article>
+</body>
+</html>

@@ -64,6 +64,8 @@ codebase · `reference`: pointer to an external resource.
 | [lesson-defaults-export-beside-html.md](lesson-defaults-export-beside-html.md) | Go-to pack PDFs export into `defaults/` next to the HTML — never `_exports/defaults/` |
 | [lesson-utf8-json-roundtrip-on-windows.md](lesson-utf8-json-roundtrip-on-windows.md) | PowerShell/cp1252 round-trips corrupt UTF-8 JSON with ⭐ — surgical Edit + `encoding=utf-8` only |
 | [lesson-ats-section-cues-must-be-contiguous.md](lesson-ats-section-cues-must-be-contiguous.md) | Jobright misses Job Title / Work Experience / Education when cues are creative, buried, or split in the text layer (Montserrat `W ORK`) — `check_ats` + system-font h2 |
+| [lesson-jobright-content-score-is-not-parse-fail.md](lesson-jobright-content-score-is-not-parse-fail.md) | Jobright rank D / skills-count ≠ ATS parse fail — upload light; print body on system font; mid-word splits are the real shredder |
+| [lesson-hub-drawer-css-without-html-clips-more.md](lesson-hub-drawer-css-without-html-clips-more.md) | Hub drawer CSS without HTML/JS + `overflow:hidden` clipped the ⋯ panel; recipe_gallery must scan layout category folders |
 
 ## Related
 

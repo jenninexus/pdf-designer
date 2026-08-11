@@ -140,9 +140,10 @@ storage/<user>/
 > **⭐ Export defaults INTO `defaults/`** — same folder as the HTML (`--output-dir storage/<user>/defaults`
 > or an explicit PDF path under that dir). **Never** write go-to packs to `_exports/defaults/` (that
 > path hid PDFs from the Design Hub defaults picker). Vault `goToPacks.*.exportDir` must point at
-> `storage/<user>/defaults/`. After editing a default HTML, re-export dark (Jenni) / per `exportPrefs`
-> and run `python -m pdf_tool.check_generation` on the source (see [`QA.md`](QA.md)).
-
+> `storage/<user>/defaults/`. After editing a default HTML, re-export **light + dark** for **every**
+> applicant (`exportPrefs.resumeDefault = light-and-dark`), run
+> `python -m pdf_tool.check_generation` on the source, and `python -m pdf_tool.check_ats` on the light
+> PDF (see [`QA.md`](QA.md) · [`JOB-ASSESSMENT.md`](JOB-ASSESSMENT.md) § Tier 4.5).
 ### Voice SSOT (hybrid)
 
 | Layer | Path | Edit when… |

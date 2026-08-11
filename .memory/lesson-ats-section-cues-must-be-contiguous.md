@@ -18,18 +18,20 @@ Experience / Education.”
 4. **Font metrics:** Montserrat’s `W` glyph advances made pypdf extract `WORK EXPERIENCE` as
    `W ORK EXPERIENCE` even at `letter-spacing: 0` — Jobright then treated the cue as missing.
 5. Extreme `letter-spacing` on brand words (`0.18em` on `jenninexus`) similarly splits the text layer.
+6. **Montserrat as print *body* font** splits ordinary words (`Gam es`, `m aterials`, `m obilize`) even
+   when section `h2` is already on Segoe — system font for the whole `@media print` body.
 
 **How to apply:**
 
 1. Use exact `h2` labels: **Work Experience**, **Education**, **Skills**; header line **Job Title**.
 2. Job blocks: title → company → dates (separate lines).
-3. Section `h2` on a system font (`Segoe UI` / Arial / Helvetica) for ATS-critical cues.
-4. Export **light** for board upload; keep dark for humans (same HTML — dark is not “unparseable”).
+3. Section `h2` **and print body** on a system font (`Segoe UI` / Arial / Helvetica).
+4. Export **light** for board upload; keep dark for humans (same HTML when print fonts match).
 5. Gate: `python -m pdf_tool.check_ats <resume-light.pdf>` — exit 0 requires contiguous
-   `job title` · `work experience` · `education`. Read the dump; if *you* cannot find the phrases,
-   the board will not either.
+   `job title` · `work experience` · `education` **and** mid-word splits ≤ threshold. Read the dump.
 
 SSOT: [`docs/JOB-ASSESSMENT.md`](../docs/JOB-ASSESSMENT.md) § Tier 4.5 · [`docs/SSOT.md`](../docs/SSOT.md)
 § ATS parseability · `examples/profiles/default-resume/profile.json#verify.atsParse`.
 
-Related: [[lesson-defaults-export-beside-html]] · [[lesson-work-samples-footer-row-false-collision]]
+Related: [[lesson-defaults-export-beside-html]] · [[lesson-work-samples-footer-row-false-collision]] ·
+[[lesson-jobright-content-score-is-not-parse-fail]]
