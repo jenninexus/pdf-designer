@@ -18,6 +18,8 @@
  *                        Mouse wheel → horizontal scroll (passive:false on wheel).
  *     .hub-bar-pin     — ⋯ + Refresh + Export stay visible on the right.
  *     .hub-folder-picker — custom list; ghost ★ on row hover; pinned rows sort to top.
+ *                        Menu is position:fixed (JS top/left) so hub-bar-scroll overflow
+ *                        does not clip it — same class of bug as hub-more before the pin move.
  *     .hub-group       — semantic group with 1px dividers.
  *   .hub-main          — library LEFT column + stage RIGHT (side-by-side from ≥576px).
  *   .hub-drawer        — offcanvas-end panel (Bungie-style, MG/JN pattern).
@@ -487,11 +489,13 @@ a.hub-brand { color: inherit; text-decoration: none; cursor: pointer; }
 }
 .hub-folder-menu {
   display: none;
-  position: absolute;
+  /* fixed — .hub-bar-scroll uses overflow-y:hidden (needed for x-scroll), which
+     clips position:absolute descendants. JS sets top/left from the trigger rect. */
+  position: fixed;
   left: 0;
-  top: calc(100% + 4px);
-  z-index: 60;
-  min-width: max(240px, 100%);
+  top: 0;
+  z-index: 120;
+  min-width: 240px;
   max-width: min(420px, 70vw);
   max-height: min(420px, 60vh);
   overflow-y: auto;
