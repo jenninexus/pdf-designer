@@ -66,6 +66,7 @@ codebase · `reference`: pointer to an external resource.
 | [lesson-ats-section-cues-must-be-contiguous.md](lesson-ats-section-cues-must-be-contiguous.md) | Jobright misses Job Title / Work Experience / Education when cues are creative, buried, or split in the text layer (Montserrat `W ORK`) — `check_ats` + system-font h2 |
 | [lesson-jobright-content-score-is-not-parse-fail.md](lesson-jobright-content-score-is-not-parse-fail.md) | Jobright rank D / skills-count ≠ ATS parse fail — upload light; print body on system font; mid-word splits are the real shredder |
 | [lesson-hub-drawer-css-without-html-clips-more.md](lesson-hub-drawer-css-without-html-clips-more.md) | Hub drawer CSS without HTML/JS + `overflow:hidden` clipped the ⋯ panel; recipe_gallery must scan layout category folders |
+| [lesson-hub-stack-at-md-breaks-desktop-split.md](lesson-hub-stack-at-md-breaks-desktop-split.md) | Do not stack library/viewer at md (991.98) — desktop/zoomed windows look broken; keep LEFT/RIGHT until phones (≤575.98); folder pins = ghost ★ in picker |
 
 ## Related
 
