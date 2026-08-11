@@ -59,7 +59,7 @@ Each `.html` file is its **own template** in the library (one card = one file).
 
 Adapted from `D:\Resume\Jobright\jobright-feature-review.md` — local-first library + filters, not cloud match scores:
 
-- **Kind chips (leading, after Profiles):** All · Resumes · Cover Letters · Work Samples — then Library / Recipes / Vault / search / folder / palette scroll horizontally. **Refresh + Export stay pinned** on the right. Mouse wheel over the header strip scrolls that row horizontally.
+- **Kind chips (leading, after Profiles):** All · Resumes · Cover Letters · Letters · Work Samples — then Library / Recipes / Vault / search / folder / palette scroll horizontally. **Refresh (icon) + Export (download icon) stay pinned** on the right; **⋯** opens the output-folder popover (also pinned — not clipped). ≤767.98px: hamburger drawer holds filters + outdir; magnifier opens search overlay (Ctrl/Cmd+K). Mouse wheel over the header strip scrolls that row horizontally.
 - **Folder:** e.g. `storage/jenni/defaults`, `storage/_job-listings/3D-Artist`. **★ pin** the current folder (button beside the select) — pinned go-tos appear in a **Pinned** optgroup and persist in `localStorage` (`pdf-designer.hub.pinnedFolders`) across Refresh and full reloads.
 - **Profiles** (was “Who”): `all profiles` · **jenni** · **shade** · **studio** · **martian** — from path ownership (`storage/<id>/`) or filename prefix. Matches `storage/profiles/*-resume.json` entity decks (studio = Synagen/capabilities; martian = game studio). Preference kept in `pdf-designer.hub.profileFilter`.
 - **Search:** name or path substring
@@ -78,7 +78,7 @@ Sidebar groups stay collapsible by folder. Stage bar shows kind · profile · bu
   library (filters cleared, person chip set, card scrolled into view). Selecting a
   library card also writes `?doc=` into the URL for shareable deep-links.
 - **Recipe gallery** → [http://127.0.0.1:8787/recipes](http://127.0.0.1:8787/recipes) · `GET /api/recipe-gallery`
-  — browse tracked `layouts/collage/` + `layouts/` + `themes/presets/` (structure +
+  — browse tracked `layouts/{cover-letter,letter,resume,work-examples,collage}/` + `themes/presets/` (structure +
   public audition palettes). Copy collage CLI (`--recipe <id>`), open raw JSON, or
   **Try in Hub** via `/?palette=<id>&mode=dark|light` (selects the palette swapper).
   Discovery chrome only — still one renderer.

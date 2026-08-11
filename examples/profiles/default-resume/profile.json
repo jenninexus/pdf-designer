@@ -34,12 +34,15 @@
     "otherGuards": "check_palette (always) · check_vault --explain/--coverage (step 0/4a) · check_ats (light PDF). See AGENTS.md § Guards.",
     "atsParse": {
       "_note": "⭐ SHARED — every profile that extends this one (jenni · shade · martian · studio) must ship an ATS-parseable LIGHT résumé. SSOT: docs/JOB-ASSESSMENT.md § Tier 4.5.",
-      "upload": "Always upload *-resume-light.pdf to boards (Jobright / Indeed / LinkedIn). Dark branded is for humans / email.",
-      "gate": "python -m pdf_tool.check_ats <resume-light.pdf> — exit 0 requires contiguous cues: job title · work experience · education",
+      "upload": "Always upload *-resume-light.pdf to boards (Jobright / Indeed / LinkedIn). Dark branded is for humans / email. Jobright rank D / IMPROVABLE is a content-AI grade — not the same as missing Job Title/Work Experience/Education.",
+      "gate": "python -m pdf_tool.check_ats <resume-light.pdf> — exit 0 requires contiguous cues: job title · work experience · education · AND mid-word splits ≤ 2",
       "requiredHeadings": ["Job Title", "Work Experience", "Education", "Skills"],
-      "jobBlockOrder": "title line → company line → dates (never COMPANY — ROLE on one line)",
+      "jobBlockOrder": "title line → company line → dates (never COMPANY — ROLE on one line). Page-2 roles need company + dates too.",
       "sectionHeadingFont": "Segoe UI / Arial / Helvetica on h2 — Montserrat W glyph advances can split WORK EXPERIENCE in the PDF text layer",
-      "banned": ["two-column prose bullets in experience", "creative section titles (My Journey)", "bare Experience without Work", "Education buried as h3 in a side column only", "extreme letter-spacing on ATS-critical words"]
+      "printBodyFont": "⭐ System stack in @media print for BODY too — Montserrat splits body words (Gam es / m aterials / m obilize). Screen may keep brand font.",
+      "letterSpacingMax": "0.04em on ATS-critical labels",
+      "skillsForBoardContentAi": "Optional: ≥10 discrete skill tags from boardSkills when optimizing for Jobright content score",
+      "banned": ["two-column prose bullets in experience", "creative section titles (My Journey)", "bare Experience without Work", "Education buried as h3 in a side column only", "extreme letter-spacing on ATS-critical words", "Montserrat (or similar) as the print body font", "uploading dark PDF to Jobright/Indeed/LinkedIn"]
     }
   },
   "layout": {
@@ -65,10 +68,11 @@
     "note": "html_to_pdf.py writes here by default when no explicit output PDF is passed; use --output-dir or a full output path to override."
   },
   "exportModes": {
-    "lightPdf": "Default ATS-safe print mode.",
+    "lightPdf": "Default ATS-safe print mode — ALWAYS ship for every profile; board upload file.",
     "darkPdf": "Run html_to_pdf.py with --pdf-theme dark; template must include html[data-pdf-theme=\"dark\"] print overrides.",
     "bundlePdf": "Run merge_pdfs.py final-application.pdf cover-letter.pdf resume.pdf --require-letter when a portal accepts one upload.",
-    "png": "Render generated PDFs to page PNG files with pdf_to_png.py."
+    "png": "Render generated PDFs to page PNG files with pdf_to_png.py.",
+    "universalBoardContract": "Every extending profile (jenni · shade · martian · studio) keeps exportPrefs.resumeDefault=light-and-dark + includeLightAts=true. Upload light only. check_ats before board submit. Print body font = system stack."
   },
   "sections": [
     {

@@ -148,23 +148,39 @@ Rank by **leverage**, not by effort. State the single highest-value action plain
 **Owner-observed 2026-07-13, Indeed · 2026-08 Jobright.** The light/ATS PDF is not just "the printable
 one" — it is the file a **parser** reads. Design it for the machine, not only for the eye.
 
+### ⚠ Two different Jobright scores — do not conflate them
+
+| What Jobright shows | What it means | Our gate |
+|---|---|---|
+| **Missing Job Title / Work Experience / Education** | Parser could not map those fields (true ATS failure) | `check_ats` — must exit 0 |
+| **Rank D / IMPROVABLE · “Insufficient skills” · “Lack of Accomplishment” · short bullets** | Their **content AI** grading bullets/skills against a generic template | **Not** a parse failure. Fix with vault-backed skills (≥10 discrete tags) + method/result bullets — or ignore if the human prefers a tight résumé |
+| Uploading **`*-resume-dark.pdf`** to a board | Boards expect the light file; dark is for humans / email / portfolio | Always upload **`*-resume-light.pdf`** |
+
+A résumé can **PASS** `check_ats` and still get Jobright’s content grade of D. That is annoying, not
+“unparseable.” Cover letters and work-samples are **not** board-upload substitutes — boards get the
+light résumé only; work-samples are visual; cover letters go where the portal asks for a letter.
+
 ### How to know a résumé is parseable (every profile)
 
 | Step | Command / action | Pass looks like |
 |---|---|---|
 | 1 | Export **light** PDF (`html_to_pdf` default — no `--pdf-theme dark`) | `*-resume-light.pdf` beside the HTML |
-| 2 | `python -m pdf_tool.check_ats <resume-light.pdf>` | Exit 0 · required cues `[OK] job title` · `[OK] work experience` · `[OK] education` |
-| 3 | **Read the text dump** in that command | Contiguous phrases a human can find — not `W ORK EXPERIENCE`, not two-column gibberish |
-| 4 | Board upload (Jobright / Indeed / LinkedIn) | No “missing Job Title / Work Experience / Education” warning |
+| 2 | `python -m pdf_tool.check_ats <resume-light.pdf>` | Exit 0 · `[OK] job title` · `[OK] work experience` · `[OK] education` · **mid-word splits ≤ 2** |
+| 3 | **Read the text dump** in that command | Contiguous phrases — not `W ORK EXPERIENCE`, not `Martian Gam es`, not two-column gibberish |
+| 4 | Board upload (Jobright / Indeed / LinkedIn) | Upload **light** only · no “missing Job Title / Work Experience / Education” warning |
 
 **Applies to every profile under `storage/profiles/`** (jenni · shade · studio · martian) and the
-public `examples/profiles/default-resume/`. Creative headings (`My Journey`, bare `Experience`,
-`Training`) are not parseable field names. Work-samples PDFs are visual — boards get the **light
-résumé**, not the portfolio.
-
+public `examples/profiles/default-resume/`. Each private profile’s
+`#exports.exportPrefs` must keep `resumeDefault: light-and-dark` + `includeLightAts: true` —
+that is the shared board contract, not a Jenni-only preference. Creative headings (`My Journey`, bare
+`Experience`, `Training`) are not parseable field names. Work-samples PDFs are visual — boards get the
+**light résumé**, not the portfolio. Cover-letter HTML still gets `check_generation`; it does **not**
+need Jobright section cues.
 `check_ats` is the local SSOT for “is it parseable?” — dashboard also in [`SSOT.md`](SSOT.md) § ATS
-parseability. **Dark is not “unparseable”** (same HTML text layer as light); boards still want the
-**light** upload. Prefer running `check_ats` on `*-resume-light.pdf` and uploading that file.
+parseability. **Dark is not “unparseable”** (same HTML text layer as light when print fonts match);
+boards still want the **light** upload. Always run `check_ats` on `*-resume-light.pdf` before a board
+submit. Go-to packs under `storage/<user>/defaults/` ship **both** light and dark so the board file
+never goes stale when `exportPrefs` also wants branded dark.
 
 ### 🚫 Two-column bullet lists are BANNED in the resume body
 
@@ -185,13 +201,19 @@ The garbled text is what the employer sees, and "hair, beauty" ends up orphaned 
 - **No text in `position: absolute`** anywhere the parser needs it (our signature block is fine — it's
   decorative and duplicated in the contact line).
 - Keep arrows/glyphs (`→`, `·`, `—`) out of bullets that carry keywords; they survive, but they add noise.
+- **Print body font = system stack.** Montserrat (and similar display fonts) can look perfect on screen
+  while the PDF text layer reads `m aterials` / `Gam es` / `m obilize`. In `@media print`, set
+  `font-family: "Segoe UI", Arial, Helvetica, sans-serif` for **body** (not only `h2`). Screen preview
+  may keep the brand font.
+- **Job blocks need company + dates.** Page-2 roles that are only an `h3` + paragraph often trigger
+  Jobright’s “Important Fields Missing.” Use title → company → dates on every experience entry.
 
 ### Verify the parse before submitting
 
 Extract the text in reading order and *read it*. If it doesn't make sense to you, it won't to the ATS:
 
 ```bash
-python -c "import fitz; d=fitz.open('<resume>-light.pdf'); print(d[0].get_text())"
+python -m pdf_tool.check_ats <resume>-light.pdf
 ```
 
 ### When the board pre-fills from the resume
@@ -200,9 +222,19 @@ Boards (Indeed, LinkedIn, **Jobright**) parse the upload into editable work-expe
 hand-fix those entries** — a clean fix in the form beats a mangled auto-parse. Paste single-column,
 plain-text bullets.
 
-**Upload the resume-only light PDF** — never the merged cover-letter+resume bundle, and prefer the
-**light** export over the dark branded one for board parsers. A parser fed the bundle will read the
-cover letter as resume content.
+**Upload the resume-only light PDF** — never the merged cover-letter+resume bundle, and never the dark
+branded file for board parsers. A parser fed the bundle will read the cover letter as resume content.
+
+### Board content tips (optional — Jobright “IMPROVABLE”, not parse)
+
+When the human *wants* a better Jobright content score (still source-backed only):
+
+| Flag | Fix (vault-backed) |
+|---|---|
+| Skills &lt; 10 | Surface ≥10 discrete tags from `boardSkills` / vault skills — not one mega-bullet |
+| Lack of Accomplishment / Methodology | Bullets = **method + result** (what you did + how / shipped outcome). Reuse metrics already in the vault (plays, tenure, titles) — never invent |
+| Bullet too short | Prefer one clear sentence over a three-word task fragment |
+| Important Fields Missing | Every role: **title · company · dates** on separate lines |
 
 ### ⚠ Jobright / board “missing Job Title / Work Experience / Education”
 
@@ -217,10 +249,10 @@ even if the words exist somewhere in the PDF. Fixes that cleared it on the Jenni
 
 Also — **font metrics matter.** Montserrat’s `W` glyph advances made the PDF text layer extract
 `WORK EXPERIENCE` as `W ORK EXPERIENCE` (Jobright then warns the section is missing), even at
-`letter-spacing: 0`. Section `h2` cues on the Jenni default use `"Segoe UI", Arial, Helvetica`
-so the cue stays contiguous. Extreme tracking on brand words (`0.18em` → `je nnine xus`) has the
-same failure mode — keep decorative spacing ≤ `0.04em` on ATS-critical labels.
-
+`letter-spacing: 0`. Section `h2` cues **and print body text** on the Jenni default use
+`"Segoe UI", Arial, Helvetica` so cues and body words stay contiguous. Extreme tracking on brand
+words (`0.18em` → `je nnine xus`) has the same failure mode — keep decorative spacing ≤ `0.04em`
+on ATS-critical labels. `check_ats` fails when mid-word splits exceed the threshold.
 ---
 
 ## 🗂 What ends up on disk

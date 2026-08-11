@@ -56,25 +56,32 @@ dir but applicant known → list the open (non-`SUBMITTED`) applications and ask
 | `both` | matched pair | one company palette, split accent runs |
 | studio voices | optional studio / brand profiles | capabilities vs games |
 
-### ⭐ Step −1 — READ `exportPrefs`
+### ⭐ Step −1 — READ `exportPrefs` (UNIVERSAL board contract)
 
 Open **`storage/profiles/<user>-resume.json#exports.exportPrefs`** before exporting.
-That object owns the default deliverable (e.g. dark-only résumé). Do not invent a full pack.
 
-### 📦 What you deliver (default = résumé only)
+**Every profile** (jenni · shade · studio · martian) ships **light + dark** résumé PDFs by default
+(`resumeDefault: light-and-dark`, `includeLightAts: true`). That is the shared board contract —
+inherited from `examples/profiles/default-resume/profile.json#verify.atsParse`. Do **not** invent a
+dark-only pack and skip the light file.
+
+### 📦 What you deliver (default = résumé only, both themes)
 
 ```
 storage/<user>/_exports/<Job>/
-    <name>-resume-dark.pdf      ← common default when exportPrefs.resumeDefault = dark-only
-    <name>-resume-light.pdf     ← only if prefs or human ask for ATS/light
+    <name>-resume-light.pdf     ← ALWAYS — board upload (Jobright / Indeed / LinkedIn)
+    <name>-resume-dark.pdf      ← branded / humans / email
 ```
 
 | Need | How |
 |---|---|
+| Board submit | Upload **light** only · `python -m pdf_tool.check_ats <light.pdf>` exit 0 first |
 | Cover letter | Ask explicitly, or run personal `/make-cover-letter` |
 | Work samples | Ask explicitly, or run personal `/make-work-examples` |
 | Bundle | Only when a portal wants one file |
 
+Print HTML: system font for **body + h2** in `@media print` (Montserrat shreds the text layer).
+Jobright rank D ≠ unparseable — see [`docs/JOB-ASSESSMENT.md`](../../docs/JOB-ASSESSMENT.md) § Tier 4.5.
 ### 🔗 Pasted job URL with no folder yet
 
 Create `storage/_job-listings/<App>/` with `<Company>.md` + `application.json` (Links table,
@@ -96,7 +103,9 @@ canonical apply URL) per [`docs/JOB-ASSESSMENT.md`](../../docs/JOB-ASSESSMENT.md
 - [ ] **5. Derive the theme** from their **real brand CSS** → save to `<App>/theme.json`. Then run the **palette guard**.
 - [ ] **6. Rewrite the listing doc** (`<App>/<Company>.md`): status → **🔗 Links table** → routine-checks table → pay verdict → research → evidence map → gaps/prep → materials index → original listing verbatim below a `---`.
 - [ ] **7. Write** the **résumé** only (company-agnostic within the track). Cover letter only if explicitly requested in this turn.
-- [ ] **8. Export** per **`exportPrefs`** to **`storage/<user>/_exports/<Job>/`**. Verify page count from the PDF. Cover letter / work samples / bundle / PNGs ONLY if asked.
+- [ ] **8. Export** per **`exportPrefs`** (light **and** dark résumé) to **`storage/<user>/_exports/<Job>/`**.
+      Run `python -m pdf_tool.check_generation <doc>.html` then `python -m pdf_tool.check_ats <light.pdf>`.
+      Cover letter / work samples / bundle / PNGs ONLY if asked.
 - [ ] **9. Log** it in `<App>/application.json` and the listing doc.
 
 ---
@@ -402,8 +411,8 @@ python -m pdf_tool.pdf_to_png "$APP/<doc>.html" --pdf-theme dark
 
 Resume = **exactly 2 pages** · cover letter = **1** · work-samples = **3** · bundle = **3** · all US Letter.
 
-> **Layout.** Recipes: résumé → `layouts/two-page-standard.json` (signature **bottom-RIGHT**);
-> cover letter → `layouts/one-page-letter.json` (sign-off **bottom-LEFT**, CZI padding). Equal margins
+> **Layout.** Recipes: résumé → `layouts/resume/two-page-standard.json` (signature **bottom-RIGHT**);
+> cover letter → `layouts/cover-letter/one-page-letter.json` (sign-off **bottom-LEFT**, CZI padding). Equal margins
 > `@page { margin: 0.65in }` résumé / `0.75in` letter. **⚠ Each résumé page must FIT its box** or the pinned
 > signature collides — `check_generation` catches it; **move a section**, never shrink the margin. Letter
 > print uses `min-height` only — never résumé `height` + `overflow:hidden`. Full model:
@@ -415,9 +424,13 @@ Resume = **exactly 2 pages** · cover letter = **1** · work-samples = **3** · 
 
 **How you know it’s parseable:** after light export, run
 `python -m pdf_tool.check_ats <resume-light.pdf>` — exit 0 with `[OK] job title`,
-`[OK] work experience`, `[OK] education`, and a text dump you can read. Full checklist:
-[`docs/JOB-ASSESSMENT.md`](../../docs/JOB-ASSESSMENT.md) § Tier 4.5. Same rule for **every**
-profile (`jenni` · `shade` · `studio` · `martian`).
+`[OK] work experience`, `[OK] education`, **mid-word splits ≤ 2**, and a text dump you can read.
+Full checklist: [`docs/JOB-ASSESSMENT.md`](../../docs/JOB-ASSESSMENT.md) § Tier 4.5. Same rule for
+**every** profile (`jenni` · `shade` · `studio` · `martian`).
+
+**Jobright rank D ≠ unparseable.** Their IMPROVABLE / skills-count / “Lack of Accomplishment” score is
+a **content AI**. The parse gate is missing Job Title / Work Experience / Education (or a shredded
+text layer). Do not “fix parseability” by rewriting claims that already pass `check_ats`.
 
 - **🚫 NO two-column bullet lists in the resume body.** Indeed parsed our two-column experience bullets
   *across* the columns and interleaved them into gibberish (*"…camera composition **AI-powered creative
@@ -425,14 +438,16 @@ profile (`jenni` · `shade` · `studio` · `martian`).
   A two-column grid is fine for **tag chips / a tools list / page-2 side-by-side entries**; never for
   prose bullets inside an experience block. **Reading order must equal DOM order.**
 - **Standard `h2` labels:** `Work Experience` (not bare `Experience`), `Education`, `Skills`, plus a
-  header `Job Title` line. Section `h2` on a system font (`Segoe UI` / Arial) — Montserrat can split
-  `WORK EXPERIENCE` → `W ORK EXPERIENCE` in the text layer.
+  header `Job Title` line. Section `h2` **and print body** on a system font (`Segoe UI` / Arial) —
+  Montserrat can split `WORK EXPERIENCE` → `W ORK EXPERIENCE` and body words → `Gam es` / `m aterials`.
 - **Job blocks:** title line → company line → dates (never `COMPANY — ROLE` mashed on one line).
-- **Upload the resume-only light PDF**, never the merged bundle (a parser fed the bundle reads the cover
-  letter as resume content). Prefer light over dark for Jobright / Indeed / LinkedIn.
+  Page-2 roles need company + dates too (Jobright “Important Fields Missing”).
+- **Upload the resume-only light PDF**, never the merged bundle, never the dark file for boards
+  (Jobright / Indeed / LinkedIn). Prefer light over dark for parsers.
 - **When a board pre-fills work-experience entries from the upload, hand-fix them** — paste clean,
   single-column, plain-text bullets.
-
+- **Cover letter / work samples:** run `check_generation`; boards still receive the light **résumé**.
+  Work-samples are visual — not an ATS substitute.
 ## Contracts (from `AGENTS.md` — do not break)
 
 - **Geometry locked:** US Letter, `@page { size: Letter; margin: 0.45in 0.5in 0.55in; }`. Palette

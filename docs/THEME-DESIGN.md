@@ -52,7 +52,7 @@ Contrast spot-check: `node scripts/wcag-resume-palettes.mjs`.
 `--support #00D4AA` · `--text #E0D5EB`). Keep footers cohesive: script name in `--accent`, email in
 `--text` at ≥11px (never muted `--dim2`). Live URLs are real `<a href>` in the body; portfolio /
 agency / studio links are not footer chrome. Layout prefs for the visual pack:
-[`../layouts/work-examples.json`](../layouts/work-examples.json) + [`LAYOUT-SYSTEM.md`](LAYOUT-SYSTEM.md).
+[`../layouts/work-examples/work-examples.json`](../layouts/work-examples/work-examples.json) + [`LAYOUT-SYSTEM.md`](LAYOUT-SYSTEM.md).
 
 Design Hub `load_palettes()` scans `themes/` + `themes/presets/` + `storage/brand-design/` — the person dropdown only filters the library, it does not auto-apply a brand.
 
