@@ -43,6 +43,8 @@ built versus planned.
 Numbers are not redefined there — they resolve through `C:\mcp\.config\mcp-breakpoints.json` → set
 `bootstrap_5_3_8_extended_390_4k` → `www-theme-kit/scss/_breakpoint-tokens.scss` (syna mirror).  
 Design Hub hard-codes the same `.98px` ceilings in `static/hub.css` (CSS `@media` cannot use `var()`).
+Library/viewer **split** holds from **576px** up; phones stack. Drawer switch stays **≤767.98px**.
+See [`PREVIEWER.md`](PREVIEWER.md) · `www-theme-kit/profiles/pdf-designer.json#breakpoints`.
 
 ### No network. No environment variables.
 

@@ -55,9 +55,10 @@
     "shared_token_reference": "<WWW_THEME_KIT>\\scss\\_breakpoint-tokens.scss",
     "hub_css": "src/pdf_tool/static/hub.css (hard-codes the same .98px maxes — CSS cannot var() inside @media)",
     "viewport_floor": "390x844",
-    "nav_switch": "lg (992px)",
+    "nav_switch": "md (768px) — drawer; library/viewer still split until xs",
     "hub_layout_switch": {
-      "compact_below": "991.98px (md-max) — library stacks above stage",
+      "stack_below": "575.98px (xs-max) — library stacks above stage (phones only)",
+      "drawer_below": "767.98px (sm-max) — hamburger; filters in drawer; split retained",
       "comfortable_from": "1200px (xl) — wider library + filter row spreads",
       "widescreen_from": "1400px (xxl) — max content breathing room"
     },

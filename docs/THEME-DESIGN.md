@@ -18,6 +18,10 @@ profiles.
 `www-theme-kit/profiles/{jenninexus,martiangames}.json` → map into
 `storage/brand-design/brand-*.json` for exports.
 
+Hub chrome (toolbar size, library/viewer split, folder ghost-★ pins) is **not** a document
+palette concern — edit `src/pdf_tool/static/hub.css` + [`PREVIEWER.md`](PREVIEWER.md); keep
+`--dash-*` accents distinct from document `--primary` / brand maps.
+
 ## Public Defaults
 
 Tracked default theme files:

@@ -252,8 +252,9 @@ Profile contract: `storage/profiles/jenni-resume.json → workSamples`. Asset so
 The Design Hub (`python -m pdf_tool.preview`) **auto-refreshes** — no restart when you export a new
 resume or edit a source. It polls `/api/version` (a cheap tree signature over HTML sources + `_exports/`
 outputs); when the signature changes the sidebar re-renders, the open preview reloads, and a small toast
-flashes (`＋1 document`). So the loop is: edit/export → the hub updates itself. See
-[`PREVIEWER.md`](PREVIEWER.md).
+flashes (`＋1 document`). So the loop is: edit/export → the hub updates itself. Hub chrome (library
+**left** / viewer **right**, compact ~40px bar, folder ghost-★ pins) is documented in
+[`PREVIEWER.md`](PREVIEWER.md) + `src/pdf_tool/static/hub.css` — not in document recipes.
 
 ## Future work
 

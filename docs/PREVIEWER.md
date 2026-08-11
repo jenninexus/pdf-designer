@@ -50,7 +50,9 @@ fast on a large tree. If the server is briefly down mid-poll, the client just re
 | `www-theme-kit/scss/_breakpoint-tokens.scss` | Shared numeric tokens / mixins (www-theme-kit is the consumer SSOT for this repo) |
 | `hub.css` `@media` | Hard-codes the same `.98px` maxes (CSS cannot `var()` inside `@media`) |
 
-Hub layout: stacks below **991.98px** (md-max); comfortable from **1200px** (xl); widescreen from **1400px** (xxl).
+Hub layout: **library left + viewer right** from **576px** up (desktop / tablet). Stacks only below
+**575.98px** (phones). Drawer (hamburger) from **≤767.98px**. Comfortable from **1200px** (xl);
+widescreen from **1400px** (xxl). Compact bar is **~40px**.
 **Vault + Recipes** use the same switch points (shared `hub.css` + `Library | Recipes | Vault` nav). Library is `body.hub-shell` (fixed panes); subpages are `body.hub-page` (document scroll). Tables get a horizontal scroll wrapper below md.
 
 Each `.html` file is its **own template** in the library (one card = one file).
@@ -60,11 +62,11 @@ Each `.html` file is its **own template** in the library (one card = one file).
 Adapted from `D:\Resume\Jobright\jobright-feature-review.md` — local-first library + filters, not cloud match scores:
 
 - **Kind chips (leading, after Profiles):** All · Resumes · Cover Letters · Letters · Work Samples — then Library / Recipes / Vault / search / folder / palette scroll horizontally. **Refresh (icon) + Export (download icon) stay pinned** on the right; **⋯** opens the output-folder popover (also pinned — not clipped). ≤767.98px: hamburger drawer holds filters + outdir; magnifier opens search overlay (Ctrl/Cmd+K). Mouse wheel over the header strip scrolls that row horizontally.
-- **Folder:** e.g. `storage/jenni/defaults`, `storage/_job-listings/3D-Artist`. **★ pin** the current folder (button beside the select) — pinned go-tos appear in a **Pinned** optgroup and persist in `localStorage` (`pdf-designer.hub.pinnedFolders`) across Refresh and full reloads.
+- **Folder:** custom picker (not a bare `<select>`). Open the list → hover a row for a **ghost ★**; click the star to pin / unpin. Pinned folders sort to the **top** and persist in `localStorage` (`pdf-designer.hub.pinnedFolders`) across Refresh and full reloads. No separate pin button in the toolbar.
 - **Profiles** (was “Who”): `all profiles` · **jenni** · **shade** · **studio** · **martian** — from path ownership (`storage/<id>/`) or filename prefix. Matches `storage/profiles/*-resume.json` entity decks (studio = Synagen/capabilities; martian = game studio). Preference kept in `pdf-designer.hub.profileFilter`.
 - **Search:** name or path substring
 
-Sidebar groups stay collapsible by folder. Stage bar shows kind · profile · bucket · path.
+Sidebar is a **left column**; the stage / iframe viewer fills the rest of the viewport. Groups stay collapsible by folder. Stage bar shows kind · profile · bucket · path.
 
 ### Features
 
