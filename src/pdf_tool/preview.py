@@ -300,8 +300,14 @@ APP_HTML = """<!doctype html>
     </nav>
     <div class="hub-group hub-filters">
       <input id="search" type="search" placeholder="Search…" autocomplete="off" title="Search name or path" aria-label="Search">
-      <select id="folderFilter" title="Folder — pin go-tos with ★" aria-label="Folder"><option value="">all folders</option></select>
-      <button type="button" id="pinFolderBtn" class="hub-pin-btn" title="Pin / unpin this folder (kept after Refresh)" aria-label="Pin folder" disabled>★</button>
+      <select id="folderFilter" class="hub-folder-native" aria-hidden="true" tabindex="-1"><option value="">all folders</option></select>
+      <div class="hub-folder-picker" id="folderPicker">
+        <button type="button" class="hub-folder-trigger" id="folderFilterBtn" aria-haspopup="listbox" aria-expanded="false" title="Folder — hover ★ to pin go-tos">
+          <span class="hub-folder-label" id="folderFilterLabel">all folders</span>
+          <span class="hub-folder-chev" aria-hidden="true">▾</span>
+        </button>
+        <div class="hub-folder-menu" id="folderFilterMenu" role="listbox" hidden></div>
+      </div>
       <select id="palette" title="Palette" aria-label="Palette"><option value="">doc default</option></select>
       <select id="fmt" title="Export format" aria-label="Export format">
         <option value="pdf-light">PDF light</option>
@@ -369,8 +375,15 @@ APP_HTML = """<!doctype html>
         </select>
       </div>
       <div class="hub-drawer-field">
-        <label for="drawerFolderFilter">Folder</label>
-        <select id="drawerFolderFilter" aria-label="Folder"><option value="">all folders</option></select>
+        <span class="hub-drawer-label" id="drawerFolderLabel">Folder</span>
+        <select id="drawerFolderFilter" class="hub-folder-native" aria-hidden="true" tabindex="-1"><option value="">all folders</option></select>
+        <div class="hub-folder-picker" id="drawerFolderPicker">
+          <button type="button" class="hub-folder-trigger" id="drawerFolderFilterBtn" aria-haspopup="listbox" aria-expanded="false" title="Folder — hover ★ to pin">
+            <span class="hub-folder-label" id="drawerFolderFilterLabel">all folders</span>
+            <span class="hub-folder-chev" aria-hidden="true">▾</span>
+          </button>
+          <div class="hub-folder-menu" id="drawerFolderFilterMenu" role="listbox" hidden></div>
+        </div>
       </div>
       <div class="hub-drawer-field">
         <label for="drawerPalette">Palette</label>
@@ -464,8 +477,155 @@ function togglePinFolder(folder) {
   else pins.push(folder);
   savePinnedFolders(pins);
   buildFolderSelect();
-  syncPinButton();
 }
+
+const STAR_SVG = '<svg class="hub-icon" viewBox="0 0 576 512" aria-hidden="true" focusable="false"><path fill="currentColor" d="M316.9 18C311.6 7 300.4 0 288.1 0s-23.4 7-28.8 18L195 150.3 51.4 171.5c-12 1.8-22 10.2-25.7 21.7s-.7 24.2 7.9 32.7L137.8 329 113.2 474.7c-2 12 3 24.2 12.9 31.3s23 8 33.8 2.3l128.3-68.5 128.3 68.5c10.8 5.7 23.9 4.9 33.8-2.3s14.9-19.3 12.9-31.3L438.5 329 542.7 225.9c8.6-8.5 11.7-21.2 7.9-32.7s-13.7-19.9-25.7-21.7L381.2 150.3 316.9 18z"/></svg>';
+
+function closeFolderPickers(exceptId) {
+  document.querySelectorAll(".hub-folder-picker.open").forEach(p => {
+    if (exceptId && p.id === exceptId) return;
+    p.classList.remove("open");
+    const btn = p.querySelector(".hub-folder-trigger");
+    const menu = p.querySelector(".hub-folder-menu");
+    if (btn) btn.setAttribute("aria-expanded", "false");
+    if (menu) menu.hidden = true;
+  });
+}
+
+function setFolderFilterValue(v, { silent = false } = {}) {
+  const sel = document.getElementById("folderFilter");
+  const drawerSel = document.getElementById("drawerFolderFilter");
+  const next = v || "";
+  if (sel) sel.value = next;
+  if (drawerSel) drawerSel.value = next;
+  const label = next || "all folders";
+  const lab = document.getElementById("folderFilterLabel");
+  const dlab = document.getElementById("drawerFolderFilterLabel");
+  if (lab) { lab.textContent = label; lab.title = label; }
+  if (dlab) { dlab.textContent = label; dlab.title = label; }
+  if (!silent && sel) sel.dispatchEvent(new Event("change"));
+}
+
+function folderMenuRow(folder, { selected, pinned, isAll }) {
+  const row = document.createElement("div");
+  row.className = "hub-folder-item";
+  row.setAttribute("role", "option");
+  row.setAttribute("aria-selected", selected ? "true" : "false");
+  row.dataset.value = folder;
+  const label = document.createElement("span");
+  label.className = "hub-folder-item-label";
+  label.textContent = isAll ? "all folders" : folder;
+  label.title = isAll ? "all folders" : folder;
+  row.appendChild(label);
+  if (!isAll) {
+    const pin = document.createElement("button");
+    pin.type = "button";
+    pin.className = "hub-folder-pin";
+    pin.title = pinned ? "Unpin folder" : "Pin folder (stays after Refresh)";
+    pin.setAttribute("aria-label", pinned ? "Unpin " + folder : "Pin " + folder);
+    pin.setAttribute("aria-pressed", pinned ? "true" : "false");
+    pin.innerHTML = STAR_SVG;
+    pin.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      togglePinFolder(folder);
+    });
+    row.appendChild(pin);
+  }
+  row.addEventListener("click", () => {
+    setFolderFilterValue(folder);
+    closeFolderPickers();
+    const drawer = document.getElementById("hubDrawer");
+    if (drawer && drawer.classList.contains("open")) closeDrawer();
+  });
+  return row;
+}
+
+function populateFolderMenu(menuEl, cur, all, pins) {
+  if (!menuEl) return;
+  menuEl.innerHTML = "";
+  menuEl.appendChild(folderMenuRow("", { selected: !cur, pinned: false, isAll: true }));
+
+  const pinnedAlive = pins.filter(p => all.includes(p));
+  if (pinnedAlive.length) {
+    const head = document.createElement("div");
+    head.className = "hub-folder-section";
+    head.textContent = "Pinned";
+    menuEl.appendChild(head);
+    for (const g of pinnedAlive.sort()) {
+      menuEl.appendChild(folderMenuRow(g, { selected: cur === g, pinned: true, isAll: false }));
+    }
+  }
+
+  const rest = all.filter(g => !pinnedAlive.includes(g));
+  if (rest.length) {
+    const head = document.createElement("div");
+    head.className = "hub-folder-section";
+    head.textContent = pinnedAlive.length ? "All folders" : "Folders";
+    menuEl.appendChild(head);
+    for (const g of rest) {
+      menuEl.appendChild(folderMenuRow(g, { selected: cur === g, pinned: false, isAll: false }));
+    }
+  }
+}
+
+function populateFolderSelect(sel, cur, all, pins, pinSet) {
+  if (!sel) return;
+  sel.innerHTML = "";
+  const allOpt = document.createElement("option");
+  allOpt.value = "";
+  allOpt.textContent = "all folders";
+  sel.appendChild(allOpt);
+  const pinnedAlive = pins.filter(p => all.includes(p));
+  for (const g of [...pinnedAlive.sort(), ...all.filter(x => !pinSet.has(x))]) {
+    const o = document.createElement("option");
+    o.value = g;
+    o.textContent = g;
+    sel.appendChild(o);
+  }
+  if ([...sel.options].some(o => o.value === cur)) sel.value = cur;
+  else sel.value = "";
+}
+
+function buildFolderSelect() {
+  const sel = document.getElementById("folderFilter");
+  const drawerSel = document.getElementById("drawerFolderFilter");
+  const cur = (sel && sel.value) || (localStorage.getItem(HUB_FOLDER_KEY) || "");
+  const all = uniqueFolders();
+  const pins = loadPinnedFolders().filter(p => all.includes(p));
+  const pinSet = new Set(pins);
+  populateFolderSelect(sel, cur, all, pins, pinSet);
+  populateFolderSelect(drawerSel, cur, all, pins, pinSet);
+  const resolved = (sel && sel.value) || "";
+  setFolderFilterValue(resolved, { silent: true });
+  populateFolderMenu(document.getElementById("folderFilterMenu"), resolved, all, pins);
+  populateFolderMenu(document.getElementById("drawerFolderFilterMenu"), resolved, all, pins);
+}
+
+function wireFolderPicker(pickerId, btnId, menuId) {
+  const picker = document.getElementById(pickerId);
+  const btn = document.getElementById(btnId);
+  const menu = document.getElementById(menuId);
+  if (!picker || !btn || !menu) return;
+  btn.addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const willOpen = !picker.classList.contains("open");
+    closeFolderPickers(willOpen ? pickerId : null);
+    picker.classList.toggle("open", willOpen);
+    btn.setAttribute("aria-expanded", willOpen ? "true" : "false");
+    menu.hidden = !willOpen;
+  });
+}
+wireFolderPicker("folderPicker", "folderFilterBtn", "folderFilterMenu");
+wireFolderPicker("drawerFolderPicker", "drawerFolderFilterBtn", "drawerFolderFilterMenu");
+document.addEventListener("click", (e) => {
+  if (e.target.closest(".hub-folder-picker")) return;
+  closeFolderPickers();
+});
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") closeFolderPickers();
+});
 
 /* Horizontal wheel-scroll on the header strip (and its scrollbar). */
 (function hubBarWheelScroll() {
@@ -541,65 +701,6 @@ function buildKindChips() {
 
 function uniqueFolders() {
   return [...new Set(DOCS.map(d => d.group))].sort();
-}
-
-function populateFolderSelect(sel, cur, all, pins, pinSet) {
-  if (!sel) return;
-  sel.innerHTML = "";
-  const allOpt = document.createElement("option");
-  allOpt.value = "";
-  allOpt.textContent = "all folders";
-  sel.appendChild(allOpt);
-
-  const pinnedAlive = pins.filter(p => all.includes(p));
-  if (pinnedAlive.length) {
-    const og = document.createElement("optgroup");
-    og.label = "Pinned";
-    for (const g of pinnedAlive.sort()) {
-      const o = document.createElement("option");
-      o.value = g;
-      o.textContent = "★ " + g;
-      og.appendChild(o);
-    }
-    sel.appendChild(og);
-  }
-
-  const ogAll = document.createElement("optgroup");
-  ogAll.label = "All folders";
-  for (const g of all) {
-    const o = document.createElement("option");
-    o.value = g;
-    o.textContent = (pinSet.has(g) ? "★ " : "") + g;
-    ogAll.appendChild(o);
-  }
-  sel.appendChild(ogAll);
-
-  if ([...sel.options].some(o => o.value === cur)) sel.value = cur;
-  else sel.value = "";
-}
-function buildFolderSelect() {
-  const sel = document.getElementById("folderFilter");
-  const drawerSel = document.getElementById("drawerFolderFilter");
-  const cur = sel.value || (localStorage.getItem(HUB_FOLDER_KEY) || "");
-  const all = uniqueFolders();
-  const pins = loadPinnedFolders().filter(p => all.includes(p) || p);
-  const pinSet = new Set(pins);
-  populateFolderSelect(sel, cur, all, pins, pinSet);
-  populateFolderSelect(drawerSel, cur, all, pins, pinSet);
-  syncPinButton();
-}
-
-function syncPinButton() {
-  const btn = document.getElementById("pinFolderBtn");
-  const folder = document.getElementById("folderFilter").value;
-  if (!btn) return;
-  btn.disabled = !folder;
-  const on = isPinned(folder);
-  btn.classList.toggle("on", on);
-  btn.title = !folder
-    ? "Select a folder to pin it"
-    : (on ? "Unpin folder (kept in Pinned until you unpin)" : "Pin this folder — survives Refresh");
-  btn.setAttribute("aria-pressed", on ? "true" : "false");
 }
 
 function filteredDocs() {
@@ -714,11 +815,10 @@ function openFromQuery() {
   }
   // Clear filters that would hide the target, then select.
   kindFilter = "all";
-  document.getElementById("folderFilter").value = "";
+  setFolderFilterValue("", { silent: true });
   document.getElementById("personFilter").value = (d.profile || d.person || "");
   document.getElementById("search").value = "";
   buildKindChips();
-  syncPinButton();
   renderLibrary();
   select(d, null, { pushUrl: true });
   // Scroll the library card into view once thumbs paint.
@@ -752,7 +852,11 @@ document.getElementById("folderFilter").addEventListener("change", () => {
   try { localStorage.setItem(HUB_FOLDER_KEY, v); } catch (_) {}
   const d = document.getElementById("drawerFolderFilter");
   if (d) d.value = v;
-  syncPinButton();
+  const label = v || "all folders";
+  const lab = document.getElementById("folderFilterLabel");
+  const dlab = document.getElementById("drawerFolderFilterLabel");
+  if (lab) { lab.textContent = label; lab.title = label; }
+  if (dlab) { dlab.textContent = label; dlab.title = label; }
   renderLibrary();
 });
 document.getElementById("personFilter").addEventListener("change", () => {
@@ -763,11 +867,6 @@ document.getElementById("personFilter").addEventListener("change", () => {
   renderLibrary();
 });
 document.getElementById("search").addEventListener("input", renderLibrary);
-const pinBtn = document.getElementById("pinFolderBtn");
-if (pinBtn) pinBtn.addEventListener("click", () => {
-  togglePinFolder(document.getElementById("folderFilter").value);
-});
-
 function readOutdir() {
   const a = document.getElementById("outdir");
   const b = document.getElementById("outdirDrawer");
@@ -961,7 +1060,6 @@ buildFolderSelect();
     const sel = document.getElementById("personFilter");
     if (prof && [...sel.options].some(o => o.value === prof)) sel.value = prof;
   } catch (_) {}
-  syncPinButton();
 })();
 renderLibrary();
 openFromQuery();
