@@ -5,32 +5,35 @@ public-facing; **detail lives here**. Agent contracts: [`../AGENTS.md`](../AGENT
 
 ## Public vs private
 
-| On GitHub (clone-safe) | Local only (`storage/` — never pushed) |
+⭐ Full map: [`PUBLIC-LOCAL-SPLIT.md`](PUBLIC-LOCAL-SPLIT.md)
+
+| On GitHub (clone-safe) | Local only |
 |---|---|
 | This folder · `AGENTS.md` · `themes/` · `layouts/` · `examples/` | Vaults, brands, jobs, collages, exports |
 | `.config/mcp-pdf-designer.example.json` | `mcp-pdf-designer.json` (machine paths) |
-| `*.example.md` command seeds only | Bare `start`/`wrap`/`README`/`make-*.md` (SEGO ritual) |
-| [`PRODUCT.md`](PRODUCT.md) · [`../examples/resume-studio/`](../examples/resume-studio/) | `storage/docs/MARKETING.md` · `WORKSPACE.md` |
+| `*.example.md` command seeds only | Bare `start`/`wrap`/`README`/`make-*.md` |
+| [`PRODUCT.md`](PRODUCT.md) · [`GETTING-STARTED.md`](GETTING-STARTED.md) · `resume-studio/` | `storage/docs/MARKETING.md` · `WORKSPACE.md` · `HISTORY-SCRUB.md` |
+| Tracked placeholder [`../storage/docs/README.md`](../storage/docs/README.md) | Private note bodies under `storage/docs/` |
 
 ## Start here
 
 | Doc | Owns |
 |---|---|
-| [`SSOT.md`](SSOT.md) | ⭐ Dashboard — owns vs points elsewhere; engine CLI map |
-| [`PRODUCT.md`](PRODUCT.md) | ⭐ **Business / product direction** — résumé creator for a broken job market; free vs paid |
-| [`../examples/resume-studio/`](../examples/resume-studio/) | ⭐ Public product front door (vault + skills + palettes demo path) |
-| [`WHITE-LABEL.md`](WHITE-LABEL.md) | Public-only reuse (examples + themes, **no** vaults) — *not* the business plan |
-| [`PACKAGING.md`](PACKAGING.md) | PyPI / wheel spike — must ship `themes/` + `layouts/` (not just `pdf_tool/*.py`) |
-| [`../layouts/cover-letter/one-page-letter.json`](../layouts/cover-letter/one-page-letter.json) | ⭐ **Cover-letter page model** — flowing sign-off, fit-to-one-page bands |
-| [`QA.md`](QA.md) | ⭐ Ship gate — `check_generation` (judge the artifact) |
-| [`ROADMAP.md`](ROADMAP.md) | Pointer to the active plan (`/jen:roadmap` entry point) |
+| [`PUBLIC-LOCAL-SPLIT.md`](PUBLIC-LOCAL-SPLIT.md) | ⭐ Public vs local vs paid architecture |
+| [`PRODUCT.md`](PRODUCT.md) | ⭐ Business / product direction — résumé creator for a broken job market |
+| [`GETTING-STARTED.md`](GETTING-STARTED.md) | ⭐ Clone path without vaults (ex-WHITE-LABEL) |
+| [`../examples/resume-studio/`](../examples/resume-studio/) | Public product front door |
+| [`SSOT.md`](SSOT.md) | Dashboard — owns vs points elsewhere |
+| [`PACKAGING.md`](PACKAGING.md) | PyPI / wheel spike |
+| [`QA.md`](QA.md) | Ship gate — `check_generation` |
+| [`ROADMAP.md`](ROADMAP.md) | Pointer to `Plans/_Active/` |
 
 ## Engine & design
 
 | Doc | Owns |
 |---|---|
 | [`ARCHITECTURE.md`](ARCHITECTURE.md) | How the engine fits; guards; planned vs built |
-| [`EXPORTS.md`](EXPORTS.md) | Commands, export paths, light/dark, guards, pagination traps |
+| [`EXPORTS.md`](EXPORTS.md) | Commands, export paths, light/dark, guards |
 | [`THEME-DESIGN.md`](THEME-DESIGN.md) | Token names, dual mode, page signature pin |
 | [`LAYOUT-SYSTEM.md`](LAYOUT-SYSTEM.md) | Shared page model — pinned footer, margins, content-fit |
 | [`PREVIEWER.md`](PREVIEWER.md) | Design Hub how-to |
@@ -43,8 +46,8 @@ These pages document the **protocol** (clone-safe). Real vaults and listings sta
 
 | Doc | Owns |
 |---|---|
-| [`STORAGE.md`](STORAGE.md) | Private workspace layout, brand SSOT, **shared MG gallery** |
-| [`VAULT.md`](VAULT.md) | Claim rules, voice layers, role tracks, work-samples per-user rule |
+| [`STORAGE.md`](STORAGE.md) | Private workspace layout, brand SSOT, shared MG gallery |
+| [`VAULT.md`](VAULT.md) | Claim rules, voice layers, role tracks |
 | [`JOB-ASSESSMENT.md`](JOB-ASSESSMENT.md) | Listing capture / pay / gap-check protocol |
 | [`APPLICATIONS.md`](APPLICATIONS.md) | One-folder-per-job workflow |
 
@@ -53,17 +56,12 @@ These pages document the **protocol** (clone-safe). Real vaults and listings sta
 | Path | Owns |
 |---|---|
 | [`../themes/PALETTE-RULES.md`](../themes/PALETTE-RULES.md) | No brown / mustard / lime + guard |
-| [`../themes/GENERATION-RULES.md`](../themes/GENERATION-RULES.md) | House rules for all generated docs |
 | [`../layouts/README.md`](../layouts/README.md) | Layout recipes — structure (themes own color) |
 | [`../Plans/`](../Plans/) | Working roadmap (one active file) |
-| [`../AGENTS.md`](../AGENTS.md) | ⭐ Single agent SSOT — capability map + contracts |
-| [`../.claude/commands/make-resume.example.md`](../.claude/commands/make-resume.example.md) | `/make-resume` public seed |
-| [`../.claude/commands/make-cover-letter.example.md`](../.claude/commands/make-cover-letter.example.md) | `/make-cover-letter` public seed |
-| [`../.claude/commands/make-work-examples.example.md`](../.claude/commands/make-work-examples.example.md) | `/make-work-examples` public seed |
-| [`../.claude/commands/make-collage.md`](../.claude/commands/make-collage.md) | `/make-collage` routine |
+| [`../AGENTS.md`](../AGENTS.md) | Single agent SSOT |
+| [`../.claude/commands/*.example.md`](../.claude/commands/) | Public protocol seeds only |
 
 ### Privacy
 
-`storage/` is **gitignored** — vaults, real brands, applications, fonts, images, and
-`storage/docs/` (personal notes). Tracked docs stay clone-safe; machine pointers belong in
-local `.config/mcp-pdf-designer.json` (seed: [`.example.json`](../.config/mcp-pdf-designer.example.json)).
+`storage/` is **gitignored** except the placeholder `storage/docs/README.md`. Tracked docs
+stay clone-safe; machine pointers belong in local `.config/mcp-pdf-designer.json`.

@@ -6,7 +6,8 @@ SSOT Dashboard — pdf-designer
 Config:    .config/mcp-pdf-designer.json ✓  (+ .example.json template ✓)
 Env:       none by design (no .env) ✓
 Protocol:  AGENTS.md → docs/{STORAGE,VAULT,JOB-ASSESSMENT,ARCHITECTURE}.md → /make-resume · /make-collage
-Product:   docs/PRODUCT.md   ← ⭐ free GitHub core vs future paid app (WHITE-LABEL = public reuse only)
+Product:   docs/PRODUCT.md + docs/PUBLIC-LOCAL-SPLIT.md   ← ⭐ free core vs private vs paid
+Clone:     docs/GETTING-STARTED.md   ← public reuse (ex-WHITE-LABEL stub)
 Theme:     themes/default-{resume,collage}.json + themes/presets/* + PALETTE-RULES.md   ← COLOR
 Gen-rules: themes/GENERATION-RULES.md   ← ⭐ house rules for ALL generated docs (casing · overlays · framing · no-magenta)
 QA gate:   docs/QA.md + python -m pdf_tool.check_generation   ← ⭐ 10 checks; judge the ARTIFACT (render), not the source
@@ -16,12 +17,12 @@ Hub:       python -m pdf_tool.preview → :8787 (workspace auto-starts via scrip
 Smoke:     python scripts/smoke-white-label.py   ← ⭐ fresh-clone proof (examples/ only, no storage/)
 Package:   docs/PACKAGING.md + scripts/check-wheel-assets.py  ← wheel must include themes/layouts
 Engine:    python -m pdf_tool  (hub) / individual modules
-Plans:     Plans/_Active/2026-07-21-next-agent-product-prompt.md
+Plans:     Plans/_Active/2026-08-12-product-privacy-packaging.md · 2026-08-12-public-private-split/
 ```
 
 Compact map of what this repo owns vs what it only points at. Agents: start here, then
 [`AGENTS.md`](../AGENTS.md). Humans shipping without private vaults:
-[`WHITE-LABEL.md`](WHITE-LABEL.md).
+[`GETTING-STARTED.md`](GETTING-STARTED.md). Architecture: [`PUBLIC-LOCAL-SPLIT.md`](PUBLIC-LOCAL-SPLIT.md).
 
 ---
 
@@ -43,14 +44,15 @@ Compact map of what this repo owns vs what it only points at. Agents: start here
 | **Work-samples SSOT** | `profiles/<user>-resume.json#workSamples` + `users/<user>.json#portfolio` | ⭐ **PER-USER** page structure + personal assets — never copy another person's page ([VAULT.md](VAULT.md) § Work-samples) |
 | **Shared MG gallery** | `storage/studio/resources/images/martiangames/` | ⭐ Title stills + MG logo used by **both** applicants; per-user `…/images/martiangames/` junctions here ([STORAGE.md](STORAGE.md)) |
 | Agent map | `AGENTS.md` | Capability / command SSOT for assistants |
-| **Product / business** | [`PRODUCT.md`](PRODUCT.md) | ⭐ Free GitHub toolkit vs future paid app; shell-over-Hub; privacy split |
+| **Product / business** | [`PRODUCT.md`](PRODUCT.md) | ⭐ Free GitHub toolkit vs future paid app; shell-over-Hub |
+| **Public vs local** | [`PUBLIC-LOCAL-SPLIT.md`](PUBLIC-LOCAL-SPLIT.md) | ⭐ Tracked vs gitignored; sibling-repo map |
 | Packaging / PyPI | [`PACKAGING.md`](PACKAGING.md) | Wheel must ship public `themes/` + `layouts/` via `pdf_tool/share/` |
-| White-label how-to | [`WHITE-LABEL.md`](WHITE-LABEL.md) | Clone without vaults (not the business plan) |
+| Clone how-to | [`GETTING-STARTED.md`](GETTING-STARTED.md) | Public path without vaults (`WHITE-LABEL.md` is a stub alias) |
 | Make-resume | `.claude/commands/make-resume.example.md` | Job-application routine (public seed; personal `make-resume.md` is gitignored) |
-| Make-collage | `.claude/commands/make-collage.md` | Multi-image collage routine |
-| Public examples | `examples/profiles/`, `examples/brand-design/`, `examples/_job-listings/` | Clone-safe templates |
-| Project config | `.config/mcp-pdf-designer.json` | Breakpoint pointer, hub, voice/external pointers |
-| Active plan | `Plans/_Active/2026-07-21-next-agent-product-prompt.md` | What to build next (+ paste-ready handoff) |
+| Make-collage | `.claude/commands/make-collage.example.md` | Multi-image collage routine (public seed) |
+| Public examples | `examples/resume-studio/`, `examples/profiles/`, `examples/brand-design/` | Clone-safe templates |
+| Project config | `.config/mcp-pdf-designer.example.json` | Seed only — local `mcp-pdf-designer.json` is gitignored |
+| Active plan | `Plans/_Active/2026-08-12-product-privacy-packaging.md` | Packaging + privacy; split run: `…/2026-08-12-public-private-split/` |
 
 ---
 
@@ -175,7 +177,7 @@ short public-facing entry.
 | Doc | Role |
 |---|---|
 | [`EXPORTS.md`](EXPORTS.md) | Commands + export / pagination SSOT |
-| [`WHITE-LABEL.md`](WHITE-LABEL.md) | Public-only reusable path (no private vaults) |
+| [`GETTING-STARTED.md`](GETTING-STARTED.md) | Public-only reusable path (no private vaults) |
 | [`VAULT.md`](VAULT.md) | Claim + voice rules |
 | [`PREVIEWER.md`](PREVIEWER.md) | Design Hub how-to |
 | [`STORAGE.md`](STORAGE.md) | Private workspace layout |

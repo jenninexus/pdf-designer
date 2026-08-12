@@ -19,7 +19,7 @@ python scripts/smoke-white-label.py                        # QA + light/dark PDF
 python -m pdf_tool.preview                                  # Design Hub → http://127.0.0.1:8787/
 ```
 
-Full white-label checklist: [`../docs/WHITE-LABEL.md`](../docs/WHITE-LABEL.md).
+Full white-label checklist: [`../docs/GETTING-STARTED.md`](../docs/GETTING-STARTED.md).
 
 The Design Hub already renders everything in `examples/` (and it **auto-refreshes** when you export a
 new document — no restart). To make it yours:

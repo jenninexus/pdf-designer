@@ -14,7 +14,7 @@ Working plans for pdf-designer. Keep **one** active product roadmap; move finish
 | [`_Active/2026-08-12-product-privacy-packaging.md`](_Active/2026-08-12-product-privacy-packaging.md) | ⭐ **THE** working plan — free GitHub vs paid · privacy · TestPyPI |
 
 > **`/jen:roadmap` entry point:** [`../docs/ROADMAP.md`](../docs/ROADMAP.md) is a thin pointer to the active plan.
-> **Business direction:** [`../docs/PRODUCT.md`](../docs/PRODUCT.md) (WHITE-LABEL is the public how-to only).
+> **Business direction:** [`../docs/PRODUCT.md`](../docs/PRODUCT.md) (GETTING-STARTED is the public clone path).
 > **Private marketing detail:** `storage/docs/MARKETING.md` (gitignored).
 
 ## Complete (recent)

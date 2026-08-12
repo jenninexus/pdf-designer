@@ -21,6 +21,9 @@
 - [x] Public product entry: `examples/resume-studio/` + job-market résumé pitch in PRODUCT
 - [ ] **TestPyPI upload** — needs `TESTPYPI_TOKEN` → `python scripts/testpypi-dry-run.py --upload`
 - [ ] **Push origin/main** — needs `jenninexus` GitHub auth (MonoFinity gh fails “repo not found”)
+- [x] **Public vs local SSOT** — `docs/PUBLIC-LOCAL-SPLIT.md` + `GETTING-STARTED.md` (WHITE-LABEL stub)
+- [x] Tracked `storage/docs/README.md` placeholder; MARKETING / WORKSPACE / HISTORY-SCRUB private
+- [ ] **History scrub** — see `storage/docs/HISTORY-SCRUB.md` (filter-repo + human force-push)
 - [ ] Optional: deepen `examples/resume-studio/` (sample vault walkthrough HTML / Hub deep-link card)
 - [ ] Optional: PyPI production after TestPyPI succeeds
 - [ ] Optional: paid-shell spike (installer → Design Hub) — still shell-over-Hub, no second renderer
@@ -46,8 +49,9 @@
 | Marketing strategy with personal brands | High-level in [`docs/PRODUCT.md`](../../docs/PRODUCT.md) | Detail in `storage/docs/MARKETING.md` | Paid features list |
 
 SSOT for free-vs-paid: [`docs/PRODUCT.md`](../../docs/PRODUCT.md).  
-Clone how-to: [`docs/WHITE-LABEL.md`](../../docs/WHITE-LABEL.md) · [`examples/resume-studio/`](../../examples/resume-studio/).  
-Private notes: [`storage/docs/`](../../storage/docs/) (gitignored with `storage/`).
+Architecture: [`docs/PUBLIC-LOCAL-SPLIT.md`](../../docs/PUBLIC-LOCAL-SPLIT.md).  
+Clone how-to: [`docs/GETTING-STARTED.md`](../../docs/GETTING-STARTED.md) · [`examples/resume-studio/`](../../examples/resume-studio/).  
+Private notes: [`storage/docs/`](../../storage/docs/) (bodies gitignored; `README.md` placeholder tracked).
 
 ---
 
