@@ -9,15 +9,16 @@ public-facing; **detail lives here**. Agent contracts: [`../AGENTS.md`](../AGENT
 |---|---|
 | This folder · `AGENTS.md` · `themes/` · `layouts/` · `examples/` | Vaults, brands, jobs, collages, exports |
 | `.config/mcp-pdf-designer.example.json` | `mcp-pdf-designer.json` (machine paths) |
-| `*.example.md` command seeds | Bare `make-resume.md` / `make-cover-letter.md` / `make-work-examples.md` |
-| [`PRODUCT.md`](PRODUCT.md) thesis | `storage/docs/MARKETING.md` · `WORKSPACE.md` |
+| `*.example.md` command seeds only | Bare `start`/`wrap`/`README`/`make-*.md` (SEGO ritual) |
+| [`PRODUCT.md`](PRODUCT.md) · [`../examples/resume-studio/`](../examples/resume-studio/) | `storage/docs/MARKETING.md` · `WORKSPACE.md` |
 
 ## Start here
 
 | Doc | Owns |
 |---|---|
 | [`SSOT.md`](SSOT.md) | ⭐ Dashboard — owns vs points elsewhere; engine CLI map |
-| [`PRODUCT.md`](PRODUCT.md) | ⭐ **Business / product direction** — free GitHub core vs future paid app |
+| [`PRODUCT.md`](PRODUCT.md) | ⭐ **Business / product direction** — résumé creator for a broken job market; free vs paid |
+| [`../examples/resume-studio/`](../examples/resume-studio/) | ⭐ Public product front door (vault + skills + palettes demo path) |
 | [`WHITE-LABEL.md`](WHITE-LABEL.md) | Public-only reuse (examples + themes, **no** vaults) — *not* the business plan |
 | [`PACKAGING.md`](PACKAGING.md) | PyPI / wheel spike — must ship `themes/` + `layouts/` (not just `pdf_tool/*.py`) |
 | [`../layouts/cover-letter/one-page-letter.json`](../layouts/cover-letter/one-page-letter.json) | ⭐ **Cover-letter page model** — flowing sign-off, fit-to-one-page bands |

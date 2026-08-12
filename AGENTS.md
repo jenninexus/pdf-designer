@@ -44,11 +44,11 @@ direction (free GitHub vs paid app): [`docs/PRODUCT.md`](docs/PRODUCT.md). Packa
 
 **Active plan (one):** [`Plans/_Active/2026-08-12-product-privacy-packaging.md`](Plans/_Active/2026-08-12-product-privacy-packaging.md) · index [`Plans/README.md`](Plans/README.md). Completed waves: [`Plans/_Complete/`](Plans/_Complete/).
 
-**Session start / wrap:** `/start` → [`.claude/commands/start.md`](.claude/commands/start.md) (open
-applications + their blocking gates). `/wrap` → [`.claude/commands/wrap.md`](.claude/commands/wrap.md)
-(`/jen:wrap` routes here too). Always append `dev-log-sego.yaml`; refresh the docs/agent surfaces the
-session touched. Palette prefs: [`docs/SSOT.md`](docs/SSOT.md) § Personal palette prefs · private maps
-in `storage/brand-design/`.
+**Session start / wrap:** `/start` → local [`.claude/commands/start.md`](.claude/commands/start.md)
+(gitignored). `/wrap` → local [`.claude/commands/wrap.md`](.claude/commands/wrap.md) — **requires
+`/reflect`** + next-agent handoff (`/jen:wrap` routes here too). Public protocol seeds:
+`.claude/commands/*.example.md`. Palette prefs: [`docs/SSOT.md`](docs/SSOT.md) § Personal palette prefs ·
+private maps in `storage/brand-design/`. Product front door: [`examples/resume-studio/`](examples/resume-studio/).
 
 **Where learnings go — two surfaces, do not confuse them.** `dev-log-sego.yaml` is **gitignored**, so
 a lesson recorded only there is invisible to every other clone and to the next agent. Durable
@@ -121,43 +121,41 @@ Full command/export recipes: [`docs/EXPORTS.md`](docs/EXPORTS.md).
 
 ## Slash commands (the protocol)
 
-Project-scoped commands live in [`.claude/commands/`](.claude/commands/) and travel **with the repo** —
-any agent working here picks them up; no global install. Each is plain markdown (no vendor APIs, no
-`SKILL.md` folders) — **Codex/Cursor/Copilot/a local model can all just read and follow the file.** If your
-agent doesn't auto-load them: *"read `.claude/commands/make-resume.md` and follow it."*
+Project-scoped commands live in [`.claude/commands/`](.claude/commands/). **GitHub tracks only
+`*.example.md`** — session ritual (`start` / `wrap` / `README`) and bare `make-*.md` stay
+**local / gitignored** (SEGO workspace). Any agent on this machine reads the bare file when
+present; a fresh public clone uses the `.example.md` seeds. Plain markdown — no vendor APIs.
+If an agent doesn't auto-load them: *"read `.claude/commands/make-resume.md` (or the `.example`)
+and follow it."*
 
 | Command | Tracked? | What it does |
 |---|---|---|
-| `make-resume.example.md` | ✅ public seed | Résumé builder — **default = résumé only** (read `profiles/<user>-resume.json#exports.exportPrefs`). Cover letter / work samples are separate opt-in commands. REMOTE + PAY + gap-check + company theme. |
-| `make-collage.md` | ✅ public | General collage / layout builder over the `layouts/` + `themes/` recipes. No private data. |
-| `start.md` | ✅ public | ⭐ **Session start** — `/start` · `/jen:start` route here. Surfaces open applications **with their blocking gate**. |
-| `wrap.md` | ✅ public | ⭐ **Session wrap** — `/wrap` · `/jen:wrap` route here. (`pdf-wrap.md` is a thin alias.) |
-| `README.md` | ✅ public | Local index + the applicant shorthand table + global-command index — no private prefs. |
-| `make-resume.md` | 🔒 personal (gitignored) | Your copy with real specifics. |
-| `make-cover-letter.md` | 🔒 personal (gitignored) | Standalone cover letter — **not** auto-run by make-resume. |
+| `make-resume.example.md` | ✅ public seed | Résumé builder — vault + skills + palette; REMOTE + PAY + gap-check + company theme |
+| `make-cover-letter.example.md` | ✅ public seed | Standalone cover letter (not auto-bundled with resume) |
+| `make-work-examples.example.md` | ✅ public seed | Standalone work-samples / portfolio |
+| `make-collage.example.md` | ✅ public seed | Collage / layout builder over `layouts/` + `themes/` |
+| `start.md` · `wrap.md` · `pdf-wrap.md` · `README.md` | 🔒 **dev-only** (gitignored) | Session start/wrap + local index — include `/reflect`; never push |
+| `make-resume.md` · `make-cover-letter.md` · `make-work-examples.md` · `make-collage.md` | 🔒 personal (gitignored) | Your copies with real specifics |
 
-**Applicant shorthand.** `/shade` · `/jenni` · `/studio` · `/martian` · `both` each resolve to that
-applicant's vault, profile, person file, and export dir. Natural phrasing parses too — *"/make-resume
-for shade"*, *"/make-resume shade"*, and *"make a resume for shade"* are one request. Table:
-[`.claude/commands/README.md`](.claude/commands/README.md) § Applicant shorthand.
+**Applicant shorthand** (local `README.md` when present; else `/jen:pdf` applicant table).
+`/shade` · `/jenni` · `/studio` · `/martian` · `both` resolve vault + profile + export dir.
 
-**Global commands in scope here** (personal, `~/.claude/commands/`, not in this repo): **`/pdf`** —
-this repo's router from any cwd · **`/voice`** — the `application` register that `/make-resume`
-Step 0b blocks on (SSOT lives in `voice-seed`) · `/reflect` (generic loop → local `dev-log-sego.yaml`)
-· `/roadmap` → [`docs/ROADMAP.md`](docs/ROADMAP.md). Index:
-[`.claude/commands/README.md`](.claude/commands/README.md) § Global commands that apply here.
-| `make-work-examples.md` | 🔒 personal (gitignored) | Standalone work-samples / portfolio. |
+**Global commands in scope here** (personal, `~/.claude/commands/`, not in this repo): **`/pdf`**
+· **`/voice`** · **`/reflect`** (`jen/reflect-universal` — required at wrap) · `/roadmap` →
+[`docs/ROADMAP.md`](docs/ROADMAP.md).
 
-### 📎 Public seed vs. personal copy — the `.example` split
+### 📎 Public seed vs. personal / dev copy — the `.example` split
 
 | File | Tracked? | Contains |
 |---|---|---|
-| `<name>.example.md` | ✅ yes | The **generalized** command. No real client names, employers, emails. Safe to clone/share — the public seed. |
-| `<name>.md` (bare) | ❌ gitignored | **Your** copy with the concrete specifics (the real company that burned you, the real contacts). |
+| `<name>.example.md` | ✅ yes | Generalized protocol. No real clients, employers, emails, machine paths. |
+| `<name>.md` (bare) | ❌ gitignored | Personal specifics **or** SEGO session ritual (`start`/`wrap`). |
 
 You type `/make-<name>`; the assistant runs the bare `<name>.md` when it exists, else the tracked
-`.example.md`. Same idea as the repo's `*.example` data files: the shareable shape is tracked, the real
-content stays in the gitignored `storage/` vault. (This replaced the older `.local.md` convention.)
+`.example.md`. Same idea as `*.example` data files and `.config/*.example.json`.
+
+**Public product entry (examples only):** [`examples/resume-studio/`](examples/resume-studio/) —
+marketed résumé-creator demo path (vault shape + palettes + smoke), not private vaults.
 
 ---
 
@@ -174,6 +172,7 @@ content stays in the gitignored `storage/` vault. (This replaced the older `.loc
 | `layouts/` | ⭐ **STRUCTURE registry** — document recipes under `layouts/{cover-letter,letter,resume,work-examples}/` + `layouts/collage/`; counterpart to `themes/` (color). See [`layouts/README.md`](layouts/README.md). |
 | `examples/brand-design/` | tracked **template** for private brand maps (copy → `storage/brand-design/`) |
 | `examples/profiles/<id>/` | one profile per document type: `profile.json` + reference `.html` + example data |
+| `examples/resume-studio/` | ⭐ **public product entry** — marketed résumé-creator demo (links vault/palette/skills shapes) |
 | `examples/_job-listings/` | one-folder-per-job-application workflow + copyable template |
 | `docs/` | ARCHITECTURE · SSOT · PRODUCT · PACKAGING · WHITE-LABEL · STORAGE · VAULT · JOB-ASSESSMENT · THEME-DESIGN · LAYOUT-SYSTEM · EXPORTS · COLLAGE-DESIGN · PREVIEWER · APPLICATIONS · LICENSING-NOTES ([`docs/README.md`](docs/README.md) is the index) |
 | `.config/mcp-pdf-designer.example.json` | ⭐ Tracked project config **seed** (breakpoints + hub/palette/layout pointers). Copy → local `mcp-pdf-designer.json` (gitignored — machine paths). |
@@ -188,7 +187,7 @@ content stays in the gitignored `storage/` vault. (This replaced the older `.loc
 | `src/pdf_tool/`, `themes/`, `examples/`, `docs/`, `AGENTS.md`, `*.example.md` | `users/`, `*/resume-source.json`, `profiles/*-resume.json`, `_job-listings/`, `brand-design/`, `studio/resources/`, `_exports/` |
 | Brand-neutral default theme | Real brand maps (`brand-jenninexus`, `brand-martian`, `brand-synagen`) |
 | Example brand shape (`examples/brand-design/`) | Real vault claims, contacts, employer research |
-| Public seed commands (`*.example.md`, `make-collage.md`) | Personal commands (bare `make-resume.md` / `make-cover-letter.md` / `make-work-examples.md`), `.codex/`, `dev-log-*.yaml` |
+| Public seed commands (`*.example.md` only) | Bare commands (`start`/`wrap`/`make-*`/`README`), `.codex/`, `dev-log-*.yaml` |
 
 `themes/` is deliberately **public** — it's the engine's default theme + palette rule a fresh clone needs
 to render. Private brand palettes live in `storage/brand-design/`, read by the previewer alongside `themes/`.

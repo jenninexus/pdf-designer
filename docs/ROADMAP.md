@@ -13,13 +13,16 @@
 Pulled from the active plan — keep in sync there, this is a quick view:
 
 - [ ] **TestPyPI upload** — create account/token → `python scripts/testpypi-dry-run.py --upload`
+- [ ] **Push origin/main** — use `jenninexus` GitHub auth (MonoFinity `gh` cannot see the private repo)
 - [ ] Keep **SSOT + QA docs** honest as the engine evolves ([`SSOT.md`](SSOT.md) · [`QA.md`](QA.md))
-- [ ] Optional: PyPI production after TestPyPI · paid-shell installer spike (shell-over-Hub)
+- [ ] Optional: deepen [`examples/resume-studio/`](../examples/resume-studio/) walkthrough · PyPI · paid-shell
 - [ ] Optional: document meet-jenni-bot / syn-themes **collage recipes** in [`COLLAGE-DESIGN.md`](COLLAGE-DESIGN.md)
 - [ ] Optional: Synagen **engine** promo screenshots → `storage/shade/resources/images/synagen/`
 
 ### Recently landed
 
+- [x] **Commands privacy** (2026-08-12) — GitHub = `*.example.md` only; wrap requires `/reflect` + handoff
+- [x] **Resume Studio product frame** — `examples/resume-studio/` + job-market pitch in PRODUCT
 - [x] **Privacy packaging** (2026-08-12) — untrack local MCP config; `storage/docs/`; public command seeds
 - [x] **Hub drawer / icons / letterhead / split restore** (2026-08-10…11)
 - [x] **TestPyPI local-wheel dry-run** (2026-07-25)
