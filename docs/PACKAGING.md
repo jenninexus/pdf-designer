@@ -1,7 +1,7 @@
 # Packaging — PyPI / installer spike
 
 How a **non-checkout** user gets `pdf-designer`. Companion to
-[`PRODUCT.md`](PRODUCT.md) (business) and [`WHITE-LABEL.md`](WHITE-LABEL.md)
+[`PRODUCT.md`](PRODUCT.md) (business) and [`GETTING-STARTED.md`](GETTING-STARTED.md)
 (public how-to from a clone).
 
 > **Status (2026-07-25):** path resolution + wheel asset gate + **local fresh-venv
@@ -86,5 +86,5 @@ this). Verifying from the checkout directory will silently use live `themes/`.
 ## Related
 
 - Product / paid shell: [`PRODUCT.md`](PRODUCT.md)
-- Public clone demo: [`WHITE-LABEL.md`](WHITE-LABEL.md)
+- Public clone demo: [`GETTING-STARTED.md`](GETTING-STARTED.md)
 - License honesty: [`LICENSING-NOTES.md`](LICENSING-NOTES.md)

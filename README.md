@@ -25,7 +25,8 @@ vault-backed claims, skills tags, and palette prefs. Never invents a claim. No S
 
 > **Status:** private for now; docs shaped for a public release. **Start here:**
 > [`examples/resume-studio/`](examples/resume-studio/) · product: [`docs/PRODUCT.md`](docs/PRODUCT.md) ·
-> white-label: [`docs/WHITE-LABEL.md`](docs/WHITE-LABEL.md) · packaging: [`docs/PACKAGING.md`](docs/PACKAGING.md) ·
+> split: [`docs/PUBLIC-LOCAL-SPLIT.md`](docs/PUBLIC-LOCAL-SPLIT.md) ·
+> clone path: [`docs/GETTING-STARTED.md`](docs/GETTING-STARTED.md) · packaging: [`docs/PACKAGING.md`](docs/PACKAGING.md) ·
 > agents: [`AGENTS.md`](AGENTS.md). Protocol seeds on GitHub are `*.example.md` only
 > (bare `start`/`wrap`/`make-*` stay local). Palette prefs (private): `storage/brand-design/` —
 > [`docs/SSOT.md`](docs/SSOT.md).
@@ -66,9 +67,10 @@ Ship gate → [`docs/QA.md`](docs/QA.md) (`python -m pdf_tool.check_generation �
 |---|---|
 | [`docs/README.md`](docs/README.md) | **Docs index** — where every topic lives |
 | [`docs/PRODUCT.md`](docs/PRODUCT.md) | Free GitHub core vs future paid app |
+| [`docs/PUBLIC-LOCAL-SPLIT.md`](docs/PUBLIC-LOCAL-SPLIT.md) | Public vs private vs paid architecture |
+| [`docs/GETTING-STARTED.md`](docs/GETTING-STARTED.md) | Clone path without vaults |
 | [`docs/PACKAGING.md`](docs/PACKAGING.md) | PyPI / wheel (must ship themes + layouts) |
 | [`docs/SSOT.md`](docs/SSOT.md) | What this repo owns vs pointers elsewhere |
-| [`docs/WHITE-LABEL.md`](docs/WHITE-LABEL.md) | Public-only path (no private vaults) |
 | [`AGENTS.md`](AGENTS.md) | Agent capability map + contracts |
 
 ---

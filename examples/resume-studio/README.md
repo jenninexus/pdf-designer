@@ -13,7 +13,7 @@ dark ones — all local, no SaaS vault.
 | Want | Go here |
 |---|---|
 | Product thesis (free vs paid) | [`../../docs/PRODUCT.md`](../../docs/PRODUCT.md) |
-| Clone how-to (no vaults) | [`../../docs/WHITE-LABEL.md`](../../docs/WHITE-LABEL.md) |
+| Clone how-to (no vaults) | [`../../docs/GETTING-STARTED.md`](../../docs/GETTING-STARTED.md) |
 | Vault shape (what may be claimed) | [`../../docs/VAULT.md`](../../docs/VAULT.md) |
 | Palette rule | [`../../themes/PALETTE-RULES.md`](../../themes/PALETTE-RULES.md) |
 | Example HTML + profile | [`../profiles/default-resume/`](../profiles/default-resume/) |
