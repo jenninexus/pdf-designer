@@ -45,8 +45,8 @@ fast on a large tree. If the server is briefly down mid-poll, the client just re
 
 | Pointer | Role |
 |---|---|
-| [`.config/mcp-pdf-designer.json#breakpoints`](../.config/mcp-pdf-designer.json) | ⭐ **THE** pdf-designer breakpoint SSOT (set name + paths — not duplicate numbers) |
-| `C:\mcp\.config\mcp-breakpoints.json` | Global cross-PC cache → `bootstrap_5_3_8_extended_390_4k` |
+| [`.config/mcp-pdf-designer.example.json#breakpoints`](../.config/mcp-pdf-designer.example.json) | ⭐ Tracked seed — copy to local `mcp-pdf-designer.json` (gitignored) for machine paths |
+| Global breakpoint cache (optional) | e.g. shared `mcp-breakpoints.json` → `bootstrap_5_3_8_extended_390_4k` |
 | `www-theme-kit/scss/_breakpoint-tokens.scss` | Shared numeric tokens / mixins (www-theme-kit is the consumer SSOT for this repo) |
 | `hub.css` `@media` | Hard-codes the same `.98px` maxes (CSS cannot `var()` inside `@media`) |
 
@@ -59,11 +59,12 @@ Each `.html` file is its **own template** in the library (one card = one file).
 
 ### Filters (Jobright-style library)
 
-Adapted from `D:\Resume\Jobright\jobright-feature-review.md` — local-first library + filters, not cloud match scores:
+Local-first library + filters (Jobright-style UX inspiration — not cloud match scores):
 
-- **Kind chips (leading, after Profiles):** All · Resumes · Cover Letters · Letters · Work Samples — then Library / Recipes / Vault / search / folder / palette scroll horizontally. **Refresh (icon) + Export (download icon) stay pinned** on the right; **⋯** opens the output-folder popover (also pinned — not clipped). ≤767.98px: hamburger drawer holds filters + outdir; magnifier opens search overlay (Ctrl/Cmd+K). Mouse wheel over the header strip scrolls that row horizontally.
+- **Kind chips (leading, after Profiles):** All · Resumes · Cover Letters · Letters · Work Samples · **Collages** · Galleries — then Library / Recipes / Vault / search / folder / palette scroll horizontally. **Refresh (icon) + Export (download icon) stay pinned** on the right; **⋯** opens the output-folder popover (also pinned — not clipped). ≤767.98px: hamburger drawer holds filters + outdir; magnifier opens search overlay (Ctrl/Cmd+K). Mouse wheel over the header strip scrolls that row horizontally.
 - **Folder:** custom picker (not a bare `<select>`). Open the list → hover a row for a **ghost ★**; click the star to pin / unpin. Pinned folders sort to the **top** and persist in `localStorage` (`pdf-designer.hub.pinnedFolders`) across Refresh and full reloads. No separate pin button in the toolbar. Menu is `position:fixed` (JS places it from the trigger rect) so `.hub-bar-scroll`’s `overflow-y:hidden` cannot clip it.
 - **Profiles** (was “Who”): `all profiles` · **jenni** · **shade** · **studio** · **martian** — from path ownership (`storage/<id>/`) or filename prefix. Matches `storage/profiles/*-resume.json` entity decks (studio = Synagen/capabilities; martian = game studio). Preference kept in `pdf-designer.hub.profileFilter`.
+  - **Trap:** collage projects **without** a profile tag (`profile: null`) disappear when Profiles ≠ `all profiles`. Clear the profile chip (or search the folder name) before assuming a collage is missing. Lesson: `.memory/lesson-hub-collage-hidden-by-profile-filter.md`.
 - **Search:** name or path substring
 
 Sidebar is a **left column**; the stage / iframe viewer fills the rest of the viewport. Groups stay collapsible by folder. Stage bar shows kind · profile · bucket · path.

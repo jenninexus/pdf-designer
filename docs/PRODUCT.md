@@ -9,8 +9,9 @@ It is **not** the white-label how-to — that stays in [`WHITE-LABEL.md`](WHITE-
 | Free / open core | Engine + themes + layouts + guards + Design Hub + public docs |
 | Paid later (hypothesis) | Packaged desktop app, templates marketplace, guided “studio” UX |
 | Inspiration | PowerPoint / Canva-class **layout + collage** tools — see collage engine + Design Hub |
-| Active engineering checklist | [`../Plans/_Active/2026-07-21-next-agent-product-prompt.md`](../Plans/_Active/2026-07-21-next-agent-product-prompt.md) |
+| Active engineering checklist | [`../Plans/_Active/2026-08-12-product-privacy-packaging.md`](../Plans/_Active/2026-08-12-product-privacy-packaging.md) |
 | QA contract | [`QA.md`](QA.md) — judge the artifact |
+| Private marketing detail (local) | `storage/docs/MARKETING.md` (gitignored — not on GitHub) |
 
 ---
 
@@ -84,12 +85,26 @@ ships free.
 Next packaging step is **TestPyPI upload** (needs account token) — see
 [`PACKAGING.md`](PACKAGING.md). Not another architecture debate.
 
+## How to market it (public-safe)
+
+| Layer | Message | Proof |
+|---|---|---|
+| **Free GitHub** | Agent-ready local PDF + collage toolkit | `smoke-white-label.py` · Design Hub · `AGENTS.md` |
+| **Who it’s for now** | Developers + AI agents who already drive CLIs | Not a Canva beginner pitch (yet) |
+| **Paid later** | Installer + guided recipe UX around the **same** engine | Shell-over-Hub above — sell time saved |
+| **Never as product** | Someone’s vault, job history, or private brand maps | Privacy split is the brand |
+
+Channels for the free core: README + Hub demo GIF from **`examples/` only** · TestPyPI/PyPI
+when the token exists · short “export + check_generation” clips. Keep personal career work
+and Patreon drafts out of public marketing.
+
 ## Non-goals
 
 - Auto-submit applications
 - Cloud-only PII or a SaaS vault as the default
 - Inventing claims / résumé lies
 - Selling private founder vaults or application history
+- Shipping machine-local config (`.config/mcp-pdf-designer.json`) — **`.example` only** on GitHub
 
 ## Doc map (who owns what)
 
@@ -99,10 +114,10 @@ Next packaging step is **TestPyPI upload** (needs account token) — see
 | How do non-devs install (PyPI / wheel)? | [`PACKAGING.md`](PACKAGING.md) |
 | What do we build next (engineering)? | Active plan under `Plans/_Active/` |
 | What may be claimed / how applications work? | [`VAULT.md`](VAULT.md) · [`JOB-ASSESSMENT.md`](JOB-ASSESSMENT.md) |
-| Where is private data? | [`STORAGE.md`](STORAGE.md) |
+| Where is private data? | [`STORAGE.md`](STORAGE.md) · local `storage/docs/` |
 | Is this “verified”? | [`QA.md`](QA.md) |
 
 ---
 
-*Last updated 2026-07-25 — recipe gallery + local-wheel dry-run landed; TestPyPI
-upload still needs a token; WHITE-LABEL stays the public how-to only.*
+*Last updated 2026-08-12 — privacy packaging plan active; TestPyPI upload still needs a
+token; WHITE-LABEL stays the public how-to only.*
