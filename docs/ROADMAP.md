@@ -24,6 +24,7 @@ Pulled from the active plan — keep in sync there, this is a quick view:
 ### Recently landed
 
 - [x] **Public vs local architecture** (2026-08-12) — `PUBLIC-LOCAL-SPLIT` · `GETTING-STARTED` · tracked `storage/docs/README` · siblings + theme-kit pointers
+- [x] **Codex/public-command reconciliation** (2026-08-12) — generated local adapters; anonymized public résumé seed; public smoke + wheel artifact gates green
 - [x] **Commands privacy** (2026-08-12) — GitHub = `*.example.md` only; wrap requires `/reflect` + handoff
 - [x] **Resume Studio product frame** — `examples/resume-studio/` + job-market pitch in PRODUCT
 - [x] **Privacy packaging** (2026-08-12) — untrack local MCP config; `storage/docs/`; public command seeds

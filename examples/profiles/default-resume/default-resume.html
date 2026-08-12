@@ -201,7 +201,10 @@
     body {
       background: var(--bg);
       color-scheme: light;
+      font-family: var(--ats-safe);
     }
+
+    h2 { font-family: var(--ats-safe); }
 
     html[data-pdf-theme="dark"] body {
       color-scheme: dark;
@@ -253,7 +256,7 @@
 <div class="page wrap">
   <div class="page-main">
   <h1>Jane Example</h1>
-  <p class="role">Founder &amp; Lead Developer, Example Studio LLC</p>
+  <p class="role"><strong>Job Title:</strong> Founder &amp; Lead Developer</p>
 
   <div class="tags">
     <span>Systems Design</span>
@@ -279,14 +282,16 @@
   </section>
 
   <section>
-    <h2>Selected Credits</h2>
+    <h2>Work Experience</h2>
     <div class="credit flagship">
-      <h3>Flagship Title <span style="color:var(--dim2); font-weight:400;">— your most popular/representative work first</span></h3>
-      <p>One or two sentences, source-backed.</p>
+      <h3>Founder &amp; Lead Developer</h3>
+      <p><strong>Example Studio LLC</strong> · 20XX–Present</p>
+      <p>One or two source-backed sentences describing the method and shipped outcome.</p>
     </div>
     <div class="credit">
-      <h3>Supporting Credit</h3>
-      <p>One or two sentences, source-backed.</p>
+      <h3>Earlier Role Title</h3>
+      <p><strong>Example Organization</strong> · 20XX–20XX</p>
+      <p>One or two source-backed sentences. Keep title, company, and dates explicit.</p>
     </div>
   </section>
 
@@ -307,6 +312,11 @@
     <h2>Technology</h2>
     <p style="font-size:13px; color:var(--dim);"><strong>Stack:</strong> tool, tool, tool.</p>
     <p class="note">Honest-gap example: no verified production experience with [toolset] yet — do not claim it without separate verification. Keep target-employer-specific framing in a separate cover letter, not here.</p>
+  </section>
+
+  <section>
+    <h2>Education</h2>
+    <p style="font-size:13px; color:var(--dim);"><strong>Program or credential</strong><br>Example Institution · 20XX</p>
   </section>
 
   <section>
