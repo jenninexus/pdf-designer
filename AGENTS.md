@@ -42,7 +42,7 @@ direction (free GitHub vs paid app): [`docs/PRODUCT.md`](docs/PRODUCT.md). Packa
 [`docs/PACKAGING.md`](docs/PACKAGING.md) · `python scripts/check-wheel-assets.py` ·
 `python scripts/testpypi-dry-run.py` (local wheel proof; `--upload` needs `TESTPYPI_TOKEN`).
 
-**Active plan (one):** [`Plans/_Active/2026-07-21-next-agent-product-prompt.md`](Plans/_Active/2026-07-21-next-agent-product-prompt.md) (checklist + paste-ready handoff) · index [`Plans/README.md`](Plans/README.md). Prior wave: [`Plans/_Archive/2026-07-14-professional-product-roadmap.md`](Plans/_Archive/2026-07-14-professional-product-roadmap.md).
+**Active plan (one):** [`Plans/_Active/2026-08-12-product-privacy-packaging.md`](Plans/_Active/2026-08-12-product-privacy-packaging.md) · index [`Plans/README.md`](Plans/README.md). Completed waves: [`Plans/_Complete/`](Plans/_Complete/).
 
 **Session start / wrap:** `/start` → [`.claude/commands/start.md`](.claude/commands/start.md) (open
 applications + their blocking gates). `/wrap` → [`.claude/commands/wrap.md`](.claude/commands/wrap.md)
@@ -176,7 +176,7 @@ content stays in the gitignored `storage/` vault. (This replaced the older `.loc
 | `examples/profiles/<id>/` | one profile per document type: `profile.json` + reference `.html` + example data |
 | `examples/_job-listings/` | one-folder-per-job-application workflow + copyable template |
 | `docs/` | ARCHITECTURE · SSOT · PRODUCT · PACKAGING · WHITE-LABEL · STORAGE · VAULT · JOB-ASSESSMENT · THEME-DESIGN · LAYOUT-SYSTEM · EXPORTS · COLLAGE-DESIGN · PREVIEWER · APPLICATIONS · LICENSING-NOTES ([`docs/README.md`](docs/README.md) is the index) |
-| `.config/mcp-pdf-designer.json` | project config — **breakpoint SSOT pointer** + hub/palette/layout/collage/voice pointers. Clone-safe: `.config/mcp-pdf-designer.example.json` |
+| `.config/mcp-pdf-designer.example.json` | ⭐ Tracked project config **seed** (breakpoints + hub/palette/layout pointers). Copy → local `mcp-pdf-designer.json` (gitignored — machine paths). |
 | `Plans/_Active/` | ⭐ the working roadmap (one file) — see [`Plans/README.md`](Plans/README.md) |
 | `storage/` | ⛔ **gitignored** local workspace: vaults, real applications, real image sets, private brands |
 | `storage/studio/resources/images/martiangames/` | ⭐ **shared** MG title gallery (WebP) — both applicants; see [`docs/STORAGE.md`](docs/STORAGE.md) |

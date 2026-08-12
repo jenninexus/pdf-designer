@@ -172,22 +172,25 @@
     ]
   },
   "plans": {
-    "active": "Plans/_Active/2026-07-21-next-agent-product-prompt.md",
+    "active": "Plans/_Active/2026-08-12-product-privacy-packaging.md",
     "index": "Plans/README.md",
-    "archive": "Plans/_Archive/",
-    "next": "TestPyPI dry-run + Hub recipe-gallery UX; pywebview stays parked"
+    "complete": "Plans/_Complete/",
+    "next": "TestPyPI upload when TESTPYPI_TOKEN exists; paid shell stays shell-over-Hub"
   },
   "protocol": {
     "storage": "docs/STORAGE.md",
     "vault": "docs/VAULT.md",
     "job_assessment": "docs/JOB-ASSESSMENT.md",
     "agents": "AGENTS.md",
-    "make_resume": ".claude/commands/make-resume.md",
+    "make_resume": ".claude/commands/make-resume.example.md",
+    "make_cover_letter": ".claude/commands/make-cover-letter.example.md",
+    "make_work_examples": ".claude/commands/make-work-examples.example.md",
     "make_collage": ".claude/commands/make-collage.md",
     "layout_system": "docs/LAYOUT-SYSTEM.md",
     "collage_design": "docs/COLLAGE-DESIGN.md",
     "layouts": "layouts/README.md",
     "ssot": "docs/SSOT.md",
-    "white_label": "docs/WHITE-LABEL.md"
+    "white_label": "docs/WHITE-LABEL.md",
+    "product": "docs/PRODUCT.md"
   }
 }
