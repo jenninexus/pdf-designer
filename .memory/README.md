@@ -68,6 +68,7 @@ codebase · `reference`: pointer to an external resource.
 | [lesson-hub-drawer-css-without-html-clips-more.md](lesson-hub-drawer-css-without-html-clips-more.md) | Hub drawer CSS without HTML/JS + `overflow:hidden` clipped the ⋯ panel; recipe_gallery must scan layout category folders |
 | [lesson-hub-stack-at-md-breaks-desktop-split.md](lesson-hub-stack-at-md-breaks-desktop-split.md) | Do not stack library/viewer at md (991.98) — desktop/zoomed windows look broken; keep LEFT/RIGHT until phones (≤575.98); folder pins = ghost ★ in picker |
 | [lesson-hub-collage-hidden-by-profile-filter.md](lesson-hub-collage-hidden-by-profile-filter.md) | Untagged collage projects vanish when Profiles ≠ all — clear profile chip or search folder; keep `_candidates/` flat |
+| [lesson-public-clone-path-stays-tracked.md](lesson-public-clone-path-stays-tracked.md) | Public clone how-to stays in `docs/GETTING-STARTED`; gitignore ≠ history scrub |
 
 ## Related
 
