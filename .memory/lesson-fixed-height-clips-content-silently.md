@@ -51,7 +51,7 @@ Don't — that just re-hides the overflow. **Cut prose until it fits at its natu
   distinguish "the line ended here" from "the line was cut here".
   **So the rule is enforced at the SOURCE:** `check_generation` check 11 (`letter-geometry`,
   implemented in `check_pagefit.check_source_geometry`) refuses the CSS combination outright on any
-  file whose name contains `letter`. Contract: `layouts/one-page-letter.json`.
+  file whose name contains `letter`. Contract: `layouts/cover-letter/one-page-letter.json`.
 - **Fix order when a letter runs long** (never restore the height): cut prose → tighten the closing
   → font-size 11.5→11.0→10.75px (floor 10.5) → line-height 1.55→1.5→1.45 (floor 1.4) → margin
   0.75–0.8in, equal on all edges.

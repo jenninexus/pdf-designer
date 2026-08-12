@@ -13,7 +13,7 @@ Sibling pattern: [`agency/docs/PUBLIC-LOCAL-SPLIT.md`](../../agency/docs/PUBLIC-
 | Product story | [`PRODUCT.md`](PRODUCT.md) · [`examples/resume-studio/`](../examples/resume-studio/) | [`../storage/docs/MARKETING.md`](../storage/docs/MARKETING.md) |
 | Clone path | [`GETTING-STARTED.md`](GETTING-STARTED.md) | — |
 | Protocol (rules) | [`VAULT.md`](VAULT.md) · [`STORAGE.md`](STORAGE.md) · [`JOB-ASSESSMENT.md`](JOB-ASSESSMENT.md) | Real vaults / listings / PII |
-| Commands | `.claude/commands/*.example.md` only | Bare `start` / `wrap` / `make-*` / commands `README` |
+| Commands | `.claude/commands/*.example.md` only | Bare `start` / `wrap` / `make-*` / commands `README` + generated `.codex/` adapters |
 | Config | `.config/mcp-pdf-designer.example.json` | `mcp-pdf-designer.json` (absolute paths) |
 | Theme kit | Public default themes in-repo | `www-theme-kit` profiles + `storage/brand-design/` (private kits) |
 | Docs index | This folder + tracked [`../storage/docs/README.md`](../storage/docs/README.md) placeholder | Full private notes under `storage/docs/` |
@@ -26,7 +26,7 @@ Commit when they are clone-safe and reusable:
 - `themes/` · `layouts/` · `examples/` (incl. `resume-studio/`)
 - `docs/*.md` — engine, product, protocol **without** real employer/PII
 - `AGENTS.md` · `README.md` · `Plans/` (engineering checklists)
-- `.claude/commands/*.example.md` — generalized protocol seeds
+- `.claude/commands/*.example.md` — generalized protocol seeds; placeholders only (the suffix itself is not a privacy check)
 - `.config/*.example.json` · `.vscode/mcp.json.example`
 - `.memory/lesson-*.md` — durable traps (no vault bodies)
 - Tracked placeholder: `storage/docs/README.md` (index only)
@@ -43,6 +43,7 @@ Never commit from a personal machine:
 | `storage/collages/`, `*_exports/` | Real image sets + PDFs |
 | `storage/docs/MARKETING.md`, `WORKSPACE.md`, `HISTORY-SCRUB.md`, … | SEGO marketing, machine paths, rewrite runbooks |
 | `.claude/commands/{start,wrap,pdf-wrap,README,make-*}.md` | Dev ritual + personal specifics |
+| `.codex/` | Generated local adapters for the bare commands; may repeat dev/private specifics |
 | `.config/mcp-pdf-designer.json` | Absolute machine paths |
 | `dev-log-sego.yaml` | Session narrative with private paths |
 | `*.pdf` / `*.png` (except deliberate example fixtures) | Exports / captures |

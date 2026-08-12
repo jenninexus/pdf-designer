@@ -23,6 +23,10 @@
 - [ ] **Push origin/main** — needs `jenninexus` GitHub auth (MonoFinity gh fails “repo not found”)
 - [x] **Public vs local SSOT** — `docs/PUBLIC-LOCAL-SPLIT.md` + `GETTING-STARTED.md` (WHITE-LABEL stub)
 - [x] Tracked `storage/docs/README.md` placeholder; MARKETING / WORKSPACE / HISTORY-SCRUB private
+- [x] **Codex command sync** — global `/pdf` + seven repo-local adapters regenerated one-way from Claude sources; `.codex/` stays private
+- [x] **Public command audit** — replace the personal-content `make-resume.example.md` with a portable placeholder-only seed
+- [x] **Public smoke repair** — default résumé now passes `check_generation` + light/dark export + ATS cues (`Job Title` / `Work Experience` / `Education`)
+- [x] **Wheel hygiene** — clean stale `build/` and reject `_exports` / `_variants` / generated media in packaged `share/`
 - [ ] **History scrub** — see `storage/docs/HISTORY-SCRUB.md` (filter-repo + human force-push)
 - [ ] Optional: deepen `examples/resume-studio/` (sample vault walkthrough HTML / Hub deep-link card)
 - [ ] Optional: PyPI production after TestPyPI succeeds

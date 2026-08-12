@@ -3,7 +3,7 @@
     "description": "TEMPLATE — copy to mcp-pdf-designer.json and replace the <PLACEHOLDER> paths with your own. The repo runs WITHOUT this file; it only enriches agents and tools with pointers. Nothing here is a secret.",
     "project": "pdf-designer",
     "repo": "<REPO_ROOT>",
-    "updated": "2026-08-05",
+    "updated": "2026-08-12",
     "theme_kit": {
       "official": "<WWW_THEME_KIT>",
       "hub_profile": "www-theme-kit/profiles/pdf-designer.json",
@@ -102,18 +102,9 @@
       "storage/brand-design/brand-*.json"
     ],
     "users_dir": "storage/users/",
-    "person_files": {
-      "jenni": "storage/users/jenni.json",
-      "shade": "storage/users/shade.json",
-      "_note": "Applicant person files. Studio entity decks have no users/*.json — see profile_files."
-    },
-    "profile_files": {
-      "jenni": "storage/profiles/jenni-resume.json",
-      "shade": "storage/profiles/shade-resume.json",
-      "studio": "storage/profiles/studio-resume.json",
-      "martian": "storage/profiles/martian-resume.json",
-      "_note": "Hub Profiles filter (preview.py) tags docs by path/prefix to these four. studio = Synagen/capabilities; martian = game studio."
-    }
+    "person_file_pattern": "storage/users/<user>.json",
+    "profile_file_pattern": "storage/profiles/<user>-resume.json",
+    "public_profile_example": "examples/profiles/default-resume/profile.example.json"
   },
   "palette_registry": {
     "_role": "COLOR. Structure lives in `layouts` below — the two compose.",
@@ -146,9 +137,9 @@
     },
     "documents": "layouts/",
     "document_recipes": [
-      "layouts/one-page-letter.json",
-      "layouts/two-page-standard.json",
-      "layouts/work-examples.json"
+      "layouts/cover-letter/one-page-letter.json",
+      "layouts/resume/two-page-standard.json",
+      "layouts/work-examples/work-examples.json"
     ]
   },
   "collage": {
@@ -159,7 +150,7 @@
     "backgrounds": "themes/default-collage.json#backgrounds",
     "frames": "themes/default-collage.json#backgrounds[*].frame",
     "recipes": "layouts/collage/",
-    "command": ".claude/commands/make-collage.md",
+    "command": ".claude/commands/make-collage.example.md",
     "example_source": "examples/profiles/default-collage/collage-source.example.json",
     "workspace": "storage/collages/<project>/",
     "output": "storage/collages/<project>/_candidates/ (ONE FLAT DIR — canvas/bg/fit encoded in the filename)",
@@ -185,12 +176,12 @@
     "make_resume": ".claude/commands/make-resume.example.md",
     "make_cover_letter": ".claude/commands/make-cover-letter.example.md",
     "make_work_examples": ".claude/commands/make-work-examples.example.md",
-    "make_collage": ".claude/commands/make-collage.md",
+    "make_collage": ".claude/commands/make-collage.example.md",
     "layout_system": "docs/LAYOUT-SYSTEM.md",
     "collage_design": "docs/COLLAGE-DESIGN.md",
     "layouts": "layouts/README.md",
     "ssot": "docs/SSOT.md",
-    "white_label": "docs/WHITE-LABEL.md",
+    "getting_started": "docs/GETTING-STARTED.md",
     "product": "docs/PRODUCT.md"
   }
 }
