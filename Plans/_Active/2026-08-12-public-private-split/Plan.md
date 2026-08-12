@@ -18,7 +18,7 @@
 - [x] Gitignore: `!storage/docs/README.md`
 - [x] History scrub script/doc (local only until push auth)
 - [x] Cross-repo: agency sibling table, socials PUBLIC-LOCAL-SPLIT, dashboard split doc, theme-kit profiles
-- [ ] Verify links; commit tracked paths; wrap
+- [x] Verify links; commit tracked paths; wrap
 
 ## Assumptions
 
