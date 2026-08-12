@@ -17,13 +17,14 @@ Pulled from the active plan — keep in sync there, this is a quick view:
 - [ ] **TestPyPI upload** — create account/token → `python scripts/testpypi-dry-run.py --upload`
 - [ ] **Push origin/main** — use `jenninexus` GitHub auth (MonoFinity `gh` cannot see the private repo)
 - [ ] Keep **SSOT + QA docs** honest as the engine evolves ([`SSOT.md`](SSOT.md) · [`QA.md`](QA.md))
-- [ ] Optional: deepen [`examples/resume-studio/`](../examples/resume-studio/) walkthrough · PyPI · paid-shell
+- [ ] Optional: production PyPI after TestPyPI · paid-shell
 - [ ] Optional: document meet-jenni-bot / syn-themes **collage recipes** in [`COLLAGE-DESIGN.md`](COLLAGE-DESIGN.md)
 - [ ] Optional: Synagen **engine** promo screenshots → `storage/shade/resources/images/synagen/`
 
 ### Recently landed
 
 - [x] **Public vs local architecture** (2026-08-12) — `PUBLIC-LOCAL-SPLIT` · `GETTING-STARTED` · tracked `storage/docs/README` · siblings + theme-kit pointers
+- [x] **Clone-safe Resume Studio walkthrough** (2026-08-12) — tracked vault → profile → palette → HTML → QA/export/ATS path + direct Hub example link
 - [x] **Codex/public-command reconciliation** (2026-08-12) — generated local adapters; anonymized public résumé seed; public smoke + wheel artifact gates green
 - [x] **Commands privacy** (2026-08-12) — GitHub = `*.example.md` only; wrap requires `/reflect` + handoff
 - [x] **Resume Studio product frame** — `examples/resume-studio/` + job-market pitch in PRODUCT

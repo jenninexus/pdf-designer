@@ -73,8 +73,8 @@
       "socialPersonal": "(optional path to a socials format-manifest voice string)",
       "socialStudio": "(optional path to studio 'we' voice)",
       "discordVisual": "(optional path to a Discord STYLE-SPEC — emoji/visual only)",
-      "networkRegistry": "C:\\Github\\voice-seed\\registry.json",
-      "publicCard": "C:\\Github\\voice-seed\\characters\\humans\\<id>.md"
+      "networkRegistry": "<VOICE_SEED>/registry.json",
+      "publicCard": "<VOICE_SEED>/characters/humans/<id>.md"
     },
     "emojiPreferences": {
       "_note": "Social/Discord only — never on ATS resume PDFs.",
