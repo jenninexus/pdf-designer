@@ -22,11 +22,11 @@
     "tracked": false,
     "reason": "Real personal resume data. storage/ is gitignored."
   },
-  "voice": "One line pointer. Full application voice → vault `voice`. Personality / contrast → users/<you>.json#characterVoice. Network map → C:\\Github\\voice-seed\\registry.json.",
+  "voice": "One line pointer. Full application voice → vault `voice`. Personality / contrast → users/<you>.json#characterVoice. Network map → <VOICE_SEED>/registry.json.",
   "leadIdentity": {
     "rule": "OPTIONAL. If lead identity CHANGES by track, put the map in the vault ONLY — profile keeps a pointer.",
     "source": "../yourname/resume-source.json#voice.leadIdentityByTrack",
-    "_note": "Do not duplicate per-track lines here (they drift). See shade-resume.json for the live pattern."
+    "_note": "Do not duplicate per-track lines here; they drift. Keep track-specific framing in the private applicant profile."
   },
   "roleTracks": {
     "_note": "Defined in the VAULT, not here. Pointer only — do not copy the available[] list.",

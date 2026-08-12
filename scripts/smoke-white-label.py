@@ -14,6 +14,7 @@ See docs/GETTING-STARTED.md and docs/PRODUCT.md.
 
 from __future__ import annotations
 
+import re
 import shutil
 import subprocess
 import sys
@@ -23,6 +24,31 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[1]
 EXAMPLE = REPO / "examples" / "profiles" / "default-resume" / "default-resume.html"
 EXPORT_DIR = REPO / "examples" / "profiles" / "default-resume" / "_exports"
+PUBLIC_TEXT_ROOTS = (
+    REPO / ".claude" / "commands",
+    REPO / ".config" / "mcp-pdf-designer.example.json",
+    REPO / "examples" / "resume-studio",
+    REPO / "examples" / "profiles" / "default-resume",
+)
+PRIVATE_MARKERS = (
+    "jenninexus",
+    "jenni",
+    "shade",
+    "synephi",
+    "martian",
+    "martian games",
+    "hasbro",
+    "halfbrick",
+    "oddworld",
+    "kixeye",
+    "netflix",
+    "alignerr",
+    "sony",
+    "segopc",
+    "beethoven",
+    "livphi",
+    r"c:\github\pdf-designer",
+)
 
 
 def _run(label: str, argv: list[str]) -> None:
@@ -42,6 +68,62 @@ def _assert_public_path() -> None:
         print(f"[ok] storage/ exists locally (ignored for smoke) - {storage}")
     else:
         print("[ok] no storage/ - pure public-path clone")
+
+
+def _public_text_files() -> list[Path]:
+    files: list[Path] = []
+    for root in PUBLIC_TEXT_ROOTS:
+        if root.is_file():
+            files.append(root)
+            continue
+        if root.name == "commands":
+            files.extend(sorted(root.glob("*.example.md")))
+            continue
+        files.extend(
+            sorted(
+                path
+                for path in root.rglob("*")
+                if path.is_file()
+                and "_exports" not in path.parts
+                and "_variants" not in path.parts
+                and path.suffix.lower() in {".html", ".json", ".md", ".css"}
+            )
+        )
+    return files
+
+
+def _assert_public_privacy() -> None:
+    offenders: list[str] = []
+    for path in _public_text_files():
+        text = path.read_text(encoding="utf-8").lower()
+        for marker in PRIVATE_MARKERS:
+            if marker in text:
+                offenders.append(f"{path.relative_to(REPO)}: {marker}")
+        normalized = text.replace("\\\\", "\\")
+        if re.search(r"\b[a-z]:\\(?!\.\.\.)[a-z0-9_.-]+", normalized):
+            offenders.append(f"{path.relative_to(REPO)}: absolute Windows path")
+
+    if offenders:
+        details = "\n  - ".join(offenders)
+        raise SystemExit(f"FAIL: private workspace markers in public examples/seeds:\n  - {details}")
+
+    if (REPO / ".git").exists():
+        tracked = subprocess.run(
+            ["git", "ls-files", ".codex", "storage"],
+            cwd=REPO,
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.splitlines()
+        unexpected = [path for path in tracked if path != "storage/docs/README.md"]
+        if unexpected:
+            details = "\n  - ".join(unexpected)
+            raise SystemExit(f"FAIL: private paths are tracked:\n  - {details}")
+
+    print(
+        "[ok] Resume Studio/public-seed privacy boundary "
+        f"({len(_public_text_files())} source files scanned)"
+    )
 
 
 def _export_light_dark(out: Path) -> tuple[Path, Path]:
@@ -95,6 +177,7 @@ def main() -> int:
     print("White-label smoke - pdf-designer")
     print(f"repo: {REPO}")
     _assert_public_path()
+    _assert_public_privacy()
 
     # Prefer a clean temp dir; also mirror into the example _exports for Hub browsing.
     with tempfile.TemporaryDirectory(prefix="pdf-designer-smoke-") as tmp:

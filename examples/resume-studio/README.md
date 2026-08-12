@@ -1,61 +1,100 @@
-# Resume Studio — public product entry
+# Resume Studio — clone-safe walkthrough
 
-**This folder is the marketed front door** for the free GitHub résumé creator.
+Resume Studio is the public front door for the free résumé creator. This walkthrough uses only
+tracked example data and public themes: no `storage/`, personal command, machine path, or SaaS
+account is required.
 
-Inspired by a broken job market: keyword soup, opaque board ranks, and templates that
-look identical. This toolkit keeps **your claims in a vault**, **your skills tags** and
-**palette prefs** under your control, and prints **ATS-honest light PDFs** plus branded
-dark ones — all local, no SaaS vault.
+> **Design Hub example card:** start the Hub, then
+> [open the default résumé directly](http://127.0.0.1:8787/?doc=examples%2Fprofiles%2Fdefault-resume%2Fdefault-resume.html).
+> The link selects its existing library card and opens the exact HTML that the exporter prints.
 
-> Not private data. Everything here points at tracked `examples/` + `themes/` only.
-> Real applicants live under gitignored `storage/` on a developer machine.
+## One complete public path
 
-| Want | Go here |
-|---|---|
-| Product thesis (free vs paid) | [`../../docs/PRODUCT.md`](../../docs/PRODUCT.md) |
-| Clone how-to (no vaults) | [`../../docs/GETTING-STARTED.md`](../../docs/GETTING-STARTED.md) |
-| Vault shape (what may be claimed) | [`../../docs/VAULT.md`](../../docs/VAULT.md) |
-| Palette rule | [`../../themes/PALETTE-RULES.md`](../../themes/PALETTE-RULES.md) |
-| Example HTML + profile | [`../profiles/default-resume/`](../profiles/default-resume/) |
-| Brand map template | [`../brand-design/`](../brand-design/) |
-| Job-folder template | [`../_job-listings/`](../_job-listings/) |
-| Protocol seeds (agent commands) | [`../../.claude/commands/*.example.md`](../../.claude/commands/) |
+Run commands from the repository root.
 
----
-
-## 60-second proof (fresh clone)
+### 1. Install the engine
 
 ```bash
-pip install -e ".[dev]" && playwright install chromium
-python scripts/smoke-white-label.py          # QA + light/dark PDF + ATS
-python -m pdf_tool.preview                   # Design Hub → http://127.0.0.1:8787/
+pip install -e ".[dev]"
+playwright install chromium
 ```
 
-Or open the example résumé directly in the Hub:
+### 2. Read and validate the claim vault
 
-`http://127.0.0.1:8787/?doc=examples/profiles/default-resume/default-resume.html`
+The [example vault](../profiles/default-resume/resume-source.example.json) is the source-backed
+inventory of claims, skills, employment, credits, and education. A résumé is a selection from this
+inventory; the example warnings are teaching prompts, while invalid structure still fails.
 
----
+```bash
+python -m pdf_tool.check_vault examples/profiles/default-resume/resume-source.example.json
+```
 
-## What “customizable vault” means (public shape)
+### 3. Read the profile
 
-Copy the example files into your own gitignored `storage/` (see [`../README.md`](../README.md)):
+The [profile shape](../profiles/default-resume/profile.example.json) describes how one person's
+verified claims should render, including layout and `exportPrefs`. The
+[live example profile](../profiles/default-resume/profile.json) points to the tracked HTML fixture
+and requires both light and dark résumé exports. In this public walkthrough these files are
+reference contracts; no private person record is created.
 
-| Layer | Example seed | You customize |
+### 4. Choose a public palette
+
+The [default palette](../../themes/default-resume.json) defines the document tokens. You can audition
+the tracked [preset palettes](../../themes/presets/) in the Design Hub without editing the source.
+The reference HTML embeds the default token values so it remains a standalone, deterministic fixture.
+
+```bash
+python -m pdf_tool.preview --no-open --port 8787
+```
+
+Open the [direct example card](http://127.0.0.1:8787/?doc=examples%2Fprofiles%2Fdefault-resume%2Fdefault-resume.html),
+then use the palette control to compare light and dark presentation.
+
+### 5. Inspect the printable HTML
+
+[`default-resume.html`](../profiles/default-resume/default-resume.html) is the browser source and the
+export source. It contains ATS-visible `Job Title`, `Work Experience`, `Education`, and `Skills` cues,
+plus matching light and dark print rules. The example vault and profile document how real verified
+content would be selected; they do not silently generate or invent prose.
+
+### 6. Run the ship gate, then export both modes
+
+```bash
+python -m pdf_tool.check_generation examples/profiles/default-resume/default-resume.html
+
+python -m pdf_tool.html_to_pdf examples/profiles/default-resume/default-resume.html --output-dir examples/resume-studio/_exports
+python -m pdf_tool.html_to_pdf examples/profiles/default-resume/default-resume.html --pdf-theme dark --output-dir examples/resume-studio/_exports
+```
+
+The first command creates `default-resume-light.pdf`; the second creates
+`default-resume-dark.pdf`. Generated files stay under the gitignored `_exports/` directory.
+
+### 7. Prove the board PDF is ATS-readable
+
+```bash
+python -m pdf_tool.check_ats examples/resume-studio/_exports/default-resume-light.pdf
+```
+
+A pass reports contiguous job-title, work-experience, and education cues with no unacceptable
+mid-word splitting. Upload the **light** PDF to job boards; keep the dark PDF for human readers,
+email, or a portfolio.
+
+For the same end-to-end proof in one command, run:
+
+```bash
+python scripts/smoke-white-label.py
+```
+
+## What each layer owns
+
+| Layer | Tracked example | Owns |
 |---|---|---|
-| Person | `profiles/default-resume/user.example.json` | Contact, brand pointer, voice prefs |
-| Vault | `profiles/default-resume/resume-source.example.json` | Claims, skills / `boardSkills`, tracks |
-| Profile | `profiles/default-resume/profile.example.json` | Layout + `exportPrefs` (light + dark) |
-| Palette | `brand-design/brand-example.json` · `themes/presets/` | Colors mapped into token names |
+| Vault | [`resume-source.example.json`](../profiles/default-resume/resume-source.example.json) | What may be truthfully claimed |
+| Profile | [`profile.example.json`](../profiles/default-resume/profile.example.json) | How selected claims render and export |
+| Palette | [`default-resume.json`](../../themes/default-resume.json) | Color tokens; never page geometry |
+| HTML | [`default-resume.html`](../profiles/default-resume/default-resume.html) | Browser and PDF source |
+| QA | `check_generation` + `check_ats` | Artifact and ATS gates |
 
-Guards (`check_vault`, `check_palette`, `check_generation`, `check_ats`) keep the print
-honest. Protocol for agents: start from `make-resume.example.md` (copy → bare
-`make-resume.md` locally if you add personal specifics).
-
----
-
-## Why a separate directory?
-
-`examples/profiles/` holds **engine fixtures**. This folder holds the **product story** —
-so README / marketing / paid-app planning can point at one URL without dragging
-collage fixtures or private SEGO ritual into the pitch.
+When you later add real information, copy the example shapes into gitignored `storage/`; never replace
+these tracked fixtures with personal details. See [Getting started](../../docs/GETTING-STARTED.md),
+[vault rules](../../docs/VAULT.md), and the [public/private split](../../docs/PUBLIC-LOCAL-SPLIT.md).

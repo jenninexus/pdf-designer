@@ -28,4 +28,10 @@ tracked `*.example.*` file; do not infer safety from the suffix. Public commands
 only, link tracked recipes/docs, and must pass `python scripts/smoke-white-label.py` without
 private `storage/` data. The smoke must include ATS cues, not only successful PDF rendering.
 
+**Name markers alone are not a privacy scan.** The first automated gate still missed portable-looking
+example JSON that contained `C:\\Github\\voice-seed` paths. Normalize escaped backslashes and reject
+real absolute Windows paths in the public surfaces under test. Label the gate by its actual coverage
+(currently Resume Studio + public seeds), because a passing scoped scan is not proof that every tracked
+theme, layout, or historical commit is anonymous.
+
 Related: [[lesson-twin-files-always-fork]]
