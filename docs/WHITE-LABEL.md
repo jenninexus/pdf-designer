@@ -13,11 +13,13 @@ are the product.
 
 | Piece | Path | Notes |
 |---|---|---|
+| **Product entry** | [`examples/resume-studio/`](../examples/resume-studio/) | Marketed résumé-creator front door |
 | Example profile + HTML | `examples/profiles/default-resume/` | Reference render + `profile.json` |
 | Default theme | `themes/default-resume.{json,css}` | Token SSOT + CSS mirror |
 | Audition palettes | `themes/presets/*.json` | Design Hub / `--variants` shopping |
 | Palette rule | [`themes/PALETTE-RULES.md`](../themes/PALETTE-RULES.md) | No brown / mustard / lime |
 | Brand template (optional) | `examples/brand-design/` | Copy shape only — not real hex maps |
+| Protocol seeds | `.claude/commands/*.example.md` | Bare start/wrap/make-* are **not** on GitHub |
 
 You do **not** need `storage/users`, vaults, or `storage/brand-design` to export PDFs.
 

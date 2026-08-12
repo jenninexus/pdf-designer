@@ -38,12 +38,19 @@ job-listing-capture-*.md
 !**/*.example.json
 !**/*.example.md
 
-# Personal slash commands — the PUBLIC seed is the .example.md; the bare <name>.md
-# is YOUR copy with real company/client specifics. Track only the .example versions.
-# (make-collage.md and README.md carry no private data and stay tracked below.)
+# Personal slash commands — TRACK ONLY `*.example.md` on GitHub.
+# Bare start/wrap/make-*/README are SEGO/dev-only (reflect, applicant specifics, session ritual).
+.claude/commands/*
+!.claude/commands/*.example.md
+# Legacy explicit ignores (redundant once the glob above applies; kept for clarity)
 .claude/commands/make-resume.md
 .claude/commands/make-cover-letter.md
 .claude/commands/make-work-examples.md
+.claude/commands/make-collage.md
+.claude/commands/start.md
+.claude/commands/wrap.md
+.claude/commands/pdf-wrap.md
+.claude/commands/README.md
 
 # Codex skill mirrors — generated duplicates of .claude/commands/*.md (SKILL.md format).
 # We don't dual-maintain them; Codex users read .claude/commands/*.md directly (see AGENTS.md).
