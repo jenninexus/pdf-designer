@@ -16,7 +16,7 @@ Repo-local command for **pdf-designer**. Real image sets live under `storage/col
 ```
 /make-collage storage/collages/<project>/images                          # all families + picker
 /make-collage storage/collages/<project>/images scatter-showcase-16x9    # one named recipe
-/make-collage storage/collages/<project>/images --bg martian-ember       # override the background
+/make-collage storage/collages/<project>/images --bg discord-ember       # override the background
 /make-collage <project> --canvas hd-portrait --px 1080x1920              # re-target another size
 ```
 
@@ -92,7 +92,7 @@ Backgrounds are **named presets**, not ad-hoc CSS:
 
 ```bash
 --bg discord-slate     # Discord grey, the safe default
---bg martian-ember     # brand orange lean
+--bg discord-ember     # warm orange lean
 --bg "linear-gradient(...)"   # raw CSS also accepted, passed through verbatim
 ```
 
