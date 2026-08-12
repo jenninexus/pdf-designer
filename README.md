@@ -10,8 +10,8 @@
 ![Engine](https://img.shields.io/badge/engine-headless%20chromium-42f4c8?style=flat-square&labelColor=1a1a2e)
 ![Local](https://img.shields.io/badge/local--first-no%20SaaS-ff6ec4?style=flat-square&labelColor=1a1a2e)
 
-Local-first toolkit that turns HTML into **print-perfect PDFs** — résumés, cover letters,
-collages — with an optional vault-backed job-application layer that never invents a claim.
+Local-first **résumé studio for a broken job market** — HTML → print-perfect PDFs, optional
+vault-backed claims, skills tags, and palette prefs. Never invents a claim. No SaaS vault.
 
 **Zero network calls. Zero environment variables. Zero telemetry.**
 
@@ -19,15 +19,16 @@ collages — with an optional vault-backed job-application layer that never inve
 
 - 📄 **HTML → PDF** via real headless Chromium — what the browser prints is what you get
 - 🌗 **Light + dark** from one source — ATS-safe light PDF and branded dark, same pagination
+- 🗄 **Per-user vaults** — skills / board tags / claims you control (`docs/VAULT.md`)
 - 🎨 **Themeable** palettes with a guard that rejects colors that print badly
 - 🔍 **Design Hub** — local preview, palette swap, one-click export (`python -m pdf_tool.preview`)
 
-> **Status:** private for now. Structure and docs are shaped for a future public release
-> (MIT engine + public themes; private vaults stay gitignored). Product direction:
-> [`docs/PRODUCT.md`](docs/PRODUCT.md). Public clone path: [`docs/WHITE-LABEL.md`](docs/WHITE-LABEL.md).
-> Packaging / PyPI spike: [`docs/PACKAGING.md`](docs/PACKAGING.md). Agent map:
-> [`AGENTS.md`](AGENTS.md). Session wrap: [`.claude/commands/pdf-wrap.md`](.claude/commands/pdf-wrap.md).
-> Personal palette prefs (private): `storage/brand-design/` — see [`docs/SSOT.md`](docs/SSOT.md).
+> **Status:** private for now; docs shaped for a public release. **Start here:**
+> [`examples/resume-studio/`](examples/resume-studio/) · product: [`docs/PRODUCT.md`](docs/PRODUCT.md) ·
+> white-label: [`docs/WHITE-LABEL.md`](docs/WHITE-LABEL.md) · packaging: [`docs/PACKAGING.md`](docs/PACKAGING.md) ·
+> agents: [`AGENTS.md`](AGENTS.md). Protocol seeds on GitHub are `*.example.md` only
+> (bare `start`/`wrap`/`make-*` stay local). Palette prefs (private): `storage/brand-design/` —
+> [`docs/SSOT.md`](docs/SSOT.md).
 
 ---
 

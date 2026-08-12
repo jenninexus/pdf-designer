@@ -1,5 +1,8 @@
 # `examples/` — start here, then copy into `storage/`
 
+**Product front door (résumé creator pitch):** [`resume-studio/`](resume-studio/) — vault +
+skills + palette demo path for the free GitHub story ([`docs/PRODUCT.md`](../docs/PRODUCT.md)).
+
 This folder is the **public, tracked template set**. It shows the shape of every file the toolkit uses,
 with placeholder data only — no real names, contacts, or claims. Your real work lives in a **gitignored
 `storage/`** folder that mirrors this structure, so nothing private is ever committed.
