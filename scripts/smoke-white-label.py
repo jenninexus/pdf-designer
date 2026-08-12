@@ -9,7 +9,7 @@ No ``storage/`` required. Run from any checkout after::
 Exits 0 only when check_generation, light+dark export, and ATS text-layer all pass.
 PDFs land under ``examples/profiles/default-resume/_exports/`` (gitignored).
 
-See docs/WHITE-LABEL.md and docs/PRODUCT.md.
+See docs/GETTING-STARTED.md and docs/PRODUCT.md.
 """
 
 from __future__ import annotations
@@ -120,7 +120,7 @@ def main() -> int:
 
     print("\nPASS - public path works without storage/")
     print("Next: python -m pdf_tool.preview  ->  http://127.0.0.1:8787/")
-    print("Docs: docs/WHITE-LABEL.md")
+    print("Docs: docs/GETTING-STARTED.md")
     return 0
 
 

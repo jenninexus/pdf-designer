@@ -12,7 +12,7 @@ Do **not** use a two-column footer row on work-samples (script left / links righ
 
 **How to apply:**
 
-1. Work-samples recipe: [`layouts/work-examples.json`](../layouts/work-examples.json).
+1. Work-samples recipe: [`layouts/work-examples/work-examples.json`](../layouts/work-examples/work-examples.json).
 2. Export go-to packs into `storage/<user>/defaults/` — never `_exports/defaults/`.
 3. After editing the `.template.html`, re-inline images, then `check_generation` before export.
 

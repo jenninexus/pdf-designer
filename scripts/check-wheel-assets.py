@@ -12,6 +12,7 @@ Usage (from repo root):
 from __future__ import annotations
 
 import subprocess
+import shutil
 import sys
 import tempfile
 import zipfile
@@ -27,6 +28,13 @@ def main() -> int:
     )
     if sync.returncode != 0:
         return sync.returncode
+
+    # setuptools reuses build/lib and does not remove files that disappeared from
+    # the source tree. A prior build can therefore smuggle ignored _variants/
+    # PDFs into a later wheel even though sync-wheel-share.py excludes them.
+    build_tree = ROOT / "build"
+    if build_tree.exists():
+        shutil.rmtree(build_tree)
 
     with tempfile.TemporaryDirectory(prefix="pdf-designer-wheel-") as tmp:
         out = Path(tmp)
@@ -61,6 +69,19 @@ def main() -> int:
         if not ok:
             missing.append(item)
 
+    forbidden = [
+        name
+        for name in names
+        if (
+            "/_exports/" in name
+            or "/_variants/" in name
+            or (
+                name.startswith("pdf_tool/share/")
+                and name.lower().endswith((".pdf", ".png", ".jpg", ".jpeg", ".webp", ".gif"))
+            )
+        )
+    ]
+
     print(f"wheel: {wheel.name} ({len(names)} files)")
     if missing:
         print("FAIL: wheel missing required public assets:", file=sys.stderr)
@@ -68,7 +89,13 @@ def main() -> int:
             print(f"  - {m}", file=sys.stderr)
         return 1
 
-    print("PASS - wheel includes themes/ + layouts/ under pdf_tool/share/")
+    if forbidden:
+        print("FAIL: wheel contains generated/private-style artifacts:", file=sys.stderr)
+        for item in forbidden:
+            print(f"  - {item}", file=sys.stderr)
+        return 1
+
+    print("PASS - wheel includes public source assets and no generated image/PDF artifacts")
     return 0
 
 

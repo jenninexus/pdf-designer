@@ -267,5 +267,5 @@ Read [`docs/VAULT.md`](docs/VAULT.md) before authoring any resume claim.
   `storage/profiles/<name>-resume.json`. See [`docs/STORAGE.md`](docs/STORAGE.md).
 - **Collage / recipes:** images in `storage/collages/<project>/images/`, then `--recipe <id>` or
   `--layout auto --png`. **Screenshots need `--fit contain`.** Browse recipes in the Hub at
-  [`/recipes`](http://127.0.0.1:8787/recipes). Routine: [`/make-collage`](.claude/commands/make-collage.md);
+  [`/recipes`](http://127.0.0.1:8787/recipes). Public routine: [`/make-collage`](.claude/commands/make-collage.example.md);
   families: [`docs/COLLAGE-DESIGN.md`](docs/COLLAGE-DESIGN.md).

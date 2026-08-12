@@ -78,6 +78,9 @@ def main() -> int:
     if dist.exists():
         shutil.rmtree(dist)
     dist.mkdir()
+    build_tree = ROOT / "build"
+    if build_tree.exists():
+        shutil.rmtree(build_tree)
     run([sys.executable, "-m", "build", "--outdir", str(dist)])
     wheels = sorted(dist.glob("*.whl"))
     if not wheels:

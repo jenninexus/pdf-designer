@@ -43,7 +43,7 @@ site-packages install breaks that assumption.
 ```bash
 # Gate before any upload
 python scripts/sync-wheel-share.py
-python scripts/check-wheel-assets.py   # sync + build + assert share/ in the wheel
+python scripts/check-wheel-assets.py   # clean build + assert public source assets; reject generated PDFs/images
 
 # Full dry-run: build + fresh venv + prove bundled share/ + check_generation
 python scripts/testpypi-dry-run.py              # local wheel proof (no upload)
