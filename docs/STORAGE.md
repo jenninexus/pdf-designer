@@ -4,8 +4,9 @@
 > Your machine’s `storage/` folder is **gitignored** and holds only real personal data.
 > A short pointer file may also exist at `storage/README.md` (local) — if they disagree, **this doc wins**.
 
-Everything under `storage/` is **local only**. It holds career data, applications, PDFs, and
-**private brand palettes**. Nothing here is pushed to GitHub.
+Everything under `storage/` is **local only**. It holds career data, applications, PDFs,
+**private brand palettes**, and optional **`storage/docs/`** (SEGO-only notes — marketing
+detail, machine paths). Nothing here is pushed to GitHub.
 
 ---
 
@@ -13,8 +14,9 @@ Everything under `storage/` is **local only**. It holds career data, application
 
 | Tracked in the repo (safe to clone) | Private in `storage/` (gitignored) | Lives in theme kits (website SSOT) |
 |---|---|---|
-| `src/`, `themes/`, `examples/`, `docs/`, `AGENTS.md` | `users/`, `*/resume-source.json`, `profiles/`, `_job-listings/`, `brand-design/`, `_exports/` | `www-theme-kit/profiles/…` (official kit) |
-| Brand-neutral default theme + `examples/brand-design/` | Real brand maps + vaults + contacts | Live site primary/secondary/accent |
+| `src/`, `themes/`, `examples/`, `docs/`, `AGENTS.md` | `users/`, `*/resume-source.json`, `profiles/`, `_job-listings/`, `brand-design/`, `collages/`, `_exports/`, **`docs/`** | `www-theme-kit/profiles/…` (official kit) |
+| Brand-neutral default theme + `examples/brand-design/` | Real brand maps + vaults + contacts + private notes | Live site primary/secondary/accent |
+| `.config/mcp-pdf-designer.example.json` | Local `mcp-pdf-designer.json` (absolute paths) | — |
 
 **Website kits own live site colors.** pdf-designer stores a **mapped copy** under
 `storage/brand-design/brand-*.json` for exports and the Design Hub. That mapped file is the

@@ -94,6 +94,9 @@ them to be public.
 | `storage/<user>/resume-source.json` | Claim vault + application voice |
 | `storage/_job-listings/` | Real listings, pay, apply links |
 | `storage/brand-design/brand-*.json` | Studio / personal palettes |
+| `storage/collages/`, `storage/docs/` | Real image sets + SEGO-only notes |
+| `.config/mcp-pdf-designer.json` | Absolute machine paths (use `.example.json`) |
+| Bare `make-resume.md` / `make-cover-letter.md` / `make-work-examples.md` | Personal command copies |
 | Real PII in any form | Never commit; never move into `examples/` |
 
 The résumé *protocol* (vault → tailor → export) is documented and optional. The

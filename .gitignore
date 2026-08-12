@@ -1,6 +1,10 @@
 # Personal workspace (contains private machine paths) — the .example version is tracked instead
 pdf-designer.code-workspace
 
+# Local project config (machine absolute paths). Tracked seed:
+#   .config/mcp-pdf-designer.example.json → copy to mcp-pdf-designer.json
+.config/mcp-pdf-designer.json
+
 # Per-machine private session log (names private storage paths + related repos) — local only
 dev-log-sego.yaml
 dev-log-*.yaml

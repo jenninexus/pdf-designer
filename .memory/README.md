@@ -67,6 +67,7 @@ codebase · `reference`: pointer to an external resource.
 | [lesson-jobright-content-score-is-not-parse-fail.md](lesson-jobright-content-score-is-not-parse-fail.md) | Jobright rank D / skills-count ≠ ATS parse fail — upload light; print body on system font; mid-word splits are the real shredder |
 | [lesson-hub-drawer-css-without-html-clips-more.md](lesson-hub-drawer-css-without-html-clips-more.md) | Hub drawer CSS without HTML/JS + `overflow:hidden` clipped the ⋯ panel; recipe_gallery must scan layout category folders |
 | [lesson-hub-stack-at-md-breaks-desktop-split.md](lesson-hub-stack-at-md-breaks-desktop-split.md) | Do not stack library/viewer at md (991.98) — desktop/zoomed windows look broken; keep LEFT/RIGHT until phones (≤575.98); folder pins = ghost ★ in picker |
+| [lesson-hub-collage-hidden-by-profile-filter.md](lesson-hub-collage-hidden-by-profile-filter.md) | Untagged collage projects vanish when Profiles ≠ all — clear profile chip or search folder; keep `_candidates/` flat |
 
 ## Related
 

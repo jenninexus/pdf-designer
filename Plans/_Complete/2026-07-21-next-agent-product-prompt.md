@@ -1,3 +1,6 @@
+> **COMPLETE / SUPERSEDED (2026-08-12).** Leftovers live in
+> [../_Active/2026-08-12-product-privacy-packaging.md](../_Active/2026-08-12-product-privacy-packaging.md).
+> Kept for history — do not treat as the working checklist.
 # Active plan + next-agent handoff — pdf-designer
 
 **Single active plan** (2026-07-21). Supersedes the archived
