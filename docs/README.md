@@ -23,6 +23,7 @@ public-facing; **detail lives here**. Agent contracts: [`../AGENTS.md`](../AGENT
 | [`PRODUCT.md`](PRODUCT.md) | ⭐ Business / product direction — résumé creator for a broken job market |
 | [`GETTING-STARTED.md`](GETTING-STARTED.md) | ⭐ Clone path without vaults |
 | [`../examples/resume-studio/`](../examples/resume-studio/) | Public product front door |
+| [`pdf-designer-launch.pptx`](pdf-designer-launch.pptx) | Visual product overview — public-safe release asset |
 | [`SSOT.md`](SSOT.md) | Dashboard — owns vs points elsewhere |
 | [`PACKAGING.md`](PACKAGING.md) | PyPI / wheel spike |
 | [`QA.md`](QA.md) | Ship gate — `check_generation` |

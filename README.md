@@ -1,39 +1,38 @@
 <div align="center">
 
-# 🖨️ pdf-designer
+# 🖨️ PDF Designer
 
-## Design it in HTML.
-## Print it like a browser.
+## Design in HTML. Print with confidence.
+## A local-first résumé studio that keeps your career data yours.
 
 ![MIT](https://img.shields.io/badge/license-MIT-9b5cf6?style=flat-square&labelColor=1a1a2e)
 ![Runtime](https://img.shields.io/badge/runtime-python%20%2B%20playwright-63b3ed?style=flat-square&labelColor=1a1a2e)
 ![Engine](https://img.shields.io/badge/engine-headless%20chromium-42f4c8?style=flat-square&labelColor=1a1a2e)
 ![Local](https://img.shields.io/badge/local--first-no%20SaaS-ff6ec4?style=flat-square&labelColor=1a1a2e)
 
-Local-first **résumé studio for a broken job market** — HTML → print-perfect PDFs, optional
-vault-backed claims, skills tags, and palette prefs. Never invents a claim. No SaaS vault.
+`pdf-designer` turns HTML into print-perfect PDFs with the same Chromium engine your browser uses.
+Build ATS-honest light résumés, branded dark versions, letters, and collages — without giving a SaaS
+your work history.
 
 **Zero network calls. Zero environment variables. Zero telemetry.**
 
 </div>
 
-- 📄 **HTML → PDF** via real headless Chromium — what the browser prints is what you get
-- 🌗 **Light + dark** from one source — ATS-safe light PDF and branded dark, same pagination
-- 🗄 **Per-user vaults** — skills / board tags / claims you control (`docs/VAULT.md`)
-- 🎨 **Themeable** palettes with a guard that rejects colors that print badly
-- 🔍 **Design Hub** — local preview, palette swap, one-click export (`python -m pdf_tool.preview`)
+| Create | Verify | Keep control |
+|---|---|---|
+| **Light + dark PDFs** from one HTML source | **QA guards** for palette, overflow, and ATS text | **Private vaults** stay local and gitignored |
+| Résumés, letters, work samples, and collages | `check_generation` judges the rendered artifact | No telemetry, account, environment file, or network call |
 
 > **Status:** private for now; docs shaped for a public release. **Start here:**
 > [`examples/resume-studio/`](examples/resume-studio/) · product: [`docs/PRODUCT.md`](docs/PRODUCT.md) ·
 > split: [`docs/PUBLIC-LOCAL-SPLIT.md`](docs/PUBLIC-LOCAL-SPLIT.md) ·
 > clone path: [`docs/GETTING-STARTED.md`](docs/GETTING-STARTED.md) · packaging: [`docs/PACKAGING.md`](docs/PACKAGING.md) ·
-> agents: [`AGENTS.md`](AGENTS.md). Protocol seeds on GitHub are `*.example.md` only
-> (bare `start`/`wrap`/`make-*` stay local). Palette prefs (private): `storage/brand-design/` —
-> [`docs/SSOT.md`](docs/SSOT.md).
+> [`PDF Designer overview`](docs/pdf-designer-launch.pptx) · agents: [`AGENTS.md`](AGENTS.md).
+> Protocol seeds on GitHub are `*.example.md` only; bare `start`/`wrap`/`make-*` stay local.
 
 ---
 
-## 🚀 5-minute path (fresh clone, no private data)
+## 🚀 Prove the public path in five minutes
 
 Works from **tracked files only** — `examples/` + `themes/`. No `storage/` required.
 
@@ -41,14 +40,14 @@ Works from **tracked files only** — `examples/` + `themes/`. No `storage/` req
 pip install -e ".[dev]"
 playwright install chromium
 
-# Prove the public path (QA + light/dark PDF + ATS text layer)
+# Prove the public path: QA + light/dark PDFs + ATS text-layer check
 python scripts/smoke-white-label.py
 
 # Design Hub — browse the example resume, swap palettes, export
 python -m pdf_tool.preview         # → http://127.0.0.1:8787/
 ```
 
-Or export by hand:
+The smoke script is the release proof. To use the engine directly:
 
 ```bash
 python -m pdf_tool.html_to_pdf examples/profiles/default-resume/default-resume.html
@@ -61,7 +60,17 @@ Ship gate → [`docs/QA.md`](docs/QA.md) (`python -m pdf_tool.check_generation �
 
 ---
 
-## 📚 Docs
+## ✨ The product loop
+
+1. **Start with the public example.** Browse `examples/resume-studio/`, or make a copy of the profile
+   and theme that fit your work.
+2. **Design once.** Render a light board-upload PDF and a dark human-facing PDF from the same HTML.
+3. **Verify before you ship.** Run `check_generation`; for board uploads, run `check_ats` on the light PDF.
+
+The optional vault workflow makes claims source-backed. It never auto-submits an application, and it
+asks before treating a missing claim as a skill gap.
+
+## 📚 Navigate the studio
 
 | Start here | |
 |---|---|
@@ -72,6 +81,9 @@ Ship gate → [`docs/QA.md`](docs/QA.md) (`python -m pdf_tool.check_generation �
 | [`docs/PACKAGING.md`](docs/PACKAGING.md) | PyPI / wheel (must ship themes + layouts) |
 | [`docs/SSOT.md`](docs/SSOT.md) | What this repo owns vs pointers elsewhere |
 | [`AGENTS.md`](AGENTS.md) | Agent capability map + contracts |
+
+For the full command index, see [`docs/EXPORTS.md`](docs/EXPORTS.md). For a visual tour of the product
+story, download [`docs/pdf-designer-launch.pptx`](docs/pdf-designer-launch.pptx).
 
 ---
 
