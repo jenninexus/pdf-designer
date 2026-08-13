@@ -23,12 +23,14 @@ dev-log-*.yaml
 # Tracked brand TEMPLATE (no personal data): examples/brand-design/
 private/
 notes/
-# Private tree — un-ignore only storage/docs/README.md (socials pattern).
-# Parent dirs must be re-included before a nested file can be tracked.
-storage/*
-!storage/docs/
-storage/docs/*
-!storage/docs/README.md
+# Legacy private workspace (migration target: root users/vaults/profiles/… — see docs/WORKSPACE-LAYOUT.md)
+storage/
+
+# Private product/ops notes live in docs/ beside public docs (never clone these)
+docs/MARKETING.md
+docs/WORKSPACE.md
+docs/HISTORY-SCRUB.md
+docs/*.local.md
 
 # Localized commands/docs — the TRACKED <name>.md is the generalized, shareable version;
 # <name>.local.md is your copy with real company names, clients, and lessons in it.
