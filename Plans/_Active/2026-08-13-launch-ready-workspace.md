@@ -33,7 +33,7 @@ Product-design hub: `C:\Github\product-design` (renamed from `Products`). Comman
 - [x] product-design: rename paths, SSOT command, registry board, launch sequence, active plan
 - [x] `~/.claude/commands/jen/products.md` pointer + jen README + JN ROADMAP hub path
 - [x] Dual-run smoke (tracker, pytest, Hub)
-- [ ] Wrap (`/reflect` + dev-log + tracked commit)
+- [x] Wrap (`/reflect` + dev-log + tracked commit)
 
 ## Assumptions
 
