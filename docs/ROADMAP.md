@@ -18,6 +18,7 @@
 
 ### Recently landed
 
+- [x] **Public README + visual overview** (2026-08-13) — clone-safe product loop, six-slide PDF Designer deck, and fresh-clone smoke evidence
 - [x] **Hub path/header repair** (2026-08-13) — live profiles/folders; profile scopes library
 - [x] **Docs-only private notes** (2026-08-13) — `MARKETING` / `WORKSPACE` / `HISTORY-SCRUB` under `docs/` + gitignore; no `storage/docs/` dual tree
 - [x] **WORKSPACE-LAYOUT recommendation** — root nouns for future users
