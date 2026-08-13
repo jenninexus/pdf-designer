@@ -10,8 +10,9 @@ paid shell later. Clone path: [`GETTING-STARTED.md`](GETTING-STARTED.md). Archit
 | Paid later (hypothesis) | Packaged desktop app — installer + guided vault/export UX |
 | **Public product story** | Résumé creator for a broken job market — **vaults**, skills, palette prefs |
 | Public demo | [`../examples/resume-studio/`](../examples/resume-studio/) |
-| Private marketing (local) | `storage/docs/MARKETING.md` (gitignored body; index placeholder tracked) |
-| Engineering checklist | [`../Plans/_Active/`](../Plans/_Active/) |
+| Folder UX (target) | [`WORKSPACE-LAYOUT.md`](WORKSPACE-LAYOUT.md) — root `users/` · `vaults/` · `profiles/` · … |
+| Private marketing (local) | `docs/MARKETING.md` (gitignored — same folder as public docs) |
+| Engineering checklist | [`../Plans/_Active/2026-08-13-intuitive-workspace-product.md`](../Plans/_Active/2026-08-13-intuitive-workspace-product.md) |
 
 ---
 

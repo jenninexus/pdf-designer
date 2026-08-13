@@ -5,23 +5,23 @@ public-facing; **detail lives here**. Agent contracts: [`../AGENTS.md`](../AGENT
 
 ## Public vs private
 
-⭐ Full map: [`PUBLIC-LOCAL-SPLIT.md`](PUBLIC-LOCAL-SPLIT.md)
+⭐ Full map: [`PUBLIC-LOCAL-SPLIT.md`](PUBLIC-LOCAL-SPLIT.md) · folder UX target: [`WORKSPACE-LAYOUT.md`](WORKSPACE-LAYOUT.md)
 
-| On GitHub (clone-safe) | Local only |
+| On GitHub (clone-safe) | Local only (gitignored) |
 |---|---|
-| This folder · `AGENTS.md` · `themes/` · `layouts/` · `examples/` | Vaults, brands, jobs, collages, exports |
+| This folder · `AGENTS.md` · `themes/` · `layouts/` · `examples/` | Live vaults / brands / jobs / collages / exports (`storage/` today → root nouns next) |
 | `.config/mcp-pdf-designer.example.json` | `mcp-pdf-designer.json` (machine paths) |
 | `*.example.md` command seeds only | Bare `start`/`wrap`/`README`/`make-*.md` |
-| [`PRODUCT.md`](PRODUCT.md) · [`GETTING-STARTED.md`](GETTING-STARTED.md) · `resume-studio/` | `storage/docs/MARKETING.md` · `WORKSPACE.md` · `HISTORY-SCRUB.md` |
-| Tracked placeholder [`../storage/docs/README.md`](../storage/docs/README.md) | Private note bodies under `storage/docs/` |
+| [`PRODUCT.md`](PRODUCT.md) · [`GETTING-STARTED.md`](GETTING-STARTED.md) · `resume-studio/` | [`MARKETING.md`](MARKETING.md) · [`WORKSPACE.md`](WORKSPACE.md) · [`HISTORY-SCRUB.md`](HISTORY-SCRUB.md) (same `docs/` folder) |
 
 ## Start here
 
 | Doc | Owns |
 |---|---|
 | [`PUBLIC-LOCAL-SPLIT.md`](PUBLIC-LOCAL-SPLIT.md) | ⭐ Public vs local vs paid architecture |
+| [`WORKSPACE-LAYOUT.md`](WORKSPACE-LAYOUT.md) | ⭐ Target root folders (`users/` · `vaults/` · …) for the free product |
 | [`PRODUCT.md`](PRODUCT.md) | ⭐ Business / product direction — résumé creator for a broken job market |
-| [`GETTING-STARTED.md`](GETTING-STARTED.md) | ⭐ Clone path without vaults (ex-WHITE-LABEL) |
+| [`GETTING-STARTED.md`](GETTING-STARTED.md) | ⭐ Clone path without vaults |
 | [`../examples/resume-studio/`](../examples/resume-studio/) | Public product front door |
 | [`SSOT.md`](SSOT.md) | Dashboard — owns vs points elsewhere |
 | [`PACKAGING.md`](PACKAGING.md) | PyPI / wheel spike |
@@ -40,13 +40,14 @@ public-facing; **detail lives here**. Agent contracts: [`../AGENTS.md`](../AGENT
 | [`COLLAGE-DESIGN.md`](COLLAGE-DESIGN.md) | Layout families, canvas presets, backgrounds, fit |
 | [`LICENSING-NOTES.md`](LICENSING-NOTES.md) | MIT honesty + AGPL removal story |
 
-## Career protocol (private *data* lives in `storage/`)
+## Career protocol (private *data* — `storage/` today → root nouns next)
 
 These pages document the **protocol** (clone-safe). Real vaults and listings stay gitignored.
 
 | Doc | Owns |
 |---|---|
-| [`STORAGE.md`](STORAGE.md) | Private workspace layout, brand SSOT, shared MG gallery |
+| [`WORKSPACE-LAYOUT.md`](WORKSPACE-LAYOUT.md) | ⭐ **Target** root workspace for the public product |
+| [`STORAGE.md`](STORAGE.md) | **Live** layout under `storage/` until migration |
 | [`VAULT.md`](VAULT.md) | Claim rules, voice layers, role tracks |
 | [`JOB-ASSESSMENT.md`](JOB-ASSESSMENT.md) | Listing capture / pay / gap-check protocol |
 | [`APPLICATIONS.md`](APPLICATIONS.md) | One-folder-per-job workflow |
