@@ -103,6 +103,7 @@ job-listing-capture-*.md
 # Generated output + personal images (collage sets, screenshots) — real image
 # files stay local; a future tracked example image needs an explicit ! exception
 *.pdf
+!docs/pdf-designer-overview.pdf
 *.png
 *.jpg
 *.jpeg
