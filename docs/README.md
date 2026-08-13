@@ -9,7 +9,7 @@ public-facing; **detail lives here**. Agent contracts: [`../AGENTS.md`](../AGENT
 
 | On GitHub (clone-safe) | Local only (gitignored) |
 |---|---|
-| This folder · `AGENTS.md` · `themes/` · `layouts/` · `examples/` | Live vaults / brands / jobs / collages / exports (`storage/` today → root nouns next) |
+| This folder · `AGENTS.md` · `themes/` · `layouts/` · `examples/` | Live vaults / brands / jobs / collages / exports (`_job-apps/` + `storage/` alias) |
 | `.config/mcp-pdf-designer.example.json` | `mcp-pdf-designer.json` (machine paths) |
 | `*.example.md` command seeds only | Bare `start`/`wrap`/`README`/`make-*.md` |
 | [`PRODUCT.md`](PRODUCT.md) · [`GETTING-STARTED.md`](GETTING-STARTED.md) · `resume-studio/` | [`MARKETING.md`](MARKETING.md) · [`WORKSPACE.md`](WORKSPACE.md) · [`HISTORY-SCRUB.md`](HISTORY-SCRUB.md) (same `docs/` folder) |
@@ -40,7 +40,7 @@ public-facing; **detail lives here**. Agent contracts: [`../AGENTS.md`](../AGENT
 | [`COLLAGE-DESIGN.md`](COLLAGE-DESIGN.md) | Layout families, canvas presets, backgrounds, fit |
 | [`LICENSING-NOTES.md`](LICENSING-NOTES.md) | MIT honesty + AGPL removal story |
 
-## Career protocol (private *data* — `storage/` today → root nouns next)
+## Career protocol (private *data* — `_job-apps/` + root nouns; `storage/` alias)
 
 These pages document the **protocol** (clone-safe). Real vaults and listings stay gitignored.
 
@@ -64,6 +64,9 @@ These pages document the **protocol** (clone-safe). Real vaults and listings sta
 
 ### Privacy
 
-`storage/` is **gitignored**. Root workspace nouns (`users/` · `vaults/` · …) ship
-tracked READMEs only — real JSON/HTML stay ignored. Tracked docs stay clone-safe;
-machine pointers belong in local `.config/mcp-pdf-designer.json`.
+`storage/` is **gitignored**. Root workspace nouns (`users/` · `vaults/` · `_job-apps/` · …) ship
+tracked READMEs + `*.example.json` — real JSON/HTML stay ignored. Tracked docs stay clone-safe;
+machine pointers belong in local `.config/mcp-pdf-designer.json`. **Do not** copy
+`storage/docs/` leftovers into this public index — private notes already live as gitignored
+[`MARKETING.md`](MARKETING.md) · [`WORKSPACE.md`](WORKSPACE.md) · [`HISTORY-SCRUB.md`](HISTORY-SCRUB.md).
+One checkout; no `.env` (engine reads none).

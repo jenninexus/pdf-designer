@@ -4,11 +4,11 @@ How a **non-checkout** user gets `pdf-designer`. Companion to
 [`PRODUCT.md`](PRODUCT.md) (business) and [`GETTING-STARTED.md`](GETTING-STARTED.md)
 (public how-to from a clone).
 
-> **Status (2026-07-25):** path resolution + wheel asset gate + **local fresh-venv
-> install proof** landed (`scripts/testpypi-dry-run.py`). TestPyPI **upload** is
-> still blocked — no TestPyPI account/API token in the credential DB yet. Until
-> upload works, the supported public install remains a **git checkout** +
-> `pip install -e ".[dev]"`.
+> **Status (2026-08-13):** path resolution + wheel asset gate + **local fresh-venv
+> install proof** landed (`scripts/testpypi-dry-run.py`). TestPyPI **upload is optional** —
+> it is the sandbox for test.pypi.org so strangers can `pip install` without cloning.
+> **Not required** for a GitHub-clone launch. Skip the token unless you want that path.
+> Supported public install remains a **git checkout** + `pip install -e ".[dev]"` until then.
 
 ---
 

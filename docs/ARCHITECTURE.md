@@ -129,7 +129,7 @@ examples/
   profiles/default-collage/
   _job-listings/              the one-folder-per-application workflow + its templates
 docs/                         you are here
-storage/                      ⛔ GITIGNORED — the real vaults, applications, exports
+storage/                      ⛔ GITIGNORED alias — real data also at users/ vaults/ _job-apps/ resumes/
 Plans/_Active/                ⭐ one live product roadmap
 Plans/_Archive/               shipped / parked plans
 .claude/commands/             the /make-resume protocol (agent-agnostic markdown)

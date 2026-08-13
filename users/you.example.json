@@ -1,0 +1,145 @@
+{
+  "_README": [
+    "THE PERSON FILE — layer ① of four. Answers: WHO is applying?",
+    "",
+    "Copy to users/<you>.json and fill in. That copy is gitignored (it holds",
+    "real contact details); THIS file is the tracked shape.",
+    "",
+    "The four layers:",
+    "  ① users/<you>.json          WHO      <- you are here",
+    "  ② vaults/<you>.json         WHAT     the VAULT (see vaults/you.example.json)",
+    "  ③ profiles/<you>-resume.json HOW     (see profiles/you-resume.example.json)",
+    "  ④ _job-apps/<Track>/          THE JOB (see examples/_job-listings/)"
+  ],
+
+  "id": "yourname",
+  "aliases": ["yourname", "your-handle"],
+  "name": "Your Full Name",
+  "brand": "your-brand",
+  "pronouns": "they/them",
+  "created": "2026-01-01",
+
+  "contact": {
+    "email": "you@yourdomain.com",
+    "web": "https://yourdomain.com",
+    "github": "https://github.com/yourhandle",
+    "location": "Remote — Your Region (TZ)",
+    "signatureName": "Your Full Name",
+    "signatureTitle": "Your Title",
+    "emailPersonal": "you@gmail.com",
+
+    "emailPolicy": "⭐ DEFAULT = you@yourdomain.com. Use it on EVERY resume, cover letter, and application unless the person explicitly says otherwise in that conversation. Do not ask; do not deliberate; just use it.",
+    "emailRules": {
+      "_note": "Exactly ONE address is the default. An agent uses it automatically, every time. The others exist to be RECOGNIZED, not selected.",
+      "default": "you@yourdomain.com — professional, on your own domain. THE DEFAULT, always.",
+      "studioContext": "you@yourcompany.com — ONLY if you have a SEPARATE company address AND are applying as the company. Omit this key if your default already IS the company domain.",
+      "personal": "you@gmail.com — a VALID address, just not the preferred one. Recorded as a reference/recovery address (job boards, signups, 2FA). NEVER auto-select it on a resume or cover letter.",
+      "⚠whyItIsRecorded": "It is listed so an agent can RECOGNIZE it — spot it on an old resume and flag it, or match a job-board account. NOT so an agent can use it. Presence in this file is not permission. Only the person naming it, in that conversation, overrides the default."
+    }
+  },
+
+  "vault": "../yourname/resume-source.json",
+  "vaultQuery": {
+    "_note": "The vault is queried BY TRACK. Pick the track matching the listing, read roleTracks.<track>.angle, then select claims whose `tracks` include that track — ranked TRACK-SPECIFIC FIRST, then by `strength` (lead > solid > supporting).",
+    "trackSource": "../yourname/resume-source.json#roleTracks"
+  },
+
+  "identity": {
+    "headline": "What you are, in six words",
+    "company": "Your Company",
+    "role": "Your Role",
+    "voice": "One-line summary. Full personality → characterVoice below; application prose SSOT → vault voice.",
+    "background": "Optional short bio. Prefer characterVoice.personality.backgroundFlavor as the deeper SSOT — keep this one line or omit."
+  },
+
+  "characterVoice": {
+    "_ssot": "Personality + register map. Application prose SSOT = vault voice (see registers.application).",
+    "personality": {
+      "traits": ["Trait one", "Trait two", "Trait three"],
+      "coreDrive": "One sentence: what they are trying to make / why they work.",
+      "catchphrase": "Optional short line that captures them.",
+      "backgroundFlavor": "Where they came from creatively."
+    },
+    "contrastWithPartner": {
+      "_note": "OPTIONAL — use when two people from one studio both apply. Prevents flattened 'same voice' résumés.",
+      "partnerId": "partner-id",
+      "weShare": ["Shared tools", "Shared studio framing rules"],
+      "ILeadWith": ["What makes THIS applicant sound like themselves"],
+      "TheyLeadWith": ["What the partner leads with — so agents do not copy it here"],
+      "neverConflate": ["Tenure numbers", "Specialty that belongs only to one person"]
+    },
+    "registers": {
+      "application": "../yourname/resume-source.json#voice",
+      "socialPersonal": "(optional path to a socials format-manifest voice string)",
+      "socialStudio": "(optional path to studio 'we' voice)",
+      "discordVisual": "(optional path to a Discord STYLE-SPEC — emoji/visual only)",
+      "networkRegistry": "<VOICE_SEED>/registry.json",
+      "publicCard": "<VOICE_SEED>/characters/humans/<id>.md"
+    },
+    "emojiPreferences": {
+      "_note": "Social/Discord only — never on ATS resume PDFs.",
+      "primary": ["optional", "emoji"],
+      "avoidOnProfessional": ["bot faces as applicant identity", "custom Discord emoji IDs"]
+    },
+    "sampleLines": {
+      "coverLetterOpen": "1–2 example openings in their real voice.",
+      "coverLetterClose": "Example close.",
+      "resumeSummaryFlavor": "How a summary line should feel."
+    }
+  },
+
+  "brandTheme": {
+    "_note": "Your fallback palette — used when a target company gives no usable color signal. Otherwise the palette is derived from THEIR brand CSS (see _job-listings/<Track>/theme.json).",
+    "name": "Your Brand",
+    "tokens": {
+      "bg": "#0B0510",
+      "surface": "#150A21",
+      "elevated": "#1F0E30",
+      "text": "#EDE4F2",
+      "primary": "#B44FD0",
+      "secondary": "#E44FD0",
+      "accent": "#4FD8E8",
+      "support": "#8F9BE8"
+    },
+    "⚠paletteRule": "No brown, no mustard, no lime. Amber has NO readable dark form on white paper — it turns brown. On light, hand the amber role to another hue. Enforced on every export; see themes/PALETTE-RULES.md."
+  },
+
+  "profiles": {
+    "base": "../profiles/yourname-resume.json",
+    "_note": "ONE profile per person. There are NO per-track profile files — the per-role framing lives in the VAULT at roleTracks.<track>.angle.",
+    "roleTracks": {
+      "source": "../yourname/resume-source.json#roleTracks",
+      "available": ["your-track-a", "your-track-b"]
+    }
+  },
+
+  "namingConvention": {
+    "render": "yourname-<company>-<role-slug>-resume.html",
+    "coverLetter": "yourname-<company>-<role-slug>-cover-letter.html",
+    "bundle": "FINAL-Your-Name-<Role>-Cover-Letter-and-Resume.pdf"
+  },
+
+  "hardFacts": {
+    "note": "Frequently-needed facts so an agent never has to ask. A SUMMARY — the vault is the source of truth.",
+    "tenure": "State YOUR tenure explicitly. ⚠ If your company is older than your time at it, say both numbers and never let a resume blur them.",
+    "tools": "The tools you actually use, grouped.",
+
+    "unverifiedTools": ["SomeToolNobodyAskedYouAbout"],
+    "⚠unverifiedToolsNote": [
+      "UNVERIFIED ≠ ABSENT. This list means only: NOBODY HAS ASKED.",
+      "These are neither claimable NOR a gap.",
+      "If a listing needs one -> ASK THE PERSON FIRST.",
+      "  If they have it  -> write it into the vault's `skills` and USE it.",
+      "  If they don't    -> only THEN is it a gap; set status `confirmed-absent`.",
+      "",
+      "This exists because a flat blocklist cannot tell 'we asked and they don't have it'",
+      "from 'nobody ever checked' — so it silently becomes the second one. Two industry-",
+      "standard DCC apps were forbidden on real resumes for months while the applicants",
+      "had YEARS of experience with each. Nobody had ever asked.",
+      "",
+      "The vault's doNotClaim block is a VERIFICATION LEDGER with a per-tool `status`,",
+      "precisely so this failure is structurally impossible. Validate it:",
+      "  python -m pdf_tool.check_vault --all"
+    ]
+  }
+}
