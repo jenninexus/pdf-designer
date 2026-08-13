@@ -10,7 +10,8 @@ paid shell later. Clone path: [`GETTING-STARTED.md`](GETTING-STARTED.md). Archit
 | Paid later (hypothesis) | Packaged desktop app — installer + guided vault/export UX |
 | **Public product story** | Résumé creator for a broken job market — **vaults**, skills, palette prefs |
 | Public demo | [`../examples/resume-studio/`](../examples/resume-studio/) |
-| Folder UX (clone tree) | [`WORKSPACE-LAYOUT.md`](WORKSPACE-LAYOUT.md) — resolver + README scaffolds landed; live data still `storage/` |
+| Folder UX (clone tree) | [`WORKSPACE-LAYOUT.md`](WORKSPACE-LAYOUT.md) — resolver + README scaffolds; SEGO data copied to root nouns, `storage/` alias kept |
+| Product hub (local) | `C:\Github\product-design` · `docs/LAUNCH-PDF-DESIGNER.md` (Patreon first; Gumroad when extras exist) |
 | Private marketing (local) | `docs/MARKETING.md` (gitignored — same folder as public docs) |
 | Engineering checklist | [`../Plans/_Active/2026-08-13-intuitive-workspace-product.md`](../Plans/_Active/2026-08-13-intuitive-workspace-product.md) |
 
@@ -118,9 +119,9 @@ Longer SEGO channel plan: `docs/MARKETING.md` (gitignored).
 | How do I clone and use it? | [`GETTING-STARTED.md`](GETTING-STARTED.md) |
 | PyPI / wheel? | [`PACKAGING.md`](PACKAGING.md) |
 | What may be claimed? | [`VAULT.md`](VAULT.md) · [`JOB-ASSESSMENT.md`](JOB-ASSESSMENT.md) |
-| Where is private data? | [`STORAGE.md`](STORAGE.md) (live `storage/`) · [`WORKSPACE-LAYOUT.md`](WORKSPACE-LAYOUT.md) (root nouns) |
+| Where is private data? | [`WORKSPACE-LAYOUT.md`](WORKSPACE-LAYOUT.md) (root nouns) · [`STORAGE.md`](STORAGE.md) (`storage/` alias) |
 | Verified? | [`QA.md`](QA.md) |
 
 ---
 
-*Last updated 2026-08-13 — dual-path resolver + root README scaffolds; live data still `storage/`.*
+*Last updated 2026-08-13 — data copy to root nouns; `storage/` alias kept; launch copy in product-design hub.*

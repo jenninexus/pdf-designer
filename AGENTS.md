@@ -17,10 +17,9 @@ per section below.
 ## Session start (read in this order)
 
 1. **This file** — capability map + the contracts that must not break.
-2. ⭐ [`.memory/README.md`](.memory/) — **the traps already hit here, and why.** Tracked, so it
-   travels with every clone. Read it before your first substantive change: each `lesson-*.md` is a
-   mistake someone already paid for (a guard whose assumption was wrong, a true claim that went
-   invisible, a "gap" nobody had asked about). Cheapest file in the repo.
+2. ⭐ [`.memory/README.md`](.memory/) **index only** — the trap hooks. Open a `lesson-*.md` when
+   the hook matches the task you are about to do. Do **not** read all 19 files every session;
+   the protocol already lives in `docs/`. The directory stays tracked so clones still get the *why*.
 3. [`docs/SSOT.md`](docs/SSOT.md) — the SSOT dashboard (what this repo owns vs. points elsewhere).
 4. [`docs/VAULT.md`](docs/VAULT.md) — **the vault**: what may be claimed, how each person sounds
    (`characterVoice` + vault `voice`), the capability matrix, the role tracks.
@@ -42,7 +41,7 @@ direction (free GitHub vs paid app): [`docs/PRODUCT.md`](docs/PRODUCT.md). Packa
 [`docs/PACKAGING.md`](docs/PACKAGING.md) · `python scripts/check-wheel-assets.py` ·
 `python scripts/testpypi-dry-run.py` (local wheel proof; `--upload` needs `TESTPYPI_TOKEN`).
 
-**Active plan (one):** [`Plans/_Active/2026-08-13-intuitive-workspace-product.md`](Plans/_Active/2026-08-13-intuitive-workspace-product.md) · index [`Plans/README.md`](Plans/README.md). Completed waves: [`Plans/_Complete/`](Plans/_Complete/). Folder UX target: [`docs/WORKSPACE-LAYOUT.md`](docs/WORKSPACE-LAYOUT.md).
+**Active plan (one):** [`Plans/_Active/2026-08-13-intuitive-workspace-product.md`](Plans/_Active/2026-08-13-intuitive-workspace-product.md) · launch-ready copy [`Plans/_Active/2026-08-13-launch-ready-workspace.md`](Plans/_Active/2026-08-13-launch-ready-workspace.md) · index [`Plans/README.md`](Plans/README.md). Completed waves: [`Plans/_Complete/`](Plans/_Complete/). Folder UX target: [`docs/WORKSPACE-LAYOUT.md`](docs/WORKSPACE-LAYOUT.md). Product hub: `C:\Github\product-design` · `/jen:products`.
 
 **Session start / wrap:** `/start` → local [`.claude/commands/start.md`](.claude/commands/start.md)
 (gitignored). `/wrap` → local [`.claude/commands/wrap.md`](.claude/commands/wrap.md) — **requires

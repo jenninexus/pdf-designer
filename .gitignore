@@ -127,6 +127,9 @@ src/pdf_tool/share/examples/
 # Playwright MCP capture dumps (local agent debugging artifacts)
 .playwright-mcp/
 
+# pytest --basetemp (or TMPDIR pointed at the repo) drops pytest-of-<user>/ here
+pytest-of-*/
+
 # Editor/OS cruft
 .DS_Store
 Thumbs.db

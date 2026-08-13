@@ -9,15 +9,17 @@
 
 ## Remaining (open items)
 
-- [ ] **Root workspace migration** — data move + drop `storage/` (resolver + README scaffolds landed)
+- [ ] **Root workspace migration** — data **copy** landed this wave; drop `storage/` only after dual-run lives on root nouns
 - [ ] **History scrub** — `docs/HISTORY-SCRUB.md` (gitignored) then human-authorized force-push
-- [ ] **TestPyPI upload** — `TESTPYPI_TOKEN` → `python scripts/testpypi-dry-run.py --upload`
+- [ ] **TestPyPI upload** — `TESTPYPI_TOKEN` (none in credential DB) → `python scripts/testpypi-dry-run.py --upload`
 - [ ] **Push origin/main** — `jenninexus` GitHub auth
+- [ ] **Patreon early → public GitHub → blog** — copy in `C:\Github\product-design\docs\LAUNCH-PDF-DESIGNER.md` (human posts)
 - [ ] Keep **SSOT + QA docs** honest as the engine evolves
 - [ ] Optional: production PyPI · paid-shell · collage recipe docs
 
 ### Recently landed
 
+- [x] **Hub path/header repair** (2026-08-13) — live profiles/folders; profile scopes library
 - [x] **Docs-only private notes** (2026-08-13) — `MARKETING` / `WORKSPACE` / `HISTORY-SCRUB` under `docs/` + gitignore; no `storage/docs/` dual tree
 - [x] **WORKSPACE-LAYOUT recommendation** — root nouns for future users
 - [x] **Public vs local architecture** (2026-08-12) — `PUBLIC-LOCAL-SPLIT` · `GETTING-STARTED`

@@ -12,12 +12,13 @@ Theme:     themes/default-{resume,collage}.json + themes/presets/* + PALETTE-RUL
 Gen-rules: themes/GENERATION-RULES.md   ← ⭐ house rules for ALL generated docs (casing · overlays · framing · no-magenta)
 QA gate:   docs/QA.md + python -m pdf_tool.check_generation   ← ⭐ 10 checks; judge the ARTIFACT (render), not the source
 Layouts:   layouts/{cover-letter,letter,resume,work-examples,collage}/*  (python -m pdf_tool.collage --list-recipes)  ← STRUCTURE
-Private:   storage/brand-design, users, vaults, studio/resources/images/martiangames (shared MG gallery), collages (gitignored)
+Private:   root nouns (users/vaults/profiles/resumes/applications/collages/brands) + storage/ alias (gitignored)
 Hub:       python -m pdf_tool.preview → :8787 (workspace auto-starts via scripts/ensure-design-hub.ps1)
 Smoke:     python scripts/smoke-white-label.py   ← ⭐ fresh-clone proof (examples/ only, no storage/)
 Package:   docs/PACKAGING.md + scripts/check-wheel-assets.py  ← wheel must include themes/layouts
 Engine:    python -m pdf_tool  (hub) / individual modules
-Plans:     Plans/_Active/2026-08-13-intuitive-workspace-product.md
+Plans:     Plans/_Active/2026-08-13-intuitive-workspace-product.md (+ launch-ready-workspace.md)
+Product hub: C:\Github\product-design  (local; /jen:products)
 ```
 
 Compact map of what this repo owns vs what it only points at. Agents: start here, then
