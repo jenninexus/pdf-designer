@@ -177,7 +177,7 @@ marketed résumé-creator demo path (vault shape + palettes + smoke), not privat
 | `docs/` | ARCHITECTURE · SSOT · PRODUCT · PACKAGING · GETTING-STARTED · PUBLIC-LOCAL-SPLIT · STORAGE · VAULT · JOB-ASSESSMENT · THEME-DESIGN · LAYOUT-SYSTEM · EXPORTS · COLLAGE-DESIGN · PREVIEWER · APPLICATIONS · LICENSING-NOTES ([`docs/README.md`](docs/README.md) is the index) |
 | `.config/mcp-pdf-designer.example.json` | ⭐ Tracked project config **seed** (breakpoints + hub/palette/layout pointers). Copy → local `mcp-pdf-designer.json` (gitignored — machine paths). |
 | `Plans/_Active/` | ⭐ the working roadmap (one file) — see [`Plans/README.md`](Plans/README.md) |
-| `storage/` | ⛔ **gitignored** local workspace: vaults, real applications, real image sets, private brands |
+| `storage/` | ⛔ **gitignored** live workspace (until data-move). Engine also accepts root `users/` · `vaults/` · `profiles/` · `resumes/` · `applications/` · `collages/` · `brands/` (README stubs tracked; real files ignored) |
 | `storage/studio/resources/images/martiangames/` | ⭐ **shared** MG title gallery (WebP) — both applicants; see [`docs/STORAGE.md`](docs/STORAGE.md) |
 
 ### Privacy split (do not blur this)

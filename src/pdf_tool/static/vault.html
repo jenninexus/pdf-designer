@@ -19,7 +19,7 @@
 </header>
 <main class="hub-page-wrap">
   <h1>Vault · Skills · Go-to résumés</h1>
-  <p class="hub-page-lead">Readable overview of <code>storage/users</code>, profiles, board skill tags, and default résumé packs — so you don’t have to dig through JSON.</p>
+  <p class="hub-page-lead">Readable overview of <code>users/</code> · <code>vaults/</code> · <code>profiles/</code> (legacy <code>storage/</code> still works) — board skill tags and default résumé packs, so you don’t have to dig through JSON.</p>
   <div id="err" class="empty" hidden></div>
   <div id="root" class="empty">Loading…</div>
 </main>
@@ -33,7 +33,7 @@ async function load() {
     if (!r.ok) throw new Error("HTTP " + r.status);
     const data = await r.json();
     if (!data.users || !data.users.length) {
-      root.innerHTML = "<p class='empty'>No vaults found under storage/ (expected on a white-label clone).</p>";
+      root.innerHTML = "<p class='empty'>No vaults found under users/ or storage/users/ (expected on a white-label clone).</p>";
       return;
     }
     root.innerHTML = "";

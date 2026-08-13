@@ -1,8 +1,9 @@
 """Application tracker — list/status over existing application.json files.
 
-Scans ``storage/_job-listings/**/application.json`` (gitignored workspace).
-No separate SSOT: the per-job application records already hold company, role,
-track, status, apply URL, and pay.
+Scans ``applications/**/application.json`` and the legacy
+``storage/_job-listings/`` alias (gitignored workspace). No separate SSOT: the
+per-job application records already hold company, role, track, status, apply
+URL, and pay.
 
 Usage:
     python -m pdf_tool.tracker list
@@ -15,19 +16,15 @@ from __future__ import annotations
 import json
 import sys
 from collections import Counter
-from pathlib import Path
 
-from .paths import repo_root
+from .paths import iter_application_json, repo_root
 
 _REPO = repo_root()
-_APPS = _REPO / "storage" / "_job-listings"
 
 
 def _load_jobs() -> list[dict]:
     jobs = []
-    if not _APPS.is_dir():
-        return jobs
-    for path in sorted(_APPS.glob("**/application.json")):
+    for path in iter_application_json(root=_REPO):
         try:
             data = json.loads(path.read_text(encoding="utf-8"))
         except (OSError, json.JSONDecodeError) as e:
@@ -64,8 +61,11 @@ def _load_jobs() -> list[dict]:
 
 def cmd_list(jobs: list[dict]) -> int:
     if not jobs:
-        print(f"no application.json under {_APPS.relative_to(_REPO)}/")
-        print("Copy examples/_job-listings/example-application/ into storage/_job-listings/<Track>/")
+        print("no application.json under applications/ or storage/_job-listings/")
+        print(
+            "Copy examples/_job-listings/example-application/ into "
+            "applications/<Track>/ (or storage/_job-listings/<Track>/ during cutover)"
+        )
         return 0
     print(f"{'STATUS':<28} {'COMPANY':<22} {'ROLE':<36} TRACK")
     print("-" * 100)
@@ -88,7 +88,7 @@ def cmd_status(jobs: list[dict], filter_status: str | None = None) -> int:
         return cmd_list(jobs)
 
     if not jobs:
-        print(f"no application.json under {_APPS.relative_to(_REPO)}/")
+        print("no application.json under applications/ or storage/_job-listings/")
         return 0
 
     counts = Counter(j["status"] or "UNKNOWN" for j in jobs)

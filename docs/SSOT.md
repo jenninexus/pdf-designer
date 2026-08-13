@@ -17,7 +17,7 @@ Hub:       python -m pdf_tool.preview → :8787 (workspace auto-starts via scrip
 Smoke:     python scripts/smoke-white-label.py   ← ⭐ fresh-clone proof (examples/ only, no storage/)
 Package:   docs/PACKAGING.md + scripts/check-wheel-assets.py  ← wheel must include themes/layouts
 Engine:    python -m pdf_tool  (hub) / individual modules
-Plans:     Plans/_Active/2026-08-12-product-privacy-packaging.md · 2026-08-12-public-private-split/
+Plans:     Plans/_Active/2026-08-13-intuitive-workspace-product.md
 ```
 
 Compact map of what this repo owns vs what it only points at. Agents: start here, then

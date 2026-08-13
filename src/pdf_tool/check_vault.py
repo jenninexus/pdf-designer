@@ -29,6 +29,7 @@ Usage:
     python -m pdf_tool.check_vault --coverage shade 3d-viz examples/_job-listings/example-application/Company.example.md
     python -m pdf_tool.check_vault --suspect shade                     # what should be re-confirmed?
     python -m pdf_tool.check_vault --suspect shade <listing>.md        # + urgent for THIS listing
+    python -m pdf_tool.check_vault vaults/shade.json
     python -m pdf_tool.check_vault storage/shade/resume-source.json
 
 Exit codes:
@@ -47,6 +48,8 @@ import json
 import re
 import sys
 from pathlib import Path
+
+from .paths import iter_vault_paths, resolve_rel, vault_path
 
 STRENGTHS = {"lead", "solid", "supporting"}
 STATUSES = {"unverified", "confirmed-absent", "confirmed-have"}
@@ -346,7 +349,7 @@ def check_vault(path: Path):
 
 def explain(user: str, track: str, verbose: bool = False) -> int:
     """Print exactly what a resume on this track WILL contain, ranked. Before you build it."""
-    path = Path("storage") / user / "resume-source.json"
+    path = vault_path(user)
     if not path.exists():
         _out(f"no vault at {path}")
         return 2
@@ -451,17 +454,17 @@ def explain(user: str, track: str, verbose: bool = False) -> int:
 
 def coverage(user: str, track: str, listing_path: Path) -> int:
     """Mechanical gap-check: listing requirements vs vault claims on this track."""
-    vault_path = Path("storage") / user / "resume-source.json"
-    if not vault_path.exists():
-        _out(f"no vault at {vault_path}")
+    vpath = vault_path(user)
+    if not vpath.exists():
+        _out(f"no vault at {vpath}")
         return 2
     if not listing_path.exists():
         _out(f"no listing at {listing_path}")
         return 2
 
-    errors, _warnings = check_vault(vault_path)
+    errors, _warnings = check_vault(vpath)
     if errors:
-        _out(f"\n{vault_path}")
+        _out(f"\n{vpath}")
         for e in errors:
             _out(f"  ERROR  {e}")
         _out("\nFAIL: vault has schema errors -- fix before coverage check.")
@@ -473,7 +476,7 @@ def coverage(user: str, track: str, listing_path: Path) -> int:
         _out(f"cannot read listing: {e}")
         return 2
 
-    v = json.loads(vault_path.read_text(encoding="utf-8"))
+    v = json.loads(vpath.read_text(encoding="utf-8"))
     tracks = {k for k in v.get("roleTracks", {}) if not k.startswith("_")}
     if track not in tracks:
         _out(f"'{track}' is not a track for {user}. Available: {sorted(tracks)}")
@@ -584,20 +587,20 @@ def suspect(user: str, listing_path: Path = None) -> int:
     With a listing path, unverified tools the LISTING NAMES are promoted to URGENT -- that is
     exactly the Substance Painter case, caught mechanically instead of by luck.
     """
-    vault_path = Path("storage") / user / "resume-source.json"
-    if not vault_path.exists():
-        _out(f"no vault at {vault_path}")
+    vpath = vault_path(user)
+    if not vpath.exists():
+        _out(f"no vault at {vpath}")
         return 2
 
-    errors, _w = check_vault(vault_path)
+    errors, _w = check_vault(vpath)
     if errors:
-        _out(f"\n{vault_path}")
+        _out(f"\n{vpath}")
         for e in errors:
             _out(f"  ERROR  {e}")
         _out("\nFAIL: vault has schema errors -- fix those before auditing content.")
         return 1
 
-    v = json.loads(vault_path.read_text(encoding="utf-8"))
+    v = json.loads(vpath.read_text(encoding="utf-8"))
     listing_text = ""
     if listing_path:
         if not listing_path.exists():
@@ -724,18 +727,18 @@ def main(argv):
         return coverage(rest[0], rest[1], Path(rest[2]))
 
     if "--all" in argv:
-        paths = sorted(Path("storage").glob("*/resume-source.json"))
-        if not paths:
-            _out("no vaults under storage/*/resume-source.json")
+        vault_files = list(iter_vault_paths())
+        if not vault_files:
+            _out("no vaults under vaults/*.json or storage/*/resume-source.json")
             return 2
     else:
-        paths = [Path(a) for a in argv if not a.startswith("-")]
-    if not paths:
+        vault_files = [resolve_rel(a) for a in argv if not a.startswith("-")]
+    if not vault_files:
         _out(__doc__)
         return 2
 
     failed = 0
-    for p in paths:
+    for p in vault_files:
         errors, warnings = check_vault(p)
         _out(f"\n{p}")
         for e in errors:

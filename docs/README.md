@@ -64,5 +64,6 @@ These pages document the **protocol** (clone-safe). Real vaults and listings sta
 
 ### Privacy
 
-`storage/` is **gitignored** except the placeholder `storage/docs/README.md`. Tracked docs
-stay clone-safe; machine pointers belong in local `.config/mcp-pdf-designer.json`.
+`storage/` is **gitignored**. Root workspace nouns (`users/` · `vaults/` · …) ship
+tracked READMEs only — real JSON/HTML stay ignored. Tracked docs stay clone-safe;
+machine pointers belong in local `.config/mcp-pdf-designer.json`.

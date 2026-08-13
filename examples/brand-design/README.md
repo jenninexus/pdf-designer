@@ -18,7 +18,7 @@ Never put real emails, employers, or private paths into `themes/` or `examples/`
 
 ## How to add your brand
 
-1. Copy [`brand-example.json`](brand-example.json) → `storage/brand-design/brand-<yours>.json`.
+1. Copy [`brand-example.json`](brand-example.json) → `brands/brand-<yours>.json` (or `storage/brand-design/` during cutover).
 2. Map from your website profile (`www-theme-kit/profiles/...`) into the pdf-designer token names (`--primary`, `--secondary`, `--accent`, `--support`, surfaces, text).
 3. Derive a **light** print map that obeys [`../../themes/PALETTE-RULES.md`](../../themes/PALETTE-RULES.md) — never darken amber/gold into brown; hand that role to another hue already in the palette.
 4. Point your `storage/profiles/<you>-resume.json` → `theme.default` at that brand file.

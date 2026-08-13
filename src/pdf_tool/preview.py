@@ -6,7 +6,7 @@ palette swapper, one-click export.
 
 Chrome tokens live in ``static/hub.css`` (vendored from www-theme-kit dashboard
 tokens + syna glass). Document brand palettes still come from ``themes/`` +
-``storage/brand-design/``.
+``brands/`` (legacy ``storage/brand-design/``).
 
 Zero new dependencies: stdlib http.server; exports reuse html_to_pdf / pdf_to_png.
 Binds to 127.0.0.1 only. No MCP / always-on server required.
@@ -29,7 +29,7 @@ from pathlib import Path
 from urllib.parse import unquote, urlparse
 
 from .html_to_pdf import export_html_to_pdf
-from .paths import repo_root
+from .paths import brand_dirs, repo_root, workspace_rel_info
 from .pdf_to_png import render_to_png
 from .recipe_gallery import build_recipe_gallery
 from .vault_overview import build_vault_overview
@@ -91,33 +91,29 @@ def classify_document(rel: str, stem: str) -> dict:
     else:
         kind = "other"
 
-    if path_l.startswith("storage/_job-listings/"):
-        bucket = "_job-listings"
+    info = workspace_rel_info(path)
+    if info.bucket:
+        bucket = info.bucket
     elif path_l.startswith("examples/"):
         bucket = "examples"
     elif "collage" in path_l or "_candidates" in parts:
         bucket = "collages"
-    elif any(path_l.startswith(f"storage/{u}/") for u in ("jenni", "shade", "studio")):
-        bucket = "vault-renders"
     else:
         bucket = "other"
 
     # Profile filter (Hub "Profiles" select) — person applicants + studio/martian entity decks.
     # Prefer path ownership, then filename prefix. `person` kept as alias of `profile` for
     # older deep-links / badges.
-    profile = None
-    if path_l.startswith("storage/jenni/") or name_l.startswith("jenni"):
-        profile = "jenni"
-    elif path_l.startswith("storage/shade/") or name_l.startswith("shade"):
-        profile = "shade"
-    elif (
-        path_l.startswith("storage/studio/")
-        or name_l.startswith("studio")
-        or "/studio-" in path_l
-    ):
-        profile = "studio"
-    elif name_l.startswith("martian") or "/martian-" in path_l or "martian-games" in name_l:
-        profile = "martian"
+    profile = info.profile
+    if profile is None:
+        if name_l.startswith("jenni"):
+            profile = "jenni"
+        elif name_l.startswith("shade"):
+            profile = "shade"
+        elif name_l.startswith("studio") or "/studio-" in path_l:
+            profile = "studio"
+        elif name_l.startswith("martian") or "/martian-" in path_l or "martian-games" in name_l:
+            profile = "martian"
 
     if "work-example" in name_l or "work-sample" in name_l or "work_examples" in name_l:
         kind = "work-samples"
@@ -237,16 +233,19 @@ def _vars_from_token_map(block: dict) -> dict:
 
 
 def load_palettes() -> list[dict]:
-    """themes/*.json + themes/presets/*.json (public) + storage/brand-design/*.json (private)."""
+    """themes/*.json + themes/presets/*.json (public) + brands/ (private; storage/brand-design alias)."""
     palettes = []
+    seen: set[tuple[str, str]] = set()
     for theme_dir in (
         _REPO_ROOT / "themes",
         _REPO_ROOT / "themes" / "presets",
-        _REPO_ROOT / "storage" / "brand-design",
+        *brand_dirs(root=_REPO_ROOT),
     ):
         if not theme_dir.is_dir():
             continue
         for f in sorted(theme_dir.glob("*.json")):
+            if f.name.endswith(".example.json"):
+                continue
             try:
                 data = json.loads(f.read_text(encoding="utf-8"))
             except Exception:
@@ -261,6 +260,10 @@ def load_palettes() -> list[dict]:
                     if isinstance(block, dict):
                         vars_ = _vars_from_nested_mode(block)
                 if vars_:
+                    key = (f.stem, mode)
+                    if key in seen:
+                        continue
+                    seen.add(key)
                     label = data.get("_meta", {}).get("name") if isinstance(data.get("_meta"), dict) else None
                     name = f"{label} · {mode}" if label else f"{f.stem} · {mode}"
                     palettes.append({"name": name, "vars": vars_, "id": f.stem, "mode": mode})
