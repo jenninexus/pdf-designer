@@ -25,8 +25,22 @@ and presets *are* the product.
 
 You do **not** need `storage/users`, vaults, or `storage/brand-design` to export PDFs.
 The clone also shows **README stubs** at `users/` · `vaults/` · `profiles/` · `resumes/` ·
-`applications/` · `collages/` · `brands/` so the product folders are visible — copy from
-`examples/` into those names when you add your own data. Layout: [`WORKSPACE-LAYOUT.md`](WORKSPACE-LAYOUT.md).
+`_job-apps/` · `collages/` · `brands/` so the product folders are visible — copy from
+`examples/` (or the in-folder `*.example.json`) into those names when you add your own data. Layout: [`WORKSPACE-LAYOUT.md`](WORKSPACE-LAYOUT.md).
+
+---
+
+## One checkout — not two apps, not `.env`
+
+You and a stranger use the **same engine**. Privacy is gitignore, not a second install:
+
+| Layer | What |
+|---|---|
+| **Tracked (clone)** | Engine, `themes/`, `layouts/`, `examples/`, README stubs, `users/you.example.json`, `vaults/you.example.json` |
+| **Local (you)** | Real `users/*.json`, vaults, `_job-apps/`, `resumes/**/_exports/`, `brands/` |
+| **Optional pointers** | `.config/mcp-pdf-designer.json` (copy the `.example`) |
+
+The engine **reads no environment variables**. Do not add `.env` / `.env.local` unless a new tool actually reads them — it would document a fiction. `storage/` is a dual-run alias of the same files (copied to root nouns 2026-08-13); deleting `storage/` later does **not** delete `_exports` that already live under `resumes/<user>/_exports/`. Wait until Hub smoke has lived on the new nouns.
 
 ---
 
@@ -84,7 +98,7 @@ Do not put real brand hex into tracked `themes/` or `examples/` unless you inten
 |---|---|
 | `storage/users/*.json` | Contact, hard facts, `characterVoice` |
 | `storage/<user>/resume-source.json` | Claim vault + application voice |
-| `storage/_job-listings/` | Real listings, pay, apply links |
+| `storage/_job-listings/` | Real listings, pay, apply links — alias of `_job-apps/` |
 | `storage/brand-design/` | Studio / personal palettes |
 | `storage/collages/` · most of `storage/docs/` | Real images + personal notes |
 | `.config/mcp-pdf-designer.json` | Absolute machine paths (use `.example.json`) |

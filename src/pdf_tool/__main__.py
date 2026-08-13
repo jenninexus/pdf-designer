@@ -18,7 +18,7 @@ _COMMANDS: tuple[tuple[str, str], ...] = (
     ("check_vault", "Vault schema / --explain / --coverage"),
     ("check_ats", "ATS text-layer guard on light PDF"),
     ("audit_resume", "Diff rendered HTML vs vault omissions"),
-    ("tracker", "List / status over applications/ (storage/_job-listings alias)"),
+    ("tracker", "Who sent which résumé to which job (_job-apps/; not a daily count)"),
     ("collage", "Collage candidates + picker gallery"),
     ("preview", "Design Hub (localhost previewer)"),
 )

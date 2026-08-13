@@ -13,7 +13,7 @@ repo root, vs what stays private on their machine.
 
 **Yes — move personal workspace to the repo root.** A single opaque `storage/` bag feels like
 dev plumbing, not a résumé product. Root nouns (`users/`, `vaults/`, `profiles/`, `resumes/`,
-`collages/`, `applications/`, `brands/`) match how people think and how we want the free
+`collages/`, `_job-apps/`, `brands/`) match how people think and how we want the free
 GitHub product to teach itself.
 
 **Do not** dump live Jenni/Shade data into tracked folders. Root dirs ship as **empty scaffolds
@@ -36,7 +36,7 @@ pdf-designer/
   vaults/           # WHAT — vaults/<id>.json  (was <user>/resume-source.json)
   profiles/         # HOW  — profiles/<id>-resume.json
   resumes/          # WORK — resumes/<id>/{html,defaults,_exports,resources}
-  applications/     # JOB  — applications/<Track>/  (was storage/_job-listings/)
+  _job-apps/        # JOB  — _job-apps/<Track>/  (was applications/ · storage/_job-listings/)
   collages/         # collage projects
   brands/           # private brand maps (was storage/brand-design/)
 
@@ -46,7 +46,7 @@ pdf-designer/
     users/                  # sample person card
     vaults/                 # sample vault (fake claims)
     profiles/               # already exists
-    applications/           # was examples/_job-listings/
+    applications/           # still examples/_job-listings/ until a later examples rename
     brand-design/           # already exists
     collages/               # tiny sample image set (optional)
 ```
@@ -59,7 +59,7 @@ pdf-designer/
 | `vaults/` | What may I claim? | `storage/<user>/resume-source.json` |
 | `profiles/` | How does it print? | `storage/profiles/` |
 | `resumes/` | Working HTML + defaults + exports | `storage/jenni/` · `shade/` · `studio/` |
-| `applications/` | This job | `storage/_job-listings/` |
+| `_job-apps/` | This job | `applications/` (README stub) · `storage/_job-listings/` |
 | `collages/` | Image layouts | `storage/collages/` |
 | `brands/` | My palette map | `storage/brand-design/` |
 
@@ -94,9 +94,12 @@ profiles/*
 resumes/*
 !resumes/README.md
 
+_job-apps/*
+!_job-apps/README.md
+!_job-apps/_template/
+
 applications/*
 !applications/README.md
-!applications/_template/
 
 collages/*
 !collages/README.md

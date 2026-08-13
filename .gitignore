@@ -13,13 +13,17 @@ dev-log-*.yaml
 # or contain unverified/sensitive claims stays local only. Applies at the repo root AND inside
 # any examples/profiles/<your-id>/ folder you create from the default-resume template.
 #
-# storage/ holds EVERYTHING private: the claim vaults, the real applications, the exported
-# PDFs, and (since 2026-07-20) storage/brand-design/ — the private brand palettes (mapped from
-# www-theme-kit / syna-theme-kit profiles; never commit real vaults or personal contacts).
+# ONE checkout, two layers — you do not need a second app, and you do not need .env:
+#   tracked  = engine + examples/ + README + *.example.json  (what a stranger clones)
+#   ignored  = your users/ vaults/ profiles/ resumes/ _job-apps/ collages/ brands/
+# Optional local pointers: .config/mcp-pdf-designer.json (copy the .example). The engine
+# reads NO environment variables; a .env.local would be a fiction unless a new tool reads it.
+#
+# storage/ is the dual-run alias (copied to root nouns 2026-08-13). Keep it until Hub smoke
+# has lived on the new tree; then it can go. Private palettes: brands/ (was storage/brand-design/).
 #
 # ⚠ themes/ is deliberately NOT ignored. It is the PUBLIC engine's default theme + the palette
-# RULE, which the code and docs depend on; a fresh clone must be able to render. Private brand
-# palettes live in storage/brand-design/, which the previewer reads alongside themes/.
+# RULE. Private brand palettes live in brands/, which the previewer reads alongside themes/.
 # Tracked brand TEMPLATE (no personal data): examples/brand-design/
 private/
 notes/
@@ -42,6 +46,11 @@ profiles/*
 resumes/*
 !resumes/README.md
 
+_job-apps/*
+!_job-apps/README.md
+!_job-apps/_template/
+
+# Brief 2026-08 name — README redirect only after rename to _job-apps/
 applications/*
 !applications/README.md
 
@@ -141,7 +150,8 @@ Thumbs.db
 
 # Secrets — defensive only.
 # This tool reads NO environment variables and makes NO network calls; there is nothing
-# for a .env to hold, which is why no .env.example ships (it would document a fiction).
+# for a .env / .env.local to hold, which is why no .env.example ships (it would document
+# a fiction). Local machine paths go in .config/mcp-pdf-designer.json (gitignored above).
 # These lines stay purely so a future contributor's stray .env can never be committed.
 .env
 .env.*

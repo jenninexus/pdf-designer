@@ -9,13 +9,12 @@
 
 ## Remaining (open items)
 
-- [ ] **Root workspace migration** — data **copy** landed this wave; drop `storage/` only after dual-run lives on root nouns
-- [ ] **History scrub** — `docs/HISTORY-SCRUB.md` (gitignored) then human-authorized force-push
-- [ ] **TestPyPI upload** — `TESTPYPI_TOKEN` (none in credential DB) → `python scripts/testpypi-dry-run.py --upload`
-- [ ] **Push origin/main** — `jenninexus` GitHub auth
-- [ ] **Patreon early → public GitHub → blog** — copy in `C:\Github\product-design\docs\LAUNCH-PDF-DESIGNER.md` (human posts)
+- [ ] **Root workspace migration** — data **copy** landed; jobs live in `_job-apps/`; drop `storage/` only after dual-run lives on root nouns
+- [ ] **History scrub** — `docs/HISTORY-SCRUB.md` (gitignored) then human-authorized force-push (**incomplete plan**)
+- [ ] **Push origin/main** — `jenninexus` GitHub auth (**local commit only** until then)
+- [ ] **Patreon / blog / Gumroad / JN `/products`** — drafts in socials; GitHub **private**; do not post/deploy from an agent. Card: `C:\Github\product-design\docs\PDF-DESIGNER.md`
 - [ ] Keep **SSOT + QA docs** honest as the engine evolves
-- [ ] Optional: production PyPI · paid-shell · collage recipe docs
+- [ ] Optional: TestPyPI upload (not required for clone launch) · production PyPI · paid-shell
 
 ### Recently landed
 

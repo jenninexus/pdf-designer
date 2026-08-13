@@ -1,11 +1,5 @@
-# `applications/` — this job
+# `applications/` — moved
 
-One folder per listing: research markdown, `application.json`, `theme.json`, source HTML.
+Live job folders now live in [`_job-apps/`](../_job-apps/). This stub stays so old links do not 404.
 
-| Tracked | Gitignored |
-|---|---|
-| this README | real listings, apply URLs, employer research |
-
-Copy [`examples/_job-listings/example-application/`](../examples/_job-listings/example-application/) → `applications/<Track>/`.
-
-Legacy alias: `storage/_job-listings/`. Protocol: [`docs/APPLICATIONS.md`](../docs/APPLICATIONS.md) · [`docs/JOB-ASSESSMENT.md`](../docs/JOB-ASSESSMENT.md).
+Aliases the engine still accepts: `_job-apps/` · `applications/` · `storage/_job-listings/`.

@@ -150,7 +150,7 @@ def migrate(*, dry_run: bool, force: bool) -> int:
 
     _copy_tree(
         STORAGE / "_job-listings",
-        ROOT / "applications",
+        ROOT / "_job-apps",
         dry_run=dry_run,
         force=force,
         notes=notes,
