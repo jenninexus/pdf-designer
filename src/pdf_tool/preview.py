@@ -24,12 +24,13 @@ import re
 import sys
 import threading
 import webbrowser
+from html import escape
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import unquote, urlparse
 
 from .html_to_pdf import export_html_to_pdf
-from .paths import brand_dirs, repo_root, workspace_rel_info
+from .paths import brand_dirs, iter_profile_paths, iter_user_paths, repo_root, workspace_rel_info
 from .pdf_to_png import render_to_png
 from .recipe_gallery import build_recipe_gallery
 from .vault_overview import build_vault_overview
@@ -69,7 +70,56 @@ _TOKEN_MAP = [
 ]
 
 
-def classify_document(rel: str, stem: str) -> dict:
+def _read_profile_id(path: Path) -> str | None:
+    """Return the workspace-facing ID for a user/profile card when available."""
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return None
+    if not isinstance(data, dict):
+        return None
+
+    user = data.get("user")
+    if isinstance(user, str) and user:
+        return Path(user).stem.lower()
+
+    ident = data.get("id")
+    if not isinstance(ident, str) or not ident:
+        ident = path.stem
+    ident = ident.lower()
+    for suffix in ("-resume", "-cover-letter", "-work-samples"):
+        if ident.endswith(suffix):
+            return ident[: -len(suffix)] or None
+    return ident.split("-", 1)[0] or None
+
+
+def workspace_profile_ids(root: Path) -> list[str]:
+    """Discover the profile filter choices from both workspace path layouts."""
+    ids = {
+        ident
+        for path in (*iter_user_paths(root=root), *iter_profile_paths(root=root))
+        if (ident := _read_profile_id(path))
+    }
+    return sorted(ids)
+
+
+def profile_options(profile_ids: list[str]) -> str:
+    """HTML options for both profile selectors; values are always local IDs."""
+    return "".join(
+        f'<option value="{escape(profile_id, quote=True)}">{escape(profile_id)}</option>'
+        for profile_id in profile_ids
+    )
+
+
+def available_profile_ids(root: Path, docs: list[dict]) -> list[str]:
+    """Profiles with a workspace card or a document in the current library."""
+    return sorted(
+        {profile for profile in workspace_profile_ids(root)}
+        | {profile for document in docs if (profile := document.get("profile"))}
+    )
+
+
+def classify_document(rel: str, stem: str, profile_ids: tuple[str, ...] = ()) -> dict:
     """Tag each HTML for filters — kind / bucket / person / group folder."""
     path = rel.replace("\\", "/")
     path_l = path.lower()
@@ -106,14 +156,20 @@ def classify_document(rel: str, stem: str) -> dict:
     # older deep-links / badges.
     profile = info.profile
     if profile is None:
-        if name_l.startswith("jenni"):
-            profile = "jenni"
-        elif name_l.startswith("shade"):
-            profile = "shade"
-        elif name_l.startswith("studio") or "/studio-" in path_l:
-            profile = "studio"
-        elif name_l.startswith("martian") or "/martian-" in path_l or "martian-games" in name_l:
-            profile = "martian"
+        for candidate in profile_ids:
+            if name_l.startswith(candidate + "-") or f"/{candidate}-" in path_l:
+                profile = candidate
+                break
+        # Preserve ownership tags for legacy documents that predate a workspace card.
+        if profile is None:
+            if name_l.startswith("jenni"):
+                profile = "jenni"
+            elif name_l.startswith("shade"):
+                profile = "shade"
+            elif name_l.startswith("studio") or "/studio-" in path_l:
+                profile = "studio"
+            elif name_l.startswith("martian") or "/martian-" in path_l or "martian-games" in name_l:
+                profile = "martian"
 
     if "work-example" in name_l or "work-sample" in name_l or "work_examples" in name_l:
         kind = "work-samples"
@@ -149,6 +205,7 @@ def _is_excluded_rel(rel_parts: tuple[str, ...]) -> bool:
 
 def scan_documents(root: Path) -> list[dict]:
     docs = []
+    profile_ids = tuple(sorted(workspace_profile_ids(root), key=len, reverse=True))
     for p in sorted(root.rglob("*.html")):
         rel = p.relative_to(root)
         if _is_excluded_rel(rel.parts):
@@ -156,14 +213,14 @@ def scan_documents(root: Path) -> list[dict]:
         # Skip the hub's own static HTML if ever added under src/
         if "pdf_tool" in rel.parts and "static" in rel.parts:
             continue
-        docs.append(classify_document(str(rel).replace("\\", "/"), p.stem))
+        docs.append(classify_document(str(rel).replace("\\", "/"), p.stem, profile_ids))
     return docs
 
 
 # File suffixes the auto-refresh watcher tracks. HTML sources change the doc
 # list; PDFs/PNGs land in _exports/ when a resume is exported and are what the
 # "refresh when I output a new resume" feature keys on.
-_WATCH_SUFFIXES = {".html", ".pdf", ".png", ".jpg", ".jpeg", ".webp"}
+_WATCH_SUFFIXES = {".html", ".json", ".pdf", ".png", ".jpg", ".jpeg", ".webp"}
 # _exports is excluded from the DOC scan but MUST be watched for new outputs.
 _WATCH_EXCLUDE = EXCLUDE_PARTS - {"_exports"}
 
@@ -232,14 +289,15 @@ def _vars_from_token_map(block: dict) -> dict:
     return vars_
 
 
-def load_palettes() -> list[dict]:
-    """themes/*.json + themes/presets/*.json (public) + brands/ (private; storage/brand-design alias)."""
+def load_palettes(root: Path | None = None) -> list[dict]:
+    """Public themes plus private brands for the workspace being previewed."""
+    workspace_root = Path(root) if root is not None else _REPO_ROOT
     palettes = []
     seen: set[tuple[str, str]] = set()
     for theme_dir in (
         _REPO_ROOT / "themes",
         _REPO_ROOT / "themes" / "presets",
-        *brand_dirs(root=_REPO_ROOT),
+        *brand_dirs(root=workspace_root),
     ):
         if not theme_dir.is_dir():
             continue
@@ -287,10 +345,7 @@ APP_HTML = """<!doctype html>
     <div class="hub-group" title="Profiles — applicants + studio entity decks">
       <select id="personFilter" title="Profiles" aria-label="Profiles">
         <option value="">all profiles</option>
-        <option value="jenni">jenni</option>
-        <option value="shade">shade</option>
-        <option value="studio">studio</option>
-        <option value="martian">martian</option>
+        __PROFILE_OPTIONS__
       </select>
     </div>
     <div class="hub-group">
@@ -371,10 +426,7 @@ APP_HTML = """<!doctype html>
         <label for="drawerPersonFilter">Profiles</label>
         <select id="drawerPersonFilter" aria-label="Profiles">
           <option value="">all profiles</option>
-          <option value="jenni">jenni</option>
-          <option value="shade">shade</option>
-          <option value="studio">studio</option>
-          <option value="martian">martian</option>
+          __PROFILE_OPTIONS__
         </select>
       </div>
       <div class="hub-drawer-field">
@@ -439,6 +491,7 @@ APP_HTML = """<!doctype html>
 <script>
 let DOCS = __DOCS__;
 const PALETTES = __PALETTES__;
+let PROFILE_IDS = __PROFILE_IDS__;
 const KIND_ORDER = ["all","resume","cover-letter","letter","work-samples","collage","gallery","example","other"];
 const KIND_LABEL = {
   all: "All",
@@ -752,6 +805,22 @@ function fillKindChipHost(wrap) {
 function buildKindChips() {
   fillKindChipHost(document.getElementById("kindChips"));
   fillKindChipHost(document.getElementById("drawerKindChips"));
+}
+
+function buildProfileSelects() {
+  const primary = document.getElementById("personFilter");
+  const current = primary ? primary.value : "";
+  for (const select of [primary, document.getElementById("drawerPersonFilter")]) {
+    if (!select) continue;
+    select.innerHTML = '<option value="">all profiles</option>';
+    for (const profile of PROFILE_IDS) {
+      const option = document.createElement("option");
+      option.value = profile;
+      option.textContent = profile;
+      select.appendChild(option);
+    }
+    select.value = PROFILE_IDS.includes(current) ? current : "";
+  }
 }
 
 function uniqueFolders() {
@@ -1107,6 +1176,7 @@ document.getElementById("exportBtn").addEventListener("click", async () => {
 
 buildStats();
 buildKindChips();
+buildProfileSelects();
 buildFolderSelect();
 /* Restore profile filter after folder options exist (folder value restored in buildFolderSelect). */
 (function restoreHubPrefs() {
@@ -1150,11 +1220,13 @@ openPaletteFromQuery();
   function applyDocs(data) {
     const prevCount = DOCS.length;
     DOCS = data.docs;
+    PROFILE_IDS = Array.isArray(data.profiles) ? data.profiles : PROFILE_IDS;
     if (selected) {
       const still = DOCS.find(d => d.path === selected.path);
       selected = still || null;
     }
     buildKindChips();
+    buildProfileSelects();
     buildFolderSelect();
     renderLibrary();
     if (selected) { try { main.src = "/" + selected.path + "?t=" + Date.now(); } catch (_) {} }
@@ -1209,10 +1281,13 @@ openPaletteFromQuery();
 
 
 def make_handler(root: Path, docs: list[dict], palettes: list[dict]):
+    profiles = available_profile_ids(root, docs)
     app_page = (
         APP_HTML.replace("__DOCS__", json.dumps(docs))
         .replace("__PALETTES__", json.dumps(palettes))
+        .replace("__PROFILE_IDS__", json.dumps(profiles))
         .replace("__ROOT__", str(root))
+        .replace("__PROFILE_OPTIONS__", profile_options(profiles))
     )
 
     class Handler(BaseHTTPRequestHandler):
@@ -1236,7 +1311,12 @@ def make_handler(root: Path, docs: list[dict], palettes: list[dict]):
                 # Re-scanning docs here keeps the sidebar live when HTML sources
                 # or _exports outputs change, without restarting the server.
                 sig = tree_signature(root)
-                payload = {"sig": sig, "docs": scan_documents(root)}
+                current_docs = scan_documents(root)
+                payload = {
+                    "sig": sig,
+                    "docs": current_docs,
+                    "profiles": available_profile_ids(root, current_docs),
+                }
                 self._send(200, json.dumps(payload).encode("utf-8"), "application/json")
                 return
             if path == "/api/vault-overview":
@@ -1333,7 +1413,7 @@ def serve(root: str | None = None, port: int = 8787, open_browser: bool = True):
     if not root_path.is_dir():
         raise FileNotFoundError(root_path)
     docs = scan_documents(root_path)
-    palettes = load_palettes()
+    palettes = load_palettes(root_path)
     server = ThreadingHTTPServer(("127.0.0.1", port), make_handler(root_path, docs, palettes))
     url = f"http://127.0.0.1:{port}/"
     by_kind = {}
