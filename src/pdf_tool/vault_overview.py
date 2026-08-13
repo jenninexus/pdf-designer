@@ -1,13 +1,22 @@
 """Human-readable vault / skills / go-to résumé overview for Design Hub.
 
-Read-only. Surfaces storage/users, profiles, resume-source vaults, boardSkills,
-and goToPacks so agents and humans need not parse raw JSON in the editor.
+Read-only. Surfaces users/, vaults/, profiles/ (and the legacy storage/
+aliases) plus boardSkills and goToPacks so agents and humans need not parse
+raw JSON in the editor.
 """
 
 from __future__ import annotations
 
 import json
 from pathlib import Path
+
+from .paths import (
+    has_private_workspace,
+    iter_profile_paths,
+    iter_user_paths,
+    resolve_rel,
+    vault_path,
+)
 
 
 def _read_json(path: Path):
@@ -58,7 +67,8 @@ def _go_to_packs(vault: dict, root: Path) -> list[dict]:
         if key.startswith("_") or not isinstance(p, dict):
             continue
         html_rel = p.get("html") or ""
-        html_path = root / html_rel if html_rel else None
+        html_path = resolve_rel(html_rel, root=root) if html_rel else None
+        resolved_rel = _rel(root, html_path) if html_path else html_rel
         out.append(
             {
                 "id": key,
@@ -66,7 +76,7 @@ def _go_to_packs(vault: dict, root: Path) -> list[dict]:
                 "targets": p.get("targets") or "",
                 "focus": p.get("focus"),
                 "rule": p.get("rule"),
-                "html": html_rel,
+                "html": resolved_rel if html_path and html_path.is_file() else html_rel,
                 "htmlExists": bool(html_path and html_path.is_file()),
                 "pages": p.get("pages"),
             }
@@ -109,32 +119,41 @@ def _profile_card(root: Path, profile_path: Path) -> dict | None:
 
 
 def build_vault_overview(root: Path) -> dict:
-    """Return a JSON-serializable overview of private storage vaults."""
-    storage = root / "storage"
-    if not storage.is_dir():
-        return {"ok": True, "users": [], "note": "storage/ missing (white-label clone)"}
+    """Return a JSON-serializable overview of private workspace vaults."""
+    if not has_private_workspace(root=root):
+        return {
+            "ok": True,
+            "users": [],
+            "note": "no private workspace yet (white-label clone) — add users/ or storage/users/",
+        }
 
     users = []
-    for user_path in sorted((storage / "users").glob("*.json")) if (storage / "users").is_dir() else []:
-        card = _user_card(root, user_path)
+    for user_file in iter_user_paths(root=root):
+        card = _user_card(root, user_file)
         if not card:
             continue
-        vault_rel = card.get("vault")
-        vault_path = (user_path.parent / vault_rel).resolve() if vault_rel else None
-        vault = _read_json(vault_path) if vault_path and vault_path.is_file() else None
+        uid = card.get("id") or user_file.stem
+        vfile = vault_path(uid, root=root)
+        if not vfile.exists():
+            hint = card.get("vault")
+            if hint:
+                linked = (user_file.parent / hint)
+                if linked.is_file():
+                    vfile = linked.resolve()
+        vault = _read_json(vfile) if vfile.is_file() else None
         users.append(
             {
                 **card,
                 "tracks": _track_summaries(vault) if vault else [],
                 "boardSkills": _board_skills(vault) if vault else {"tags": []},
                 "goToPacks": _go_to_packs(vault, root) if vault else [],
-                "vaultFile": _rel(root, vault_path) if vault_path and vault_path.is_file() else None,
+                "vaultFile": _rel(root, vfile) if vfile.is_file() else None,
             }
         )
 
     profiles = []
-    for profile_path in sorted((storage / "profiles").glob("*.json")) if (storage / "profiles").is_dir() else []:
-        card = _profile_card(root, profile_path)
+    for profile_file in iter_profile_paths(root=root):
+        card = _profile_card(root, profile_file)
         if card:
             profiles.append(card)
 

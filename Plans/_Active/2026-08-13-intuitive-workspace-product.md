@@ -37,8 +37,9 @@ SSOT: [`docs/WORKSPACE-LAYOUT.md`](../../docs/WORKSPACE-LAYOUT.md).
 
 ### Migration (next engineering)
 
-- [ ] Add `workspace` path resolver (accept `storage/` **and** root nouns during cutover)
-- [ ] Scaffold root dirs with README + example stubs (tracked)
+- [x] Add `workspace` path resolver (accept `storage/` **and** root nouns during cutover)
+- [x] Scaffold root dirs with README + example stubs (tracked)
+- [x] Point Products hub card + registry at the same folder language
 - [ ] Migrate SEGO `storage/{users,profiles,jenni,shade,studio,collages,brand-design,_job-listings}` → new nouns
 - [ ] Update Hub / vault / tracker / collage / AGENTS / make-* examples
 - [ ] Dual-run smoke; then remove `storage/` alias

@@ -9,7 +9,7 @@
 
 ## Remaining (open items)
 
-- [ ] **Root workspace migration** — path resolver → scaffold → move SEGO data → drop `storage/`
+- [ ] **Root workspace migration** — data move + drop `storage/` (resolver + README scaffolds landed)
 - [ ] **History scrub** — `docs/HISTORY-SCRUB.md` (gitignored) then human-authorized force-push
 - [ ] **TestPyPI upload** — `TESTPYPI_TOKEN` → `python scripts/testpypi-dry-run.py --upload`
 - [ ] **Push origin/main** — `jenninexus` GitHub auth

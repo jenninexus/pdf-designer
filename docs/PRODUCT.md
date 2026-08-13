@@ -10,7 +10,7 @@ paid shell later. Clone path: [`GETTING-STARTED.md`](GETTING-STARTED.md). Archit
 | Paid later (hypothesis) | Packaged desktop app — installer + guided vault/export UX |
 | **Public product story** | Résumé creator for a broken job market — **vaults**, skills, palette prefs |
 | Public demo | [`../examples/resume-studio/`](../examples/resume-studio/) |
-| Folder UX (target) | [`WORKSPACE-LAYOUT.md`](WORKSPACE-LAYOUT.md) — root `users/` · `vaults/` · `profiles/` · … |
+| Folder UX (clone tree) | [`WORKSPACE-LAYOUT.md`](WORKSPACE-LAYOUT.md) — resolver + README scaffolds landed; live data still `storage/` |
 | Private marketing (local) | `docs/MARKETING.md` (gitignored — same folder as public docs) |
 | Engineering checklist | [`../Plans/_Active/2026-08-13-intuitive-workspace-product.md`](../Plans/_Active/2026-08-13-intuitive-workspace-product.md) |
 
@@ -43,9 +43,10 @@ workflow that **asks before inventing gaps** — not another cloud form that own
 | **Personal protocol** | Founders using this clone privately | ✅ local `storage/` + bare commands | Never sell *their* vaults |
 | **Packaged app** (future) | Job-seekers who want Canva ease without lying | ❌ not built | Paid / freemium **shell** |
 
-**Hard privacy split:** `storage/` stays gitignored. GitHub ships **`*.example.md` only** for
-commands. A stranger proves the product with `examples/` + `themes/` alone —
-[`GETTING-STARTED.md`](GETTING-STARTED.md).
+**Hard privacy split:** `storage/` stays gitignored until dropped; root nouns
+(`users/` · `vaults/` · …) ship **README + examples only**. GitHub ships
+**`*.example.md` only** for commands. A stranger proves the product with
+`examples/` + `themes/` alone — [`GETTING-STARTED.md`](GETTING-STARTED.md).
 
 Network brand kits (`www-theme-kit`, `syna-theme-kit`) are **private infra**, not part of
 the public GitHub pitch. Public color defaults live in-repo under `themes/`.
@@ -98,7 +99,7 @@ TestPyPI upload still needs a human token.
 Channels: README + Hub GIF from **`examples/` only** · PyPI when TestPyPI is green ·
 short “export + check_generation” clips. Keep personal career work and Patreon drafts out.
 
-Longer SEGO channel plan: `storage/docs/MARKETING.md`.
+Longer SEGO channel plan: `docs/MARKETING.md` (gitignored).
 
 ## Non-goals
 
@@ -117,10 +118,9 @@ Longer SEGO channel plan: `storage/docs/MARKETING.md`.
 | How do I clone and use it? | [`GETTING-STARTED.md`](GETTING-STARTED.md) |
 | PyPI / wheel? | [`PACKAGING.md`](PACKAGING.md) |
 | What may be claimed? | [`VAULT.md`](VAULT.md) · [`JOB-ASSESSMENT.md`](JOB-ASSESSMENT.md) |
-| Where is private data? | [`STORAGE.md`](STORAGE.md) · `storage/docs/` |
+| Where is private data? | [`STORAGE.md`](STORAGE.md) (live `storage/`) · [`WORKSPACE-LAYOUT.md`](WORKSPACE-LAYOUT.md) (root nouns) |
 | Verified? | [`QA.md`](QA.md) |
 
 ---
 
-*Last updated 2026-08-12 — PUBLIC-LOCAL-SPLIT + GETTING-STARTED rename; history scrub still
-pending human force-push auth.*
+*Last updated 2026-08-13 — dual-path resolver + root README scaffolds; live data still `storage/`.*

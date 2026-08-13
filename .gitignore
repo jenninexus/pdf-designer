@@ -26,6 +26,33 @@ notes/
 # Legacy private workspace (migration target: root users/vaults/profiles/… — see docs/WORKSPACE-LAYOUT.md)
 storage/
 
+# Root workspace nouns — track README + *.example.* only; real data stays local
+users/*
+!users/README.md
+!users/*.example.json
+
+vaults/*
+!vaults/README.md
+!vaults/*.example.json
+
+profiles/*
+!profiles/README.md
+!profiles/*.example.json
+
+resumes/*
+!resumes/README.md
+
+applications/*
+!applications/README.md
+
+collages/*
+!collages/README.md
+
+brands/*
+!brands/README.md
+!brands/*.example.json
+
+
 # Private product/ops notes live in docs/ beside public docs (never clone these)
 docs/MARKETING.md
 docs/WORKSPACE.md

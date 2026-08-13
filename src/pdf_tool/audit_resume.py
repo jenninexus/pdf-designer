@@ -30,7 +30,8 @@ import re
 import sys
 from pathlib import Path
 
-from .check_vault import collect, TRACKED_SECTIONS
+from .check_vault import TRACKED_SECTIONS, collect
+from .paths import vault_path
 
 # Words too generic to prove a claim is present -- matching on these gives false
 # "it's covered" readings and defeats the audit.
@@ -81,7 +82,7 @@ def _present(claim, page_text, threshold=0.34):
 
 
 def audit(user: str, track: str, html_path: str):
-    vault_p = Path("storage") / user / "resume-source.json"
+    vault_p = vault_path(user)
     doc_p = Path(html_path)
     if not vault_p.exists():
         print(f"no vault: {vault_p}")
