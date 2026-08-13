@@ -27,7 +27,7 @@ your work history.
 > [`examples/resume-studio/`](examples/resume-studio/) · product: [`docs/PRODUCT.md`](docs/PRODUCT.md) ·
 > split: [`docs/PUBLIC-LOCAL-SPLIT.md`](docs/PUBLIC-LOCAL-SPLIT.md) ·
 > clone path: [`docs/GETTING-STARTED.md`](docs/GETTING-STARTED.md) · packaging: [`docs/PACKAGING.md`](docs/PACKAGING.md) ·
-> [`PDF Designer overview`](docs/pdf-designer-launch.pptx) · agents: [`AGENTS.md`](AGENTS.md).
+> [`Browser overview`](docs/pdf-designer-overview.html) · [`printable PDF`](docs/pdf-designer-overview.pdf) · agents: [`AGENTS.md`](AGENTS.md).
 > Protocol seeds on GitHub are `*.example.md` only; bare `start`/`wrap`/`make-*` stay local.
 
 ---
@@ -83,7 +83,8 @@ asks before treating a missing claim as a skill gap.
 | [`AGENTS.md`](AGENTS.md) | Agent capability map + contracts |
 
 For the full command index, see [`docs/EXPORTS.md`](docs/EXPORTS.md). For a visual tour of the product
-story, download [`docs/pdf-designer-launch.pptx`](docs/pdf-designer-launch.pptx).
+story, open [`docs/pdf-designer-overview.html`](docs/pdf-designer-overview.html) in any browser, or read
+the [`printable PDF`](docs/pdf-designer-overview.pdf) rendered by PDF Designer.
 
 ---
 

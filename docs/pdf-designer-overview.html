@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PDF Designer — local-first résumé studio</title>
+<style>
+  :root {
+    --ink: #111827;
+    --muted: #5f6f89;
+    --paper: #ffffff;
+    --mist: #f5f7fb;
+    --line: #dce2ee;
+    --navy: #151a2d;
+    --violet: #7456d8;
+    --teal: #087c78;
+    --mint: #42d8b5;
+    --pink: #d7469c;
+    --sans: Inter, Aptos, Arial, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+  @page { size: Letter; margin: 0.65in; }
+  body { margin: 0; background: var(--mist); color: var(--ink); font-family: var(--sans); }
+  .page {
+    display: flex; flex-direction: column; width: 8.5in; min-height: 11in; margin: 24px auto;
+    padding: 0.65in; background: var(--paper); box-shadow: 0 18px 48px rgba(17, 24, 39, .14);
+  }
+  .page-main { flex: 1 1 auto; }
+  .page-sig { margin-top: auto; align-self: flex-end; color: var(--muted); font-size: 9pt; letter-spacing: .08em; text-transform: uppercase; }
+  .eyebrow { color: var(--violet); font-size: 10pt; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+  h1, h2, h3, p { margin: 0; }
+  h1 { max-width: 5.2in; margin-top: .35in; color: var(--paper); font-size: 35pt; line-height: 1.04; letter-spacing: -.04em; }
+  h2 { max-width: 6.6in; margin-top: .22in; font-size: 27pt; line-height: 1.1; letter-spacing: -.03em; }
+  h3 { font-size: 15pt; }
+  p { color: var(--muted); font-size: 12.5pt; line-height: 1.45; }
+  .hero { background: var(--navy); }
+  .hero-main { min-height: 8.84in; padding: .45in; overflow: hidden; }
+  .hero-main .eyebrow { color: var(--mint); }
+  .hero-copy { max-width: 4.9in; margin-top: .38in; color: #d8dcea; font-size: 15pt; }
+  .hero-rule { width: 1.6in; height: 3px; margin-top: .35in; background: var(--mint); }
+  .hero-meta { margin-top: .18in; color: #bdc5d9; font-size: 10.5pt; font-weight: 700; }
+  .resume-sample { position: absolute; z-index: 1; right: .43in; top: 1.15in; width: 2.26in; padding: .2in; background: var(--paper); border-radius: 14px; box-shadow: 0 18px 38px rgba(0, 0, 0, .24); }
+  .resume-sample strong { display: block; font-family: Georgia, serif; font-size: 17pt; }
+  .resume-sample small { display: block; margin-top: .06in; color: #62708a; font-size: 7.5pt; }
+  .resume-sample .line { height: 2px; margin-top: .1in; background: #dce2ee; }
+  .resume-sample .accent { height: .62in; margin-top: .1in; border-left: 5px solid var(--teal); background: #f7f9fc; }
+  .resume-sample .fine { height: 1px; margin-top: .08in; background: #dce2ee; }
+  .kicker { margin-top: .2in; max-width: 6.5in; }
+  .split { display: grid; grid-template-columns: 1fr 1fr; gap: .32in; margin-top: .35in; }
+  .mode { min-height: 2.12in; padding: .26in; border: 1px solid var(--line); border-radius: 16px; background: var(--paper); }
+  .mode.dark { background: var(--navy); border-color: var(--navy); }
+  .glyph { display: grid; width: .48in; height: .48in; place-items: center; border-radius: 10px; background: #e5f4f1; color: var(--teal); font-weight: 900; font-size: 17pt; }
+  .dark .glyph { background: #3a2d6d; color: var(--mint); }
+  .mode h3 { margin-top: .18in; }
+  .mode p { margin-top: .13in; font-size: 11pt; }
+  .dark h3 { color: var(--paper); }
+  .dark p { color: #c6cce0; }
+  .process { display: grid; grid-template-columns: repeat(4, 1fr); gap: .13in; margin-top: .46in; }
+  .step { min-height: 1.42in; padding: .19in; border-radius: 14px; background: var(--mist); }
+  .step:last-child { background: var(--navy); }
+  .step-no { color: var(--violet); font-size: 10pt; font-weight: 900; }
+  .step:last-child .step-no { color: var(--mint); }
+  .step h3 { margin-top: .2in; }
+  .step p { margin-top: .12in; font-size: 9.8pt; }
+  .step:last-child h3 { color: var(--paper); }
+  .step:last-child p { color: #c6cce0; }
+  .privacy { margin-top: .34in; padding: .27in; border-radius: 16px; background: #e5f4f1; }
+  .privacy h3 { color: var(--teal); }
+  .privacy p { margin-top: .12in; font-size: 11pt; }
+  .folders { display: flex; flex-wrap: wrap; gap: .1in; margin-top: .18in; }
+  .folder { padding: .08in .13in; border-radius: 999px; background: var(--paper); color: var(--ink); font: 800 10pt var(--sans); }
+  .close { margin-top: .38in; font-size: 16pt; font-weight: 800; color: var(--teal); }
+  .human-gates { margin-top: .22in; padding-top: .2in; border-top: 2px solid var(--line); }
+  .human-gates p { font-size: 10.5pt; }
+  @media print {
+    body { background: var(--paper); }
+    .page { margin: 0; width: auto; min-height: 9.7in; padding: 0; box-shadow: none; page-break-after: always; }
+    .page:last-child { page-break-after: auto; }
+    .hero-main { min-height: 8.84in; }
+    .hero .page-sig { color: var(--mint); }
+    .page:not(.hero) h2 { font-size: 24pt; }
+    .page:not(.hero) .kicker { margin-top: .12in; }
+    .page:not(.hero) .mode { min-height: 1.98in; padding: .21in; }
+    .process { margin-top: .28in; }
+    .privacy { margin-top: .22in; padding: .21in; }
+    .close { margin-top: .24in; }
+  }
+  @media screen and (max-width: 760px) {
+    .page { width: 100%; min-height: 0; margin: 0; padding: 32px 24px; }
+    .resume-sample { display: none; }
+    .split, .process { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+  <section class="page hero">
+    <main class="page-main">
+      <div class="hero-main">
+        <div class="eyebrow">PDF Designer</div>
+        <h1>Your résumé should print exactly as you designed it.</h1>
+        <p class="hero-copy">A local-first PDF studio for source-backed, ATS-honest applications — with a branded version for human eyes.</p>
+        <div class="hero-rule"></div>
+        <p class="hero-meta">HTML → PDF · LIGHT + DARK · PRIVATE VAULTS · RENDERED QA</p>
+        <div class="resume-sample" aria-label="A public example résumé">
+          <strong>Jane Example</strong><small>Founder &amp; Lead Developer</small><div class="line"></div>
+          <small>SKILLS</small><div class="line"></div><div class="accent"></div>
+          <small>WORK EXPERIENCE</small><div class="fine"></div><div class="fine"></div><div class="fine"></div>
+        </div>
+      </div>
+    </main>
+    <footer class="page-sig">PDF Designer · local-first résumé studio</footer>
+  </section>
+
+  <section class="page">
+    <main class="page-main">
+      <div class="eyebrow">The product loop</div>
+      <h2>Design once. Export the right PDF for the moment.</h2>
+      <p class="kicker">One HTML source keeps the page geometry stable while every export serves a different reader.</p>
+      <div class="split">
+        <article class="mode"><div class="glyph">A</div><h3>Light PDF for boards</h3><p>System-font print styling and a text-layer check keep applications parseable for Jobright, Indeed, and LinkedIn.</p></article>
+        <article class="mode dark"><div class="glyph">H</div><h3>Dark PDF for humans</h3><p>The branded version carries the same content and pagination for a person reviewing your work.</p></article>
+      </div>
+      <div class="process">
+        <article class="step"><div class="step-no">01</div><h3>Start</h3><p>Open a public example or your own local workspace.</p></article>
+        <article class="step"><div class="step-no">02</div><h3>Shape</h3><p>Write in HTML, select a palette, and keep claims source-backed.</p></article>
+        <article class="step"><div class="step-no">03</div><h3>Export</h3><p>Create synchronized light and dark PDFs.</p></article>
+        <article class="step"><div class="step-no">04</div><h3>Verify</h3><p>Run rendered QA; use the light file for boards.</p></article>
+      </div>
+      <div class="privacy">
+        <h3>One checkout. Your data stays yours.</h3>
+        <p>Privacy is gitignore plus clear local folders — not a second app, a cloud vault, or an environment file.</p>
+        <div class="folders"><span class="folder">users/</span><span class="folder">vaults/</span><span class="folder">profiles/</span><span class="folder">resumes/</span><span class="folder">_job-apps/</span><span class="folder">collages/</span><span class="folder">brands/</span></div>
+      </div>
+      <p class="close">Build your résumé. Keep your story. Verify the PDF.</p>
+      <div class="human-gates"><p><strong>Release status:</strong> the public path is prepared; GitHub publication, Patreon/blog posting, history scrub, and paid extras remain human decisions.</p></div>
+    </main>
+    <footer class="page-sig">PDF Designer · browser-openable source and PDF output</footer>
+  </section>
+</body>
+</html>
