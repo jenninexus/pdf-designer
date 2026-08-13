@@ -35,6 +35,14 @@ Product-design hub: `C:\Github\product-design` (renamed from `Products`). Comman
 - [x] Dual-run smoke (tracker, pytest, Hub)
 - [x] Wrap (`/reflect` + dev-log + tracked commit)
 
+### Release assets addendum — 2026-08-13
+
+- [x] Refresh the public README around the clone-safe product loop and public/private boundary.
+- [x] Create a public-safe PDF Designer overview deck using only the tracked example profile and
+  documented claims; render and inspect every slide.
+- [x] Link the deck from the README and record its local-only status on the product board.
+- [x] Re-run fresh-clone smoke and relevant tests; commit only safe tracked release assets locally.
+
 ## Assumptions
 
 - **Do not delete `storage/` this run.** Dual-run alias stays until a human confirms Hub/tracker/vault after living on root nouns. Flip signal: a full workday on root nouns with zero `storage/` reads.
@@ -42,6 +50,9 @@ Product-design hub: `C:\Github\product-design` (renamed from `Products`). Comman
 - **Gumroad $5 today would sell a shell that does not exist.** Early release = Patreon announcement of the **free** GitHub seed (after public push). Gumroad waits for installer / extra kit.
 - **`.memory/` stays tracked.** Session start reads the **index**, not 19 files. Protocol lessons already live in `docs/`; Hub traps stay as lesson files until PREVIEWER absorbs them. Archiving the directory would hide clone-traveling traps (same failure as gitignored-only dev-log).
 - CRLF-only dirty diffs in `.config/mcp-pdf-designer.example.json` and `scripts/testpypi-dry-run.py` are noise — restore, do not commit.
+- The overview deck is a **release asset**, not a launch event: it may be tracked because it contains
+  only public examples and product documentation. It does not authorize public GitHub, Patreon, blog,
+  Gumroad, or JN-store publication.
 
 ## Evidence
 
@@ -52,6 +63,11 @@ Product-design hub: `C:\Github\product-design` (renamed from `Products`). Comman
 - VERIFIED: Hub `GET /api/version` → 200.
 - VERIFIED: sys-admin MCP ready; no TestPyPI credential in userdata.db.
 - UNVERIFIED: GitHub push, history scrub, Patreon/Gumroad/blog publish, TestPyPI upload (Hard Stops / missing token).
+- VERIFIED (release assets addendum): six-slide deck `docs/pdf-designer-launch.pptx` rendered and
+  visually inspected; `slides_test.py` reports no canvas overflow. README and docs index link it.
+- VERIFIED (release assets addendum): `python -m pytest tests/test_workspace_paths.py
+  tests/test_preview_workspace.py -q` → 19 passed; `python scripts/smoke-white-label.py` → PASS,
+  including rendered QA and contiguous ATS section cues.
 
 ## Deferred
 
