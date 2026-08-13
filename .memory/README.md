@@ -70,6 +70,7 @@ codebase · `reference`: pointer to an external resource.
 | [lesson-hub-collage-hidden-by-profile-filter.md](lesson-hub-collage-hidden-by-profile-filter.md) | Untagged collage projects vanish when Profiles ≠ all — clear profile chip or search folder; keep `_candidates/` flat |
 | [lesson-public-clone-path-stays-tracked.md](lesson-public-clone-path-stays-tracked.md) | Public clone how-to stays tracked; audit seed content and absolute paths; scope privacy claims honestly; gitignore ≠ history scrub |
 | [lesson-scaffold-readme-must-not-win-path-resolution.md](lesson-scaffold-readme-must-not-win-path-resolution.md) | README-only root nouns (`users/` · `applications/` · …) must not win over live `storage/` during dual-run — resolve payload, not directory existence |
+| [lesson-hub-options-must-follow-workspace.md](lesson-hub-options-must-follow-workspace.md) | Design Hub profile and palette controls follow the workspace root, never a hard-coded local roster |
 
 ## Related
 
