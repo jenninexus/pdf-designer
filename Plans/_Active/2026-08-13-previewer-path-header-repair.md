@@ -14,7 +14,7 @@
 - [x] Trace the document-index and UI-filter data path against the current private workspace.
 - [x] Implement the smallest path/header correction.
 - [x] Verify the API/index and rendered header controls.
-- [ ] Review the resulting diff, wrap, and report.
+- [x] Review the resulting diff, wrap, and report.
 
 ## Assumptions
 
