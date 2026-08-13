@@ -153,10 +153,23 @@ A project file listing multiple collage pages (each its own
 `collage-source.json`) → render each page → `merge_pdfs.py` into one PDF
 book. Same pattern as cover-letter + resume bundles.
 
+### Workspace filters (live private tree)
+
+Selecting a **header profile** must list that profile's documents. Restore the
+profile chip **before** rebuilding folder options; scope folder + kind counts
+to the selected profile or the library goes empty. README-only root-noun
+scaffolds must not win over live `storage/` (or live root-noun) payloads —
+`pdf_tool.paths._has_payload` is the rule. Application identity is the path
+relative to `applications/` (or `storage/_job-listings/`), not the leaf folder
+name.
+
+Durable *why*: `.memory/lesson-hub-profile-scopes-folder-and-kind.md` ·
+`lesson-scaffold-readme-must-not-win-path-resolution.md`.
+
 ## See also
 
 - [`COLLAGE-DESIGN.md`](COLLAGE-DESIGN.md) — layout families + canvas presets
 - [`THEME-DESIGN.md`](THEME-DESIGN.md) — token contract the palette swapper relies on
 - [`EXPORTS.md`](EXPORTS.md) — export command reference
-- [`Plans/_Active/2026-07-21-next-agent-product-prompt.md`](../Plans/_Active/2026-07-21-next-agent-product-prompt.md) — ⭐ live product checklist
+- [`WORKSPACE-LAYOUT.md`](WORKSPACE-LAYOUT.md) — root nouns vs `storage/` alias
 - [`Plans/README.md`](../Plans/README.md) — active vs archive index
