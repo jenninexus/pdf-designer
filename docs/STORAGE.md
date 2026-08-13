@@ -1,12 +1,15 @@
-# `storage/` — private workspace layout
+# `storage/` — private workspace layout (LIVE)
 
+> **Migration target:** root nouns in [`WORKSPACE-LAYOUT.md`](WORKSPACE-LAYOUT.md)
+> (`users/` · `vaults/` · `profiles/` · `resumes/` · …). This page describes the **current**
+> tree under `storage/` until the path resolver + cutover land.
+>
 > **Tracked protocol SSOT:** this page lives in `docs/` so a fresh clone can learn the flow.
 > Your machine’s `storage/` folder is **gitignored** and holds only real personal data.
-> A short pointer file may also exist at `storage/README.md` (local) — if they disagree, **this doc wins**.
 
 Everything under `storage/` is **local only**. It holds career data, applications, PDFs,
-**private brand palettes**, and optional **`storage/docs/`** (SEGO-only notes — marketing
-detail, machine paths). Nothing here is pushed to GitHub.
+and **private brand palettes**. Private *notes* (`MARKETING` · `WORKSPACE` · history scrub)
+now live under **`docs/`** (gitignored) — not a second docs tree here.
 
 ---
 

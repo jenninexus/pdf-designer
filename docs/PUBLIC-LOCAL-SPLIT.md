@@ -7,16 +7,17 @@ private vaults, real job applications, brand hex maps, or SEGO session ritual.
 Sibling pattern: [`agency/docs/PUBLIC-LOCAL-SPLIT.md`](../../agency/docs/PUBLIC-LOCAL-SPLIT.md)
 (framework agents). Same idea here for a **résumé / PDF toolkit**.
 
-| Layer | On GitHub | Local only (`storage/` + gitignored ritual) |
+| Layer | On GitHub | Local only |
 |---|---|---|
 | Engine | `src/pdf_tool/`, `themes/`, `layouts/`, QA guards | — |
-| Product story | [`PRODUCT.md`](PRODUCT.md) · [`examples/resume-studio/`](../examples/resume-studio/) | [`../storage/docs/MARKETING.md`](../storage/docs/MARKETING.md) |
+| Product story | [`PRODUCT.md`](PRODUCT.md) · [`examples/resume-studio/`](../examples/resume-studio/) | [`MARKETING.md`](MARKETING.md) (gitignored) |
+| Folder UX | [`WORKSPACE-LAYOUT.md`](WORKSPACE-LAYOUT.md) (target) · [`STORAGE.md`](STORAGE.md) (live) | Real data under `storage/` → root nouns |
 | Clone path | [`GETTING-STARTED.md`](GETTING-STARTED.md) | — |
-| Protocol (rules) | [`VAULT.md`](VAULT.md) · [`STORAGE.md`](STORAGE.md) · [`JOB-ASSESSMENT.md`](JOB-ASSESSMENT.md) | Real vaults / listings / PII |
+| Protocol (rules) | [`VAULT.md`](VAULT.md) · [`JOB-ASSESSMENT.md`](JOB-ASSESSMENT.md) | Real vaults / listings / PII |
 | Commands | `.claude/commands/*.example.md` only | Bare `start` / `wrap` / `make-*` / commands `README` + generated `.codex/` adapters |
 | Config | `.config/mcp-pdf-designer.example.json` | `mcp-pdf-designer.json` (absolute paths) |
 | Theme kit | Public default themes in-repo | `www-theme-kit` profiles + `storage/brand-design/` (private kits) |
-| Docs index | This folder + tracked [`../storage/docs/README.md`](../storage/docs/README.md) placeholder | Full private notes under `storage/docs/` |
+| Docs | This folder (public `*.md`) | `MARKETING.md` · `WORKSPACE.md` · `HISTORY-SCRUB.md` · `*.local.md` |
 
 ## Track public files
 
@@ -24,12 +25,11 @@ Commit when they are clone-safe and reusable:
 
 - `src/pdf_tool/` — HTML→PDF, Design Hub, guards, collage
 - `themes/` · `layouts/` · `examples/` (incl. `resume-studio/`)
-- `docs/*.md` — engine, product, protocol **without** real employer/PII
+- `docs/*.md` — engine, product, protocol **except** gitignored private notes listed below
 - `AGENTS.md` · `README.md` · `Plans/` (engineering checklists)
-- `.claude/commands/*.example.md` — generalized protocol seeds; placeholders only (the suffix itself is not a privacy check)
+- `.claude/commands/*.example.md` — generalized protocol seeds; placeholders only
 - `.config/*.example.json` · `.vscode/mcp.json.example`
 - `.memory/lesson-*.md` — durable traps (no vault bodies)
-- Tracked placeholder: `storage/docs/README.md` (index only)
 
 ## Keep local files untracked
 
@@ -37,17 +37,13 @@ Never commit from a personal machine:
 
 | Path | Why |
 |---|---|
-| `storage/users/`, `storage/<user>/`, `storage/profiles/` | Vaults, contacts, `characterVoice` |
-| `storage/_job-listings/` | Real listings, pay, apply URLs |
-| `storage/brand-design/` | Studio / personal palettes + chrome CSS |
-| `storage/collages/`, `*_exports/` | Real image sets + PDFs |
-| `storage/docs/MARKETING.md`, `WORKSPACE.md`, `HISTORY-SCRUB.md`, … | SEGO marketing, machine paths, rewrite runbooks |
+| `storage/**` (live) · future `users/` · `vaults/` · `resumes/` · … real files | Vaults, contacts, exports |
+| `docs/MARKETING.md` · `WORKSPACE.md` · `HISTORY-SCRUB.md` · `docs/*.local.md` | SEGO marketing, machine paths, rewrite runbooks |
 | `.claude/commands/{start,wrap,pdf-wrap,README,make-*}.md` | Dev ritual + personal specifics |
-| `.codex/` | Generated local adapters for the bare commands; may repeat dev/private specifics |
+| `.codex/` | Generated local adapters for the bare commands |
 | `.config/mcp-pdf-designer.json` | Absolute machine paths |
 | `dev-log-sego.yaml` | Session narrative with private paths |
 | `*.pdf` / `*.png` (except deliberate example fixtures) | Exports / captures |
-
 ## Product surfaces (do not blur)
 
 ```

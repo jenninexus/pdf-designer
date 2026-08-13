@@ -42,7 +42,7 @@ direction (free GitHub vs paid app): [`docs/PRODUCT.md`](docs/PRODUCT.md). Packa
 [`docs/PACKAGING.md`](docs/PACKAGING.md) · `python scripts/check-wheel-assets.py` ·
 `python scripts/testpypi-dry-run.py` (local wheel proof; `--upload` needs `TESTPYPI_TOKEN`).
 
-**Active plan (one):** [`Plans/_Active/2026-08-12-product-privacy-packaging.md`](Plans/_Active/2026-08-12-product-privacy-packaging.md) · index [`Plans/README.md`](Plans/README.md). Completed waves: [`Plans/_Complete/`](Plans/_Complete/).
+**Active plan (one):** [`Plans/_Active/2026-08-13-intuitive-workspace-product.md`](Plans/_Active/2026-08-13-intuitive-workspace-product.md) · index [`Plans/README.md`](Plans/README.md). Completed waves: [`Plans/_Complete/`](Plans/_Complete/). Folder UX target: [`docs/WORKSPACE-LAYOUT.md`](docs/WORKSPACE-LAYOUT.md).
 
 **Session start / wrap:** `/start` → local [`.claude/commands/start.md`](.claude/commands/start.md)
 (gitignored). `/wrap` → local [`.claude/commands/wrap.md`](.claude/commands/wrap.md) — **requires
