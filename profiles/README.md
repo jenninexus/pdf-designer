@@ -6,6 +6,7 @@ Render profiles: `profiles/<id>-resume.json` (layout, `exportPrefs`, work-sample
 |---|---|
 | this README · `*.example.json` | real profile JSON |
 
-Copy [`examples/profiles/default-resume/profile.example.json`](../examples/profiles/default-resume/profile.example.json) → `profiles/<you>-resume.json`.
+Copy [`you-resume.example.json`](you-resume.example.json) → `profiles/<you>-resume.json`. Same shape lives in
+[`examples/profiles/default-resume/profile.example.json`](../examples/profiles/default-resume/profile.example.json).
 
 Legacy alias: `storage/profiles/`.

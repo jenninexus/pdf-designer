@@ -60,6 +60,6 @@ Product-design hub: `C:\Github\product-design` (renamed from `Products`). Comman
 - TestPyPI upload (create account + token)
 - Delete `storage/` alias after a workday on root nouns
 - JN `/products` page implementation (site repo)
-- Patreon / Gumroad / blog **publish** (human) — copy in product-design `docs/LAUNCH-PDF-DESIGNER.md`
+- Patreon / Gumroad / blog **publish** (human) — drafts in socials; card `C:\Github\product-design\docs\PDF-DESIGNER.md`
 - Paid-shell installer spike
 - Archiving `.memory/` — **rejected**; index-only session start instead

@@ -2,8 +2,9 @@
 
 > **Migration:** root nouns in [`WORKSPACE-LAYOUT.md`](WORKSPACE-LAYOUT.md).
 > Engine: `pdf_tool.paths` accepts both trees. **SEGO live files were copied** to
-> `users/` · `vaults/` · `profiles/` · `resumes/` · `applications/` · `collages/` · `brands/`
-> on 2026-08-13 (`scripts/migrate-workspace.py`). **`storage/` is still the alias** —
+> `users/` · `vaults/` · `profiles/` · `resumes/` · `_job-apps/` · `collages/` · `brands/`
+> on 2026-08-13 (`scripts/migrate-workspace.py`). Jobs were renamed `_job-apps/` (was
+> `applications/`). **`storage/` is still the alias** —
 > do not delete it until dual-run smoke has lived on the new nouns.
 >
 > **Tracked protocol SSOT:** this page lives in `docs/` so a fresh clone can learn the flow.

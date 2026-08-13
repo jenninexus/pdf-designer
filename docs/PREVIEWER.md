@@ -160,7 +160,7 @@ profile chip **before** rebuilding folder options; scope folder + kind counts
 to the selected profile or the library goes empty. README-only root-noun
 scaffolds must not win over live `storage/` (or live root-noun) payloads —
 `pdf_tool.paths._has_payload` is the rule. Application identity is the path
-relative to `applications/` (or `storage/_job-listings/`), not the leaf folder
+relative to `_job-apps/` (or `applications/` / `storage/_job-listings/`), not the leaf folder
 name.
 
 Durable *why*: `.memory/lesson-hub-profile-scopes-folder-and-kind.md` ·

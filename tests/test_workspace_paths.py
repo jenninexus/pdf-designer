@@ -27,11 +27,18 @@ def test_alias_user_and_vault():
 
 
 def test_alias_applications_and_brands_bare_dirs():
+    assert paths.alias_rel_paths("_job-apps") == (
+        "_job-apps",
+        "applications",
+        "storage/_job-listings",
+    )
     assert paths.alias_rel_paths("applications") == (
+        "_job-apps",
         "applications",
         "storage/_job-listings",
     )
     assert paths.alias_rel_paths("storage/_job-listings/3D-Visualizer/application.json") == (
+        "_job-apps/3D-Visualizer/application.json",
         "applications/3D-Visualizer/application.json",
         "storage/_job-listings/3D-Visualizer/application.json",
     )
@@ -67,6 +74,8 @@ def test_resolve_falls_back_to_storage(tmp_path: Path):
 
 
 def test_scaffold_dir_does_not_steal_legacy_jobs(tmp_path: Path):
+    (tmp_path / "_job-apps").mkdir()
+    (tmp_path / "_job-apps" / "README.md").write_text("scaffold", encoding="utf-8")
     (tmp_path / "applications").mkdir()
     (tmp_path / "applications" / "README.md").write_text("scaffold", encoding="utf-8")
     job = tmp_path / "storage" / "_job-listings" / "Track"
@@ -103,7 +112,7 @@ def test_iter_vaults_prefers_new_and_skips_example(tmp_path: Path):
 
 
 def test_iter_application_json_dedupes(tmp_path: Path):
-    new_job = tmp_path / "applications" / "Track"
+    new_job = tmp_path / "_job-apps" / "Track"
     new_job.mkdir(parents=True)
     (new_job / "application.json").write_text("new", encoding="utf-8")
     old_job = tmp_path / "storage" / "_job-listings" / "Track"
@@ -120,7 +129,7 @@ def test_iter_application_json_dedupes(tmp_path: Path):
 
 def test_iter_application_json_nested_same_leaf_is_not_collapsed(tmp_path: Path):
     """Leaf folder name is not identity — two Sony folders under different tracks stay two jobs."""
-    new_sony = tmp_path / "applications" / "3d-art" / "Sony"
+    new_sony = tmp_path / "_job-apps" / "3d-art" / "Sony"
     new_sony.mkdir(parents=True)
     (new_sony / "application.json").write_text("new", encoding="utf-8")
     old_sony = tmp_path / "storage" / "_job-listings" / "game-dev" / "Sony"
@@ -132,7 +141,7 @@ def test_iter_application_json_nested_same_leaf_is_not_collapsed(tmp_path: Path)
     got = list(paths.iter_application_json(root=tmp_path))
     rels = [p.parent.relative_to(tmp_path).as_posix() for p in got]
     assert rels == [
-        "applications/3d-art/Sony",
+        "_job-apps/3d-art/Sony",
         "storage/_job-listings/game-dev/Sony",
     ]
 
@@ -144,6 +153,8 @@ def test_workspace_rel_info():
     info = paths.workspace_rel_info("resumes/shade/defaults/x.html")
     assert info.profile == "shade"
     info = paths.workspace_rel_info("applications/3D-Visualizer/x.html")
+    assert info.bucket == "_job-listings"
+    info = paths.workspace_rel_info("_job-apps/3D-Visualizer/x.html")
     assert info.bucket == "_job-listings"
     info = paths.workspace_rel_info("examples/profiles/default-resume/x.html")
     assert info.bucket is None

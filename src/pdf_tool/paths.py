@@ -7,11 +7,13 @@ and ``docs/PACKAGING.md``). Callers must not hard-code ``Path(__file__).parents[
 Checkout wins over ``share/`` so a local ``sync-wheel-share`` run cannot shadow
 live edits to repo-root ``themes/`` / ``layouts/``.
 
-Workspace nouns (``users/`` · ``vaults/`` · …) are the product layout — see
-``docs/WORKSPACE-LAYOUT.md``. Live data still sits under ``storage/`` until
-migration. Every helper here accepts **both** trees: an existing new-noun file
-wins; otherwise the ``storage/`` alias; if neither file exists, prefer the
-legacy path while ``storage/`` is still present so SEGO keeps working.
+Workspace nouns (``users/`` · ``vaults/`` · ``_job-apps/`` · …) are the product
+layout — see ``docs/WORKSPACE-LAYOUT.md``. Live data still sits under
+``storage/`` until the alias is dropped. Every helper here accepts **both**
+trees: an existing new-noun file wins; otherwise the ``storage/`` alias; if
+neither file exists, prefer the legacy path while ``storage/`` is still present
+so SEGO keeps working. Job folders: ``_job-apps/`` (canonical) ·
+``applications/`` (brief 2026-08 name) · ``storage/_job-listings/`` (legacy).
 """
 
 from __future__ import annotations
@@ -92,6 +94,25 @@ def _prefix_pair(rel: str, new_prefix: str, old_prefix: str) -> tuple[str, str] 
     return None
 
 
+# Canonical job tree, then the brief 2026-08 name, then the storage alias.
+_JOB_APP_PREFIXES = ("_job-apps", "applications", "storage/_job-listings")
+
+
+def _job_app_aliases(rel: str) -> tuple[str, ...] | None:
+    """Map any job-tree path onto ``(_job-apps/…, applications/…, storage/_job-listings/…)``."""
+    rest: str | None = None
+    for prefix in _JOB_APP_PREFIXES:
+        if rel == prefix:
+            rest = ""
+            break
+        if rel.startswith(prefix + "/"):
+            rest = rel[len(prefix) + 1 :]
+            break
+    if rest is None:
+        return None
+    return tuple(f"{prefix}/{rest}" if rest else prefix for prefix in _JOB_APP_PREFIXES)
+
+
 def _is_workspace_json(path: Path) -> bool:
     name = path.name
     if not name.endswith(".json") or name.startswith("_"):
@@ -131,10 +152,13 @@ def alias_rel_paths(rel: str) -> tuple[str, ...]:
     if not rel:
         return (rel,)
 
+    job_aliases = _job_app_aliases(rel)
+    if job_aliases:
+        return job_aliases
+
     for new_prefix, old_prefix in (
         ("users", "storage/users"),
         ("profiles", "storage/profiles"),
-        ("applications", "storage/_job-listings"),
         ("collages", "storage/collages"),
         ("brands", "storage/brand-design"),
     ):
@@ -199,7 +223,11 @@ def resume_dir(user: str, *, root: Path | None = None) -> Path:
 
 
 def applications_dir(*, root: Path | None = None) -> Path:
-    return resolve_rel("applications", root=root)
+    """Canonical job tree: ``_job-apps/`` (aliases: ``applications/``, ``storage/_job-listings/``)."""
+    return resolve_rel("_job-apps", root=root)
+
+
+job_apps_dir = applications_dir
 
 
 def brands_dir(*, root: Path | None = None) -> Path:
@@ -257,16 +285,16 @@ def iter_vault_paths(*, root: Path | None = None):
 
 
 def iter_application_json(*, root: Path | None = None):
-    """Yield ``application.json`` files; prefer ``applications/`` over ``storage/_job-listings/``.
+    """Yield ``application.json`` files; prefer ``_job-apps/`` then aliases.
 
     Identity is the path *relative to that tree's root* (posix, casefolded), not the
-    leaf folder name. ``applications/Sony`` and ``storage/_job-listings/Sony`` are
-    the same job; ``applications/3d-art/Sony`` and ``storage/_job-listings/game-dev/Sony``
+    leaf folder name. ``_job-apps/Sony`` and ``storage/_job-listings/Sony`` are
+    the same job; ``_job-apps/3d-art/Sony`` and ``storage/_job-listings/game-dev/Sony``
     are not.
     """
     root = _root(root)
     seen: set[str] = set()
-    for base in (root / "applications", root / "storage" / "_job-listings"):
+    for base in (root / "_job-apps", root / "applications", root / "storage" / "_job-listings"):
         if not base.is_dir():
             continue
         for path in sorted(base.glob("**/application.json")):
@@ -317,7 +345,11 @@ def workspace_rel_info(rel: str) -> RelInfo:
     """Hub classifier hints for a repo-relative document path."""
     low = _posix(rel).lower()
     parts = low.split("/")
-    if low.startswith("applications/") or low.startswith("storage/_job-listings/"):
+    if (
+        low.startswith("_job-apps/")
+        or low.startswith("applications/")
+        or low.startswith("storage/_job-listings/")
+    ):
         return RelInfo(bucket="_job-listings")
     if low.startswith("collages/") or low.startswith("storage/collages/"):
         return RelInfo(bucket="collages")

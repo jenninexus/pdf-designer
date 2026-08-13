@@ -12,7 +12,7 @@
 **Move personal workspace out of opaque `storage/` into root nouns** so GitHub clones
 read like a product, not a dump:
 
-`users/` · `vaults/` · `profiles/` · `resumes/` · `applications/` · `collages/` · `brands/`
+`users/` · `vaults/` · `profiles/` · `resumes/` · `_job-apps/` · `collages/` · `brands/`
 
 - Real data stays **gitignored**; tracked **README + `*.example.*` + `examples/`** teach the shape.
 - **All docs live under `docs/`** — private notes (`MARKETING` · `WORKSPACE` · `HISTORY-SCRUB`)
@@ -51,15 +51,16 @@ folder or kind chip from another profile must not empty the library.
 - [x] Scaffold root dirs with README + example stubs (tracked)
 - [x] Point product-design hub card + registry at the same folder language
 - [x] Copy SEGO `storage/{users,profiles,jenni,shade,studio,collages,brand-design,_job-listings}` → root nouns (`scripts/migrate-workspace.py`; `storage/` alias kept)
-- [x] Application identity = path relative to applications root (not leaf folder name)
+- [x] Rename jobs folder `applications/` → `_job-apps/` (engine aliases both + `storage/_job-listings/`)
+- [x] Tracker lists **who × job**, not a daily count (`applied-index.md` is the human log)
 - [ ] Dual-run smoke; **then** (later) remove `storage/` alias — not this wave
 
 ### Still human-gated (carry forward)
 
-- [ ] Push `origin/main` — `jenninexus` GitHub auth
+- [ ] Push `origin/main` — `jenninexus` GitHub auth (**local commit only** until then)
 - [ ] History scrub — `docs/HISTORY-SCRUB.md` + explicit OK + force-push
-- [ ] TestPyPI upload — `TESTPYPI_TOKEN`
-- [ ] Optional: production PyPI · paid-shell spike
+- [ ] Patreon / blog / Gumroad / JN `/products` — drafts in socials; do not post/deploy from an agent. Card: `C:\Github\product-design\docs\PDF-DESIGNER.md`. Aim public **2026-08-14**.
+- [ ] Optional: TestPyPI token — **not required** for GitHub-clone launch
 
 ### Never
 

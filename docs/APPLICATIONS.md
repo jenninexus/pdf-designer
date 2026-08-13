@@ -4,8 +4,10 @@ One folder per job — how to go after a job without ever inventing a claim.
 
 The workflow for going after a job without ever inventing a claim.
 
-> Your real applications live in `storage/_job-listings/` (gitignored). The copyable templates live
+> Your real applications live in `_job-apps/` (gitignored; aliases `applications/` and
+> `storage/_job-listings/`). The copyable templates live
 > in [`../examples/_job-listings/example-application/`](../examples/_job-listings/example-application/).
+> Human log (who × job × outcome): `_job-apps/applied-index.md`. Do **not** daily-count submissions.
 
 ---
 
@@ -43,7 +45,7 @@ Folders are keyed by **role track**, *not* by date — so each new job in a trac
 copy-and-tweak of the last one rather than a rebuild.
 
 ```text
-storage/_job-listings/
+_job-apps/
   3D-Visualizer/            ← the TRACK, not a date
     Company.md              research · verified links · pay verdict · evidence map · the listing verbatim
     application.json        the machine record: apply URL · pay · status · who applied
@@ -54,12 +56,13 @@ storage/_job-listings/
   …
 ```
 
-**⭐ No PDFs in here.** Finished PDFs and PNGs go to **`storage/<user>/_exports/<Track>/`** —
+**⭐ No PDFs in here.** Finished PDFs and PNGs go to **`resumes/<user>/_exports/<Track>/`**
+(alias `storage/<user>/_exports/<Track>/`) —
 per *person*, so everything one applicant needs to send sits in one place:
 
 ```text
-storage/jenni/_exports/3D-Visualizer/     one applicant's PDFs for that job
-storage/shade/_exports/3D-Visualizer/     the other's, for the same job
+resumes/jenni/_exports/3D-Visualizer/     one applicant's PDFs for that job
+resumes/shade/_exports/3D-Visualizer/     the other's, for the same job
 ```
 
 Facts about the *job* (the apply link, the pay, the company palette) belong to the *job* — so

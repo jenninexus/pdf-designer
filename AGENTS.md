@@ -100,8 +100,8 @@ python -m pdf_tool.check_vault --all                            # vault schema �
 python -m pdf_tool.check_vault --explain <user> <track>         # ranked claims preview (blocks on schema/thin)
 python -m pdf_tool.check_vault --coverage <user> <track> <listing.md>  # listing gap-check
 python -m pdf_tool.check_ats <resume-light.pdf>                 # ATS text-layer guard
-python -m pdf_tool.tracker list                                 # scan storage/_job-listings/**/application.json
-python -m pdf_tool.tracker status                               # status breakdown (optional filter arg)
+python -m pdf_tool.tracker list                                 # who (jenni/shade) sent which job — not a daily count
+python -m pdf_tool.tracker status                               # per-applicant sent / not sent (optional filter: jenni|shade)
 python -m pdf_tool.collage --list-recipes                       # named layout recipes (layouts/collage/)
 python -m pdf_tool.collage <imagesDir> --recipe <id> --png      # render a named recipe
 python -m pdf_tool.collage <imagesDir> --layout auto --png      # every family + picker gallery (--fit contain for screenshots)
@@ -176,7 +176,7 @@ marketed résumé-creator demo path (vault shape + palettes + smoke), not privat
 | `docs/` | ARCHITECTURE · SSOT · PRODUCT · PACKAGING · GETTING-STARTED · PUBLIC-LOCAL-SPLIT · STORAGE · VAULT · JOB-ASSESSMENT · THEME-DESIGN · LAYOUT-SYSTEM · EXPORTS · COLLAGE-DESIGN · PREVIEWER · APPLICATIONS · LICENSING-NOTES ([`docs/README.md`](docs/README.md) is the index) |
 | `.config/mcp-pdf-designer.example.json` | ⭐ Tracked project config **seed** (breakpoints + hub/palette/layout pointers). Copy → local `mcp-pdf-designer.json` (gitignored — machine paths). |
 | `Plans/_Active/` | ⭐ the working roadmap (one file) — see [`Plans/README.md`](Plans/README.md) |
-| `storage/` | ⛔ **gitignored** live workspace (until data-move). Engine also accepts root `users/` · `vaults/` · `profiles/` · `resumes/` · `applications/` · `collages/` · `brands/` (README stubs tracked; real files ignored) |
+| `storage/` | ⛔ **gitignored** dual-run alias. Prefer root `users/` · `vaults/` · `profiles/` · `resumes/` · `_job-apps/` · `collages/` · `brands/` (README + `*.example.json` tracked; real files ignored) |
 | `storage/studio/resources/images/martiangames/` | ⭐ **shared** MG title gallery (WebP) — both applicants; see [`docs/STORAGE.md`](docs/STORAGE.md) |
 
 ### Privacy split (do not blur this)
@@ -199,10 +199,12 @@ Four layers, each answering one question. **The vault is the brain.**
 
 | Layer | File | Answers |
 |---|---|---|
-| Person | `storage/users/<user>.json` | **who** — contact, `brandTheme.ssot`, **`characterVoice`**, `hardFacts` |
-| **Vault** ⭐ | `storage/<user>/resume-source.json` | **what may be truthfully claimed** · application `voice` · roleTracks |
-| Profile | `storage/profiles/<user>-resume.json` | **how** it renders (one per person) · `workSamples` |
-| Application | `storage/_job-listings/<Track>/` | **the job** — listing, apply link, pay, company palette |
+| Person | `users/<user>.json` | **who** — contact, `brandTheme.ssot`, **`characterVoice`**, `hardFacts` |
+| **Vault** ⭐ | `vaults/<user>.json` | **what may be truthfully claimed** · application `voice` · roleTracks |
+| Profile | `profiles/<user>-resume.json` | **how** it renders (one per person) · `workSamples` |
+| Application | `_job-apps/<Track>/` | **the job** — listing, apply link, pay, company palette |
+
+(`storage/` is still a dual-run alias of the same files.)
 
 Read [`docs/VAULT.md`](docs/VAULT.md) before authoring any resume claim.
 
@@ -255,8 +257,8 @@ Read [`docs/VAULT.md`](docs/VAULT.md) before authoring any resume claim.
 - **Job résumé:** run **`/make-resume <user> <application-dir|url>`** — capture apply link → verify
   remote/pay → **gap-check and ask** → derive theme → write → export per **`exportPrefs`** (**every**
   profile = **light + dark**; board upload = **light** only) → `check_ats` on the light file → log it.
-  Pasted URL with no folder → create `storage/_job-listings/<App>/`.
-  Protocol: [`docs/JOB-ASSESSMENT.md`](docs/JOB-ASSESSMENT.md) § Tier 4.5 (parse ≠ Jobright content grade).- **Cover letter / work samples:** `/make-cover-letter` or `/make-work-examples` (personal) — **not**
+  Pasted URL with no folder → create `_job-apps/<App>/`.
+  Protocol: [`docs/JOB-ASSESSMENT.md`](docs/JOB-ASSESSMENT.md) § Tier 4.5 (parse ≠ Jobright content grade). Log who sent what in `_job-apps/applied-index.md` — do **not** daily-count submissions.- **Cover letter / work samples:** `/make-cover-letter` or `/make-work-examples` (personal) — **not**
   auto-bundled with make-resume.
 - **`boardSkills`:** when LinkedIn/board tags change → update vault `#boardSkills` (+ claims); preview
   on Design Hub `/vault`.
