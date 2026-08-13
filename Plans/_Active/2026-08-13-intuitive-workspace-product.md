@@ -33,7 +33,7 @@ SSOT: [`docs/WORKSPACE-LAYOUT.md`](../../docs/WORKSPACE-LAYOUT.md).
 - [x] Archive 2026-08-12 active plans → `_Complete/`
 - [x] Refresh [`docs/README.md`](../../docs/README.md) · [`PUBLIC-LOCAL-SPLIT.md`](../../docs/PUBLIC-LOCAL-SPLIT.md) · [`PRODUCT.md`](../../docs/PRODUCT.md) · [`STORAGE.md`](../../docs/STORAGE.md) pointers
 - [x] Update [`docs/ROADMAP.md`](../../docs/ROADMAP.md) · [`Plans/README.md`](../README.md) · `/jen/roadmap` pdf-designer row
-- [x] Dev-log `#pdf-designer-s021` + optional `C:\Github\Products\docs\PDF-DESIGNER.md` hub
+- [x] Dev-log `#pdf-designer-s023`–`s024` + `C:\Github\Products\docs\PDF-DESIGNER.md` hub
 
 ### Migration (next engineering)
 
