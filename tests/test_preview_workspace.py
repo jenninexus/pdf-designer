@@ -6,7 +6,10 @@ import json
 from pathlib import Path
 
 from pdf_tool.preview import (
+    APP_HTML,
+    _hyphen_token_in_rel,
     available_profile_ids,
+    classify_document,
     load_palettes,
     profile_options,
     scan_documents,
@@ -38,3 +41,53 @@ def test_custom_preview_root_contributes_its_private_brand_palette(tmp_path: Pat
 
     palettes = load_palettes(tmp_path)
     assert ("alex", "dark") in {(palette["id"], palette["mode"]) for palette in palettes}
+
+
+def test_hyphen_token_matches_meet_jenni_bot_not_jennifer():
+    assert _hyphen_token_in_rel(
+        "storage/collages/meet-jenni-bot/images/_candidates/uniform-grid.html",
+        "uniform-grid",
+        "jenni",
+    )
+    assert _hyphen_token_in_rel("storage/jenni/defaults/jenni-default-resume.html", "jenni-default-resume", "jenni")
+    assert not _hyphen_token_in_rel("examples/jennifer-letter.html", "jennifer-letter", "jenni")
+
+
+def test_collage_project_token_tags_workspace_profile(tmp_path: Path):
+    users = tmp_path / "storage" / "users"
+    users.mkdir(parents=True)
+    (users / "jenni.json").write_text(json.dumps({"id": "jenni"}), encoding="utf-8")
+    collage = tmp_path / "storage" / "collages" / "meet-jenni-bot" / "_candidates"
+    collage.mkdir(parents=True)
+    (collage / "uniform-grid.html").write_text("<p>grid</p>", encoding="utf-8")
+    resume = tmp_path / "storage" / "jenni" / "defaults"
+    resume.mkdir(parents=True)
+    (resume / "jenni-default-resume.html").write_text("<p>resume</p>", encoding="utf-8")
+
+    docs = {doc["path"].replace("\\", "/"): doc for doc in scan_documents(tmp_path)}
+    assert docs["storage/jenni/defaults/jenni-default-resume.html"]["profile"] == "jenni"
+    assert docs["storage/collages/meet-jenni-bot/_candidates/uniform-grid.html"]["profile"] == "jenni"
+
+
+def test_classify_fallback_tokens_without_workspace_card():
+    tagged = classify_document(
+        "storage/collages/meet-jenni-bot/_candidates/uniform-grid.html",
+        "uniform-grid",
+        (),
+    )
+    assert tagged["profile"] == "jenni"
+
+
+def test_profile_card_without_html_still_appears_in_header(tmp_path: Path):
+    profiles = tmp_path / "storage" / "profiles"
+    profiles.mkdir(parents=True)
+    (profiles / "studio-resume.json").write_text(json.dumps({"id": "studio-resume"}), encoding="utf-8")
+    assert workspace_profile_ids(tmp_path) == ["studio"]
+    assert available_profile_ids(tmp_path, []) == ["studio"]
+
+
+def test_hub_js_restores_profile_before_folder_rebuild():
+    assert "function applyProfileChange()" in APP_HTML
+    assert "docsForProfile(activeProfile())" in APP_HTML
+    boot = APP_HTML.split("openFromQuery();", 1)[0]
+    assert boot.rfind("restoreHubPrefs") < boot.rfind("buildFolderSelect();")

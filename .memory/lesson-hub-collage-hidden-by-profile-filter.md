@@ -16,7 +16,8 @@ metadata:
 
 **Rule:** When hunting a new collage project, set Profiles → **all profiles** (or search
 the project folder name). Collages chip alone is not enough if a profile chip is sticky
-in `localStorage`.
+in `localStorage`. Hyphen-bounded project names (`meet-jenni-bot`) now tag the matching
+profile, so choosing **jenni** will show those collages. Untagged projects still vanish.
 
 **Also:** Prefer a **flat** `_candidates/` directory (filenames encode canvas/bg/fit). Nested
 `--out` subfolders still scan, but they clutter the folder picker and break the documented
