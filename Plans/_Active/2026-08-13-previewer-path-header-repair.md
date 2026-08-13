@@ -6,7 +6,7 @@
 - [x] The Design Hub discovers live workspace documents and exposes their actual profiles/folders in both header and drawer controls.
 - [x] A legacy-only `storage/` workspace remains visible during the migration, while README-only root scaffolds do not displace live payloads.
 - [x] Focused automated checks and an HTTP/API smoke test demonstrate the repaired behavior.
-- [ ] The session wrap records the outcome and any durable lesson.
+- [x] The session wrap records the outcome and any durable lesson.
 
 ## Task checklist
 
