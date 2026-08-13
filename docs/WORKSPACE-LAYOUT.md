@@ -1,8 +1,9 @@
 # Workspace layout — product UX for local files
 
-**Status:** recommendation locked for the next migration wave (not migrated yet).  
-**Today’s live tree still uses** [`storage/`](STORAGE.md). Engine code still resolves
-`storage/` in Hub, vault, tracker, and collage paths.
+**Status:** path resolver + root README scaffolds landed (2026-08-13).  
+**Live data still uses** [`storage/`](STORAGE.md). Hub, vault, tracker, and collage
+accept **both** trees via `pdf_tool.paths` — do not delete `storage/` until
+migration copies the files and dual-run smoke is green.
 
 This page is the **clone-safe product story**: what a future GitHub user should see at the
 repo root, vs what stays private on their machine.
@@ -127,9 +128,9 @@ hides them from clones.
 
 ## Migration phases (see active plan)
 
-1. **Docs + ignore** — private notes → `docs/`; stop using `storage/docs/` (this wave)
-2. **Path resolver** — one helper (`workspace_root()` / aliases) so Hub + CLI accept both trees
-3. **Scaffold root dirs** — README + example stubs on GitHub
+1. **Docs + ignore** — private notes → `docs/`; stop using `storage/docs/` ✅
+2. **Path resolver** — `pdf_tool.paths` accepts both trees (Hub + CLI) ✅
+3. **Scaffold root dirs** — README stubs on GitHub ✅
 4. **Move SEGO data** — copy `storage/*` → new nouns; keep `storage/` as read-only alias briefly
 5. **Delete `storage/`** — after smoke + Hub + tracker green; update AGENTS / commands / Products hub
 

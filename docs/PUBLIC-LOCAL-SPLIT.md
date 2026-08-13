@@ -68,7 +68,7 @@ Never commit from a personal machine:
 ```
 
 Thesis: [`PRODUCT.md`](PRODUCT.md). Clone without vaults: [`GETTING-STARTED.md`](GETTING-STARTED.md).
-Private marketing detail: `storage/docs/MARKETING.md`.
+Private marketing detail: `docs/MARKETING.md` (gitignored).
 
 ## Theme kits (private — not the public product)
 

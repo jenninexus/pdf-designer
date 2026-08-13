@@ -24,6 +24,9 @@ and presets *are* the product.
 | Protocol seeds | `.claude/commands/*.example.md` | Bare start/wrap/make-* are **not** on GitHub |
 
 You do **not** need `storage/users`, vaults, or `storage/brand-design` to export PDFs.
+The clone also shows **README stubs** at `users/` · `vaults/` · `profiles/` · `resumes/` ·
+`applications/` · `collages/` · `brands/` so the product folders are visible — copy from
+`examples/` into those names when you add your own data. Layout: [`WORKSPACE-LAYOUT.md`](WORKSPACE-LAYOUT.md).
 
 ---
 

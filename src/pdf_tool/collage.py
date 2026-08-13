@@ -44,7 +44,8 @@ liked is never a one-off. Pair it with --best-for "<when to use it>".
 --archive <id> retires a recipe to layouts/collage/_archive/ — it leaves the
 listing but the file survives. Archive color-only duplicates: a background
 composes at render time via --bg, so it is a flag, not a layout.
---shelve copies this run's PNGs to storage/collages/layouts/, prefixed by
+--shelve copies this run's PNGs to collages/layouts/ (or storage/collages/layouts/
+during cutover), prefixed by
 project, replacing copying finished renders around by hand.
 
 --bg sets the page background instead of the theme's flat color. It takes a
