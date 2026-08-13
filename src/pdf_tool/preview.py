@@ -119,6 +119,22 @@ def available_profile_ids(root: Path, docs: list[dict]) -> list[str]:
     )
 
 
+def _hyphen_token_in_rel(path_l: str, name_l: str, token: str) -> bool:
+    """True when ``token`` is a path segment or hyphen-bounded name bit.
+
+    ``storage/jenni/…`` and ``meet-jenni-bot`` match ``jenni``; ``jennifer`` does not.
+    """
+    token = (token or "").lower()
+    if not token:
+        return False
+    if name_l == token or name_l.startswith(token + "-"):
+        return True
+    padded = f"/{path_l.strip('/')}/"
+    if f"/{token}/" in padded:
+        return True
+    return any(token in part.split("-") for part in path_l.split("/") if part)
+
+
 def classify_document(rel: str, stem: str, profile_ids: tuple[str, ...] = ()) -> dict:
     """Tag each HTML for filters — kind / bucket / person / group folder."""
     path = rel.replace("\\", "/")
@@ -157,19 +173,14 @@ def classify_document(rel: str, stem: str, profile_ids: tuple[str, ...] = ()) ->
     profile = info.profile
     if profile is None:
         for candidate in profile_ids:
-            if name_l.startswith(candidate + "-") or f"/{candidate}-" in path_l:
+            if _hyphen_token_in_rel(path_l, name_l, candidate):
                 profile = candidate
                 break
-        # Preserve ownership tags for legacy documents that predate a workspace card.
         if profile is None:
-            if name_l.startswith("jenni"):
-                profile = "jenni"
-            elif name_l.startswith("shade"):
-                profile = "shade"
-            elif name_l.startswith("studio") or "/studio-" in path_l:
-                profile = "studio"
-            elif name_l.startswith("martian") or "/martian-" in path_l or "martian-games" in name_l:
-                profile = "martian"
+            for candidate in ("jenni", "shade", "studio", "martian"):
+                if _hyphen_token_in_rel(path_l, name_l, candidate):
+                    profile = candidate
+                    break
 
     if "work-example" in name_l or "work-sample" in name_l or "work_examples" in name_l:
         kind = "work-samples"
@@ -772,10 +783,23 @@ function applyPalette(iframe) {
   if (idx !== "") for (const [k, v] of Object.entries(PALETTES[idx].vars)) st.setProperty(k, v);
 }
 
+function activeProfile() {
+  const sel = document.getElementById("personFilter");
+  return (sel && sel.value) || "";
+}
+function docsForProfile(profile) {
+  if (!profile) return DOCS;
+  return DOCS.filter(d => (d.profile || d.person || null) === profile);
+}
 function counts() {
-  const c = { all: DOCS.length };
-  for (const d of DOCS) c[d.kind] = (c[d.kind] || 0) + 1;
+  const pool = docsForProfile(activeProfile());
+  const c = { all: pool.length };
+  for (const d of pool) c[d.kind] = (c[d.kind] || 0) + 1;
   return c;
+}
+function reconcileKindForProfile() {
+  const c = counts();
+  if (kindFilter !== "all" && !c[kindFilter]) kindFilter = "all";
 }
 
 function buildStats() { /* counts live on kind chips — no separate stats row */ }
@@ -824,7 +848,7 @@ function buildProfileSelects() {
 }
 
 function uniqueFolders() {
-  return [...new Set(DOCS.map(d => d.group))].sort();
+  return [...new Set(docsForProfile(activeProfile()).map(d => d.group))].sort();
 }
 
 function filteredDocs() {
@@ -855,7 +879,15 @@ function renderLibrary() {
     // Selection hidden by filters — keep preview, drop false sidebar highlight
   }
   if (!docs.length) {
-    sidebar.innerHTML = '<div class="empty">No templates match these filters.</div>';
+    const profile = activeProfile();
+    const owned = docsForProfile(profile).length;
+    let msg = "No templates match these filters.";
+    if (profile && owned === 0) {
+      msg = "No documents tagged “" + profile + "” yet. Pick all profiles, or add HTML under storage/" + profile + "/ (or resumes/" + profile + "/).";
+    } else if (profile) {
+      msg = "No “" + profile + "” documents match this folder or kind. Try All or another folder.";
+    }
+    sidebar.innerHTML = '<div class="empty">' + msg + "</div>";
     return;
   }
   const groups = {};
@@ -983,13 +1015,17 @@ document.getElementById("folderFilter").addEventListener("change", () => {
   if (dlab) { dlab.textContent = label; dlab.title = label; }
   renderLibrary();
 });
-document.getElementById("personFilter").addEventListener("change", () => {
+function applyProfileChange() {
   const v = document.getElementById("personFilter").value;
   try { localStorage.setItem(HUB_PROFILE_KEY, v); } catch (_) {}
   const d = document.getElementById("drawerPersonFilter");
   if (d) d.value = v;
+  reconcileKindForProfile();
+  buildKindChips();
+  buildFolderSelect();
   renderLibrary();
-});
+}
+document.getElementById("personFilter").addEventListener("change", applyProfileChange);
 document.getElementById("search").addEventListener("input", renderLibrary);
 function readOutdir() {
   const a = document.getElementById("outdir");
@@ -1175,17 +1211,21 @@ document.getElementById("exportBtn").addEventListener("click", async () => {
 });
 
 buildStats();
-buildKindChips();
 buildProfileSelects();
-buildFolderSelect();
-/* Restore profile filter after folder options exist (folder value restored in buildFolderSelect). */
 (function restoreHubPrefs() {
   try {
     const prof = localStorage.getItem(HUB_PROFILE_KEY) || "";
     const sel = document.getElementById("personFilter");
-    if (prof && [...sel.options].some(o => o.value === prof)) sel.value = prof;
+    const drawer = document.getElementById("drawerPersonFilter");
+    if (prof && sel && [...sel.options].some(o => o.value === prof)) {
+      sel.value = prof;
+      if (drawer) drawer.value = prof;
+    }
   } catch (_) {}
 })();
+reconcileKindForProfile();
+buildKindChips();
+buildFolderSelect();
 renderLibrary();
 openFromQuery();
 openPaletteFromQuery();
@@ -1225,8 +1265,9 @@ openPaletteFromQuery();
       const still = DOCS.find(d => d.path === selected.path);
       selected = still || null;
     }
-    buildKindChips();
     buildProfileSelects();
+    reconcileKindForProfile();
+    buildKindChips();
     buildFolderSelect();
     renderLibrary();
     if (selected) { try { main.src = "/" + selected.path + "?t=" + Date.now(); } catch (_) {} }

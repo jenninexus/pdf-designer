@@ -35,6 +35,16 @@ SSOT: [`docs/WORKSPACE-LAYOUT.md`](../../docs/WORKSPACE-LAYOUT.md).
 - [x] Update [`docs/ROADMAP.md`](../../docs/ROADMAP.md) · [`Plans/README.md`](../README.md) · `/jen/roadmap` pdf-designer row
 - [x] Dev-log `#pdf-designer-s023`–`s024` + `C:\Github\Products\docs\PDF-DESIGNER.md` hub
 
+### Hub profile showcase (this session)
+
+Selecting a header profile must list that profile's documents — a leftover
+folder or kind chip from another profile must not empty the library.
+
+- [x] Tag hyphen-bounded path tokens (`meet-jenni-bot` → jenni)
+- [x] Restore profile **before** folder options; scope folders + kind counts
+- [x] Honest empty copy when a profile card has no HTML yet (studio)
+- [x] `pytest tests/test_preview_workspace.py` + Hub `:8787` running new markup
+
 ### Migration (next engineering)
 
 - [x] Add `workspace` path resolver (accept `storage/` **and** root nouns during cutover)
