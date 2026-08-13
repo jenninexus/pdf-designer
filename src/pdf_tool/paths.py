@@ -257,14 +257,23 @@ def iter_vault_paths(*, root: Path | None = None):
 
 
 def iter_application_json(*, root: Path | None = None):
-    """Yield ``application.json`` files; prefer ``applications/`` over ``storage/_job-listings/``."""
+    """Yield ``application.json`` files; prefer ``applications/`` over ``storage/_job-listings/``.
+
+    Identity is the path *relative to that tree's root* (posix, casefolded), not the
+    leaf folder name. ``applications/Sony`` and ``storage/_job-listings/Sony`` are
+    the same job; ``applications/3d-art/Sony`` and ``storage/_job-listings/game-dev/Sony``
+    are not.
+    """
     root = _root(root)
     seen: set[str] = set()
     for base in (root / "applications", root / "storage" / "_job-listings"):
         if not base.is_dir():
             continue
         for path in sorted(base.glob("**/application.json")):
-            ident = path.parent.name
+            try:
+                ident = path.parent.relative_to(base).as_posix().casefold()
+            except ValueError:
+                ident = path.parent.name.casefold()
             if ident in seen:
                 continue
             seen.add(ident)

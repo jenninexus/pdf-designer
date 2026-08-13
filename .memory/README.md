@@ -21,8 +21,26 @@ invisible to the next person and to a fresh checkout.
 `dev-log-sego.yaml` (local, narrative) → **if the lesson is durable, it also lands here as a
 `lesson-*.md` file** → if it changes a rule, the owning `docs/` page is edited too.
 
-> **Rule of thumb:** if an agent could hit the same wall next month, it belongs here. If it only
-> mattered today, the dev-log is enough.
+**How to use this at session start:** read **this index**. Open a lesson file only when
+its hook matches the work in front of you. Protocol that is already a standing rule
+lives in `docs/` (VAULT, QA, LAYOUT-SYSTEM, JOB-ASSESSMENT, PREVIEWER) — do not re-read
+every lesson as if it were the SSOT.
+
+**Do not archive this directory.** A lesson recorded only in gitignored `dev-log-sego.yaml`
+is invisible to the next clone. Thin the *reading* obligation, not the files.
+
+### Already a standing rule in docs (open the doc, not the lesson, unless you need the *why*)
+
+| Lesson | Standing rule lives in |
+|---|---|
+| ask-before-calling-it-a-gap · track-tags-hide-true-claims | [`docs/VAULT.md`](../docs/VAULT.md) |
+| overflow-fix-is-move-not-shrink · work-samples-footer-row-false-collision · fixed-height-clips-content-silently | [`docs/LAYOUT-SYSTEM.md`](../docs/LAYOUT-SYSTEM.md) · [`docs/QA.md`](../docs/QA.md) |
+| ats-section-cues · jobright-content-score-is-not-parse-fail | [`docs/JOB-ASSESSMENT.md`](../docs/JOB-ASSESSMENT.md) § Tier 4.5 |
+| twin-files-always-fork | [`AGENTS.md`](../AGENTS.md) (`.example` vs bare commands) |
+| public-clone-path-stays-tracked | [`docs/GETTING-STARTED.md`](../docs/GETTING-STARTED.md) · [`docs/PUBLIC-LOCAL-SPLIT.md`](../docs/PUBLIC-LOCAL-SPLIT.md) |
+| utf8-json-roundtrip-on-windows | `/jen/sys-admin` UTF-8 note · [`docs/QA.md`](../docs/QA.md) |
+
+Hub-specific traps (profile scope, scaffold vs payload, drawer clip) stay as lesson files until [`docs/PREVIEWER.md`](../docs/PREVIEWER.md) absorbs them — those are still the cheapest *why*.
 
 ## File format
 

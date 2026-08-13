@@ -49,10 +49,10 @@ folder or kind chip from another profile must not empty the library.
 
 - [x] Add `workspace` path resolver (accept `storage/` **and** root nouns during cutover)
 - [x] Scaffold root dirs with README + example stubs (tracked)
-- [x] Point Products hub card + registry at the same folder language
-- [ ] Migrate SEGO `storage/{users,profiles,jenni,shade,studio,collages,brand-design,_job-listings}` → new nouns
-- [ ] Update Hub / vault / tracker / collage / AGENTS / make-* examples
-- [ ] Dual-run smoke; then remove `storage/` alias
+- [x] Point product-design hub card + registry at the same folder language
+- [x] Copy SEGO `storage/{users,profiles,jenni,shade,studio,collages,brand-design,_job-listings}` → root nouns (`scripts/migrate-workspace.py`; `storage/` alias kept)
+- [x] Application identity = path relative to applications root (not leaf folder name)
+- [ ] Dual-run smoke; **then** (later) remove `storage/` alias — not this wave
 
 ### Still human-gated (carry forward)
 
@@ -65,7 +65,7 @@ folder or kind chip from another profile must not empty the library.
 
 - Auto-submit · invent claims · fork the renderer · commit real vaults · reopen Netflix  
 - Force-add bare `.claude/commands/{start,wrap,README,make-*}.md`  
-- Big-bang delete `storage/` before path resolver is green
+- Big-bang delete `storage/` before dual-run smoke has lived on root nouns
 
 ---
 

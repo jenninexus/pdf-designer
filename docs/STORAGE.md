@@ -1,11 +1,10 @@
 # `storage/` — private workspace layout (LIVE)
 
-> **Migration target:** root nouns in [`WORKSPACE-LAYOUT.md`](WORKSPACE-LAYOUT.md)
-> (`users/` · `vaults/` · `profiles/` · `resumes/` · …). This page describes the **current**
-> tree under `storage/` until the data copy lands.
->
-> **Engine:** `pdf_tool.paths` already accepts both trees. Live files are still here.
-> Tracked README stubs exist at the repo root so clones see the product folders.
+> **Migration:** root nouns in [`WORKSPACE-LAYOUT.md`](WORKSPACE-LAYOUT.md).
+> Engine: `pdf_tool.paths` accepts both trees. **SEGO live files were copied** to
+> `users/` · `vaults/` · `profiles/` · `resumes/` · `applications/` · `collages/` · `brands/`
+> on 2026-08-13 (`scripts/migrate-workspace.py`). **`storage/` is still the alias** —
+> do not delete it until dual-run smoke has lived on the new nouns.
 >
 > **Tracked protocol SSOT:** this page lives in `docs/` so a fresh clone can learn the flow.
 > Your machine’s `storage/` folder is **gitignored** and holds only real personal data.

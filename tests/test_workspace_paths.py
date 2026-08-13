@@ -118,6 +118,25 @@ def test_iter_application_json_dedupes(tmp_path: Path):
     assert got[0] == new_job / "application.json"
 
 
+def test_iter_application_json_nested_same_leaf_is_not_collapsed(tmp_path: Path):
+    """Leaf folder name is not identity — two Sony folders under different tracks stay two jobs."""
+    new_sony = tmp_path / "applications" / "3d-art" / "Sony"
+    new_sony.mkdir(parents=True)
+    (new_sony / "application.json").write_text("new", encoding="utf-8")
+    old_sony = tmp_path / "storage" / "_job-listings" / "game-dev" / "Sony"
+    old_sony.mkdir(parents=True)
+    (old_sony / "application.json").write_text("old", encoding="utf-8")
+    dup = tmp_path / "storage" / "_job-listings" / "3d-art" / "Sony"
+    dup.mkdir(parents=True)
+    (dup / "application.json").write_text("legacy-dup", encoding="utf-8")
+    got = list(paths.iter_application_json(root=tmp_path))
+    rels = [p.parent.relative_to(tmp_path).as_posix() for p in got]
+    assert rels == [
+        "applications/3d-art/Sony",
+        "storage/_job-listings/game-dev/Sony",
+    ]
+
+
 def test_workspace_rel_info():
     info = paths.workspace_rel_info("storage/jenni/defaults/x.html")
     assert info.bucket == "vault-renders"
