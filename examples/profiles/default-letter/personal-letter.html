@@ -5,7 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Personal letter — example</title>
 <style>
-  /* Public example: use the platform's script face. Never reach into private storage/. */
+  /* Public example: bundled public font; never reach into private storage/. */
+  @font-face {
+    font-family: "Parisienne";
+    src: url("../../../themes/fonts/Parisienne-Regular.woff2") format("woff2");
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+  }
   :root {
     --bg: #faf7f2;
     --surface: #fffdf9;
@@ -14,7 +21,7 @@
     --border: #e4d8cc;
     --primary: #7a5c8a;
     --accent: #c45c7a;
-    --script: "Segoe Script", "Brush Script MT", cursive;
+    --script: "Parisienne", "Segoe Script", "Brush Script MT", cursive;
     --body: "Georgia", "Times New Roman", Times, serif;
   }
   html[data-pdf-theme="dark"] {
@@ -140,7 +147,7 @@
   <article class="page">
     <header class="letter-head">
       <div class="letter-identity">
-        <p class="who">Jenni</p>
+        <p class="who">Avery</p>
         <p class="tag">A note from me</p>
       </div>
       <time class="letter-date" datetime="2026-08-10">August 10, 2026</time>
@@ -165,8 +172,8 @@
 
     <footer class="signoff">
       <p class="closing">Love,</p>
-      <p class="script-name">Jenni</p>
-      <p class="legal">Jennifer</p>
+      <p class="script-name">Avery</p>
+      <p class="legal">Avery Lane</p>
       <div class="letter-foot">Handwritten in spirit · sent with care</div>
     </footer>
   </article>
