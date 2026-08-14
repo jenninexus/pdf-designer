@@ -91,6 +91,7 @@ codebase · `reference`: pointer to an external resource.
 | [lesson-hub-options-must-follow-workspace.md](lesson-hub-options-must-follow-workspace.md) | Design Hub profile and palette controls follow the workspace root, never a hard-coded local roster |
 | [lesson-hub-profile-scopes-folder-and-kind.md](lesson-hub-profile-scopes-folder-and-kind.md) | Restore profile before folders; scope folder/kind to the selected profile or the library goes empty |
 | [lesson-one-checkout-privacy-is-gitignore.md](lesson-one-checkout-privacy-is-gitignore.md) | One engine; gitignore + examples; no .env; tracker is who×job not a count |
+| [lesson-platform-drafts-are-owned-by-platform.md](lesson-platform-drafts-are-owned-by-platform.md) | Release sisters live in the Socials platform's sibling `drafts/` / `published/` folders — never inside a devlog topic directory |
 
 ## Related
 
