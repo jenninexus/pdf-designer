@@ -42,6 +42,12 @@ Product-design hub: `C:\Github\product-design` (renamed from `Products`). Comman
 - [x] Link the browser source and PDF from the README and record their local-only status on the product board.
 - [x] Re-run fresh-clone smoke and relevant tests; commit only safe tracked release assets locally.
 
+### Release-content alignment — 2026-08-13
+
+- [x] Normalize the local JenniNexus Patreon and blog sister drafts to dated, platform-owned paths.
+- [x] Correct the Socials JN content protocol: each platform has sibling `drafts/` and `published/` folders; no generated/published artifacts live inside a devlog draft topic directory.
+- [x] Link the product card to the actual local drafts and retain every human publication gate.
+
 ## Assumptions
 
 - **Do not delete `storage/` this run.** Dual-run alias stays until a human confirms Hub/tracker/vault after living on root nouns. Flip signal: a full workday on root nouns with zero `storage/` reads.
@@ -52,6 +58,7 @@ Product-design hub: `C:\Github\product-design` (renamed from `Products`). Comman
 - The browser/PDF overview is a **release asset**, not a launch event: it may be tracked because it contains
   only public examples and product documentation. It does not authorize public GitHub, Patreon, blog,
   Gumroad, or JN-store publication.
+- The target date `2026-08-14` names the planned sister draft files, not an authorization to publish.
 
 ## Evidence
 
@@ -68,6 +75,9 @@ Product-design hub: `C:\Github\product-design` (renamed from `Products`). Comman
 - VERIFIED (release assets addendum): `python -m pytest tests/test_workspace_paths.py
   tests/test_preview_workspace.py -q` → 19 passed; `python scripts/smoke-white-label.py` → PASS,
   including rendered QA and contiguous ATS section cues.
+- VERIFIED (release-content alignment): local JenniNexus content protocol and product card now point to
+  dated Patreon/blog drafts with the shared `pdf-designer` slug; every platform archives only to its
+  own sibling `published/` directory. Publication remains unperformed.
 
 ## Deferred
 
