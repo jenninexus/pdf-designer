@@ -27,8 +27,19 @@ EXPORT_DIR = REPO / "examples" / "profiles" / "default-resume" / "_exports"
 PUBLIC_TEXT_ROOTS = (
     REPO / ".claude" / "commands",
     REPO / ".config" / "mcp-pdf-designer.example.json",
-    REPO / "examples" / "resume-studio",
-    REPO / "examples" / "profiles" / "default-resume",
+    REPO / "examples",
+)
+PRIVATE_TRACKED_ROOTS = (
+    ".codex",
+    "storage",
+    "users",
+    "vaults",
+    "profiles",
+    "resumes",
+    "_job-apps",
+    "applications",
+    "collages",
+    "brands",
 )
 PRIVATE_MARKERS = (
     "jenninexus",
@@ -109,13 +120,20 @@ def _assert_public_privacy() -> None:
 
     if (REPO / ".git").exists():
         tracked = subprocess.run(
-            ["git", "ls-files", ".codex", "storage"],
+            ["git", "ls-files", *PRIVATE_TRACKED_ROOTS],
             cwd=REPO,
             check=True,
             capture_output=True,
             text=True,
         ).stdout.splitlines()
-        unexpected = [path for path in tracked if path != "storage/docs/README.md"]
+        unexpected = [
+            path
+            for path in tracked
+            if not (
+                Path(path).name == "README.md"
+                or Path(path).name.endswith(".example.json")
+            )
+        ]
         if unexpected:
             details = "\n  - ".join(unexpected)
             raise SystemExit(f"FAIL: private paths are tracked:\n  - {details}")

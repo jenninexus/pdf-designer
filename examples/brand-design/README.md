@@ -24,8 +24,8 @@ Never put real emails, employers, or private paths into `themes/` or `examples/`
 4. Point your `storage/profiles/<you>-resume.json` → `theme.default` at that brand file.
 5. Run `python -m pdf_tool.check_palette --scan storage/` before export.
 
-## Worked MG example (structure only)
+## Worked fictional example (structure only)
 
-Live site: molten orange `FF6B00` + hot secondary `FF4500` + violet `8B5CF6` + cyan `42F4C8`.
-Private map name: `storage/brand-design/brand-martian.json`.
-Kit mirror: `resume-palettes.json#martian-resume`.
+Live site: ember orange `FF6B00` + hot accent `FF4500` + violet `8B5CF6` + cyan `42F4C8`.
+Private map name: `storage/brand-design/brand-aurora.json`.
+Kit mirror: `resume-palettes.json#ember-violet`.
