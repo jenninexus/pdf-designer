@@ -59,7 +59,7 @@ folder or kind chip from another profile must not empty the library.
 
 ### Still human-gated (carry forward)
 
-- [ ] Push `origin/main` — `jenninexus` GitHub auth (**local commit only** until then)
+- [x] Push `origin/main` — authenticated as `jenninexus`; normal HTTPS push completed (2026-08-14)
 - [ ] History scrub — `docs/HISTORY-SCRUB.md` + explicit OK + force-push
 - [ ] Patreon / blog / Gumroad / JN `/products` — Patreon + blog sisters and a **Gumroad listing brief** live in Socials drafts; do not post, create a listing, or deploy from an agent. Gumroad remains blocked until the installer/wizard exists. Card: `C:\Github\product-design\docs\PDF-DESIGNER.md`. Aim public **2026-08-14**.
 - [ ] Optional: TestPyPI token — **not required** for GitHub-clone launch
