@@ -19,8 +19,18 @@ and the CLI keep working without them (headless parity).
 pip install -e .                          # one-time: makes pdf_tool importable from the repo root
 python -m pdf_tool.preview                # scan the repo, open http://127.0.0.1:8787
 python -m pdf_tool.preview path/to/dir    # scan any directory (e.g. one application folder)
+python -m pdf_tool.preview examples        # exact public-seed library (no local workspace documents)
 python -m pdf_tool.preview --port 9000 --no-open
 ```
+
+### What a new user sees
+
+`python -m pdf_tool.preview` scans the **current checkout**. On a personal machine, that
+correctly includes ignored working documents under `resumes/`, `_job-apps/`, collages, and the
+legacy `storage/` alias. A fresh clone contains only tracked files, so it has no personal cards to
+discover. To inspect the release experience exactly, run `python -m pdf_tool.preview examples`:
+the library contains only the tracked default resume, letter, and collage examples. `examples/resume-studio/`
+is the walkthrough data and docs, not a renderable document directory by itself.
 
 **No MCP / always-on server.** Optional temporary localhost only. CLI export works without it.
 
