@@ -9,7 +9,7 @@ Sibling pattern: [`agency/docs/PUBLIC-LOCAL-SPLIT.md`](../../agency/docs/PUBLIC-
 
 | Layer | On GitHub | Local only |
 |---|---|---|
-| Engine | `src/pdf_tool/`, `themes/`, `layouts/`, QA guards | — |
+| Engine | `src/pdf_tool/`, `themes/` (including licensed `themes/fonts/`), `layouts/`, QA guards | — |
 | Product story | [`PRODUCT.md`](PRODUCT.md) · [`examples/resume-studio/`](../examples/resume-studio/) | [`MARKETING.md`](MARKETING.md) (gitignored) |
 | Folder UX | [`WORKSPACE-LAYOUT.md`](WORKSPACE-LAYOUT.md) (target) · [`STORAGE.md`](STORAGE.md) (live) | Real data under `storage/` → root nouns |
 | Clone path | [`GETTING-STARTED.md`](GETTING-STARTED.md) | — |
