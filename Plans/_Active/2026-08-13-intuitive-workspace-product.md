@@ -53,13 +53,14 @@ folder or kind chip from another profile must not empty the library.
 - [x] Copy SEGO `storage/{users,profiles,jenni,shade,studio,collages,brand-design,_job-listings}` → root nouns (`scripts/migrate-workspace.py`; `storage/` alias kept)
 - [x] Rename jobs folder `applications/` → `_job-apps/` (engine aliases both + `storage/_job-listings/`)
 - [x] Tracker lists **who × job**, not a daily count (`applied-index.md` is the human log)
-- [ ] Dual-run smoke; **then** (later) remove `storage/` alias — not this wave
+- [x] Dual-run smoke — root-noun resolver wins; public white-label smoke, vault validation, and path tests pass (2026-08-13)
+- [ ] Archive the legacy `storage/` tree only after its local docs and bare-command path references are relocated or retired; do not delete the alias in place
 
 ### Still human-gated (carry forward)
 
 - [ ] Push `origin/main` — `jenninexus` GitHub auth (**local commit only** until then)
 - [ ] History scrub — `docs/HISTORY-SCRUB.md` + explicit OK + force-push
-- [ ] Patreon / blog / Gumroad / JN `/products` — drafts in socials; do not post/deploy from an agent. Card: `C:\Github\product-design\docs\PDF-DESIGNER.md`. Aim public **2026-08-14**.
+- [ ] Patreon / blog / Gumroad / JN `/products` — Patreon + blog sisters and a **Gumroad listing brief** live in Socials drafts; do not post, create a listing, or deploy from an agent. Gumroad remains blocked until the installer/wizard exists. Card: `C:\Github\product-design\docs\PDF-DESIGNER.md`. Aim public **2026-08-14**.
 - [ ] Optional: TestPyPI token — **not required** for GitHub-clone launch
 
 ### Never

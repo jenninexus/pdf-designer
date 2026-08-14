@@ -5,14 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Personal letter — example</title>
 <style>
-  /* Public example — Parisienne when brand fonts exist locally; cursive fallback for clones. */
-  @font-face {
-    font-family: "Parisienne";
-    src: url("../../../storage/fonts/Parisienne-Regular.woff2") format("woff2");
-    font-weight: 400;
-    font-style: normal;
-    font-display: swap;
-  }
+  /* Public example: use the platform's script face. Never reach into private storage/. */
   :root {
     --bg: #faf7f2;
     --surface: #fffdf9;
@@ -21,7 +14,7 @@
     --border: #e4d8cc;
     --primary: #7a5c8a;
     --accent: #c45c7a;
-    --script: "Parisienne", "Segoe Script", "Brush Script MT", cursive;
+    --script: "Segoe Script", "Brush Script MT", cursive;
     --body: "Georgia", "Times New Roman", Times, serif;
   }
   html[data-pdf-theme="dark"] {
@@ -33,7 +26,7 @@
     --primary: #c9a0dc;
     --accent: #f08ab0;
   }
-  @page { size: Letter; margin: 0.75in; }
+  @page { size: Letter; margin: 0.75in; background: var(--surface); }
   * { box-sizing: border-box; }
   html, body {
     margin: 0;
@@ -64,7 +57,7 @@
     }
   }
   @media print {
-    body { background: white; }
+    body { background: var(--surface); }
     .page {
       height: auto;
       min-height: 9.5in;
@@ -133,6 +126,7 @@
   }
 
   .letter-foot {
+    width: fit-content;
     margin-top: 1.25rem;
     padding-top: 0.75rem;
     border-top: 1px solid var(--border);
@@ -173,8 +167,8 @@
       <p class="closing">Love,</p>
       <p class="script-name">Jenni</p>
       <p class="legal">Jennifer</p>
+      <div class="letter-foot">Handwritten in spirit · sent with care</div>
     </footer>
-    <div class="letter-foot">Handwritten in spirit · sent with care</div>
   </article>
 </body>
 </html>
