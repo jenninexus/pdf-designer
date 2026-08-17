@@ -157,6 +157,9 @@ def main() -> None:
 
     source = cleaned[0]
     output_dir = cleaned[1] if len(cleaned) > 1 else None
+    from pdf_tool.paths import reject_flag_looking_path
+
+    reject_flag_looking_path(output_dir, flag="out-dir")
 
     try:
         outputs = render_to_png(source, output_dir, scale=scale, pdf_theme=pdf_theme)

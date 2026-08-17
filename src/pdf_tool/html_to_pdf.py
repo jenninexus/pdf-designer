@@ -235,6 +235,10 @@ def main() -> None:
             continue
         args.append(arg)
 
+    from pdf_tool.paths import reject_flag_looking_path
+
+    reject_flag_looking_path(output_dir, flag="--output-dir")
+
     if len(args) < 1:
         print(__doc__)
         raise SystemExit(1)

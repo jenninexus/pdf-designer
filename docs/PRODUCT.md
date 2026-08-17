@@ -13,7 +13,7 @@ paid shell later. Clone path: [`GETTING-STARTED.md`](GETTING-STARTED.md). Archit
 | Folder UX (clone tree) | [`WORKSPACE-LAYOUT.md`](WORKSPACE-LAYOUT.md) — resolver + README scaffolds; SEGO data copied to root nouns, `storage/` alias kept |
 | Product hub (local) | `C:\Github\product-design` · `docs/LAUNCH-PDF-DESIGNER.md` (Patreon first; Gumroad when extras exist) |
 | Private marketing (local) | `docs/MARKETING.md` (gitignored — same folder as public docs) |
-| Engineering checklist | [`../Plans/_Active/2026-08-13-intuitive-workspace-product.md`](../Plans/_Active/2026-08-13-intuitive-workspace-product.md) |
+| Engineering checklist | [`../Plans/_Active/2026-08-17-early-release-remaining.md`](../Plans/_Active/2026-08-17-early-release-remaining.md) |
 
 ---
 

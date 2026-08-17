@@ -1,18 +1,19 @@
 # ROADMAP — pdf-designer
 
 > **This is a pointer, not the roadmap.** The single active working checklist is
-> [`Plans/_Active/2026-08-13-intuitive-workspace-product.md`](../Plans/_Active/2026-08-13-intuitive-workspace-product.md).
+> [`Plans/_Active/2026-08-17-early-release-remaining.md`](../Plans/_Active/2026-08-17-early-release-remaining.md).
 > `/jen:roadmap` resolves here. Plans index: [`Plans/README.md`](../Plans/README.md).
 >
-> Product UX target: [`WORKSPACE-LAYOUT.md`](WORKSPACE-LAYOUT.md) (root `users/` · `vaults/` · …).  
+> Product UX target: [`WORKSPACE-LAYOUT.md`](WORKSPACE-LAYOUT.md) (root `users/` · `vaults/` · `_job-apps/` · …).  
 > Live data today: those root nouns. [`STORAGE.md`](STORAGE.md) documents the layout + the `storage/` dual-run alias.
 
 ## Remaining (open items)
 
 - [x] Root workspace **duplicates archived** (2026-08-16) — live data at root nouns; `storage/` keeps private provider template + private font + `_archive/`. Do not delete the `storage/` directory until dual-run is retired.
-- [ ] **History scrub** — `docs/HISTORY-SCRUB.md` (gitignored) then human-authorized force-push (**incomplete plan**)
-- [x] **Push origin/main** — `jenninexus` GitHub auth (normal HTTPS push 2026-08-14; follow-up docs 2026-08-16)
-- [ ] **Patreon / blog / Gumroad / JN `/products`** — drafts in socials; GitHub **private**; do not post/deploy from an agent. Card: `C:\Github\product-design\docs\PDF-DESIGNER.md`
+- [x] **One job noun** (2026-08-17) — `_job-apps/` is live + public; `applications/` is README-only.
+- [ ] **History scrub** — `docs/HISTORY-SCRUB.md` (gitignored) then human-authorized force-push
+- [x] **Push origin/main** — `jenninexus` GitHub auth (normal HTTPS push 2026-08-14; follow-up docs 2026-08-16). Repo stays **private**.
+- [ ] **Patreon / blog / Discord / short-form** — drafts in socials; do not post/deploy from an agent. Card: `C:\Github\product-design\docs\PDF-DESIGNER.md`
 - [ ] Keep **SSOT + QA docs** honest as the engine evolves
 - [ ] Optional: TestPyPI upload (not required for clone launch) · production PyPI · paid-shell
 

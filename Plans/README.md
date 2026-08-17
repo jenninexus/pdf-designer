@@ -11,8 +11,7 @@ Working plans for pdf-designer. Keep **one** active product roadmap; move finish
 
 | Plan | Status |
 |---|---|
-| [`_Active/2026-08-13-intuitive-workspace-product.md`](_Active/2026-08-13-intuitive-workspace-product.md) | ⭐ **THE** working plan — root workspace UX · docs-in-docs · migration |
-| [`_Active/2026-08-13-launch-ready-workspace.md`](_Active/2026-08-13-launch-ready-workspace.md) | This wave — data copy + app dedupe + launch copy (not posted) |
+| [`_Active/2026-08-17-early-release-remaining.md`](_Active/2026-08-17-early-release-remaining.md) | ⭐ **THE** working plan — human publication gates + short-form + storage retirement |
 
 > **`/jen:roadmap` entry point:** [`../docs/ROADMAP.md`](../docs/ROADMAP.md).  
 > **Business:** [`../docs/PRODUCT.md`](../docs/PRODUCT.md).  
@@ -24,6 +23,9 @@ Working plans for pdf-designer. Keep **one** active product roadmap; move finish
 
 | Plan | Why complete |
 |---|---|
+| [`2026-08-16-pdf-start-wrap-private provider/`](_Complete/2026-08-16-pdf-start-wrap-private provider/) | `/pdf-start`·`/pdf-wrap` SSOT; private provider vault claims; storage dupes archived |
+| [`2026-08-13-intuitive-workspace-product.md`](_Complete/2026-08-13-intuitive-workspace-product.md) | Root nouns, path resolver, dual-run copy, `_job-apps/` rename |
+| [`2026-08-13-launch-ready-workspace.md`](_Complete/2026-08-13-launch-ready-workspace.md) | Data copy, tracker dedupe, launch *copy* in Socials (not posted) |
 | [`2026-08-13-previewer-path-header-repair.md`](_Complete/2026-08-13-previewer-path-header-repair.md) | Hub discovers live profiles/folders; sticky profile scopes library |
 | [`2026-08-12-product-privacy-packaging.md`](_Complete/2026-08-12-product-privacy-packaging.md) | Privacy packaging · resume-studio · smoke/wheel · commands `*.example.md` |
 | [`2026-08-12-public-private-split/`](_Complete/2026-08-12-public-private-split/) | PUBLIC-LOCAL-SPLIT · GETTING-STARTED · sibling splits |

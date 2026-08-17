@@ -17,7 +17,7 @@ Hub:       python -m pdf_tool.preview → :8787 (workspace auto-starts via scrip
 Smoke:     python scripts/smoke-white-label.py   ← ⭐ fresh-clone proof (examples/ only, no storage/)
 Package:   docs/PACKAGING.md + scripts/check-wheel-assets.py  ← wheel must include themes/layouts
 Engine:    python -m pdf_tool  (hub) / individual modules
-Plans:     Plans/_Active/2026-08-13-intuitive-workspace-product.md (+ launch-ready-workspace.md)
+Plans:     Plans/_Active/2026-08-17-early-release-remaining.md
 Product hub: C:\Github\product-design  (local; /jen:products)
 ```
 
