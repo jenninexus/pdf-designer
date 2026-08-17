@@ -49,7 +49,7 @@ fast on a large tree. If the server is briefly down mid-poll, the client just re
 | Layer | Where | Purpose |
 |---|---|---|
 | **Hub chrome** | `src/pdf_tool/static/hub.css` | App shell (filters, library, stage). Vendored `--dash-*` from **www-theme-kit** dashboard tokens + glass. Official profile: [`www-theme-kit/profiles/pdf-designer.json`](../../www-theme-kit/profiles/pdf-designer.json). |
-| **Document brands** | `themes/*.json` + `themes/presets/*.json` + `storage/brand-design/brand-*.json` | Palette swapper / WYSIWYG export. Personal SSOT — see [`STORAGE.md`](STORAGE.md). |
+| **Document brands** | `themes/*.json` + `themes/presets/*.json` + `brands/brand-*.json` | Palette swapper / WYSIWYG export. Personal SSOT — see [`STORAGE.md`](STORAGE.md). |
 
 ### Breakpoints (one project reference)
 
@@ -86,7 +86,7 @@ Sidebar is a **left column**; the stage / iframe viewer fills the rest of the vi
 - **Palette swapper** → injects CSS vars into the previewed document (and into export)
 - **Export selected** → PDF light/dark or PNG pages
 - **Vault overview** → [http://127.0.0.1:8787/vault](http://127.0.0.1:8787/vault) · `GET /api/vault-overview`
-  — human-readable `storage/users`, profiles (joined under each person), `boardSkills` tags, and `goToPacks`
+  — human-readable `users/`, profiles (joined under each person), `boardSkills` tags, and `goToPacks`
   (which default résumé targets which job family). Read-only; no second renderer.
   Pack **Open in library** links use `/?doc=<html-path>` to select that file in the Hub
   library (filters cleared, person chip set, card scrolled into view). Selecting a
@@ -112,7 +112,7 @@ Typical flows:
 |---|---|
 | Engine, Design Hub, protocol docs, examples | Disney finals, personal vaults, Jobright screenshots |
 | Jobright *library + filter* UX ideas | Jobright match scores / autofill / extension |
-| Brand maps under `storage/brand-design/` | Historical prompt logs |
+| Brand maps under `brands/` | Historical prompt logs |
 
 ## Roadmap
 
