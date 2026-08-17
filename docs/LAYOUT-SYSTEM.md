@@ -202,7 +202,7 @@ résumé Online Community pattern.
 
 Use `--text` (or brand `--accent`), **≥11px**, `font-weight: 600` — not `--dim2` at 9px. Same treatment
 on résumé `.page-sig .mail`, cover `.signoff .mail`, and work-samples `.footer .mail`. Palette SSOT:
-`storage/brand-design/brand-jenninexus.json`.
+`brands/brand-jenninexus.json`.
 
 ### Work-samples imagery — caption below hero; keep height
 

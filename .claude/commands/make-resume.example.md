@@ -19,10 +19,10 @@ This command builds the résumé only. Cover letters and work samples are separa
 /make-resume <user> <application-dir|job-url> [light|dark|full]
 ```
 
-- `<user>` resolves the private person, vault, and render profile under `storage/`.
+- `<user>` resolves the private person, vault, and render profile under root nouns (`users/` · `vaults/` · `profiles/`).
 - `<application-dir>` is a private folder under `_job-apps/` (aliases `applications/`, `storage/_job-listings/`).
 - A pasted job URL creates a new private application folder before any résumé prose is written.
-- Export mode never overrides `storage/profiles/<user>-resume.json#exports.exportPrefs` silently.
+- Export mode never overrides `profiles/<user>-resume.json#exports.exportPrefs` silently.
 
 If an input can be resolved from the current application folder or profile, proceed. Ask only when a
 missing choice would materially change the applicant, truth claims, or output set.
@@ -58,9 +58,9 @@ their first-person involvement.
 
 | Layer | Path | Owns |
 |---|---|---|
-| Person | `storage/users/<user>.json` | Contact, default email, character voice, brand pointer |
-| Vault | `storage/<user>/resume-source.json` | Every claim that may be made, application voice, role tracks |
-| Profile | `storage/profiles/<user>-resume.json` | Layout, theme pointer, `exportPrefs`, work-sample policy |
+| Person | `users/<user>.json` | Contact, default email, character voice, brand pointer |
+| Vault | `vaults/<user>.json` | Every claim that may be made, application voice, role tracks |
+| Profile | `profiles/<user>-resume.json` | Layout, theme pointer, `exportPrefs`, work-sample policy |
 | Application | `_job-apps/<App>/` | Listing evidence, assessment, application state, generated HTML |
 
 The vault is the truth boundary. Read [`docs/VAULT.md`](../../docs/VAULT.md) before authoring claims.
@@ -76,8 +76,8 @@ python -m pdf_tool.check_vault --coverage <user> <track> <listing.md>
 
 Non-zero schema or thin-vault results block the build. Load both voice layers:
 
-- `storage/users/<user>.json#characterVoice` — the person.
-- `storage/<user>/resume-source.json#voice` — the application register.
+- `users/<user>.json#characterVoice` — the person.
+- `vaults/<user>.json#voice` — the application register.
 
 If the role track changes the lead identity, use the track-specific value. The résumé should sound
 like the applicant, not like the employer or a generic assistant.

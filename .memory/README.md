@@ -73,6 +73,7 @@ codebase · `reference`: pointer to an external resource.
 |---|---|
 | [lesson-guard-assumptions-must-be-measured.md](lesson-guard-assumptions-must-be-measured.md) | A QA guard that hard-codes a layout assumption fails silently on the other layout — measure the pixels before trusting the verdict |
 | [lesson-private provider-fellowship-never-names-partners.md](lesson-private provider-fellowship-never-names-partners.md) | private provider AI trainer listings use company “private provider AI Fellowship” — never partner lab names |
+| [lesson-ssot-dashboard-must-name-live-paths.md](lesson-ssot-dashboard-must-name-live-paths.md) | After a folder rename, update `SSOT.md` + wrap checklists in the same wrap — dual-run is not honesty |
 | [lesson-track-tags-hide-true-claims.md](lesson-track-tags-hide-true-claims.md) | A true claim tagged for the wrong track goes invisible — nothing errors, the evidence just vanishes |
 | [lesson-ask-before-calling-it-a-gap.md](lesson-ask-before-calling-it-a-gap.md) | `doNotClaim` means "not yet confirmed", never "cannot do" — ask before writing anything off |
 | [lesson-overflow-fix-is-move-not-shrink.md](lesson-overflow-fix-is-move-not-shrink.md) | Page overflow is fixed by moving or cutting content, never by shrinking the equal margins |
@@ -99,4 +100,4 @@ codebase · `reference`: pointer to an external resource.
 - [`docs/VAULT.md`](../docs/VAULT.md) — claim rules (the "silent failure" section)
 - [`docs/QA.md`](../docs/QA.md) — the ship gate
 - [`docs/LAYOUT-SYSTEM.md`](../docs/LAYOUT-SYSTEM.md) — pagination + content-fit
-- [`.claude/commands/wrap.md`](../.claude/commands/wrap.md) — the wrap that feeds this
+- [`.claude/commands/pdf-wrap.md`](../.claude/commands/pdf-wrap.md) — the wrap that feeds this

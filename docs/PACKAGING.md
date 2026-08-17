@@ -24,7 +24,7 @@ Those trees are required by:
 |---|---|
 | `pdf_tool.variants` | `themes/default-resume.json` + `themes/presets/*` |
 | `pdf_tool.collage` | `themes/default-collage.json` + `layouts/collage/*` |
-| `pdf_tool.preview` | public palettes under `themes/` (+ optional `storage/brand-design/`) |
+| `pdf_tool.preview` | public palettes under `themes/` (+ optional `brands/`) |
 
 Hard-coding `Path(__file__).parents[2]` assumes an editable `src/` layout. A
 site-packages install breaks that assumption.

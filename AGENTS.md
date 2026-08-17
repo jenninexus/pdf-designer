@@ -70,7 +70,8 @@ Local-first PDF/document toolkit. Two layers:
    guard the palette, validate a vault, build collages, serve a previewer. Deterministic: what a browser
    prints is what you get.
 2. **The résumé layer** — a *protocol*, not a module. The job-application workflow lives in
-   [`.claude/commands/`](.claude/commands/) (agent-agnostic markdown), backed by plain JSON in `storage/`
+   [`.claude/commands/`](.claude/commands/) (agent-agnostic markdown), backed by plain JSON in root nouns
+   (`users/` · `vaults/` · `profiles/` · `_job-apps/`; `storage/` is the dual-run alias)
    and the guards (`check_vault`, `check_ats`, `check_palette`). The judgment can't be coded; the data is
    the product. See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 
@@ -183,19 +184,19 @@ marketed résumé-creator demo path (vault shape + palettes + smoke), not privat
 
 ### Privacy split (do not blur this)
 
-| Public / tracked (safe to clone) | Private / gitignored (`storage/`) |
+| Public / tracked (safe to clone) | Private / gitignored (root nouns; `storage/` is the dual-run alias) |
 |---|---|
-| `src/pdf_tool/`, `themes/`, `examples/`, `docs/`, `AGENTS.md`, `*.example.md` | `users/`, `*/resume-source.json`, `profiles/*-resume.json`, `_job-listings/`, `brand-design/`, `studio/resources/`, `_exports/` |
-| Brand-neutral default theme | Real brand maps (`brand-jenninexus`, `brand-martian`, `brand-synagen`) |
+| `src/pdf_tool/`, `themes/`, `examples/`, `docs/`, `AGENTS.md`, `*.example.md` | `users/`, `vaults/`, `profiles/`, `_job-apps/`, `brands/`, `resumes/`, `collages/`, `_exports/` |
+| Brand-neutral default theme | Real brand maps (`brands/brand-jenninexus.json`, `brand-martian`, `brand-synagen`) |
 | Example brand shape (`examples/brand-design/`) | Real vault claims, contacts, employer research |
-| Public seed commands (`*.example.md` only) | Bare commands (`start`/`wrap`/`make-*`/`README`), `.codex/`, `dev-log-*.yaml` |
+| Public seed commands (`*.example.md` only) | Bare commands (`pdf-start`/`pdf-wrap`/`start`/`wrap`/`make-*`/`README`), `.codex/`, `dev-log-*.yaml` |
 
 `themes/` is deliberately **public** — it's the engine's default theme + palette rule a fresh clone needs
-to render. Private brand palettes live in `storage/brand-design/`, read by the previewer alongside `themes/`.
-Website kits own **live-site** colors; for résumé exports the mapped `storage/brand-design/brand-*.json` is the
+to render. Private brand palettes live in `brands/` (legacy `storage/brand-design/`), read by the previewer alongside `themes/`.
+Website kits own **live-site** colors; for résumé exports the mapped `brands/brand-*.json` is the
 **only** pdf-designer color SSOT — `users/*.json` points via `brandTheme.ssot`; never duplicate hex there.
 
-### The application workflow lives in `storage/` (gitignored)
+### The application workflow lives in root nouns (gitignored)
 
 Four layers, each answering one question. **The vault is the brain.**
 
@@ -265,10 +266,10 @@ Read [`docs/VAULT.md`](docs/VAULT.md) before authoring any resume claim.
 - **`boardSkills`:** when LinkedIn/board tags change → update vault `#boardSkills` (+ claims); preview
   on Design Hub `/vault`.
 - **New document type / profile:** copy `examples/profiles/default-resume/` (or `default-collage/`) to a
-  new `examples/profiles/<id>/` (public example) or under `storage/` (real/private).
-- **Add a person:** `storage/users/<name>.json` + `storage/<name>/resume-source.json` +
-  `storage/profiles/<name>-resume.json`. See [`docs/STORAGE.md`](docs/STORAGE.md).
-- **Collage / recipes:** images in `storage/collages/<project>/images/`, then `--recipe <id>` or
+  new `examples/profiles/<id>/` (public example) or under `profiles/` + `resumes/` (real/private).
+- **Add a person:** `users/<name>.json` + `vaults/<name>.json` +
+  `profiles/<name>-resume.json`. See [`docs/STORAGE.md`](docs/STORAGE.md).
+- **Collage / recipes:** images in `collages/<project>/images/`, then `--recipe <id>` or
   `--layout auto --png`. **Screenshots need `--fit contain`.** Browse recipes in the Hub at
   [`/recipes`](http://127.0.0.1:8787/recipes). Public routine: [`/make-collage`](.claude/commands/make-collage.example.md);
   families: [`docs/COLLAGE-DESIGN.md`](docs/COLLAGE-DESIGN.md).
