@@ -73,6 +73,7 @@ codebase · `reference`: pointer to an external resource.
 |---|---|
 | [lesson-guard-assumptions-must-be-measured.md](lesson-guard-assumptions-must-be-measured.md) | A QA guard that hard-codes a layout assumption fails silently on the other layout — measure the pixels before trusting the verdict |
 | [lesson-private provider-fellowship-never-names-partners.md](lesson-private provider-fellowship-never-names-partners.md) | private provider AI trainer listings use company “private provider AI Fellowship” — never partner lab names |
+| [lesson-flag-looking-output-dir.md](lesson-flag-looking-output-dir.md) | `pdf_to_png` treats leftover `--output-dir` as a folder name — refuse paths that start with `-` |
 | [lesson-ssot-dashboard-must-name-live-paths.md](lesson-ssot-dashboard-must-name-live-paths.md) | After a folder rename, update `SSOT.md` + wrap checklists in the same wrap — dual-run is not honesty |
 | [lesson-track-tags-hide-true-claims.md](lesson-track-tags-hide-true-claims.md) | A true claim tagged for the wrong track goes invisible — nothing errors, the evidence just vanishes |
 | [lesson-ask-before-calling-it-a-gap.md](lesson-ask-before-calling-it-a-gap.md) | `doNotClaim` means "not yet confirmed", never "cannot do" — ask before writing anything off |

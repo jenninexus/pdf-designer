@@ -1,5 +1,10 @@
-# `applications/` — moved
+# `applications/` — moved (README only)
 
-Live job folders now live in [`_job-apps/`](../_job-apps/). This stub stays so old links do not 404.
+**Public + live noun:** [`_job-apps/`](../_job-apps/).
 
-Aliases the engine still accepts: `_job-apps/` · `applications/` · `storage/_job-listings/`.
+This directory is **not** a second job store. It ships a redirect so old links
+do not 404. Real listings, apply URLs, and `applied-index.md` live only under
+`_job-apps/` and stay gitignored.
+
+Engine aliases (do not create a parallel tree): `_job-apps/` · `applications/` ·
+`storage/_job-listings/`.
