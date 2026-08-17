@@ -31,27 +31,49 @@ metrics, *and their writing voice*.
 | Layer | File | Answers |
 |---|---|---|
 | **Person** | `users/<user>.json` | *Who is applying* — contact, emails, brand palette, **`characterVoice`** (personality / contrast / register map), quick `hardFacts` |
-| **Vault** ⭐ | `<user>/resume-source.json` | *What may be truthfully claimed* · *how application prose sounds* (`voice`) · *the angle for each role track* |
+| **Vault** ⭐ | `vaults/<user>.json` | *What may be truthfully claimed* · *how application prose sounds* (`voice`) · *the angle for each role track* |
 | **Profile** | `profiles/<user>-resume.json` | *How it renders* — layout, exports, cover-letter policy (voice = pointer only) |
-| **Application** | `_job-listings/<Track>/` | *The job* — listing, apply link, pay, company palette |
+| **Application** | `_job-apps/<Track>/` | *The job* — listing, apply link, pay, company palette |
 
 **Voice is two layers (hybrid SSOT):**
 
 | Edit… | File | For |
 |---|---|---|
 | Personality, partner contrast, emoji prefs, social/Discord pointers | `users/<user>.json#characterVoice` | Who they are; how they differ; where other registers live |
-| Tone, signatureMoves, avoid, leadIdentityByTrack, resume vs coverLetter | `<user>/resume-source.json#voice` | How résumés and cover letters *sound* |
+| Tone, signatureMoves, avoid, leadIdentityByTrack, resume vs coverLetter | `vaults/<user>.json#voice` | How résumés and cover letters *sound* |
 
 Socials `format-manifest.json` voice strings and bot STYLE-SPECs are **marketing registers** — emoji and post format only. Never the application prose SSOT.
 
 > **Network map (not deep edit):** [`C:\Github\voice-seed`](../../voice-seed) holds the human
 > voice **map**, public cards (`characters/humans/*.md`), and seed template
 > (`templates/character-voice.seed.json`). Deep edit of applicant voice stays in
-> **this** repo’s `storage/` (`characterVoice` + vault `voice`). Agency agents are
+> **this** repo’s `users/` + `vaults/` (`characterVoice` + vault `voice`). Agency agents are
 > fiction — **never** use them as applicant voice.
 
 **One profile per person.** The per-role framing is **not** a separate file — it lives in the vault at
 `roleTracks.<track>.angle`. (Per-track profiles were retired 2026-07-13: they duplicated the vault and drifted.)
+
+---
+
+## private provider AI Fellowship (AI-track listings)
+
+private provider’s own listing template is the rule for **any AI trainer / eval / RLHF contractor
+application** (and for LinkedIn / private provider-profile work history). Company line is exactly
+**private provider AI Fellowship**. Employment type **Contract**. Location **Remote**.
+
+| | Jenni | Shade |
+|---|---|---|
+| Vault id | `emp-private provider-ai` | `emp-private provider-ai` |
+| Title | AI Trainer – Game Development Expert | AI Trainer – Machine Learning Expert |
+| Dates | Jun 2026 – Present | Jun 2026 – Present |
+| Angle | `roleTracks.ai.angleByUse.ai-trainer` | same key (contractor overlay; default AI identity remains Principal ML) |
+
+**Do not name the partner company or AI lab** on the résumé, cover letter, or LinkedIn. Internal
+private provider project names stay in the private provider hub, not on exported PDFs. Full operator template:
+local `storage/private provider.md`. Voice for private provider *task* writing is a different register
+(`technicalAuthorship` in voice-seed) — do not dump that into ATS prose.
+
+---
 
 ---
 
