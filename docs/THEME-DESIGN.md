@@ -16,7 +16,7 @@ profiles.
 (`_meta.ssot` / `kit: www-theme-kit`). Document audition catalog:
 `www-theme-kit/palettes/resume-palettes.json`. Live-site brand inspiration:
 `www-theme-kit/profiles/{jenninexus,martiangames}.json` → map into
-`storage/brand-design/brand-*.json` for exports.
+`brands/brand-*.json` for exports.
 
 Hub chrome (toolbar size, library/viewer split, folder ghost-★ pins) is **not** a document
 palette concern — edit `src/pdf_tool/static/hub.css` + [`PREVIEWER.md`](PREVIEWER.md); keep
@@ -39,17 +39,17 @@ Contrast spot-check: `node scripts/wcag-resume-palettes.mjs`.
 
 | Layer | Path | Holds |
 |---|---|---|
-| Person pointer | `storage/users/<user>.json#brandTheme.ssot` | Path only — **no hex** |
-| Profile pointer | `storage/profiles/<user>-resume.json#theme.brandMap` | Same path, for make-resume |
-| **Hex SSOT** | `storage/brand-design/brand-*.json` | Tokens Design Hub + exports use |
-| Website upstream | `www-theme-kit/profiles/{jenninexus,martiangames}.json` | Live-site inspiration; map into brand-design when syncing |
+| Person pointer | `users/<user>.json#brandTheme.ssot` | Path only — **no hex** |
+| Profile pointer | `profiles/<user>-resume.json#theme.brandMap` | Same path, for make-resume |
+| **Hex SSOT** | `brands/brand-*.json` | Tokens Design Hub + exports use |
+| Website upstream | `www-theme-kit/profiles/{jenninexus,martiangames}.json` | Live-site inspiration; map into `brands/` when syncing |
 | Kit catalog | `www-theme-kit/palettes/resume-palettes.json` | Public presets + `martian-resume` mirror |
 
 | Who | `brandTheme.ssot` → |
 |---|---|
-| Jenni | `storage/brand-design/brand-jenninexus.json` |
-| Shade (personal / Synagen) | `storage/brand-design/brand-synagen.json` |
-| Shade studio / games voice | `storage/brand-design/brand-martian.json` |
+| Jenni | `brands/brand-jenninexus.json` |
+| Shade (personal / Synagen) | `brands/brand-synagen.json` |
+| Shade studio / games voice | `brands/brand-martian.json` |
 
 **Jenni defaults triad (resume · cover letter · work samples)** share one mapped palette from
 `brand-jenninexus.json` (`--primary #A563D1` · `--secondary #FF2E88` · `--accent #FF6EC4` ·
@@ -58,7 +58,7 @@ Contrast spot-check: `node scripts/wcag-resume-palettes.mjs`.
 agency / studio links are not footer chrome. Layout prefs for the visual pack:
 [`../layouts/work-examples/work-examples.json`](../layouts/work-examples/work-examples.json) + [`LAYOUT-SYSTEM.md`](LAYOUT-SYSTEM.md).
 
-Design Hub `load_palettes()` scans `themes/` + `themes/presets/` + `storage/brand-design/` — the person dropdown only filters the library, it does not auto-apply a brand.
+Design Hub `load_palettes()` scans `themes/` + `themes/presets/` + `brands/` (alias `storage/brand-design/`) — the person dropdown only filters the library, it does not auto-apply a brand.
 
 The public default is intentionally brand-neutral. It supports:
 
@@ -89,27 +89,27 @@ Private, real profiles belong outside tracked public examples. The recommended
 local location inside this repo is:
 
 ```text
-storage/
-  profiles/
-    your-profile.json
-  brand-design/
-    brand-yours.json          ← private brand token maps (gitignored with storage/)
-  users/
-    you.json
-  you/
-    resume-source.json        ← the vault
+users/
+  you.json
+vaults/
+  you.json                    ← the vault
+profiles/
+  you-resume.json
+brands/
+  brand-yours.json            ← private brand token maps (gitignored)
 ```
 
-`storage/` is ignored by git. Use it for local brand profiles, private source
-paths, real output paths, and project-specific palette mappings.
+Root nouns are ignored by git. Use them for local brand profiles, private source
+paths, real output paths, and project-specific palette mappings. `storage/` remains
+a dual-run alias until retirement.
 
 **Website brands stay in `www-theme-kit/profiles/`.**
-When a resume needs that brand, **map** the kit profile into `storage/brand-design/brand-*.json`
+When a resume needs that brand, **map** the kit profile into `brands/brand-*.json`
 (token names in the table below). Tracked starter: [`../examples/brand-design/`](../examples/brand-design/).
 Do not open `syna-theme-kit` or `syn-themes` for routine pdf-designer palette work.
 
 **Worked MG mapping (aligned 2026-07-22):** live site roles (`martiangames.json`) →
-`storage/brand-design/brand-martian.json` + kit mirror `palettes/resume-palettes.json#martian-resume`.
+`brands/brand-martian.json` + kit mirror `palettes/resume-palettes.json#martian-resume`.
 Dark = **primary `#FF6B00` · secondary `#8B5CF6` · accent `#FF4500` · support `#42F4C8`** on
 purple-tinted near-black (same role order as the site — do not swap secondary/accent). Light =
 print-safe orange-RED + violet (never darkened amber, never teal-as-secondary).

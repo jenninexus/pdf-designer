@@ -23,7 +23,7 @@ and presets *are* the product.
 | Brand template (optional) | `examples/brand-design/` | Copy shape only — not real hex maps |
 | Protocol seeds | `.claude/commands/*.example.md` | Bare start/wrap/make-* are **not** on GitHub |
 
-You do **not** need `storage/users`, vaults, or `storage/brand-design` to export PDFs.
+You do **not** need `users/`, vaults, or `brands/` to export PDFs.
 The clone also shows **README stubs** at `users/` · `vaults/` · `profiles/` · `resumes/` ·
 `_job-apps/` · `collages/` · `brands/` so the product folders are visible — copy from
 `examples/` (or the in-folder `*.example.json`) into those names when you add your own data. Layout: [`WORKSPACE-LAYOUT.md`](WORKSPACE-LAYOUT.md).
@@ -85,7 +85,7 @@ More: [`EXPORTS.md`](EXPORTS.md) · [`PREVIEWER.md`](PREVIEWER.md) · [`../AGENT
 ## Brand maps
 
 - **Public:** `themes/default-resume.json` + `themes/presets/*` (Hub swapper).
-- **Private later:** copy `examples/brand-design/` → local `storage/brand-design/brand-*.json`
+- **Private later:** copy `examples/brand-design/` → local `brands/brand-*.json`
   (gitignored). See [`STORAGE.md`](STORAGE.md).
 
 Do not put real brand hex into tracked `themes/` or `examples/` unless you intend them public.
@@ -96,11 +96,11 @@ Do not put real brand hex into tracked `themes/` or `examples/` unless you inten
 
 | Surface | Why |
 |---|---|
-| `storage/users/*.json` | Contact, hard facts, `characterVoice` |
-| `storage/<user>/resume-source.json` | Claim vault + application voice |
-| `storage/_job-listings/` | Real listings, pay, apply links — alias of `_job-apps/` |
-| `storage/brand-design/` | Studio / personal palettes |
-| `storage/collages/` · most of `storage/docs/` | Real images + personal notes |
+| `users/*.json` | Contact, hard facts, `characterVoice` |
+| `vaults/<user>.json` | Claim vault + application voice |
+| `_job-apps/` | Real listings, pay, apply links |
+| `brands/` | Studio / personal palettes |
+| `collages/` | Real images |
 | `.config/mcp-pdf-designer.json` | Absolute machine paths (use `.example.json`) |
 | Bare `make-*.md` / `start.md` / `wrap.md` | Personal / SEGO ritual |
 | Real PII | Never commit; never move into `examples/` |

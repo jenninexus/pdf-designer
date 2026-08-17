@@ -92,7 +92,7 @@ not either. Full checklist: [`JOB-ASSESSMENT.md`](JOB-ASSESSMENT.md) § Tier 4.5
 | “Section looks fine on screen” | Not enough. Montserrat can split `WORK EXPERIENCE` → `W ORK EXPERIENCE` and body words → `Gam es` / `m aterials` while the page looks perfect. **Print body + h2 use a system font.** |
 | “Jobright rank D means unparseable” | **False.** Rank / IMPROVABLE / “Insufficient skills” / “Lack of Accomplishment” is their **content AI**. Missing Job Title / Work Experience / Education is the **parse** warning. Different gates. |
 
-**Defaults:** ship **both** light and dark for go-to résumés under `storage/<user>/defaults/` so the board
+**Defaults:** ship **both** light and dark for go-to résumés under `resumes/<user>/defaults/` so the board
 file and the branded file stay in sync. Per-job `exportPrefs` may still emphasize dark for email —
 that does **not** remove the need for a light file when a board will parse the upload. Cover letters
 and work-samples: `check_generation` always; boards still get the light **résumé**, not the portfolio.
@@ -106,7 +106,7 @@ and work-samples: `check_generation` always; boards still get the light **résum
 users/<user>.json#brandTheme.ssot
         │
         ▼
-storage/brand-design/brand-*.json   ← ⭐ pdf-designer COLOR SSOT (Design Hub + exports)
+brands/brand-*.json   ← ⭐ pdf-designer COLOR SSOT (Design Hub + exports)
         ▲
         │  map / sync from (never a second résumé SSOT)
 www-theme-kit/profiles/{jenninexus,martiangames}.json
@@ -114,11 +114,11 @@ www-theme-kit/profiles/{jenninexus,martiangames}.json
 
 | Who | Edit this file | Pointed by |
 |---|---|---|
-| Jenni | `storage/brand-design/brand-jenninexus.json` | `users/jenni.json` · `profiles/jenni-resume.json` · defaults triad under `storage/jenni/defaults/` (same footer-mail legibility: `--text` ≥11px) |
-| Shade (Synagen) | `storage/brand-design/brand-synagen.json` | `users/shade.json` · `profiles/shade-resume.json` |
-| Martian studio | `storage/brand-design/brand-martian.json` | Shade studio/games profiles + kit `#martian-resume` |
+| Jenni | `brands/brand-jenninexus.json` | `users/jenni.json` · `profiles/jenni-resume.json` · defaults triad under `resumes/jenni/defaults/` (same footer-mail legibility: `--text` ≥11px) |
+| Shade (Synagen) | `brands/brand-synagen.json` | `users/shade.json` · `profiles/shade-resume.json` |
+| Martian studio | `brands/brand-martian.json` | Shade studio/games profiles + kit `#martian-resume` |
 
-Design Hub loads `themes/` + `themes/presets/` + `storage/brand-design/` (`preview.load_palettes`).
+Design Hub loads `themes/` + `themes/presets/` + `brands/` (`preview.load_palettes`; alias `storage/brand-design/`).
 The person filter is library-only — it does **not** auto-select a palette. Full contract:
 [`THEME-DESIGN.md`](THEME-DESIGN.md) · [`STORAGE.md`](STORAGE.md) · [`../themes/PALETTE-RULES.md`](../themes/PALETTE-RULES.md).
 
@@ -131,10 +131,10 @@ The person filter is library-only — it does **not** auto-select a palette. Ful
 | Breakpoints numbers | `C:\mcp\.config\mcp-breakpoints.json` + www-theme-kit SCSS |
 | Resume palette kit catalog | `www-theme-kit/palettes/resume-palettes.json` |
 | Hub chrome profile ⭐ | `www-theme-kit/profiles/pdf-designer.json` |
-| Live-site brand hex (JN / MG) | `www-theme-kit/profiles/{jenninexus,martiangames}.json` — map into `storage/brand-design/` for résumés |
+| Live-site brand hex (JN / MG) | `www-theme-kit/profiles/{jenninexus,martiangames}.json` — map into `brands/` for résumés |
 | Preset lineage (history only) | Some `themes/presets/*` note syna-theme-kit origins — **runtime kit is www-theme-kit**; do not open syna/syn-themes for hub work |
 | Human voice map / public cards | `C:\Github\voice-seed` (registry + `characters/humans/*.md`) |
-| Application `characterVoice` + vault `voice` | **THIS** repo `storage/` (private) — voice-seed only points |
+| Application `characterVoice` + vault `voice` | **THIS** repo `users/` + `vaults/` (private) — voice-seed only points |
 | Agency fiction voices | `agency` — **NOT** applicants |
 | Social / marketing registers | `socials` |
 
@@ -155,7 +155,7 @@ The person filter is library-only — it does **not** auto-select a palette. Ful
 | `check_vault` | Vault schema / `--explain` / `--coverage` |
 | `check_ats` | ATS parse gate — see § ATS parseability below |
 | `audit_resume` | Diff rendered HTML vs vault (lead omissions) |
-| `tracker` | List / status over `storage/_job-listings/**/application.json` |
+| `tracker` | List / status over `_job-apps/**/application.json` |
 | `collage` | Layout candidates + picker gallery from an image folder |
 | `preview` | Design Hub — localhost library + palette swap + export |
 
