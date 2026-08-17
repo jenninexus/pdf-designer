@@ -18,3 +18,14 @@ def test_repo_root_finds_checkout_themes():
 def test_repo_root_is_absolute():
     paths.repo_root.cache_clear()
     assert paths.repo_root().is_absolute()
+
+
+def test_reject_flag_looking_output_dir():
+    import pytest
+
+    with pytest.raises(SystemExit):
+        paths.reject_flag_looking_path("--output-dir", flag="--output-dir")
+    with pytest.raises(SystemExit):
+        paths.reject_flag_looking_path("-o", flag="out-dir")
+    paths.reject_flag_looking_path("resumes/jenni/_exports", flag="--output-dir")
+    paths.reject_flag_looking_path(None, flag="--output-dir")

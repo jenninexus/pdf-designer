@@ -50,7 +50,7 @@ _job-apps/*
 !_job-apps/README.md
 !_job-apps/_template/
 
-# Brief 2026-08 name — README redirect only after rename to _job-apps/
+# Brief 2026-08 name — README redirect only; listings live in _job-apps/
 applications/*
 !applications/README.md
 
@@ -111,6 +111,8 @@ job-listing-capture-*.md
 *.webp
 *.gif
 output/
+# CLI mishap: pdf_to_png treats a leftover flag as a positional out-dir
+--output-dir/
 _exports/
 **/_exports/
 _variants/

@@ -52,7 +52,10 @@ profile/
     resume-light-v2.pdf
 ```
 
-Use `--output-dir` or a full output path when a project needs a specific folder.
+Use `--output-dir <dir>` or a full output path when a project needs a specific folder.
+That flag is not a directory at the repo root — a leftover `--output-dir` without a
+path used to create a folder of that name (`pdf_to_png` positional). The CLIs now
+refuse paths that start with `-`. Go-to packs belong in `resumes/<id>/defaults/`.
 
 ## Light PDF
 

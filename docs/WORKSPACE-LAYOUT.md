@@ -37,7 +37,7 @@ pdf-designer/
   vaults/           # WHAT — vaults/<id>.json  (was <user>/resume-source.json)
   profiles/         # HOW  — profiles/<id>-resume.json
   resumes/          # WORK — resumes/<id>/{html,defaults,_exports,resources}
-  _job-apps/        # JOB  — _job-apps/<Track>/  (was applications/ · storage/_job-listings/)
+  _job-apps/        # JOB  — _job-apps/<Track>/  (canonical; applications/ is README-only)
   collages/         # collage projects
   brands/           # private brand maps (was storage/brand-design/)
 
@@ -60,7 +60,7 @@ pdf-designer/
 | `vaults/` | What may I claim? | `storage/<user>/resume-source.json` |
 | `profiles/` | How does it print? | `storage/profiles/` |
 | `resumes/` | Working HTML + defaults + exports | `storage/jenni/` · `shade/` · `studio/` |
-| `_job-apps/` | This job | `applications/` (README stub) · `storage/_job-listings/` |
+| `_job-apps/` | This job | **canonical.** `applications/` is a tracked README redirect only (no listings). `storage/_job-listings/` is the dual-run alias. |
 | `collages/` | Image layouts | `storage/collages/` |
 | `brands/` | My palette map | `storage/brand-design/` |
 
@@ -99,6 +99,7 @@ _job-apps/*
 !_job-apps/README.md
 !_job-apps/_template/
 
+# Optional alias — README redirect only; do not store listings here
 applications/*
 !applications/README.md
 

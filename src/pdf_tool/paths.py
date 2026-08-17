@@ -98,6 +98,15 @@ def _prefix_pair(rel: str, new_prefix: str, old_prefix: str) -> tuple[str, str] 
 _JOB_APP_PREFIXES = ("_job-apps", "applications", "storage/_job-listings")
 
 
+def reject_flag_looking_path(path: str | None, *, flag: str = "--output-dir") -> None:
+    """Refuse a path that is actually a leftover CLI flag (``--output-dir`` as a folder)."""
+    if path and path.lstrip().startswith("-"):
+        raise SystemExit(
+            f"refusing {flag} path {path!r} — that looks like a CLI flag, not a folder.\n"
+            "Pass a real directory (for example resumes/jenni/_exports or resumes/jenni/defaults)."
+        )
+
+
 def _job_app_aliases(rel: str) -> tuple[str, ...] | None:
     """Map any job-tree path onto ``(_job-apps/…, applications/…, storage/_job-listings/…)``."""
     rest: str | None = None
