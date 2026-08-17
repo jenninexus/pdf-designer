@@ -43,11 +43,12 @@ direction (free GitHub vs paid app): [`docs/PRODUCT.md`](docs/PRODUCT.md). Packa
 
 **Active plan (one):** [`Plans/_Active/2026-08-13-intuitive-workspace-product.md`](Plans/_Active/2026-08-13-intuitive-workspace-product.md) · launch-ready copy [`Plans/_Active/2026-08-13-launch-ready-workspace.md`](Plans/_Active/2026-08-13-launch-ready-workspace.md) · index [`Plans/README.md`](Plans/README.md). Completed waves: [`Plans/_Complete/`](Plans/_Complete/). Folder UX target: [`docs/WORKSPACE-LAYOUT.md`](docs/WORKSPACE-LAYOUT.md). Product hub: `C:\Github\product-design` · `/jen:products`.
 
-**Session start / wrap:** `/start` → local [`.claude/commands/start.md`](.claude/commands/start.md)
-(gitignored). `/wrap` → local [`.claude/commands/wrap.md`](.claude/commands/wrap.md) — **requires
-`/reflect`** + next-agent handoff (`/jen:wrap` routes here too). Public protocol seeds:
+**Session start / wrap:** `/pdf-start` → local [`.claude/commands/pdf-start.md`](.claude/commands/pdf-start.md)
+(gitignored). `/pdf-wrap` → local [`.claude/commands/pdf-wrap.md`](.claude/commands/pdf-wrap.md) — **requires
+`/reflect`** + next-agent handoff. `/start` and `/wrap` (and `/jen:start` / `/jen:wrap`) are thin
+aliases in `start.md` / `wrap.md` that defer here. Public protocol seeds:
 `.claude/commands/*.example.md`. Palette prefs: [`docs/SSOT.md`](docs/SSOT.md) § Personal palette prefs ·
-private maps in `storage/brand-design/`. Product front door: [`examples/resume-studio/`](examples/resume-studio/).
+private maps in `brands/` (was `storage/brand-design/`). Product front door: [`examples/resume-studio/`](examples/resume-studio/).
 
 **Where learnings go — two surfaces, do not confuse them.** `dev-log-sego.yaml` is **gitignored**, so
 a lesson recorded only there is invisible to every other clone and to the next agent. Durable
@@ -56,7 +57,7 @@ lessons — a trap, its root cause, and the guard that now prevents it — go to
 narrative (what happened today, next steps) stays in the dev-log. If the lesson changes a standing
 rule, edit the owning `docs/` page **as well**.
 
-**Netflix — CLOSED:** both founders submitted. Keep any `storage/_job-listings/Netflix*` schemas —
+**Netflix — CLOSED:** both founders submitted. Keep any `_job-apps/Netflix*` schemas —
 do not delete. Do not reopen/rebuild/re-apply unless the human explicitly asks.
 
 ---
@@ -133,7 +134,8 @@ and follow it."*
 | `make-cover-letter.example.md` | ✅ public seed | Standalone cover letter (not auto-bundled with resume) |
 | `make-work-examples.example.md` | ✅ public seed | Standalone work-samples / portfolio |
 | `make-collage.example.md` | ✅ public seed | Collage / layout builder over `layouts/` + `themes/` |
-| `start.md` · `wrap.md` · `pdf-wrap.md` · `README.md` | 🔒 **dev-only** (gitignored) | Session start/wrap + local index — include `/reflect`; never push |
+| `pdf-start.md` · `pdf-wrap.md` | 🔒 **dev-only** (gitignored) | Canonical session start/wrap — include `/reflect`; never push |
+| `start.md` · `wrap.md` · `README.md` | 🔒 **dev-only** (gitignored) | Thin aliases → `pdf-start.md` / `pdf-wrap.md` + local index |
 | `make-resume.md` · `make-cover-letter.md` · `make-work-examples.md` · `make-collage.md` | 🔒 personal (gitignored) | Your copies with real specifics |
 
 **Applicant shorthand** (local `README.md` when present; else `/jen:pdf` applicant table).
@@ -169,15 +171,15 @@ marketed résumé-creator demo path (vault shape + palettes + smoke), not privat
 | `themes/PALETTE-RULES.md` | ⭐ **the color rule** (no brown/mustard/lime) + how the guard enforces it |
 | `themes/default-collage.json` | collage canvas presets + `backgrounds` (gradients) + per-bg `frame` colors ([`docs/COLLAGE-DESIGN.md`](docs/COLLAGE-DESIGN.md)) |
 | `layouts/` | ⭐ **STRUCTURE registry** — document recipes under `layouts/{cover-letter,letter,resume,work-examples}/` + `layouts/collage/`; counterpart to `themes/` (color). See [`layouts/README.md`](layouts/README.md). |
-| `examples/brand-design/` | tracked **template** for private brand maps (copy → `storage/brand-design/`) |
+| `examples/brand-design/` | tracked **template** for private brand maps (copy → `brands/`) |
 | `examples/profiles/<id>/` | one profile per document type: `profile.json` + reference `.html` + example data |
 | `examples/resume-studio/` | ⭐ **public product entry** — marketed résumé-creator demo (links vault/palette/skills shapes) |
 | `examples/_job-listings/` | one-folder-per-job-application workflow + copyable template |
 | `docs/` | ARCHITECTURE · SSOT · PRODUCT · PACKAGING · GETTING-STARTED · PUBLIC-LOCAL-SPLIT · STORAGE · VAULT · JOB-ASSESSMENT · THEME-DESIGN · LAYOUT-SYSTEM · EXPORTS · COLLAGE-DESIGN · PREVIEWER · APPLICATIONS · LICENSING-NOTES ([`docs/README.md`](docs/README.md) is the index) |
 | `.config/mcp-pdf-designer.example.json` | ⭐ Tracked project config **seed** (breakpoints + hub/palette/layout pointers). Copy → local `mcp-pdf-designer.json` (gitignored — machine paths). |
 | `Plans/_Active/` | ⭐ the working roadmap (one file) — see [`Plans/README.md`](Plans/README.md) |
-| `storage/` | ⛔ **gitignored** dual-run alias. Prefer root `users/` · `vaults/` · `profiles/` · `resumes/` · `_job-apps/` · `collages/` · `brands/` (README + `*.example.json` tracked; real files ignored) |
-| `storage/studio/resources/images/martiangames/` | ⭐ **shared** MG title gallery (WebP) — both applicants; see [`docs/STORAGE.md`](docs/STORAGE.md) |
+| `storage/` | ⛔ **gitignored** alias directory. Live data: root `users/` · `vaults/` · `profiles/` · `resumes/` · `_job-apps/` · `collages/` · `brands/`. Payload duplicates archived 2026-08-16 under `storage/_archive/`. Unique leftovers: `private provider.md`, private font. |
+| `resumes/studio/resources/images/martiangames/` | ⭐ **shared** MG title gallery (WebP) — both applicants; see [`docs/STORAGE.md`](docs/STORAGE.md) |
 
 ### Privacy split (do not blur this)
 
@@ -227,7 +229,7 @@ Read [`docs/VAULT.md`](docs/VAULT.md) before authoring any resume claim.
   `h2` on a system font. Jobright content rank ≠ parse fail. SSOT:
   [`docs/JOB-ASSESSMENT.md`](docs/JOB-ASSESSMENT.md) § Tier 4.5 ·
   `examples/profiles/default-resume/profile.json#verify.atsParse` · each
-  `storage/profiles/<user>-resume.json#exports.exportPrefs`.
+  `profiles/<user>-resume.json#exports.exportPrefs`.
 - **Token names.** `--bg, --surface, --elevated, --text, --dim, --dim2, --border, --border2, --primary,
   --secondary, --accent, --support`. External palettes get *mapped into* these
   ([`docs/THEME-DESIGN.md`](docs/THEME-DESIGN.md)).

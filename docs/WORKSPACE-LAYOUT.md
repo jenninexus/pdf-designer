@@ -1,8 +1,9 @@
 # Workspace layout — product UX for local files
 
 **Status:** path resolver + root README scaffolds + SEGO **data copy** (2026-08-13).  
-**`storage/` remains** as the dual-run alias. Do not delete it until Hub, tracker, and vault
-smoke have lived on the new nouns. Copy script: `python scripts/migrate-workspace.py`.
+**`storage/` remains** as a directory (private provider template + private font + archived
+duplicates as of 2026-08-16). Do not delete the folder until Hub/tracker/vault
+smoke has lived only on the new nouns. Copy script: `python scripts/migrate-workspace.py`.
 
 This page is the **clone-safe product story**: what a future GitHub user should see at the
 repo root, vs what stays private on their machine.

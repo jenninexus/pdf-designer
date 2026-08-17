@@ -92,6 +92,7 @@ job-listing-capture-*.md
 .claude/commands/make-collage.md
 .claude/commands/start.md
 .claude/commands/wrap.md
+.claude/commands/pdf-start.md
 .claude/commands/pdf-wrap.md
 .claude/commands/README.md
 

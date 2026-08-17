@@ -4,8 +4,10 @@
 > Engine: `pdf_tool.paths` accepts both trees. **SEGO live files were copied** to
 > `users/` · `vaults/` · `profiles/` · `resumes/` · `_job-apps/` · `collages/` · `brands/`
 > on 2026-08-13 (`scripts/migrate-workspace.py`). Jobs were renamed `_job-apps/` (was
-> `applications/`). **`storage/` is still the alias** —
-> do not delete it until dual-run smoke has lived on the new nouns.
+> `applications/`). Byte-identical `storage/` copies were archived
+> 2026-08-16 (`storage/_archive/2026-08-16-root-noun-dupes/`). **`storage/` remains
+> as a directory** (private provider template + private font + archive) — do not delete the
+> folder until dual-run is fully retired.
 >
 > **Tracked protocol SSOT:** this page lives in `docs/` so a fresh clone can learn the flow.
 > Your machine’s `storage/` folder is **gitignored** and holds only real personal data.
@@ -18,14 +20,14 @@ now live under **`docs/`** (gitignored) — not a second docs tree here.
 
 ## Public vs private (one glance)
 
-| Tracked in the repo (safe to clone) | Private in `storage/` (gitignored) | Lives in theme kits (website SSOT) |
+| Tracked in the repo (safe to clone) | Private at repo root (gitignored) | Lives in theme kits (website SSOT) |
 |---|---|---|
-| `src/`, `themes/`, `examples/`, `docs/`, `AGENTS.md` | `users/`, `*/resume-source.json`, `profiles/`, `_job-listings/`, `brand-design/`, `collages/`, `_exports/`, **`docs/`** | `www-theme-kit/profiles/…` (official kit) |
+| `src/`, `themes/`, `examples/`, `docs/`, `AGENTS.md` | `users/`, `vaults/`, `profiles/`, `_job-apps/`, `brands/`, `collages/`, `resumes/` | `www-theme-kit/profiles/…` (official kit) |
 | Brand-neutral default theme + `examples/brand-design/` | Real brand maps + vaults + contacts + private notes | Live site primary/secondary/accent |
 | `.config/mcp-pdf-designer.example.json` | Local `mcp-pdf-designer.json` (absolute paths) | — |
 
 **Website kits own live site colors.** pdf-designer stores a **mapped copy** under
-`storage/brand-design/brand-*.json` for exports and the Design Hub. That mapped file is the
+`brands/brand-*.json` for exports and the Design Hub. That mapped file is the
 **pdf-designer SSOT** for personal/studio résumé colors — edit it here, point everything else at it.
 
 ---
@@ -34,20 +36,20 @@ now live under **`docs/`** (gitignored) — not a second docs tree here.
 
 | Who / what | Single file to edit | Pointed at by |
 |---|---|---|
-| **Jenni** personal | `storage/brand-design/brand-jenninexus.json` | `users/jenni.json` → `brandTheme.ssot`, `profiles/jenni-resume.json` |
-| **Shade** personal (Synagen) | `storage/brand-design/brand-synagen.json` | `users/shade.json` → `brandTheme.ssot`, `profiles/shade-resume.json` |
-| **Martian Games** studio | `storage/brand-design/brand-martian.json` | `profiles/martian-resume.json`, `profiles/studio-resume.json` |
+| **Jenni** personal | `brands/brand-jenninexus.json` | `users/jenni.json` → `brandTheme.ssot`, `profiles/jenni-resume.json` |
+| **Shade** personal (Synagen) | `brands/brand-synagen.json` | `users/shade.json` → `brandTheme.ssot`, `profiles/shade-resume.json` |
+| **Martian Games** studio | `brands/brand-martian.json` | `profiles/martian-resume.json`, `profiles/studio-resume.json` |
 
 Do **not** keep a second hex map in `users/*.json`. Upstream website profiles are
 **inspiration / sync source**, not a second résumé SSOT.
 
 **MG dark role lockstep** (do not swap secondary/accent): primary `#FF6B00` · secondary `#8B5CF6` ·
 accent `#FF4500` · support `#42F4C8` — mirrors `www-theme-kit/profiles/martiangames.json` and
-`www-theme-kit/palettes/resume-palettes.json#martian-resume`. Path is `brand-design/` (never legacy
-`storage/brands/`).
+`www-theme-kit/palettes/resume-palettes.json#martian-resume`. Path is `brands/` (was
+`storage/brand-design/`).
 
-**Cross-PC:** `storage/` is gitignored. After editing brand maps on SEGO, copy
-`storage/brand-design/` → BEE `C:\p\pdf-designer\storage\brand-design\` over SMB
+**Cross-PC:** root nouns are gitignored. After editing brand maps on SEGO, copy
+`brands/` → BEE `C:\p\pdf-designer\brands\` over SMB
 (`\\BEETHOVEN\p\…`). Tracked docs sync via `git pull` on BEE (pdf-designer uses a deploy key —
 see `/jen/pdf` · `/jen/bee` §11b). Prefs chain: [`SSOT.md`](SSOT.md) § Personal palette prefs.
 
@@ -61,11 +63,11 @@ Each layer answers exactly one question.
 
 ```
   ① WHO ─────────────  users/<user>.json
-                       contact · emails · brandTheme.ssot → brand-design/brand-*.json
+                       contact · emails · brandTheme.ssot → brands/brand-*.json
                        characterVoice  ← personality · contrast · register map
                                     │
                                     ▼
-  ② WHAT ────────────  <user>/resume-source.json          ◀── ⭐ THE VAULT
+  ② WHAT ────────────  vaults/<user>.json          ◀── ⭐ THE VAULT
      every claim (source · strength · tracks) + voice (application prose)
      + roleTracks.<track>.angle
                                     │
@@ -76,11 +78,11 @@ Each layer answers exactly one question.
                        (+ martian-resume / studio-resume for studio voice)
                                     │
                                     ▼
-  ④ THE JOB ─────────  _job-listings/<Track>/
+  ④ THE JOB ─────────  _job-apps/<Track>/
                        <Company>.md · application.json · theme.json · *.html
                                     │
                                     ▼
-  → OUT ─────────────  <user>/_exports/<Track>/
+  → OUT ─────────────  resumes/<user>/_exports/<Track>/
 ```
 
 ### Shared studio assets vs per-user assets (⭐ read before hunting images)
@@ -90,9 +92,9 @@ twice. Personal / brand-identity art stays per-user.
 
 | Asset class | SSOT path | Who |
 |---|---|---|
-| **MG title stills + MG logo** | `storage/studio/resources/images/martiangames/` | Jenni **and** Shade |
-| Agency banner + agent faces | `storage/jenni/resources/images/agency/` | **Jenni only** |
-| Synagen logo / engine shots | `storage/shade/resources/logos/` (+ `images/synagen/` when present) | **Shade lead** (Jenni may reference the logo file under her own `logos/` copy) |
+| **MG title stills + MG logo** | `resumes/studio/resources/images/martiangames/` | Jenni **and** Shade |
+| Agency banner + agent faces | `resumes/jenni/resources/images/agency/` | **Jenni only** |
+| Synagen logo / engine shots | `resumes/shade/resources/logos/` (+ `images/synagen/` when present) | **Shade lead** (Jenni may reference the logo file under her own `logos/` copy) |
 | Source CVs / owner quotes | `storage/<user>/resources/refrence/` | That person |
 
 ```

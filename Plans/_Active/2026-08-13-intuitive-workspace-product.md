@@ -55,7 +55,7 @@ folder or kind chip from another profile must not empty the library.
 - [x] Tracker lists **who × job**, not a daily count (`applied-index.md` is the human log)
 - [x] Dual-run smoke — root-noun resolver wins; public white-label smoke, vault validation, and path tests pass (2026-08-13)
 - [x] Public-release boundary — neutralize all public examples, scan the complete `examples/` tree, and ship only verified OFL assets under `themes/fonts/` (2026-08-13)
-- [ ] Archive the legacy `storage/` tree only after its local docs and bare-command path references are relocated or retired; do not delete the alias in place
+- [x] Archive the legacy `storage/` **payload duplicates** (2026-08-16) into `storage/_archive/`; keep the `storage/` directory as alias + private provider template + private font. Do not delete the alias folder yet.
 
 ### Still human-gated (carry forward)
 
