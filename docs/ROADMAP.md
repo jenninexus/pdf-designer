@@ -9,7 +9,7 @@
 
 ## Remaining (open items)
 
-- [ ] **Root workspace migration** — data **copy** landed; jobs live in `_job-apps/`; drop `storage/` only after dual-run lives on root nouns
+- [ ] Root workspace **duplicates archived** (2026-08-16) — live data at root nouns; `storage/` keeps private provider template + private font + `_archive/`. Do not delete the `storage/` directory until dual-run is retired.
 - [ ] **History scrub** — `docs/HISTORY-SCRUB.md` (gitignored) then human-authorized force-push (**incomplete plan**)
 - [ ] **Push origin/main** — `jenninexus` GitHub auth (**local commit only** until then)
 - [ ] **Patreon / blog / Gumroad / JN `/products`** — drafts in socials; GitHub **private**; do not post/deploy from an agent. Card: `C:\Github\product-design\docs\PDF-DESIGNER.md`
