@@ -1,0 +1,33 @@
+{
+  "_README": [
+    "LIVE public example profile — tracked. Hub dropdown id is `examples`.",
+    "Copy you-resume.example.json → profiles/you-resume.json (gitignored) for a real person.",
+    "Editing you-resume.json must not hide this file; both can exist at once."
+  ],
+  "id": "examples",
+  "name": "Jane Example — public templates",
+  "status": "ready",
+  "lastUpdated": "2026-08-18",
+  "description": "Clone-safe Hub profile. Points at examples/profiles/default-* so every kind chip has a card.",
+  "user": "examples",
+  "vault": "../vaults/examples.json",
+  "privacy": {
+    "tracked": true,
+    "reason": "Fictional Jane Example only. Real applicants use gitignored profiles/<you>-resume.json."
+  },
+  "extends": "../examples/profiles/default-resume/profile.json",
+  "layout": {
+    "paper": "Letter",
+    "widthIn": 8.5,
+    "heightIn": 11,
+    "pages": 2
+  },
+  "packs": {
+    "resume": "../examples/profiles/default-resume/default-resume.html",
+    "coverLetter": "../examples/profiles/default-cover-letter/default-cover-letter.html",
+    "letter": "../examples/profiles/default-letter/personal-letter.html",
+    "workSamples": "../examples/profiles/default-work-examples/default-work-examples.html",
+    "collage": "../examples/profiles/default-collage/default-collage.html",
+    "gallery": "../examples/profiles/default-gallery/_candidates/hero-mosaic.html"
+  }
+}

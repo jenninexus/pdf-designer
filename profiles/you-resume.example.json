@@ -2,7 +2,9 @@
   "_README": [
     "THE PROFILE — layer ③ of four. Answers: HOW does it render?",
     "",
-    "Copy to storage/profiles/<you>-resume.json. That copy is gitignored; this is the shape.",
+    "Copy to profiles/<you>-resume.json. That copy is gitignored; this is the shape.",
+    "The live public Hub profile is profiles/examples.json — keep that file so clones",
+    "still see Jane Example after you add your own card.",
     "",
     "ONE profile per person. There are NO per-track profile files — a profile per role",
     "track duplicates the vault and drifts out of sync with it. The per-role framing",
@@ -15,28 +17,28 @@
   "name": "Your Name — Personal Resume (base profile)",
   "status": "local-private",
   "lastUpdated": "2026-01-01",
-  "extends": "../../examples/profiles/default-resume/profile.json",
+  "extends": "../examples/profiles/default-resume/profile.json",
   "user": "../users/yourname.json",
-  "vault": "../yourname/resume-source.json",
+  "vault": "../vaults/yourname.json",
   "privacy": {
     "tracked": false,
-    "reason": "Real personal resume data. storage/ is gitignored."
+    "reason": "Real personal resume data. profiles/<you>-resume.json is gitignored."
   },
   "voice": "One line pointer. Full application voice → vault `voice`. Personality / contrast → users/<you>.json#characterVoice. Network map → <VOICE_SEED>/registry.json.",
   "leadIdentity": {
     "rule": "OPTIONAL. If lead identity CHANGES by track, put the map in the vault ONLY — profile keeps a pointer.",
-    "source": "../yourname/resume-source.json#voice.leadIdentityByTrack",
+    "source": "../vaults/yourname.json#voice.leadIdentityByTrack",
     "_note": "Do not duplicate per-track lines here; they drift. Keep track-specific framing in the private applicant profile."
   },
   "roleTracks": {
     "_note": "Defined in the VAULT, not here. Pointer only — do not copy the available[] list.",
-    "source": "../yourname/resume-source.json#roleTracks"
+    "source": "../vaults/yourname.json#roleTracks"
   },
   "theme": {
-    "base": "../../themes/default-resume.css",
+    "base": "../themes/default-resume.css",
     "default": "Your brand palette — see users/yourname.json -> brandTheme.",
     "mode": "company-derived",
-    "modeNote": "Derive the palette from the TARGET COMPANY's real brand CSS when they give a usable signal; store it at _job-listings/<Track>/theme.json (it belongs to the company, not to you). Fall back to your brandTheme otherwise.",
+    "modeNote": "Derive the palette from the TARGET COMPANY's real brand CSS when they give a usable signal; store it at _job-apps/<Track>/theme.json (it belongs to the company, not to you). Fall back to your brandTheme otherwise.",
     "pairing": "If two people apply to the SAME company: both render from the company palette with SPLIT accent runs — same grid and type, different accent order — so they read as a matched pair from one studio rather than two copies of one document.",
     "houseRule": "themes/PALETTE-RULES.md — no brown, no mustard, no lime. Enforced on every export."
   },
@@ -53,8 +55,8 @@
     "order": "Cover letter FIRST, then resume."
   },
   "exports": {
-    "dir": "../yourname/_exports/<Application-Dir>/",
-    "rule": "PDFs and PNGs go to storage/<user>/_exports/<Application-Dir>/ — NEVER into the application folder. The application folder holds the listing doc, application.json, theme.json, and the .html sources only. This keeps everything ONE person needs to send in one place.",
+    "dir": "../resumes/yourname/_exports/<Application-Dir>/",
+    "rule": "PDFs and PNGs go to resumes/<user>/_exports/<Application-Dir>/ — NEVER into the application folder. The application folder holds the listing doc, application.json, theme.json, and the .html sources only. This keeps everything ONE person needs to send in one place.",
     "deliverable": "Unless asked otherwise, an application ships: resume light+dark PDF, cover letter light+dark PDF, and the merged FINAL bundle. PNGs only on request."
   }
 }

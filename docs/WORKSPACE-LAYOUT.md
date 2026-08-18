@@ -83,14 +83,17 @@ Track **READMEs + `*.example.*`**; ignore real data:
 users/*
 !users/README.md
 !users/*.example.json
+!users/examples.json
 
 vaults/*
 !vaults/README.md
 !vaults/*.example.json
+!vaults/examples.json
 
 profiles/*
 !profiles/README.md
 !profiles/*.example.json
+!profiles/examples.json
 
 resumes/*
 !resumes/README.md

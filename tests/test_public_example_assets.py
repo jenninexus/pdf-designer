@@ -26,6 +26,32 @@ def test_public_example_html_has_no_private_workspace_asset_references() -> None
     assert offenders == [], f"public examples reference ignored workspace assets: {offenders}"
 
 
+def test_tracked_tree_has_no_personal_applicant_files() -> None:
+    import subprocess
+
+    listed = subprocess.check_output(["git", "ls-files"], cwd=ROOT, text=True)
+    banned_prefixes = (
+        "users/jenni",
+        "users/shade",
+        "users/studio",
+        "vaults/jenni",
+        "vaults/shade",
+        "vaults/studio",
+        "profiles/jenni",
+        "profiles/shade",
+        "profiles/studio",
+        "resumes/jenni",
+        "resumes/shade",
+        "resumes/studio",
+    )
+    leaked = [
+        line.replace("\\", "/")
+        for line in listed.splitlines()
+        if any(line.replace("\\", "/").startswith(prefix) for prefix in banned_prefixes)
+    ]
+    assert leaked == [], f"personal applicant files are tracked: {leaked}"
+
+
 def test_public_letter_uses_the_tracked_parisienne_asset() -> None:
     letter = ROOT / "examples/profiles/default-letter/personal-letter.html"
     text = letter.read_text(encoding="utf-8")
