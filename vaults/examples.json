@@ -1,0 +1,174 @@
+{
+  "_meta": {
+    "schema": "vault/v2",
+    "whatThisIs": "Public Jane Example vault — tracked so /vault has a clone-safe card. Copy you.example.json for a real person.",
+    "validate": "python -m pdf_tool.check_vault vaults/examples.json"
+  },
+
+  "roleTracks": {
+    "product-design": {
+      "covers": "Document systems, résumé studios, and local-first design tools.",
+      "theme": "company-derived",
+      "toolbeltOrder": ["HTML", "CSS", "Python", "Playwright"],
+      "angle": {
+        "leadWith": [
+          "Shipped a local résumé studio: vault → Hub → light + dark PDF",
+          "Equal-margin Letter geometry that survives palette swaps",
+          "ATS-honest light PDF plus a branded dark twin with the same pagination"
+        ],
+        "demote": ["Unrelated illustration credits"]
+      }
+    }
+  },
+
+  "voice": {
+    "person": "First person. Warm and direct.",
+    "tone": "Concrete, unhurried, specific.",
+    "personality": "A designer who would rather show a working PDF than a mood board.",
+    "resume": "Claim-dense, track-angled, company-agnostic within the track.",
+    "coverLetter": "Warmer and company-specific.",
+    "avoid": ["Corporate jargon", "Buzzword stacking"]
+  },
+
+  "boardSkills": {
+    "lastUpdated": "2026-08-18",
+    "tags": [
+      {"label": "HTML", "group": "web", "mapsTo": "sk-html"},
+      {"label": "CSS", "group": "web", "mapsTo": "sk-css"},
+      {"label": "Python", "group": "tools", "mapsTo": "sk-python"},
+      {"label": "Playwright", "group": "tools", "mapsTo": "sk-playwright"},
+      {"label": "Resume design", "group": "craft", "mapsTo": "sk-resume"},
+      {"label": "Document systems", "group": "craft", "mapsTo": "sk-docs"}
+    ]
+  },
+
+  "goToPacks": {
+    "default-resume": {
+      "label": "Example résumé",
+      "targets": "ATS-honest light + branded dark",
+      "html": "examples/profiles/default-resume/default-resume.html",
+      "pages": 2
+    },
+    "default-cover-letter": {
+      "label": "Example cover letter",
+      "targets": "One-page letter",
+      "html": "examples/profiles/default-cover-letter/default-cover-letter.html",
+      "pages": 1
+    },
+    "default-work-examples": {
+      "label": "Example work samples",
+      "targets": "Hero mosaic · 6 tiles · Letter portrait",
+      "html": "examples/profiles/default-work-examples/default-work-examples.html",
+      "pages": 1
+    },
+    "default-letter": {
+      "label": "Example personal letter",
+      "targets": "Formal letter",
+      "html": "examples/profiles/default-letter/personal-letter.html",
+      "pages": 1
+    },
+    "default-collage": {
+      "label": "Example collage",
+      "targets": "hero-mosaic layout family",
+      "html": "examples/profiles/default-collage/default-collage.html",
+      "pages": 1
+    }
+  },
+
+  "skills": {
+    "documents": [
+      {
+        "id": "sk-html",
+        "claim": "Authors print-ready HTML that Chromium paginates the same way a browser prints.",
+        "strength": "lead",
+        "tracks": ["product-design"],
+        "source": "examples/profiles/default-resume/default-resume.html",
+        "confidence": "verified"
+      },
+      {
+        "id": "sk-css",
+        "claim": "Keeps light ATS and dark branded modes on one stylesheet with equal Letter margins.",
+        "strength": "lead",
+        "tracks": ["product-design"],
+        "source": "themes/default-resume.css",
+        "confidence": "verified"
+      },
+      {
+        "id": "sk-resume",
+        "claim": "Designs two-page résumés that fit their box instead of shrinking the margin.",
+        "strength": "solid",
+        "tracks": ["product-design"],
+        "source": "docs/LAYOUT-SYSTEM.md",
+        "confidence": "verified"
+      },
+      {
+        "id": "sk-docs",
+        "claim": "Treats a résumé as a query against a vault, not a rewrite of the whole career each time.",
+        "strength": "solid",
+        "tracks": ["product-design"],
+        "source": "docs/VAULT.md",
+        "confidence": "verified"
+      },
+      {
+        "id": "sk-python",
+        "claim": "Ships local Python tooling with no network calls and no environment file.",
+        "strength": "supporting",
+        "tracks": ["product-design"],
+        "source": "AGENTS.md",
+        "confidence": "verified"
+      },
+      {
+        "id": "sk-playwright",
+        "claim": "Exports PDF and PNG through headless Chromium so print matches preview.",
+        "strength": "supporting",
+        "tracks": ["product-design"],
+        "source": "src/pdf_tool/html_to_pdf.py",
+        "confidence": "verified"
+      }
+    ]
+  },
+
+  "employment": [
+    {
+      "id": "emp-example-studio",
+      "org": "Example Studio",
+      "role": "Product designer",
+      "dates": "2024 – Present",
+      "duration": "2 years",
+      "summary": "Owns the public example path for a local-first résumé studio.",
+      "bullets": [
+        "Shipped Design Hub examples for résumé, letter, work samples, and collage",
+        "Kept personal vaults off GitHub while the clone path still has something to open"
+      ],
+      "tracks": ["product-design"],
+      "strength": "lead",
+      "source": "examples/profiles/",
+      "confidence": "verified"
+    }
+  ],
+
+  "credits": {
+    "titles": [
+      {
+        "name": "PDF Designer public examples",
+        "status": "shipped",
+        "yourRole": "Authored the Jane Example vault, Hub templates, and work-sample mosaic.",
+        "tracks": ["product-design"],
+        "strength": "lead"
+      },
+      {
+        "name": "Hero mosaic collage recipe",
+        "status": "shipped",
+        "yourRole": "Documented the 6-tile Letter portrait family used by work samples and collages.",
+        "tracks": ["product-design"],
+        "strength": "solid"
+      }
+    ]
+  },
+
+  "doNotClaim": {
+    "tools": [
+      { "name": "SomeUnverifiedTool", "status": "unverified", "askedOn": null }
+    ]
+  }
+}

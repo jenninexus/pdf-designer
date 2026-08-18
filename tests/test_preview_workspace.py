@@ -90,8 +90,36 @@ def test_profile_card_without_html_still_appears_in_header(tmp_path: Path):
 def test_hub_js_restores_profile_before_folder_rebuild():
     assert "function applyProfileChange()" in APP_HTML
     assert "docsForProfile(activeProfile())" in APP_HTML
-    boot = APP_HTML.split("openFromQuery();", 1)[0]
+    assert 'id="hubHomeLink"' in APP_HTML
+    assert 'const cur = sel ? sel.value : "";' in APP_HTML
+    boot = APP_HTML.split("if (!openFromQuery())", 1)[0]
     assert boot.rfind("restoreHubPrefs") < boot.rfind("buildFolderSelect();")
+
+
+def test_public_example_rel_tags_examples_profile():
+    tagged = classify_document(
+        "examples/profiles/default-resume/default-resume.html",
+        "default-resume",
+        (),
+    )
+    assert tagged["profile"] == "examples"
+    assert tagged["kind"] == "resume"
+    assert tagged["bucket"] == "examples"
+    work = classify_document(
+        "profiles/default-work-examples/default-work-examples.html",
+        "default-work-examples",
+        (),
+    )
+    assert work["profile"] == "examples"
+    assert work["kind"] == "work-samples"
+
+
+def test_examples_profile_sorts_first(tmp_path: Path):
+    users = tmp_path / "users"
+    users.mkdir()
+    (users / "alex.json").write_text(json.dumps({"id": "alex"}), encoding="utf-8")
+    (users / "examples.json").write_text(json.dumps({"id": "examples"}), encoding="utf-8")
+    assert workspace_profile_ids(tmp_path) == ["examples", "alex"]
 
 
 def test_scan_skips_archive_and_template_html(tmp_path: Path):
@@ -130,3 +158,4 @@ def test_public_examples_cover_each_hub_kind():
     assert any("work-example" in path for path in by_kind.get("work-samples", []))
     assert any("collage" in path for path in by_kind.get("collage", []))
     assert any(path.endswith("_candidates/index.html") for path in by_kind.get("gallery", []))
+    assert all(doc.get("profile") == "examples" for doc in docs)

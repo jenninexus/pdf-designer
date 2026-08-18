@@ -75,8 +75,9 @@ Local-first library + filters (Jobright-style UX inspiration — not cloud match
 
 - **Kind chips (leading, after Profiles):** All · Resumes · Cover Letters · Letters · Work Samples · **Collages** · Galleries — then Library / Recipes / Vault / search / folder / palette scroll horizontally. **Refresh (icon) + Export (download icon) stay pinned** on the right; **⋯** opens the output-folder popover (also pinned — not clipped). ≤767.98px: hamburger drawer holds filters + outdir; magnifier opens search overlay (Ctrl/Cmd+K). Mouse wheel over the header strip scrolls that row horizontally.
 - **Folder:** custom picker (not a bare `<select>`). Open the list → hover a row for a **ghost ★**; click the star to pin / unpin. Pinned folders sort to the **top** and persist in `localStorage` (`pdf-designer.hub.pinnedFolders`) across Refresh and full reloads. No separate pin button in the toolbar. Menu is `position:fixed` (JS places it from the trigger rect) so `.hub-bar-scroll`’s `overflow-y:hidden` cannot clip it.
-- **Profiles** (was “Who”): `all profiles` plus every workspace id from `users/` + `profiles/`. Path ownership (`resumes/<id>/` · legacy `storage/<id>/` URLs resolve to the same files) or a hyphen-bounded token (`jenni-…`, `meet-jenni-bot`) tags the card. Preference: `pdf-designer.hub.profileFilter`.
-  - Choosing a profile **scopes** the folder picker and kind-chip counts to that profile. A leftover collage/shade folder cannot hide Jenni’s resumes. Kind chips with zero docs for that profile are dropped and the kind filter resets to All.
+- **Profiles** (was “Who”): `all profiles` plus **`examples` first** (Jane Example, from tracked `profiles/examples.json`) then every workspace id from `users/` + `profiles/`. Path ownership (`resumes/<id>/` · legacy `storage/<id>/` URLs resolve to the same files) or a hyphen-bounded token (`jenni-…`, `meet-jenni-bot`) tags the card. Preference: `pdf-designer.hub.profileFilter`. First visit with no stored preference selects `examples`. **Design Hub** logo returns to the home landing (kind cards) and clears `?doc=`.
+  - Choosing a profile **scopes** the folder picker and kind-chip counts to that profile. Kind chips click the first matching card. A leftover folder filter is **not** restored across reload (that hid the library behind one template dir).
+  - Copy `profiles/you-resume.example.json` → `profiles/you-resume.json` for yourself; keep `profiles/examples.json` so the public cards stay in the dropdown.
   - **Trap:** collage projects **without** a profile token (`profile: null`) still disappear when Profiles ≠ `all profiles`. Search the folder name, or pick All. Lesson: `.memory/lesson-hub-collage-hidden-by-profile-filter.md`.
 - **Search:** name or path substring
 
@@ -87,12 +88,8 @@ Sidebar is a **left column**; the stage / iframe viewer fills the rest of the vi
 - **Live thumbnails** for every renderable `.html` (excludes `_exports/`, etc.)
 - **Palette swapper** → injects CSS vars into the previewed document (and into export)
 - **Export selected** → PDF light/dark or PNG pages
-- **Vault overview** → [http://127.0.0.1:8787/vault](http://127.0.0.1:8787/vault) · `GET /api/vault-overview`
-  — human-readable `users/`, profiles (joined under each person), `boardSkills` tags, and `goToPacks`
-  (which default résumé targets which job family). Read-only; no second renderer.
-  Pack **Open in library** links use `/?doc=<html-path>` to select that file in the Hub
-  library (filters cleared, person chip set, card scrolled into view). Selecting a
-  library card also writes `?doc=` into the URL for shareable deep-links.
+- **Vault overview** → [http://127.0.0.1:8787/vault](http://127.0.0.1:8787/vault) · `GET /api/vault-overview?profile=examples`
+  — default card is public Jane Example (`users/examples.json`). Personal vaults (jenni / shade / studio) appear only when that profile is selected in the header. Pack **Open in library** links use `/?doc=<html-path>`.
 - **Recipe gallery** → [http://127.0.0.1:8787/recipes](http://127.0.0.1:8787/recipes) · `GET /api/recipe-gallery`
   — browse tracked `layouts/{cover-letter,letter,resume,work-examples,collage}/` + `themes/presets/` (structure +
   public audition palettes). Copy collage CLI (`--recipe <id>`), open raw JSON, or

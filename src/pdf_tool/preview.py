@@ -27,7 +27,7 @@ import webbrowser
 from html import escape
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
-from urllib.parse import unquote, urlparse
+from urllib.parse import parse_qs, unquote, urlparse
 
 from .html_to_pdf import export_html_to_pdf
 from .paths import (
@@ -68,6 +68,8 @@ KINDS = (
     "example",
     "other",
 )
+
+PUBLIC_EXAMPLE_PROFILE = "examples"
 
 # theme-JSON block -> pdf-designer CSS custom properties
 _TOKEN_MAP = [
@@ -110,6 +112,15 @@ def _read_profile_id(path: Path) -> str | None:
     return ident.split("-", 1)[0] or None
 
 
+def _order_profile_ids(ids) -> list[str]:
+    """``examples`` first so clones see Jane Example before personal ids."""
+    unique = {ident for ident in ids if ident}
+    rest = sorted(ident for ident in unique if ident != PUBLIC_EXAMPLE_PROFILE)
+    if PUBLIC_EXAMPLE_PROFILE in unique:
+        return [PUBLIC_EXAMPLE_PROFILE, *rest]
+    return rest
+
+
 def workspace_profile_ids(root: Path) -> list[str]:
     """Discover the profile filter choices from both workspace path layouts."""
     ids = {
@@ -117,7 +128,7 @@ def workspace_profile_ids(root: Path) -> list[str]:
         for path in (*iter_user_paths(root=root), *iter_profile_paths(root=root))
         if (ident := _read_profile_id(path))
     }
-    return sorted(ids)
+    return _order_profile_ids(ids)
 
 
 def profile_options(profile_ids: list[str]) -> str:
@@ -130,10 +141,30 @@ def profile_options(profile_ids: list[str]) -> str:
 
 def available_profile_ids(root: Path, docs: list[dict]) -> list[str]:
     """Profiles with a workspace card or a document in the current library."""
-    return sorted(
-        {profile for profile in workspace_profile_ids(root)}
-        | {profile for document in docs if (profile := document.get("profile"))}
-    )
+    ids = {profile for profile in workspace_profile_ids(root)} | {
+        profile for document in docs if (profile := document.get("profile"))
+    }
+    if any(
+        document.get("profile") == PUBLIC_EXAMPLE_PROFILE
+        or str(document.get("path") or "").replace("\\", "/").startswith("examples/")
+        or document.get("bucket") == "examples"
+        for document in docs
+    ):
+        ids.add(PUBLIC_EXAMPLE_PROFILE)
+    return _order_profile_ids(ids)
+
+
+def is_public_example_rel(rel: str) -> bool:
+    """True for tracked public templates, including when Hub scans ``examples/`` as root."""
+    path_l = rel.replace("\\", "/").lower().lstrip("/")
+    if path_l.startswith("examples/") or "/examples/" in path_l:
+        return True
+    parts = path_l.split("/")
+    if parts and parts[0] == "resume-studio":
+        return True
+    if len(parts) >= 2 and parts[0] == "profiles" and parts[1].startswith("default-"):
+        return True
+    return False
 
 
 def _hyphen_token_in_rel(path_l: str, name_l: str, token: str) -> bool:
@@ -201,6 +232,10 @@ def classify_document(rel: str, stem: str, profile_ids: tuple[str, ...] = ()) ->
 
     if "work-example" in name_l or "work-sample" in name_l or "work_examples" in name_l:
         kind = "work-samples"
+
+    if is_public_example_rel(path):
+        bucket = "examples"
+        profile = PUBLIC_EXAMPLE_PROFILE
 
     group = str(Path(path).parent).replace("\\", "/")
     if group == ".":
@@ -396,7 +431,7 @@ APP_HTML = """<!doctype html>
 <header class="hub-bar" aria-label="Design Hub toolbar">
   <div class="hub-bar-scroll" id="hubBarScroll" tabindex="0" title="Scroll horizontally — mouse wheel works here">
     <div class="hub-group hub-brand-group">
-      <h1 class="hub-brand" title="__ROOT__">Design Hub</h1>
+      <a class="hub-brand" id="hubHomeLink" href="/" title="Home — public examples">Design Hub</a>
     </div>
     <div class="hub-group" title="Profiles — applicants + studio entity decks">
       <select id="personFilter" title="Profiles" aria-label="Profiles">
@@ -540,7 +575,13 @@ APP_HTML = """<!doctype html>
     <div class="stagebar" id="stagebar">
       <span>Select a template in the library →</span>
     </div>
-    <iframe id="main" title="Document preview" src="about:blank"></iframe>
+    <div class="hub-home" id="hubHomePanel">
+      <p class="hub-home-kicker">pdf-designer</p>
+      <h2>Design Hub</h2>
+      <p class="hub-home-lead">Public templates first. Pick a kind below, or use the chips and the <code>examples</code> profile to browse every clone-safe card.</p>
+      <div class="hub-home-grid" id="hubHomeGrid"></div>
+    </div>
+    <iframe id="main" title="Document preview" src="about:blank" hidden></iframe>
   </div>
 </main>
 
@@ -741,7 +782,7 @@ function populateFolderSelect(sel, cur, all, pins, pinSet) {
 function buildFolderSelect() {
   const sel = document.getElementById("folderFilter");
   const drawerSel = document.getElementById("drawerFolderFilter");
-  const cur = (sel && sel.value) || (localStorage.getItem(HUB_FOLDER_KEY) || "");
+  const cur = sel ? sel.value : "";
   const all = uniqueFolders();
   const pins = loadPinnedFolders().filter(p => all.includes(p));
   const pinSet = new Set(pins);
@@ -846,8 +887,13 @@ function activeProfile() {
   const sel = document.getElementById("personFilter");
   return (sel && sel.value) || "";
 }
+function isExampleDoc(d) {
+  const path = String(d.path || "").replace(/\\\\/g, "/");
+  return (d.profile || d.person) === "examples" || d.bucket === "examples" || path.startsWith("examples/");
+}
 function docsForProfile(profile) {
   if (!profile) return DOCS;
+  if (profile === "examples") return DOCS.filter(isExampleDoc);
   return DOCS.filter(d => (d.profile || d.person || null) === profile);
 }
 function counts() {
@@ -878,8 +924,11 @@ function fillKindChipHost(wrap) {
     b.innerHTML = `${KIND_LABEL[k]}<span class="n">${c[k] || 0}</span>`;
     b.addEventListener("click", () => {
       kindFilter = k;
+      setFolderFilterValue("", { silent: true });
       buildKindChips();
       renderLibrary();
+      const first = filteredDocs()[0];
+      if (first) select(first);
       closeDrawer();
     });
     wrap.appendChild(b);
@@ -918,7 +967,11 @@ function filteredDocs() {
     if (kindFilter !== "all" && d.kind !== kindFilter) return false;
     if (folder && d.group !== folder) return false;
     const dProfile = d.profile || d.person || null;
-    if (profile && dProfile !== profile && !d.path.startsWith("examples/")) return false;
+    if (profile === "examples") {
+      if (!isExampleDoc(d)) return false;
+    } else if (profile && dProfile !== profile) {
+      return false;
+    }
     if (q) {
       const hay = `${d.path} ${d.name} ${d.label} ${d.group} ${d.kind} ${dProfile || ""}`.toLowerCase();
       if (!hay.includes(q)) return false;
@@ -1002,8 +1055,78 @@ paletteSel.addEventListener("change", () => {
   document.querySelectorAll(".thumb iframe").forEach(f => applyPalette(f));
 });
 
+const HOME_KINDS = ["resume","cover-letter","letter","work-samples","collage","gallery"];
+
+function hideHome() {
+  const home = document.getElementById("hubHomePanel");
+  const frame = document.getElementById("main");
+  if (home) home.hidden = true;
+  if (frame) frame.hidden = false;
+}
+function showHome() {
+  const home = document.getElementById("hubHomePanel");
+  const frame = document.getElementById("main");
+  if (home) home.hidden = false;
+  if (frame) { frame.hidden = true; frame.removeAttribute("src"); frame.src = "about:blank"; }
+  document.querySelectorAll(".thumb").forEach(t => t.classList.remove("sel"));
+  const bar = document.getElementById("stagebar");
+  if (bar) bar.innerHTML = "<span>Public examples — pick a kind, or a card in the library</span>";
+  buildHomeGrid();
+}
+function goHome(opts) {
+  const pushUrl = !opts || opts.pushUrl !== false;
+  const resetProfile = opts && opts.resetProfile;
+  selected = null;
+  kindFilter = "all";
+  setFolderFilterValue("", { silent: true });
+  const sel = document.getElementById("personFilter");
+  if (resetProfile && sel && PROFILE_IDS.includes("examples")) {
+    sel.value = "examples";
+    const drawer = document.getElementById("drawerPersonFilter");
+    if (drawer) drawer.value = "examples";
+    try { localStorage.setItem(HUB_PROFILE_KEY, "examples"); } catch (_) {}
+  }
+  reconcileKindForProfile();
+  buildKindChips();
+  buildFolderSelect();
+  renderLibrary();
+  showHome();
+  if (pushUrl) {
+    try {
+      const u = new URL(location.href);
+      u.searchParams.delete("doc");
+      history.replaceState(null, "", u.pathname + u.search);
+    } catch (_) {}
+  }
+}
+function buildHomeGrid() {
+  const grid = document.getElementById("hubHomeGrid");
+  if (!grid) return;
+  grid.innerHTML = "";
+  const pool = docsForProfile("examples").length ? docsForProfile("examples") : DOCS;
+  for (const k of HOME_KINDS) {
+    const d = pool.find(x => x.kind === k) || DOCS.find(x => x.kind === k);
+    if (!d) continue;
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "hub-home-card";
+    b.innerHTML = `<span class="hub-home-kind">${KIND_LABEL[k] || k}</span>`
+      + `<span class="hub-home-name">${d.name}</span>`
+      + `<span class="hub-home-path">${d.path}</span>`;
+    b.addEventListener("click", () => {
+      kindFilter = k;
+      setFolderFilterValue("", { silent: true });
+      buildKindChips();
+      renderLibrary();
+      select(d);
+    });
+    grid.appendChild(b);
+  }
+}
+
 function select(d, el, { pushUrl = true } = {}) {
   selected = d;
+  hideHome();
   document.querySelectorAll(".thumb").forEach(t => t.classList.remove("sel"));
   if (el) el.classList.add("sel");
   else {
@@ -1087,12 +1210,17 @@ function applyProfileChange() {
   try { localStorage.setItem(HUB_PROFILE_KEY, v); } catch (_) {}
   const d = document.getElementById("drawerPersonFilter");
   if (d) d.value = v;
+  setFolderFilterValue("", { silent: true });
   reconcileKindForProfile();
   buildKindChips();
   buildFolderSelect();
   renderLibrary();
 }
-document.getElementById("personFilter").addEventListener("change", applyProfileChange);
+document.getElementById("hubHomeLink").addEventListener("click", (ev) => {
+  if (ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.altKey) return;
+  ev.preventDefault();
+  goHome({ resetProfile: true });
+});
 document.getElementById("search").addEventListener("input", renderLibrary);
 function readOutdir() {
   const a = document.getElementById("outdir");
@@ -1281,10 +1409,14 @@ buildStats();
 buildProfileSelects();
 (function restoreHubPrefs() {
   try {
-    const prof = localStorage.getItem(HUB_PROFILE_KEY) || "";
     const sel = document.getElementById("personFilter");
     const drawer = document.getElementById("drawerPersonFilter");
-    if (prof && sel && [...sel.options].some(o => o.value === prof)) {
+    const stored = localStorage.getItem(HUB_PROFILE_KEY);
+    let prof = stored;
+    if (stored == null) {
+      prof = PROFILE_IDS.includes("examples") ? "examples" : "";
+    }
+    if (sel && (prof === "" || [...sel.options].some(o => o.value === prof))) {
       sel.value = prof;
       if (drawer) drawer.value = prof;
     }
@@ -1294,7 +1426,7 @@ reconcileKindForProfile();
 buildKindChips();
 buildFolderSelect();
 renderLibrary();
-openFromQuery();
+if (!openFromQuery()) goHome({ pushUrl: false });
 openPaletteFromQuery();
 
 /* ---- Auto-refresh watcher ----
@@ -1428,7 +1560,9 @@ def make_handler(root: Path, docs: list[dict], palettes: list[dict]):
                 self._send(200, json.dumps(payload).encode("utf-8"), "application/json")
                 return
             if path == "/api/vault-overview":
-                payload = build_vault_overview(root)
+                qs = parse_qs(urlparse(self.path).query)
+                profile = (qs.get("profile") or [None])[0]
+                payload = build_vault_overview(root, profile=profile)
                 self._send(200, json.dumps(payload).encode("utf-8"), "application/json")
                 return
             if path == "/api/recipe-gallery":

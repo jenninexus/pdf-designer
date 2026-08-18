@@ -30,6 +30,7 @@ Commit when they are clone-safe and reusable:
 - `.claude/commands/*.example.md` — generalized protocol seeds; placeholders only
 - `.config/*.example.json` · `.vscode/mcp.json.example`
 - `.memory/lesson-*.md` — durable traps (no vault bodies)
+- `users/examples.json` · `vaults/examples.json` · `profiles/examples.json` — fictional Jane Example so the Hub Vault and profile dropdown have a clone-safe card. Copy-me seeds stay `*.example.json`.
 
 ## Keep local files untracked
 
