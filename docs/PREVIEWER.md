@@ -25,12 +25,14 @@ python -m pdf_tool.preview --port 9000 --no-open
 
 ### What a new user sees
 
-`python -m pdf_tool.preview` scans the **current checkout**. On a personal machine, that
-correctly includes ignored working documents under `resumes/`, `_job-apps/`, collages, and the
-legacy `storage/` alias. A fresh clone contains only tracked files, so it has no personal cards to
-discover. To inspect the release experience exactly, run `python -m pdf_tool.preview examples`:
-the library contains only the tracked default resume, letter, and collage examples. `examples/resume-studio/`
-is the walkthrough data and docs, not a renderable document directory by itself.
+`python -m pdf_tool.preview` scans the **current checkout** — root nouns (`resumes/`,
+`_job-apps/`, `collages/`, `users/`, `vaults/`, `profiles/`, `brands/`) plus tracked
+`examples/` and `layouts/`. The `storage/` directory was retired 2026-08-17; `pdf_tool.paths`
+still maps old `storage/<user>/…` preview URLs to `resumes/<user>/…` when the live file exists.
+A fresh clone contains only tracked files, so it has no personal cards to discover. To inspect
+the release experience exactly, run `python -m pdf_tool.preview examples`: the library contains
+only the tracked default resume, cover letter, letter, work samples, collage, and gallery examples.
+`examples/resume-studio/` is the walkthrough data and docs, not a renderable document directory by itself.
 
 **No MCP / always-on server.** Optional temporary localhost only. CLI export works without it.
 
@@ -73,7 +75,7 @@ Local-first library + filters (Jobright-style UX inspiration — not cloud match
 
 - **Kind chips (leading, after Profiles):** All · Resumes · Cover Letters · Letters · Work Samples · **Collages** · Galleries — then Library / Recipes / Vault / search / folder / palette scroll horizontally. **Refresh (icon) + Export (download icon) stay pinned** on the right; **⋯** opens the output-folder popover (also pinned — not clipped). ≤767.98px: hamburger drawer holds filters + outdir; magnifier opens search overlay (Ctrl/Cmd+K). Mouse wheel over the header strip scrolls that row horizontally.
 - **Folder:** custom picker (not a bare `<select>`). Open the list → hover a row for a **ghost ★**; click the star to pin / unpin. Pinned folders sort to the **top** and persist in `localStorage` (`pdf-designer.hub.pinnedFolders`) across Refresh and full reloads. No separate pin button in the toolbar. Menu is `position:fixed` (JS places it from the trigger rect) so `.hub-bar-scroll`’s `overflow-y:hidden` cannot clip it.
-- **Profiles** (was “Who”): `all profiles` plus every workspace id from `users/` + `profiles/` (and `storage/` aliases). Path ownership (`storage/<id>/` · `resumes/<id>/`) or a hyphen-bounded token (`jenni-…`, `meet-jenni-bot`) tags the card. Preference: `pdf-designer.hub.profileFilter`.
+- **Profiles** (was “Who”): `all profiles` plus every workspace id from `users/` + `profiles/`. Path ownership (`resumes/<id>/` · legacy `storage/<id>/` URLs resolve to the same files) or a hyphen-bounded token (`jenni-…`, `meet-jenni-bot`) tags the card. Preference: `pdf-designer.hub.profileFilter`.
   - Choosing a profile **scopes** the folder picker and kind-chip counts to that profile. A leftover collage/shade folder cannot hide Jenni’s resumes. Kind chips with zero docs for that profile are dropped and the kind filter resets to All.
   - **Trap:** collage projects **without** a profile token (`profile: null`) still disappear when Profiles ≠ `all profiles`. Search the folder name, or pick All. Lesson: `.memory/lesson-hub-collage-hidden-by-profile-filter.md`.
 - **Search:** name or path substring
@@ -168,18 +170,19 @@ book. Same pattern as cover-letter + resume bundles.
 Selecting a **header profile** must list that profile's documents. Restore the
 profile chip **before** rebuilding folder options; scope folder + kind counts
 to the selected profile or the library goes empty. README-only root-noun
-scaffolds must not win over live `storage/` (or live root-noun) payloads —
-`pdf_tool.paths._has_payload` is the rule. Application identity is the path
-relative to `_job-apps/` (or `applications/` / `storage/_job-listings/`), not the leaf folder
-name.
+scaffolds must not win over live root-noun payloads — `pdf_tool.paths._has_payload`
+is the rule. Application identity is the path relative to `_job-apps/` (or the tracked
+`applications/` README redirect), not the leaf folder name. Hub scan excludes `_archive/`
+and `*.template.html`; stale `/storage/<user>/…` links resolve via `resolve_preview_file`.
 
 Durable *why*: `.memory/lesson-hub-profile-scopes-folder-and-kind.md` ·
-`lesson-scaffold-readme-must-not-win-path-resolution.md`.
+`lesson-scaffold-readme-must-not-win-path-resolution.md` ·
+`lesson-hub-archive-not-found.md`.
 
 ## See also
 
 - [`COLLAGE-DESIGN.md`](COLLAGE-DESIGN.md) — layout families + canvas presets
 - [`THEME-DESIGN.md`](THEME-DESIGN.md) — token contract the palette swapper relies on
 - [`EXPORTS.md`](EXPORTS.md) — export command reference
-- [`WORKSPACE-LAYOUT.md`](WORKSPACE-LAYOUT.md) — root nouns vs `storage/` alias
+- [`WORKSPACE-LAYOUT.md`](WORKSPACE-LAYOUT.md) — root nouns (`storage/` retired; URL resolver only)
 - [`Plans/README.md`](../Plans/README.md) — active vs archive index

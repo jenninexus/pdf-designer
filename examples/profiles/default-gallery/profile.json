@@ -1,0 +1,9 @@
+{
+  "id": "default-gallery",
+  "name": "Default Gallery",
+  "status": "ready",
+  "lastUpdated": "2026-08-17",
+  "description": "Public collage-candidate gallery (index.html under _candidates/). Nested layout pages use CSS tiles only.",
+  "theme": "default-collage",
+  "render": "_candidates/index.html"
+}

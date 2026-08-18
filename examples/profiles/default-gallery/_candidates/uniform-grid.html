@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Example gallery — uniform grid</title>
+<style>
+  body { margin: 0; background: #0b0d12; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 10px; height: 100vh; padding: 14px; box-sizing: border-box; }
+  .tile { border-radius: 10px; border: 1px solid rgba(79,209,201,0.22); }
+  .a { background: linear-gradient(135deg, #164e63, #4fd1c9); }
+  .b { background: linear-gradient(135deg, #4c1d95, #9d8cd9); }
+  .c { background: linear-gradient(135deg, #1e3a8a, #6aa7ff); }
+  .d { background: linear-gradient(135deg, #0f766e, #4fd1c9); }
+</style>
+</head>
+<body>
+  <div class="grid">
+    <div class="tile a"></div>
+    <div class="tile b"></div>
+    <div class="tile c"></div>
+    <div class="tile d"></div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Collage candidates — example gallery</title>
+<style>
+  body { margin: 0; padding: 28px; background: #0b0d12; color: rgba(240,242,246,0.94);
+         font-family: "Segoe UI", system-ui, sans-serif; }
+  h1 { font-size: 18px; margin: 0 0 4px; }
+  p { color: rgba(240,242,246,0.6); font-size: 12px; margin: 0 0 22px; }
+  .row { display: flex; flex-wrap: wrap; gap: 20px; }
+  .card { text-decoration: none; color: inherit; border: 1px solid rgba(79,209,201,0.18);
+          border-radius: 12px; overflow: hidden; background: #10131a; }
+  .thumb { width: 320px; height: 180px; overflow: hidden; position: relative; }
+  .thumb iframe { border: 0; transform-origin: top left; pointer-events: none; position: absolute; top: 0; left: 0; }
+  .label { padding: 9px 12px; font-size: 12.5px; letter-spacing: 0.06em; text-transform: uppercase;
+           color: #4fd1c9; border-top: 1px solid rgba(79,209,201,0.14); }
+</style>
+</head>
+<body>
+<h1>Collage candidates — example gallery</h1>
+<p>Placeholder tiles · click a layout to open it full size</p>
+<div class="row">
+  <a class="card" href="uniform-grid.html">
+    <div class="thumb">
+      <iframe src="uniform-grid.html" style="width:960px;height:540px;transform:scale(0.333);" scrolling="no" tabindex="-1"></iframe>
+    </div>
+    <div class="label">uniform-grid</div>
+  </a>
+  <a class="card" href="hero-mosaic.html">
+    <div class="thumb">
+      <iframe src="hero-mosaic.html" style="width:960px;height:540px;transform:scale(0.333);" scrolling="no" tabindex="-1"></iframe>
+    </div>
+    <div class="label">hero-mosaic</div>
+  </a>
+</div>
+</body>
+</html>
