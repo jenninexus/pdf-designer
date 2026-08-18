@@ -71,7 +71,7 @@ Local-first PDF/document toolkit. Two layers:
    prints is what you get.
 2. **The résumé layer** — a *protocol*, not a module. The job-application workflow lives in
    [`.claude/commands/`](.claude/commands/) (agent-agnostic markdown), backed by plain JSON in root nouns
-   (`users/` · `vaults/` · `profiles/` · `_job-apps/`; `storage/` is the dual-run alias)
+   (`users/` · `vaults/` · `profiles/` · `_job-apps/`. `storage/` was retired 2026-08-17; old URLs still resolve.)
    and the guards (`check_vault`, `check_ats`, `check_palette`). The judgment can't be coded; the data is
    the product. See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 
@@ -179,12 +179,12 @@ marketed résumé-creator demo path (vault shape + palettes + smoke), not privat
 | `docs/` | ARCHITECTURE · SSOT · PRODUCT · PACKAGING · GETTING-STARTED · PUBLIC-LOCAL-SPLIT · STORAGE · VAULT · JOB-ASSESSMENT · THEME-DESIGN · LAYOUT-SYSTEM · EXPORTS · COLLAGE-DESIGN · PREVIEWER · APPLICATIONS · LICENSING-NOTES ([`docs/README.md`](docs/README.md) is the index) |
 | `.config/mcp-pdf-designer.example.json` | ⭐ Tracked project config **seed** (breakpoints + hub/palette/layout pointers). Copy → local `mcp-pdf-designer.json` (gitignored — machine paths). |
 | `Plans/_Active/` | ⭐ the working roadmap (one file) — see [`Plans/README.md`](Plans/README.md) |
-| `storage/` | ⛔ **gitignored** alias directory. Live data: root `users/` · `vaults/` · `profiles/` · `resumes/` · `_job-apps/` · `collages/` · `brands/`. Payload duplicates archived 2026-08-16 under `storage/_archive/`. Unique leftovers: `private provider.md`, private font. |
+| `storage/` | **Retired** (directory deleted 2026-08-17 after unique leftovers were copied). Live data lives at repo-root nouns: `users/` · `vaults/` · `profiles/` · `resumes/` · `_job-apps/` · `collages/` · `brands/`. private provider template → `_job-apps/_template/private provider-ai-fellowship.md`; private font → `brands/fonts/alienleaguebold.woff2`. Full tree backed up off-repo under `%TEMP%\pdf-designer-storage-archive-2026-08-17`. `pdf_tool.paths` still maps old `storage/<user>/` URLs for tests. |
 | `resumes/studio/resources/images/martiangames/` | ⭐ **shared** MG title gallery (WebP) — both applicants; see [`docs/STORAGE.md`](docs/STORAGE.md) |
 
 ### Privacy split (do not blur this)
 
-| Public / tracked (safe to clone) | Private / gitignored (root nouns; `storage/` is the dual-run alias) |
+| Public / tracked (safe to clone) | Private / gitignored (root nouns; `storage/` retired — live data is root nouns) |
 |---|---|
 | `src/pdf_tool/`, `themes/`, `examples/`, `docs/`, `AGENTS.md`, `*.example.md` | `users/`, `vaults/`, `profiles/`, `_job-apps/`, `brands/`, `resumes/`, `collages/`, `_exports/` |
 | Brand-neutral default theme | Real brand maps (`brands/brand-jenninexus.json`, `brand-martian`, `brand-synagen`) |
@@ -207,7 +207,7 @@ Four layers, each answering one question. **The vault is the brain.**
 | Profile | `profiles/<user>-resume.json` | **how** it renders (one per person) · `workSamples` |
 | Application | `_job-apps/<Track>/` | **the job** — listing, apply link, pay, company palette |
 
-(`storage/` is still a dual-run alias of the same files.)
+(`storage/` retired 2026-08-17; dual-run resolver kept for old URLs.)
 
 Read [`docs/VAULT.md`](docs/VAULT.md) before authoring any resume claim.
 

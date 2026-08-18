@@ -8,4 +8,6 @@ Mapped token files the Design Hub and exports actually load (`brand-<name>.json`
 
 Copy [`examples/brand-design/brand-example.json`](../examples/brand-design/brand-example.json) → `brands/brand-<yours>.json`.
 
-Legacy alias: `storage/brand-design/`. Palette rule: [`themes/PALETTE-RULES.md`](../themes/PALETTE-RULES.md).
+Private fonts (gitignored): `brands/fonts/` — Alien League lives here, not in tracked `themes/fonts/`.
+
+Legacy alias: `storage/brand-design/` (retired). Palette rule: [`themes/PALETTE-RULES.md`](../themes/PALETTE-RULES.md).

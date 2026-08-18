@@ -1,9 +1,9 @@
 # Workspace layout — product UX for local files
 
 **Status:** path resolver + root README scaffolds + SEGO **data copy** (2026-08-13).  
-**`storage/` remains** as a directory (private provider template + private font + archived
-duplicates as of 2026-08-16). Do not delete the folder until Hub/tracker/vault
-smoke has lived only on the new nouns. Copy script: `python scripts/migrate-workspace.py`.
+**`storage/` is retired (2026-08-17).** private provider template + private font moved to
+`_job-apps/_template/` and `brands/fonts/`. The engine still accepts `storage/`
+aliases. Copy script (historical): `python scripts/migrate-workspace.py`.
 
 This page is the **clone-safe product story**: what a future GitHub user should see at the
 repo root, vs what stays private on their machine.
@@ -60,7 +60,7 @@ pdf-designer/
 | `vaults/` | What may I claim? | `storage/<user>/resume-source.json` |
 | `profiles/` | How does it print? | `storage/profiles/` |
 | `resumes/` | Working HTML + defaults + exports | `storage/jenni/` · `shade/` · `studio/` |
-| `_job-apps/` | This job | **canonical.** `applications/` is a tracked README redirect only (no listings). `storage/_job-listings/` is the dual-run alias. |
+| `_job-apps/` | This job | **canonical.** `applications/` is a tracked README redirect only (no listings). `storage/_job-listings/` is a retired alias — do not store listings there. |
 | `collages/` | Image layouts | `storage/collages/` |
 | `brands/` | My palette map | `storage/brand-design/` |
 

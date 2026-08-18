@@ -19,8 +19,8 @@ dev-log-*.yaml
 # Optional local pointers: .config/mcp-pdf-designer.json (copy the .example). The engine
 # reads NO environment variables; a .env.local would be a fiction unless a new tool reads it.
 #
-# storage/ is the dual-run alias (copied to root nouns 2026-08-13). Keep it until Hub smoke
-# has lived on the new tree; then it can go. Private palettes: brands/ (was storage/brand-design/).
+# storage/ is retired (2026-08-17). Keep the ignore so a leftover tree cannot be committed.
+storage/
 #
 # ⚠ themes/ is deliberately NOT ignored. It is the PUBLIC engine's default theme + the palette
 # RULE. Private brand palettes live in brands/, which the previewer reads alongside themes/.

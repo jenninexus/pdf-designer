@@ -94,9 +94,10 @@
   --hub-divider: 1px solid rgba(255, 255, 255, 0.06);
 
   /* Scrollbar tints (used by .hub-bar horizontal AND all vertical panes) */
-  --hub-scroll-thumb: rgba(66, 244, 200, 0.25);
-  --hub-scroll-thumb-hover: rgba(66, 244, 200, 0.45);
-  --hub-scroll-track: transparent;
+  --hub-scroll-thumb: rgba(66, 244, 200, 0.55);
+  --hub-scroll-thumb-hover: rgba(66, 244, 200, 0.82);
+  --hub-scroll-track: rgba(13, 15, 20, 0.45);
+  --hub-scroll-size: 10px;
 
   font-family: var(--dash-body);
   color: var(--dash-text);
@@ -144,7 +145,7 @@ button, [role="button"], summary, .chip, .thumb { user-select: none; -webkit-use
   scrollbar-width: thin;
   scrollbar-color: var(--hub-scroll-thumb) var(--hub-scroll-track);
 }
-*::-webkit-scrollbar { width: 8px; height: 8px; }
+*::-webkit-scrollbar { width: var(--hub-scroll-size); height: var(--hub-scroll-size); }
 *::-webkit-scrollbar-track { background: var(--hub-scroll-track); }
 *::-webkit-scrollbar-thumb {
   background: var(--hub-scroll-thumb);
@@ -187,7 +188,7 @@ button, [role="button"], summary, .chip, .thumb { user-select: none; -webkit-use
   scrollbar-width: thin;
   scrollbar-color: var(--hub-scroll-thumb) var(--hub-scroll-track);
 }
-.hub-bar-scroll::-webkit-scrollbar { height: 8px; }
+.hub-bar-scroll::-webkit-scrollbar { height: var(--hub-scroll-size); }
 .hub-bar-scroll::-webkit-scrollbar-thumb {
   background: var(--hub-scroll-thumb);
   border-radius: 999px;
@@ -1086,7 +1087,13 @@ a.hub-brand { color: inherit; text-decoration: none; cursor: pointer; }
 }
 .library-head span { color: var(--dash-accent); font-family: var(--dash-mono); }
 
-.library-scroll { flex: 1; overflow-y: auto; padding: var(--dash-space-3); }
+.library-scroll {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: var(--dash-space-3);
+  scrollbar-gutter: stable;
+}
 
 .group { margin-bottom: var(--dash-space-4); }
 .group > summary {
@@ -1174,6 +1181,8 @@ a.hub-brand { color: inherit; text-decoration: none; cursor: pointer; }
 }
 .badge.kind-resume { color: #42f4c8; border-color: rgba(66, 244, 200, 0.35); }
 .badge.kind-cover-letter { color: #c4b5fd; border-color: rgba(139, 92, 246, 0.4); }
+.badge.kind-letter { color: #f9a8d4; border-color: rgba(249, 168, 212, 0.4); }
+.badge.kind-work-samples { color: #67e8f9; border-color: rgba(103, 232, 249, 0.4); }
 .badge.kind-collage { color: #fbbf24; border-color: rgba(251, 191, 36, 0.35); }
 .badge.kind-gallery { color: #94a3b8; border-color: rgba(148, 163, 184, 0.35); }
 .badge.kind-example { color: #67e8f9; border-color: rgba(103, 232, 249, 0.35); }

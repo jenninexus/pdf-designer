@@ -12,6 +12,7 @@ from pdf_tool.preview import (
     classify_document,
     load_palettes,
     profile_options,
+    resolve_preview_file,
     scan_documents,
     workspace_profile_ids,
 )
@@ -91,3 +92,41 @@ def test_hub_js_restores_profile_before_folder_rebuild():
     assert "docsForProfile(activeProfile())" in APP_HTML
     boot = APP_HTML.split("openFromQuery();", 1)[0]
     assert boot.rfind("restoreHubPrefs") < boot.rfind("buildFolderSelect();")
+
+
+def test_scan_skips_archive_and_template_html(tmp_path: Path):
+    (tmp_path / "resumes" / "alex" / "defaults").mkdir(parents=True)
+    (tmp_path / "resumes" / "alex" / "defaults" / "alex-resume.html").write_text("<p>ok</p>", encoding="utf-8")
+    (tmp_path / "resumes" / "alex" / "defaults" / "alex-resume.template.html").write_text("<p>tmpl</p>", encoding="utf-8")
+    archived = tmp_path / "_archive" / "old"
+    archived.mkdir(parents=True)
+    (archived / "ghost-resume.html").write_text("<p>ghost</p>", encoding="utf-8")
+    nested = tmp_path / "storage" / "_archive" / "dupes"
+    nested.mkdir(parents=True)
+    (nested / "ghost-cover.html").write_text("<p>ghost</p>", encoding="utf-8")
+
+    docs = {doc["path"].replace("\\", "/") for doc in scan_documents(tmp_path)}
+    assert docs == {"resumes/alex/defaults/alex-resume.html"}
+
+
+def test_resolve_preview_file_follows_storage_alias(tmp_path: Path):
+    live = tmp_path / "resumes" / "alex" / "defaults"
+    live.mkdir(parents=True)
+    (live / "alex-resume.html").write_text("<p>live</p>", encoding="utf-8")
+    got = resolve_preview_file(tmp_path, "storage/alex/defaults/alex-resume.html")
+    assert got == (live / "alex-resume.html").resolve()
+    assert resolve_preview_file(tmp_path, "missing.html") is None
+
+
+def test_public_examples_cover_each_hub_kind():
+    root = Path(__file__).resolve().parents[1]
+    docs = scan_documents(root / "examples")
+    by_kind: dict[str, list[str]] = {}
+    for doc in docs:
+        by_kind.setdefault(doc["kind"], []).append(doc["path"].replace("\\", "/"))
+    assert any("default-resume" in path for path in by_kind.get("resume", []))
+    assert any("cover-letter" in path for path in by_kind.get("cover-letter", []))
+    assert any("letter" in path.lower() for path in by_kind.get("letter", []))
+    assert any("work-example" in path for path in by_kind.get("work-samples", []))
+    assert any("collage" in path for path in by_kind.get("collage", []))
+    assert any(path.endswith("_candidates/index.html") for path in by_kind.get("gallery", []))

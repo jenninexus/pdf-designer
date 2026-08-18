@@ -1,0 +1,11 @@
+{
+  "id": "default-cover-letter",
+  "name": "Default Cover Letter",
+  "status": "ready",
+  "lastUpdated": "2026-08-17",
+  "description": "One-page cover letter example: Jane Example applying to a fictional company. Layout is layouts/cover-letter/one-page-letter.json (equal 0.75in margins, sign-off pinned bottom-left).",
+  "theme": "default-resume",
+  "render": "default-cover-letter.html",
+  "layout": "cover-letter/one-page-letter",
+  "expectedPages": 1
+}

@@ -34,9 +34,12 @@ only. Personal listings stay gitignored. Public clones see the noun +
 
 ### Later engineering (not launch-blocking)
 
-- [ ] Dual-run smoke on root nouns only, then retire the `storage/` **directory** (private provider template + private font + `_archive/` must be relocated first).
-- [ ] Gumroad $5 — blocked until installer/wizard exists. Listing brief stays draft.
-- [ ] JN `/products` store page (site repo).
+- [x] Dual-run smoke on root nouns only, then retire the `storage/` **directory** (private provider template → `_job-apps/_template/private provider-ai-fellowship.md`; private font → `brands/fonts/`).
+- [x] **`_job-apps/` sole listing noun** — `applications/` is a tracked README redirect only; workspace + docs no longer point at `storage/_job-listings/`.
+- [x] **Public Hub examples** — `python -m pdf_tool.preview examples` shows resume, cover letter, letter, work samples, collage, and gallery; `examples/` sorts first in each kind.
+- [x] **Hub not-found** — scan excludes `_archive` + `*.template.html`; `resolve_preview_file` maps stale `/storage/<user>/…` to `resumes/<user>/…`.
+- [ ] Gumroad $5 — blocked until installer/wizard exists. Wheel + `testpypi-dry-run.py` exist; the paid SKU is a **desktop installer that launches Design Hub** (not started — see PACKAGING.md). Listing brief stays draft.
+- [ ] JN.com `/products` store page (site repo). **Hub card already exists:** `C:\Github\product-design\docs\PDF-DESIGNER.md`.
 - [ ] Optional TestPyPI upload — not required for clone launch.
 - [ ] Next AI-trainer application: include `emp-private provider-ai`; company line exactly **private provider AI Fellowship**.
 
@@ -44,6 +47,6 @@ only. Personal listings stay gitignored. Public clones see the noun +
 
 - Auto-submit · invent claims · commit vaults · reopen Netflix  
 - Force-push without HISTORY-SCRUB OK  
-- Delete `storage/` before dual-run retirement  
+- Recreate `storage/` as a second vault/listing store  
 - Post / deploy / `--write` without an explicit human yes  
 - Show a real résumé, listing, or `brands/` hex in launch media
