@@ -25,11 +25,11 @@ only. Personal listings stay gitignored. Public clones see the noun +
 
 ### Human gates (do not skip)
 
-- [ ] **HISTORY-SCRUB** — `docs/HISTORY-SCRUB.md` + explicit OK + force-push. Blocks a *public* GitHub.
+- [x] **HISTORY-SCRUB** — executed 2026-08-18; force-push `8c1c631` on origin/main. BEE must re-clone. (`docs/HISTORY-SCRUB.md`.)
 - [ ] **Patreon early** — paste [`socials/content/jenninexus/patreon/drafts/2026-08-14-pdf-designer.md`](../../../socials/content/jenninexus/patreon/drafts/2026-08-14-pdf-designer.md). Honest while GitHub is still private. Do not claim the repo is public.
-- [ ] **Public GitHub** — only after scrub (or an explicit “private-repo Patreon is enough for now”). Then add the clone URL to Patreon / README tip footer.
+- [ ] **Public GitHub** — only after scrub (or an explicit "private-repo Patreon is enough for now"). Then add the clone URL to Patreon / README tip footer.
 - [ ] **Blog** — [`socials/content/jenninexus/devlogs/drafts/2026-08-14-pdf-designer.md`](../../../socials/content/jenninexus/devlogs/drafts/2026-08-14-pdf-designer.md). `site:publish` dry-run first; `--write` / SSH / deploy need a separate yes.
-- [ ] **Discord `#announcements📢`** — [`socials/content/jenninexus/discord/drafts/2026-08-17-announcements-pdf-designer.json`](../../../socials/content/jenninexus/discord/drafts/2026-08-17-announcements-pdf-designer.json). Manual. Patreon Publish already fans `#social-feed` / patrons / supporters — do not double-post there.
+- [ ] **Discord `#announcements??`** — [`socials/content/jenninexus/discord/drafts/2026-08-17-announcements-pdf-designer.json`](../../../socials/content/jenninexus/discord/drafts/2026-08-17-announcements-pdf-designer.json). Manual. Patreon Publish already fans `#social-feed` / patrons / supporters — do not double-post there.
 - [ ] **Short-form (after public-safe Hub stills)** — TikTok + YouTube sisters dated 2026-08-17. Capture only `python -m pdf_tool.preview examples` + `docs/pdf-designer-overview.html`. Never vaults or `_job-apps`.
 
 ### Later engineering (not launch-blocking)
