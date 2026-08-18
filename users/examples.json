@@ -1,0 +1,34 @@
+{
+  "_README": [
+    "PUBLIC example person — Jane Example. Tracked on purpose so a clone's Design Hub",
+    "Vault page has someone to show before the user copies you.example.json → users/<you>.json.",
+    "Fictional contact only. Real applicants stay gitignored."
+  ],
+  "id": "examples",
+  "aliases": ["jane", "jane-example"],
+  "name": "Jane Example",
+  "brand": "example-studio",
+  "pronouns": "she/her",
+  "created": "2026-08-18",
+
+  "contact": {
+    "email": "jane@example.studio",
+    "web": "https://example.studio",
+    "github": "https://github.com/example",
+    "location": "Remote — Example Region",
+    "signatureName": "Jane Example",
+    "signatureTitle": "Product designer",
+    "emailRules": {
+      "default": "jane@example.studio — THE DEFAULT, always."
+    }
+  },
+
+  "vault": "../vaults/examples.json",
+  "identity": {
+    "headline": "Product designer — local-first documents",
+    "company": "Example Studio",
+    "role": "Product designer",
+    "voice": "Warm, concrete, no buzzword stacking.",
+    "background": "Fictional applicant used by pdf-designer public examples."
+  }
+}
