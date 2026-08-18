@@ -36,3 +36,8 @@ def test_public_letter_uses_the_tracked_parisienne_asset() -> None:
 def test_public_personal_letter_passes_the_full_generation_gate() -> None:
     result = run_file(ROOT / "examples/profiles/default-letter/personal-letter.html")
     assert result["passed"], result
+
+
+def test_public_cover_letter_passes_the_full_generation_gate() -> None:
+    result = run_file(ROOT / "examples/profiles/default-cover-letter/default-cover-letter.html")
+    assert result["passed"], result

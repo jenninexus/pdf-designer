@@ -1,16 +1,16 @@
-# `storage/` — private workspace layout (LIVE)
+# `storage/` — retired dual-run alias
 
-> **Migration:** root nouns in [`WORKSPACE-LAYOUT.md`](WORKSPACE-LAYOUT.md).
-> Engine: `pdf_tool.paths` accepts both trees. **SEGO live files were copied** to
-> `users/` · `vaults/` · `profiles/` · `resumes/` · `_job-apps/` · `collages/` · `brands/`
-> on 2026-08-13 (`scripts/migrate-workspace.py`). Jobs were renamed `_job-apps/` (was
-> `applications/`). Byte-identical `storage/` copies were archived
-> 2026-08-16 (`storage/_archive/2026-08-16-root-noun-dupes/`). **`storage/` remains
-> as a directory** (private provider template + private font + archive) — do not delete the
-> folder until dual-run is fully retired.
+> **Retired 2026-08-17.** Live personal data is only at the root nouns in
+> [`WORKSPACE-LAYOUT.md`](WORKSPACE-LAYOUT.md): `users/` · `vaults/` · `profiles/` ·
+> `resumes/` · `_job-apps/` · `collages/` · `brands/`.
+> The engine (`pdf_tool.paths`) still *accepts* `storage/…` paths as aliases so old
+> scripts and Hub URLs keep working. Do **not** recreate a `storage/` tree or store
+> listings under `storage/_job-listings/`.
+>
+> private provider Fellowship template: [`../_job-apps/_template/private provider-ai-fellowship.md`](../_job-apps/_template/private provider-ai-fellowship.md).
+> Private font: `brands/fonts/alienleaguebold.woff2` (gitignored).
 >
 > **Tracked protocol SSOT:** this page lives in `docs/` so a fresh clone can learn the flow.
-> Your machine’s `storage/` folder is **gitignored** and holds only real personal data.
 
 Everything under `storage/` is **local only**. It holds career data, applications, PDFs,
 and **private brand palettes**. Private *notes* (`MARKETING` · `WORKSPACE` · history scrub)

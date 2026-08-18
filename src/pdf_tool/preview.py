@@ -30,7 +30,14 @@ from pathlib import Path
 from urllib.parse import unquote, urlparse
 
 from .html_to_pdf import export_html_to_pdf
-from .paths import brand_dirs, iter_profile_paths, iter_user_paths, repo_root, workspace_rel_info
+from .paths import (
+    brand_dirs,
+    iter_profile_paths,
+    iter_user_paths,
+    repo_root,
+    resolve_rel,
+    workspace_rel_info,
+)
 from .pdf_to_png import render_to_png
 from .recipe_gallery import build_recipe_gallery
 from .vault_overview import build_vault_overview
@@ -39,6 +46,7 @@ _REPO_ROOT = repo_root()
 _STATIC_DIR = Path(__file__).resolve().parent / "static"
 EXCLUDE_PARTS = {
     "_exports",
+    "_archive",
     "node_modules",
     ".git",
     "__pycache__",
@@ -50,7 +58,16 @@ EXCLUDE_PARTS = {
     "egg-info",
 }
 
-KINDS = ("resume", "cover-letter", "collage", "gallery", "example", "other")
+KINDS = (
+    "resume",
+    "cover-letter",
+    "letter",
+    "work-samples",
+    "collage",
+    "gallery",
+    "example",
+    "other",
+)
 
 # theme-JSON block -> pdf-designer CSS custom properties
 _TOKEN_MAP = [
@@ -224,8 +241,36 @@ def scan_documents(root: Path) -> list[dict]:
         # Skip the hub's own static HTML if ever added under src/
         if "pdf_tool" in rel.parts and "static" in rel.parts:
             continue
+        # Source templates are authoring sidecars, not previewable documents.
+        if p.name.endswith(".template.html"):
+            continue
         docs.append(classify_document(str(rel).replace("\\", "/"), p.stem, profile_ids))
     return docs
+
+
+def resolve_preview_file(root: Path, rel: str) -> Path | None:
+    """Map a Hub URL onto an existing file, accepting root-noun / storage aliases.
+
+    Direct hits win. Otherwise ``resolve_rel`` follows the dual-run map so a stale
+    ``/storage/<user>/defaults/….html`` still finds ``resumes/<user>/…``.
+    """
+    root_resolved = root.resolve()
+    rel = rel.replace("\\", "/").lstrip("/")
+    if not rel or rel.startswith("/") or ".." in Path(rel).parts:
+        return None
+    direct = (root / rel).resolve()
+    try:
+        direct.relative_to(root_resolved)
+    except ValueError:
+        return None
+    if direct.is_file():
+        return direct
+    aliased = resolve_rel(rel, root=root).resolve()
+    try:
+        aliased.relative_to(root_resolved)
+    except ValueError:
+        return None
+    return aliased if aliased.is_file() else None
 
 
 # File suffixes the auto-refresh watcher tracks. HTML sources change the doc
@@ -774,10 +819,24 @@ PALETTES.forEach((p, i) => {
   if (drawerPaletteSel) drawerPaletteSel.appendChild(o.cloneNode(true));
 });
 
+function ensureHubScrollbars(doc) {
+  if (!doc || !doc.head || doc.getElementById("hub-scroll-theme")) return;
+  const style = doc.createElement("style");
+  style.id = "hub-scroll-theme";
+  style.textContent =
+    "html{scrollbar-width:thin;scrollbar-color:rgba(66,244,200,.55) rgba(13,15,20,.35);}" +
+    "*::-webkit-scrollbar{width:10px;height:10px;}" +
+    "*::-webkit-scrollbar-track{background:rgba(13,15,20,.35);}" +
+    "*::-webkit-scrollbar-thumb{background:rgba(66,244,200,.45);border-radius:999px;}" +
+    "*::-webkit-scrollbar-thumb:hover{background:rgba(66,244,200,.7);}";
+  doc.head.appendChild(style);
+}
+
 function applyPalette(iframe) {
   const idx = paletteSel.value;
   const doc = iframe.contentDocument;
   if (!doc) return;
+  ensureHubScrollbars(doc);
   const st = doc.documentElement.style;
   for (const p of PALETTES) for (const k of Object.keys(p.vars)) st.removeProperty(k);
   if (idx !== "") for (const [k, v] of Object.entries(PALETTES[idx].vars)) st.setProperty(k, v);
@@ -855,17 +914,25 @@ function filteredDocs() {
   const q = document.getElementById("search").value.trim().toLowerCase();
   const folder = document.getElementById("folderFilter").value;
   const profile = document.getElementById("personFilter").value;
-  return DOCS.filter(d => {
+  const docs = DOCS.filter(d => {
     if (kindFilter !== "all" && d.kind !== kindFilter) return false;
     if (folder && d.group !== folder) return false;
     const dProfile = d.profile || d.person || null;
-    if (profile && dProfile !== profile) return false;
+    if (profile && dProfile !== profile && !d.path.startsWith("examples/")) return false;
     if (q) {
       const hay = `${d.path} ${d.name} ${d.label} ${d.group} ${d.kind} ${dProfile || ""}`.toLowerCase();
       if (!hay.includes(q)) return false;
     }
     return true;
   });
+  // Public examples first in every kind so a fresh clone always has a card to click.
+  docs.sort((a, b) => {
+    const ae = a.path.startsWith("examples/") ? 0 : 1;
+    const be = b.path.startsWith("examples/") ? 0 : 1;
+    if (ae !== be) return ae - be;
+    return String(a.path).localeCompare(String(b.path));
+  });
+  return docs;
 }
 
 const THUMB_W = 248;
@@ -883,7 +950,7 @@ function renderLibrary() {
     const owned = docsForProfile(profile).length;
     let msg = "No templates match these filters.";
     if (profile && owned === 0) {
-      msg = "No documents tagged “" + profile + "” yet. Pick all profiles, or add HTML under storage/" + profile + "/ (or resumes/" + profile + "/).";
+      msg = "No documents tagged “" + profile + "” yet. Pick all profiles, or add HTML under resumes/" + profile + "/.";
     } else if (profile) {
       msg = "No “" + profile + "” documents match this folder or kind. Try All or another folder.";
     }
@@ -963,7 +1030,7 @@ function select(d, el, { pushUrl = true } = {}) {
 function openFromQuery() {
   const raw = new URLSearchParams(location.search).get("doc");
   if (!raw) return false;
-  const want = String(raw).replace(/^\/+/, "").split("\\\\").join("/");
+  const want = String(raw).replace(/^\\/+/,"").split("\\\\").join("/");
   const d = DOCS.find(x => x.path === want || x.path.endsWith("/" + want));
   if (!d) {
     document.getElementById("status").textContent = "doc not in library: " + want;
@@ -1398,8 +1465,8 @@ def make_handler(root: Path, docs: list[dict], palettes: list[dict]):
                 }.get(target.suffix.lower(), "application/octet-stream")
                 self._send(200, target.read_bytes(), ctype)
                 return
-            target = (root / path.lstrip("/")).resolve()
-            if not str(target).startswith(str(root.resolve())) or not target.is_file():
+            target = resolve_preview_file(root, path.lstrip("/"))
+            if target is None:
                 self._send(404, b"not found", "text/plain")
                 return
             ctype = {
@@ -1423,8 +1490,9 @@ def make_handler(root: Path, docs: list[dict], palettes: list[dict]):
             try:
                 length = int(self.headers.get("Content-Length", 0))
                 req = json.loads(self.rfile.read(length))
-                doc = (root / req["doc"]).resolve()
-                if not str(doc).startswith(str(root.resolve())) or not doc.is_file():
+                doc = resolve_preview_file(root, req["doc"])
+                if doc is None:
+                    raise ValueError(f"bad doc path: {req['doc']}")
                     raise ValueError(f"bad doc path: {req['doc']}")
                 fmt = req.get("format", "pdf-light")
                 pdf_theme = "dark" if fmt.endswith("-dark") else None

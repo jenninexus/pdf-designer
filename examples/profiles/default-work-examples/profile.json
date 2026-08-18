@@ -1,0 +1,10 @@
+{
+  "id": "default-work-examples",
+  "name": "Default Work Samples",
+  "status": "ready",
+  "lastUpdated": "2026-08-17",
+  "description": "Public work-samples example with CSS placeholder tiles (no private images). Layout: layouts/work-examples/work-examples.json.",
+  "theme": "default-resume",
+  "render": "default-work-examples.html",
+  "layout": "work-examples/work-examples"
+}

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" data-pdf-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jane Example — Cover letter (example)</title>
+<style>
+  :root {
+    --bg: #f5f7fa; --surface: #ffffff; --text: #171b24;
+    --dim: rgba(23,27,36,0.72); --border: rgba(23,27,36,0.14);
+    --primary: #087c78; --accent: #6f57c2;
+    --script: "Segoe Script", "Brush Script MT", cursive;
+    --body: "Georgia", "Times New Roman", Times, serif;
+    --sans: "Segoe UI", system-ui, sans-serif;
+  }
+  html[data-pdf-theme="dark"] {
+    --bg: #0b0d12; --surface: #10131a; --text: rgba(240,242,246,0.94);
+    --dim: rgba(240,242,246,0.68); --border: rgba(79,209,201,0.22);
+    --primary: #4fd1c9; --accent: #9d8cd9;
+  }
+  @page { size: Letter; margin: 0.75in; background: var(--surface); }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0; background: var(--bg); color: var(--text);
+    font-family: var(--body); font-size: 12px; line-height: 1.6;
+  }
+  .page {
+    display: flex; flex-direction: column;
+    width: auto; min-height: 9.5in; margin: 0 auto; padding: 0;
+    background: var(--surface);
+  }
+  @media screen {
+    body { padding: 24px; }
+    .page {
+      max-width: 8.5in; padding: 0.75in;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.12);
+      border: 1px solid var(--border);
+    }
+  }
+  @media print {
+    body { background: var(--surface); }
+    .page { height: auto; min-height: 9.5in; }
+  }
+  header { padding-bottom: 0.85rem; margin-bottom: 1.2rem; border-bottom: 1px solid var(--border); }
+  h1 { margin: 0; font-family: var(--sans); font-size: 1.35rem; letter-spacing: 0.04em; color: var(--primary); }
+  .role { margin: 0.3rem 0 0; font-family: var(--sans); font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dim); }
+  .re { font-family: var(--sans); font-weight: 700; color: var(--accent); margin: 0 0 1rem; }
+  .letter-main { flex: 1 1 auto; min-height: 0; }
+  p { margin: 0 0 0.9rem; max-width: 40em; }
+  .signoff { margin-top: auto; padding-top: 30px; flex: 0 0 auto; text-align: left; }
+  .script { font-family: var(--script); font-size: 1.7rem; color: var(--accent); margin: 0.15rem 0; }
+  .mail { font-family: var(--sans); font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; }
+</style>
+</head>
+<body>
+  <article class="page">
+    <header>
+      <h1>Jane Example</h1>
+      <p class="role">Product designer · Example Studio LLC</p>
+    </header>
+    <div class="letter-main">
+      <p class="re">Re: Staff Product Designer — Northwind Labs</p>
+      <p>Dear hiring team,</p>
+      <p>
+        I’m applying for the Staff Product Designer role at Northwind Labs. I build
+        local-first tools where the preview you pick is the file you export — vault-backed
+        claims, equal-margin Letter pages, and an ATS-honest light PDF beside a branded dark one.
+      </p>
+      <p>
+        At Example Studio I shipped a résumé studio used by our own applicants: one HTML
+        source, two print modes, and a Design Hub so a new teammate can open a working
+        resume, cover letter, and collage on day one. I care about fit over flourish —
+        if a page overflows, I move a section. I never shrink the margin.
+      </p>
+      <p>
+        I’d like to bring that same discipline to Northwind’s product surfaces. Thank you
+        for reading — Jane Example, jane@example.studio.
+      </p>
+    </div>
+    <footer class="signoff">
+      <p>Warm regards,</p>
+      <p class="script">Jane Example</p>
+      <p class="mail">jane@example.studio</p>
+    </footer>
+  </article>
+</body>
+</html>

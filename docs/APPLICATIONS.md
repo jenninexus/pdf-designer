@@ -4,10 +4,11 @@ One folder per job — how to go after a job without ever inventing a claim.
 
 The workflow for going after a job without ever inventing a claim.
 
-> Your real applications live in `_job-apps/` (gitignored; aliases `applications/` and
-> `storage/_job-listings/`). The copyable templates live
+> Your real applications live in `_job-apps/` (gitignored). The copyable templates live
 > in [`../examples/_job-listings/example-application/`](../examples/_job-listings/example-application/).
 > Human log (who × job × outcome): `_job-apps/applied-index.md`. Do **not** daily-count submissions.
+> Do **not** store listings in `applications/` or `storage/_job-listings/` — those names are
+> retired aliases the engine still accepts.
 
 ---
 
