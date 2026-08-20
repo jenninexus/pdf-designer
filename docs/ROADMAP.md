@@ -11,9 +11,9 @@
 
 - [x] Root workspace **duplicates archived** (2026-08-16) then **`storage/` directory retired** (2026-08-17) — private provider template → `_job-apps/_template/`; private font → `brands/fonts/`.
 - [x] **One job noun** (2026-08-17) — `_job-apps/` is live + public; `applications/` is README-only. `storage/_job-listings/` pointer archived.
-- [ ] **History scrub** — `docs/HISTORY-SCRUB.md` (gitignored) then human-authorized force-push
-- [x] **Push origin/main** — `jenninexus` GitHub auth (normal HTTPS push 2026-08-14; follow-up docs 2026-08-16). Repo stays **private**.
-- [ ] **Patreon / blog / Discord / short-form** — drafts in socials; do not post/deploy from an agent. Card: `C:\Github\product-design\docs\PDF-DESIGNER.md`
+- [x] **History scrub** (2026-08-18) — `docs/HISTORY-SCRUB.md`; force-push `8c1c631`. BEE re-clones.
+- [x] **Push origin/main** — private repo; clone-safe Hub + stills `3f5ebe8` (2026-08-18).
+- [x] **Human publication** — stills approved; GitHub **public** 2026-08-19. Remaining: Patreon · Discord · short-form · add clone URL on the live blog.
 - [ ] Keep **SSOT + QA docs** honest as the engine evolves
 - [ ] Optional: TestPyPI upload (not required for clone launch) · production PyPI · paid-shell (installer not started)
 
