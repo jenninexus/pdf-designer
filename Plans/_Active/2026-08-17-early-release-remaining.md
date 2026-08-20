@@ -24,9 +24,9 @@ Launch copy lives in **Socials** (do not post from this repo unless asked).
 - [x] **README / stills** — approved 2026-08-19.
 - [x] **Blog** — live [`/blog/pdf-designer`](https://jenninexus.com/blog/pdf-designer) (2026-08-19). Clone URL added in local PHP 2026-08-20 (`github.com/jenninexus/pdf-designer`); deploy JN if prod copy still says private.
 - [x] **Public GitHub** — [`github.com/jenninexus/pdf-designer`](https://github.com/jenninexus/pdf-designer) flipped **public** 2026-08-19.
-- [x] **Patreon paste body** — moved to [`socials/content/jenninexus/patreon/published/2026-08-14-pdf-designer.md`](../../../socials/content/jenninexus/patreon/published/2026-08-14-pdf-designer.md). **Human: paste in composer today 2026-08-20**, attach stills, stamp live URL, then `npm run patreon:archive:jn`.
-- [ ] **Discord `#announcements📢`** — [`socials/content/jenninexus/discord/drafts/2026-08-17-announcements-pdf-designer.json`](../../../socials/content/jenninexus/discord/drafts/2026-08-17-announcements-pdf-designer.json). Manual. Wait for explicit `--post` OK. Patreon Publish already fans `#social-feed` / patrons / supporters — do not double-post there.
-- [ ] **X / Meta** — `twitter-x/drafts/2026-08-20-pdf-designer.md` (~251/280) · `meta/drafts/2026-08-20-pdf-designer.md`. Manual composers.
+- [x] **Patreon paste body** — [live post](https://www.patreon.com/posts/pdf-designer-com-167093475) 2026-08-20. Local [`socials/.../patreon/published/2026-08-14-pdf-designer.md`](../../../socials/content/jenninexus/patreon/published/2026-08-14-pdf-designer.md). Archive refreshed (`npm run patreon:archive:jn`, 616 posts).
+- [x] **Discord `#announcements📢`** — SENT 2026-08-20 (landscape promo card). Patreon webhook already fanned `#social-feed` / patrons / supporters — do not re-`--post` those.
+- [ ] **X / Meta** — API blocked 2026-08-20 (`X_*` 403 · `FB_PAGE_ACCESS_TOKEN` expired 2026-06-07). Human composer: attach `docs/images/promo-card-landscape.png` (also HTTPS on jenninexus.com). Then `npm run x:notify:jn`. Preflight next time: `npm run x:ready:jn` + `npx tsx scripts/auth/fb-auth.ts`.
 - [ ] **Short-form** — TikTok + YouTube sisters dated 2026-08-17. Use `docs/images/` (Jennifer Nexus pack + Jane Example). Never real vaults or `_job-apps`.
 
 ### Already done (do not re-open)
