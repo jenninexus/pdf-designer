@@ -52,7 +52,7 @@ def _detect_user(path: Path, html: str) -> str | None:
     low = html.lower()
     if "shade@martiangames" in low or ">shade<" in low:
         return "shade"
-    if "jenni@jenninexus" in low or "jennifer sylvester" in low:
+    if "jenni@jenninexus" in low:
         return "jenni"
     return None
 
