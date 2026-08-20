@@ -13,7 +13,7 @@
 - [x] **One job noun** (2026-08-17) — `_job-apps/` is live + public; `applications/` is README-only. `storage/_job-listings/` pointer archived.
 - [x] **History scrub** (2026-08-18) — `docs/HISTORY-SCRUB.md`; force-push `8c1c631`. BEE re-clones.
 - [x] **Push origin/main** — private repo; clone-safe Hub + stills `3f5ebe8` (2026-08-18).
-- [x] **Human publication** — stills approved; GitHub **public** 2026-08-19. Remaining: Patreon · Discord · short-form · add clone URL on the live blog.
+- [x] **Human publication** — stills approved; GitHub **public** 2026-08-19; blog live; Patreon paste body ready **2026-08-20**. Remaining: human Patreon Publish · Discord `--post` · short-form · deploy JN if prod blog still says GitHub private.
 - [ ] Keep **SSOT + QA docs** honest as the engine evolves
 - [ ] Optional: TestPyPI upload (not required for clone launch) · production PyPI · paid-shell (installer not started)
 
