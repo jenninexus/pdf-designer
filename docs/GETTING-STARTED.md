@@ -1,7 +1,12 @@
 # Getting started — public clone path
 
-Use this repo **without** private vaults, PII, or studio brand maps. Public defaults
-and presets *are* the product.
+Use this repo **without** private vaults, PII, or studio brand maps.
+
+```bash
+git clone https://github.com/jenninexus/pdf-designer.git
+```
+
+Public defaults and presets *are* the product.
 
 > **Architecture:** [`PUBLIC-LOCAL-SPLIT.md`](PUBLIC-LOCAL-SPLIT.md) ·
 > **Business thesis:** [`PRODUCT.md`](PRODUCT.md) ·

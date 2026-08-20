@@ -77,6 +77,8 @@ More stills (collage + Jane Example clone template): [`docs/images/review.html`]
 Works from **tracked files only** — `examples/` + `themes/`. No private folders required.
 
 ```bash
+git clone https://github.com/jenninexus/pdf-designer.git
+cd pdf-designer
 pip install -e ".[dev]"
 playwright install chromium
 
