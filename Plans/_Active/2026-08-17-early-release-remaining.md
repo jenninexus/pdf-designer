@@ -1,6 +1,6 @@
 # Active plan — Early release remaining (human publication)
 
-**Date:** 2026-08-17 · **Updated:** 2026-08-19 · **Host:** SEGOPC
+**Date:** 2026-08-17 · **Updated:** 2026-08-20 · **Host:** SEGOPC
 
 Engine waves for this SKU are **complete.** Last parked:
 [`../_Complete/2026-08-17-hub-examples-storage-retire/Plan.md`](../_Complete/2026-08-17-hub-examples-storage-retire/Plan.md).
@@ -22,10 +22,11 @@ Launch copy lives in **Socials** (do not post from this repo unless asked).
 ## Remaining — human gates only
 
 - [x] **README / stills** — approved 2026-08-19.
-- [x] **Blog** — live [`/blog/pdf-designer`](https://jenninexus.com/blog/pdf-designer) (2026-08-19). Add the clone URL on the post now that GitHub is public.
+- [x] **Blog** — live [`/blog/pdf-designer`](https://jenninexus.com/blog/pdf-designer) (2026-08-19). Clone URL added in local PHP 2026-08-20 (`github.com/jenninexus/pdf-designer`); deploy JN if prod copy still says private.
 - [x] **Public GitHub** — [`github.com/jenninexus/pdf-designer`](https://github.com/jenninexus/pdf-designer) flipped **public** 2026-08-19.
-- [ ] **Patreon early** — paste [`socials/content/jenninexus/patreon/drafts/2026-08-14-pdf-designer.md`](../../../socials/content/jenninexus/patreon/drafts/2026-08-14-pdf-designer.md). Include the clone URL + blog. Attach approved stills.
-- [ ] **Discord `#announcements📢`** — [`socials/content/jenninexus/discord/drafts/2026-08-17-announcements-pdf-designer.json`](../../../socials/content/jenninexus/discord/drafts/2026-08-17-announcements-pdf-designer.json). Manual. Public URLs exist (blog + GitHub). Patreon Publish already fans `#social-feed` — do not double-post there.
+- [x] **Patreon paste body** — moved to [`socials/content/jenninexus/patreon/published/2026-08-14-pdf-designer.md`](../../../socials/content/jenninexus/patreon/published/2026-08-14-pdf-designer.md). **Human: paste in composer today 2026-08-20**, attach stills, stamp live URL, then `npm run patreon:archive:jn`.
+- [ ] **Discord `#announcements📢`** — [`socials/content/jenninexus/discord/drafts/2026-08-17-announcements-pdf-designer.json`](../../../socials/content/jenninexus/discord/drafts/2026-08-17-announcements-pdf-designer.json). Manual. Wait for explicit `--post` OK. Patreon Publish already fans `#social-feed` / patrons / supporters — do not double-post there.
+- [ ] **X / Meta** — `twitter-x/drafts/2026-08-20-pdf-designer.md` (~251/280) · `meta/drafts/2026-08-20-pdf-designer.md`. Manual composers.
 - [ ] **Short-form** — TikTok + YouTube sisters dated 2026-08-17. Use `docs/images/` (Jennifer Nexus pack + Jane Example). Never real vaults or `_job-apps`.
 
 ### Already done (do not re-open)
