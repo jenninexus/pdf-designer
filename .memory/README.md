@@ -76,6 +76,7 @@ codebase · `reference`: pointer to an external resource.
 | [lesson-flag-looking-output-dir.md](lesson-flag-looking-output-dir.md) | `pdf_to_png` treats leftover `--output-dir` as a folder name — refuse paths that start with `-` |
 | [lesson-ssot-dashboard-must-name-live-paths.md](lesson-ssot-dashboard-must-name-live-paths.md) | After a folder rename, update `SSOT.md` + wrap checklists in the same wrap — dual-run is not honesty |
 | [lesson-public-github-must-update-live-blog.md](lesson-public-github-must-update-live-blog.md) | GitHub public ≠ live blog honest — replace “still private / clone URL later” on the HTTP 200 post in the same session |
+| [lesson-socials-api-preflight-before-posting-day.md](lesson-socials-api-preflight-before-posting-day.md) | Discord/Patreon live ≠ X/Meta callable — run `x:ready:jn` + `fb-auth` before promising CLI posts |
 | [lesson-track-tags-hide-true-claims.md](lesson-track-tags-hide-true-claims.md) | A true claim tagged for the wrong track goes invisible — nothing errors, the evidence just vanishes |
 | [lesson-ask-before-calling-it-a-gap.md](lesson-ask-before-calling-it-a-gap.md) | `doNotClaim` means "not yet confirmed", never "cannot do" — ask before writing anything off |
 | [lesson-overflow-fix-is-move-not-shrink.md](lesson-overflow-fix-is-move-not-shrink.md) | Page overflow is fixed by moving or cutting content, never by shrinking the equal margins |
