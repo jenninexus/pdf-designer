@@ -700,7 +700,6 @@ a.hub-brand {
   -webkit-mask: var(--hub-fa-icon) center / contain no-repeat;
   mask: var(--hub-fa-icon) center / contain no-repeat;
 }
-.fa-bars { --hub-fa-icon: url("/_hub/fa-bars.svg"); }
 .fa-xmark { --hub-fa-icon: url("/_hub/fa-xmark.svg"); }
 .fa-arrows-rotate { --hub-fa-icon: url("/_hub/fa-arrows-rotate.svg"); }
 .fa-magnifying-glass { --hub-fa-icon: url("/_hub/fa-magnifying-glass.svg"); }
@@ -802,7 +801,7 @@ a.hub-brand {
 }
 .hub-bar button.primary:hover { filter: brightness(1.06); }
 
-/* Hamburger — only visible ≤ drawer switch. */
+/* Menu trigger — only visible ≤ drawer switch. */
 .hub-drawer-toggle {
   display: none;
   width: var(--hub-icon-box);
@@ -812,27 +811,8 @@ a.hub-brand {
   justify-content: center;
   align-items: center;
   font-size: 0.9rem;
-  letter-spacing: 1px;
 }
-.hub-drawer-toggle .bars {
-  display: inline-block;
-  width: 12px;
-  height: 9px;
-  position: relative;
-}
-.hub-drawer-toggle .bars::before,
-.hub-drawer-toggle .bars::after,
-.hub-drawer-toggle .bars > span {
-  content: "";
-  position: absolute;
-  left: 0; right: 0;
-  height: 1.5px;
-  background: currentColor;
-  border-radius: 1px;
-}
-.hub-drawer-toggle .bars::before { top: 0; }
-.hub-drawer-toggle .bars > span { top: 3.5px; }
-.hub-drawer-toggle .bars::after { bottom: 0; }
+.hub-drawer-toggle .hub-menu-icon { width: 14px; height: 14px; }
 
 /* Status line — wide on desktop, narrow ellipsis on narrow. */
 #status {

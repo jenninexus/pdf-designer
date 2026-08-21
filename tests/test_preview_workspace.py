@@ -149,11 +149,15 @@ def test_hub_icons_are_local_font_awesome_assets_with_attribution():
     assert "Font Awesome Free 6.7.2" in css
     assert (root / "FONT-AWESOME-LICENSE.txt").is_file()
     for icon in (
-        "bars", "xmark", "arrows-rotate", "magnifying-glass",
+        "xmark", "arrows-rotate", "magnifying-glass",
         "download", "ellipsis", "chevron-down", "star",
     ):
         assert (root / f"fa-{icon}.svg").is_file()
         assert f".fa-{icon}" in css
+
+    for html in (APP_HTML, *((root / name).read_text(encoding="utf-8") for name in ("recipes.html", "vault.html"))):
+        assert 'class="hub-icon hub-menu-icon"' in html
+        assert 'viewBox="0 0 512 512"' in html
 
 
 def test_public_example_rel_tags_examples_profile():

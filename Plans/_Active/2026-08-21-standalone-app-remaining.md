@@ -42,6 +42,9 @@ the non-developer desktop product is a separate, unstarted implementation phase.
 - [x] Visual/regression check the Hub (`/`, `/recipes`, `/vault`) at 390, 576, 768, 992, 1200, 1400,
   and 1920px against `www-theme-kit/profiles/pdf-designer.json` (2026-08-21). Fixed document-root
   overflow from the closed drawer and restored the 768px desktop hamburger boundary.
+- [x] Replace the compact top-right menu glyph with Font Awesome Free 6.7.2 `bars-staggered` across
+  Library, Recipes, and Vault (2026-08-21). The local SVG keeps the control offline and visually
+  distinct from the drawer's close action.
 
 ## Distribution — optional, not a blocker for the clone product
 
