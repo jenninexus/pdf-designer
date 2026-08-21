@@ -15,7 +15,8 @@
 - [x] **Push origin/main** — private repo; clone-safe Hub + stills `3f5ebe8` (2026-08-18).
 - [x] **Core public product** — GitHub **public** 2026-08-19; blog walkthrough live; Jane Example covers every Hub document kind. Social publication records are owned in the Socials workspace.
 - [ ] Keep **SSOT + QA docs** honest as the engine evolves
-- [ ] Optional: TestPyPI upload (not required for clone launch) · production PyPI · paid desktop shell (installer/wizard not started) · recurring responsive Hub visual matrix
+- [x] Optional: TestPyPI upload + fresh-install proof (`pdf-designer 0.4.0`, 2026-08-21)
+- [ ] Production PyPI · paid desktop shell (installer/wizard not started) · recurring responsive Hub visual matrix
 
 ### Recently landed
 

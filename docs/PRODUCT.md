@@ -87,7 +87,7 @@ Prefer a **thin shell** over a second renderer.
 ```
 
 Packaging precursor: [`PACKAGING.md`](PACKAGING.md) (wheel must include `themes/` + `layouts/`).
-TestPyPI upload still needs a human token.
+TestPyPI upload and fresh-install proof passed for `pdf-designer 0.4.0` on 2026-08-21; production PyPI remains a separate decision.
 
 ## How to market it (public-safe)
 
