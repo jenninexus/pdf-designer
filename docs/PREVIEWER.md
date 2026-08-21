@@ -36,6 +36,10 @@ only the tracked default resume, cover letter, letter, work samples, collage, an
 
 **No MCP / always-on server.** Optional temporary localhost only. CLI export works without it.
 
+On compact layouts, the Design Hub drawer closes with its top-right **X**, the
+backdrop, or Escape. Its manual **Refresh** control sits beside that X; the drawer
+does not repeat keyboard instructions in a footer.
+
 ### Auto-refresh (no restart when you export)
 
 The hub **refreshes itself** when documents change — you don't restart it after exporting a new resume

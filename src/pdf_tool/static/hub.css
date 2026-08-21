@@ -685,7 +685,7 @@ a.hub-brand {
   margin: 0;
 }
 .hub-bar button.hub-icon-btn,
-.hub-drawer-actions button.hub-icon-btn,
+.hub-drawer-head-actions button.hub-icon-btn,
 .hub-search-trigger,
 .hub-more > summary,
 .hub-drawer-toggle {
@@ -695,7 +695,7 @@ a.hub-brand {
   line-height: 0;
 }
 .hub-bar button.hub-icon-btn,
-.hub-drawer-actions button.hub-icon-btn {
+.hub-drawer-head-actions button.hub-icon-btn {
   width: var(--hub-icon-box);
   min-width: var(--hub-icon-box);
   height: var(--hub-icon-box);
@@ -867,6 +867,24 @@ a.hub-brand {
   flex-shrink: 0;
 }
 .hub-drawer-head .hub-brand { font-size: 1rem; }
+.hub-drawer-head-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.hub-drawer-head-actions button.hub-icon-btn {
+  border-radius: 6px;
+  background: transparent;
+  border: 1px solid var(--dash-card-border);
+  color: var(--dash-text);
+  cursor: pointer;
+  font-size: 1.15rem;
+}
+.hub-drawer-head-actions button.hub-icon-btn:hover {
+  color: var(--dash-text-bright);
+  border-color: var(--dash-card-hover);
+}
+.hub-refresh-glyph { line-height: 1; }
 .hub-drawer-close {
   width: 32px; height: 32px;
   display: inline-flex; align-items: center; justify-content: center;
@@ -936,49 +954,6 @@ a.hub-brand {
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--dash-text-dim);
-}
-
-.hub-drawer-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 8px;
-  padding: 12px 14px;
-  border-top: 1px solid var(--dash-card-border);
-  flex-shrink: 0;
-}
-.hub-drawer-actions button {
-  flex: 0 0 auto;
-  height: 36px;
-  border-radius: 6px;
-  font-size: 0.82rem;
-  font-weight: 600;
-  cursor: pointer;
-  background: var(--dash-card);
-  color: var(--dash-text);
-  border: 1px solid var(--dash-card-border);
-}
-.hub-drawer-actions button.primary {
-  background: var(--hub-grad);
-  color: #0a1210;
-  border-color: transparent;
-  box-shadow: var(--hub-glow);
-}
-
-.hub-drawer-foot {
-  padding: 8px 14px 14px;
-  font-size: 0.62rem;
-  color: var(--dash-text-dim);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-.hub-drawer-foot kbd {
-  font-family: var(--dash-mono);
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid var(--dash-card-border);
-  border-radius: 4px;
-  padding: 0 4px;
-  font-size: 0.6rem;
 }
 
 /* ── Search overlay (full-screen glass) ──────────────────── */
