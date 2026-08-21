@@ -39,14 +39,14 @@ the non-developer desktop product is a separate, unstarted implementation phase.
   breakpoint file is a cache/index only.
 - [x] At the drawer switch, hide empty desktop groups and their divider borders; keep refresh/close
   compact; make drawer and search dismiss on outside click as well as Escape.
-- [ ] Visual-regression check the Hub (`/`, `/recipes`, `/vault`) at 390, 576, 768, 992, 1200, 1400,
-  and 1920px against `www-theme-kit/profiles/pdf-designer.json`; add a browser-level test if a
-  recurring layout regression appears.
+- [x] Visual/regression check the Hub (`/`, `/recipes`, `/vault`) at 390, 576, 768, 992, 1200, 1400,
+  and 1920px against `www-theme-kit/profiles/pdf-designer.json` (2026-08-21). Fixed document-root
+  overflow from the closed drawer and restored the 768px desktop hamburger boundary.
 
 ## Distribution — optional, not a blocker for the clone product
 
 - [x] Public-source smoke and local wheel gates exist.
-- [ ] Human: create a TestPyPI token, run `python scripts/testpypi-dry-run.py --upload`, and prove a fresh install from TestPyPI.
+- [ ] Human: create a fresh TestPyPI token, run `python scripts/testpypi-dry-run.py --upload`, and prove a fresh install from TestPyPI. An attempted upload on 2026-08-21 returned HTTP 403 invalid/non-existent authentication; no credential was retained.
 - [ ] Only after TestPyPI passes: decide whether to publish production PyPI and update the README install path.
 
 ## Paid desktop shell — first real implementation phase
@@ -59,9 +59,7 @@ the non-developer desktop product is a separate, unstarted implementation phase.
 - [ ] After the launcher is proven, choose the paid checkout path: Gumroad as merchant-of-record
   convenience, or a Jenninexus product card with a PayPal checkout button plus owned fulfilment,
   tax, receipt, refund, and download-delivery responsibilities.
-- [ ] Define an optional Voice Seed handoff for the wizard: create/import a user's own public-safe
-  voice card only after local `characterVoice` + vault `voice` are set. It must remain optional,
-  never copy private vault claims or contacts, and never add Voice Seed as a renderer dependency.
+- [x] Define the optional Voice Seed handoff contract in [`docs/VOICE-SEED-HANDOFF.md`](../../docs/VOICE-SEED-HANDOFF.md): create/import a user's own public-safe voice card only after local `characterVoice` + vault `voice` are set. It remains optional, never copies private vault claims or contacts, and never adds Voice Seed as a renderer dependency.
 
 ## Guardrails
 
