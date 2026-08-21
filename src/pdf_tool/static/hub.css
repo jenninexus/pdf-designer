@@ -105,7 +105,11 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; }
-html, body { margin: 0; height: 100%; }
+/* The closed off-canvas drawer is translated beyond the viewport. Clip that
+   composited area at the document root so the desktop/tablet header's internal
+   scroll strip never turns it into page-level horizontal scrolling. */
+html { margin: 0; height: 100%; overflow-x: clip; }
+body { margin: 0; height: 100%; }
 
 body {
   display: flex;
@@ -698,6 +702,9 @@ a.hub-brand {
   padding: 0 !important;
   gap: 0;
 }
+/* The shared icon-box rule above uses !important; reassert the desktop state
+   here so only the drawer-switch media query can reveal the hamburger. */
+.hub-drawer-toggle { display: none !important; }
 .hub-bar button.hub-icon-btn.primary {
   padding: 0 !important;
   width: 28px;
