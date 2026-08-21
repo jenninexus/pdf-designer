@@ -102,7 +102,9 @@ def test_hub_offcanvas_controls_do_not_depend_on_escape():
         encoding="utf-8"
     )
     assert 'if (backdrop) backdrop.addEventListener("click", closeDrawer);' in APP_HTML
-    assert 'if (e.target === searchOvl) closeSearchOvl();' in APP_HTML
+    assert 'searchOvl.addEventListener("pointerdown", (e) => {' in APP_HTML
+    assert 'if (!searchCard?.contains(e.target)) closeSearchOvl();' in APP_HTML
+    assert '<kbd>Esc</kbd> or click outside closes' in APP_HTML
     assert ".hub-bar-scroll > .hub-group:not(.hub-brand-group):not(.spacer)" in css
     assert ".hub-drawer-actions button {\n  flex: 0 0 auto;" in css
     assert ".hub-drawer .chips { flex-wrap: wrap; gap: 6px; justify-content: center; }" in css

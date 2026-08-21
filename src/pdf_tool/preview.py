@@ -562,7 +562,7 @@ APP_HTML = """<!doctype html>
   <div class="hub-search-ovl-inner">
     <input class="hub-search-ovl-input" id="searchOvlInput" type="search" placeholder="Search name or path…" autocomplete="off" aria-label="Search documents">
     <div class="hub-search-ovl-results" id="searchOvlResults"></div>
-    <div class="hub-search-ovl-foot"><kbd>Esc</kbd> closes · <kbd>Enter</kbd> opens first</div>
+    <div class="hub-search-ovl-foot"><kbd>Esc</kbd> or click outside closes · <kbd>Enter</kbd> opens first</div>
   </div>
 </div>
 
@@ -1357,10 +1357,13 @@ function renderSearchOvl() {
   if (closeBtn) closeBtn.addEventListener("click", closeDrawer);
   if (backdrop) backdrop.addEventListener("click", closeDrawer);
   if (searchTrigger) searchTrigger.addEventListener("click", openSearchOvl);
-  if (searchOvl) searchOvl.addEventListener("click", (e) => {
-    // The glass itself is the backdrop; clicks inside the search card keep working.
-    if (e.target === searchOvl) closeSearchOvl();
-  });
+  if (searchOvl) {
+    const searchCard = searchOvl.querySelector(".hub-search-ovl-inner");
+    searchOvl.addEventListener("pointerdown", (e) => {
+      // The full-screen glass is the backdrop; any pointer action outside the card closes it.
+      if (!searchCard?.contains(e.target)) closeSearchOvl();
+    });
+  }
   if (searchOvlInput) {
     searchOvlInput.addEventListener("input", () => {
       renderSearchOvl();

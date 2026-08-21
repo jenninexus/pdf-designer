@@ -146,6 +146,13 @@ and follow it."*
 · **`/voice`** · **`/reflect`** (`jen/reflect-universal` — required at wrap) · `/roadmap` →
 [`docs/ROADMAP.md`](docs/ROADMAP.md).
 
+**Shared-agent tooling:** source commands stay in `.claude/commands/`; Codex uses the generated local
+`.codex/skills/` adapters, while Claude may use the focused optional profile in `.claude/settings.json`
+(`frontend-design`, `code-review`, `code-simplifier`). Other agents follow the same Markdown commands and this
+guide. sys-admin is optional workspace enrichment only — its user-level stdio client is already configured on
+SEGOPC, and `C:\mcp\sys-admin\start-sys-admin.bat` is the safe standing-helper check. The engine itself must
+continue to run with no MCP, environment variables, or copied credentials.
+
 ### 📎 Public seed vs. personal / dev copy — the `.example` split
 
 | File | Tracked? | Contains |
