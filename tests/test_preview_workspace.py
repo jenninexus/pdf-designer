@@ -96,8 +96,8 @@ def test_hub_js_restores_profile_before_folder_rebuild():
     assert boot.rfind("restoreHubPrefs") < boot.rfind("buildFolderSelect();")
 
 
-def test_hub_offcanvas_controls_do_not_depend_on_escape():
-    """Both overlays must close from their visible outside/backdrop surface."""
+def test_hub_offcanvas_controls_are_in_the_header_and_close_from_the_backdrop():
+    """The drawer has header actions; both overlays also close from their backdrop."""
     css = (Path(__file__).resolve().parents[1] / "src" / "pdf_tool" / "static" / "hub.css").read_text(
         encoding="utf-8"
     )
@@ -106,7 +106,10 @@ def test_hub_offcanvas_controls_do_not_depend_on_escape():
     assert 'if (!searchCard?.contains(e.target)) closeSearchOvl();' in APP_HTML
     assert '<kbd>Esc</kbd> or click outside closes' in APP_HTML
     assert ".hub-bar-scroll > .hub-group:not(.hub-brand-group):not(.spacer)" in css
-    assert ".hub-drawer-actions button {\n  flex: 0 0 auto;" in css
+    assert 'class="hub-drawer-head-actions"' in APP_HTML
+    assert APP_HTML.index('id="drawerRefresh"') < APP_HTML.index('id="drawerClose"')
+    assert '<div class="hub-drawer-foot"><kbd>Esc</kbd> closes</div>' not in APP_HTML
+    assert ".hub-drawer-head-actions {" in css
     assert ".hub-drawer .chips { flex-wrap: wrap; gap: 6px; justify-content: center; }" in css
 
 
