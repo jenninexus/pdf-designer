@@ -25,7 +25,7 @@ the non-developer desktop product is a separate, unstarted implementation phase.
 - [x] Keep the fictional Jane Example cards (`users/examples.json`, `vaults/examples.json`,
   `profiles/examples.json`) tracked so a fresh clone and the Hub demonstrate every document kind.
 - [x] Replace the broad `_job-apps/_template/` smoke exception with named public seeds; remove the
-  private provider template from the public tree. Real listings, private provider records, names, phone numbers,
+  provider-specific material from the public tree. Real listings, provider records, names, phone numbers,
   and submission evidence remain local only.
 - [x] Make `users/<you>.json#characterVoice` the one person-level voice-design area in the public
   seed; the vault is the sole application-prose layer and profiles only point at it.

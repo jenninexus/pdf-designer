@@ -7,7 +7,7 @@
 > scripts and Hub URLs keep working. Do **not** recreate a `storage/` tree or store
 > listings under `storage/_job-listings/`.
 >
-> private provider Fellowship template: [`../_job-apps/_template/private provider-ai-fellowship.md`](../_job-apps/_template/private provider-ai-fellowship.md).
+> `_job-apps/_template/` is a tracked folder-shape pointer only. Keep real application material local.
 > Private font: `brands/fonts/alienleaguebold.woff2` (gitignored).
 >
 > **Tracked protocol SSOT:** this page lives in `docs/` so a fresh clone can learn the flow.

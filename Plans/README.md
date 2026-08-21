@@ -26,7 +26,6 @@ Working plans for pdf-designer. Keep **one** active product roadmap; move finish
 | [`2026-08-17-early-release-remaining.md`](_Complete/2026-08-17-early-release-remaining.md) | Early-release handoff superseded by the unified standalone-app plan |
 |---|---|
 | [`2026-08-17-hub-examples-storage-retire/`](_Complete/2026-08-17-hub-examples-storage-retire/) | Public Hub examples, `_job-apps/` sole listing, `storage/` retired, history scrub |
-| [`2026-08-16-pdf-start-wrap-private provider/`](_Complete/2026-08-16-pdf-start-wrap-private provider/) | `/pdf-start`·`/pdf-wrap` SSOT; private provider vault claims; storage dupes archived |
 | [`2026-08-13-intuitive-workspace-product.md`](_Complete/2026-08-13-intuitive-workspace-product.md) | Root nouns, path resolver, dual-run copy, `_job-apps/` rename |
 | [`2026-08-13-launch-ready-workspace.md`](_Complete/2026-08-13-launch-ready-workspace.md) | Data copy, tracker dedupe, launch *copy* in Socials (not posted) |
 | [`2026-08-13-previewer-path-header-repair.md`](_Complete/2026-08-13-previewer-path-header-repair.md) | Hub discovers live profiles/folders; sticky profile scopes library |

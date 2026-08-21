@@ -105,6 +105,7 @@ def test_hub_offcanvas_controls_do_not_depend_on_escape():
     assert 'if (e.target === searchOvl) closeSearchOvl();' in APP_HTML
     assert ".hub-bar-scroll > .hub-group:not(.hub-brand-group):not(.spacer)" in css
     assert ".hub-drawer-actions button {\n  flex: 0 0 auto;" in css
+    assert ".hub-drawer .chips { flex-wrap: wrap; gap: 6px; justify-content: center; }" in css
 
 
 def test_recipes_and_vault_share_the_mobile_drawer_contract():

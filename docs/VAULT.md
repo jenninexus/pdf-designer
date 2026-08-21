@@ -55,23 +55,21 @@ Socials `format-manifest.json` voice strings and bot STYLE-SPECs are **marketing
 
 ---
 
-## private provider AI Fellowship (AI-track listings)
+## Private AI-track records
 
-private provider’s own listing template is the rule for **any AI trainer / eval / RLHF contractor
-application** (and for LinkedIn / private provider-profile work history). Company line is exactly
-**private provider AI Fellowship**. Employment type **Contract**. Location **Remote**.
+Provider-specific records must remain **local only**. Do not copy a private provider's wording,
+project names, or employment details into the public protocol.
 
 | | Jenni | Shade |
 |---|---|---|
-| Vault id | `emp-private provider-ai` | `emp-private provider-ai` |
+| Vault id | local-only | local-only |
 | Title | AI Trainer – Game Development Expert | AI Trainer – Machine Learning Expert |
 | Dates | Jun 2026 – Present | Jun 2026 – Present |
 | Angle | `roleTracks.ai.angleByUse.ai-trainer` | same key (contractor overlay; default AI identity remains Principal ML) |
 
-**Do not name the partner company or AI lab** on the résumé, cover letter, or LinkedIn. Internal
-private provider project names stay in the private provider hub, not on exported PDFs. Full operator template:
-local `storage/private provider.md`. Voice for private provider *task* writing is a different register
-(`technicalAuthorship` in voice-seed) — do not dump that into ATS prose.
+**Do not name a private provider or partner** on the résumé, cover letter, or LinkedIn unless the
+user has explicitly authorized it. Keep provider-specific task voice and source material out of
+exported PDFs and the tracked protocol.
 
 ---
 
