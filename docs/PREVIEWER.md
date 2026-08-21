@@ -38,7 +38,12 @@ only the tracked default resume, cover letter, letter, work samples, collage, an
 
 On compact layouts, the Design Hub drawer closes with its top-right **X**, the
 backdrop, or Escape. Its manual **Refresh** control sits beside that X; the drawer
-does not repeat keyboard instructions in a footer.
+does not repeat keyboard instructions in a footer. Its left grab edge is resizable
+(or keyboard-adjustable) and stores only a local browser width preference. The
+Library, Recipes, and Vault use that same drawer contract at `<=767.98px`.
+
+For the Windows-first browser launcher and its acceptance checks, see
+[`WINDOWS-LAUNCHER.md`](WINDOWS-LAUNCHER.md).
 
 ### Auto-refresh (no restart when you export)
 
@@ -69,6 +74,8 @@ fast on a large tree. If the server is briefly down mid-poll, the client just re
 Hub layout: **library left + viewer right** from **576px** up (desktop / tablet). Stacks only below
 **575.98px** (phones). Drawer (hamburger) from **≤767.98px**. Comfortable from **1200px** (xl);
 widescreen from **1400px** (xxl). Compact bar is **~40px**.
+The regression matrix covers 390, 576, 768, 992, 1200, 1400, 1920, 2560, and 3840px; the 2K/4K
+checks protect the same capped HD layout rather than introducing a second nav switch.
 **Vault + Recipes** use the same switch points (shared `hub.css` + `Library | Recipes | Vault` nav). Library is `body.hub-shell` (fixed panes); subpages are `body.hub-page` (document scroll). Tables get a horizontal scroll wrapper below md.
 
 Each `.html` file is its **own template** in the library (one card = one file).

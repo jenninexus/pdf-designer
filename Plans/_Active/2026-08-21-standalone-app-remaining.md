@@ -52,8 +52,8 @@ the non-developer desktop product is a separate, unstarted implementation phase.
 ## Paid desktop shell — first real implementation phase
 
 - [ ] Owner decision: define the supported first OS and delivery mechanism for the paid shell.
-- [ ] Write a small acceptance spec for the first installer: installs/launches the existing Hub on localhost, opens the browser, and leaves all vault data local.
-- [ ] Build and test that launcher/installer spike without forking the renderer or introducing a cloud account.
+- [x] Write a small acceptance spec for the first launcher: starts the existing Hub on localhost, opens the browser, and leaves all vault data local. See [`docs/WINDOWS-LAUNCHER.md`](../../docs/WINDOWS-LAUNCHER.md).
+- [x] Build and test the Windows launcher spike without forking the renderer or introducing a cloud account.
 - [ ] Add the guided vault → skills → palette → light/dark export wizard only after the launcher is proven.
 - [ ] Keep Gumroad and any paid listing blocked until the installer/wizard has a real, tested user path.
 - [ ] After the launcher is proven, choose the paid checkout path: Gumroad as merchant-of-record
@@ -81,3 +81,36 @@ python scripts/testpypi-dry-run.py
 Related: [`../../docs/PRODUCT.md`](../../docs/PRODUCT.md) ·
 [`../../docs/PACKAGING.md`](../../docs/PACKAGING.md) ·
 [`../../docs/PREVIEWER.md`](../../docs/PREVIEWER.md).
+
+## Autonomous completion run — 2026-08-21
+
+### Done when
+
+- [ ] The production-PyPI decision is documented with its evidence and release boundary.
+- [x] A Windows launcher starts the existing local Hub, opens the browser, and keeps all data local. Acceptance record: [`docs/WINDOWS-LAUNCHER.md`](../../docs/WINDOWS-LAUNCHER.md).
+- [ ] A guided local wizard covers vault → skills → palette → dual export without a second renderer.
+- [ ] The optional Voice Seed flow presents a redacted card for approval and never needs a network dependency.
+- [ ] The changed surfaces have automated and observable verification, then are committed and pushed as authorized.
+
+### Task checklist
+
+- [ ] Audit existing launcher, installer, wizard, and release mechanisms.
+- [x] Implement the smallest Windows distribution path around `pdf_tool.preview` (`scripts/launch-design-hub.ps1`).
+- [ ] Implement the guided wizard and bounded Voice Seed handoff.
+- [ ] Verify the distribution and wizard paths; update release docs and plan.
+- [ ] Commit explicit in-scope paths and push the authorized branch.
+
+### Assumptions
+
+- The first paid-shell target is Windows, because this is the requested platform and the active work occurs on Windows.
+- Production PyPI is deferred unless an existing production credential and public-release gate make publication independently verifiable; TestPyPI remains the proved distribution rehearsal.
+- The wizard is a Design Hub surface over existing local data and renderer commands, never a new renderer or cloud account.
+
+### Evidence
+
+- VERIFIED — 2026-08-21 TestPyPI uploaded `pdf-designer 0.4.0`, fresh-installed it outside the checkout, and passed the packaged `check_generation` gate.
+- UNVERIFIED — Windows distribution and guided-wizard implementation have not yet been inspected in this run.
+
+### Deferred
+
+- Production PyPI publication itself is outward-facing and remains separate from the reversible production-PyPI decision unless its release conditions are fully met.

@@ -36,3 +36,8 @@ breakpoint, not missing HTML.
 - `src/pdf_tool/static/hub.css` — stack only in `@media (max-width: 575.98px)`
 - `docs/PREVIEWER.md` · `.config/mcp-pdf-designer.json#breakpoints` ·
   `www-theme-kit/profiles/pdf-designer.json#breakpoints`
+- When changing drawer chrome, exercise **Library, Recipes, and Vault** at the full project
+  matrix (390, 576, 768, 992, 1200, 1400, 1920, 2560, 3840px). Check the drawer *after its
+  transition completes*, then verify no root horizontal overflow, header action order, and the
+  resize-edge's locally persisted width. Source-string assertions cannot catch a transformed
+  off-canvas element that is still animating or off-screen.
