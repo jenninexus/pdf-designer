@@ -14,3 +14,7 @@ Render profiles: `profiles/<id>.json` (layout, export prefs, which HTML to open)
 Same shape also lives in [`examples/profiles/default-resume/profile.example.json`](../examples/profiles/default-resume/profile.example.json).
 
 Person + vault companions: [`users/examples.json`](../users/examples.json) · [`vaults/examples.json`](../vaults/examples.json).
+
+Voice is edited in exactly two places, never in a profile: `users/<you>.json#characterVoice`
+holds personality and cross-register routing; `vaults/<you>.json#voice` holds application prose.
+The profile's `voice` field is a pointer only, so it cannot become a conflicting third source.

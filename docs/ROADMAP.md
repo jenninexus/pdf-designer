@@ -9,13 +9,13 @@
 
 ## Remaining (open items)
 
-- [x] Root workspace **duplicates archived** (2026-08-16) then **`storage/` directory retired** (2026-08-17) — private provider template → `_job-apps/_template/`; private font → `brands/fonts/`.
-- [x] **One job noun** (2026-08-17) — `_job-apps/` is live + public; `applications/` is README-only. `storage/_job-listings/` pointer archived.
+- [x] Root workspace **duplicates archived** (2026-08-16) then **`storage/` directory retired** (2026-08-17) — private private provider material stays local; private font → `brands/fonts/`.
+- [x] **One job noun** (2026-08-17) — `_job-apps/` is live; its tracked surface is a generic README/template pointer only. `applications/` is README-only and `storage/_job-listings/` is archived.
 - [x] **History scrub** (2026-08-18) — `docs/HISTORY-SCRUB.md`; force-push `8c1c631`. BEE re-clones.
 - [x] **Push origin/main** — private repo; clone-safe Hub + stills `3f5ebe8` (2026-08-18).
-- [x] **Core launch** — stills approved; GitHub **public** 2026-08-19; blog live; Patreon **published** 2026-08-20 ([post](https://www.patreon.com/posts/pdf-designer-com-167093475)); Discord `#announcements📢` SENT; X composer completion recorded at the human’s direction 2026-08-21. Remaining: capture X URL + `x:notify:jn`, Meta composer, short-form, and deploy JN only if production still says GitHub private.
+- [x] **Core public product** — GitHub **public** 2026-08-19; blog walkthrough live; Jane Example covers every Hub document kind. Social publication records are owned in the Socials workspace.
 - [ ] Keep **SSOT + QA docs** honest as the engine evolves
-- [ ] Optional: TestPyPI upload (not required for clone launch) · production PyPI · paid desktop shell (installer/wizard not started)
+- [ ] Optional: TestPyPI upload (not required for clone launch) · production PyPI · paid desktop shell (installer/wizard not started) · recurring responsive Hub visual matrix
 
 ### Recently landed
 

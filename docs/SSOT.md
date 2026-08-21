@@ -128,7 +128,9 @@ The person filter is library-only — it does **not** auto-select a palette. Ful
 
 | Concern | Owning SSOT |
 |---|---|
-| Breakpoints numbers | `C:\mcp\.config\mcp-breakpoints.json` + www-theme-kit SCSS |
+| Breakpoint numbers | `www-theme-kit/scss/_breakpoint-tokens.scss` (shared numeric SSOT) |
+| Hub breakpoint / nav behavior | `src/pdf_tool/static/hub.css` (implemented pdf-designer policy) |
+| MCP breakpoint file | `C:\mcp\.config\mcp-breakpoints.json` (cross-project cache/index; verify it, never treat it as the owner) |
 | Resume palette kit catalog | `www-theme-kit/palettes/resume-palettes.json` |
 | Hub chrome profile ⭐ | `www-theme-kit/profiles/pdf-designer.json` |
 | Live-site brand hex (JN / MG) | `www-theme-kit/profiles/{jenninexus,martiangames}.json` — map into `brands/` for résumés |

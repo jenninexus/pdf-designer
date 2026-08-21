@@ -52,6 +52,14 @@ def test_tracked_tree_has_no_personal_applicant_files() -> None:
     assert leaked == [], f"personal applicant files are tracked: {leaked}"
 
 
+def test_tracked_job_template_has_no_private provider_material() -> None:
+    import subprocess
+
+    listed = subprocess.check_output(["git", "ls-files", "_job-apps"], cwd=ROOT, text=True)
+    visible = [path for path in listed.splitlines() if (ROOT / path).exists()]
+    assert all("private provider" not in path.lower() for path in visible)
+
+
 def test_public_letter_uses_the_tracked_parisienne_asset() -> None:
     letter = ROOT / "examples/profiles/default-letter/personal-letter.html"
     text = letter.read_text(encoding="utf-8")

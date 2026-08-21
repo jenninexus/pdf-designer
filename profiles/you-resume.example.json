@@ -24,7 +24,7 @@
     "tracked": false,
     "reason": "Real personal resume data. profiles/<you>-resume.json is gitignored."
   },
-  "voice": "One line pointer. Full application voice → vault `voice`. Personality / contrast → users/<you>.json#characterVoice. Network map → <VOICE_SEED>/registry.json.",
+  "voice": "Pointer only — do not design voice here. THE ONE person-level voice-design area is users/<you>.json#characterVoice; application prose is vaults/<you>.json#voice. Optional network map: <VOICE_SEED>/registry.json.",
   "leadIdentity": {
     "rule": "OPTIONAL. If lead identity CHANGES by track, put the map in the vault ONLY — profile keeps a pointer.",
     "source": "../vaults/yourname.json#voice.leadIdentityByTrack",
