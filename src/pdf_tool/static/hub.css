@@ -891,13 +891,13 @@ a.hub-brand {
   font-weight: 600;
 }
 
-.hub-drawer .hub-nav { flex-wrap: wrap; gap: 4px; }
+.hub-drawer .hub-nav { flex-wrap: wrap; gap: 4px; justify-content: center; }
 .hub-drawer .hub-nav .hub-link {
   font-size: 0.92rem;
   padding: 8px 12px;
 }
 
-.hub-drawer .chips { flex-wrap: wrap; gap: 6px; }
+.hub-drawer .chips { flex-wrap: wrap; gap: 6px; justify-content: center; }
 .hub-drawer .chip {
   height: 32px;
   font-size: 0.78rem;
@@ -1541,6 +1541,9 @@ code.path-mini, code.cmd {
   .hub-page-wrap { padding: 12px 10px 36px; }
   .hub-page-wrap h1 { font-size: 1.12rem; }
   .hub-page-lead { font-size: 0.88rem; margin-bottom: 16px; }
+  /* Discovery controls are easier to scan as a centred, shared mobile set. */
+  .hub-drawer-section > .hub-drawer-label { align-self: center; }
+  .hub-page-wrap .hub-chips { justify-content: center; }
   .hub-drawer { width: min(100vw, 360px); }
 }
 

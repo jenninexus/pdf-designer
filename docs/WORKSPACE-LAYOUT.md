@@ -1,8 +1,8 @@
 # Workspace layout — product UX for local files
 
 **Status:** path resolver + root README scaffolds + SEGO **data copy** (2026-08-13).  
-**`storage/` is retired (2026-08-17).** private provider template + private font moved to
-`_job-apps/_template/` and `brands/fonts/`. The engine still accepts `storage/`
+**`storage/` is retired (2026-08-17).** Private application material remains local and the
+private font moved to `brands/fonts/`. The engine still accepts `storage/`
 aliases. Copy script (historical): `python scripts/migrate-workspace.py`.
 
 This page is the **clone-safe product story**: what a future GitHub user should see at the

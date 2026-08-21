@@ -9,7 +9,7 @@
 
 ## Remaining (open items)
 
-- [x] Root workspace **duplicates archived** (2026-08-16) then **`storage/` directory retired** (2026-08-17) — private private provider material stays local; private font → `brands/fonts/`.
+- [x] Root workspace **duplicates archived** (2026-08-16) then **`storage/` directory retired** (2026-08-17) — private application material stays local; private font → `brands/fonts/`.
 - [x] **One job noun** (2026-08-17) — `_job-apps/` is live; its tracked surface is a generic README/template pointer only. `applications/` is README-only and `storage/_job-listings/` is archived.
 - [x] **History scrub** (2026-08-18) — `docs/HISTORY-SCRUB.md`; force-push `8c1c631`. BEE re-clones.
 - [x] **Push origin/main** — private repo; clone-safe Hub + stills `3f5ebe8` (2026-08-18).

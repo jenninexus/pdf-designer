@@ -46,7 +46,7 @@ Launch copy lives in **Socials** (do not post from this repo unless asked).
 - Gumroad $5 — blocked until installer/wizard exists (`docs/PACKAGING.md`).
 - JN.com `/products` store row for this SKU.
 - Optional TestPyPI upload.
-- Next AI-trainer application: `emp-private provider-ai`; company line **private provider AI Fellowship**.
+- Next AI-trainer application: confirm the provider and permitted company line with the user before use.
 
 ### Never
 

@@ -18,7 +18,7 @@
 - [x] Serve files through `resolve_rel` so moved HTML is not 404
 - [x] Public cover-letter, work-samples, gallery examples; sort `examples/` first
 - [x] Header chip colors + themed scrollbars (chrome + iframe inject)
-- [x] Relocate private provider.md + private font; dual-run smoke; delete `storage/`
+- [x] Relocate private local material + private font; dual-run smoke; delete `storage/`
 - [x] HISTORY-SCRUB backup; execute rewrite (2026-08-18, force-push `8c1c631`)
 - [x] Update STORAGE / ROADMAP / remaining plan / product card
 
