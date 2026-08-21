@@ -13,7 +13,7 @@ and
 |---|---|---|
 | Local-first engine + Design Hub | **Shipped** | HTML→PDF, variants, collage, vault/ATS/palette/overflow guards, public examples, and the localhost Hub are in `main`. |
 | Public GitHub clone experience | **Shipped, regression-gated** | `scripts/smoke-white-label.py` passed 2026-08-21: public-only QA, light/dark export, and ATS parsing. |
-| Installable Python package | **Locally proved** | Wheel assets and fresh-venv dry-run passed 2026-08-21; TestPyPI upload needs a human token. |
+| Installable Python package | **TestPyPI proved** | Wheel assets, upload, fresh TestPyPI install, and packaged `check_generation` passed 2026-08-21. |
 | Public product record | **Shipped** | Public GitHub clone, clone-safe Hub examples, and the blog walkthrough exist. Social publication records are owned by `C:\Github\socials\Plans\_ACTIVE\2026-08-10-jn-agency-socials-sequence\Plan.md`, not this engineering plan. |
 | Paid standalone desktop app | **Not implemented** | The product decision is a thin installer/launcher + guided wizard over the same engine, never a second renderer. No installer or wizard code exists yet. |
 
@@ -46,7 +46,7 @@ the non-developer desktop product is a separate, unstarted implementation phase.
 ## Distribution — optional, not a blocker for the clone product
 
 - [x] Public-source smoke and local wheel gates exist.
-- [ ] Human: create a fresh TestPyPI token, run `python scripts/testpypi-dry-run.py --upload`, and prove a fresh install from TestPyPI. An attempted upload on 2026-08-21 returned HTTP 403 invalid/non-existent authentication; no credential was retained.
+- [x] TestPyPI: `pdf-designer 0.4.0` uploaded and passed the fresh-install + packaged `check_generation` proof on 2026-08-21.
 - [ ] Only after TestPyPI passes: decide whether to publish production PyPI and update the README install path.
 
 ## Paid desktop shell — first real implementation phase

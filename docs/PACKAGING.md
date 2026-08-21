@@ -61,7 +61,7 @@ this). Verifying from the checkout directory will silently use live `themes/`.
 |---|---|---|
 | `git clone` + `pip install -e ".[dev]"` + `playwright install chromium` | Devs / agents | ✅ supported (white-label smoke) |
 | Local wheel with synced `share/` | Spike / CI | ✅ `check-wheel-assets.py` + `testpypi-dry-run.py` |
-| TestPyPI `pip install pdf-designer` | Non-dev trial | 🟡 local proof green; **upload blocked** (no token yet) |
+| TestPyPI `pip install pdf-designer` | Non-dev trial | ✅ `pdf-designer 0.4.0` uploaded and fresh-installed 2026-08-21 |
 | Production PyPI | Public | ❌ not until TestPyPI upload + install works |
 | GUI installer (paid app) | Creatives | ❌ design only — PRODUCT.md |
 
@@ -70,7 +70,7 @@ this). Verifying from the checkout directory will silently use live `themes/`.
 1. Bump `project.version` in `pyproject.toml` if that version was already uploaded
 2. `python scripts/check-wheel-assets.py` → PASS
 3. `python scripts/smoke-white-label.py` from a clean clone (still the product gate)
-4. **Create TestPyPI account + API token** at https://test.pypi.org/manage/account/token/
+4. **For a future TestPyPI release, create an API token** at https://test.pypi.org/manage/account/token/
    — store in sys-admin `userdata.db` (`category=API Keys`, `service=TestPyPI`,
    `key=api_token`) or set the local-only `TESTPYPI_TOKEN` environment variable.
    For a single upload without retaining the token, the preferred path is:
