@@ -20,8 +20,8 @@ GitHub product to teach itself.
 **Do not** dump live Jenni/Shade data into tracked folders. Root dirs ship as **empty scaffolds
 + README + examples**; real JSON/HTML/PDFs stay gitignored — same privacy bar as today.
 
-**Do not** big-bang rename overnight.** `preview.py`, `check_vault`, `tracker`, and dozens of
-docs hard-code `storage/`. Migration = path resolver first, then move, then delete `storage/`.
+The migration is complete. `preview.py`, `check_vault`, and `tracker` resolve legacy `storage/` URLs
+only when the corresponding root-noun payload exists; new content must use root nouns.
 
 ---
 
@@ -139,7 +139,7 @@ hides them from clones.
 2. **Path resolver** — `pdf_tool.paths` accepts both trees (Hub + CLI) ✅
 3. **Scaffold root dirs** — README stubs on GitHub ✅
 4. **Move SEGO data** — copy `storage/*` → new nouns; keep `storage/` as read-only alias  ✅ `scripts/migrate-workspace.py`
-5. **Delete `storage/`** — after smoke + Hub + tracker green; update AGENTS / commands / product-design hub
+5. **Delete `storage/`** — ✅ retired 2026-08-17 after smoke + Hub + tracker verification; retain the resolver only for old URLs.
 
 ---
 

@@ -10,10 +10,10 @@ paid shell later. Clone path: [`GETTING-STARTED.md`](GETTING-STARTED.md). Archit
 | Paid later (hypothesis) | Packaged desktop app — installer + guided vault/export UX |
 | **Public product story** | Résumé creator for a broken job market — **vaults**, skills, palette prefs |
 | Public demo | [`../examples/resume-studio/`](../examples/resume-studio/) |
-| Folder UX (clone tree) | [`WORKSPACE-LAYOUT.md`](WORKSPACE-LAYOUT.md) — resolver + README scaffolds; SEGO data copied to root nouns, `storage/` alias kept |
+| Folder UX (clone tree) | [`WORKSPACE-LAYOUT.md`](WORKSPACE-LAYOUT.md) — root-noun README scaffolds; SEGO data migrated and `storage/` retired |
 | Product hub (local) | `C:\Github\product-design` · `docs/LAUNCH-PDF-DESIGNER.md` (Patreon first; Gumroad when extras exist) |
 | Private marketing (local) | `docs/MARKETING.md` (gitignored — same folder as public docs) |
-| Engineering checklist | [`../Plans/_Active/2026-08-17-early-release-remaining.md`](../Plans/_Active/2026-08-17-early-release-remaining.md) |
+| Engineering checklist | [`../Plans/_Active/2026-08-21-standalone-app-remaining.md`](../Plans/_Active/2026-08-21-standalone-app-remaining.md) |
 
 ---
 
@@ -34,18 +34,19 @@ workflow that **asks before inventing gaps** — not another cloud form that own
 | Generic templates | Per-user **vault** + **palette prefs** + dual light/dark |
 | Claims that drift | Vault is the brain — `check_vault` / gap-check before prose |
 | ATS shreds fancy fonts | Light PDF + `check_ats`; dark is for humans |
-| SaaS wants your data | Local-first; `storage/` never required for the public demo |
+| SaaS wants your data | Local-first; private root nouns are never required for the public demo |
 
 ## Three surfaces, one engine
 
 | Surface | Audience | Today | Monetize? |
 |---|---|---|---|
 | **Open toolkit** | Devs, agents, power users | ✅ MIT on GitHub | Free — trust + contributors |
-| **Personal protocol** | Founders using this clone privately | ✅ local `storage/` + bare commands | Never sell *their* vaults |
+| **Personal protocol** | Founders using this clone privately | ✅ local root nouns + bare commands | Never sell *their* vaults |
 | **Packaged app** (future) | Job-seekers who want Canva ease without lying | ❌ not built | Paid / freemium **shell** |
 
-**Hard privacy split:** `storage/` stays gitignored until dropped; root nouns
-(`users/` · `vaults/` · …) ship **README + examples only**. GitHub ships
+**Hard privacy split:** root nouns (`users/` · `vaults/` · …) ship **README + examples only**;
+real local data remains gitignored. `storage/` is retired, while the resolver keeps old URLs working.
+GitHub ships
 **`*.example.md` only** for commands. A stranger proves the product with
 `examples/` + `themes/` alone — [`GETTING-STARTED.md`](GETTING-STARTED.md).
 
@@ -124,4 +125,4 @@ Longer SEGO channel plan: `docs/MARKETING.md` (gitignored).
 
 ---
 
-*Last updated 2026-08-13 — data copy to root nouns; `storage/` alias kept; launch copy in product-design hub.*
+*Last updated 2026-08-21 — core toolkit shipped; TestPyPI remains optional and the paid desktop shell is unstarted.*

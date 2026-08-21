@@ -48,7 +48,7 @@ These pages document the **protocol** (clone-safe). Real vaults and listings sta
 | Doc | Owns |
 |---|---|
 | [`WORKSPACE-LAYOUT.md`](WORKSPACE-LAYOUT.md) | ⭐ **Target** root workspace for the public product |
-| [`STORAGE.md`](STORAGE.md) | **Live** layout under `storage/` until migration |
+| [`STORAGE.md`](STORAGE.md) | **Live** root-noun layout; retired `storage/` URL aliases |
 | [`VAULT.md`](VAULT.md) | Claim rules, voice layers, role tracks |
 | [`JOB-ASSESSMENT.md`](JOB-ASSESSMENT.md) | Listing capture / pay / gap-check protocol |
 | [`APPLICATIONS.md`](APPLICATIONS.md) | One-folder-per-job workflow |
@@ -65,8 +65,9 @@ These pages document the **protocol** (clone-safe). Real vaults and listings sta
 
 ### Privacy
 
-`storage/` is **gitignored**. Root workspace nouns (`users/` · `vaults/` · `_job-apps/` · …) ship
-tracked READMEs + `*.example.json` — real JSON/HTML stay ignored. Tracked docs stay clone-safe;
+Root workspace nouns (`users/` · `vaults/` · `_job-apps/` · …) are **gitignored** except for
+tracked READMEs + `*.example.json`; real JSON/HTML stay ignored. `storage/` is retired and only
+accepted as an old-path alias. Tracked docs stay clone-safe;
 machine pointers belong in local `.config/mcp-pdf-designer.json`. **Do not** copy
 `storage/docs/` leftovers into this public index — private notes already live as gitignored
 [`MARKETING.md`](MARKETING.md) · [`WORKSPACE.md`](WORKSPACE.md) · [`HISTORY-SCRUB.md`](HISTORY-SCRUB.md).

@@ -38,7 +38,7 @@ Never commit from a personal machine:
 
 | Path | Why |
 |---|---|
-| `storage/**` (live) · future `users/` · `vaults/` · `resumes/` · … real files | Vaults, contacts, exports |
+| Root nouns (`users/` · `vaults/` · `resumes/` · …) real files; legacy `storage/` paths resolve only | Vaults, contacts, exports |
 | `docs/MARKETING.md` · `WORKSPACE.md` · `HISTORY-SCRUB.md` · `docs/*.local.md` | SEGO marketing, machine paths, rewrite runbooks |
 | `.claude/commands/{start,wrap,pdf-start,pdf-wrap,README,make-*}.md` | Dev ritual + personal specifics |
 | `.codex/` | Generated local adapters for the bare commands |

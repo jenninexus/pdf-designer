@@ -1,7 +1,7 @@
 # ROADMAP — pdf-designer
 
 > **This is a pointer, not the roadmap.** The single active working checklist is
-> [`Plans/_Active/2026-08-17-early-release-remaining.md`](../Plans/_Active/2026-08-17-early-release-remaining.md).
+> [`Plans/_Active/2026-08-21-standalone-app-remaining.md`](../Plans/_Active/2026-08-21-standalone-app-remaining.md).
 > `/jen:roadmap` resolves here. Plans index: [`Plans/README.md`](../Plans/README.md).
 >
 > Product UX target: [`WORKSPACE-LAYOUT.md`](WORKSPACE-LAYOUT.md) (root `users/` · `vaults/` · `_job-apps/` · …).  
@@ -13,9 +13,9 @@
 - [x] **One job noun** (2026-08-17) — `_job-apps/` is live + public; `applications/` is README-only. `storage/_job-listings/` pointer archived.
 - [x] **History scrub** (2026-08-18) — `docs/HISTORY-SCRUB.md`; force-push `8c1c631`. BEE re-clones.
 - [x] **Push origin/main** — private repo; clone-safe Hub + stills `3f5ebe8` (2026-08-18).
-- [x] **Human publication** — stills approved; GitHub **public** 2026-08-19; blog live; Patreon **published** 2026-08-20 ([post](https://www.patreon.com/posts/pdf-designer-com-167093475)); Discord `#announcements📢` SENT. Remaining: X + Meta composer (API tokens dead) · short-form · deploy JN if prod blog still says GitHub private.
+- [x] **Core launch** — stills approved; GitHub **public** 2026-08-19; blog live; Patreon **published** 2026-08-20 ([post](https://www.patreon.com/posts/pdf-designer-com-167093475)); Discord `#announcements📢` SENT; X composer completion recorded at the human’s direction 2026-08-21. Remaining: capture X URL + `x:notify:jn`, Meta composer, short-form, and deploy JN only if production still says GitHub private.
 - [ ] Keep **SSOT + QA docs** honest as the engine evolves
-- [ ] Optional: TestPyPI upload (not required for clone launch) · production PyPI · paid-shell (installer not started)
+- [ ] Optional: TestPyPI upload (not required for clone launch) · production PyPI · paid desktop shell (installer/wizard not started)
 
 ### Recently landed
 

@@ -41,6 +41,14 @@ PRIVATE_TRACKED_ROOTS = (
     "collages",
     "brands",
 )
+PUBLIC_TRACKED_PRIVATE_PATHS = frozenset(
+    {
+        "users/examples.json",
+        "vaults/examples.json",
+        "profiles/examples.json",
+    }
+)
+PUBLIC_TRACKED_PRIVATE_PREFIXES = ("_job-apps/_template/",)
 PRIVATE_MARKERS = (
     "jenninexus",
     "jenni",
@@ -132,6 +140,8 @@ def _assert_public_privacy() -> None:
             if not (
                 Path(path).name == "README.md"
                 or Path(path).name.endswith(".example.json")
+                or path in PUBLIC_TRACKED_PRIVATE_PATHS
+                or path.startswith(PUBLIC_TRACKED_PRIVATE_PREFIXES)
             )
         ]
         if unexpected:

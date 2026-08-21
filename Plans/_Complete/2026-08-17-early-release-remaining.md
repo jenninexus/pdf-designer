@@ -1,4 +1,9 @@
-# Active plan — Early release remaining (human publication)
+# Complete / superseded plan — Early release remaining (human publication)
+
+> **Superseded 2026-08-21.** Its remaining release, distribution, and desktop-shell work now lives in
+> [`../_Active/2026-08-21-standalone-app-remaining.md`](../_Active/2026-08-21-standalone-app-remaining.md).
+> X composer completion was recorded at the human's direction; the live URL and `x:notify:jn` remain
+> separate follow-up work. This file is historical context, not a working checklist.
 
 **Date:** 2026-08-17 · **Updated:** 2026-08-20 · **Host:** SEGOPC
 
@@ -26,7 +31,8 @@ Launch copy lives in **Socials** (do not post from this repo unless asked).
 - [x] **Public GitHub** — [`github.com/jenninexus/pdf-designer`](https://github.com/jenninexus/pdf-designer) flipped **public** 2026-08-19.
 - [x] **Patreon paste body** — [live post](https://www.patreon.com/posts/pdf-designer-com-167093475) 2026-08-20. Local [`socials/.../patreon/published/2026-08-14-pdf-designer.md`](../../../socials/content/jenninexus/patreon/published/2026-08-14-pdf-designer.md). Archive refreshed (`npm run patreon:archive:jn`, 616 posts).
 - [x] **Discord `#announcements📢`** — SENT 2026-08-20 (landscape promo card). Patreon webhook already fanned `#social-feed` / patrons / supporters — do not re-`--post` those.
-- [ ] **X / Meta** — API blocked 2026-08-20 (`X_*` 403 · `FB_PAGE_ACCESS_TOKEN` expired 2026-06-07). Human composer: attach `docs/images/promo-card-landscape.png` (also HTTPS on jenninexus.com). Then `npm run x:notify:jn`. Preflight next time: `npm run x:ready:jn` + `npx tsx scripts/auth/fb-auth.ts`.
+- [x] **X composer** — marked complete at the human’s direction 2026-08-21. Capture the live URL and run `x:notify:jn` only with explicit authorization; see the active plan.
+- [ ] **Meta composer** — API blocked 2026-08-20 (`FB_PAGE_ACCESS_TOKEN` expired 2026-06-07). Human composer: attach `docs/images/promo-card-landscape.png` (also HTTPS on jenninexus.com). Preflight next time: `npx tsx scripts/auth/fb-auth.ts`.
 - [ ] **Short-form** — TikTok + YouTube sisters dated 2026-08-17. Use `docs/images/` (Jennifer Nexus pack + Jane Example). Never real vaults or `_job-apps`.
 
 ### Already done (do not re-open)
