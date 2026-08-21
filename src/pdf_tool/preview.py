@@ -453,7 +453,7 @@ APP_HTML = """<!doctype html>
       <div class="hub-folder-picker" id="folderPicker">
         <button type="button" class="hub-folder-trigger" id="folderFilterBtn" aria-haspopup="listbox" aria-expanded="false" title="Folder — hover ★ to pin go-tos">
           <span class="hub-folder-label" id="folderFilterLabel">all folders</span>
-          <span class="hub-folder-chev" aria-hidden="true">▾</span>
+          <span class="hub-fa-icon fa-chevron-down" aria-hidden="true"></span>
         </button>
         <div class="hub-folder-menu" id="folderFilterMenu" role="listbox" hidden></div>
       </div>
@@ -469,7 +469,7 @@ APP_HTML = """<!doctype html>
   <div class="hub-bar-pin" aria-label="Pinned actions">
     <details class="hub-more" id="hubMore">
       <summary title="More export options" aria-label="More export options">
-        <svg class="hub-icon" viewBox="0 0 448 512" aria-hidden="true" focusable="false"><path fill="currentColor" d="M8 256a56 56 0 1 1 112 0A56 56 0 1 1 8 256zm160 0a56 56 0 1 1 112 0 56 56 0 1 1 -112 0zm216-56a56 56 0 1 1 0 112 56 56 0 1 1 0-112z"/></svg>
+        <span class="hub-fa-icon fa-ellipsis" aria-hidden="true"></span>
       </summary>
       <div class="hub-more-panel">
         <label>Output folder
@@ -478,7 +478,7 @@ APP_HTML = """<!doctype html>
       </div>
     </details>
     <button type="button" class="hub-search-trigger" id="searchTrigger" title="Search (Ctrl/Cmd+K)" aria-label="Search">
-      <svg class="hub-icon" viewBox="0 0 512 512" aria-hidden="true" focusable="false"><path fill="currentColor" d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
+      <span class="hub-fa-icon fa-magnifying-glass" aria-hidden="true"></span>
     </button>
     <button id="refreshBtn" type="button" class="hub-icon-btn" title="Re-scan the repo for new/changed documents" aria-label="Refresh">
       <svg class="hub-icon" viewBox="0 0 512 512" aria-hidden="true" focusable="false"><path fill="currentColor" d="M105.1 202.6c7.7-21.8 20.2-42.3 37.8-59.8c62.5-62.5 163.8-62.5 226.3 0L386.3 160 352 160c-17.7 0-32 14.3-32 32s14.3 32 32 32l111.5 0c0 0 0 0 0 0l.4 0c17.7 0 32-14.3 32-32l0-112c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 35.2L414.4 97.6c-87.5-87.5-229.3-87.5-316.8 0C73.2 122 55.6 150.7 44.8 181.4c-5.9 16.7 2.9 34.9 19.5 40.8s34.9-2.9 40.8-19.5zM39 289.3c-5 1.5-9.8 4.2-13.7 8.2c-4 4-6.7 8.8-8.1 14c-.3 1.2-.6 2.5-.8 3.8c-.3 1.7-.4 3.4-.4 5.1L16 432c0 17.7 14.3 32 32 32s32-14.3 32-32l0-35.1 17.6 17.5c0 0 0 0 0 0c87.5 87.4 229.3 87.4 316.7 0c24.4-24.4 42.1-53.1 52.9-83.8c5.9-16.7-2.9-34.9-19.5-40.8s-34.9 2.9-40.8 19.5c-7.7 21.8-20.2 42.3-37.8 59.8c-62.5 62.5-163.8 62.5-226.3 0l-.1-.1L125.6 352l34.4 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L48.4 288c-1.6 0-3.2 .1-4.8 .3s-3.1 .5-4.6 1z"/></svg>
@@ -487,7 +487,7 @@ APP_HTML = """<!doctype html>
       <svg class="hub-icon" viewBox="0 0 512 512" aria-hidden="true" focusable="false"><path fill="currentColor" d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 242.7-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7 288 32zM64 352c-35.3 0-64 28.7-64 64l0 32c0 35.3 28.7 64 64 64l384 0c35.3 0 64-28.7 64-64l0-32c0-35.3-28.7-64-64-64l-101.5 0-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352 64 352zm368 56a24 24 0 1 1 0 48 24 24 0 1 1 0-48z"/></svg>
     </button>
     <button type="button" class="hub-drawer-toggle" id="drawerToggle" title="Menu" aria-label="Open menu" aria-expanded="false" aria-controls="hubDrawer">
-      <span class="bars" aria-hidden="true"><span></span></span>
+      <span class="hub-fa-icon fa-bars" aria-hidden="true"></span>
     </button>
     <span id="status"></span>
   </div>
@@ -495,11 +495,12 @@ APP_HTML = """<!doctype html>
 
 <div class="hub-drawer-backdrop" id="hubDrawerBackdrop" hidden></div>
 <aside class="hub-drawer" id="hubDrawer" aria-hidden="true" aria-label="Design Hub menu">
+  <div class="hub-drawer-resize" id="drawerResize" role="separator" aria-label="Resize menu" aria-orientation="vertical" tabindex="0"></div>
   <div class="hub-drawer-head">
     <span class="hub-brand">Design Hub</span>
     <div class="hub-drawer-head-actions">
-      <button type="button" id="drawerRefresh" class="hub-icon-btn" title="Refresh" aria-label="Refresh"><span class="hub-refresh-glyph" aria-hidden="true">&#8635;</span></button>
-      <button type="button" class="hub-drawer-close" id="drawerClose" aria-label="Close menu">&times;</button>
+      <button type="button" id="drawerRefresh" class="hub-icon-btn" title="Refresh" aria-label="Refresh"><span class="hub-fa-icon fa-arrows-rotate" aria-hidden="true"></span></button>
+      <button type="button" class="hub-drawer-close" id="drawerClose" aria-label="Close menu"><span class="hub-fa-icon fa-xmark" aria-hidden="true"></span></button>
     </div>
   </div>
   <div class="hub-drawer-body">
@@ -529,7 +530,7 @@ APP_HTML = """<!doctype html>
         <div class="hub-folder-picker" id="drawerFolderPicker">
           <button type="button" class="hub-folder-trigger" id="drawerFolderFilterBtn" aria-haspopup="listbox" aria-expanded="false" title="Folder — hover ★ to pin">
             <span class="hub-folder-label" id="drawerFolderFilterLabel">all folders</span>
-            <span class="hub-folder-chev" aria-hidden="true">▾</span>
+            <span class="hub-fa-icon fa-chevron-down" aria-hidden="true"></span>
           </button>
           <div class="hub-folder-menu" id="drawerFolderFilterMenu" role="listbox" hidden></div>
         </div>
@@ -1339,6 +1340,58 @@ function renderSearchOvl() {
     box.appendChild(row);
   }
 }
+function wireDrawerResize() {
+  const drawer = document.getElementById("hubDrawer");
+  const handle = document.getElementById("drawerResize");
+  if (!drawer || !handle) return;
+  const key = "pdf-designer.hub.drawerWidth";
+  const min = 280;
+  const maxWidth = () => Math.max(min, Math.min(560, window.innerWidth - (window.innerWidth <= 576 ? 16 : 24)));
+  const clamp = value => Math.round(Math.max(min, Math.min(maxWidth(), value)));
+  const setWidth = (value, persist = true) => {
+    const width = clamp(value);
+    document.documentElement.style.setProperty("--hub-drawer-w", width + "px");
+    handle.setAttribute("aria-valuemin", String(min));
+    handle.setAttribute("aria-valuemax", String(maxWidth()));
+    handle.setAttribute("aria-valuenow", String(width));
+    if (persist) try { localStorage.setItem(key, String(width)); } catch (_) {}
+  };
+  try {
+    const saved = Number(localStorage.getItem(key));
+    if (Number.isFinite(saved)) setWidth(saved, false);
+  } catch (_) {}
+  window.addEventListener("resize", () => setWidth(drawer.getBoundingClientRect().width, false));
+  handle.addEventListener("pointerdown", event => {
+    event.preventDefault();
+    const startX = event.clientX;
+    const startWidth = drawer.getBoundingClientRect().width;
+    handle.setPointerCapture(event.pointerId);
+    document.documentElement.classList.add("drawer-resizing");
+    const move = e => setWidth(startWidth + (startX - e.clientX));
+    const finish = e => {
+      handle.releasePointerCapture?.(e.pointerId);
+      document.documentElement.classList.remove("drawer-resizing");
+      handle.removeEventListener("pointermove", move);
+      handle.removeEventListener("pointerup", finish);
+      handle.removeEventListener("pointercancel", finish);
+    };
+    handle.addEventListener("pointermove", move);
+    handle.addEventListener("pointerup", finish);
+    handle.addEventListener("pointercancel", finish);
+  });
+  handle.addEventListener("keydown", event => {
+    const width = drawer.getBoundingClientRect().width;
+    if (event.key === "ArrowLeft") { event.preventDefault(); setWidth(width + 16); }
+    if (event.key === "ArrowRight") { event.preventDefault(); setWidth(width - 16); }
+    if (event.key === "Home") { event.preventDefault(); setWidth(min); }
+    if (event.key === "End") { event.preventDefault(); setWidth(maxWidth()); }
+  });
+  handle.addEventListener("dblclick", () => {
+    try { localStorage.removeItem(key); } catch (_) {}
+    setWidth(320, false);
+  });
+}
+
 (function wireDrawerSearch() {
   const toggle = document.getElementById("drawerToggle");
   const closeBtn = document.getElementById("drawerClose");
@@ -1385,6 +1438,7 @@ function renderSearchOvl() {
     }
   });
 })();
+wireDrawerResize();
 
 document.getElementById("exportBtn").addEventListener("click", async () => {
   const status = document.getElementById("status");

@@ -26,6 +26,7 @@ short and public-facing; **public product detail lives here**.
 | [`../examples/resume-studio/`](../examples/resume-studio/) | Public product front door |
 | [`pdf-designer-overview.html`](pdf-designer-overview.html) · [`PDF`](pdf-designer-overview.pdf) | Browser-openable product overview + PDF rendered by this engine |
 | [`PACKAGING.md`](PACKAGING.md) | PyPI / wheel spike |
+| [`WINDOWS-LAUNCHER.md`](WINDOWS-LAUNCHER.md) | Windows-first local Design Hub launcher spike + acceptance checks |
 | [`VOICE-SEED-HANDOFF.md`](VOICE-SEED-HANDOFF.md) | Optional, public-safe voice-card boundary |
 | [`QA.md`](QA.md) | Ship gate — `check_generation` |
 

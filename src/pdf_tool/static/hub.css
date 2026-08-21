@@ -90,7 +90,11 @@
   --hub-icon-box: 26px;
 
   /* Drawer + overlay (new) */
+  /* A local preference, set by the drawer's grab edge. It is clamped for the
+     current viewport and never leaves this browser's localStorage. */
   --hub-drawer-w: 320px;
+  --hub-drawer-min: 280px;
+  --hub-drawer-max: 560px;
   --hub-divider: 1px solid rgba(255, 255, 255, 0.06);
 
   /* Scrollbar tints (used by .hub-bar horizontal AND all vertical panes) */
@@ -676,7 +680,7 @@ a.hub-brand {
   font-family: inherit;
 }
 
-/* FA 6.7.2 inline SVG icons — always centered in their box */
+/* Legacy inline SVGs are retained where a document renderer injects them. */
 .hub-icon {
   width: 12px;
   height: 12px;
@@ -684,6 +688,26 @@ a.hub-brand {
   flex-shrink: 0;
   margin: 0;
 }
+/* Font Awesome Free 6.7.2 SVGs, copied unchanged from the local Bootstrap
+   checkout. Masks preserve currentColor without inventing a parallel icon set.
+   Attribution: static/FONT-AWESOME-LICENSE.txt. */
+.hub-fa-icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  flex: 0 0 auto;
+  background: currentColor;
+  -webkit-mask: var(--hub-fa-icon) center / contain no-repeat;
+  mask: var(--hub-fa-icon) center / contain no-repeat;
+}
+.fa-bars { --hub-fa-icon: url("/_hub/fa-bars.svg"); }
+.fa-xmark { --hub-fa-icon: url("/_hub/fa-xmark.svg"); }
+.fa-arrows-rotate { --hub-fa-icon: url("/_hub/fa-arrows-rotate.svg"); }
+.fa-magnifying-glass { --hub-fa-icon: url("/_hub/fa-magnifying-glass.svg"); }
+.fa-download { --hub-fa-icon: url("/_hub/fa-download.svg"); }
+.fa-ellipsis { --hub-fa-icon: url("/_hub/fa-ellipsis.svg"); }
+.fa-chevron-down { --hub-fa-icon: url("/_hub/fa-chevron-down.svg"); }
+.fa-star { --hub-fa-icon: url("/_hub/fa-star.svg"); }
 .hub-bar button.hub-icon-btn,
 .hub-drawer-head-actions button.hub-icon-btn,
 .hub-search-trigger,
@@ -843,7 +867,7 @@ a.hub-brand {
   top: 0;
   right: 0;
   bottom: 0;
-  width: min(var(--hub-drawer-w), 90vw);
+  width: clamp(var(--hub-drawer-min), var(--hub-drawer-w), min(var(--hub-drawer-max), calc(100vw - 24px)));
   background: rgba(13, 15, 20, 0.96);
   backdrop-filter: blur(var(--dash-glass-blur));
   -webkit-backdrop-filter: blur(var(--dash-glass-blur));
@@ -857,6 +881,31 @@ a.hub-brand {
   min-height: 0;
 }
 .hub-drawer.open { transform: translateX(0); }
+.hub-drawer-resize {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  bottom: 0;
+  left: -7px;
+  width: 14px;
+  cursor: ew-resize;
+  touch-action: none;
+}
+.hub-drawer-resize::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 5px;
+  width: 3px;
+  height: 42px;
+  transform: translateY(-50%);
+  border-radius: 999px;
+  background: var(--dash-accent);
+  box-shadow: 0 0 12px rgba(66, 244, 200, 0.5);
+  opacity: 0.72;
+}
+.hub-drawer-resize:focus-visible { outline: 2px solid var(--dash-accent); outline-offset: 2px; }
+html.drawer-resizing, html.drawer-resizing * { cursor: ew-resize !important; user-select: none !important; }
 
 .hub-drawer-head {
   display: flex;
@@ -884,7 +933,6 @@ a.hub-brand {
   color: var(--dash-text-bright);
   border-color: var(--dash-card-hover);
 }
-.hub-refresh-glyph { line-height: 1; }
 .hub-drawer-close {
   width: 32px; height: 32px;
   display: inline-flex; align-items: center; justify-content: center;
@@ -918,15 +966,26 @@ a.hub-brand {
 
 .hub-drawer .hub-nav { flex-wrap: wrap; gap: 4px; justify-content: center; }
 .hub-drawer .hub-nav .hub-link {
-  font-size: 0.92rem;
-  padding: 8px 12px;
+  flex: 1 1 0;
+  justify-content: center;
+  min-width: 0;
+  font-size: 0.82rem;
+  padding: 7px 8px;
+  white-space: nowrap;
 }
 
-.hub-drawer .chips { flex-wrap: wrap; gap: 6px; justify-content: center; }
+.hub-drawer .chips {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(116px, 1fr));
+  gap: 6px;
+  justify-content: stretch;
+}
 .hub-drawer .chip {
+  width: 100%;
   height: 32px;
-  font-size: 0.78rem;
-  padding: 4px 8px 4px 12px;
+  min-width: 0;
+  font-size: 0.75rem;
+  padding: 4px 7px 4px 10px;
 }
 
 .hub-drawer select,
@@ -1526,7 +1585,10 @@ code.path-mini, code.cmd {
   /* Discovery controls are easier to scan as a centred, shared mobile set. */
   .hub-drawer-section > .hub-drawer-label { align-self: center; }
   .hub-page-wrap .hub-chips { justify-content: center; }
-  .hub-drawer { width: min(100vw, 360px); }
+  .hub-drawer { width: clamp(var(--hub-drawer-min), var(--hub-drawer-w), calc(100vw - 16px)); }
+  .hub-drawer .hub-nav .hub-link { font-size: 0.78rem; padding-inline: 5px; }
+  .hub-drawer .chips { grid-template-columns: repeat(auto-fit, minmax(112px, 1fr)); gap: 5px; }
+  .hub-drawer .chip { font-size: 0.72rem; padding-inline: 6px; }
 }
 
 /* ── xxs (<390) — sub-iPhone-14 floor, horizontal scroll lives ── */

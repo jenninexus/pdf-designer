@@ -110,7 +110,7 @@ def test_hub_offcanvas_controls_are_in_the_header_and_close_from_the_backdrop():
     assert APP_HTML.index('id="drawerRefresh"') < APP_HTML.index('id="drawerClose"')
     assert '<div class="hub-drawer-foot"><kbd>Esc</kbd> closes</div>' not in APP_HTML
     assert ".hub-drawer-head-actions {" in css
-    assert ".hub-drawer .chips { flex-wrap: wrap; gap: 6px; justify-content: center; }" in css
+    assert "grid-template-columns: repeat(auto-fit, minmax(116px, 1fr))" in css
 
 
 def test_recipes_and_vault_share_the_mobile_drawer_contract():
@@ -122,6 +122,38 @@ def test_recipes_and_vault_share_the_mobile_drawer_contract():
         assert 'id="drawerClose"' in html
         assert 'id="drawerRefresh"' in html
         assert 'hubDrawerBackdrop").onclick = closeDrawer' in html
+
+
+def test_drawer_resize_and_compact_mobile_controls_are_shared_across_hub_routes():
+    root = Path(__file__).resolve().parents[1] / "src" / "pdf_tool" / "static"
+    css = (root / "hub.css").read_text(encoding="utf-8")
+    resize_script = (root / "drawer-resize.js").read_text(encoding="utf-8")
+    assert 'id="drawerResize"' in APP_HTML
+    assert 'pdf-designer.hub.drawerWidth' in APP_HTML
+    assert "--hub-drawer-min: 280px" in css
+    assert "grid-template-columns: repeat(auto-fit, minmax(116px, 1fr))" in css
+    assert "@media (max-width: 767.98px)" in css
+    assert "pointerdown" in resize_script
+    assert "localStorage.setItem(key" in resize_script
+    for name in ("recipes.html", "vault.html"):
+        html = (root / name).read_text(encoding="utf-8")
+        assert 'id="drawerResize"' in html
+        assert 'src="/_hub/drawer-resize.js"' in html
+        assert html.index('id="drawerRefresh"') < html.index('id="drawerClose"')
+        assert '<div class="hub-drawer-actions" hidden aria-hidden="true">' in html
+
+
+def test_hub_icons_are_local_font_awesome_assets_with_attribution():
+    root = Path(__file__).resolve().parents[1] / "src" / "pdf_tool" / "static"
+    css = (root / "hub.css").read_text(encoding="utf-8")
+    assert "Font Awesome Free 6.7.2" in css
+    assert (root / "FONT-AWESOME-LICENSE.txt").is_file()
+    for icon in (
+        "bars", "xmark", "arrows-rotate", "magnifying-glass",
+        "download", "ellipsis", "chevron-down", "star",
+    ):
+        assert (root / f"fa-{icon}.svg").is_file()
+        assert f".fa-{icon}" in css
 
 
 def test_public_example_rel_tags_examples_profile():
