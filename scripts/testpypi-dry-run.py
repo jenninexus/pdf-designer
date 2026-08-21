@@ -23,6 +23,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import getpass
 import os
 import shutil
 import subprocess
@@ -54,8 +55,11 @@ def run(
     return completed.stdout if capture else ""
 
 
-def token() -> str | None:
-    return os.environ.get("TESTPYPI_TOKEN") or os.environ.get("TWINE_PASSWORD")
+def token(*, prompt: bool) -> str | None:
+    saved = os.environ.get("TESTPYPI_TOKEN") or os.environ.get("TWINE_PASSWORD")
+    if saved or not prompt:
+        return saved
+    return getpass.getpass("TestPyPI API token (input hidden): ").strip() or None
 
 
 def main() -> int:
@@ -69,6 +73,11 @@ def main() -> int:
         "--skip-gate",
         action="store_true",
         help="Skip check-wheel-assets.py (already ran this session)",
+    )
+    ap.add_argument(
+        "--prompt-token",
+        action="store_true",
+        help="Prompt privately for a one-use upload token instead of reading the environment",
     )
     args = ap.parse_args()
 
@@ -92,13 +101,13 @@ def main() -> int:
 
     uploaded = False
     if args.upload:
-        tok = token()
+        tok = token(prompt=args.prompt_token)
         if not tok:
             print(
                 "FAIL: --upload needs TESTPYPI_TOKEN (or TWINE_PASSWORD).\n"
                 "  Create at https://test.pypi.org/manage/account/token/\n"
                 "  Store in sys-admin userdata.db (category=API Keys, service=TestPyPI)\n"
-                "  or export TESTPYPI_TOKEN for this shell.",
+                "  or export TESTPYPI_TOKEN for this shell. For a one-use token, add --prompt-token.",
                 file=sys.stderr,
             )
             return 2
