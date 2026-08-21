@@ -53,7 +53,12 @@
   },
 
   "characterVoice": {
-    "_ssot": "Personality + register map. Application prose SSOT = vault voice (see registers.application).",
+    "_ssot": "THE ONE person-level voice-design area. Set personality, contrast, and all cross-register pointers here. Application prose itself lives only in vaults/<you>.json#voice; do not duplicate tone rules in profiles.",
+    "_editOrder": [
+      "Set personality and optional partner contrast here.",
+      "Set application prose in vaults/<you>.json#voice.",
+      "Optionally add a public Voice Seed pointer after the local layers are complete. Voice Seed is a map/integration point, not a duplicate source of resume voice."
+    ],
     "personality": {
       "traits": ["Trait one", "Trait two", "Trait three"],
       "coreDrive": "One sentence: what they are trying to make / why they work.",
@@ -69,7 +74,7 @@
       "neverConflate": ["Tenure numbers", "Specialty that belongs only to one person"]
     },
     "registers": {
-      "application": "../yourname/resume-source.json#voice",
+      "application": "../vaults/yourname.json#voice",
       "socialPersonal": "(optional path to a socials format-manifest voice string)",
       "socialStudio": "(optional path to studio 'we' voice)",
       "discordVisual": "(optional path to a Discord STYLE-SPEC — emoji/visual only)",

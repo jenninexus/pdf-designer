@@ -28,10 +28,10 @@
  *                        output folder, refresh. Export stays in the bar (primary CTA).
  *   .hub-search-ovl    — full-screen glass overlay; magnifier or Cmd/Ctrl+K opens it.
  *
- * Breakpoint SSOT:
- *   .config/mcp-pdf-designer.json#breakpoints
- *   → C:\mcp\.config\mcp-breakpoints.json # bootstrap_5_3_8_extended_390_4k
- *   → www-theme-kit/scss/_breakpoint-tokens.scss
+ * Breakpoint contract:
+ *   www-theme-kit/scss/_breakpoint-tokens.scss — canonical shared numeric scale
+ *   THIS FILE — pdf-designer's implemented layout and nav-switch behavior
+ *   .config/mcp-pdf-designer*.json + C:\mcp\.config\mcp-breakpoints.json — pointers/cache only
  *
  * Cascade (per .config/mcp-pdf-designer.example.json):
  *   xxs < 390         floor: horizontal scroll lives, nothing hides
@@ -136,7 +136,7 @@ body.hub-page {
 }
 
 /* When the offcanvas drawer is open, lock the body scroll on the underlying page. */
-body.hub-shell.drawer-open { overflow: hidden; }
+body.drawer-open { overflow: hidden; }
 
 button, [role="button"], summary, .chip, .thumb { user-select: none; -webkit-user-select: none; }
 
@@ -933,13 +933,14 @@ a.hub-brand {
 
 .hub-drawer-actions {
   display: flex;
+  justify-content: flex-end;
   gap: 8px;
   padding: 12px 14px;
   border-top: 1px solid var(--dash-card-border);
   flex-shrink: 0;
 }
 .hub-drawer-actions button {
-  flex: 1;
+  flex: 0 0 auto;
   height: 36px;
   border-radius: 6px;
   font-size: 0.82rem;
@@ -961,8 +962,8 @@ a.hub-brand {
   font-size: 0.62rem;
   color: var(--dash-text-dim);
   display: flex;
-  flex-direction: column;
-  gap: 4px;
+  align-items: center;
+  gap: 6px;
 }
 .hub-drawer-foot kbd {
   font-family: var(--dash-mono);
@@ -1493,6 +1494,11 @@ code.path-mini, code.cmd {
    Search collapses to magnifier. Split layout retained so the
    viewer keeps most of the viewport. */
 @media (max-width: 767.98px) {
+  /* Hide the empty desktop groups themselves, not only their children. Otherwise
+     their divider borders survive as stray vertical lines beside the logo/actions. */
+  .hub-bar-scroll > .hub-group:not(.hub-brand-group):not(.spacer) { display: none; }
+  .hub-bar-pin { border-left: 0; padding-left: 4px; }
+
   .hub-bar #personFilter,
   .hub-bar #palette,
   .hub-bar #fmt,

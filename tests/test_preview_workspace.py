@@ -96,6 +96,28 @@ def test_hub_js_restores_profile_before_folder_rebuild():
     assert boot.rfind("restoreHubPrefs") < boot.rfind("buildFolderSelect();")
 
 
+def test_hub_offcanvas_controls_do_not_depend_on_escape():
+    """Both overlays must close from their visible outside/backdrop surface."""
+    css = (Path(__file__).resolve().parents[1] / "src" / "pdf_tool" / "static" / "hub.css").read_text(
+        encoding="utf-8"
+    )
+    assert 'if (backdrop) backdrop.addEventListener("click", closeDrawer);' in APP_HTML
+    assert 'if (e.target === searchOvl) closeSearchOvl();' in APP_HTML
+    assert ".hub-bar-scroll > .hub-group:not(.hub-brand-group):not(.spacer)" in css
+    assert ".hub-drawer-actions button {\n  flex: 0 0 auto;" in css
+
+
+def test_recipes_and_vault_share_the_mobile_drawer_contract():
+    root = Path(__file__).resolve().parents[1] / "src" / "pdf_tool" / "static"
+    for name in ("recipes.html", "vault.html"):
+        html = (root / name).read_text(encoding="utf-8")
+        assert 'id="drawerToggle"' in html
+        assert 'id="hubDrawerBackdrop"' in html
+        assert 'id="drawerClose"' in html
+        assert 'id="drawerRefresh"' in html
+        assert 'hubDrawerBackdrop").onclick = closeDrawer' in html
+
+
 def test_public_example_rel_tags_examples_profile():
     tagged = classify_document(
         "examples/profiles/default-resume/default-resume.html",

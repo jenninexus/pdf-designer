@@ -47,11 +47,11 @@
     "voice_seed": "<VOICE_SEED>"
   },
   "breakpoints": {
-    "_role": "⭐ THE ONE pdf-designer breakpoint reference. Numbers live in the global cache + theme-kit SCSS — this block only names the set and where consumers look.",
+    "_role": "Project pointer only. Shared breakpoint numbers live in www-theme-kit SCSS; src/pdf_tool/static/hub.css owns pdf-designer behavior. The MCP global file is a cross-project cache/index, not an SSOT.",
     "set": "bootstrap_5_3_8_extended_390_4k",
     "framework": "Bootstrap 5.3.8 extended (xxs + HD/2K/4K)",
-    "global_ssot": "<MCP_CONFIG_DIR>\\mcp-breakpoints.json",
-    "global_ssot_path": "breakpoint_sets.bootstrap_5_3_8_extended_390_4k",
+    "global_cache": "<MCP_CONFIG_DIR>\\mcp-breakpoints.json",
+    "global_cache_path": "breakpoint_sets.bootstrap_5_3_8_extended_390_4k",
     "shared_token_reference": "<WWW_THEME_KIT>\\scss\\_breakpoint-tokens.scss",
     "hub_css": "src/pdf_tool/static/hub.css (hard-codes the same .98px maxes — CSS cannot var() inside @media)",
     "viewport_floor": "390x844",

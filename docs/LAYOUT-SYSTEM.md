@@ -8,6 +8,14 @@ sign-off always lands where it should. Established 2026-07-19 while refining the
 > [`../themes/PALETTE-RULES.md`](../themes/PALETTE-RULES.md) (color guard).
 > **Profile hook:** `storage/profiles/jenni-resume.json → layout.system` points here.
 
+## Design Hub responsive shell
+
+This document owns printed-page geometry. The browser-only Design Hub uses the same breakpoint
+scale but has a separate responsive shell: [`THEME-DESIGN.md`](THEME-DESIGN.md#hub-responsive-contract)
+names the source of truth, while [`src/pdf_tool/static/hub.css`](../src/pdf_tool/static/hub.css)
+implements the toolbar, drawer switch, and library/viewer transitions. Do not put Hub navigation
+rules into a document recipe or change paper geometry to address a browser-width issue.
+
 ---
 
 ## The one rule that fixes 90% of layout complaints
