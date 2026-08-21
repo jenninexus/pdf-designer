@@ -1347,6 +1347,7 @@ function renderSearchOvl() {
   const closeBtn = document.getElementById("drawerClose");
   const backdrop = document.getElementById("hubDrawerBackdrop");
   const searchTrigger = document.getElementById("searchTrigger");
+  const searchOvl = document.getElementById("hubSearchOvl");
   const searchOvlInput = document.getElementById("searchOvlInput");
   const drawerRefresh = document.getElementById("drawerRefresh");
   if (toggle) toggle.addEventListener("click", () => {
@@ -1356,6 +1357,10 @@ function renderSearchOvl() {
   if (closeBtn) closeBtn.addEventListener("click", closeDrawer);
   if (backdrop) backdrop.addEventListener("click", closeDrawer);
   if (searchTrigger) searchTrigger.addEventListener("click", openSearchOvl);
+  if (searchOvl) searchOvl.addEventListener("click", (e) => {
+    // The glass itself is the backdrop; clicks inside the search card keep working.
+    if (e.target === searchOvl) closeSearchOvl();
+  });
   if (searchOvlInput) {
     searchOvlInput.addEventListener("input", () => {
       renderSearchOvl();

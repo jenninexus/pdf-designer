@@ -14,19 +14,34 @@ and
 | Local-first engine + Design Hub | **Shipped** | HTML→PDF, variants, collage, vault/ATS/palette/overflow guards, public examples, and the localhost Hub are in `main`. |
 | Public GitHub clone experience | **Shipped, regression-gated** | `scripts/smoke-white-label.py` passed 2026-08-21: public-only QA, light/dark export, and ATS parsing. |
 | Installable Python package | **Locally proved** | Wheel assets and fresh-venv dry-run passed 2026-08-21; TestPyPI upload needs a human token. |
-| Public launch | **Near-close** | GitHub, blog, Patreon, and Discord are live. X has been marked complete at the human’s direction; capture its URL and notify Discord. Meta and short-form remain human/content gates. |
+| Public product record | **Shipped** | Public GitHub clone, clone-safe Hub examples, and the blog walkthrough exist. Social publication records are owned by `C:\Github\socials\Plans\_ACTIVE\2026-08-10-jn-agency-socials-sequence\Plan.md`, not this engineering plan. |
 | Paid standalone desktop app | **Not implemented** | The product decision is a thin installer/launcher + guided wizard over the same engine, never a second renderer. No installer or wizard code exists yet. |
 
 Do not turn these rows into invented percentages. The core can be used standalone from a clone today;
 the non-developer desktop product is a separate, unstarted implementation phase.
 
-## Now — close the release record
+## Public examples and privacy boundary
 
-- [x] Record Shade’s Color X application as submitted (owner instruction, 2026-08-21).
-- [x] Mark the X composer post complete at the human’s direction (2026-08-21); do **not** invent its URL.
-- [ ] Capture the live X URL, move/confirm its Socials published draft, then run `npm run x:notify:jn` from `C:\Github\socials` **only after explicit authorization for that command**.
-- [ ] Human: publish the MostlyJenniNexus Meta composer post with `docs/images/promo-card-landscape.png`; record the live URL in Socials.
-- [ ] Human/content: make TikTok and YouTube sisters only from the approved `examples` Hub and public Jennifer Nexus / Jane Example assets.
+- [x] Keep the fictional Jane Example cards (`users/examples.json`, `vaults/examples.json`,
+  `profiles/examples.json`) tracked so a fresh clone and the Hub demonstrate every document kind.
+- [x] Replace the broad `_job-apps/_template/` smoke exception with named public seeds; remove the
+  private provider template from the public tree. Real listings, private provider records, names, phone numbers,
+  and submission evidence remain local only.
+- [x] Make `users/<you>.json#characterVoice` the one person-level voice-design area in the public
+  seed; the vault is the sole application-prose layer and profiles only point at it.
+- [ ] When adding a new public Hub feature, add a fictional Jane Example artifact (or a clearly
+  labelled generic template) and extend the public-example coverage test in the same change.
+
+## Responsive Hub contract
+
+- [x] Confirm the shared numeric scale comes from `www-theme-kit/scss/_breakpoint-tokens.scss`,
+  while `src/pdf_tool/static/hub.css` owns this app's breakpoint and nav-switch behavior. The MCP
+  breakpoint file is a cache/index only.
+- [x] At the drawer switch, hide empty desktop groups and their divider borders; keep refresh/close
+  compact; make drawer and search dismiss on outside click as well as Escape.
+- [ ] Visual-regression check the Hub (`/`, `/recipes`, `/vault`) at 390, 576, 768, 992, 1200, 1400,
+  and 1920px against `www-theme-kit/profiles/pdf-designer.json`; add a browser-level test if a
+  recurring layout regression appears.
 
 ## Distribution — optional, not a blocker for the clone product
 
@@ -41,6 +56,12 @@ the non-developer desktop product is a separate, unstarted implementation phase.
 - [ ] Build and test that launcher/installer spike without forking the renderer or introducing a cloud account.
 - [ ] Add the guided vault → skills → palette → light/dark export wizard only after the launcher is proven.
 - [ ] Keep Gumroad and any paid listing blocked until the installer/wizard has a real, tested user path.
+- [ ] After the launcher is proven, choose the paid checkout path: Gumroad as merchant-of-record
+  convenience, or a Jenninexus product card with a PayPal checkout button plus owned fulfilment,
+  tax, receipt, refund, and download-delivery responsibilities.
+- [ ] Define an optional Voice Seed handoff for the wizard: create/import a user's own public-safe
+  voice card only after local `characterVoice` + vault `voice` are set. It must remain optional,
+  never copy private vault claims or contacts, and never add Voice Seed as a renderer dependency.
 
 ## Guardrails
 

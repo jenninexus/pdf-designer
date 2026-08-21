@@ -22,6 +22,29 @@ Hub chrome (toolbar size, library/viewer split, folder ghost-★ pins) is **not*
 palette concern — edit `src/pdf_tool/static/hub.css` + [`PREVIEWER.md`](PREVIEWER.md); keep
 `--dash-*` accents distinct from document `--primary` / brand maps.
 
+## Hub responsive contract
+
+The shared breakpoint **numbers** live in
+[`www-theme-kit/scss/_breakpoint-tokens.scss`](../../www-theme-kit/scss/_breakpoint-tokens.scss).
+The Design Hub's actual behavior lives in
+[`src/pdf_tool/static/hub.css`](../src/pdf_tool/static/hub.css): CSS media queries cannot consume
+runtime variables. `C:\mcp\.config\mcp-breakpoints.json` is a cross-project cache/index, and
+`.config/mcp-pdf-designer*.json` is a pointer for tools; neither owns the numbers or can override
+the Hub implementation.
+
+| Width | Hub behavior |
+|---|---|
+| `>= 992px` | Full toolbar and side-by-side library/viewer |
+| `768–991.98px` | Tighter desktop split; full toolbar remains |
+| `<= 767.98px` | Drawer switch: desktop groups are removed, hamburger/search appear, library/viewer stay split |
+| `<= 575.98px` | Phone layout: library stacks above viewer |
+| `< 390px` | Horizontal-overflow safety floor |
+
+The drawer and search overlay must both close when the user clicks their visible outside surface;
+Escape remains an optional keyboard shortcut. Drawer refresh and close affordances stay compact
+icon controls. Any responsive change must be checked against the shared width matrix (390, 576,
+768, 992, 1200, 1400, 1920) and the related `www-theme-kit/profiles/pdf-designer.json` profile.
+
 ## Public Defaults
 
 Tracked default theme files:

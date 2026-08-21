@@ -31,6 +31,7 @@ Commit when they are clone-safe and reusable:
 - `.config/*.example.json` · `.vscode/mcp.json.example`
 - `.memory/lesson-*.md` — durable traps (no vault bodies)
 - `users/examples.json` · `vaults/examples.json` · `profiles/examples.json` — fictional Jane Example so the Hub Vault and profile dropdown have a clone-safe card. Copy-me seeds stay `*.example.json`.
+- `_job-apps/_template/README.md` — generic folder-shape pointer only. Real listings, private provider material, employer notes, submission evidence, phone numbers, and real first/last names never belong in this tracked tree.
 
 ## Keep local files untracked
 
@@ -45,6 +46,14 @@ Never commit from a personal machine:
 | `.config/mcp-pdf-designer.json` | Absolute machine paths |
 | `dev-log-sego.yaml` | Session narrative with private paths |
 | `*.pdf` / `*.png` (except deliberate example fixtures) | Exports / captures |
+
+### Named public seeds, not broad private-root exceptions
+
+The smoke gate permits the fictional Jane cards and `*.example.json` copy-me shapes by name and
+suffix; it does **not** exempt a whole private-shaped directory. Add a public example under
+`examples/` whenever possible. If a root-noun seed is truly needed, keep it fictional, list its
+reason here, and add a narrow allowlist/test in the same change. This protects Jennifer Sylvester,
+Shade Muse, their contact details, and every real application from an accidental public push.
 ## Product surfaces (do not blur)
 
 ```
