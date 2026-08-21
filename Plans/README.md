@@ -11,7 +11,7 @@ Working plans for pdf-designer. Keep **one** active product roadmap; move finish
 
 | Plan | Status |
 |---|---|
-| [`_Active/2026-08-17-early-release-remaining.md`](_Active/2026-08-17-early-release-remaining.md) | ⭐ **THE** working plan — human publication gates only |
+| [`_Active/2026-08-21-standalone-app-remaining.md`](_Active/2026-08-21-standalone-app-remaining.md) | ⭐ **THE** working plan — release record, optional distribution, and the unstarted desktop shell |
 
 > **`/jen:roadmap` entry point:** [`../docs/ROADMAP.md`](../docs/ROADMAP.md).  
 > **Business:** [`../docs/PRODUCT.md`](../docs/PRODUCT.md).  
@@ -22,6 +22,8 @@ Working plans for pdf-designer. Keep **one** active product roadmap; move finish
 ## Complete (recent)
 
 | Plan | Why complete |
+| [`2026-08-20-pdf-designer-remaining-sisters/`](_Complete/2026-08-20-pdf-designer-remaining-sisters/) | Posting-day snapshot; Patreon/Discord complete and remaining work consolidated 2026-08-21 |
+| [`2026-08-17-early-release-remaining.md`](_Complete/2026-08-17-early-release-remaining.md) | Early-release handoff superseded by the unified standalone-app plan |
 |---|---|
 | [`2026-08-17-hub-examples-storage-retire/`](_Complete/2026-08-17-hub-examples-storage-retire/) | Public Hub examples, `_job-apps/` sole listing, `storage/` retired, history scrub |
 | [`2026-08-16-pdf-start-wrap-private provider/`](_Complete/2026-08-16-pdf-start-wrap-private provider/) | `/pdf-start`·`/pdf-wrap` SSOT; private provider vault claims; storage dupes archived |

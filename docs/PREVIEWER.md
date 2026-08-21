@@ -115,14 +115,13 @@ Typical flows:
 
 ## Roadmap
 
-### Phase 2 — variant generation (`--variants`)
+### Phase 2 — variant generation (`--variants`) — shipped
 
-One command that renders N palette/layout variants of the same document into
-`_variants/` so the hub can show true side-by-side alternatives without
-hand-copying files. Resume color-combo shopping becomes: generate variants →
-open hub → pick → export.
+`python -m pdf_tool.variants <doc>.html` renders light PDFs per public palette into
+`_variants/`, and the Hub can show the resulting alternatives without hand-copying files.
+Resume color-combo shopping is: generate variants → open Hub → pick → export.
 
-### Phase 3 — paid shell (shell-over-Hub first; pywebview optional)
+### Phase 3 — paid shell (shell-over-Hub first; pywebview optional) — unstarted
 
 **Product decision (2026-07-21):** the paid app is a thin installer / launcher
 around **this** Design Hub — not a second renderer. See [`PRODUCT.md`](PRODUCT.md)
@@ -136,7 +135,8 @@ shell is actually needed.
 | Engine | same `pdf_tool.preview` HTTP | same | same |
 
 Recipe gallery chrome: **shipped** at `/recipes` (see Features above). Packaging
-precursor for installers: [`PACKAGING.md`](PACKAGING.md).
+precursor for installers: [`PACKAGING.md`](PACKAGING.md). The remaining implementation checklist is
+[`../Plans/_Active/2026-08-21-standalone-app-remaining.md`](../Plans/_Active/2026-08-21-standalone-app-remaining.md).
 
 ### Phase 4 — canvas editor (drag & drop)
 

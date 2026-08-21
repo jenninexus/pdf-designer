@@ -1,4 +1,8 @@
-# PDF Designer remaining sisters — post X + Meta + announcements
+# Complete / superseded plan — PDF Designer remaining sisters
+
+> **Superseded 2026-08-21.** The remaining release record and standalone-app work are consolidated in
+> [`../../_Active/2026-08-21-standalone-app-remaining.md`](../../_Active/2026-08-21-standalone-app-remaining.md).
+> This was a posting-day snapshot; do not revive completed Discord or Patreon actions from it.
 
 **Date:** 2026-08-20 · **Host:** SEGOPC · **Mode:** `/auto-goal`
 
@@ -6,7 +10,7 @@
 
 - [x] Live Patreon URL stamped on published markdown + `npm run patreon:archive:jn` refreshed
 - [x] `#announcements📢` Discord teaser SENT (not social-feed / patrons / supporters — those already fanned from Patreon)
-- [ ] `@JenniNexus` X posted with landscape promo card; `x:notify:jn` Discord card after live URL
+- [x] `@JenniNexus` X composer completion recorded at the human’s direction 2026-08-21; live URL capture and `x:notify:jn` remain in the active plan
 - [ ] MostlyJenniNexus Facebook Page posted with landscape promo card
 - [ ] Instagram `@jenninexus` posted if Graph credentials validate; otherwise noted UNVERIFIED
 - [x] Promo cards on public HTTPS (jenninexus.com/resources/images/blog/pdf-designer/)

@@ -1,7 +1,7 @@
 # Hub examples, listing pointers, storage retire
 
 **Complete** 2026-08-18. Engine wave only — publication stays on
-[`../_Active/2026-08-17-early-release-remaining.md`](../_Active/2026-08-17-early-release-remaining.md).
+[`../../_Active/2026-08-21-standalone-app-remaining.md`](../../_Active/2026-08-21-standalone-app-remaining.md).
 
 ## Done when
 - [x] `_job-apps/` is the only live listing noun; workspace + READMEs no longer tell people to store copies under `storage/_job-listings/`
