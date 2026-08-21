@@ -71,7 +71,17 @@ this). Verifying from the checkout directory will silently use live `themes/`.
 3. `python scripts/smoke-white-label.py` from a clean clone (still the product gate)
 4. **Create TestPyPI account + API token** at https://test.pypi.org/manage/account/token/
    — store in sys-admin `userdata.db` (`category=API Keys`, `service=TestPyPI`,
-   `key=api_token`) or export `TESTPYPI_TOKEN` for the shell
+   `key=api_token`) or set the local-only `TESTPYPI_TOKEN` environment variable:
+
+   ```powershell
+   # Current PowerShell session only — preferred for one upload.
+   $env:TESTPYPI_TOKEN = "pypi-your-token-here"
+
+   # Optional: persist for your Windows user, then open a new terminal.
+   [Environment]::SetEnvironmentVariable("TESTPYPI_TOKEN", "pypi-your-token-here", "User")
+   ```
+
+   Do not create a `.env` file or put the token in this repository.
 5. `python scripts/testpypi-dry-run.py --upload` → upload + fresh-venv install from TestPyPI
 6. Only then production PyPI
 7. README badge / install blurb — only after a real `pip install pdf-designer` works
