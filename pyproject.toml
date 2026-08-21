@@ -8,7 +8,7 @@ version = "0.4.0"
 description = "HTML -> print-perfect PDF/PNG toolkit: themed resumes, cover letters, collages, and a live design previewer."
 readme = "README.md"
 requires-python = ">=3.9"
-license = { file = "LICENSE" }
+license = "MIT"
 
 # Every dependency is permissive (Apache-2.0 / BSD-3 / MIT), so the MIT license
 # on this project is honest and unqualified.

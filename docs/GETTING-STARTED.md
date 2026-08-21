@@ -45,7 +45,7 @@ You and a stranger use the **same engine**. Privacy is gitignore, not a second i
 | **Local (you)** | Real `users/*.json`, vaults, `_job-apps/`, `resumes/**/_exports/`, `brands/` |
 | **Optional pointers** | `.config/mcp-pdf-designer.json` (copy the `.example`) |
 
-The engine **reads no environment variables**. Do not add `.env` / `.env.local` unless a new tool actually reads them — it would document a fiction. `storage/` is a dual-run alias of the same files (copied to root nouns 2026-08-13); deleting `storage/` later does **not** delete `_exports` that already live under `resumes/<user>/_exports/`. Wait until Hub smoke has lived on the new nouns.
+The engine **reads no environment variables**. Do not add `.env` / `.env.local` unless a new tool actually reads them — it would document a fiction. `storage/` was retired after the root-noun migration; the resolver only accepts old URLs when a live root-noun file exists. Exports live under `resumes/<user>/_exports/`.
 
 ---
 

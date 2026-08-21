@@ -17,7 +17,7 @@ Hub:       python -m pdf_tool.preview → :8787 (workspace auto-starts via scrip
 Smoke:     python scripts/smoke-white-label.py   ← ⭐ fresh-clone proof (examples/ only, no storage/)
 Package:   docs/PACKAGING.md + scripts/check-wheel-assets.py  ← wheel must include themes/layouts
 Engine:    python -m pdf_tool  (hub) / individual modules
-Plans:     Plans/_Active/2026-08-17-early-release-remaining.md
+Plans:     Plans/_Active/2026-08-21-standalone-app-remaining.md
 Product hub: C:\Github\product-design  (local; /jen:products)
 ```
 
@@ -53,7 +53,7 @@ Compact map of what this repo owns vs what it only points at. Agents: start here
 | Make-collage | `.claude/commands/make-collage.example.md` | Multi-image collage routine (public seed) |
 | Public examples | `examples/resume-studio/`, `examples/profiles/`, `examples/brand-design/` | Clone-safe templates |
 | Project config | `.config/mcp-pdf-designer.example.json` | Seed only — local `mcp-pdf-designer.json` is gitignored |
-| Active plan | `Plans/_Active/2026-08-17-early-release-remaining.md` | Current early-release publication gates and launch handoff |
+| Active plan | `Plans/_Active/2026-08-21-standalone-app-remaining.md` | Current release record, optional distribution, and desktop-shell checklist |
 
 ---
 
@@ -182,4 +182,4 @@ short public-facing entry.
 | [`VAULT.md`](VAULT.md) | Claim + voice rules |
 | [`PREVIEWER.md`](PREVIEWER.md) | Design Hub how-to |
 | [`STORAGE.md`](STORAGE.md) | Private workspace layout |
-| [`Plans/_Active/2026-08-17-early-release-remaining.md`](../Plans/_Active/2026-08-17-early-release-remaining.md) | Working checklist + launch handoff |
+| [`Plans/_Active/2026-08-21-standalone-app-remaining.md`](../Plans/_Active/2026-08-21-standalone-app-remaining.md) | Working checklist + standalone-app handoff |
