@@ -53,7 +53,7 @@ Compact map of what this repo owns vs what it only points at. Agents: start here
 | Make-collage | `.claude/commands/make-collage.example.md` | Multi-image collage routine (public seed) |
 | Public examples | `examples/resume-studio/`, `examples/profiles/`, `examples/brand-design/` | Clone-safe templates |
 | Project config | `.config/mcp-pdf-designer.example.json` | Seed only — local `mcp-pdf-designer.json` is gitignored |
-| Active plan | `Plans/_Active/2026-08-12-product-privacy-packaging.md` | Packaging + privacy; split run: `…/2026-08-12-public-private-split/` |
+| Active plan | `Plans/_Active/2026-08-17-early-release-remaining.md` | Current early-release publication gates and launch handoff |
 
 ---
 
@@ -182,4 +182,4 @@ short public-facing entry.
 | [`VAULT.md`](VAULT.md) | Claim + voice rules |
 | [`PREVIEWER.md`](PREVIEWER.md) | Design Hub how-to |
 | [`STORAGE.md`](STORAGE.md) | Private workspace layout |
-| [`Plans/_Active/…`](../Plans/_Active/2026-07-21-next-agent-product-prompt.md) | Working checklist + handoff |
+| [`Plans/_Active/2026-08-17-early-release-remaining.md`](../Plans/_Active/2026-08-17-early-release-remaining.md) | Working checklist + launch handoff |
