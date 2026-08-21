@@ -72,7 +72,6 @@ codebase · `reference`: pointer to an external resource.
 | Lesson | Hook |
 |---|---|
 | [lesson-guard-assumptions-must-be-measured.md](lesson-guard-assumptions-must-be-measured.md) | A QA guard that hard-codes a layout assumption fails silently on the other layout — measure the pixels before trusting the verdict |
-| [lesson-private provider-fellowship-never-names-partners.md](lesson-private provider-fellowship-never-names-partners.md) | private provider AI trainer listings use company “private provider AI Fellowship” — never partner lab names |
 | [lesson-flag-looking-output-dir.md](lesson-flag-looking-output-dir.md) | `pdf_to_png` treats leftover `--output-dir` as a folder name — refuse paths that start with `-` |
 | [lesson-ssot-dashboard-must-name-live-paths.md](lesson-ssot-dashboard-must-name-live-paths.md) | After a folder rename, update `SSOT.md` + wrap checklists in the same wrap — dual-run is not honesty |
 | [lesson-public-github-must-update-live-blog.md](lesson-public-github-must-update-live-blog.md) | GitHub public ≠ live blog honest — replace “still private / clone URL later” on the HTTP 200 post in the same session |

@@ -31,7 +31,7 @@ Commit when they are clone-safe and reusable:
 - `.config/*.example.json` · `.vscode/mcp.json.example`
 - `.memory/lesson-*.md` — durable traps (no vault bodies)
 - `users/examples.json` · `vaults/examples.json` · `profiles/examples.json` — fictional Jane Example so the Hub Vault and profile dropdown have a clone-safe card. Copy-me seeds stay `*.example.json`.
-- `_job-apps/_template/README.md` — generic folder-shape pointer only. Real listings, private provider material, employer notes, submission evidence, phone numbers, and real first/last names never belong in this tracked tree.
+- `_job-apps/_template/README.md` — generic folder-shape pointer only. Real listings, provider-specific material, employer notes, submission evidence, phone numbers, and real first/last names never belong in this tracked tree.
 
 ## Keep local files untracked
 
