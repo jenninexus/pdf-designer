@@ -32,6 +32,7 @@ import venv
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+TESTPYPI_LEGACY_URL = "https://test.pypi.org/legacy/"
 
 
 def run(
@@ -103,7 +104,12 @@ def main() -> int:
             return 2
         run([sys.executable, "-m", "pip", "install", "-q", "twine"])
         env = os.environ.copy()
-        env["TWINE_USERNAME"] = env.get("TWINE_USERNAME") or "__token__"
+        # Do not inherit a production/other-repository target or a regular PyPI
+        # username from the caller's shell or .pypirc. TestPyPI API tokens always
+        # authenticate as __token__ and must be sent to its legacy upload endpoint.
+        env.pop("TWINE_REPOSITORY", None)
+        env.pop("TWINE_REPOSITORY_URL", None)
+        env["TWINE_USERNAME"] = "__token__"
         env["TWINE_PASSWORD"] = tok
         run(
             [
@@ -111,8 +117,10 @@ def main() -> int:
                 "-m",
                 "twine",
                 "upload",
-                "--repository",
-                "testpypi",
+                "--repository-url",
+                TESTPYPI_LEGACY_URL,
+                "--username",
+                "__token__",
                 "--non-interactive",
                 str(wheel),
             ],
