@@ -94,7 +94,7 @@ Related: [`../../docs/PRODUCT.md`](../../docs/PRODUCT.md) ·
 - [x] The optional Voice Seed flow presents a redacted, read-only card preview and never needs a network dependency (`/wizard` → `/api/voice-card`, 2026-08-21). Saving/copying a human-approved card remains deliberately out of scope.
 - [x] A Windows x64 Electron NSIS artifact is built with an isolated bundled Hub runtime, public workspace seed, and only the existing Playwright renderer; the frozen runtime made an actual light PDF export without a system Python interpreter (2026-08-21).
 - [ ] A clean Windows 10/11 x64 GUI/install test observes the Electron host launch the artifact and clean up only its own child process on exit.
-- [ ] The changed surfaces have automated and observable verification, then are committed and pushed as authorized. Local wizard and Voice Seed commits exist; current `origin` is a deliberate blocked push URL.
+- [ ] The changed surfaces have automated and observable verification, then are committed and pushed as authorized. The 2026-08-21 status audit found 14 existing release commits ahead of the public `origin/main`; publishing remains an explicit authorization gate.
 
 ### Task checklist
 
@@ -106,7 +106,7 @@ Related: [`../../docs/PRODUCT.md`](../../docs/PRODUCT.md) ·
 - [x] Implement the Electron main/package and a reproducible bundled Python/Playwright runtime build. The shell has no preload capabilities and uses the existing local renderer only.
 - [x] Build and inspect the unsigned Windows NSIS artifact locally (`desktop/dist/PDF-Designer-Setup-0.1.0.exe`, 368,302,759 bytes); a clean-machine install remains a later external-machine validation.
 - [x] Verify the distribution and wizard paths; update release docs and plan (84 pytest, white-label QA/light/dark/ATS, wheel asset gate, and fresh local `/wizard` response, 2026-08-21).
-- [ ] Push the committed in-scope paths when this checkout has a real authorized `origin` (local wizard + Voice Seed commits exist; current remote is intentionally blocked).
+- [ ] Obtain explicit publish authorization, then push all committed in-scope paths to the verified public `origin/main` and confirm the remote tip.
 
 ### Assumptions
 
