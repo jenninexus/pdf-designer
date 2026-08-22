@@ -446,6 +446,7 @@ APP_HTML = """<!doctype html>
       <a class="hub-link on" href="/" title="Document library" aria-current="page">Library</a>
       <a class="hub-link" href="/recipes" title="Browse layouts/ + themes/presets">Recipes</a>
       <a class="hub-link" href="/vault" title="Readable vault · skills · go-to résumés">Vault</a>
+      <a class="hub-link" href="/wizard" title="Start a local résumé workspace">Start</a>
     </nav>
     <div class="hub-group hub-filters">
       <input id="search" type="search" placeholder="Search…" autocomplete="off" title="Search name or path" aria-label="Search">
@@ -510,6 +511,7 @@ APP_HTML = """<!doctype html>
         <a class="hub-link on" href="/">Library</a>
         <a class="hub-link" href="/recipes">Recipes</a>
         <a class="hub-link" href="/vault">Vault</a>
+        <a class="hub-link" href="/wizard">Start</a>
       </nav>
     </div>
     <div class="hub-drawer-section">
@@ -1632,6 +1634,13 @@ def make_handler(root: Path, docs: list[dict], palettes: list[dict]):
                 target = (_STATIC_DIR / "vault.html").resolve()
                 if not target.is_file():
                     self._send(404, b"vault.html missing", "text/plain")
+                    return
+                self._send(200, target.read_bytes(), "text/html; charset=utf-8")
+                return
+            if path in ("/wizard", "/wizard.html"):
+                target = (_STATIC_DIR / "wizard.html").resolve()
+                if not target.is_file():
+                    self._send(404, b"wizard.html missing", "text/plain")
                     return
                 self._send(200, target.read_bytes(), "text/html; charset=utf-8")
                 return
