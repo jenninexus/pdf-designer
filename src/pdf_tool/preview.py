@@ -41,6 +41,7 @@ from .paths import (
 from .pdf_to_png import render_to_png
 from .recipe_gallery import build_recipe_gallery
 from .vault_overview import build_vault_overview
+from .voice_card import build_voice_card
 
 _REPO_ROOT = repo_root()
 _STATIC_DIR = Path(__file__).resolve().parent / "static"
@@ -1624,6 +1625,14 @@ def make_handler(root: Path, docs: list[dict], palettes: list[dict]):
                 qs = parse_qs(urlparse(self.path).query)
                 profile = (qs.get("profile") or [None])[0]
                 payload = build_vault_overview(root, profile=profile)
+                self._send(200, json.dumps(payload).encode("utf-8"), "application/json")
+                return
+            if path == "/api/voice-card":
+                qs = parse_qs(urlparse(self.path).query)
+                # An omitted query is always the public Jane demo.  A local
+                # profile is read only when the browser explicitly names it.
+                profile = (qs.get("profile") or [None])[0]
+                payload = build_voice_card(root, profile=profile)
                 self._send(200, json.dumps(payload).encode("utf-8"), "application/json")
                 return
             if path == "/api/recipe-gallery":

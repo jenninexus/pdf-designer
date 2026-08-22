@@ -22,6 +22,8 @@ def test_wizard_has_four_local_steps_and_uses_jane_example_export_path():
     assert "/api/export" not in wizard
     assert "creates no account" in wizard
     assert "second renderer" not in wizard.lower()
+    assert "/api/voice-card" in wizard
+    assert "saves nothing" in wizard
 
 
 def test_wizard_is_a_design_hub_route_and_navigation_target():
@@ -35,6 +37,10 @@ def test_wizard_is_a_design_hub_route_and_navigation_target():
         with urlopen(f"http://127.0.0.1:{server.server_port}/wizard") as response:
             assert response.status == 200
             assert "Start a local résumé" in response.read().decode("utf-8")
+        with urlopen(f"http://127.0.0.1:{server.server_port}/api/voice-card") as response:
+            payload = __import__("json").loads(response.read())
+            assert payload["ok"] is True
+            assert payload["card"]["displayName"] == "Jane Example"
     finally:
         server.shutdown()
         thread.join()
