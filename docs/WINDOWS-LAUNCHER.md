@@ -37,6 +37,8 @@ profiles, palettes, and exports remain in the existing checkout's local files.
 
 ## Scope boundary
 
-This spike intentionally does not create an installer executable, paid checkout,
-cloud sync, or wizard. Those need separate product decisions after this proven
-launcher path; the renderer remains the Python engine.
+This launcher remains the browser-first fallback. The separate pre-release
+Windows Electron/NSIS path is documented in
+[`WINDOWS-ELECTRON.md`](WINDOWS-ELECTRON.md); it embeds this same local Hub and
+Python renderer rather than introducing a second renderer. Neither path creates
+paid checkout or cloud sync.

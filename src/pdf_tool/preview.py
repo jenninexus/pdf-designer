@@ -1728,14 +1728,28 @@ def make_handler(root: Path, docs: list[dict], palettes: list[dict]):
     return Handler
 
 
-def serve(root: str | None = None, port: int = 8787, open_browser: bool = True):
+def _write_ready_file(path: str | Path | None, url: str) -> None:
+    """Publish the bound loopback URL for a local desktop host, if requested."""
+    if path is None:
+        return
+    ready_path = Path(path)
+    ready_path.parent.mkdir(parents=True, exist_ok=True)
+    ready_path.write_text(url + "\n", encoding="utf-8")
+
+
+def serve(
+    root: str | None = None,
+    port: int = 8787,
+    open_browser: bool = True,
+    ready_file: str | Path | None = None,
+):
     root_path = Path(root).resolve() if root else _REPO_ROOT
     if not root_path.is_dir():
         raise FileNotFoundError(root_path)
     docs = scan_documents(root_path)
     palettes = load_palettes(root_path)
     server = ThreadingHTTPServer(("127.0.0.1", port), make_handler(root_path, docs, palettes))
-    url = f"http://127.0.0.1:{port}/"
+    url = f"http://127.0.0.1:{server.server_port}/"
     by_kind = {}
     for d in docs:
         by_kind[d["kind"]] = by_kind.get(d["kind"], 0) + 1
@@ -1744,6 +1758,7 @@ def serve(root: str | None = None, port: int = 8787, open_browser: bool = True):
     print(f"  {len(docs)} templates ({kind_summary})")
     print(f"  {len(palettes)} palettes · root: {root_path}")
     print("  Filters: kind · folder · person · search — Ctrl+C to stop.")
+    _write_ready_file(ready_file, url)
     if open_browser:
         threading.Timer(0.4, lambda: webbrowser.open(url)).start()
     try:
@@ -1759,6 +1774,7 @@ def main() -> None:
     port = 8787
     open_browser = True
     root = None
+    ready_file = None
     i = 0
     while i < len(args):
         a = args[i]
@@ -1769,13 +1785,18 @@ def main() -> None:
             port = int(a.split("=", 1)[1])
         elif a == "--no-open":
             open_browser = False
+        elif a == "--ready-file":
+            ready_file = args[i + 1]
+            i += 1
+        elif a.startswith("--ready-file="):
+            ready_file = a.split("=", 1)[1]
         elif a in ("-h", "--help"):
             print(__doc__)
             raise SystemExit(0)
         else:
             root = a
         i += 1
-    serve(root, port=port, open_browser=open_browser)
+    serve(root, port=port, open_browser=open_browser, ready_file=ready_file)
 
 
 if __name__ == "__main__":

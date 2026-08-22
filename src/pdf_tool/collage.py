@@ -61,6 +61,8 @@ import struct
 import sys
 from pathlib import Path
 
+from .browser import chromium_launch_kwargs
+
 from .paths import repo_root
 
 IMAGE_EXTS = {".png", ".jpg", ".jpeg", ".webp", ".gif"}
@@ -706,7 +708,7 @@ def generate(images_dir, canvas_name=None, layout=None, hero=None, title=None,
         from playwright.sync_api import sync_playwright
 
         with sync_playwright() as p:
-            browser = p.chromium.launch()
+            browser = p.chromium.launch(**chromium_launch_kwargs())
             page = browser.new_page(viewport={"width": canvas["px_w"], "height": canvas["px_h"]})
             for fam in families:
                 page.goto((out / f"{fam}{stem}.html").as_uri())

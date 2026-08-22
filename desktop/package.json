@@ -1,0 +1,62 @@
+{
+  "name": "pdf-designer-desktop",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Local Windows shell for PDF Designer",
+  "main": "main.cjs",
+  "scripts": {
+    "runtime": "pwsh -NoProfile -File scripts/build-runtime.ps1",
+    "verify-shell": "node scripts/verify-shell.cjs",
+    "pack": "npm run runtime && npm run verify-shell && electron-builder --dir --win --x64 --publish never",
+    "dist": "npm run runtime && npm run verify-shell && electron-builder --win nsis --x64 --publish never"
+  },
+  "devDependencies": {
+    "electron": "43.4.1",
+    "electron-builder": "26.15.3"
+  },
+  "build": {
+    "appId": "com.jenninexus.pdfdesigner",
+    "productName": "PDF Designer",
+    "artifactName": "PDF-Designer-Setup-${version}.exe",
+    "asar": true,
+    "files": [
+      "main.cjs",
+      "startup-error.html",
+      "README.md"
+    ],
+    "extraResources": [
+      {
+        "from": "runtime",
+        "to": "runtime",
+        "filter": [
+          "**/*"
+        ]
+      },
+      {
+        "from": "workspace-seed",
+        "to": "workspace-seed",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "PDF Designer"
+    }
+  }
+}

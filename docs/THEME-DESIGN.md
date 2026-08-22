@@ -244,9 +244,10 @@ scroll-triggered states control printed layout.
 
 ## The UI boundary (whatever the UI turns out to be)
 
-The **Design Hub** already exists as a local web app ([`PREVIEWER.md`](PREVIEWER.md)), and the
-plan is to wrap it in **pywebview** — not React, not Electron. *(An earlier version of this doc
-recommended a React module tree; that predates the pywebview decision and is gone.)*
+The **Design Hub** already exists as a local web app ([`PREVIEWER.md`](PREVIEWER.md)). The
+Windows pre-release package uses a thin **Electron** host over that existing Hub;
+[`WINDOWS-ELECTRON.md`](WINDOWS-ELECTRON.md) records its local-only security and
+installer boundary. pywebview is parked. Neither is a renderer or a React rewrite.
 
 What matters isn't the framework — it's the boundary, which holds for any UI:
 
