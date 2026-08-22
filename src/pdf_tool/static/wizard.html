@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en" data-theme="dark" data-bs-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>pdf-designer — Start a local résumé</title>
+<link rel="stylesheet" href="/_hub/hub.css">
+</head>
+<body class="hub-page">
+<header class="hub-bar" aria-label="First résumé wizard toolbar">
+  <div class="hub-bar-scroll">
+    <div class="hub-group hub-brand-group"><a class="hub-brand" href="/" title="Home">Design Hub</a></div>
+    <nav class="hub-group hub-nav" aria-label="Hub sections">
+      <a class="hub-link" href="/">Library</a>
+      <a class="hub-link" href="/recipes">Recipes</a>
+      <a class="hub-link" href="/vault">Vault</a>
+      <a class="hub-link on" href="/wizard" aria-current="page">Start</a>
+    </nav>
+  </div>
+</header>
+<main class="hub-page-wrap">
+  <h1>Start a local résumé</h1>
+  <p class="hub-page-lead">A four-step local path. It creates no account, sends nothing anywhere, and uses the same HTML-to-PDF engine as the Library.</p>
+  <ol class="wizard-progress" aria-label="Wizard progress">
+    <li class="on">1 · Vault</li><li>2 · Skills</li><li>3 · Palette</li><li>4 · Export</li>
+  </ol>
+
+  <section class="wizard-step on" data-step="0">
+    <h2>1 · Put your facts in a local vault</h2>
+    <p>Copy the three generic templates into the root-noun workspace. They are gitignored when you replace <code>yourname</code>, so this is where private contact details and verified career facts stay.</p>
+    <code class="wizard-path">users/you.example.json → users/&lt;you&gt;.json<br>vaults/you.example.json → vaults/&lt;you&gt;.json<br>profiles/you-resume.example.json → profiles/&lt;you&gt;-resume.json</code>
+    <div class="wizard-callout"><strong>Only facts with a source belong in the vault.</strong> A missing skill is not a gap until you ask and record the answer.</div>
+    <div class="wizard-actions"><a href="/vault?profile=examples">See fictional Jane Example</a><button type="button" class="primary" data-next>My local files are ready</button></div>
+  </section>
+
+  <section class="wizard-step" data-step="1" hidden>
+    <h2>2 · Add the skills you can support</h2>
+    <p>In <code>vaults/&lt;you&gt;.json</code>, group skills by domain. Every claim needs a <code>source</code>, <code>confidence</code>, and the role track it serves. The profile only points at the vault; it does not become a competing source of truth.</p>
+    <code class="wizard-path">python -m pdf_tool.check_vault vaults/&lt;you&gt;.json</code>
+    <div class="wizard-callout"><strong>Jane Example is fictional and public.</strong> Use it to learn the shape, never as a claim source for your own résumé.</div>
+    <div class="wizard-actions"><button type="button" data-back>Back</button><a href="/vault?profile=examples">Inspect Jane’s skills</a><button type="button" class="primary" data-next>Skills are source-backed</button></div>
+  </section>
+
+  <section class="wizard-step" data-step="2" hidden>
+    <h2>3 · Audition a palette without changing geometry</h2>
+    <p>Open the public Jane Example résumé in the Library and use its palette control. Palette tokens affect colour only: Letter size, equal margins, and pagination remain locked.</p>
+    <div class="wizard-callout"><strong>House rule:</strong> no brown, mustard, or lime. Use the tracked presets first; a personal brand map belongs in your ignored <code>brands/</code> folder later.</div>
+    <div class="wizard-actions"><button type="button" data-back>Back</button><a class="primary" href="/?doc=examples%2Fprofiles%2Fdefault-resume%2Fdefault-resume.html">Open Jane Example in Library</a><button type="button" data-next>I picked a palette</button></div>
+  </section>
+
+  <section class="wizard-step" data-step="3" hidden>
+    <h2>4 · Export both modes through the existing engine</h2>
+    <p>The Library’s Export control calls the same local endpoint and renderer as the CLI. Choose <strong>PDF light</strong> for ATS/job boards, export it, then choose <strong>PDF dark</strong> for human readers and export again.</p>
+    <code class="wizard-path">python -m pdf_tool.check_generation examples/profiles/default-resume/default-resume.html<br>python -m pdf_tool.html_to_pdf examples/profiles/default-resume/default-resume.html<br>python -m pdf_tool.html_to_pdf examples/profiles/default-resume/default-resume.html --pdf-theme dark</code>
+    <div class="wizard-callout"><strong>Complete demo:</strong> the fictional Jane Example is the only document this wizard exports until you author a source-backed HTML résumé from your own vault. Nothing is submitted automatically.</div>
+    <div class="wizard-actions"><button type="button" data-back>Back</button><a class="primary" href="/?doc=examples%2Fprofiles%2Fdefault-resume%2Fdefault-resume.html">Open Jane Example for light + dark export</a></div>
+  </section>
+</main>
+<script>
+(() => {
+  const steps = [...document.querySelectorAll('[data-step]')];
+  const progress = [...document.querySelectorAll('.wizard-progress li')];
+  let current = 0;
+  function show(next) {
+    current = Math.max(0, Math.min(steps.length - 1, next));
+    steps.forEach((step, index) => { const on = index === current; step.hidden = !on; step.classList.toggle('on', on); });
+    progress.forEach((item, index) => item.classList.toggle('on', index <= current));
+    try { localStorage.setItem('pdf-designer.wizard.step', String(current)); } catch (_) {}
+  }
+  document.querySelectorAll('[data-next]').forEach(button => button.addEventListener('click', () => show(current + 1)));
+  document.querySelectorAll('[data-back]').forEach(button => button.addEventListener('click', () => show(current - 1)));
+  try { show(Number(localStorage.getItem('pdf-designer.wizard.step')) || 0); } catch (_) { show(0); }
+})();
+</script>
+</body>
+</html>

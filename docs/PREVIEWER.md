@@ -106,6 +106,7 @@ Sidebar is a **left column**; the stage / iframe viewer fills the rest of the vi
   public audition palettes). Copy collage CLI (`--recipe <id>`), open raw JSON, or
   **Try in Hub** via `/?palette=<id>&mode=dark|light` (selects the palette swapper).
   Discovery chrome only — still one renderer.
+- **Start a local résumé** → [http://127.0.0.1:8787/wizard](http://127.0.0.1:8787/wizard) — a four-step, no-account walkthrough: copy ignored local vault/profile templates, add source-backed skills, audition a public palette, then use the existing Library export for the fictional Jane Example light/dark proof. It does not write personal data, generate claims, or add a renderer.
 - Zero new deps (stdlib server; Playwright only for export/render)
   Binds to 127.0.0.1 only.
 
