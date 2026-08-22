@@ -31,6 +31,20 @@ must not remove a user's vaults, resumes, palettes, or exports.
 - The runtime is bound to `127.0.0.1` on an ephemeral port. Electron accepts only the exact port written to its local ready file and blocks new windows/navigation elsewhere.
 - The bundled Python runtime gives Playwright the adjacent, bundled Chromium executable explicitly. It does not need a user environment variable, system Python, or a second renderer.
 
+### Local-process and Documents boundary
+
+`127.0.0.1` prevents network access; it is not an authentication boundary
+between processes running as the same Windows user. A same-user local process
+that learns the ephemeral port can reach the Hub just as it can reach other
+user-owned local files. This is the intentional local trust model for v1, not a
+claim of secrecy from malware or other same-user processes.
+
+The default workspace follows Windows `Documents`. If the operating system or
+the user's policy redirects Documents to OneDrive or another sync provider,
+that provider can sync the workspace even though PDF Designer creates no cloud
+account or network connection. Before a public release, choose and document
+whether redirected Documents is supported or require a clearly local workspace.
+
 ## Build and local verification
 
 From a Windows checkout with Python and Node available:
@@ -46,6 +60,20 @@ npm run dist       # ignored PDF-Designer-Setup-<version>.exe
 Playwright Chromium plus a seed generated only from Git-tracked public files.
 `verify-shell` asserts the security/lifecycle/NSIS contract before packaging.
 The build deliberately has no publishing configuration.
+
+For a real clean-target test, copy the installer and the standalone companion
+script (not a checkout) to the test machine, then run:
+
+```powershell
+pwsh -NoProfile -ExecutionPolicy Bypass -File .\verify-clean-machine.ps1 `
+  -InstallerPath .\PDF-Designer-Setup-0.1.0.exe -ShowAppWindow
+```
+
+The companion refuses a contaminated target, uses only Jane Example plus a
+clearly labelled fictional release-test vault, verifies light and dark exports,
+and proves the workspace remains after uninstall. `-ShowAppWindow` leaves the
+window visible for the required UI/navigation observation; omit it only for
+non-visual automation.
 
 Before any public release, verify the NSIS installer on a Windows machine that
 has no checkout, Python, or Node; create and preserve a local vault; export

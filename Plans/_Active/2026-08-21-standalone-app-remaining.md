@@ -131,3 +131,38 @@ Related: [`../../docs/PRODUCT.md`](../../docs/PRODUCT.md) ·
 
 - Production PyPI publication itself is outward-facing and remains separate from the reversible production-PyPI decision unless its release conditions are fully met.
 - PayPal product-page publication, payment processing, tax/receipt/refund policy, secure download fulfilment, code signing, and a clean-machine install test require later explicit human-owned actions. No checkout or public-page change is part of this engineering run.
+
+## Clean-machine validation run — 2026-08-21
+
+### Done when
+
+- [ ] The unsigned installer is observed on a genuinely clean Windows 10/11 x64 target: no checkout, Python, Node, or existing `Documents\\PDF Designer` before the test.
+- [ ] First run creates only the public Jane Example seed; a clearly labelled fictional release-test vault can be created locally; existing-engine light and dark exports succeed.
+- [ ] Closing the Electron window removes only the runtime process tree it created; uninstall preserves `Documents\\PDF Designer` and its release-test files.
+- [ ] The release privacy wording has an explicit policy for Windows Documents redirection (for example OneDrive), and treats same-user local processes as in-scope to the loopback threat model.
+
+### Task checklist
+
+- [x] Preflight available local/network targets without changing them. SEGOPC is contaminated by the checkout, Python, and Node; BEETHOVEN has no PDF Designer checkout/workspace but has Python and Node; LIVPHI cannot be authenticated for its preflight; no local Hyper-V VM is present.
+- [x] Add `scripts/verify-clean-machine.ps1`, a standalone clean-target companion that refuses contamination and automates install, visible-app option, Jane seed, fictional test vault, light/dark export, graceful close, uninstall, and preservation assertions. Its PowerShell parser/static contract tests pass locally; it has not been run against an installer here.
+- [ ] Obtain a clean Windows 10/11 x64 VM or physical target, or authenticated access that proves a target meets the preflight. Do not use a shared development/media machine merely because it is reachable.
+- [ ] Transfer only the installer plus the standalone verification companion—never a source checkout—and run the full install/launch/export/close/uninstall observation.
+- [ ] Record observed process IDs/paths, export paths, and post-uninstall workspace existence; do not treat a build or source review as a substitute.
+- [ ] Decide whether Documents redirected by the operating system is acceptable for private vaults, or change the documented workspace policy before public release.
+- [x] Document the same-user loopback and Documents-redirection boundaries in [`docs/WINDOWS-ELECTRON.md`](../../docs/WINDOWS-ELECTRON.md); the owner decision remains open.
+
+### Assumptions
+
+- A Windows Sandbox or new VM is the most reversible clean target. This host has no enumerated Hyper-V VM and its Sandbox executable is absent; enabling or provisioning either is a separate machine-configuration action.
+- BEETHOVEN and LIVPHI remain out of scope as test targets until independently proven clean and safe to disturb. Their network reachability is not evidence that they meet the no-Python/no-Node requirement.
+
+### Evidence
+
+- VERIFIED — read-only preflight: BEETHOVEN and LIVPHI respond to ping/SMB, but PowerShell remoting is not trusted. BEETHOVEN's accessible filesystem shows no checkout, while independent SSH inspection found Python/Node; it is disqualified. LIVPHI authentication fails, so its state is unverified. Local `Get-VM` returned no VMs under elevation; SEGOPC is Windows 11 Pro x64 but has the checkout, Python, and Node.
+- UNVERIFIED — no genuinely clean Windows target is presently available, so no installer, GUI, seed, export, shutdown, or uninstall observation has been made in the required environment.
+- VERIFIED — `tests/test_clean_machine_script.py` parses the standalone PowerShell companion and asserts its contamination checks plus install/seed/export/shutdown/uninstall contract (2 passed, 2026-08-21). This is a reproducible test procedure, not target-environment proof.
+- REVIEW FINDING — the current Documents workspace can be redirected by Windows/OneDrive, and the unauthenticated loopback Hub is accessible to same-user local processes that learn the ephemeral port. The app adds no cloud service and binds no network interface, but product wording must state these operating-system/local-user boundaries before release.
+
+### Deferred
+
+- Provisioning a new VM/Sandbox, enabling optional Windows features, changing remote credentials/TrustedHosts, or altering another machine's configuration is intentionally not performed by this run.
