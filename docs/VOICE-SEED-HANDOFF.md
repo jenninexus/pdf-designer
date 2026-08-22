@@ -58,3 +58,17 @@ dates, credentials, client names, samples, social handles, local paths, or IDs.
 
 If Voice Seed is unavailable, the wizard displays a short explanation and leaves the
 PDF Designer workflow unchanged.
+
+## Current local preview
+
+The Design Hub now provides an optional preview at
+[`/wizard`](http://127.0.0.1:8787/wizard). Its default is the fictional Jane Example
+card; a user may explicitly name a local profile to inspect a redacted card. The local
+`/api/voice-card` response contains only the minimal schema above. Private profiles use a
+generic summary and empty writing-preference lists—the browser cannot prove free-form local
+text is public-safe—while fictional Jane Example demonstrates the populated shape. The response
+does not return contacts, claims, source objects, or paths.
+
+The preview has no save, copy, export, account, network, or background-sync action. A
+future owner-approved write to a separately chosen local Voice Seed location remains a
+separate, explicit product decision.

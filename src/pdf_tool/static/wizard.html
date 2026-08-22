@@ -24,6 +24,16 @@
   <ol class="wizard-progress" aria-label="Wizard progress">
     <li class="on">1 · Vault</li><li>2 · Skills</li><li>3 · Palette</li><li>4 · Export</li>
   </ol>
+  <section class="wizard-step on" aria-labelledby="voice-seed-title">
+    <h2 id="voice-seed-title">Optional · Voice Seed preview</h2>
+    <p>Preview a redacted, read-only card from local writing preferences. It creates no account, sends nothing, saves nothing, and does not use a renderer or background sync.</p>
+    <div class="wizard-actions">
+      <label for="voiceProfile">Local profile (optional)</label>
+      <input id="voiceProfile" type="text" inputmode="text" autocomplete="off" placeholder="Jane Example is shown by default">
+      <button type="button" id="voicePreview">Preview card</button>
+    </div>
+    <pre id="voiceCard" class="wizard-path" aria-live="polite">Loading public Jane Example…</pre>
+  </section>
 
   <section class="wizard-step on" data-step="0">
     <h2>1 · Put your facts in a local vault</h2>
@@ -70,6 +80,23 @@
   document.querySelectorAll('[data-next]').forEach(button => button.addEventListener('click', () => show(current + 1)));
   document.querySelectorAll('[data-back]').forEach(button => button.addEventListener('click', () => show(current - 1)));
   try { show(Number(localStorage.getItem('pdf-designer.wizard.step')) || 0); } catch (_) { show(0); }
+
+  const voiceProfile = document.getElementById('voiceProfile');
+  const voiceCard = document.getElementById('voiceCard');
+  async function previewVoiceCard() {
+    const profile = voiceProfile.value.trim();
+    const url = profile ? '/api/voice-card?profile=' + encodeURIComponent(profile) : '/api/voice-card';
+    voiceCard.textContent = 'Loading…';
+    try {
+      const response = await fetch(url, { cache: 'no-store' });
+      const payload = await response.json();
+      voiceCard.textContent = payload.ok ? JSON.stringify(payload.card, null, 2) : payload.reason;
+    } catch (_) {
+      voiceCard.textContent = 'Voice Seed preview is unavailable.';
+    }
+  }
+  document.getElementById('voicePreview').addEventListener('click', previewVoiceCard);
+  previewVoiceCard();
 })();
 </script>
 </body>

@@ -99,6 +99,7 @@ codebase · `reference`: pointer to an external resource.
 | [lesson-hub-archive-not-found.md](lesson-hub-archive-not-found.md) | Hub "not found" for galleries/work-samples — exclude `_archive` + `*.template.html`; resolve stale `/storage/<user>/` to `resumes/<user>/` |
 | [lesson-one-checkout-privacy-is-gitignore.md](lesson-one-checkout-privacy-is-gitignore.md) | One engine; gitignore + examples; no .env; tracker is who×job not a count |
 | [lesson-platform-drafts-are-owned-by-platform.md](lesson-platform-drafts-are-owned-by-platform.md) | Release sisters live in the Socials platform's sibling `drafts/` / `published/` folders — never inside a devlog topic directory |
+| [lesson-voice-preview-never-heuristically-redacts-private-text.md](lesson-voice-preview-never-heuristically-redacts-private-text.md) | A browser card cannot prove arbitrary local voice prose public-safe — use a skeletal private card until owner approval |
 
 ## Related
 

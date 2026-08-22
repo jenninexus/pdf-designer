@@ -91,28 +91,30 @@ Related: [`../../docs/PRODUCT.md`](../../docs/PRODUCT.md) ·
 - [ ] The production-PyPI decision is documented with its evidence and release boundary.
 - [x] A Windows launcher starts the existing local Hub, opens the browser, and keeps all data local. Acceptance record: [`docs/WINDOWS-LAUNCHER.md`](../../docs/WINDOWS-LAUNCHER.md).
 - [x] A guided local wizard covers vault → skills → palette → dual export without a second renderer (Jane Example public proof; `/wizard`).
-- [ ] The optional Voice Seed flow presents a redacted card for approval and never needs a network dependency.
-- [ ] The changed surfaces have automated and observable verification, then are committed and pushed as authorized. Local commit `cdffcf3` exists; current `origin` is a deliberate blocked push URL.
+- [x] The optional Voice Seed flow presents a redacted, read-only card preview and never needs a network dependency (`/wizard` → `/api/voice-card`, 2026-08-21). Saving/copying a human-approved card remains deliberately out of scope.
+- [ ] The changed surfaces have automated and observable verification, then are committed and pushed as authorized. Local wizard and Voice Seed commits exist; current `origin` is a deliberate blocked push URL.
 
 ### Task checklist
 
 - [x] Audit existing launcher, installer, wizard, and release mechanisms.
 - [x] Implement the smallest Windows distribution path around `pdf_tool.preview` (`scripts/launch-design-hub.ps1`).
 - [x] Implement the guided local wizard.
-- [ ] Implement the bounded optional Voice Seed handoff (separate from the local wizard).
+- [x] Implement the bounded optional Voice Seed preview handoff (separate from the local wizard; no save/copy action).
 - [x] Verify the distribution and wizard paths; update release docs and plan (84 pytest, white-label QA/light/dark/ATS, wheel asset gate, and fresh local `/wizard` response, 2026-08-21).
-- [ ] Push the committed in-scope paths when this checkout has a real authorized `origin` (local commit `cdffcf3`; current remote is intentionally blocked).
+- [ ] Push the committed in-scope paths when this checkout has a real authorized `origin` (local wizard + Voice Seed commits exist; current remote is intentionally blocked).
 
 ### Assumptions
 
 - The first paid-shell target is Windows, because this is the requested platform and the active work occurs on Windows.
 - Production PyPI is deferred unless an existing production credential and public-release gate make publication independently verifiable; TestPyPI remains the proved distribution rehearsal.
 - The wizard is a Design Hub surface over existing local data and renderer commands, never a new renderer or cloud account.
+- Private free-form voice text is not heuristically redacted in a browser preview. The current local profile card is deliberately skeletal until a human-approved editor/write flow exists; fictional Jane Example demonstrates the populated public shape.
 
 ### Evidence
 
 - VERIFIED — 2026-08-21 TestPyPI uploaded `pdf-designer 0.4.0`, fresh-installed it outside the checkout, and passed the packaged `check_generation` gate.
 - VERIFIED — 2026-08-21 `/wizard` serves locally, has focused coverage, and the fictional Jane Example path passes vault validation, generation QA, dual PDF export, and ATS parsing through the existing engine.
+- VERIFIED — 2026-08-21 `/api/voice-card` emits only a constrained redacted schema, defaults to fictional Jane Example, and the wizard presents it without any write, account, sync, or renderer dependency. Independent re-review passed; 86 pytest plus white-label QA/light/dark/ATS and wheel asset gates passed; fresh loopback API and wizard checks passed on :8793.
 
 ### Deferred
 
