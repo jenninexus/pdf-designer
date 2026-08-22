@@ -92,7 +92,7 @@ Related: [`../../docs/PRODUCT.md`](../../docs/PRODUCT.md) ·
 - [x] A Windows launcher starts the existing local Hub, opens the browser, and keeps all data local. Acceptance record: [`docs/WINDOWS-LAUNCHER.md`](../../docs/WINDOWS-LAUNCHER.md).
 - [x] A guided local wizard covers vault → skills → palette → dual export without a second renderer (Jane Example public proof; `/wizard`).
 - [ ] The optional Voice Seed flow presents a redacted card for approval and never needs a network dependency.
-- [ ] The changed surfaces have automated and observable verification, then are committed and pushed as authorized.
+- [ ] The changed surfaces have automated and observable verification, then are committed and pushed as authorized. Local commit `cdffcf3` exists; current `origin` is a deliberate blocked push URL.
 
 ### Task checklist
 
@@ -101,7 +101,7 @@ Related: [`../../docs/PRODUCT.md`](../../docs/PRODUCT.md) ·
 - [x] Implement the guided local wizard.
 - [ ] Implement the bounded optional Voice Seed handoff (separate from the local wizard).
 - [x] Verify the distribution and wizard paths; update release docs and plan (84 pytest, white-label QA/light/dark/ATS, wheel asset gate, and fresh local `/wizard` response, 2026-08-21).
-- [x] Commit explicit in-scope paths and push the authorized branch.
+- [ ] Push the committed in-scope paths when this checkout has a real authorized `origin` (local commit `cdffcf3`; current remote is intentionally blocked).
 
 ### Assumptions
 
