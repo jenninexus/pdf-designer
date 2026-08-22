@@ -134,17 +134,16 @@ Typical flows:
 `_variants/`, and the Hub can show the resulting alternatives without hand-copying files.
 Resume color-combo shopping is: generate variants → open Hub → pick → export.
 
-### Phase 3 — paid shell (shell-over-Hub first; pywebview optional) — unstarted
+### Phase 3 — paid shell (Electron shell-over-Hub) — pre-release builder
 
-**Product decision (2026-07-21):** the paid app is a thin installer / launcher
-around **this** Design Hub — not a second renderer. See [`PRODUCT.md`](PRODUCT.md)
-§ shell-over-Hub. Native window (pywebview) stays **parked** until a non-browser
-shell is actually needed.
+**Product decision (2026-08-21):** the paid app is a thin Windows Electron/NSIS
+installer around **this** Design Hub—not a second renderer. See
+[`WINDOWS-ELECTRON.md`](WINDOWS-ELECTRON.md). pywebview stays **parked**.
 
-| | shell-over-Hub (chosen) | pywebview (parked) | Electron / Tauri |
+| | Electron shell-over-Hub (chosen) | pywebview (parked) | Tauri (not selected) |
 |---|---|---|---|
-| Fits this stack | ✅ Hub already ships | ✅ ~1 MB OS webview | ❌ heavy / new toolchain |
-| First milestone | installer + recipe gallery chrome | native window polish | only if Python install is a blocker |
+| Fits this stack | ✅ Hub already ships; bundled no-Python runtime | ✅ OS webview | unassessed |
+| First milestone | x64 NSIS artifact + sandboxed local window | native window polish | not planned |
 | Engine | same `pdf_tool.preview` HTTP | same | same |
 
 Recipe gallery chrome: **shipped** at `/recipes` (see Features above). Packaging

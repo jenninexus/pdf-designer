@@ -38,7 +38,7 @@ site-packages install breaks that assumption.
 | **Runtime resolve** | `pdf_tool.paths.repo_root()` — **checkout wins** over `share/` (so live edits aren't shadowed); wheel-only installs fall through to `pdf_tool/share/` |
 | **Private data** | Never package `storage/` |
 | **Chromium** | Still a post-install step: `playwright install chromium` |
-| **Desktop installer** | Later paid shell — see PRODUCT.md § shell-over-Hub; not required for PyPI |
+| **Desktop installer** | Windows x64 Electron/NSIS builder exists locally; see [`WINDOWS-ELECTRON.md`](WINDOWS-ELECTRON.md). It remains unsigned and needs a clean-machine install proof before release. |
 
 ```bash
 # Gate before any upload
@@ -62,8 +62,8 @@ this). Verifying from the checkout directory will silently use live `themes/`.
 | `git clone` + `pip install -e ".[dev]"` + `playwright install chromium` | Devs / agents | ✅ supported (white-label smoke) |
 | Local wheel with synced `share/` | Spike / CI | ✅ `check-wheel-assets.py` + `testpypi-dry-run.py` |
 | TestPyPI `pip install pdf-designer` | Non-dev trial | ✅ `pdf-designer 0.4.0` uploaded and fresh-installed 2026-08-21 |
-| Production PyPI | Public | ❌ not until TestPyPI upload + install works |
-| GUI installer (paid app) | Creatives | ❌ design only — PRODUCT.md |
+| Production PyPI | Public | ❌ deliberate decision: do not publish now; it is a developer-package channel, not the Windows desktop delivery route |
+| Windows Electron NSIS installer | Creatives | 🟡 local artifact builder works; unsigned + clean-machine install validation pending |
 
 ## Publish checklist (when ready)
 
@@ -92,8 +92,11 @@ this). Verifying from the checkout directory will silently use live `themes/`.
 
    Do not create a `.env` file or put the token in this repository.
 5. `python scripts/testpypi-dry-run.py --upload` → upload + fresh-venv install from TestPyPI
-6. Only then production PyPI
-7. README badge / install blurb — only after a real `pip install pdf-designer` works
+6. Decide production PyPI independently. The current decision is **do not publish**:
+   TestPyPI is the developer-package rehearsal and the Windows Electron/NSIS
+   installer is the customer install route.
+7. Add a README badge / install blurb only after a deliberate production-PyPI
+   release, not merely because the TestPyPI proof passes.
 
 ## Non-goals for packaging
 

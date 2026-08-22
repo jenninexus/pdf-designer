@@ -26,6 +26,8 @@ Setup: pip install -e .   (Playwright only -- Apache-2.0)
 """
 
 from pathlib import Path
+
+from .browser import chromium_launch_kwargs
 import sys
 
 # US Letter at 96 CSS px/in.
@@ -65,7 +67,7 @@ def render_to_png(
 
     outputs: list[Path] = []
     with sync_playwright() as pw:
-        browser = pw.chromium.launch()
+        browser = pw.chromium.launch(**chromium_launch_kwargs())
         page = browser.new_page(
             viewport={"width": _PAGE_W, "height": _PAGE_H},
             device_scale_factor=scale,

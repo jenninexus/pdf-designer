@@ -42,7 +42,7 @@ workflow that **asks before inventing gaps** — not another cloud form that own
 |---|---|---|---|
 | **Open toolkit** | Devs, agents, power users | ✅ MIT on GitHub | Free — trust + contributors |
 | **Personal protocol** | Founders using this clone privately | ✅ local root nouns + bare commands | Never sell *their* vaults |
-| **Packaged app** (future) | Job-seekers who want Canva ease without lying | ❌ not built | Paid / freemium **shell** |
+| **Packaged app** (pre-release) | Job-seekers who want Canva ease without lying | 🟡 Windows Electron/NSIS artifact builder; no public release | Paid / freemium **shell** |
 
 **Hard privacy split:** root nouns (`users/` · `vaults/` · …) ship **README + examples only**;
 real local data remains gitignored. `storage/` is retired, while the resolver keeps old URLs working.
@@ -64,19 +64,19 @@ the public GitHub pitch. Public color defaults live in-repo under `themes/`.
   [`GETTING-STARTED.md`](GETTING-STARTED.md) · [`VAULT.md`](VAULT.md) shape
 - Stranger-proof demo: `python scripts/smoke-white-label.py` + `examples/resume-studio/`
 
-## Future paid app (ideas — not commitments)
+## Windows desktop shell (pre-release; not a storefront promise)
 
 Prefer a **thin shell** over a second renderer.
 
-1. Installer that launches Design Hub on `127.0.0.1`
+1. Windows 10/11 x64 per-user Electron/NSIS installer that launches Design Hub on an ephemeral `127.0.0.1` port
 2. Guided résumé wizard — vault → skills → palette → export light+dark
 3. Job-application wizard (capture → gap-check → export) for non-agents
 4. Template / recipe gallery (collage + letter packs)
-5. Cloud-optional sync of *layouts/themes only* — never require cloud for vaults
+5. No cloud sync in this product path; vaults remain local
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│  Paid shell (future)                                     │
+│  Paid shell (pre-release)                                 │
 │  OS installer · starts pdf_tool.preview · wizard chrome  │
 └──────────────────────────┬──────────────────────────────┘
                            │ localhost HTTP
@@ -87,7 +87,7 @@ Prefer a **thin shell** over a second renderer.
 ```
 
 Packaging precursor: [`PACKAGING.md`](PACKAGING.md) (wheel must include `themes/` + `layouts/`).
-TestPyPI upload and fresh-install proof passed for `pdf-designer 0.4.0` on 2026-08-21; production PyPI remains a separate decision.
+TestPyPI upload and fresh-install proof passed for `pdf-designer 0.4.0` on 2026-08-21. We deliberately will not publish production PyPI now: it is a developer library channel, while the Windows Electron/NSIS route is the customer install path. Installer proof: [`WINDOWS-ELECTRON.md`](WINDOWS-ELECTRON.md).
 
 ## How to market it (public-safe)
 
@@ -98,8 +98,9 @@ TestPyPI upload and fresh-install proof passed for `pdf-designer 0.4.0` on 2026-
 | Paid later | Installer + guided vault/export around the **same** engine | Shell-over-Hub |
 | Never as product | Someone’s vault, job history, or private brand maps | Privacy split *is* the brand |
 
-Channels: README + Hub GIF from **`examples/` only** · PyPI when TestPyPI is green ·
-short “export + check_generation” clips. Keep personal career work and Patreon drafts out.
+Channels: README + Hub GIF from **`examples/` only** · TestPyPI only for developer
+package rehearsal (no production PyPI release) · short “export +
+check_generation” clips. Keep personal career work and Patreon drafts out.
 
 Longer SEGO channel plan: `docs/MARKETING.md` (gitignored).
 
@@ -125,4 +126,4 @@ Longer SEGO channel plan: `docs/MARKETING.md` (gitignored).
 
 ---
 
-*Last updated 2026-08-21 — core toolkit shipped; TestPyPI remains optional and the paid desktop shell is unstarted.*
+*Last updated 2026-08-21 — core toolkit shipped; production PyPI is intentionally deferred, and an unsigned Windows Electron/NSIS pre-release artifact awaits clean-machine and signing gates.*

@@ -28,6 +28,8 @@ import re
 import sys
 from pathlib import Path
 
+from .browser import chromium_launch_kwargs
+
 from . import check_palette
 
 # Windows consoles default to cp1252 and choke on → / ⭐ etc. Force UTF-8 for our output.
@@ -315,7 +317,7 @@ def check_footer_collision(path: Path):
         with tempfile.TemporaryDirectory() as td:
             out = Path(td) / "probe.pdf"
             with sync_playwright() as p:
-                b = p.chromium.launch()
+                b = p.chromium.launch(**chromium_launch_kwargs())
                 pg = b.new_page()
                 pg.goto(path.resolve().as_uri())
                 pg.evaluate("() => document.documentElement.setAttribute('data-pdf-theme','dark')")

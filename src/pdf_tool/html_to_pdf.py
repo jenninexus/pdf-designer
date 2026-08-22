@@ -33,6 +33,8 @@ _exports directory next to the source HTML. Pass an explicit output path
 import sys
 from pathlib import Path
 
+from .browser import chromium_launch_kwargs
+
 
 def _next_available_path(base: Path) -> Path:
     """Return base, or the next base-vN sibling that doesn't exist yet."""
@@ -95,7 +97,7 @@ def export_html_to_pdf(
         out_path = default_path if force else _next_available_path(default_path)
 
     with sync_playwright() as p:
-        browser = p.chromium.launch()
+        browser = p.chromium.launch(**chromium_launch_kwargs())
         page = browser.new_page()
         page.goto(html_path.as_uri())
         if pdf_theme:

@@ -100,6 +100,7 @@ codebase · `reference`: pointer to an external resource.
 | [lesson-one-checkout-privacy-is-gitignore.md](lesson-one-checkout-privacy-is-gitignore.md) | One engine; gitignore + examples; no .env; tracker is who×job not a count |
 | [lesson-platform-drafts-are-owned-by-platform.md](lesson-platform-drafts-are-owned-by-platform.md) | Release sisters live in the Socials platform's sibling `drafts/` / `published/` folders — never inside a devlog topic directory |
 | [lesson-voice-preview-never-heuristically-redacts-private-text.md](lesson-voice-preview-never-heuristically-redacts-private-text.md) | A browser card cannot prove arbitrary local voice prose public-safe — use a skeletal private card until owner approval |
+| [lesson-electron-packaged-playwright-needs-explicit-browser-path.md](lesson-electron-packaged-playwright-needs-explicit-browser-path.md) | A frozen desktop runtime must explicitly use its copied Playwright Chromium and accept the actual `chrome-win*` folder layout |
 
 ## Related
 
