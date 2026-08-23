@@ -94,7 +94,9 @@ python -m pdf_tool.html_to_pdf examples/profiles/default-resume/default-resume.h
 python -m pdf_tool.html_to_pdf examples/profiles/default-resume/default-resume.html --pdf-theme dark
 ```
 
-Exports land in `_exports/` as `<stem>-light.pdf` / `<stem>-dark.pdf` and **never overwrite** (`-v2`, `-v3`).
+Exports land in `output/` as `<stem>-light.pdf` / `<stem>-dark.pdf` (grouped by
+profile then kind when the source lives under `resumes/` / `collages/` / `examples/`)
+and **never overwrite** (`-v2`, `-v3`).
 
 Full commands → [`docs/EXPORTS.md`](docs/EXPORTS.md) · ship gate → [`docs/QA.md`](docs/QA.md).
 

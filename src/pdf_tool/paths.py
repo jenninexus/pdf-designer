@@ -103,8 +103,149 @@ def reject_flag_looking_path(path: str | None, *, flag: str = "--output-dir") ->
     if path and path.lstrip().startswith("-"):
         raise SystemExit(
             f"refusing {flag} path {path!r} — that looks like a CLI flag, not a folder.\n"
-            "Pass a real directory (for example resumes/jenni/_exports or resumes/jenni/defaults)."
+            "Pass a real directory (for example output/jenni/resumes or resumes/jenni/defaults)."
         )
+
+
+OUTPUT_KIND_RESUMES = "resumes"
+OUTPUT_KIND_COLLAGES = "collages"
+OUTPUT_KIND_EXAMPLES = "examples"
+
+# Collage *projects* are not users. Map known local sets so Jenni's renders
+# land under output/jenni/collages/ instead of a kind-only root folder.
+COLLAGE_PROJECT_USERS = {
+    "meet-jenni-bot": "jenni",
+    "agency-patreon-desks": "jenni",
+    "syn-themes": "jenni",
+    "martian-collage": "studio",
+    "martian-discord": "studio",
+}
+
+
+def output_root(*, root: Path | None = None) -> Path:
+    """Repo-root ``output/`` — generated PDFs/PNGs, never source HTML."""
+    return _root(root) / "output"
+
+
+def _strip_output_prefixes(parts: tuple[str, ...]) -> tuple[str, ...]:
+    if parts and parts[0] in {"output", "_exports"}:
+        return parts[1:]
+    return parts
+
+
+def collage_project_user(project: str) -> str | None:
+    if project in COLLAGE_PROJECT_USERS:
+        return COLLAGE_PROJECT_USERS[project]
+    low = project.lower()
+    if "jenni" in low:
+        return "jenni"
+    if "shade" in low or "synagen" in low:
+        return "shade"
+    if "martian" in low:
+        return "studio"
+    return None
+
+
+def infer_output_user_kind(
+    source: Path | str,
+    *,
+    kind: str | None = None,
+    root: Path | None = None,
+) -> tuple[str | None, str | None]:
+    """Return ``(user_or_none, kind_or_none)`` for a source file or folder."""
+    root_path = _root(root).resolve()
+    source_path = Path(source).resolve()
+    try:
+        parts = source_path.relative_to(root_path).parts
+    except ValueError:
+        return None, kind
+
+    parts = _strip_output_prefixes(parts)
+    if not parts:
+        return None, kind
+
+    first = parts[0]
+    if first == "resumes" and len(parts) >= 2:
+        return parts[1], kind or OUTPUT_KIND_RESUMES
+    if first == "collages" and len(parts) >= 2:
+        return collage_project_user(parts[1]), kind or OUTPUT_KIND_COLLAGES
+    if first == "examples":
+        return None, kind or OUTPUT_KIND_EXAMPLES
+    if first == "storage" and len(parts) >= 2:
+        second = parts[1]
+        if second == "collages" and len(parts) >= 3:
+            return collage_project_user(parts[2]), kind or OUTPUT_KIND_COLLAGES
+        if second not in _RESERVED_STORAGE:
+            return second, kind or OUTPUT_KIND_RESUMES
+    # Already-migrated output/jenni/resumes/...
+    if len(parts) >= 2 and parts[1] in {
+        OUTPUT_KIND_RESUMES,
+        OUTPUT_KIND_COLLAGES,
+        OUTPUT_KIND_EXAMPLES,
+    }:
+        return parts[0], kind or parts[1]
+    if first in {OUTPUT_KIND_RESUMES, OUTPUT_KIND_COLLAGES, OUTPUT_KIND_EXAMPLES}:
+        nested = parts[1] if len(parts) >= 2 else None
+        if first == OUTPUT_KIND_COLLAGES and nested:
+            return collage_project_user(nested), kind or first
+        return nested, kind or first
+    return None, kind
+
+
+_RESERVED_USER_DIRS = {
+    "defaults",
+    "resources",
+    "templates",
+    "_archive",
+    "_submitted",
+    "_exports",
+}
+
+
+def output_job_leaf(source: Path | str, *, root: Path | None = None) -> str | None:
+    """Per-job folder name (Netflix-App, CZI, …) when the source is not a go-to pack."""
+    root_path = _root(root).resolve()
+    source_path = Path(source).resolve()
+    try:
+        parts = list(source_path.relative_to(root_path).parts)
+    except ValueError:
+        return None
+    parts = list(_strip_output_prefixes(tuple(parts)))
+    if "_exports" in parts:
+        idx = parts.index("_exports")
+        if idx + 1 < len(parts) and parts[idx + 1] not in _RESERVED_USER_DIRS:
+            return parts[idx + 1]
+    # resumes/<user>/<App>/doc.html  (len>=4) — not a file sitting in the user folder
+    if parts[:1] == ["resumes"] and len(parts) >= 4 and parts[2] not in _RESERVED_USER_DIRS:
+        return parts[2]
+    if len(parts) >= 4 and parts[1] == OUTPUT_KIND_RESUMES and parts[2] not in _RESERVED_USER_DIRS:
+        return parts[2]
+    return None
+
+
+def default_output_dir(
+    source: Path | str,
+    *,
+    kind: str | None = None,
+    root: Path | None = None,
+    leaf: str | None = None,
+) -> Path:
+    """Where a generated PDF/PNG goes when the caller does not pass ``--output-dir``.
+
+    ``output/<user>/<kind>/`` when a profile is known, ``output/<kind>/`` when
+    only the kind is known, otherwise ``output/``. Optional ``leaf`` nests one
+    more folder (a job name, or ``<stem>-png``).
+    """
+    user, inferred_kind = infer_output_user_kind(source, kind=kind, root=root)
+    dest = output_root(root=root)
+    if user and inferred_kind:
+        dest = dest / user / inferred_kind
+    elif inferred_kind:
+        dest = dest / inferred_kind
+    job = leaf if leaf is not None else output_job_leaf(source, root=root)
+    if job:
+        dest = dest / job
+    return dest
 
 
 def _job_app_aliases(rel: str) -> tuple[str, ...] | None:

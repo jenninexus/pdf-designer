@@ -80,7 +80,7 @@ is the *print height* pattern — not the flex pin itself.
 | **Résumé / work-samples** | `height: 9.7in` + `overflow: hidden` | **bottom-RIGHT** | Page count is **fixed** — the box must hold the bottom edge. |
 | **Cover letter** | `height: auto` · `min-height: 9.5in` · **no** `overflow: hidden` | **bottom-LEFT**, `padding-top: 30px` | One page. `@page { margin }` already insets; a near-full fixed height + clip **slices the tail**. |
 
-**Reference letter (geometry / padding):** `storage/jenni/_exports/CZI/jenni-czi-letter.html` —
+**Reference letter (geometry / padding):** `resumes/jenni/CZI/jenni-czi-letter.html` —
 flex column · `.letter-main` grows · `.signoff { margin-top: auto; padding-top: 30px }`.
 
 **Machine-readable:** [`../layouts/cover-letter/one-page-letter.json`](../layouts/cover-letter/one-page-letter.json)
@@ -233,7 +233,7 @@ fully self-contained — no external image hosts:
 1. Author `<doc>.template.html` with `{{img:name}}` placeholders; keep sources in the application's
    `assets/` dir.
 2. A small Python inliner replaces each `{{img:name}}` with a base64 `data:` URI → `<doc>.html`.
-3. Export light + dark to `storage/<user>/_exports/<App>/`. **Upload the dark version** for impact;
+3. Export light + dark to `output/<user>/resumes/<App>/`. **Upload the dark version** for impact;
    keep the ATS `resume-light` as the primary Resume upload.
 
 Worked example: `storage/_job-listings/Netflix-App/jenni-netflix-genai-work-samples.template.html`.
@@ -258,7 +258,7 @@ Profile contract: `storage/profiles/jenni-resume.json → workSamples`. Asset so
 ## Auto-refresh preview
 
 The Design Hub (`python -m pdf_tool.preview`) **auto-refreshes** — no restart when you export a new
-resume or edit a source. It polls `/api/version` (a cheap tree signature over HTML sources + `_exports/`
+resume or edit a source. It polls `/api/version` (a cheap tree signature over HTML sources + `output/`
 outputs); when the signature changes the sidebar re-renders, the open preview reloads, and a small toast
 flashes (`＋1 document`). So the loop is: edit/export → the hub updates itself. Hub chrome (library
 **left** / viewer **right**, compact ~40px bar, folder ghost-★ pins) is documented in

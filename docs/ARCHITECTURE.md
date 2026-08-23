@@ -153,7 +153,7 @@ pyproject.toml                `pip install -e .` → `pdf_tool` importable from 
 - **Ask before calling something a gap.** The vault records what someone *told* you — it is not
   the limit of what they can do.
 - **No auto-submission.** The tool prepares; the human submits.
-- **Privacy split.** `storage/`, `*.pdf`, `*.png`, `_exports/`, and every non-`.example` real
+- **Privacy split.** `storage/`, `*.pdf`, `*.png`, leftover `_exports/`, and every non-`.example` real
   data file are gitignored. Never move real personal data into a tracked path.
 
 ## Planned

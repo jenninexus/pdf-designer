@@ -41,33 +41,46 @@ After `pip install -e .` you also get console scripts: `pdf-designer`,
 
 ## Default Folders
 
-If no output path is supplied, exports go under `_exports` **beside the source
-HTML**. Dual-mode default names are **`<stem>-light.pdf`** / **`<stem>-dark.pdf`**.
+If no output path is supplied, exports go under repo-root **`output/`**, grouped
+by profile then kind:
+
+| Inference | Destination |
+|---|---|
+| Known user + résumé/letter HTML | `output/<user>/resumes/` |
+| Same, plus a job folder (`<App>/` or leftover `_exports/<App>/`) | `output/<user>/resumes/<App>/` |
+| Collage project mapped to a person | `output/<user>/collages/` |
+| Collage with no profile | `output/collages/` |
+| Public `examples/` | `output/examples/` |
+| Unknown / outside the repo | `output/` |
+
+Dual-mode default names are **`<stem>-light.pdf`** / **`<stem>-dark.pdf`**.
 Re-exports never overwrite — they bump to `-v2`, `-v3`, …
 
-After the 2026-08 root-noun rearrange, pick the folder on purpose:
+Pick the folder on purpose only when the inference is wrong:
 
 | What you're exporting | Put the PDFs here | Flag |
 |---|---|---|
-| **Go-to pack** (generic résumé / cover / work-examples) | `resumes/<user>/defaults/` next to the HTML | `--output-dir resumes/<user>/defaults --force` |
-| **This job** | `resumes/<user>/_exports/<App>/` | `--output-dir resumes/<user>/_exports/<App>` |
-| Unspecified / one-off | `_exports/` beside the source HTML | (default) |
+| **Go-to pack** (generic résumé / cover / work-examples) | `output/<user>/resumes/` (HTML stays in `resumes/<user>/defaults/`) | omit `--output-dir`, or `--output-dir output/<user>/resumes --force` |
+| **This job** | `output/<user>/resumes/<App>/` | `--output-dir output/<user>/resumes/<App>` |
+| Public example / smoke | `output/examples/` | (default from `examples/…`) |
+| Unspecified / one-off | `output/` | (default) |
 
-Never write go-to PDFs to `_exports/defaults/` — the Design Hub picker reads
-`resumes/<user>/defaults/`. Vault `goToPacks.*.exportDir` must match.
+Never write go-to PDFs into `defaults/` or a retired `_exports/defaults/` folder.
+The Design Hub picker reads HTML under `resumes/<user>/defaults/`. Vault
+`goToPacks.*.exportDir` must match the PDF location (`output/<user>/resumes/`).
 
 ```text
 resumes/jenni/defaults/
   jenni-default-resume.html
-  jenni-default-resume-light.pdf
-  jenni-default-resume-dark.pdf
   jenni-default-cover-letter.html
   jenni-default-work-examples.html
-  jenni-default-work-examples-light.pdf
-  jenni-default-work-examples-dark.pdf
 
-resumes/jenni/_exports/Color-X/
-  jenni-color-x-resume-light.pdf
+output/jenni/resumes/
+  jenni-default-resume-light.pdf
+  jenni-default-resume-dark.pdf
+  jenni-default-work-examples-light.pdf
+  Netflix-App/
+    jenni-netflix-genai-resume-light.pdf
 ```
 
 Use `--output-dir <dir>` or a full output path when a project needs a specific folder.
@@ -108,8 +121,8 @@ inside `@media print`.
 
 ```powershell
 python -m pdf_tool.html_to_pdf resume.html
-python -m pdf_tool.html_to_pdf resume.html _exports/final/resume-light.pdf
-python -m pdf_tool.html_to_pdf resume.html --output-dir _exports/final
+python -m pdf_tool.html_to_pdf resume.html output/final/resume-light.pdf
+python -m pdf_tool.html_to_pdf resume.html --output-dir output/final
 ```
 
 ## Dark PDF
@@ -119,8 +132,8 @@ It keeps the same paper size and page breaks.
 
 ```powershell
 python -m pdf_tool.html_to_pdf resume.html --pdf-theme dark
-python -m pdf_tool.html_to_pdf resume.html _exports/final/resume-dark.pdf --pdf-theme dark
-python -m pdf_tool.html_to_pdf cover-letter.html --output-dir _exports/final --pdf-theme dark
+python -m pdf_tool.html_to_pdf resume.html output/final/resume-dark.pdf --pdf-theme dark
+python -m pdf_tool.html_to_pdf cover-letter.html --output-dir output/final --pdf-theme dark
 ```
 
 ## Combined Upload PDF
@@ -129,8 +142,8 @@ Use this when a job portal accepts only one file. Put the cover letter first,
 then the resume. Use `--require-letter` for application bundles.
 
 ```powershell
-python -m pdf_tool.merge_pdfs _exports/final/application.pdf _exports/final/cover-letter.pdf _exports/final/resume.pdf --require-letter
-python -m pdf_tool.merge_pdfs _exports/final/application-dark.pdf _exports/final/cover-letter-dark.pdf _exports/final/resume-dark.pdf --require-letter
+python -m pdf_tool.merge_pdfs output/final/application.pdf output/final/cover-letter.pdf output/final/resume.pdf --require-letter
+python -m pdf_tool.merge_pdfs output/final/application-dark.pdf output/final/cover-letter-dark.pdf output/final/resume-dark.pdf --require-letter
 ```
 
 ## PNG Preview
@@ -143,7 +156,7 @@ engine, so the image is exact.
 
 ```powershell
 python -m pdf_tool.pdf_to_png resume.html
-python -m pdf_tool.pdf_to_png resume.html _exports/preview --pdf-theme dark --scale 2
+python -m pdf_tool.pdf_to_png resume.html output/preview --pdf-theme dark --scale 2
 ```
 
 > **Why HTML and not the PDF?** It used to rasterize the exported PDF with **PyMuPDF — which is
@@ -266,16 +279,16 @@ Exporting is not finishing. Run the guards, assert the page count, and *look at 
 ```bash
 # 1) OVERFLOW GUARD — every doc, always. A page that overflows its box makes the
 #    pinned footer collide with the last lines. Also auto-warns on every export.
-python -m pdf_tool.check_overflow _exports/../resume.html --pdf-theme dark
+python -m pdf_tool.check_overflow resume.html --pdf-theme dark
 
 # 2) MAGENTA guard — Shade + Martian docs only (Jenni's brand legitimately uses pink)
 python -m pdf_tool.check_palette --no-magenta resume.html
 
 # 3) page count + paper size from the ACTUAL PDF (ground truth, never an HTML re-render)
-python -c "from pypdf import PdfReader; r=PdfReader('_exports/resume-light.pdf'); b=r.pages[0].mediabox; print(len(r.pages),'pages', f'{float(b.width)/72:.2f}x{float(b.height)/72:.2f}in')"
+python -c "from pypdf import PdfReader; r=PdfReader('output/resume-light.pdf'); b=r.pages[0].mediabox; print(len(r.pages),'pages', f'{float(b.width)/72:.2f}x{float(b.height)/72:.2f}in')"
 
 # 4) eyeball it
-python -m pdf_tool.pdf_to_png _exports/resume-light.pdf
+python -m pdf_tool.pdf_to_png resume.html
 ```
 
 A two-page resume that silently became three pages is the single most common

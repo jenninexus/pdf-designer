@@ -7,7 +7,7 @@ or a neon color painted over a photo. Composes the existing single-purpose guard
 
     python -m pdf_tool.check_generation <doc>.html                  # auto-detect user from filename/content
     python -m pdf_tool.check_generation <doc>.html --user shade     # force per-user rules (no-magenta)
-    python -m pdf_tool.check_generation --scan storage/shade/defaults  # sweep a dir of .html
+    python -m pdf_tool.check_generation --scan resumes/jenni/defaults  # sweep a dir of .html
     python -m pdf_tool.check_generation <doc>.html --json           # machine-readable
 
 Exit 0 = all checks pass. Exit 1 = one or more FAIL. Exit 2 = bad usage / file not found.

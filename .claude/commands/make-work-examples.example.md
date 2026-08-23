@@ -25,7 +25,7 @@ see `.memory/lesson-work-samples-footer-row-false-collision.md`).
 - Work-examples must stay **≤5 MB** (Indeed-class additional-documents cap):
   `python -m pdf_tool.inline_images <tpl>.html <out>.html --board name=path …`
   then `python -m pdf_tool.html_to_pdf … --max-mb 5`
-- Export go-to packs under `resumes/<user>/defaults/`; per-job under `resumes/<user>/_exports/<Job>/`
+- Export go-to packs under `resumes/<user>/defaults/`; per-job under `output/<user>/resumes/<Job>/`
 
 ### Checklist
 

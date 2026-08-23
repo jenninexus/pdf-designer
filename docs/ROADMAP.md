@@ -30,6 +30,7 @@
 - [x] **Clone-safe Resume Studio walkthrough** + smoke / wheel gates
 - [x] **Commands privacy** — `*.example.md` only on GitHub
 - [x] **Hub drawer / layouts / letterhead** (2026-08-10)
+- [x] **Repo-root `output/<user>/<kind>/`** (2026-08-22) — generated PDFs/PNGs; HTML stays in `resumes/` · `collages/`; `storage/` leftover is not the SSOT; `_exports/` retired
 
 ### Parked
 

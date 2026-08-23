@@ -126,7 +126,7 @@ def main(argv):
             targets += [
                 f
                 for f in p.rglob("*")
-                if f.suffix.lower() in (".html", ".css", ".json") and "_exports" not in f.parts
+                if f.suffix.lower() in (".html", ".css", ".json") and "_exports" not in f.parts and "output" not in f.parts
             ]
         else:
             targets.append(p)

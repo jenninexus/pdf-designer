@@ -44,8 +44,8 @@ liked is never a one-off. Pair it with --best-for "<when to use it>".
 --archive <id> retires a recipe to layouts/collage/_archive/ — it leaves the
 listing but the file survives. Archive color-only duplicates: a background
 composes at render time via --bg, so it is a flag, not a layout.
---shelve copies this run's PNGs to collages/layouts/ (or storage/collages/layouts/
-during cutover), prefixed by
+--shelve copies this run's PNGs to output/<user>/collages/ (or output/collages/
+when the project has no profile), prefixed by
 project, replacing copying finished renders around by hand.
 
 --bg sets the page background instead of the theme's flat color. It takes a
@@ -721,7 +721,9 @@ def generate(images_dir, canvas_name=None, layout=None, hero=None, title=None,
         if not png:
             print("\nWARNING: --shelve had nothing to copy: add --png to render images first.")
         else:
-            shelf = project_dir.parent / "layouts"
+            from .paths import default_output_dir
+
+            shelf = default_output_dir(project_dir, kind="collages")
             copied = shelve_renders(out, project_dir.name, shelf)
             print(f"\nShelved {len(copied)} render(s) to {shelf}")
 

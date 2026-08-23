@@ -34,7 +34,7 @@ WHAT IT ASSERTS
 Usage:
     python -m pdf_tool.check_pagefit <doc>.pdf
     python -m pdf_tool.check_pagefit <doc>.pdf --expect 1
-    python -m pdf_tool.check_pagefit storage/<user>/_exports/<App>/*.pdf
+    python -m pdf_tool.check_pagefit output/<user>/resumes/<App>/*.pdf
 
 Exit codes:
   0  PASS

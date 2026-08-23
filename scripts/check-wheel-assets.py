@@ -74,6 +74,7 @@ def main() -> int:
         for name in names
         if (
             "/_exports/" in name
+            or "/output/" in name
             or "/_variants/" in name
             or (
                 name.startswith("pdf_tool/share/")

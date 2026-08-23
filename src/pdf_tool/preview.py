@@ -47,6 +47,7 @@ _REPO_ROOT = repo_root()
 _STATIC_DIR = Path(__file__).resolve().parent / "static"
 EXCLUDE_PARTS = {
     "_exports",
+    "output",
     "_archive",
     "node_modules",
     ".git",
@@ -310,15 +311,15 @@ def resolve_preview_file(root: Path, rel: str) -> Path | None:
 
 
 # File suffixes the auto-refresh watcher tracks. HTML sources change the doc
-# list; PDFs/PNGs land in _exports/ when a resume is exported and are what the
+# list; PDFs/PNGs land in output/ when a resume is exported and are what the
 # "refresh when I output a new resume" feature keys on.
 _WATCH_SUFFIXES = {".html", ".json", ".pdf", ".png", ".jpg", ".jpeg", ".webp"}
-# _exports is excluded from the DOC scan but MUST be watched for new outputs.
-_WATCH_EXCLUDE = EXCLUDE_PARTS - {"_exports"}
+# output/ and leftover _exports/ are excluded from the DOC scan but MUST be watched.
+_WATCH_EXCLUDE = EXCLUDE_PARTS - {"_exports", "output"}
 
 
 def tree_signature(root: Path) -> str:
-    """Cheap change token over the doc tree + _exports outputs.
+    """Cheap change token over the doc tree + output/ artifacts.
 
     Returns a string that changes whenever a watched file is added, removed, or
     modified — the client polls /api/version and refreshes when it changes.
@@ -335,7 +336,7 @@ def tree_signature(root: Path) -> str:
             rel_parts = p.relative_to(root).parts
         except ValueError:
             continue
-        # Watch _exports even though scan_documents excludes them.
+        # Watch output/ (and leftover _exports/) even though scan_documents excludes them.
         if _WATCH_EXCLUDE.intersection(rel_parts):
             continue
         if any(part.endswith(".egg-info") for part in rel_parts):
@@ -475,7 +476,7 @@ APP_HTML = """<!doctype html>
       </summary>
       <div class="hub-more-panel">
         <label>Output folder
-          <input id="outdir" type="text" placeholder="_exports next to doc">
+          <input id="outdir" type="text" placeholder="output/<user>/<kind> (default)">
         </label>
       </div>
     </details>
@@ -553,7 +554,7 @@ APP_HTML = """<!doctype html>
       </div>
       <div class="hub-drawer-field">
         <label for="outdirDrawer">Output folder</label>
-        <input id="outdirDrawer" type="text" placeholder="_exports next to doc">
+        <input id="outdirDrawer" type="text" placeholder="output/<user>/<kind> (default)">
       </div>
     </div>
   </div>
@@ -1560,7 +1561,7 @@ def make_handler(root: Path, docs: list[dict], palettes: list[dict]):
             if path == "/api/version":
                 # Auto-refresh poll: current tree signature + a fresh doc list.
                 # Re-scanning docs here keeps the sidebar live when HTML sources
-                # or _exports outputs change, without restarting the server.
+                # or output/ (leftover _exports) change, without restarting the server.
                 sig = tree_signature(root)
                 current_docs = scan_documents(root)
                 payload = {

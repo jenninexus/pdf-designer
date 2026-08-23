@@ -71,7 +71,10 @@ docs/WORKSPACE.md
 docs/HISTORY-SCRUB.md
 # Internal operating records: retain locally, never add to the public product.
 AGENTS.md
-.memory/
+# Lessons travel with the clone (README + lesson-*.md). Other .memory/ notes stay local.
+.memory/*
+!.memory/README.md
+!.memory/lesson-*.md
 Plans/
 docs/APPLICATIONS.md
 docs/JOB-ASSESSMENT.md
@@ -125,11 +128,13 @@ job-listing-capture-*.md
 *.jpeg
 *.webp
 *.gif
-output/
-# CLI mishap: pdf_to_png treats a leftover flag as a positional out-dir
---output-dir/
+output/*
+!output/README.md
+# Retired alias (2026-08-22). Live generated files are output/<user>/<kind>/.
 _exports/
 **/_exports/
+# CLI mishap: pdf_to_png treats a leftover flag as a positional out-dir
+--output-dir/
 _variants/
 **/_variants/
 

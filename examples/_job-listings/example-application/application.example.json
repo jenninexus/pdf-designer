@@ -65,8 +65,8 @@
       "user": "yourname",
       "resume": "yourname-company-track-resume.html",
       "coverLetter": "yourname-company-track-cover-letter.html",
-      "exports": "../../yourname/_exports/<Track>/",
-      "bundle": "../../yourname/_exports/<Track>/FINAL-Your-Name-<Role>-Cover-Letter-and-Resume.pdf",
+      "exports": "../../../output/yourname/resumes/<Track>/",
+      "bundle": "../../../output/yourname/resumes/<Track>/FINAL-Your-Name-<Role>-Cover-Letter-and-Resume.pdf",
       "accentRun": "warm"
     }
   ],
