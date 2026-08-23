@@ -22,7 +22,7 @@ short and public-facing; **public product detail lives here**.
 | [`WORKSPACE-LAYOUT.md`](WORKSPACE-LAYOUT.md) | ⭐ Target root folders (`users/` · `vaults/` · …) for the free product |
 | [`PRODUCT.md`](PRODUCT.md) | ⭐ Business / product direction — résumé creator for a broken job market |
 | [`GETTING-STARTED.md`](GETTING-STARTED.md) | ⭐ Clone path without vaults |
-| [`PUBLIC-RELEASE-AUDIT.md`](PUBLIC-RELEASE-AUDIT.md) | What may ship in a future public release |
+| [`PUBLIC-RELEASE-AUDIT.md`](PUBLIC-RELEASE-AUDIT.md) | Free GitHub product vs local vs paid; clone-safety on public `main` |
 | [`../examples/resume-studio/`](../examples/resume-studio/) | Public product front door |
 | [`pdf-designer-overview.html`](pdf-designer-overview.html) · [`PDF`](pdf-designer-overview.pdf) | Browser-openable product overview + PDF rendered by this engine |
 | [`images/README.md`](images/README.md) | Current public-only Hub screenshot set; prior captures are dated archives |
