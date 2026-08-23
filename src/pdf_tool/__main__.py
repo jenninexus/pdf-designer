@@ -7,7 +7,8 @@ import sys
 from . import __version__
 
 _COMMANDS: tuple[tuple[str, str], ...] = (
-    ("html_to_pdf", "HTML -> PDF (light/dark; optional --variants)"),
+    ("html_to_pdf", "HTML -> PDF (light/dark; optional --variants / --max-mb 5)"),
+    ("inline_images", "Inline {{img:name}} placeholders (--board = JPEG ≤960px)"),
     ("variants", "Light PDF per public palette -> _variants/"),
     ("merge_pdfs", "Merge PDFs into one bundle"),
     ("pdf_to_png", "Screenshot each .page for visual verify"),

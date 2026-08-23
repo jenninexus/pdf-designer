@@ -21,7 +21,9 @@
  *                        Menu is position:fixed (JS top/left) so hub-bar-scroll overflow
  *                        does not clip it — same class of bug as hub-more before the pin move.
  *     .hub-group       — semantic group with 1px dividers.
- *   .hub-main          — library LEFT column + stage RIGHT (side-by-side from ≥576px).
+ *   .hub-main          — library LEFT column + viewer RIGHT (side-by-side from ≥576px).
+ *                        Library width is a persisted sash (--hub-library-w), Dockview-inspired
+ *                        but not Dockview. Phones stack; the sash hides ≤575.98.
  *   .hub-drawer        — offcanvas-end panel (Bungie-style, MG/JN pattern).
  *                        Holds everything that loses its label at narrow widths:
  *                        navlinks, kind chips, folder/person/palette/fmt selects,
@@ -95,6 +97,9 @@
   --hub-drawer-w: 320px;
   --hub-drawer-min: 280px;
   --hub-drawer-max: 560px;
+  --hub-library-w: 300px;
+  --hub-library-min: 200px;
+  --hub-library-max: 480px;
   --hub-divider: 1px solid rgba(255, 255, 255, 0.06);
 
   /* Scrollbar tints (used by .hub-bar horizontal AND all vertical panes) */
@@ -1081,13 +1086,14 @@ html.drawer-resizing, html.drawer-resizing * { cursor: ew-resize !important; use
 .hub-main {
   flex: 1 1 auto;
   display: grid;
-  grid-template-columns: minmax(240px, 300px) minmax(0, 1fr);
+  grid-template-columns: clamp(var(--hub-library-min), var(--hub-library-w), var(--hub-library-max)) minmax(0, 1fr);
   min-height: 0;
   height: 100%;
   overflow: hidden;
 }
 
 .library {
+  position: relative;
   display: flex;
   flex-direction: column;
   min-height: 0;
@@ -1098,6 +1104,33 @@ html.drawer-resizing, html.drawer-resizing * { cursor: ew-resize !important; use
   background: rgba(17, 20, 27, 0.55);
   backdrop-filter: blur(10px);
 }
+
+.library-resize {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  bottom: 0;
+  right: -7px;
+  width: 14px;
+  cursor: ew-resize;
+  touch-action: none;
+}
+.library-resize::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 5px;
+  width: 3px;
+  height: 42px;
+  transform: translateY(-50%);
+  border-radius: 999px;
+  background: var(--dash-accent);
+  box-shadow: 0 0 12px rgba(66, 244, 200, 0.5);
+  opacity: 0.55;
+}
+.library-resize:hover::after,
+.library-resize:focus-visible::after { opacity: 1; }
+.library-resize:focus-visible { outline: 2px solid var(--dash-accent); outline-offset: 2px; }
 
 .library-head {
   padding: 8px 12px;
@@ -1508,12 +1541,35 @@ code.path-mini, code.cmd {
   color: var(--dash-accent);
   font: 0.76rem/1.5 var(--dash-mono);
 }
-.wizard-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+.wizard-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 18px;
+}
+.wizard-actions label {
+  color: var(--dash-text-dim);
+  font-size: var(--dash-fs-xs);
+  font-weight: 600;
+}
+.wizard-actions input {
+  min-width: min(100%, 220px);
+  min-height: 36px;
+  padding: 6px 10px;
+  border: 1px solid var(--dash-card-border);
+  border-radius: 6px;
+  background: var(--dash-bg);
+  color: var(--dash-text);
+  font: var(--dash-fs-xs) var(--dash-body);
+}
 .wizard-actions a, .wizard-actions button {
   display: inline-flex;
   align-items: center;
-  min-height: 30px;
-  padding: 5px 10px;
+  justify-content: center;
+  min-height: 36px;
+  padding: 6px 12px;
   border: 1px solid var(--dash-card-border);
   border-radius: 6px;
   background: var(--dash-bg-2);
@@ -1524,6 +1580,125 @@ code.path-mini, code.cmd {
 }
 .wizard-actions .primary { background: var(--hub-grad); border-color: transparent; color: #0a1210; }
 .wizard-actions a:hover, .wizard-actions button:hover { border-color: var(--dash-accent); }
+.wizard-actions a:focus-visible,
+.wizard-actions button:focus-visible,
+.wizard-actions input:focus-visible {
+  outline: 2px solid var(--dash-accent);
+  outline-offset: 2px;
+}
+
+/* Dark-default Start route: an intentionally composed local onboarding surface,
+   while document palettes remain isolated in the preview/export layer. */
+body.wizard-page {
+  background:
+    radial-gradient(ellipse 72% 40% at 8% -8%, rgba(66, 244, 200, 0.12), transparent 54%),
+    radial-gradient(ellipse 56% 38% at 96% 8%, rgba(139, 92, 246, 0.15), transparent 56%),
+    var(--dash-bg);
+}
+.wizard-shell { max-width: 1060px; padding-top: 28px; }
+.wizard-hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(270px, 0.8fr);
+  gap: clamp(24px, 5vw, 72px);
+  align-items: end;
+  overflow: hidden;
+  margin-bottom: 22px;
+  padding: clamp(24px, 5vw, 52px);
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 20px;
+  background:
+    linear-gradient(115deg, rgba(255, 255, 255, 0.085), rgba(255, 255, 255, 0.025)),
+    rgba(13, 15, 20, 0.78);
+  box-shadow: 0 24px 72px rgba(0, 0, 0, 0.28);
+  isolation: isolate;
+}
+.wizard-hero::after {
+  position: absolute;
+  z-index: -1;
+  width: 260px;
+  height: 260px;
+  right: -112px;
+  bottom: -164px;
+  border-radius: 50%;
+  background: rgba(66, 244, 200, 0.18);
+  content: "";
+}
+.wizard-eyebrow, .wizard-kicker, .wizard-step-index {
+  margin: 0;
+  color: var(--dash-accent);
+  font: 700 var(--dash-fs-xs)/1.2 var(--dash-heading);
+  letter-spacing: 0.14em;
+}
+.wizard-hero h1 {
+  max-width: 13ch;
+  margin: 10px 0 12px;
+  color: var(--dash-text-bright);
+  font-size: clamp(2rem, 5vw, 3.85rem);
+  line-height: 0.98;
+  letter-spacing: -0.055em;
+}
+.wizard-hero .hub-page-lead { max-width: 60ch; margin: 0; font-size: clamp(0.92rem, 1.6vw, 1.04rem); }
+.wizard-promises { display: grid; gap: 9px; margin: 0; }
+.wizard-promises div { padding: 11px 0 11px 14px; border-left: 2px solid rgba(66, 244, 200, 0.55); background: linear-gradient(90deg, rgba(66, 244, 200, 0.08), transparent 84%); }
+.wizard-promises div:nth-child(2) { border-color: rgba(139, 92, 246, 0.75); background: linear-gradient(90deg, rgba(139, 92, 246, 0.08), transparent 84%); }
+.wizard-promises div:nth-child(3) { border-color: rgba(255, 107, 154, 0.72); background: linear-gradient(90deg, rgba(255, 107, 154, 0.08), transparent 84%); }
+.wizard-promises dt { color: var(--dash-text-bright); font: 700 var(--dash-fs-xs) var(--dash-heading); letter-spacing: 0.1em; text-transform: uppercase; }
+.wizard-promises dd { margin: 2px 0 0; color: var(--dash-text-dim); font-size: var(--dash-fs-sm); }
+.wizard-progress {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0;
+}
+.wizard-progress li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 8px 10px;
+  border-radius: var(--dash-radius-sm);
+  background: rgba(255, 255, 255, 0.025);
+  font: 700 var(--dash-fs-xs) var(--dash-heading);
+  letter-spacing: 0.04em;
+  transition: border-color var(--motion), background var(--motion), color var(--motion), transform var(--motion);
+}
+.wizard-progress li.on { border-color: rgba(66, 244, 200, 0.38); color: var(--dash-text); }
+.wizard-progress li[aria-current="step"] { border-color: rgba(66, 244, 200, 0.75); background: linear-gradient(115deg, rgba(66, 244, 200, 0.2), rgba(139, 92, 246, 0.13)); box-shadow: var(--hub-glow); color: var(--dash-text-bright); transform: translateY(-2px); }
+.wizard-progress-number { color: var(--dash-accent); font-family: var(--dash-mono); }
+.wizard-progress-copy { margin: 9px 0 22px; color: var(--dash-text-dim); font-size: var(--dash-fs-xs); }
+.wizard-voice, .wizard-step {
+  max-width: 830px;
+  padding: clamp(19px, 3vw, 30px);
+  border-radius: 16px;
+  background: linear-gradient(140deg, rgba(255, 255, 255, 0.065), rgba(255, 255, 255, 0.025));
+  box-shadow: 0 14px 42px rgba(0, 0, 0, 0.18);
+  backdrop-filter: blur(var(--dash-glass-blur));
+}
+.wizard-voice { margin: 0 0 14px; }
+.wizard-section-meta { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.wizard-status { padding: 4px 7px; border: 1px solid rgba(139, 92, 246, 0.45); border-radius: 999px; color: #cbbdff; font: 700 var(--dash-fs-2xs) var(--dash-heading); letter-spacing: 0.1em; }
+.wizard-voice h2, .wizard-step h2 { margin: 8px 0; color: var(--dash-text-bright); font-size: clamp(1.18rem, 2.5vw, 1.48rem); letter-spacing: -0.025em; }
+.wizard-voice p, .wizard-step p { color: var(--dash-text-dim); }
+.wizard-step.on { animation: wizard-arrive 220ms ease-out both; }
+.wizard-step-heading { display: grid; gap: 2px; }
+.wizard-step-index { color: var(--dash-accent-2); }
+.wizard-callout { margin: 18px 0; padding: 13px 15px; background: linear-gradient(90deg, rgba(139, 92, 246, 0.15), rgba(139, 92, 246, 0.025)); color: var(--dash-text-dim); }
+.wizard-path { margin: 14px 0; padding: 12px 14px; border-color: rgba(66, 244, 200, 0.2); background: rgba(0, 0, 0, 0.3); font: 0.76rem/1.6 var(--dash-mono); }
+.wizard-voice-card { max-height: 220px; margin-bottom: 0; color: #cbbdff; }
+.wizard-voice-actions { margin-top: 16px; }
+.wizard-voice-actions label { display: block; margin-bottom: 6px; color: var(--dash-text); font: 700 var(--dash-fs-xs) var(--dash-heading); letter-spacing: 0.04em; }
+.wizard-voice-actions label span { color: var(--dash-text-dim); font-weight: 400; }
+.wizard-field-row { display: flex; gap: 8px; }
+.wizard-field-row input { min-width: 0; flex: 1 1 280px; min-height: 38px; padding: 7px 11px; border: 1px solid var(--dash-card-border); border-radius: 7px; outline: none; background: rgba(0, 0, 0, 0.22); color: var(--dash-text); font: var(--dash-fs-sm) var(--dash-body); }
+.wizard-field-row input:focus { border-color: var(--dash-accent); box-shadow: 0 0 0 3px rgba(66, 244, 200, 0.12); }
+.wizard-actions { justify-content: center; gap: 8px; margin-top: 20px; }
+.wizard-actions a, .wizard-actions button, .wizard-field-row button { min-height: 36px; padding: 7px 11px; border-radius: 7px; background: rgba(17, 20, 27, 0.88); font: 700 var(--dash-fs-xs) var(--dash-body); letter-spacing: 0.01em; transition: border-color var(--motion), background var(--motion), transform var(--motion); }
+.wizard-actions .primary { border-color: transparent; background: var(--hub-grad); }
+.wizard-actions a:hover, .wizard-actions button:hover, .wizard-field-row button:hover { border-color: var(--dash-accent); transform: translateY(-1px); }
+.wizard-actions .primary:hover { border-color: transparent; box-shadow: var(--hub-glow); }
+.wizard-field-row button:focus-visible { outline: 2px solid var(--dash-accent); outline-offset: 2px; }
+@keyframes wizard-arrive { from { opacity: 0; transform: translateY(7px); } to { opacity: 1; transform: translateY(0); } }
 
 /* ════════════════════════════════════════════════════════════
    BREAKPOINT CASCADE
@@ -1533,7 +1708,6 @@ code.path-mini, code.cmd {
 
 /* ── xxl (≥1400) — widescreen ────────────────────────────── */
 @media (min-width: 1400px) {
-  .hub-main { grid-template-columns: minmax(300px, 340px) minmax(0, 1fr); }
   .hub-search input { width: 160px; }
   .hub-search input:focus { width: 200px; }
   .hub-folder-trigger { max-width: 180px; }
@@ -1543,7 +1717,6 @@ code.path-mini, code.cmd {
 
 /* ── hd (≥1920) — display refs (2k/4k caps) ─────────────── */
 @media (min-width: 1920px) {
-  .hub-main { grid-template-columns: 360px minmax(0, 1fr); }
   .hub-search input { width: 200px; }
   .hub-search input:focus { width: 240px; }
   .hub-folder-trigger { max-width: 220px; }
@@ -1554,7 +1727,6 @@ code.path-mini, code.cmd {
 
 /* ── xl (≥1200) — comfortable ───────────────────────────── */
 @media (min-width: 1200px) {
-  .hub-main { grid-template-columns: minmax(280px, 320px) minmax(0, 1fr); }
   .hub-search input { width: 140px; }
   .hub-search input:focus { width: 180px; }
   .hub-folder-trigger { max-width: 160px; }
@@ -1566,7 +1738,6 @@ code.path-mini, code.cmd {
    Side-by-side stays on (yesterday's "great" desktop look). Drawer still
    at ≤767.98. Only phones stack. */
 @media (max-width: 991.98px) {
-  .hub-main { grid-template-columns: minmax(220px, 260px) minmax(0, 1fr); }
   .hub-search input { width: 110px; }
   .hub-search input:focus { width: 140px; }
   .hub-folder-trigger { max-width: 130px; min-width: 96px; }
@@ -1605,8 +1776,6 @@ code.path-mini, code.cmd {
 
   .hub-bar .hub-group.spacer { display: none; }
 
-  .hub-main { grid-template-columns: minmax(180px, 220px) minmax(0, 1fr); }
-
   .hub-page-wrap { padding: 12px 12px 36px; }
   .hub-page-wrap h1 { font-size: 1.18rem; }
   .hub-page-wrap table { min-width: 420px; font-size: 0.84rem; }
@@ -1627,9 +1796,14 @@ code.path-mini, code.cmd {
     border-right: 0;
     border-bottom: 1px solid var(--dash-card-border);
   }
+  .library-resize { display: none; }
   .hub-page-wrap { padding: 12px 10px 36px; }
   .hub-page-wrap h1 { font-size: 1.12rem; }
   .hub-page-lead { font-size: 0.88rem; margin-bottom: 16px; }
+  .wizard-actions { gap: 10px; }
+  .wizard-actions label { flex-basis: 100%; text-align: center; }
+  .wizard-actions input { flex: 1 1 100%; min-height: 40px; }
+  .wizard-actions a, .wizard-actions button { flex: 1 1 100%; min-height: 40px; }
   /* Discovery controls are easier to scan as a centred, shared mobile set. */
   .hub-drawer-section > .hub-drawer-label { align-self: center; }
   .hub-page-wrap .hub-chips { justify-content: center; }
@@ -1637,6 +1811,15 @@ code.path-mini, code.cmd {
   .hub-drawer .hub-nav .hub-link { font-size: 0.78rem; padding-inline: 5px; }
   .hub-drawer .chips { grid-template-columns: repeat(auto-fit, minmax(112px, 1fr)); gap: 5px; }
   .hub-drawer .chip { font-size: 0.72rem; padding-inline: 6px; }
+  .wizard-shell { padding-top: 16px; }
+  .wizard-hero { grid-template-columns: 1fr; gap: 22px; padding: 24px 20px; border-radius: 16px; }
+  .wizard-hero h1 { max-width: 11ch; font-size: clamp(2.25rem, 13vw, 3.25rem); }
+  .wizard-progress { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .wizard-progress li { min-height: 44px; }
+  .wizard-voice, .wizard-step { padding: 19px 16px; border-radius: 12px; }
+  .wizard-field-row { flex-direction: column; }
+  .wizard-field-row input { width: 100%; flex: 0 0 auto; min-height: 40px; }
+  .wizard-field-row button { width: 100%; min-height: 40px; }
 }
 
 /* ── xxs (<390) — sub-iPhone-14 floor, horizontal scroll lives ── */

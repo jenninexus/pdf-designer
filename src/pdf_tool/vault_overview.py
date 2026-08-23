@@ -62,6 +62,19 @@ def _board_skills(vault: dict) -> dict:
     }
 
 
+def _software(vault: dict) -> dict:
+    sw = vault.get("software") or {}
+    programs = sw.get("programs") or []
+    return {
+        "note": (sw.get("_note") or "")[:320],
+        "programs": [
+            {"name": p.get("name"), "group": p.get("group"), "skillId": p.get("skillId")}
+            for p in programs
+            if isinstance(p, dict) and p.get("name")
+        ],
+    }
+
+
 def _go_to_packs(vault: dict, root: Path) -> list[dict]:
     packs = vault.get("goToPacks") or {}
     out = []
@@ -143,6 +156,7 @@ def _enrich_user(root: Path, user_file: Path) -> dict | None:
         **card,
         "tracks": _track_summaries(vault) if vault else [],
         "boardSkills": _board_skills(vault) if vault else {"tags": []},
+        "software": _software(vault) if vault else {"programs": []},
         "goToPacks": _go_to_packs(vault, root) if vault else [],
         "vaultFile": _rel(root, vfile) if vfile.is_file() else None,
         "example": _is_example_id(uid),

@@ -146,7 +146,8 @@ The person filter is library-only — it does **not** auto-select a palette. Ful
 
 | Module | One-liner |
 |---|---|
-| `html_to_pdf` | Render HTML → print-perfect PDF (light/dark; optional `--variants`) |
+| `html_to_pdf` | Render HTML → print-perfect PDF (light/dark; optional `--variants` / `--max-mb 5`) |
+| `inline_images` | Inline `{{img:name}}` placeholders (`--board` = JPEG ≤960px for 5 MB caps) |
 | `variants` | Light PDF per public palette → `_variants/<stem>/` |
 | `merge_pdfs` | Bundle PDFs; optional US Letter size check |
 | `pdf_to_png` | Screenshot each `.page` (agent visual verify) |

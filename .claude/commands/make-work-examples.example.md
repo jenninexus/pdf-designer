@@ -19,10 +19,13 @@ see `.memory/lesson-work-samples-footer-row-false-collision.md`).
 ### Rules
 
 - Source-backed only — every sample claim must exist in the vault
-- Respect `storage/profiles/<user>-resume.json#exports.exportPrefs` and `workSamples`
+- Respect `profiles/<user>-resume.json#exports.exportPrefs` and `workSamples`
 - Dual mode (light + dark) when prefs say so
 - `python -m pdf_tool.check_generation <doc>.html` before ship
-- Export under `storage/<user>/_exports/<Job>/` (or profile `goToPacks.exportDir`)
+- Work-examples must stay **≤5 MB** (Indeed-class additional-documents cap):
+  `python -m pdf_tool.inline_images <tpl>.html <out>.html --board name=path …`
+  then `python -m pdf_tool.html_to_pdf … --max-mb 5`
+- Export go-to packs under `resumes/<user>/defaults/`; per-job under `resumes/<user>/_exports/<Job>/`
 
 ### Checklist
 
