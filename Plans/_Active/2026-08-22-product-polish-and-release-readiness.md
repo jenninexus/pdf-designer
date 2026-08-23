@@ -71,6 +71,8 @@ linked repository remains owner of its own implementation.
       ignored private workspace data, credentials, Electron runtime, or installer artifacts.
 - [ ] Inspect the LIVPHI mirror and record its suitable role: source/docs mirror only, not proof of the
       clean-machine release gate until its preflight is explicitly passed.
+- [x] BEETHOVEN `C:\p\pdf-designer` fast-forwarded to GitHub `829e0ca` (2026-08-22). Source/docs only —
+      not a clean-machine proof host (Python/Node + checkout present).
 - [x] Carry forward the only release blockers: clean Windows 10/11 x64 install/GUI/process-cleanup test,
       signing decision, and human-owned PayPal production/fulfilment policy.
 
@@ -98,6 +100,11 @@ linked repository remains owner of its own implementation.
   unrelated non-admin shares are currently readable. Its administrative share denied access, WinRM is not
   trusted, and SSH has no approved non-interactive credential. Do not relax those controls merely to copy
   this repo; wait for an approved authenticated share or remote account that maps to `C:\Github`.
+- VERIFIED — 2026-08-22 SEGO→GitHub `829e0ca`, then BEETHOVEN `C:\p\pdf-designer` reset onto `origin/main`
+  (history-scrub divergence; working tree was otherwise clean). BEE now has current source. BEE is **not**
+  a clean-machine installer target: Python/Node are present and `C:\p\pdf-designer` is a checkout.
+  `scripts/verify-clean-machine.ps1` will refuse that host. Use a separate Windows 10/11 x64 box (or a
+  fresh Windows user/VM with no Python/Node/checkout) for GUI/install/process-cleanup proof.
 - VERIFIED — rechecked through sys-admin after the access request: the cached registry's passwordless
   `LIVPHI\\pcnet` SMB route cannot open the advertised `git` share, and its named `Synabrain`, `Synagen`,
   and `pc-network` shares are absent. SSH with the configured `Shade` key times out; WinRM rejects the
