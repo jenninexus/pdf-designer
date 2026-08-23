@@ -59,8 +59,8 @@
     "footer": "Footer/signature pins to the bottom via .page-sig / .letter-sign / .page-foot (margin-top:auto). The equal @page margin frames all four edges."
   },
   "paths": {
-    "defaultExportDir": "_exports",
-    "note": "html_to_pdf.py writes here by default when no explicit output PDF is passed; use --output-dir or a full output path to override."
+    "defaultExportDir": "output/examples",
+    "note": "html_to_pdf.py writes under repo-root output/ (grouped by user/kind) when no explicit output PDF is passed; use --output-dir or a full output path to override. Public examples land in output/examples/."
   },
   "exportModes": {
     "lightPdf": "Default ATS-safe print mode — ALWAYS ship for every profile; board upload file.",

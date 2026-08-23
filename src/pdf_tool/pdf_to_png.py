@@ -58,10 +58,12 @@ def render_to_png(
             f"Try:  python -m pdf_tool.pdf_to_png {src.with_suffix('.html').name}\n"
         )
 
+    from .paths import default_output_dir
+
     out_dir = (
         Path(output_dir).resolve()
         if output_dir
-        else src.parent / "_exports" / f"{src.stem}-png"
+        else default_output_dir(src, leaf=f"{src.stem}-png")
     )
     out_dir.mkdir(parents=True, exist_ok=True)
 

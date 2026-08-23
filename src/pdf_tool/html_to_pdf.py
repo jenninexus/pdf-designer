@@ -14,7 +14,7 @@ One-time setup (not run automatically by this module):
 Usage:
     python -m pdf_tool.html_to_pdf path/to/document.html
     python -m pdf_tool.html_to_pdf path/to/document.html path/to/output.pdf
-    python -m pdf_tool.html_to_pdf path/to/document.html --output-dir path/to/_exports
+    python -m pdf_tool.html_to_pdf path/to/document.html --output-dir path/to/output/jenni/resumes
     python -m pdf_tool.html_to_pdf path/to/document.html --force
     python -m pdf_tool.html_to_pdf path/to/document.html --pdf-theme dark
     python -m pdf_tool.html_to_pdf path/to/document.html --variants
@@ -22,12 +22,13 @@ Usage:
 
 By default, re-running against the same document.html does NOT overwrite a
 previous export - it writes document-v2.pdf, document-v3.pdf, etc., so you
-always keep the last version you sent somewhere. Default exports go under an
-_exports directory next to the source HTML. Pass an explicit output path
-(second positional arg), --output-dir, or --force to control that behavior.
+always keep the last version you sent somewhere. Default exports go under
+repo-root ``output/<user>/<kind>/`` (see ``pdf_tool.paths.default_output_dir``).
+Pass an explicit output path (second positional arg), --output-dir, or --force
+to control that behavior.
 
 ``--variants`` exports a light PDF for each public palette (default-resume +
-``themes/presets/``) into ``_variants/<stem>/`` — same as
+``themes/presets/``) into ``output/…/_variants/<stem>/`` — same as
 ``python -m pdf_tool.variants <doc>.html``.
 """
 
@@ -72,8 +73,9 @@ def export_html_to_pdf(
     `@media print { html[data-pdf-theme="dark"] { ... } }` to keep Letter
     pagination while rendering a branded dark PDF variant.
 
-    If pdf_path is not given, the default output lives under an _exports
-    directory next to html_path, or under output_dir when provided. Unless
+    If pdf_path is not given, the default output lives under
+    ``output/<user>/<kind>/`` (inferred from the source path), or under
+    output_dir when provided. Unless
     force=True, an existing file at that default path is never overwritten -
     a -v2, -v3, ... suffix is used instead, so previously-sent PDFs are never
     silently replaced. Passing an explicit pdf_path always writes there
@@ -89,7 +91,9 @@ def export_html_to_pdf(
     if pdf_path:
         out_path = Path(pdf_path).resolve()
     else:
-        export_dir = Path(output_dir).resolve() if output_dir else html_path.parent / "_exports"
+        from .paths import default_output_dir
+
+        export_dir = Path(output_dir).resolve() if output_dir else default_output_dir(html_path)
         export_dir.mkdir(parents=True, exist_ok=True)
         # Dual-mode convention: stem-light.pdf (ATS) / stem-dark.pdf (branded).
         # Explicit pdf_path still wins when the caller wants a custom name.

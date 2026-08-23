@@ -1,6 +1,6 @@
 """Export light PDFs for every public palette — palette shopping without the Hub.
 
-Writes under ``_variants/<stem>/`` next to the source HTML (never overwrites;
+Writes under ``output/<user>/<kind>/_variants/<stem>/`` (never overwrites;
 uses the same ``-v2`` / ``-v3`` pattern as ``html_to_pdf``).
 
 Public palettes = ``themes/default-resume.json`` + ``themes/presets/*.json``.
@@ -20,7 +20,7 @@ import sys
 from pathlib import Path
 
 from .html_to_pdf import _guard_palette, _next_available_path, export_html_to_pdf
-from .paths import repo_root
+from .paths import default_output_dir, repo_root
 
 _HEX = re.compile(r"#([0-9a-fA-F]{6})\b")
 _REPO = repo_root()
@@ -106,7 +106,7 @@ def _guard_palette_json(path: Path, vars_: dict) -> list[str]:
 
 
 def export_variants(html_path: str | Path, skip_palette: bool = False) -> list[Path]:
-    """Export one light PDF per public palette into ``_variants/<stem>/``."""
+    """Export one light PDF per public palette into ``output/.../_variants/<stem>/``."""
     html = Path(html_path).resolve()
     if not html.exists():
         raise FileNotFoundError(html)
@@ -118,7 +118,7 @@ def export_variants(html_path: str | Path, skip_palette: bool = False) -> list[P
     if not palettes:
         raise SystemExit("no public palettes found under themes/ + themes/presets/")
 
-    out_dir = html.parent / "_variants" / html.stem
+    out_dir = default_output_dir(html) / "_variants" / html.stem
     out_dir.mkdir(parents=True, exist_ok=True)
     written: list[Path] = []
 

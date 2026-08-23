@@ -89,7 +89,7 @@ The public default is intentionally brand-neutral. It supports:
 - light ATS-safe PDF export
 - optional dark branded PDF export through `--pdf-theme dark`
 - US Letter output, 8.5 x 11 inches
-- `_exports` output folders
+- `output/` generated folders (and leftover `_exports`)
 - cover-letter + resume bundles through `merge_pdfs.py --require-letter`
 
 **Page layout (SSOT):** [`docs/LAYOUT-SYSTEM.md`](LAYOUT-SYSTEM.md) + `themes/default-resume.json#document`.
@@ -312,8 +312,8 @@ See `docs/EXPORTS.md` for exact commands.
 Typical sequence:
 
 ```powershell
-python -m pdf_tool.html_to_pdf resume.html _exports/final/resume.pdf
-python -m pdf_tool.html_to_pdf resume.html _exports/final/resume-dark.pdf --pdf-theme dark
-python -m pdf_tool.merge_pdfs _exports/final/application.pdf _exports/final/cover-letter.pdf _exports/final/resume.pdf --require-letter
-python -m pdf_tool.pdf_to_png _exports/final/application.pdf
+python -m pdf_tool.html_to_pdf resume.html output/final/resume.pdf
+python -m pdf_tool.html_to_pdf resume.html output/final/resume-dark.pdf --pdf-theme dark
+python -m pdf_tool.merge_pdfs output/final/application.pdf output/final/cover-letter.pdf output/final/resume.pdf --require-letter
+python -m pdf_tool.pdf_to_png resume.html
 ```

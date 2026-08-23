@@ -16,8 +16,5 @@ named `--output-dir/` and writes PNGs into it.
 folder name, so mkdir succeeds and the dump looks like a product directory.
 
 **How to apply:** `paths.reject_flag_looking_path` runs in both CLIs. Default
-exports already land beside the HTML (`resumes/<id>/_exports/` or `defaults/`).
-Never invent a repo-root `--output-dir/` folder. `.gitignore` lists
-`--output-dir/` as a belt-and-suspenders ignore.
-
-Related: [[lesson-defaults-export-beside-html]]
+exports already land under repo-root `output/<user>/<kind>/` (see
+[[lesson-output-is-repo-root]]). Never invent a repo-root `--output-dir/` folder.

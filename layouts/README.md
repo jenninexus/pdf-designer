@@ -38,7 +38,7 @@ Map of every SSOT surface: [`../docs/SSOT.md`](../docs/SSOT.md).
 | **Work samples** | [`work-examples/work-examples.json`](work-examples/work-examples.json) | Footer row (name L / links R). Portfolio URLs in a **body** section — not an extra footer line | **3** |
 
 Full narrative + bands: [`../docs/LAYOUT-SYSTEM.md`](../docs/LAYOUT-SYSTEM.md).  
-**Visual reference for cover-letter pin/padding:** `storage/jenni/_exports/CZI/jenni-czi-letter.html` (geometry only — not its palette).  
+**Visual reference for cover-letter pin/padding:** `resumes/jenni/CZI/jenni-czi-letter.html` (geometry only — not its palette).  
 **Personal letter example:** [`../examples/profiles/default-letter/personal-letter.html`](../examples/profiles/default-letter/personal-letter.html).
 
 | Recipe | Doc types | Page model |

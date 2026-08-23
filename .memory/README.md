@@ -38,6 +38,7 @@ is invisible to the next clone. Thin the *reading* obligation, not the files.
 | ats-section-cues · jobright-content-score-is-not-parse-fail | [`docs/JOB-ASSESSMENT.md`](../docs/JOB-ASSESSMENT.md) § Tier 4.5 |
 | twin-files-always-fork | [`AGENTS.md`](../AGENTS.md) (`.example` vs bare commands) |
 | public-clone-path-stays-tracked | [`docs/GETTING-STARTED.md`](../docs/GETTING-STARTED.md) · [`docs/PUBLIC-LOCAL-SPLIT.md`](../docs/PUBLIC-LOCAL-SPLIT.md) |
+| output-is-repo-root | [`docs/EXPORTS.md`](../docs/EXPORTS.md) · [`output/README.md`](../output/README.md) |
 | utf8-json-roundtrip-on-windows | `/jen/sys-admin` UTF-8 note · [`docs/QA.md`](../docs/QA.md) |
 
 Hub-specific traps (profile scope, scaffold vs payload, drawer clip) stay as lesson files until [`docs/PREVIEWER.md`](../docs/PREVIEWER.md) absorbs them — those are still the cheapest *why*.
@@ -82,7 +83,8 @@ codebase · `reference`: pointer to an external resource.
 | [lesson-fixed-height-clips-content-silently.md](lesson-fixed-height-clips-content-silently.md) | ⚠ A print `height` + `overflow:hidden` on a cover letter CLIPS the sign-off while every guard passes — verify the bottom of the page by eye |
 | [lesson-applicant-fit-before-polish.md](lesson-applicant-fit-before-polish.md) | Decide *who* is applying against the listing's real spine before building anything |
 | [lesson-work-samples-footer-row-false-collision.md](lesson-work-samples-footer-row-false-collision.md) | Work-samples L/R footer (name·links) false-triggers footer-collision — pin bottom-RIGHT; portfolio URLs in a body panel |
-| [lesson-defaults-export-beside-html.md](lesson-defaults-export-beside-html.md) | Go-to pack PDFs export into `defaults/` next to the HTML — never `_exports/defaults/` |
+| [lesson-defaults-export-beside-html.md](lesson-defaults-export-beside-html.md) | **Superseded 2026-08-22** — go-to PDFs used to sit in `defaults/` beside HTML; now `output/<user>/resumes/` |
+| [lesson-output-is-repo-root.md](lesson-output-is-repo-root.md) | Generated files go to repo-root `output/<user>/<kind>/`; source HTML stays in `resumes/` / `collages/`; never mix them under `_exports/` |
 | [lesson-utf8-json-roundtrip-on-windows.md](lesson-utf8-json-roundtrip-on-windows.md) | PowerShell/cp1252 round-trips corrupt UTF-8 JSON with ⭐ — surgical Edit + `encoding=utf-8` only |
 | [lesson-ats-section-cues-must-be-contiguous.md](lesson-ats-section-cues-must-be-contiguous.md) | Jobright misses Job Title / Work Experience / Education when cues are creative, buried, or split in the text layer (Montserrat `W ORK`) — `check_ats` + system-font h2 |
 | [lesson-jobright-content-score-is-not-parse-fail.md](lesson-jobright-content-score-is-not-parse-fail.md) | Jobright rank D / skills-count ≠ ATS parse fail — upload light; print body on system font; mid-word splits are the real shredder |

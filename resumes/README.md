@@ -1,15 +1,24 @@
-# `resumes/` — working HTML + exports
+# `resumes/` — working HTML (not the PDFs)
 
-Per-person working tree: `resumes/<id>/{html,defaults,_exports,resources}`.
+Per-person **source** tree: `resumes/<id>/{html,defaults,resources,templates}`.
+Generated PDFs and PNGs live in **[`output/<id>/resumes/`](../output/README.md)**.
 
 | Tracked | Gitignored |
 |---|---|
-| this README | HTML, PDFs, `_exports/`, private resources |
+| this README | HTML, private resources, job-letter HTML |
 
 **Vault SSOT is [`vaults/<id>.json`](../vaults/), not a `resume-source.json` in this folder.**
-Exports: per-job PDFs in `_exports/<Track>/`; the reusable go-to pack in `defaults/`
-(same folder as the HTML). There is no repo-root `--output-dir/` folder — that name
-is a CLI flag (`html_to_pdf --output-dir <dir>`).
 
-Legacy alias: `storage/<id>/`. Shared studio assets stay under `resumes/studio/resources/`
-(or `brands/`) with the same junction rule as today — see [`docs/STORAGE.md`](../docs/STORAGE.md).
+| What | Where |
+|---|---|
+| Go-to HTML | `resumes/<id>/defaults/` |
+| Go-to PDFs | `output/<id>/resumes/` (flat) |
+| Per-job PDFs | `output/<id>/resumes/<App>/` |
+| Shared MG gallery | `resumes/studio/resources/images/martiangames/` (junctions from jenni/shade) |
+
+There is no repo-root `--output-dir/` folder — that name is a CLI flag
+(`html_to_pdf --output-dir <dir>`). Omit the flag and the engine infers
+`output/<user>/resumes/`.
+
+Legacy alias: `storage/<id>/`. See [`docs/STORAGE.md`](../docs/STORAGE.md) ·
+[`docs/EXPORTS.md`](../docs/EXPORTS.md).

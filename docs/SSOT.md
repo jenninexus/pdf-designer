@@ -12,7 +12,7 @@ Theme:     themes/default-{resume,collage}.json + themes/presets/* + PALETTE-RUL
 Gen-rules: themes/GENERATION-RULES.md   ← ⭐ house rules for ALL generated docs (casing · overlays · framing · no-magenta)
 QA gate:   docs/QA.md + python -m pdf_tool.check_generation   ← ⭐ 10 checks; judge the ARTIFACT (render), not the source
 Layouts:   layouts/{cover-letter,letter,resume,work-examples,collage}/*  (python -m pdf_tool.collage --list-recipes)  ← STRUCTURE
-Private:   root nouns (users/vaults/profiles/resumes/_job-apps/collages/brands) + storage/ alias (gitignored)
+Private:   root nouns (users/vaults/profiles/resumes/_job-apps/collages/brands/output) + storage/ alias (gitignored)
 Hub:       python -m pdf_tool.preview → :8787 (workspace auto-starts via scripts/ensure-design-hub.ps1)
 Smoke:     python scripts/smoke-white-label.py   ← ⭐ fresh-clone proof (examples/ only, no storage/)
 Package:   docs/PACKAGING.md + scripts/check-wheel-assets.py  ← wheel must include themes/layouts
@@ -92,7 +92,8 @@ not either. Full checklist: [`JOB-ASSESSMENT.md`](JOB-ASSESSMENT.md) § Tier 4.5
 | “Section looks fine on screen” | Not enough. Montserrat can split `WORK EXPERIENCE` → `W ORK EXPERIENCE` and body words → `Gam es` / `m aterials` while the page looks perfect. **Print body + h2 use a system font.** |
 | “Jobright rank D means unparseable” | **False.** Rank / IMPROVABLE / “Insufficient skills” / “Lack of Accomplishment” is their **content AI**. Missing Job Title / Work Experience / Education is the **parse** warning. Different gates. |
 
-**Defaults:** ship **both** light and dark for go-to résumés under `resumes/<user>/defaults/` so the board
+**Defaults:** ship **both** light and dark for go-to résumés under `output/<user>/resumes/`
+(HTML stays in `resumes/<user>/defaults/`) so the board
 file and the branded file stay in sync. Per-job `exportPrefs` may still emphasize dark for email —
 that does **not** remove the need for a light file when a board will parse the upload. Cover letters
 and work-samples: `check_generation` always; boards still get the light **résumé**, not the portfolio.
@@ -114,7 +115,7 @@ www-theme-kit/profiles/{jenninexus,martiangames}.json
 
 | Who | Edit this file | Pointed by |
 |---|---|---|
-| Jenni | `brands/brand-jenninexus.json` | `users/jenni.json` · `profiles/jenni-resume.json` · defaults triad under `resumes/jenni/defaults/` (same footer-mail legibility: `--text` ≥11px) |
+| Jenni | `brands/brand-jenninexus.json` | `users/jenni.json` · `profiles/jenni-resume.json` · defaults triad HTML under `resumes/jenni/defaults/`; PDFs under `output/jenni/resumes/` (same footer-mail legibility: `--text` ≥11px) |
 | Shade (Synagen) | `brands/brand-synagen.json` | `users/shade.json` · `profiles/shade-resume.json` |
 | Martian studio | `brands/brand-martian.json` | Shade studio/games profiles + kit `#martian-resume` |
 

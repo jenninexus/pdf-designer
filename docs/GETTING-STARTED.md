@@ -30,7 +30,7 @@ Public defaults and presets *are* the product.
 
 You do **not** need `users/`, vaults, or `brands/` to export PDFs.
 The clone also shows **README stubs** at `users/` · `vaults/` · `profiles/` · `resumes/` ·
-`_job-apps/` · `collages/` · `brands/` so the product folders are visible — copy from
+`output/` · `_job-apps/` · `collages/` · `brands/` so the product folders are visible — copy from
 `examples/` (or the in-folder `*.example.json`) into those names when you add your own data. Layout: [`WORKSPACE-LAYOUT.md`](WORKSPACE-LAYOUT.md).
 
 ---
@@ -42,10 +42,10 @@ You and a stranger use the **same engine**. Privacy is gitignore, not a second i
 | Layer | What |
 |---|---|
 | **Tracked (clone)** | Engine, `themes/`, `layouts/`, `examples/`, README stubs, `users/you.example.json`, `vaults/you.example.json` |
-| **Local (you)** | Real `users/*.json`, vaults, `_job-apps/`, `resumes/**/_exports/`, `brands/` |
+| **Local (you)** | Real `users/*.json`, vaults, `_job-apps/`, `resumes/**`, `output/**`, `brands/` |
 | **Optional pointers** | `.config/mcp-pdf-designer.json` (copy the `.example`) |
 
-The engine **reads no environment variables**. Do not add `.env` / `.env.local` unless a new tool actually reads them — it would document a fiction. `storage/` was retired after the root-noun migration; the resolver only accepts old URLs when a live root-noun file exists. Exports live under `resumes/<user>/_exports/`.
+The engine **reads no environment variables**. Do not add `.env` / `.env.local` unless a new tool actually reads them — it would document a fiction. `storage/` was retired after the root-noun migration; the resolver only accepts old URLs when a live root-noun file exists. Exports live under `output/<user>/<kind>/`.
 
 ---
 
@@ -61,7 +61,7 @@ Every step uses **tracked** paths only.
 | 4. (Optional) variants | `python -m pdf_tool.variants examples/profiles/default-resume/default-resume.html` | one light PDF per public palette |
 
 The smoke script runs `check_generation`, exports light + dark PDFs, runs `check_ats` on
-the light file, and writes under `examples/profiles/default-resume/_exports/` (gitignored).
+the light file, and writes under `output/examples/` (gitignored payload).
 
 **If smoke fails on a clean clone, the public product path is broken — fix before anything else.**
 

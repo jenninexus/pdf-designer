@@ -49,7 +49,7 @@ For the Windows-first browser launcher and its acceptance checks, see
 
 The hub **refreshes itself** when documents change — you don't restart it after exporting a new resume
 or editing a source. A client poller hits **`GET /api/version`** (~every 1.5s), which returns a cheap
-tree *signature* (count + newest mtime + total size over `*.html` sources **and** `_exports/**` outputs)
+tree *signature* (count + newest mtime + total size over `*.html` sources **and** `output/**` outputs)
 plus a fresh document list. When the signature changes, the sidebar re-renders, the open preview reloads
 (cache-busted), and a small toast flashes (`＋1 document`). So the loop is simply: **export or edit → the
 hub updates on its own.** The signature is coarse and content-free (never reads file bytes), so it stays
@@ -96,7 +96,7 @@ Sidebar is a **left column**; the stage / iframe viewer fills the rest of the vi
 
 ### Features
 
-- **Live thumbnails** for every renderable `.html` (excludes `_exports/`, etc.)
+- **Live thumbnails** for every renderable `.html` (excludes `output/`, leftover `_exports/`, etc.)
 - **Palette swapper** → injects CSS vars into the previewed document (and into export)
 - **Export selected** → PDF light/dark or PNG pages
 - **Vault overview** → [http://127.0.0.1:8787/vault](http://127.0.0.1:8787/vault) · `GET /api/vault-overview?profile=examples`

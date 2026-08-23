@@ -265,7 +265,7 @@ storage/_job-listings/<Role-Track>/
   <user>-<company>-<track>-resume.html
   <user>-<company>-<track>-cover-letter.html
 
-storage/<user>/_exports/<Role-Track>/   ← ALL PDFs + PNGs (never in the application folder)
+output/<user>/resumes/<Role-Track>/   ← ALL PDFs + PNGs (never in the application folder)
 ```
 
 **Also log** into `profiles/<user>-<track>-resume.json → roleTrack.applications[]`:

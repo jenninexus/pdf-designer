@@ -7,7 +7,7 @@ No ``storage/`` required. Run from any checkout after::
     python scripts/smoke-white-label.py
 
 Exits 0 only when check_generation, light+dark export, and ATS text-layer all pass.
-PDFs land under ``examples/profiles/default-resume/_exports/`` (gitignored).
+PDFs land under ``output/examples/`` (gitignored payload; ``output/README.md`` is tracked).
 
 See docs/GETTING-STARTED.md and docs/PRODUCT.md.
 """
@@ -23,7 +23,7 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[1]
 EXAMPLE = REPO / "examples" / "profiles" / "default-resume" / "default-resume.html"
-EXPORT_DIR = REPO / "examples" / "profiles" / "default-resume" / "_exports"
+EXPORT_DIR = REPO / "output" / "examples"
 PUBLIC_TEXT_ROOTS = (
     REPO / ".claude" / "commands",
     REPO / ".config" / "mcp-pdf-designer.example.json",
@@ -103,6 +103,7 @@ def _public_text_files() -> list[Path]:
                 for path in root.rglob("*")
                 if path.is_file()
                 and "_exports" not in path.parts
+                and "output" not in path.parts
                 and "_variants" not in path.parts
                 and path.suffix.lower() in {".html", ".json", ".md", ".css"}
             )
@@ -208,7 +209,7 @@ def main() -> int:
     _assert_public_path()
     _assert_public_privacy()
 
-    # Prefer a clean temp dir; also mirror into the example _exports for Hub browsing.
+    # Prefer a clean temp dir; also mirror into output/examples for Hub browsing.
     with tempfile.TemporaryDirectory(prefix="pdf-designer-smoke-") as tmp:
         tmp_out = Path(tmp)
         _run(

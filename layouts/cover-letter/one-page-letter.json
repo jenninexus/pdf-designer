@@ -20,7 +20,7 @@
     "body": ".letter-main { flex: 1 1 auto; min-height: 0; }",
     "signoff": ".signoff { margin-top: auto; padding-top: 30px; flex: 0 0 auto; text-align: left; break-inside: avoid; }",
     "printPage": ".page { width: auto; height: auto; min-height: 9.5in; margin: 0; padding: 0; /* NO overflow:hidden */ }",
-    "rule": "⭐ CZI reference (storage/jenni/_exports/CZI/jenni-czi-letter.html): flex column + growing .letter-main + sign-off pinned with margin-top:auto so whitespace sits ABOVE the closing. Sign-off is bottom-LEFT (Warm regards → script → title → email). Résumés pin bottom-RIGHT — do not conflate.",
+    "rule": "⭐ CZI reference (resumes/jenni/CZI/jenni-czi-letter.html): flex column + growing .letter-main + sign-off pinned with margin-top:auto so whitespace sits ABOVE the closing. Sign-off is bottom-LEFT (Warm regards → script → title → email). Résumés pin bottom-RIGHT — do not conflate.",
     "reference": "CZI letter — position + padding (padding-top: 30px). Copy geometry, not palette.",
     "⛔forbidden": [
       "height: <n>in on .page in print — @page{margin} already insets the printable area; a near-full fixed height overflows the sheet",

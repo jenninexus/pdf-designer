@@ -57,13 +57,12 @@ _job-apps/
   …
 ```
 
-**⭐ No PDFs in here.** Finished PDFs and PNGs go to **`resumes/<user>/_exports/<Track>/`**
-(alias `storage/<user>/_exports/<Track>/`) —
+**⭐ No PDFs in here.** Finished PDFs and PNGs go to **`output/<user>/resumes/<Track>/`**
 per *person*, so everything one applicant needs to send sits in one place:
 
 ```text
-resumes/jenni/_exports/3D-Visualizer/     one applicant's PDFs for that job
-resumes/shade/_exports/3D-Visualizer/     the other's, for the same job
+output/jenni/resumes/3D-Visualizer/     one applicant's PDFs for that job
+output/shade/resumes/3D-Visualizer/     the other's, for the same job
 ```
 
 Facts about the *job* (the apply link, the pay, the company palette) belong to the *job* — so

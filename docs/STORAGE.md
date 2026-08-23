@@ -82,7 +82,7 @@ Each layer answers exactly one question.
                        <Company>.md · application.json · theme.json · *.html
                                     │
                                     ▼
-  → OUT ─────────────  resumes/<user>/_exports/<Track>/
+  → OUT ─────────────  output/<user>/resumes/<Track>/
 ```
 
 ### Shared studio assets vs per-user assets (⭐ read before hunting images)
@@ -123,10 +123,9 @@ finished-run history. Updated architecture 2026-07-20 / shared gallery 2026-07-2
 storage/<user>/
   resume-source.json        ⭐ THE VAULT (root — stays here)
   <user>-resume.html / shade-default-resume.html   the favorite/default source HTML (root)
-  defaults/                 ⭐ GO-TO reusable PDFs — the generic "best-of" resume, cover letter,
-                            and work-examples (light + dark), ready to submit to a NEW listing
-                            without re-generating. NO template placeholders ([address] etc.) —
-                            generic and submittable as-is.
+  defaults/                 ⭐ GO-TO reusable HTML — the generic "best-of" resume, cover letter,
+                            and work-examples sources (company-agnostic). PDFs live in
+                            output/<user>/resumes/ (flat), not in this folder.
   resources/                reusable user assets (NOT job-specific)
       images/
         martiangames/       JUNCTION → storage/studio/resources/images/martiangames/ (shared)
@@ -134,24 +133,21 @@ storage/<user>/
         synagen/            (shade — when engine screenshots arrive)
       logos/                brand marks — synagen-logo-16-9.png, etc. (per-user)
       refrence/             source CVs + owner quote docs (mg_cv_2025.pdf, Self-Described.md, …)
-  _exports/<Track>/         per-listing generated PDFs (one subdir per job)
+  (PDFs)                    output/<user>/resumes/<Track>/  — generated files, not this folder
   _archive/                 ⛔ retired/superseded material — DO NOT DELETE on a "clean stale" pass
   _submitted/               (shade) sent-application record — DO NOT DELETE on a "clean stale" pass
 ```
 
-> **⛔ `_archive/`, `_exports/`, and `_submitted/` are protected.** Never delete their contents during
-> a "clean stale" / dangling-reference sweep — they are history and finished work the owner keeps on
-> purpose. Stale-cleaning applies to broken *pointers*, not to these directories.
+> **⛔ `_archive/` and `_submitted/` are protected.** Never delete their contents during
+> a "clean stale" / dangling-reference sweep — they are history the owner keeps on
+> purpose. Finished PDFs now live under **`output/<user>/resumes/`** (also protected).
+> Stale-cleaning applies to broken *pointers*, not to these directories.
 >
-> **`defaults/` vs `_exports/`.** `_exports/<Track>/` is per-job output; **`defaults/` is the one place
-> to grab a ready-to-send generic resume/cover/work-samples** so the owner never has to sort through
-> `_exports/` or re-generate for a fresh listing. Keep `defaults/` current with the best-of vault.
->
-> **⭐ Export defaults INTO `defaults/`** — same folder as the HTML (`--output-dir resumes/<user>/defaults`
-> or an explicit PDF path under that dir). **Never** write go-to packs to `_exports/defaults/` (that
-> path hid PDFs from the Design Hub defaults picker). Vault `goToPacks.*.exportDir` must point at
-> `resumes/<user>/defaults/`. After editing a default HTML, re-export **light + dark** for **every**
-> applicant (`exportPrefs.resumeDefault = light-and-dark`), run
+> **`defaults/` vs `output/`.** `output/<user>/resumes/<Track>/` is per-job output;
+> **`defaults/` is HTML only** — the generic "best-of" résumé / cover / work-examples
+> sources. Grab the matching PDFs from `output/<user>/resumes/` (flat go-to files).
+> Vault `goToPacks.*.exportDir` must point at `output/<user>/resumes/`. After editing
+> a default HTML, re-export **light + dark** (no `--output-dir` needed), run
 > `python -m pdf_tool.check_generation` on the source, and `python -m pdf_tool.check_ats` on the light
 > PDF (see [`QA.md`](QA.md) · [`JOB-ASSESSMENT.md`](JOB-ASSESSMENT.md) § Tier 4.5).
 > Work-examples must also pass `--max-mb 5` (Indeed-class additional-documents cap) —

@@ -461,9 +461,9 @@ Persuasion is the goal; fabrication is never the method.
 ## House rules that bite
 
 - **🛑 Ask before you call something a gap.** The one at the top. It's the one we keep learning.
-- **Output location:** finished PDFs/PNGs go to **`storage/<user>/_exports/<Application-Dir>/`** —
+- **Output location:** finished PDFs/PNGs go to **`output/<user>/resumes/<Application-Dir>/`** —
   never into the application folder (that keeps the listing, `application.json`, `theme.json`, and the
-  HTML sources only).
+  HTML sources only). Go-to packs: `output/<user>/resumes/` (HTML stays in `resumes/<user>/defaults/`).
 - **Palette:** **no brown, no mustard, no puke/lime green.** Amber cannot be darkened for white paper
   without turning brown — on light, hand the amber role to another hue. Full rule + the guard:
   [`../themes/PALETTE-RULES.md`](../themes/PALETTE-RULES.md). Run `python -m pdf_tool.check_palette` before every export.

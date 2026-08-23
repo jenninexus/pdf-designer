@@ -55,8 +55,8 @@
     "order": "Cover letter FIRST, then resume."
   },
   "exports": {
-    "dir": "../resumes/yourname/_exports/<Application-Dir>/",
-    "rule": "PDFs and PNGs go to resumes/<user>/_exports/<Application-Dir>/ — NEVER into the application folder. The application folder holds the listing doc, application.json, theme.json, and the .html sources only. This keeps everything ONE person needs to send in one place.",
+    "dir": "../output/yourname/resumes/<Application-Dir>/",
+    "rule": "PDFs and PNGs go to output/<user>/resumes/<Application-Dir>/ — NEVER into the application folder. The application folder holds the listing doc, application.json, theme.json, and the .html sources only. This keeps everything ONE person needs to send in one place.",
     "deliverable": "Unless asked otherwise, an application ships: resume light+dark PDF, cover letter light+dark PDF, and the merged FINAL bundle. PNGs only on request."
   }
 }

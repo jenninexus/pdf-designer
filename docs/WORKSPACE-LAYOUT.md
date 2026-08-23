@@ -36,7 +36,8 @@ pdf-designer/
   users/            # WHO  — users/<id>.json (+ users/README.md tracked)
   vaults/           # WHAT — vaults/<id>.json  (was <user>/resume-source.json)
   profiles/         # HOW  — profiles/<id>-resume.json
-  resumes/          # WORK — resumes/<id>/{html,defaults,_exports,resources}
+  resumes/          # WORK — resumes/<id>/{html,defaults,resources}
+  output/           # OUT  — output/<id>/{resumes,collages}/ (+ examples/)
   _job-apps/        # JOB  — _job-apps/<Track>/  (canonical; applications/ is README-only)
   collages/         # collage projects
   brands/           # private brand maps (was storage/brand-design/)
@@ -59,7 +60,8 @@ pdf-designer/
 | `users/` | Who am I? contact, voice prefs | `storage/users/` |
 | `vaults/` | What may I claim? | `storage/<user>/resume-source.json` |
 | `profiles/` | How does it print? | `storage/profiles/` |
-| `resumes/` | Working HTML + defaults + exports | `storage/jenni/` · `shade/` · `studio/` |
+| `resumes/` | Working HTML + defaults | `storage/jenni/` · `shade/` · `studio/` |
+| `output/` | Generated PDFs/PNGs | `storage/<user>/_exports/` · beside-HTML `_exports/` |
 | `_job-apps/` | This job | **canonical.** `applications/` is a tracked README redirect only (no listings). `storage/_job-listings/` is a retired alias — do not store listings there. |
 | `collages/` | Image layouts | `storage/collages/` |
 | `brands/` | My palette map | `storage/brand-design/` |
@@ -112,6 +114,9 @@ collages/*
 brands/*
 !brands/README.md
 !brands/*.example.json
+
+output/*
+!output/README.md
 
 # Legacy during migration (delete after cutover)
 storage/

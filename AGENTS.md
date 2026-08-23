@@ -114,7 +114,8 @@ node scripts/wcag-resume-palettes.mjs                           # optional WCAG 
 ```
 
 `pip install -e .` makes `pdf_tool` importable **from the repo root** (else run from `src/` or set
-`PYTHONPATH=src`). Exports default to `_exports/` beside the source HTML and **never overwrite** (auto
+`PYTHONPATH=src`). Exports default to repo-root **`output/<user>/<kind>/`** (or `output/<kind>/` /
+`output/` when no profile) and **never overwrite** (auto
 `-v2`, `-v3`). Default dual-mode names: `<stem>-light.pdf` (ATS) and `<stem>-dark.pdf` (branded).
 **Verification without a screen:** export, then `pdf_to_png` and *read* the PNGs — the intended agent loop.
 
@@ -188,14 +189,15 @@ marketed résumé-creator demo path (vault shape + palettes + smoke), not privat
 | `docs/` | ARCHITECTURE · SSOT · PRODUCT · PACKAGING · GETTING-STARTED · PUBLIC-LOCAL-SPLIT · STORAGE · VAULT · JOB-ASSESSMENT · THEME-DESIGN · LAYOUT-SYSTEM · EXPORTS · COLLAGE-DESIGN · PREVIEWER · APPLICATIONS · LICENSING-NOTES ([`docs/README.md`](docs/README.md) is the index) |
 | `.config/mcp-pdf-designer.example.json` | ⭐ Tracked project config **seed** (breakpoints + hub/palette/layout pointers). Copy → local `mcp-pdf-designer.json` (gitignored — machine paths). |
 | `Plans/_Active/` | ⭐ the working roadmap (one file) — see [`Plans/README.md`](Plans/README.md) |
-| `storage/` | **Retired** (directory deleted 2026-08-17 after unique leftovers were copied). Live data lives at repo-root nouns: `users/` · `vaults/` · `profiles/` · `resumes/` · `_job-apps/` · `collages/` · `brands/`. Private application material stays local; private font → `brands/fonts/alienleaguebold.woff2`. Full tree backed up off-repo under `%TEMP%\pdf-designer-storage-archive-2026-08-17`. `pdf_tool.paths` still maps old `storage/<user>/` URLs for tests. |
+| `output/` | ⭐ **generated PDFs/PNGs** — `output/<user>/<kind>/` (tracked README only). Engine default. `_exports/` is retired. |
+| `storage/` | **Retired leftover** (keep private; never ship). Live data is root nouns + `output/`. Dual-run resolver still maps old `storage/<user>/` URLs. |
 | `resumes/studio/resources/images/martiangames/` | ⭐ **shared** MG title gallery (WebP) — both applicants; see [`docs/STORAGE.md`](docs/STORAGE.md) |
 
 ### Privacy split (do not blur this)
 
 | Public / tracked (safe to clone) | Private / gitignored (root nouns; `storage/` retired — live data is root nouns) |
 |---|---|
-| `src/pdf_tool/`, `themes/`, `examples/`, `docs/`, `AGENTS.md`, `*.example.md` | `users/`, `vaults/`, `profiles/`, `_job-apps/`, `brands/`, `resumes/`, `collages/`, `_exports/` |
+| `src/pdf_tool/`, `themes/`, `examples/`, `docs/`, `AGENTS.md`, `*.example.md`, `output/README.md` | `users/`, `vaults/`, `profiles/`, `_job-apps/`, `brands/`, `resumes/`, `collages/`, `output/*` (payload), `_exports/` |
 | Brand-neutral default theme | Real brand maps (`brands/brand-jenninexus.json`, `brand-martian`, `brand-synagen`) |
 | Example brand shape (`examples/brand-design/`) | Real vault claims, contacts, employer research |
 | Public seed commands (`*.example.md` only) | Bare commands (`pdf-start`/`pdf-wrap`/`start`/`wrap`/`make-*`/`README`), `.codex/`, `dev-log-*.yaml` |
@@ -259,7 +261,7 @@ Read [`docs/VAULT.md`](docs/VAULT.md) before authoring any resume claim.
 - **Emails — the default is the default.** Each person file has one `contact.emailRules.default`. Use it,
   every time, automatically. A personal gmail on record is **recognition, not authorization**.
 - **No auto-submission.** Prepare materials; the human submits.
-- **Privacy split.** `storage/`, `*.pdf`, `*.png`, `_exports/`, non-`.example` source/capture files, and
+- **Privacy split.** `storage/`, `*.pdf`, `*.png`, `output/` payload, leftover `_exports/`, non-`.example` source/capture files, and
   the personal `.md` commands are gitignored. Never move real personal data into tracked paths.
 
 ---

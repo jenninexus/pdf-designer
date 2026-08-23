@@ -42,6 +42,7 @@ def main() -> int:
             dest,
             ignore=shutil.ignore_patterns(
                 "_exports",
+                "output",
                 "_variants",
                 "__pycache__",
                 "*.pyc",
