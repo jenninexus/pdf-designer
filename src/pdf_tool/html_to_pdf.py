@@ -18,6 +18,7 @@ Usage:
     python -m pdf_tool.html_to_pdf path/to/document.html --force
     python -m pdf_tool.html_to_pdf path/to/document.html --pdf-theme dark
     python -m pdf_tool.html_to_pdf path/to/document.html --variants
+    python -m pdf_tool.html_to_pdf path/to/document.html --max-mb 5   # Indeed-class board cap
 
 By default, re-running against the same document.html does NOT overwrite a
 previous export - it writes document-v2.pdf, document-v3.pdf, etc., so you
@@ -203,6 +204,7 @@ def main() -> None:
     want_variants = "--variants" in raw_args
     pdf_theme = None
     output_dir = None
+    max_mb = None
     args = []
     skip_next = False
     for index, arg in enumerate(raw_args):
@@ -216,6 +218,15 @@ def main() -> None:
         if arg == "--skip-overflow-check":
             continue
         if arg == "--variants":
+            continue
+        if arg == "--max-mb":
+            if index + 1 >= len(raw_args):
+                raise SystemExit("--max-mb requires a number, e.g. 5")
+            max_mb = float(raw_args[index + 1])
+            skip_next = True
+            continue
+        if arg.startswith("--max-mb="):
+            max_mb = float(arg.split("=", 1)[1])
             continue
         if arg == "--pdf-theme":
             if index + 1 >= len(raw_args):
@@ -285,6 +296,11 @@ def main() -> None:
         raise SystemExit(1)
 
     print(f"Saved: {result}")
+
+    if max_mb is not None:
+        from .inline_images import assert_pdf_under_mb
+
+        assert_pdf_under_mb(result, max_mb)
 
     if not skip_overflow:
         _warn_overflow(input_html, pdf_theme)

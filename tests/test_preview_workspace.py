@@ -129,12 +129,16 @@ def test_drawer_resize_and_compact_mobile_controls_are_shared_across_hub_routes(
     css = (root / "hub.css").read_text(encoding="utf-8")
     resize_script = (root / "drawer-resize.js").read_text(encoding="utf-8")
     assert 'id="drawerResize"' in APP_HTML
-    assert 'pdf-designer.hub.drawerWidth' in APP_HTML
+    assert 'id="libraryResize"' in APP_HTML
+    assert 'src="/_hub/drawer-resize.js"' in APP_HTML
+    assert "pdf-designer.hub.drawerWidth" in resize_script
+    assert "pdf-designer.hub.libraryWidth" in resize_script
     assert "--hub-drawer-min: 280px" in css
+    assert "--hub-library-w: 300px" in css
     assert "grid-template-columns: repeat(auto-fit, minmax(116px, 1fr))" in css
     assert "@media (max-width: 767.98px)" in css
     assert "pointerdown" in resize_script
-    assert "localStorage.setItem(key" in resize_script
+    assert "localStorage.setItem(opts.key" in resize_script or "localStorage.setItem(key" in resize_script
     for name in ("recipes.html", "vault.html"):
         html = (root / name).read_text(encoding="utf-8")
         assert 'id="drawerResize"' in html

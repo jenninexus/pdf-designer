@@ -15,6 +15,11 @@ def test_wizard_has_four_local_steps_and_uses_jane_example_export_path():
     wizard = (root / "src" / "pdf_tool" / "static" / "wizard.html").read_text(encoding="utf-8")
     for label in ("1 · Vault", "2 · Skills", "3 · Palette", "4 · Export"):
         assert label in wizard
+    assert 'data-theme="dark"' in wizard
+    assert '<meta name="color-scheme" content="dark">' in wizard
+    assert 'class="hub-page wizard-page"' in wizard
+    assert "Build the honest version first." in wizard
+    assert "Hub is the default workspace" in wizard
     assert "Jane Example" in wizard
     assert "check_vault vaults/&lt;you&gt;.json" in wizard
     assert "check_generation examples/profiles/default-resume/default-resume.html" in wizard
@@ -24,6 +29,9 @@ def test_wizard_has_four_local_steps_and_uses_jane_example_export_path():
     assert "second renderer" not in wizard.lower()
     assert "/api/voice-card" in wizard
     assert "saves nothing" in wizard
+    assert "aria-current" in wizard
+    assert "kind: \"tool\"" in wizard
+    assert "résumé-file upload is not available" in wizard
 
 
 def test_wizard_is_a_design_hub_route_and_navigation_target():

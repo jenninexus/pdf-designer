@@ -63,3 +63,6 @@ def test_live_repo_vault_default_is_jane_example():
     assert "jane example" in names
     assert "jennifer" not in names
     assert "shade" not in names
+    jane = data["users"][0]
+    assert jane.get("software", {}).get("programs")
+    assert {p["name"] for p in jane["software"]["programs"]} >= {"HTML", "Python"}

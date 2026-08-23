@@ -41,7 +41,7 @@ direction (free GitHub vs paid app): [`docs/PRODUCT.md`](docs/PRODUCT.md). Packa
 [`docs/PACKAGING.md`](docs/PACKAGING.md) · `python scripts/check-wheel-assets.py` ·
 `python scripts/testpypi-dry-run.py` (local wheel proof; `--upload` needs `TESTPYPI_TOKEN`).
 
-**Active plan (one):** [`Plans/_Active/2026-08-21-standalone-app-remaining.md`](Plans/_Active/2026-08-21-standalone-app-remaining.md) · index [`Plans/README.md`](Plans/README.md). Completed waves: [`Plans/_Complete/`](Plans/_Complete/). Folder UX target: [`docs/WORKSPACE-LAYOUT.md`](docs/WORKSPACE-LAYOUT.md). Product hub: `C:\Github\product-design` · `/jen:products`.
+**Active plan (one):** [`Plans/_Active/2026-08-22-product-polish-and-release-readiness.md`](Plans/_Active/2026-08-22-product-polish-and-release-readiness.md) · index [`Plans/README.md`](Plans/README.md). Completed waves: [`Plans/_Complete/`](Plans/_Complete/). Folder UX target: [`docs/WORKSPACE-LAYOUT.md`](docs/WORKSPACE-LAYOUT.md). Product hub: `C:\Github\product-design` · `/jen:products`.
 
 **Session start / wrap:** `/pdf-start` → local [`.claude/commands/pdf-start.md`](.claude/commands/pdf-start.md)
 (gitignored). `/pdf-wrap` → local [`.claude/commands/pdf-wrap.md`](.claude/commands/pdf-wrap.md) — **requires
@@ -89,12 +89,14 @@ python -m pdf_tool                                              # engine hub —
 python -m pdf_tool.html_to_pdf <doc>.html                       # light/ATS PDF (default)
 python -m pdf_tool.html_to_pdf <doc>.html --pdf-theme dark      # dark branded PDF, same pagination
 python -m pdf_tool.html_to_pdf <doc>.html --output-dir <dir>    # control export location
+python -m pdf_tool.html_to_pdf <doc>.html --max-mb 5            # fail if PDF > 5 MB (Indeed-class)
+python -m pdf_tool.inline_images <tpl>.html <out>.html --board name=path ...  # JPEG ≤960px
 python -m pdf_tool.html_to_pdf <doc>.html --variants            # light PDF per public palette → _variants/<stem>/
 python -m pdf_tool.variants <doc>.html                          # same as --variants
 python -m pdf_tool.merge_pdfs out.pdf a.pdf b.pdf --require-letter   # bundle, validate 8.5x11
 python -m pdf_tool.pdf_to_png <doc>.html                        # one PNG per page (visual verify; HTML source)
 python -m pdf_tool.check_generation <doc>.html                  # ⭐ ONE QA gate — 10 checks; run before EVERY ship
-python -m pdf_tool.check_generation --scan storage/<user>/defaults  #    sweep go-to set
+python -m pdf_tool.check_generation --scan resumes/<user>/defaults  #    sweep go-to set
 python -m pdf_tool.check_palette <doc>.html                     # palette only (also inside check_generation)
 python -m pdf_tool.check_palette --scan storage/                #    sweep a whole tree
 python -m pdf_tool.check_overflow <doc>.html --pdf-theme dark   # overflow only (also inside check_generation)

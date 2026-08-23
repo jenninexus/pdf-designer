@@ -147,13 +147,15 @@ storage/<user>/
 > to grab a ready-to-send generic resume/cover/work-samples** so the owner never has to sort through
 > `_exports/` or re-generate for a fresh listing. Keep `defaults/` current with the best-of vault.
 >
-> **⭐ Export defaults INTO `defaults/`** — same folder as the HTML (`--output-dir storage/<user>/defaults`
+> **⭐ Export defaults INTO `defaults/`** — same folder as the HTML (`--output-dir resumes/<user>/defaults`
 > or an explicit PDF path under that dir). **Never** write go-to packs to `_exports/defaults/` (that
 > path hid PDFs from the Design Hub defaults picker). Vault `goToPacks.*.exportDir` must point at
-> `storage/<user>/defaults/`. After editing a default HTML, re-export **light + dark** for **every**
+> `resumes/<user>/defaults/`. After editing a default HTML, re-export **light + dark** for **every**
 > applicant (`exportPrefs.resumeDefault = light-and-dark`), run
 > `python -m pdf_tool.check_generation` on the source, and `python -m pdf_tool.check_ats` on the light
 > PDF (see [`QA.md`](QA.md) · [`JOB-ASSESSMENT.md`](JOB-ASSESSMENT.md) § Tier 4.5).
+> Work-examples must also pass `--max-mb 5` (Indeed-class additional-documents cap) —
+> re-inline with `python -m pdf_tool.inline_images --board` first; see [`EXPORTS.md`](EXPORTS.md).
 ### Voice SSOT (hybrid)
 
 | Layer | Path | Edit when… |

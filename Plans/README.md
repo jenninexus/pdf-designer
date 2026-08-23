@@ -11,7 +11,7 @@ Working plans for pdf-designer. Keep **one** active product roadmap; move finish
 
 | Plan | Status |
 |---|---|
-| [`_Active/2026-08-21-standalone-app-remaining.md`](_Active/2026-08-21-standalone-app-remaining.md) | ⭐ **THE** working plan — release record, optional distribution, and the unstarted desktop shell |
+| [`_Active/2026-08-22-product-polish-and-release-readiness.md`](_Active/2026-08-22-product-polish-and-release-readiness.md) | ⭐ **THE** working plan — polished public-safe Hub, product alignment, LIVPHI source mirror, and carried release gates |
 
 > **`/jen:roadmap` entry point:** [`../docs/ROADMAP.md`](../docs/ROADMAP.md).  
 > **Business:** [`../docs/PRODUCT.md`](../docs/PRODUCT.md).  
@@ -22,9 +22,11 @@ Working plans for pdf-designer. Keep **one** active product roadmap; move finish
 ## Complete (recent)
 
 | Plan | Why complete |
+|---|---|
+| [`2026-08-21-standalone-app-remaining.md`](_Complete/2026-08-21-standalone-app-remaining.md) | Superseded 2026-08-22; built work is retained as history and the remaining clean-machine/payment gates are consolidated into the active plan |
+| [`2026-08-21-public-surface-audit.local.md`](_Complete/2026-08-21-public-surface-audit.local.md) | Local-only release audit complete; evidence is retained, not a second active roadmap |
 | [`2026-08-20-pdf-designer-remaining-sisters/`](_Complete/2026-08-20-pdf-designer-remaining-sisters/) | Posting-day snapshot; Patreon/Discord complete and remaining work consolidated 2026-08-21 |
 | [`2026-08-17-early-release-remaining.md`](_Complete/2026-08-17-early-release-remaining.md) | Early-release handoff superseded by the unified standalone-app plan |
-|---|---|
 | [`2026-08-17-hub-examples-storage-retire/`](_Complete/2026-08-17-hub-examples-storage-retire/) | Public Hub examples, `_job-apps/` sole listing, `storage/` retired, history scrub |
 | [`2026-08-13-intuitive-workspace-product.md`](_Complete/2026-08-13-intuitive-workspace-product.md) | Root nouns, path resolver, dual-run copy, `_job-apps/` rename |
 | [`2026-08-13-launch-ready-workspace.md`](_Complete/2026-08-13-launch-ready-workspace.md) | Data copy, tracker dedupe, launch *copy* in Socials (not posted) |

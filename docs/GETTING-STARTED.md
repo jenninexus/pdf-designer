@@ -67,6 +67,26 @@ the light file, and writes under `examples/profiles/default-resume/_exports/` (g
 
 ---
 
+## First local Hub session
+
+Run the Hub without opening a browser automatically, then visit
+[http://127.0.0.1:8787/wizard](http://127.0.0.1:8787/wizard):
+
+```powershell
+python -m pdf_tool.preview --no-open
+```
+
+The Hub starts dark by default. Its theme is only the local app chrome; document palettes
+still control the preview and exported PDF. The Start route guides the public fictional
+Jane Example through vault → skills → palette → light/dark export. It creates no account,
+does not write a personal profile, does not import an existing résumé PDF, and uses the
+existing renderer only. Stop the temporary localhost server with `Ctrl+C`.
+
+For the Windows Electron wrapper, read [`WINDOWS-ELECTRON.md`](WINDOWS-ELECTRON.md) before
+sharing anything: it is an unsigned pre-release artifact, not a supported public download.
+
+---
+
 ## Commands
 
 ```bash

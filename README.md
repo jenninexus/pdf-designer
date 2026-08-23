@@ -100,6 +100,33 @@ Full commands → [`docs/EXPORTS.md`](docs/EXPORTS.md) · ship gate → [`docs/Q
 
 ---
 
+## Start locally in the Design Hub
+
+The Hub is intentionally **dark by default**. It is app chrome only: picking a document
+palette changes that document's preview/export tokens, not the Hub's local workspace theme.
+
+```powershell
+python -m pdf_tool.preview --no-open
+```
+
+Open [http://127.0.0.1:8787/wizard](http://127.0.0.1:8787/wizard) for the guided
+local path: vault → source-backed skills → palette → light and dark export. It starts
+with the fictional Jane Example, writes no personal record, creates no account, and uses
+the same existing Playwright renderer as the CLI and Library. The server is temporary and
+localhost-only; stop it with `Ctrl+C` when you are done.
+
+## Windows standalone status
+
+The Electron/NSIS wrapper is a **pre-release local build**, not a customer download yet.
+Once installed it bundles its own runtime, so a customer will not need Python, Node, or a
+checkout; it opens the same dark Design Hub and seeds only the public Jane Example into
+`Documents\PDF Designer` on first launch. The current installer is unsigned and still
+awaits clean Windows 10/11 x64 validation, so do not distribute it or promise a download.
+See [`docs/WINDOWS-ELECTRON.md`](docs/WINDOWS-ELECTRON.md) for the exact support boundary,
+first-launch behavior, and release gates.
+
+---
+
 ## The loop
 
 1. **Start with Jane Example.** Browse [`examples/resume-studio/`](examples/resume-studio/), or copy the profile + theme that fit your work.

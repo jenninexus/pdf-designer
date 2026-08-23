@@ -5,7 +5,7 @@ Codex, Cursor, or a human should all be able to work from this page alone.
 
 > **Tracked protocol** (this file). Private data lives under gitignored `storage/`.
 > Layout + brand SSOT: [`STORAGE.md`](STORAGE.md). Job capture: [`JOB-ASSESSMENT.md`](JOB-ASSESSMENT.md).
-> Engineering next-steps (one active plan): [`../Plans/_Active/2026-07-21-next-agent-product-prompt.md`](../Plans/_Active/2026-07-21-next-agent-product-prompt.md).
+> Engineering next-steps (one active plan): [`../Plans/_Active/2026-08-22-product-polish-and-release-readiness.md`](../Plans/_Active/2026-08-22-product-polish-and-release-readiness.md).
 
 ---
 
@@ -130,9 +130,19 @@ A game-dev listing absolutely may ask *"do you know 3ds Max?"* An AI lab buildin
 absolutely cares that you've shipped in Blender. Hiding a tool behind a track tag doesn't make the
 résumé focused — it makes it **incomplete**.
 
-**Relevance is the ranking's job, never the tag's.** Each track declares a **`toolbeltOrder`** —
-which tools *lead* for that job family. A tool not in that list is still claimable; it just doesn't
-open the section.
+**Relevance is the ranking's job, never the tag's.** Three different jobs — do not collapse them:
+
+| Field | Job | Example |
+|---|---|---|
+| `skills` | What may be claimed at all | 3D modeling (craft) *and* Maya (program) |
+| `kind: "tool"` | This claim is a **program** | Maya, 3ds Max, Blender |
+| `software` | Convenience roster of program **names** so you can collect and find apps | `{name: "Maya", skillId: "sk-maya"}` |
+| `toolbeltOrder` | On *this* track, which programs **open** the Tools line | Ranked names, not a second inventory |
+| `roleTracks` | Which résumé family you are building | `3d-art`, `game-dev` |
+
+**Do not put “3D Art” or “3D modeling” in `toolbeltOrder`.** That is the track / a craft. Software is additional to skills, never a substitute. Add a new app in `software` + a `skills` claim with `kind: "tool"`; only add it to `toolbeltOrder` if it should *lead* that track.
+
+Each track declares a **`toolbeltOrder`** — which tools *lead* for that job family. A tool not in that list is still claimable; it just doesn't open the section.
 
 ### What's shared, and what isn't
 

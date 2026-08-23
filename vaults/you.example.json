@@ -27,7 +27,7 @@
   },
 
   "roleTracks": {
-    "_note": "The job families this person applies for. Every claim's `tracks` array says which it serves (`any` = everywhere). Each track carries an ANGLE — the proven framing for that family. This is why there are no per-track profile FILES: the framing lives here, right next to the facts it frames.",
+    "_note": "The job families this person applies for. Every claim's `tracks` array says which it serves (`any` = everywhere). Each track carries an ANGLE — the proven framing for that family. This is why there are no per-track profile FILES: the framing lives here, right next to the facts it frames. `toolbeltOrder` is NOT a second skills list — it only RANKS which PROGRAMS open the Tools line on this track. Crafts (3D modeling, writing, facilitation) live under `skills` without kind=tool. Program inventory → vault-root `software`.",
 
     "your-track-a": {
       "covers": "One line: what kind of job this is.",
@@ -41,7 +41,9 @@
         "demote": [
           "Genuinely true, but irrelevant here — it costs space and dilutes the pitch"
         ]
-      }
+      },
+      "toolbeltOrder": ["The program that should OPEN the Tools line on this track"],
+      "_toolbeltNote": "RANKING ONLY — not an inventory. Every kind=tool claim is selectable on every track. This list says which program names lead. Add new apps in vault-root `software` plus a skills claim with kind=tool."
     },
 
     "your-track-b": {
@@ -50,7 +52,9 @@
       "angle": {
         "leadWith": ["What leads on THIS track (probably not what led on the last one)"],
         "demote": ["What led on the other track, but would mislead here"]
-      }
+      },
+      "toolbeltOrder": ["A different program that should lead on this track"],
+      "_toolbeltNote": "RANKING ONLY — not an inventory. Same programs as vault-root `software`; different lead order."
     }
   },
 
@@ -79,8 +83,20 @@
     }
   },
 
+  "software": {
+    "_note": "PROGRAM roster — Maya, Blender, Figma — not crafts. Canonical claims still live in `skills` as kind=tool. Look here to collect apps; `toolbeltOrder` only ranks which ones OPEN a résumé's Tools line. How to add: (1) a skills.* claim with kind=tool + source, (2) a row here, (3) toolbeltOrder only if it should lead.",
+    "whereToEditClaims": "skills.* entries with kind: \"tool\"",
+    "programs": [
+      {
+        "name": "ExampleApp",
+        "skillId": "sk-example-app",
+        "group": "your-domain"
+      }
+    ]
+  },
+
   "skills": {
-    "_note": "Grouped by DOMAIN, so a resume can pull the relevant cluster whole. `strength` = lead | solid | supporting.",
+    "_note": "CRAFTS + PROGRAMS, grouped by domain. Not the same as `toolbeltOrder`. A skill is a claim (3D modeling, facilitation, ExampleApp). `kind: \"tool\"` = a PROGRAM; omit kind for a CRAFT. Look up / add software in vault-root `software`. `strength` = lead | solid | supporting.",
 
     "your-domain": [
       {
@@ -99,6 +115,15 @@
         "tracks": ["any"],
         "source": "owner directive 2026-01-01",
         "confidence": "verified"
+      },
+      {
+        "id": "sk-example-app",
+        "claim": "ExampleApp — the program you actually use (Maya, Blender, Figma…). This is SOFTWARE, not the craft.",
+        "strength": "solid",
+        "tracks": ["any"],
+        "source": "owner directive 2026-01-01",
+        "confidence": "verified",
+        "kind": "tool"
       }
     ]
   },

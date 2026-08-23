@@ -143,6 +143,11 @@ async function load() {
         <div class="hub-chips">${tags.length ? tags.map(t =>
           `<span class="hub-tag">${esc(t.label)}<span class="g">${esc(t.group || "")}</span></span>`
         ).join("") : "<span class='empty'>No boardSkills yet</span>"}</div>
+        <h3 class="hub-section-label">Software (${((u.software && u.software.programs) || []).length})</h3>
+        <p class="hub-meta">Programs only — not crafts. <code>toolbeltOrder</code> ranks which of these open a résumé's Tools line; add a new app here and as a <code>kind: "tool"</code> skill.</p>
+        <div class="hub-chips">${((u.software && u.software.programs) || []).length ? u.software.programs.map(p =>
+          `<span class="hub-tag">${esc(p.name)}<span class="g">${esc(p.group || "tool")}</span></span>`
+        ).join("") : "<span class='empty'>No software roster yet — see vault-root software</span>"}</div>
         <h3 class="hub-section-label">Go-to résumé packs</h3>
         <div class="hub-table-scroll">
         <table>

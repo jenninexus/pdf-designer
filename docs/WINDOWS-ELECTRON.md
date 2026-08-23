@@ -23,6 +23,24 @@ The first run copies the public, Git-tracked Jane Example seed into
 never merge, overwrite, sync, or delete that workspace. The installer/uninstaller
 must not remove a user's vaults, resumes, palettes, or exports.
 
+## First launch: what a standalone user sees
+
+1. Install the per-user Windows app, then open **PDF Designer** from Start Menu or the
+   desktop shortcut. No checkout, Node, or system Python is required by the packaged app.
+2. On a genuinely new workspace, the app copies the public fictional Jane Example to
+   `Documents\PDF Designer`; it never overwrites an existing folder.
+3. The local Design Hub opens in its dark-default workspace chrome. Choose **Start** for
+   the guided route: local vault → source-backed skills → palette → light and dark export.
+   The document's own palette is independent of the Hub theme.
+4. Jane Example is a clearly labelled fictional template. The guided path creates no
+   account, cloud connection, claim, or automatic submission. It uses the bundled local
+   Hub and the existing Playwright renderer only.
+5. Keep the `Documents\PDF Designer` folder when uninstalling. The uninstaller removes the
+   application, not the person's vaults, resumes, palettes, or exports.
+
+This describes the intended customer path, not current release eligibility. The present
+artifact is unsigned and has not yet passed the clean-machine Windows validation below.
+
 ## Security and local-data boundary
 
 - Windows 10/11 x64 only; assisted per-user NSIS install with Start Menu and desktop shortcuts.

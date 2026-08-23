@@ -162,7 +162,7 @@ Honest status — nothing below exists yet.
 
 | What | Status |
 |---|---|
-| **Design Hub app** — pywebview shell around the existing previewer; variant generation; canvas editor | Parked / mid-term. See [`PREVIEWER.md`](PREVIEWER.md) and [`../Plans/_Active/2026-07-21-next-agent-product-prompt.md`](../Plans/_Active/2026-07-21-next-agent-product-prompt.md). |
+| **Design Hub app** — pywebview shell around the existing previewer; variant generation; canvas editor | Parked / mid-term. See [`PREVIEWER.md`](PREVIEWER.md) and [`../Plans/_Complete/2026-07-11-design-hub-parked-phases.md`](../Plans/_Complete/2026-07-11-design-hub-parked-phases.md). Active checklist: [`../Plans/_Active/2026-08-22-product-polish-and-release-readiness.md`](../Plans/_Active/2026-08-22-product-polish-and-release-readiness.md). |
 | **PDF form filling** — AcroForm field filling, flat-PDF overlay filling | **Deferred indefinitely.** This was the repo's *original* premise and has never once been needed — every real document has been HTML → PDF. Don't build it until something actually demands it. |
 
 > The previous version of this document described a `src/application_assistant/` package

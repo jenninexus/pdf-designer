@@ -3,10 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
 <title>pdf-designer — Start a local résumé</title>
 <link rel="stylesheet" href="/_hub/hub.css">
 </head>
-<body class="hub-page">
+<body class="hub-page wizard-page">
 <header class="hub-bar" aria-label="First résumé wizard toolbar">
   <div class="hub-bar-scroll">
     <div class="hub-group hub-brand-group"><a class="hub-brand" href="/" title="Home">Design Hub</a></div>
@@ -18,52 +19,71 @@
     </nav>
   </div>
 </header>
-<main class="hub-page-wrap">
-  <h1>Start a local résumé</h1>
-  <p class="hub-page-lead">A four-step local path. It creates no account, sends nothing anywhere, and uses the same HTML-to-PDF engine as the Library.</p>
-  <ol class="wizard-progress" aria-label="Wizard progress">
-    <li class="on">1 · Vault</li><li>2 · Skills</li><li>3 · Palette</li><li>4 · Export</li>
-  </ol>
-  <section class="wizard-step on" aria-labelledby="voice-seed-title">
-    <h2 id="voice-seed-title">Optional · Voice Seed preview</h2>
-    <p>Preview a redacted, read-only card from local writing preferences. It creates no account, sends nothing, saves nothing, and does not use a renderer or background sync.</p>
-    <div class="wizard-actions">
-      <label for="voiceProfile">Local profile (optional)</label>
-      <input id="voiceProfile" type="text" inputmode="text" autocomplete="off" placeholder="Jane Example is shown by default">
-      <button type="button" id="voicePreview">Preview card</button>
+<main class="hub-page-wrap wizard-shell">
+  <section class="wizard-hero" aria-labelledby="wizard-title">
+    <div class="wizard-hero-copy">
+      <p class="wizard-eyebrow">LOCAL RÉSUMÉ STUDIO</p>
+      <h1 id="wizard-title">Build the honest version first.</h1>
+      <p class="hub-page-lead">A calm, four-step local path from your verified facts to light and dark PDFs. The dark Design Hub is the default workspace; your documents keep their own palette.</p>
     </div>
-    <pre id="voiceCard" class="wizard-path" aria-live="polite">Loading public Jane Example…</pre>
+    <dl class="wizard-promises" aria-label="Local-first promises">
+      <div><dt>Local</dt><dd>Files stay in your workspace.</dd></div>
+      <div><dt>Focused</dt><dd>One engine, one clear path.</dd></div>
+      <div><dt>Yours</dt><dd>Nothing submits itself.</dd></div>
+    </dl>
   </section>
 
-  <section class="wizard-step on" data-step="0">
-    <h2>1 · Put your facts in a local vault</h2>
+  <ol class="wizard-progress" aria-label="Wizard progress">
+    <li class="on" aria-current="step" aria-label="1 · Vault"><span class="wizard-progress-number">01</span><span>Vault</span></li>
+    <li aria-label="2 · Skills"><span class="wizard-progress-number">02</span><span>Skills</span></li>
+    <li aria-label="3 · Palette"><span class="wizard-progress-number">03</span><span>Palette</span></li>
+    <li aria-label="4 · Export"><span class="wizard-progress-number">04</span><span>Export</span></li>
+  </ol>
+  <p class="wizard-progress-copy">Your place is remembered only in this browser, so you can continue when you are ready.</p>
+
+  <section class="wizard-voice" aria-labelledby="voice-seed-title">
+    <div class="wizard-section-meta"><p class="wizard-kicker">OPTIONAL COMPANION</p><span class="wizard-status">READ-ONLY</span></div>
+    <h2 id="voice-seed-title">A small Voice Seed preview</h2>
+    <p>Preview a redacted, read-only card from local writing preferences. It creates no account, sends nothing, saves nothing, and does not use a renderer or background sync.</p>
+    <div class="wizard-voice-actions">
+      <label for="voiceProfile">Local profile <span>(optional)</span></label>
+      <div class="wizard-field-row">
+        <input id="voiceProfile" type="text" inputmode="text" autocomplete="off" placeholder="Jane Example is shown by default">
+        <button type="button" id="voicePreview">Preview card</button>
+      </div>
+    </div>
+    <pre id="voiceCard" class="wizard-path wizard-voice-card" aria-live="polite">Loading public Jane Example…</pre>
+  </section>
+
+  <section class="wizard-step on" data-step="0" aria-labelledby="wizard-step-1">
+    <div class="wizard-step-heading"><p class="wizard-step-index">STEP 01</p><h2 id="wizard-step-1" tabindex="-1">Put your facts in a local vault</h2></div>
     <p>Copy the three generic templates into the root-noun workspace. They are gitignored when you replace <code>yourname</code>, so this is where private contact details and verified career facts stay.</p>
     <code class="wizard-path">users/you.example.json → users/&lt;you&gt;.json<br>vaults/you.example.json → vaults/&lt;you&gt;.json<br>profiles/you-resume.example.json → profiles/&lt;you&gt;-resume.json</code>
     <div class="wizard-callout"><strong>Only facts with a source belong in the vault.</strong> A missing skill is not a gap until you ask and record the answer.</div>
-    <div class="wizard-actions"><a href="/vault?profile=examples">See fictional Jane Example</a><button type="button" class="primary" data-next>My local files are ready</button></div>
+    <div class="wizard-actions"><a href="/vault?profile=examples">See fictional Jane Example</a><button type="button" class="primary" data-next>My local files are ready <span aria-hidden="true">→</span></button></div>
   </section>
 
-  <section class="wizard-step" data-step="1" hidden>
-    <h2>2 · Add the skills you can support</h2>
-    <p>In <code>vaults/&lt;you&gt;.json</code>, group skills by domain. Every claim needs a <code>source</code>, <code>confidence</code>, and the role track it serves. The profile only points at the vault; it does not become a competing source of truth.</p>
+  <section class="wizard-step" data-step="1" hidden aria-labelledby="wizard-step-2">
+    <div class="wizard-step-heading"><p class="wizard-step-index">STEP 02</p><h2 id="wizard-step-2" tabindex="-1">Add the skills you can support</h2></div>
+    <p>In <code>vaults/&lt;you&gt;.json</code>, group skills by domain. Every claim needs a <code>source</code>, <code>confidence</code>, and the role track it serves. Programs (Maya, Figma) go in vault-root <code>software</code> plus a <code>kind: "tool"</code> skill — that roster is not the same as <code>toolbeltOrder</code>, which only ranks which apps open the Tools line. There is no résumé-file upload yet: paste source-backed facts, or start from Jane Example. The profile only points at the vault; it does not become a competing source of truth.</p>
     <code class="wizard-path">python -m pdf_tool.check_vault vaults/&lt;you&gt;.json</code>
-    <div class="wizard-callout"><strong>Jane Example is fictional and public.</strong> Use it to learn the shape, never as a claim source for your own résumé.</div>
-    <div class="wizard-actions"><button type="button" data-back>Back</button><a href="/vault?profile=examples">Inspect Jane’s skills</a><button type="button" class="primary" data-next>Skills are source-backed</button></div>
+    <div class="wizard-callout"><strong>Jane Example is fictional and public.</strong> Use it to learn the shape, never as a claim source for your own résumé. Uploading an old PDF to auto-fill the vault is not available in this version — résumé-file upload is not available yet.</div>
+    <div class="wizard-actions"><button type="button" data-back><span aria-hidden="true">←</span> Back</button><a href="/vault?profile=examples">Inspect Jane’s skills</a><button type="button" class="primary" data-next>Skills are source-backed <span aria-hidden="true">→</span></button></div>
   </section>
 
-  <section class="wizard-step" data-step="2" hidden>
-    <h2>3 · Audition a palette without changing geometry</h2>
+  <section class="wizard-step" data-step="2" hidden aria-labelledby="wizard-step-3">
+    <div class="wizard-step-heading"><p class="wizard-step-index">STEP 03</p><h2 id="wizard-step-3" tabindex="-1">Audition a palette without changing geometry</h2></div>
     <p>Open the public Jane Example résumé in the Library and use its palette control. Palette tokens affect colour only: Letter size, equal margins, and pagination remain locked.</p>
     <div class="wizard-callout"><strong>House rule:</strong> no brown, mustard, or lime. Use the tracked presets first; a personal brand map belongs in your ignored <code>brands/</code> folder later.</div>
-    <div class="wizard-actions"><button type="button" data-back>Back</button><a class="primary" href="/?doc=examples%2Fprofiles%2Fdefault-resume%2Fdefault-resume.html">Open Jane Example in Library</a><button type="button" data-next>I picked a palette</button></div>
+    <div class="wizard-actions"><button type="button" data-back><span aria-hidden="true">←</span> Back</button><a class="primary" href="/?doc=examples%2Fprofiles%2Fdefault-resume%2Fdefault-resume.html">Open Jane Example in Library</a><button type="button" data-next>I picked a palette <span aria-hidden="true">→</span></button></div>
   </section>
 
-  <section class="wizard-step" data-step="3" hidden>
-    <h2>4 · Export both modes through the existing engine</h2>
+  <section class="wizard-step" data-step="3" hidden aria-labelledby="wizard-step-4">
+    <div class="wizard-step-heading"><p class="wizard-step-index">STEP 04</p><h2 id="wizard-step-4" tabindex="-1">Export both modes through the existing engine</h2></div>
     <p>The Library’s Export control calls the same local endpoint and renderer as the CLI. Choose <strong>PDF light</strong> for ATS/job boards, export it, then choose <strong>PDF dark</strong> for human readers and export again.</p>
     <code class="wizard-path">python -m pdf_tool.check_generation examples/profiles/default-resume/default-resume.html<br>python -m pdf_tool.html_to_pdf examples/profiles/default-resume/default-resume.html<br>python -m pdf_tool.html_to_pdf examples/profiles/default-resume/default-resume.html --pdf-theme dark</code>
     <div class="wizard-callout"><strong>Complete demo:</strong> the fictional Jane Example is the only document this wizard exports until you author a source-backed HTML résumé from your own vault. Nothing is submitted automatically.</div>
-    <div class="wizard-actions"><button type="button" data-back>Back</button><a class="primary" href="/?doc=examples%2Fprofiles%2Fdefault-resume%2Fdefault-resume.html">Open Jane Example for light + dark export</a></div>
+    <div class="wizard-actions"><button type="button" data-back><span aria-hidden="true">←</span> Back</button><a class="primary" href="/?doc=examples%2Fprofiles%2Fdefault-resume%2Fdefault-resume.html">Open Jane Example for light + dark export <span aria-hidden="true">↗</span></a></div>
   </section>
 </main>
 <script>
@@ -71,14 +91,18 @@
   const steps = [...document.querySelectorAll('[data-step]')];
   const progress = [...document.querySelectorAll('.wizard-progress li')];
   let current = 0;
-  function show(next) {
+  function show(next, moveFocus = false) {
     current = Math.max(0, Math.min(steps.length - 1, next));
     steps.forEach((step, index) => { const on = index === current; step.hidden = !on; step.classList.toggle('on', on); });
-    progress.forEach((item, index) => item.classList.toggle('on', index <= current));
+    progress.forEach((item, index) => {
+      item.classList.toggle('on', index <= current);
+      item.toggleAttribute('aria-current', index === current);
+    });
     try { localStorage.setItem('pdf-designer.wizard.step', String(current)); } catch (_) {}
+    if (moveFocus) steps[current].querySelector('h2')?.focus({ preventScroll: true });
   }
-  document.querySelectorAll('[data-next]').forEach(button => button.addEventListener('click', () => show(current + 1)));
-  document.querySelectorAll('[data-back]').forEach(button => button.addEventListener('click', () => show(current - 1)));
+  document.querySelectorAll('[data-next]').forEach(button => button.addEventListener('click', () => show(current + 1, true)));
+  document.querySelectorAll('[data-back]').forEach(button => button.addEventListener('click', () => show(current - 1, true)));
   try { show(Number(localStorage.getItem('pdf-designer.wizard.step')) || 0); } catch (_) { show(0); }
 
   const voiceProfile = document.getElementById('voiceProfile');

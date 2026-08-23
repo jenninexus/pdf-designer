@@ -18,9 +18,9 @@ public card.
 
 ## Product gate
 
-Offer this only after the future guided wizard has a valid local `characterVoice` and
-vault `voice` block. The wizard must make **Skip** the default-safe choice and must
-work completely when Voice Seed is absent.
+The current guided wizard may offer only the read-only preview after it has a valid local
+`characterVoice` and vault `voice` block. The preview must remain optional and the wizard
+must work completely when Voice Seed is absent.
 
 Before writing a card, show the exact proposed contents and require a human approval.
 No network request, account, renderer dependency, or background sync is permitted.
@@ -48,7 +48,7 @@ Allowed fields are the display name or pseudonym, a short non-biographical summa
 and owner-approved writing preferences. Do not include email addresses, employers,
 dates, credentials, client names, samples, social handles, local paths, or IDs.
 
-## Implementation contract for the future wizard
+## Implementation contract for the guided wizard
 
 1. Read only the two local voice blocks.
 2. Construct the minimal card in memory; redact anything outside the schema.

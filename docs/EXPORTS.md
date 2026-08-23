@@ -14,6 +14,8 @@ python -m pdf_tool                                              # hub — list c
 python -m pdf_tool.html_to_pdf <doc>.html                       # → <stem>-light.pdf
 python -m pdf_tool.html_to_pdf <doc>.html --pdf-theme dark      # → <stem>-dark.pdf
 python -m pdf_tool.html_to_pdf <doc>.html --output-dir <dir>
+python -m pdf_tool.html_to_pdf <doc>.html --max-mb 5            # fail if PDF > 5 MB (Indeed)
+python -m pdf_tool.inline_images <tpl>.html <out>.html --board name=path ...
 python -m pdf_tool.html_to_pdf <doc>.html --variants            # light PDF per public palette
 python -m pdf_tool.variants <doc>.html                          # same as --variants
 python -m pdf_tool.merge_pdfs out.pdf a.pdf b.pdf --require-letter
@@ -39,23 +41,65 @@ After `pip install -e .` you also get console scripts: `pdf-designer`,
 
 ## Default Folders
 
-If no output path is supplied, exports go under `_exports` beside the source
-document. Dual-mode default names are **`<stem>-light.pdf`** / **`<stem>-dark.pdf`**.
+If no output path is supplied, exports go under `_exports` **beside the source
+HTML**. Dual-mode default names are **`<stem>-light.pdf`** / **`<stem>-dark.pdf`**.
 Re-exports never overwrite — they bump to `-v2`, `-v3`, …
 
+After the 2026-08 root-noun rearrange, pick the folder on purpose:
+
+| What you're exporting | Put the PDFs here | Flag |
+|---|---|---|
+| **Go-to pack** (generic résumé / cover / work-examples) | `resumes/<user>/defaults/` next to the HTML | `--output-dir resumes/<user>/defaults --force` |
+| **This job** | `resumes/<user>/_exports/<App>/` | `--output-dir resumes/<user>/_exports/<App>` |
+| Unspecified / one-off | `_exports/` beside the source HTML | (default) |
+
+Never write go-to PDFs to `_exports/defaults/` — the Design Hub picker reads
+`resumes/<user>/defaults/`. Vault `goToPacks.*.exportDir` must match.
+
 ```text
-profile/
-  resume.html
-  _exports/
-    resume-light.pdf
-    resume-dark.pdf
-    resume-light-v2.pdf
+resumes/jenni/defaults/
+  jenni-default-resume.html
+  jenni-default-resume-light.pdf
+  jenni-default-resume-dark.pdf
+  jenni-default-cover-letter.html
+  jenni-default-work-examples.html
+  jenni-default-work-examples-light.pdf
+  jenni-default-work-examples-dark.pdf
+
+resumes/jenni/_exports/Color-X/
+  jenni-color-x-resume-light.pdf
 ```
 
 Use `--output-dir <dir>` or a full output path when a project needs a specific folder.
 That flag is not a directory at the repo root — a leftover `--output-dir` without a
 path used to create a folder of that name (`pdf_to_png` positional). The CLIs now
-refuse paths that start with `-`. Go-to packs belong in `resumes/<id>/defaults/`.
+refuse paths that start with `-`.
+
+## Board upload size (Indeed / 5 MB)
+
+Résumé and cover-letter PDFs are already well under 5 MB. **Work-examples are
+not**, unless the photos are shrunk *before* Chromium embeds them. A 3 MB HTML
+full of native WebP can print as a **23 MB PDF** because `page.pdf()` decodes
+WebP and re-embeds bitmaps.
+
+Indeed, Greenhouse "Additional Documents", and several other boards cap uploads
+around **5 MB**. The go-to work-examples pack must clear that bar.
+
+```powershell
+# 1) Inline at print resolution (JPEG, longest edge 960px)
+python resumes/jenni/defaults/_inline_work_examples.py
+# or: python -m pdf_tool.inline_images <template.html> <out.html> --board name=path ...
+
+# 2) QA, then export into defaults/ (same folder as the HTML)
+python -m pdf_tool.check_generation resumes/jenni/defaults/jenni-default-work-examples.html
+python -m pdf_tool.html_to_pdf resumes/jenni/defaults/jenni-default-work-examples.html --output-dir resumes/jenni/defaults --force --max-mb 5
+python -m pdf_tool.html_to_pdf resumes/jenni/defaults/jenni-default-work-examples.html --output-dir resumes/jenni/defaults --force --pdf-theme dark --max-mb 5
+```
+
+`--max-mb 5` fails the export if the PDF is still over the cap. Do **not** try
+to shrink the PDF after the fact with an AGPL rasterizer — the size has to be
+won at inline time. Game shots still use `object-fit: contain` on a 16:9 dark
+mat ([`../themes/GENERATION-RULES.md`](../themes/GENERATION-RULES.md) §3).
 
 ## Light PDF
 

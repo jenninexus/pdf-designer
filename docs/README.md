@@ -25,8 +25,10 @@ short and public-facing; **public product detail lives here**.
 | [`PUBLIC-RELEASE-AUDIT.md`](PUBLIC-RELEASE-AUDIT.md) | What may ship in a future public release |
 | [`../examples/resume-studio/`](../examples/resume-studio/) | Public product front door |
 | [`pdf-designer-overview.html`](pdf-designer-overview.html) · [`PDF`](pdf-designer-overview.pdf) | Browser-openable product overview + PDF rendered by this engine |
+| [`images/README.md`](images/README.md) | Current public-only Hub screenshot set; prior captures are dated archives |
 | [`PACKAGING.md`](PACKAGING.md) | PyPI / wheel spike |
 | [`WINDOWS-LAUNCHER.md`](WINDOWS-LAUNCHER.md) | Windows-first local Design Hub launcher spike + acceptance checks |
+| [`WINDOWS-ELECTRON.md`](WINDOWS-ELECTRON.md) | Pre-release standalone Windows behavior, first launch, and release gates |
 | [`VOICE-SEED-HANDOFF.md`](VOICE-SEED-HANDOFF.md) | Optional, public-safe voice-card boundary |
 | [`QA.md`](QA.md) | Ship gate — `check_generation` |
 

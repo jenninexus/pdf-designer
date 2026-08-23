@@ -1,7 +1,7 @@
 # ROADMAP — pdf-designer
 
 > **This is a pointer, not the roadmap.** The single active working checklist is
-> [`Plans/_Active/2026-08-21-standalone-app-remaining.md`](../Plans/_Active/2026-08-21-standalone-app-remaining.md).
+> [`Plans/_Active/2026-08-22-product-polish-and-release-readiness.md`](../Plans/_Active/2026-08-22-product-polish-and-release-readiness.md).
 > `/jen:roadmap` resolves here. Plans index: [`Plans/README.md`](../Plans/README.md).
 >
 > Product UX target: [`WORKSPACE-LAYOUT.md`](WORKSPACE-LAYOUT.md) (root `users/` · `vaults/` · `_job-apps/` · …).  
@@ -14,9 +14,11 @@
 - [x] **History scrub** (2026-08-18) — `docs/HISTORY-SCRUB.md`; force-push `8c1c631`. BEE re-clones.
 - [x] **Push origin/main** — private repo; clone-safe Hub + stills `3f5ebe8` (2026-08-18).
 - [x] **Core public product** — GitHub **public** 2026-08-19; blog walkthrough live; Jane Example covers every Hub document kind. Social publication records are owned in the Socials workspace.
-- [ ] Keep **SSOT + QA docs** honest as the engine evolves
+- [ ] Keep **SSOT + QA docs** honest as the engine evolves; consolidate the 2026-08-22 public-safe
+  product polish, visual evidence, product-channel record, and LIVPHI mirror in the active plan.
 - [x] Optional: TestPyPI upload + fresh-install proof (`pdf-designer 0.4.0`, 2026-08-21)
-- [ ] Production PyPI · paid desktop shell (installer/wizard not started) · recurring responsive Hub visual matrix
+- [ ] Clean-machine Electron installer proof + signing decision · release-gated paid desktop fulfilment ·
+  recurring responsive Hub visual matrix
 
 ### Recently landed
 

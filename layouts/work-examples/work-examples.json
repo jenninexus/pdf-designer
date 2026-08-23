@@ -38,7 +38,7 @@
   "footerMail": "Signature email uses --text (or --accent), ≥11px, font-weight 600 — never --dim2 at 9px. Same rule across résumé + cover letter + work samples.",
   "brandAssets": {
     "mgLogo": "Optional. Default work-examples omits the MG mark in shipped-games. If used elsewhere, prefer SQUARE 1×1 — not landscape 16×9 in the header.",
-    "ssot": "storage/studio/resources/images/martiangames/martiangames-logo-1x1.webp"
+    "ssot": "resumes/studio/resources/images/martiangames/martiangames-logo-1x1.webp"
   },
   "tenureRule": "Studio at a glance: studio age (25 yrs founded 2000) and applicant tenure (Jenni = 15 yrs from Dec 2011) are DIFFERENT. Never tag the glance as 'Martian Games · 25 years' if it reads as the applicant's tenure — prefer 'studio · founded 2000' + a separate '15 yrs with studio' badge.",
   "expectedPages": { "workSamples": 3 },

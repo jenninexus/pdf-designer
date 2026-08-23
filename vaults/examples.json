@@ -10,6 +10,7 @@
       "covers": "Document systems, résumé studios, and local-first design tools.",
       "theme": "company-derived",
       "toolbeltOrder": ["HTML", "CSS", "Python", "Playwright"],
+      "_toolbeltNote": "RANKING ONLY — not a skills list. Programs live in vault-root software + skills with kind=tool.",
       "angle": {
         "leadWith": [
           "Shipped a local résumé studio: vault → Hub → light + dark PDF",
@@ -28,6 +29,16 @@
     "resume": "Claim-dense, track-angled, company-agnostic within the track.",
     "coverLetter": "Warmer and company-specific.",
     "avoid": ["Corporate jargon", "Buzzword stacking"]
+  },
+
+  "software": {
+    "_note": "PROGRAM roster — not crafts. Canonical claims stay in skills as kind=tool. toolbeltOrder only ranks which apps open the Tools line.",
+    "programs": [
+      {"name": "HTML", "skillId": "sk-html", "group": "documents"},
+      {"name": "CSS", "skillId": "sk-css", "group": "documents"},
+      {"name": "Python", "skillId": "sk-python", "group": "documents"},
+      {"name": "Playwright", "skillId": "sk-playwright", "group": "documents"}
+    ]
   },
 
   "boardSkills": {
@@ -115,7 +126,8 @@
         "strength": "supporting",
         "tracks": ["product-design"],
         "source": "AGENTS.md",
-        "confidence": "verified"
+        "confidence": "verified",
+        "kind": "tool"
       },
       {
         "id": "sk-playwright",
@@ -123,7 +135,8 @@
         "strength": "supporting",
         "tracks": ["product-design"],
         "source": "src/pdf_tool/html_to_pdf.py",
-        "confidence": "verified"
+        "confidence": "verified",
+        "kind": "tool"
       }
     ]
   },
