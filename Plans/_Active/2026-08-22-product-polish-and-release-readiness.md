@@ -21,7 +21,10 @@ linked repository remains owner of its own implementation.
 - [x] The optional Voice Seed handoff correctly distinguishes the character and application registers;
       no private claims, contacts, or vault data are copied into Voice Seed.
 - [ ] PDF Designer is mirrored to `C:\Github\pdf-designer` on LIVPHI using the approved local-network
-      route. A clean-machine Electron GUI/install test is explicitly deferred for the owner tomorrow.
+      route. A clean-machine Electron GUI/install test is **not** BEE or LIVPHI: those machines have
+      Python/Node/checkouts. Proof host = a fresh Win10/11 x64 VM. See `docs/WINDOWS-ELECTRON.md`.
+- [x] Start route can seed a gitignored vault from an uploaded résumé/cover letter (inferred claims,
+      local parse only) and edit it before save (2026-08-23).
 - [x] Docs, plan index, roadmap, local dev log, and next-agent handoff state verified versus unverified
       work precisely.
 
@@ -67,14 +70,26 @@ linked repository remains owner of its own implementation.
 
 ### 4. Cross-PC and release gates
 
-- [ ] Mirror the local PDF Designer repository to LIVPHI's `C:\Github\pdf-designer` without copying
+- [x] Mirror the local PDF Designer repository to LIVPHI's `C:\Github\pdf-designer` without copying
       ignored private workspace data, credentials, Electron runtime, or installer artifacts.
-- [ ] Inspect the LIVPHI mirror and record its suitable role: source/docs mirror only, not proof of the
+      **Done 2026-08-24** via writable `\\LIVPHI\Github` (public `git clone --filter=blob:none --depth 1`
+      https://github.com/jenninexus/pdf-designer.git). Advertised `\\LIVPHI\git` stays access-denied;
+      do not use admin shares.
+- [x] Inspect the LIVPHI mirror and record its suitable role: source/docs mirror only, not proof of the
       clean-machine release gate until its preflight is explicitly passed.
 - [x] BEETHOVEN `C:\p\pdf-designer` fast-forwarded to GitHub `829e0ca` (2026-08-22). Source/docs only —
-      not a clean-machine proof host (Python/Node + checkout present).
+      not a clean-machine proof host (Python/Node + checkout present). `C:\p\pdf-designer-installer-drop\`
+      is a valid *drop folder* for the EXE+script, but BEE still fails preflight because the toolchain
+      is on PATH. That is correct. LIVPHI is the same class of machine.
+- [x] Start /wizard résumé+cover import → review editor → gitignored starter vault (2026-08-23).
+      Claims tagged `inferred`. No network parser. Reserved ids (`examples`, `you`) cannot be overwritten.
 - [x] Carry forward the only release blockers: clean Windows 10/11 x64 install/GUI/process-cleanup test,
       signing decision, and human-owned PayPal production/fulfilment policy.
+      **Signing decision (2026-08-24):** Azure Trusted Signing via electron-builder 26
+      `win.azureSignOptions`. Local `npm run dist` stays unsigned (`CSC_IDENTITY_AUTO_DISCOVERY=false`)
+      and is **not listable**. Signed dist is `npm run dist:signed` after the human provisions the
+      Azure identity. Clean-machine proof remains a fresh Win10/11 x64 VM with
+      `-RequireAuthenticode` on the signed EXE.
 
 ## Assumptions
 
@@ -93,13 +108,12 @@ linked repository remains owner of its own implementation.
   runtime export, wizard, test suite, and public clone checks.
 - VERIFIED — PDF Designer's own config and docs identify `www-theme-kit` as the runtime-kit authority;
   `syna-theme-kit` is historical lineage only.
-- UNVERIFIED — clean-machine Windows installer GUI, lifecycle, uninstall, and signing behavior.
+- UNVERIFIED — clean-machine Windows installer GUI on a **fresh VM**, and signed Authenticode behavior.
+- VERIFIED — 2026-08-24 rebuilt unsigned `desktop/dist/PDF-Designer-Setup-0.1.0.exe`; Authenticode `NotSigned` (not listable). `npm run dist:signed` fails closed without Azure identity. Hub title screen measured 3s hold + 2s fade on localhost `/?splash=1`. Documents policy: follow Windows Documents (SEGOPC OneDrive KFM). `-BundledRuntimeProof` PASS from `C:\pdf-designer-installer-drop\` (bundled runtime path, Jane light+dark, uninstall kept workspace). That is **not** a listing gate. Syn Themes `VSCE_PAT` cannot sign the EXE.
 - VERIFIED — public-only QA workspace captured Library, Recipes, Vault, and Start at 390, 576, 768,
   992, 1200, 1400, and 1920px; 91 source tests passed.
-- BLOCKED — LIVPHI answered ping and SMB tests. It advertises a `git` share but denies access to it; only
-  unrelated non-admin shares are currently readable. Its administrative share denied access, WinRM is not
-  trusted, and SSH has no approved non-interactive credential. Do not relax those controls merely to copy
-  this repo; wait for an approved authenticated share or remote account that maps to `C:\Github`.
+- BLOCKED — Azure Trusted Signing identity validation (human + ID documents as `jenninexus2.0@gmail.com`). Until Approved + `npm run dist:signed`, there is no Gumroad/JN `$5` file.
+- VERIFIED — 2026-08-24 `\\LIVPHI\Github\pdf-designer` public clone exists (source/docs). `\\LIVPHI\git` remains access-denied. BEETHOVEN `C:\p\pdf-designer` already mirrored. Neither host is a clean-VM listing proof.
 - VERIFIED — 2026-08-22 SEGO→GitHub `829e0ca`, then BEETHOVEN `C:\p\pdf-designer` reset onto `origin/main`
   (history-scrub divergence; working tree was otherwise clean). BEE now has current source. BEE is **not**
   a clean-machine installer target: Python/Node are present and `C:\p\pdf-designer` is a checkout.
@@ -113,18 +127,24 @@ linked repository remains owner of its own implementation.
 
 ## Deferred / human-owned
 
-- Run the Electron installer and visible app on an independently preflighted clean Windows 10/11 x64
-  machine tomorrow; use `scripts/verify-clean-machine.ps1` with the installer only, never a checkout.
+- Provision Azure Trusted Signing (identity validation + Entra app). Store `AZURE_TENANT_ID`,
+  `AZURE_CLIENT_ID`, `AZURE_CLIENT_SECRET` in sys-admin; fill gitignored
+  `desktop/azure-trusted-signing.json` from the tracked example. Then `npm run dist:signed`.
+- Run the **signed** Electron installer on an independently preflighted clean Windows 10/11 x64
+  VM with `scripts/verify-clean-machine.ps1 -ShowAppWindow -RequireAuthenticode`; copy only the
+  Setup EXE and that script, never a checkout. SEGOPC / BEETHOVEN / LIVPHI cannot be that host.
 - Create PayPal production credentials, accept processor terms, configure webhook secrets, set refund/
   tax/support policy, and activate protected versioned fulfilment only after the release gate passes.
 - Production PyPI remains intentionally out of scope for the customer-facing desktop route.
+- LIVPHI `git` share stays denied. Source mirror is `\\LIVPHI\Github\pdf-designer` (done 2026-08-24).
 
 ## Next-agent handoff
 
 Continue only the remaining release gates. Preserve all current uncommitted work from other agents.
-Do not activate checkout, paid-download, account, cloud, updater, or second-renderer behavior. First obtain
-an approved authenticated LIVPHI source-copy route (or leave that task blocked), then use a separately
-provisioned clean Windows 10/11 x64 target for `scripts/verify-clean-machine.ps1 -ShowAppWindow`. Record
-only observed installer, Electron lifecycle, export, uninstall, and signing evidence. Revisit the $5 direct
-PayPal / $6 Gumroad channel policy and the prepared product-widget contract only after those gates and an
-explicit release decision.
+Do not activate checkout, paid-download, account, cloud, updater, or second-renderer behavior.
+LIVPHI source mirror is `\\LIVPHI\Github\pdf-designer`. After the human
+provisions Azure Trusted Signing, rebuild with `npm run dist:signed` and prove it on a separately
+provisioned clean Windows 10/11 x64 VM using `scripts/verify-clean-machine.ps1 -ShowAppWindow -RequireAuthenticode`
+(or `-BundledRuntimeProof -RequireAuthenticode` on this LAN until a spare VM exists).
+The unsigned 0.1.0 NSIS file is never listable. Revisit the $5 direct PayPal / $6 Gumroad channel
+policy and the prepared product-widget contract only after those gates and an explicit release decision.

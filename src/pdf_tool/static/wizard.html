@@ -6,8 +6,34 @@
 <meta name="color-scheme" content="dark">
 <title>pdf-designer — Start a local résumé</title>
 <link rel="stylesheet" href="/_hub/hub.css">
+<script>
+try {
+  var q = new URLSearchParams(location.search);
+  var skip = sessionStorage.getItem("pdf-designer.hub.splash") === "1";
+  var force = q.has("splash");
+  var off = q.has("no-splash");
+  if ((skip && !force) || (off && !force)) document.documentElement.classList.add("hub-splash-skip");
+} catch (e) {}
+</script>
 </head>
 <body class="hub-page wizard-page">
+<div id="hubSplash" class="hub-splash" role="dialog" aria-modal="true" aria-label="PDF Designer">
+  <div class="hub-splash-aurora" aria-hidden="true"></div>
+  <div class="hub-splash-orb hub-splash-orb-a" aria-hidden="true"></div>
+  <div class="hub-splash-orb hub-splash-orb-b" aria-hidden="true"></div>
+  <div class="hub-splash-orb hub-splash-orb-c" aria-hidden="true"></div>
+  <div class="hub-splash-grain" aria-hidden="true"></div>
+  <div class="hub-splash-vignette" aria-hidden="true"></div>
+  <div class="hub-splash-stage">
+    <div class="hub-splash-page" aria-hidden="true"></div>
+    <p class="hub-splash-kicker">Local résumé studio</p>
+    <h1 class="hub-splash-mark" aria-label="PDF"><span>P</span><span>D</span><span>F</span></h1>
+    <p class="hub-splash-name">Designer</p>
+    <p class="hub-splash-sub">Design Hub</p>
+    <div class="hub-splash-bar" aria-hidden="true"><i></i></div>
+    <p class="hub-splash-hint">Enter to skip</p>
+  </div>
+</div>
 <header class="hub-bar" aria-label="First résumé wizard toolbar">
   <div class="hub-bar-scroll">
     <div class="hub-group hub-brand-group"><a class="hub-brand" href="/" title="Home">Design Hub</a></div>
@@ -57,17 +83,48 @@
 
   <section class="wizard-step on" data-step="0" aria-labelledby="wizard-step-1">
     <div class="wizard-step-heading"><p class="wizard-step-index">STEP 01</p><h2 id="wizard-step-1" tabindex="-1">Put your facts in a local vault</h2></div>
-    <p>Copy the three generic templates into the root-noun workspace. They are gitignored when you replace <code>yourname</code>, so this is where private contact details and verified career facts stay.</p>
+    <p>Start from an old résumé or cover letter, or copy the templates by hand. Files stay in this workspace. The parser is local and heuristic — every imported claim is <code>inferred</code> until you review it.</p>
+    <div class="wizard-import">
+      <label for="starterSlug">Workspace id <span>(users/&lt;id&gt;.json)</span></label>
+      <input id="starterSlug" type="text" autocomplete="off" spellcheck="false" placeholder="alex">
+      <label for="starterFiles">Upload an old résumé and/or cover letter</label>
+      <input id="starterFiles" type="file" accept=".pdf,.txt,.md,.html,.htm,application/pdf,text/plain" multiple>
+      <div class="wizard-import-actions">
+        <button type="button" id="starterImport">Read files into a draft</button>
+      </div>
+      <p class="wizard-hint">PDF, TXT, MD, or HTML. No account, no network parse. Cover-letter filenames should include “cover” or “letter”.</p>
+    </div>
+    <div id="starterEditor" class="wizard-editor" hidden>
+      <p id="starterWarnings" class="wizard-callout" hidden></p>
+      <label for="starterName">Name</label>
+      <input id="starterName" type="text" autocomplete="name">
+      <label for="starterHeadline">Headline</label>
+      <input id="starterHeadline" type="text">
+      <label for="starterEmail">Email</label>
+      <input id="starterEmail" type="email" autocomplete="email">
+      <label for="starterWeb">Website</label>
+      <input id="starterWeb" type="url">
+      <label for="starterSkills">Skills <span>(one per line)</span></label>
+      <textarea id="starterSkills" rows="5"></textarea>
+      <label for="starterJobs">Jobs <span>(Role — Org, then dates / bullets)</span></label>
+      <textarea id="starterJobs" rows="8"></textarea>
+      <label for="starterCover">Cover-letter notes</label>
+      <textarea id="starterCover" rows="4"></textarea>
+      <div class="wizard-import-actions">
+        <button type="button" class="primary" id="starterSave">Save starter vault locally</button>
+      </div>
+      <p id="starterStatus" class="wizard-status-line" role="status"></p>
+    </div>
     <code class="wizard-path">users/you.example.json → users/&lt;you&gt;.json<br>vaults/you.example.json → vaults/&lt;you&gt;.json<br>profiles/you-resume.example.json → profiles/&lt;you&gt;-resume.json</code>
-    <div class="wizard-callout"><strong>Only facts with a source belong in the vault.</strong> A missing skill is not a gap until you ask and record the answer.</div>
+    <div class="wizard-callout"><strong>Only facts with a source belong in the vault.</strong> A missing skill is not a gap until you ask and record the answer. Imported rows are a starter, not a verified claim list.</div>
     <div class="wizard-actions"><a href="/vault?profile=examples">See fictional Jane Example</a><button type="button" class="primary" data-next>My local files are ready <span aria-hidden="true">→</span></button></div>
   </section>
 
   <section class="wizard-step" data-step="1" hidden aria-labelledby="wizard-step-2">
     <div class="wizard-step-heading"><p class="wizard-step-index">STEP 02</p><h2 id="wizard-step-2" tabindex="-1">Add the skills you can support</h2></div>
-    <p>In <code>vaults/&lt;you&gt;.json</code>, group skills by domain. Every claim needs a <code>source</code>, <code>confidence</code>, and the role track it serves. Programs (Maya, Figma) go in vault-root <code>software</code> plus a <code>kind: "tool"</code> skill — that roster is not the same as <code>toolbeltOrder</code>, which only ranks which apps open the Tools line. There is no résumé-file upload yet: paste source-backed facts, or start from Jane Example. The profile only points at the vault; it does not become a competing source of truth.</p>
+    <p>In <code>vaults/&lt;you&gt;.json</code>, group skills by domain. Every claim needs a <code>source</code>, <code>confidence</code>, and the role track it serves. Programs (Maya, Figma) go in vault-root <code>software</code> plus a <code>kind: "tool"</code> skill — that roster is not the same as <code>toolbeltOrder</code>, which only ranks which apps open the Tools line. If you imported a file in step 01, open the saved vault and raise <code>inferred</code> rows to <code>verified</code> only when you can source them. The profile only points at the vault; it does not become a competing source of truth.</p>
     <code class="wizard-path">python -m pdf_tool.check_vault vaults/&lt;you&gt;.json</code>
-    <div class="wizard-callout"><strong>Jane Example is fictional and public.</strong> Use it to learn the shape, never as a claim source for your own résumé. Uploading an old PDF to auto-fill the vault is not available in this version — résumé-file upload is not available yet.</div>
+    <div class="wizard-callout"><strong>Jane Example is fictional and public.</strong> Use it to learn the shape, never as a claim source for your own résumé. An uploaded PDF is a starter only — review every inferred row before you export.</div>
     <div class="wizard-actions"><button type="button" data-back><span aria-hidden="true">←</span> Back</button><a href="/vault?profile=examples">Inspect Jane’s skills</a><button type="button" class="primary" data-next>Skills are source-backed <span aria-hidden="true">→</span></button></div>
   </section>
 
@@ -121,7 +178,128 @@
   }
   document.getElementById('voicePreview').addEventListener('click', previewVoiceCard);
   previewVoiceCard();
+
+  const starter = { draft: null };
+  function bytesToB64(buf) {
+    const bytes = new Uint8Array(buf);
+    let binary = '';
+    const chunk = 0x8000;
+    for (let i = 0; i < bytes.length; i += chunk) {
+      binary += String.fromCharCode.apply(null, bytes.subarray(i, i + chunk));
+    }
+    return btoa(binary);
+  }
+  function jobsToText(jobs) {
+    return (jobs || []).map(job => {
+      const head = [job.role, job.org].filter(Boolean).join(' — ');
+      const lines = [head];
+      if (job.dates) lines.push(job.dates);
+      if (job.summary) lines.push(job.summary);
+      (job.bullets || []).forEach(b => lines.push('- ' + b));
+      return lines.join('\n');
+    }).join('\n\n');
+  }
+  function textToJobs(text) {
+    const blocks = String(text || '').split(/\n\s*\n/);
+    return blocks.map(block => {
+      const lines = block.split('\n').map(l => l.trim()).filter(Boolean);
+      if (!lines.length) return null;
+      const head = lines[0].split(/\s+[—–-]\s+|\s+at\s+/i);
+      const bullets = lines.filter(l => /^[-*•]/.test(l)).map(l => l.replace(/^[-*•]\s*/, ''));
+      const rest = lines.slice(1).filter(l => !/^[-*•]/.test(l));
+      return {
+        role: (head[0] || '').trim(),
+        org: (head[1] || '').trim(),
+        dates: rest[0] && /\d{4}/.test(rest[0]) ? rest[0] : '',
+        summary: rest.filter(l => !/\d{4}/.test(l)).join(' '),
+        bullets
+      };
+    }).filter(Boolean);
+  }
+  function fillEditor(draft) {
+    starter.draft = draft;
+    document.getElementById('starterSlug').value = draft.slug || '';
+    document.getElementById('starterName').value = draft.displayName || '';
+    document.getElementById('starterHeadline').value = draft.headline || '';
+    document.getElementById('starterEmail').value = draft.email || '';
+    document.getElementById('starterWeb').value = draft.web || '';
+    document.getElementById('starterSkills').value = (draft.skills || []).map(s => s.claim || s).join('\n');
+    document.getElementById('starterJobs').value = jobsToText(draft.jobs);
+    document.getElementById('starterCover').value = draft.coverLetterNotes || '';
+    const warn = document.getElementById('starterWarnings');
+    if (draft.warnings && draft.warnings.length) {
+      warn.hidden = false;
+      warn.innerHTML = '<strong>Review before saving.</strong> ' + draft.warnings.map(w => String(w)).join(' ');
+    } else {
+      warn.hidden = true;
+      warn.textContent = '';
+    }
+    document.getElementById('starterEditor').hidden = false;
+    document.getElementById('starterStatus').textContent = 'Draft loaded locally. Nothing is saved until you click Save.';
+  }
+  function readEditorDraft() {
+    const draft = Object.assign({}, starter.draft || {});
+    draft.slug = document.getElementById('starterSlug').value.trim().toLowerCase();
+    draft.displayName = document.getElementById('starterName').value.trim();
+    draft.headline = document.getElementById('starterHeadline').value.trim();
+    draft.email = document.getElementById('starterEmail').value.trim();
+    draft.web = document.getElementById('starterWeb').value.trim();
+    draft.skills = document.getElementById('starterSkills').value.split('\n').map(s => s.trim()).filter(Boolean).map(claim => ({ claim }));
+    draft.jobs = textToJobs(document.getElementById('starterJobs').value);
+    draft.coverLetterNotes = document.getElementById('starterCover').value;
+    return draft;
+  }
+  document.getElementById('starterImport').addEventListener('click', async () => {
+    const status = document.getElementById('starterStatus');
+    const input = document.getElementById('starterFiles');
+    const files = [...(input.files || [])];
+    if (!files.length) {
+      status.textContent = 'Choose a résumé or cover letter first.';
+      return;
+    }
+    status.textContent = 'Reading locally…';
+    const payload = { slug: document.getElementById('starterSlug').value.trim(), files: [] };
+    for (const file of files) {
+      const lower = file.name.toLowerCase();
+      const kind = (lower.includes('cover') || lower.includes('letter')) ? 'cover-letter' : 'resume';
+      if (/\.(txt|md|html|htm)$/i.test(file.name)) {
+        payload.files.push({ name: file.name, kind, text: await file.text() });
+      } else {
+        payload.files.push({ name: file.name, kind, contentBase64: bytesToB64(await file.arrayBuffer()) });
+      }
+    }
+    try {
+      const response = await fetch('/api/import-resume', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const result = await response.json();
+      if (!result.ok) throw new Error(result.error || 'Import failed');
+      fillEditor(result.draft);
+    } catch (err) {
+      status.textContent = err.message || 'Import failed.';
+    }
+  });
+  document.getElementById('starterSave').addEventListener('click', async () => {
+    const status = document.getElementById('starterStatus');
+    const draft = readEditorDraft();
+    status.textContent = 'Saving locally…';
+    try {
+      const response = await fetch('/api/save-starter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ slug: draft.slug, draft, overwrite: false })
+      });
+      const result = await response.json();
+      if (!result.ok) throw new Error(result.error || 'Save failed');
+      status.innerHTML = 'Saved <code>' + (result.files && result.files.vault ? result.files.vault : draft.slug) + '</code>. <a href="' + result.vaultHref + '">Open in Vault</a>.';
+    } catch (err) {
+      status.textContent = err.message || 'Save failed.';
+    }
+  });
 })();
 </script>
+<script src="/_hub/splash.js"></script>
 </body>
 </html>

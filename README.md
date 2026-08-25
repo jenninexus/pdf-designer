@@ -112,9 +112,10 @@ python -m pdf_tool.preview --no-open
 ```
 
 Open [http://127.0.0.1:8787/wizard](http://127.0.0.1:8787/wizard) for the guided
-local path: vault → source-backed skills → palette → light and dark export. It starts
-with the fictional Jane Example, writes no personal record, creates no account, and uses
-the same existing Playwright renderer as the CLI and Library. The server is temporary and
+local path: vault → source-backed skills → palette → light and dark export. Copy the
+ignored templates, or upload an old résumé/cover letter to seed a starter vault
+(imported claims stay `inferred` until you review them). It creates no account and uses
+the same Playwright renderer as the CLI and Library. The server is temporary and
 localhost-only; stop it with `Ctrl+C` when you are done.
 
 ## Windows standalone status

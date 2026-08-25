@@ -5,7 +5,7 @@ from __future__ import annotations
 import threading
 from http.server import ThreadingHTTPServer
 from pathlib import Path
-from urllib.request import urlopen
+from urllib.request import Request, urlopen
 
 from pdf_tool.preview import APP_HTML, load_palettes, make_handler, scan_documents
 
@@ -31,7 +31,11 @@ def test_wizard_has_four_local_steps_and_uses_jane_example_export_path():
     assert "saves nothing" in wizard
     assert "aria-current" in wizard
     assert "kind: \"tool\"" in wizard
-    assert "résumé-file upload is not available" in wizard
+    assert "Upload an old résumé" in wizard
+    assert "/api/import-resume" in wizard
+    assert "/api/save-starter" in wizard
+    assert "inferred" in wizard
+    assert "résumé-file upload is not available" not in wizard
 
 
 def test_wizard_is_a_design_hub_route_and_navigation_target():
@@ -49,6 +53,18 @@ def test_wizard_is_a_design_hub_route_and_navigation_target():
             payload = __import__("json").loads(response.read())
             assert payload["ok"] is True
             assert payload["card"]["displayName"] == "Jane Example"
+        import json
+        from tests.test_seed_from_resume import RESUME
+        req = Request(
+            f"http://127.0.0.1:{server.server_port}/api/import-resume",
+            data=json.dumps({"files": [{"name": "alex-resume.txt", "text": RESUME}]}).encode(),
+            headers={"Content-Type": "application/json"},
+            method="POST",
+        )
+        with urlopen(req) as response:
+            imported = json.loads(response.read())
+            assert imported["ok"] is True
+            assert imported["draft"]["displayName"] == "Alex Rivera"
     finally:
         server.shutdown()
         thread.join()

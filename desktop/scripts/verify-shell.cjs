@@ -28,7 +28,12 @@ assert(packageJson.build?.nsis?.perMachine === false, "installer must be per-use
 assert(packageJson.build?.nsis?.allowToChangeInstallationDirectory === true, "installer must permit changing install directory");
 assert(packageJson.build?.nsis?.createDesktopShortcut === true, "installer must create a desktop shortcut");
 assert(packageJson.build?.nsis?.createStartMenuShortcut === true, "installer must create a Start Menu shortcut");
-includes(packageJson.scripts?.dist || "", "--publish never", "dist must explicitly disable publishing");
+includes(packageJson.scripts?.dist || "", "scripts/dist-nsis.cjs", "unsigned dist must go through dist-nsis.cjs");
+includes(packageJson.scripts?.["dist:signed"] || "", "scripts/dist-signed.cjs", "signed dist must go through dist-signed.cjs");
+includes(fs.readFileSync(path.join(root, "scripts", "dist-nsis.cjs"), "utf8"), 'CSC_IDENTITY_AUTO_DISCOVERY', "unsigned dist must disable cert-store auto-discovery");
+includes(fs.readFileSync(path.join(root, "scripts", "dist-nsis.cjs"), "utf8"), "--publish", "unsigned dist must explicitly disable publishing");
+includes(fs.readFileSync(path.join(root, "scripts", "dist-signed.cjs"), "utf8"), "azureSignOptions", "signed dist must use Azure Trusted Signing");
+assert(fs.existsSync(path.join(root, "azure-trusted-signing.example.json")), "Azure Trusted Signing example config must exist");
 includes(main, "app.requestSingleInstanceLock()", "single-instance lock is required");
 includes(main, '"--port", "0", "--no-open", "--ready-file"', "runtime launch arguments are incomplete");
 includes(main, 'packagedResource("runtime", "pdf-designer-runtime", "pdf-designer-runtime.exe")', "shell must launch only the bundled runtime executable");
@@ -42,9 +47,13 @@ includes(main, "setWindowOpenHandler(() => ({ action: \"deny\" }))", "window.ope
 includes(main, "will-navigate", "navigation must be restricted");
 includes(main, 'candidate.hostname === "127.0.0.1"', "navigation must stay on loopback");
 includes(main, "execFile(\"taskkill\"", "only the spawned runtime PID must be stopped on quit");
+includes(main, 'searchParams.set("splash", "1")', "packaged app must force the Hub title screen on launch");
+includes(main, "documentsLooksCloudRedirected", "shell must detect redirected Documents without relocating the workspace");
 assert(!main.includes("autoUpdater"), "desktop shell must not include an auto-updater");
 assert(!main.includes("https://"), "desktop shell must not load remote URLs");
 includes(readme, "SmartScreen", "README must explain unsigned Windows SmartScreen behavior");
+includes(readme, "Azure Trusted Signing", "README must name the Authenticode approach");
+includes(readme, "not listable", "README must refuse listing the unsigned installer");
 includes(readme, "no auto-update", "README must state the no-auto-update contract");
 
 if (failures.length) {

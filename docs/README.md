@@ -28,7 +28,7 @@ short and public-facing; **public product detail lives here**.
 | [`images/README.md`](images/README.md) | Current public-only Hub screenshot set; prior captures are dated archives |
 | [`PACKAGING.md`](PACKAGING.md) | PyPI / wheel spike |
 | [`WINDOWS-LAUNCHER.md`](WINDOWS-LAUNCHER.md) | Windows-first local Design Hub launcher spike + acceptance checks |
-| [`WINDOWS-ELECTRON.md`](WINDOWS-ELECTRON.md) | Pre-release standalone Windows behavior, first launch, and release gates |
+| [`WINDOWS-ELECTRON.md`](WINDOWS-ELECTRON.md) | Pre-release Windows shell: Azure Trusted Signing, Documents/OneDrive policy, clean-VM gate |
 | [`VOICE-SEED-HANDOFF.md`](VOICE-SEED-HANDOFF.md) | Optional, public-safe voice-card boundary |
 | [`QA.md`](QA.md) | Ship gate — `check_generation` |
 

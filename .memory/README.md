@@ -104,6 +104,10 @@ codebase · `reference`: pointer to an external resource.
 | [lesson-voice-preview-never-heuristically-redacts-private-text.md](lesson-voice-preview-never-heuristically-redacts-private-text.md) | A browser card cannot prove arbitrary local voice prose public-safe — use a skeletal private card until owner approval |
 | [lesson-electron-packaged-playwright-needs-explicit-browser-path.md](lesson-electron-packaged-playwright-needs-explicit-browser-path.md) | A frozen desktop runtime must explicitly use its copied Playwright Chromium and accept the actual `chrome-win*` folder layout |
 | [lesson-clean-installer-target-must-be-proven.md](lesson-clean-installer-target-must-be-proven.md) | A reachable Windows PC is not a clean installer target until checkout, runtime, install, and workspace preflight all pass |
+| [lesson-clean-host-is-not-a-dev-pc.md](lesson-clean-host-is-not-a-dev-pc.md) | BEE/LIVPHI/SEGOPC are not listing-proof hosts; `-BundledRuntimeProof` is the LAN substitute, not a skip-toolchain cheat |
+| [lesson-unsigned-dist-must-disable-cert-auto-discovery.md](lesson-unsigned-dist-must-disable-cert-auto-discovery.md) | Default NSIS dist must disable cert-store auto-discovery; Azure Trusted Signing is the only listable Authenticode path |
+| [lesson-vsce-pat-cannot-authenticode.md](lesson-vsce-pat-cannot-authenticode.md) | Syn Themes `VSCE_PAT` publishes a VSIX — it cannot stamp `PDF-Designer-Setup.exe`; gate is `verify-authenticode.ps1` |
+| [lesson-hidden-electron-close-needs-stop-process.md](lesson-hidden-electron-close-needs-stop-process.md) | Hidden Electron often has no main window — `CloseMainWindow()` false is not an installer fail; Stop-Process then assert runtime death |
 
 ## Related
 

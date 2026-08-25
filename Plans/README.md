@@ -11,7 +11,7 @@ Working plans for pdf-designer. Keep **one** active product roadmap; move finish
 
 | Plan | Status |
 |---|---|
-| [`_Active/2026-08-22-product-polish-and-release-readiness.md`](_Active/2026-08-22-product-polish-and-release-readiness.md) | ⭐ **THE** working plan — polished public-safe Hub, product alignment, LIVPHI source mirror, and carried release gates |
+| [`_Active/2026-08-22-product-polish-and-release-readiness.md`](_Active/2026-08-22-product-polish-and-release-readiness.md) | ⭐ **THE** working plan — Hub polish, LIVPHI mirror, clean-VM installer proof (not BEE), Start vault import |
 
 > **`/jen:roadmap` entry point:** [`../docs/ROADMAP.md`](../docs/ROADMAP.md).  
 > **Business:** [`../docs/PRODUCT.md`](../docs/PRODUCT.md).  

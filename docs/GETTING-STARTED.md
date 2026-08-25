@@ -77,9 +77,10 @@ python -m pdf_tool.preview --no-open
 ```
 
 The Hub starts dark by default. Its theme is only the local app chrome; document palettes
-still control the preview and exported PDF. The Start route guides the public fictional
-Jane Example through vault → skills → palette → light/dark export. It creates no account,
-does not write a personal profile, does not import an existing résumé PDF, and uses the
+still control the preview and exported PDF. The Start route guides a local vault →
+source-backed skills → palette → light/dark export. You can copy the ignored templates
+or upload an old résumé/cover letter (PDF/TXT/MD/HTML) to seed a starter vault; every
+imported claim is `inferred` until you review it. It creates no account and uses the
 existing renderer only. Stop the temporary localhost server with `Ctrl+C`.
 
 For the Windows Electron wrapper, read [`WINDOWS-ELECTRON.md`](WINDOWS-ELECTRON.md) before

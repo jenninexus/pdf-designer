@@ -126,4 +126,4 @@ Longer SEGO channel plan: `docs/MARKETING.md` (gitignored).
 
 ---
 
-*Last updated 2026-08-21 — core toolkit shipped; production PyPI is intentionally deferred, and an unsigned Windows Electron/NSIS pre-release artifact awaits clean-machine and signing gates.*
+*Last updated 2026-08-24 — core toolkit shipped; production PyPI is intentionally deferred. Authenticode approach is Azure Trusted Signing; unsigned Windows Electron/NSIS dist is not listable until `dist:signed` and a clean-VM proof both pass.*

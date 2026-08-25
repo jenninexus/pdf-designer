@@ -8,7 +8,8 @@
     "runtime": "pwsh -NoProfile -File scripts/build-runtime.ps1",
     "verify-shell": "node scripts/verify-shell.cjs",
     "pack": "npm run runtime && npm run verify-shell && electron-builder --dir --win --x64 --publish never",
-    "dist": "npm run runtime && npm run verify-shell && electron-builder --win nsis --x64 --publish never"
+    "dist": "npm run runtime && npm run verify-shell && node scripts/dist-nsis.cjs",
+    "dist:signed": "npm run runtime && npm run verify-shell && node scripts/dist-signed.cjs"
   },
   "devDependencies": {
     "electron": "43.4.1",

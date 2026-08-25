@@ -40,6 +40,8 @@ from .paths import (
 )
 from .pdf_to_png import render_to_png
 from .recipe_gallery import build_recipe_gallery
+from .seed_from_resume import MAX_IMPORT_BYTES, draft_from_uploads
+from .starter_workspace import save_starter
 from .vault_overview import build_vault_overview
 from .voice_card import build_voice_card
 
@@ -428,8 +430,34 @@ APP_HTML = """<!doctype html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>pdf-designer — Design Hub</title>
 <link rel="stylesheet" href="/_hub/hub.css">
+<script>
+try {
+  var q = new URLSearchParams(location.search);
+  var skip = sessionStorage.getItem("pdf-designer.hub.splash") === "1";
+  var force = q.has("splash");
+  var off = q.has("no-splash");
+  if ((skip && !force) || (off && !force)) document.documentElement.classList.add("hub-splash-skip");
+} catch (e) {}
+</script>
 </head>
 <body class="hub-shell">
+<div id="hubSplash" class="hub-splash" role="dialog" aria-modal="true" aria-label="PDF Designer">
+  <div class="hub-splash-aurora" aria-hidden="true"></div>
+  <div class="hub-splash-orb hub-splash-orb-a" aria-hidden="true"></div>
+  <div class="hub-splash-orb hub-splash-orb-b" aria-hidden="true"></div>
+  <div class="hub-splash-orb hub-splash-orb-c" aria-hidden="true"></div>
+  <div class="hub-splash-grain" aria-hidden="true"></div>
+  <div class="hub-splash-vignette" aria-hidden="true"></div>
+  <div class="hub-splash-stage">
+    <div class="hub-splash-page" aria-hidden="true"></div>
+    <p class="hub-splash-kicker">Local résumé studio</p>
+    <h1 class="hub-splash-mark" aria-label="PDF"><span>P</span><span>D</span><span>F</span></h1>
+    <p class="hub-splash-name">Designer</p>
+    <p class="hub-splash-sub">Design Hub</p>
+    <div class="hub-splash-bar" aria-hidden="true"><i></i></div>
+    <p class="hub-splash-hint">Enter to skip</p>
+  </div>
+</div>
 <header class="hub-bar" aria-label="Design Hub toolbar">
   <div class="hub-bar-scroll" id="hubBarScroll" tabindex="0" title="Scroll horizontally — mouse wheel works here">
     <div class="hub-group hub-brand-group">
@@ -1527,6 +1555,7 @@ openPaletteFromQuery();
 })();
 </script>
 <script src="/_hub/drawer-resize.js"></script>
+<script src="/_hub/splash.js"></script>
 </body>
 </html>
 """
@@ -1645,15 +1674,50 @@ def make_handler(root: Path, docs: list[dict], palettes: list[dict]):
             self._send(200, target.read_bytes(), ctype)
 
         def do_POST(self):
-            if urlparse(self.path).path != "/api/export":
+            path = urlparse(self.path).path
+            try:
+                length = int(self.headers.get("Content-Length", 0) or 0)
+            except ValueError:
+                length = 0
+            if length > MAX_IMPORT_BYTES + 120_000:
+                self._send(
+                    413,
+                    json.dumps({"ok": False, "error": "payload too large"}).encode(),
+                    "application/json",
+                )
+                return
+            raw = self.rfile.read(length) if length else b"{}"
+            if path == "/api/import-resume":
+                try:
+                    req = json.loads(raw.decode("utf-8"))
+                    draft = draft_from_uploads(req.get("files") or [])
+                    if req.get("slug"):
+                        draft["slug"] = str(req["slug"]).strip().lower()
+                    self._send(200, json.dumps({"ok": True, "draft": draft}).encode(), "application/json")
+                except Exception as exc:
+                    self._send(200, json.dumps({"ok": False, "error": str(exc)}).encode(), "application/json")
+                return
+            if path == "/api/save-starter":
+                try:
+                    req = json.loads(raw.decode("utf-8"))
+                    result = save_starter(
+                        root,
+                        req.get("draft") or {},
+                        slug=req.get("slug"),
+                        overwrite=bool(req.get("overwrite")),
+                        template_root=_REPO_ROOT,
+                    )
+                    self._send(200, json.dumps(result).encode(), "application/json")
+                except Exception as exc:
+                    self._send(200, json.dumps({"ok": False, "error": str(exc)}).encode(), "application/json")
+                return
+            if path != "/api/export":
                 self._send(404, b"{}", "application/json")
                 return
             try:
-                length = int(self.headers.get("Content-Length", 0))
-                req = json.loads(self.rfile.read(length))
+                req = json.loads(raw.decode("utf-8"))
                 doc = resolve_preview_file(root, req["doc"])
                 if doc is None:
-                    raise ValueError(f"bad doc path: {req['doc']}")
                     raise ValueError(f"bad doc path: {req['doc']}")
                 fmt = req.get("format", "pdf-light")
                 pdf_theme = "dark" if fmt.endswith("-dark") else None
