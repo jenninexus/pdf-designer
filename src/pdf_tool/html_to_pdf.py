@@ -278,6 +278,7 @@ def main() -> None:
         return
 
     output_pdf = args[1] if len(args) > 1 else None
+    reject_flag_looking_path(output_pdf, flag="output pdf")
 
     if not skip_palette:
         _guard_palette(input_html)

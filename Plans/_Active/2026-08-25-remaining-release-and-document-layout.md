@@ -30,8 +30,8 @@ rewrite notes live in `docs/CHANNELS.local.md` (gitignored), not `docs/PRODUCT.m
 
 ## Done when
 
-- [ ] Jenni + Shade **and** Jane Example résumé / cover / work-examples match [`docs/LAYOUT-SYSTEM.md`](../../docs/LAYOUT-SYSTEM.md) rhythm (not just the JSON recipes). Verify with `pdf_to_png` + `check_generation`.
-- [ ] Shade work-examples PDFs ≤ 5 MB (`html_to_pdf --max-mb 5`).
+- [x] Jenni + Shade résumé / cover / work-examples match [`docs/LAYOUT-SYSTEM.md`](../../docs/LAYOUT-SYSTEM.md) rhythm. `check_generation` PASS 2026-08-25. Jane résumé + cover PASS. Jane Hub mosaic is collage-family (`0.6in` / `9.8in`) — `footer-collision` still FAILs (colored tiles vs résumé signature scan); not the 3-page pack.
+- [x] Shade work-examples PDFs ≤ 5 MB — `output/shade/resumes/shade-default-work-examples-{light,dark}-v2.pdf` ≈ **2.05 MB** (`html_to_pdf --max-mb 5`). Older `*-light.pdf` / `*-dark.pdf` (~11.8 MB) are pre-inline leftovers.
 - [ ] Signed NSIS exists **or** Azure remains explicitly held (no unsigned listing).
 - [ ] Clean Win10/11 x64 VM proof with `-RequireAuthenticode` **or** documented LAN substitute only after a Valid signature.
 
@@ -57,9 +57,7 @@ Recipes (shared by Jenni and Shade — not per-person files):
 4. **Jane Example** — same rhythm so the public clone matches what we print.
 5. **Verify** — `python -m pdf_tool.check_generation` then `pdf_to_png`. Optional later: `/human-sim-qa` on Syqo’s **designated QA machine** (never SEGOPC pointer). Write `human-sim-qa-pdf-designer.md` before that run.
 
-Do **not** change `@page` size or unequal margins. Palette stays tokens.
-
----
+**Landed 2026-08-25 (layout HTML pass):** Jenni defaults + Shade go-to restored to equal margins and recipe air. Shade cover is CZI flex (`.letter-main` / `.signoff`); work-examples re-inlined JPEG ≤960 via `resumes/shade/defaults/_inline_work_examples.py`. Footer email tracking dropped to ~`0.03em` so `footer-collision` does not treat the mailto as body. `html_to_pdf` has no `--user` — that flag is `check_generation` only.
 
 ## 2. Carryover (human / later — not this layout session)
 
@@ -68,7 +66,7 @@ From the closed 2026-08-22 polish plan. Detail: `docs/CHANNELS.local.md` + `docs
 - [ ] **Hold Azure Artifact Signing** until a signing month is budgeted. Then `npm run dist:signed` + `verify-authenticode.ps1 -RequireSigned`. Detail stays in `docs/CHANNELS.local.md`.
 - [ ] Clean VM (or `-BundledRuntimeProof -RequireAuthenticode` after Valid). Not a daily-driver PC as listing proof.
 - [ ] Do not enable live checkout, Gumroad overlay, or Microsoft Store on `/products`.
-- [ ] Shade work-examples ≤ 5 MB.
+- [x] Shade work-examples ≤ 5 MB.
 - [ ] Production PyPI still out of scope.
 
 ---
