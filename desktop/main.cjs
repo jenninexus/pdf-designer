@@ -17,9 +17,29 @@ function packagedResource(...parts) {
     : path.join(__dirname, ...parts);
 }
 
+function documentsLooksCloudRedirected(documentsPath) {
+  const normalized = documentsPath.replace(/\//g, "\\").toLowerCase();
+  return normalized.includes("\\onedrive")
+    || normalized.includes("\\dropbox")
+    || normalized.includes("\\icloud")
+    || normalized.includes("\\google drive");
+}
+
 function seedWorkspace() {
-  const workspace = path.join(app.getPath("documents"), "PDF Designer");
+  const documents = app.getPath("documents");
+  const workspace = path.join(documents, "PDF Designer");
   const seed = packagedResource("workspace-seed");
+
+  // Follow Windows Documents, including Known Folder Move. PDF Designer does
+  // not create a cloud account; a redirected Documents folder is the user's
+  // OS policy. See docs/WINDOWS-ELECTRON.md.
+  if (documentsLooksCloudRedirected(documents)) {
+    console.warn(
+      "Documents is redirected to a sync provider. The workspace stays at",
+      workspace,
+      "and may be synced by that provider."
+    );
+  }
 
   // A user's existing workspace is authoritative: this shell never merges or
   // replaces it.  The seed is copied only on a genuinely first run.
@@ -106,7 +126,9 @@ function createMainWindow() {
     if (!isAllowedRuntimeUrl(target)) event.preventDefault();
   });
   window.once("ready-to-show", () => window.show());
-  window.loadURL(runtimeUrl);
+  const launch = new URL(runtimeUrl);
+  launch.searchParams.set("splash", "1");
+  window.loadURL(launch.href);
 }
 
 function showStartupError(error) {

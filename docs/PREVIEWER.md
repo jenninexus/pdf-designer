@@ -34,6 +34,12 @@ the release experience exactly, run `python -m pdf_tool.preview examples`: the l
 only the tracked default resume, cover letter, letter, work samples, collage, and gallery examples.
 `examples/resume-studio/` is the walkthrough data and docs, not a renderable document directory by itself.
 
+Library, Recipes, Vault, and Start open with a **PDF Designer** title screen
+(cyan/violet hub chrome from `www-theme-kit/profiles/pdf-designer.json`): **3s hold**,
+then a **2s fade-out**. Click, Enter, or Escape skips it; `?no-splash=1` disables it;
+`?splash=1` forces it (the packaged app always launches this way). After the first view
+in a browser tab, the same session does not replay it.
+
 **No MCP / always-on server.** Optional temporary localhost only. CLI export works without it.
 
 On compact layouts, the Design Hub drawer closes with its top-right **X**, the
@@ -106,7 +112,7 @@ Sidebar is a **left column**; the stage / iframe viewer fills the rest of the vi
   public audition palettes). Copy collage CLI (`--recipe <id>`), open raw JSON, or
   **Try in Hub** via `/?palette=<id>&mode=dark|light` (selects the palette swapper).
   Discovery chrome only — still one renderer.
-- **Start a local résumé** → [http://127.0.0.1:8787/wizard](http://127.0.0.1:8787/wizard) — a dark-default, four-step, no-account walkthrough: copy ignored local vault/profile templates, add source-backed skills (programs in vault-root `software` plus `kind: "tool"` claims), audition a public palette, then use the existing Library export for the fictional Jane Example light/dark proof. Hub chrome and document palettes remain separate. It does not write personal data, generate claims, import an existing résumé PDF, or add a renderer.
+- **Start a local résumé** → [http://127.0.0.1:8787/wizard](http://127.0.0.1:8787/wizard) — a dark-default, four-step, no-account walkthrough. Copy ignored local templates **or** upload an old résumé/cover letter (PDF/TXT/MD/HTML) to seed a gitignored starter vault. Imported claims are `inferred` until reviewed. Then add source-backed skills (programs in vault-root `software` plus `kind: "tool"` claims), audition a public palette, and use the existing Library export (Jane Example until you author HTML from your vault). Hub chrome and document palettes remain separate. No second renderer.
 - **Optional Voice Seed preview** → the Start route includes a read-only, redacted local card preview. It defaults to Jane Example; an explicitly named local profile receives a generic skeletal card, never free-form local text. No card is saved, copied, exported, or synced.
 - Zero new deps (stdlib server; Playwright only for export/render)
   Binds to 127.0.0.1 only.

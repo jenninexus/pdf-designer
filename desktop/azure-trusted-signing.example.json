@@ -1,0 +1,9 @@
+{
+  "publisherName": "JenniNexus",
+  "endpoint": "https://eus.codesigning.azure.net/",
+  "codeSigningAccountName": "REPLACE_WITH_AZURE_TRUSTED_SIGNING_ACCOUNT",
+  "certificateProfileName": "REPLACE_WITH_CERTIFICATE_PROFILE",
+  "fileDigest": "SHA256",
+  "timestampRfc3161": "http://timestamp.acs.microsoft.com",
+  "timestampDigest": "SHA256"
+}

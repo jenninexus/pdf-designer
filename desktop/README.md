@@ -19,6 +19,13 @@ environment variables.
 
 `npm run pack` creates an unpacked x64 Windows app for local packaging checks. `npm run dist` creates the assisted, per-user x64 NSIS installer named `PDF-Designer-Setup-<version>.exe`. Publishing is explicitly disabled; this project has no auto-update mechanism and no cloud release configuration.
 
-The first app run copies `workspace-seed/` to `Documents/PDF Designer` only if that folder does not already exist. Existing workspace data is never overwritten or merged. The desktop window may navigate only to the exact local loopback URL written by the runtime; it has no preload API, remote content, account flow, telemetry, or synchronization.
+The first app run copies `workspace-seed/` to `Documents/PDF Designer` only if that folder does not already exist. Existing workspace data is never overwritten or merged. If Windows redirects Documents to OneDrive or another sync provider, that provider may sync the folder; PDF Designer still does not create a cloud account. The desktop window may navigate only to the exact local loopback URL written by the runtime; it has no preload API, remote content, account flow, telemetry, or synchronization. Each launch forces the Hub title screen (`?splash=1`).
 
-The installer is unsigned until a Windows code-signing certificate is deliberately configured. Windows SmartScreen warnings are therefore expected for test builds. Do not ask customers to bypass SmartScreen as a product workflow; ship a signed build before broad distribution.
+## Signing
+
+The chosen Authenticode path is **Azure Trusted Signing**. Details:
+[`docs/WINDOWS-ELECTRON.md`](../docs/WINDOWS-ELECTRON.md).
+
+`npm run dist` is unsigned on purpose (`CSC_IDENTITY_AUTO_DISCOVERY=false`). Windows SmartScreen warnings are therefore expected for those test builds. That unsigned artifact is **not listable** — do not attach it to Gumroad, do not treat it as the JN `$5` installer, and do not ask customers to bypass SmartScreen as a product workflow.
+
+A listable build is only `npm run dist:signed` after the human fills gitignored `azure-trusted-signing.json` and sets `AZURE_TENANT_ID` / `AZURE_CLIENT_ID` / `AZURE_CLIENT_SECRET`. That command fails closed without those values, then `scripts/verify-authenticode.ps1 -RequireSigned` must exit 0.
