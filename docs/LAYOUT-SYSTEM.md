@@ -214,8 +214,9 @@ résumé Online Community pattern.
 ### Footer email (all three Jenni defaults)
 
 Use `--text` (or brand `--accent`), **≥11px**, `font-weight: 600` — not `--dim2` at 9px. Same treatment
-on résumé `.page-sig .mail`, cover `.signoff .mail`, and work-samples `.footer .mail`. Palette SSOT:
-`brands/brand-jenninexus.json`.
+on résumé `.page-sig .mail`, cover `.signoff .mail`, and work-samples `.footer .mail`. Keep
+`letter-spacing` modest (~`0.03em`): `0.08em` on a long uppercase address paints past `x = 0.72W` and
+fails `footer-collision` at ~70 px on every page. Palette SSOT: `brands/brand-jenninexus.json`.
 
 ### Work-samples imagery — caption below hero; keep height
 

@@ -14,7 +14,7 @@
 - [x] **History scrub** (2026-08-18) — `docs/HISTORY-SCRUB.md`; force-push `8c1c631`. BEE re-clones.
 - [x] **Push origin/main** — private repo; clone-safe Hub + stills `3f5ebe8` (2026-08-18).
 - [x] **Core public product** — GitHub **public** 2026-08-19; blog walkthrough live; Jane Example covers every Hub document kind. Social publication records are owned in the Socials workspace.
-- [ ] **Document layout / spacing** — Jenni + Shade + Jane résumé / cover / work-examples vs [`LAYOUT-SYSTEM.md`](LAYOUT-SYSTEM.md) (active plan §1)
+- [x] **Document layout / spacing** — Jenni + Shade résumé / cover / 3-page work-examples vs [`LAYOUT-SYSTEM.md`](LAYOUT-SYSTEM.md) (2026-08-25). Jane Hub mosaic is collage-family; Azure signing still held.
 - [ ] **Later:** signed Windows installer + paid fulfilment (maintainer notes local: `docs/CHANNELS.local.md`)
 
 ### Recently landed

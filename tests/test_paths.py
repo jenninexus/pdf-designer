@@ -28,6 +28,8 @@ def test_reject_flag_looking_output_dir():
     with pytest.raises(SystemExit):
         paths.reject_flag_looking_path("--output-dir", flag="--output-dir")
     with pytest.raises(SystemExit):
+        paths.reject_flag_looking_path("--user", flag="output pdf")
+    with pytest.raises(SystemExit):
         paths.reject_flag_looking_path("-o", flag="out-dir")
     paths.reject_flag_looking_path("output/jenni/resumes", flag="--output-dir")
     paths.reject_flag_looking_path(None, flag="--output-dir")
