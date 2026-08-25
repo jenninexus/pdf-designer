@@ -43,7 +43,7 @@ Current example: repo-root `output/` as the default export tree (HTML stays in
 | Bare `.claude/commands/*.md` (`start` / `wrap` / `make-*` / commands README) | Dev ritual + personal specifics |
 | `Plans/` · `dev-log-sego.yaml` · `docs/MARKETING.md` · `WORKSPACE.md` · `HISTORY-SCRUB.md` | Operating records |
 | Machine `.config/mcp-pdf-designer.json` | Absolute paths |
-| Signed Electron/NSIS download, PayPal/Gumroad fulfilment, production PyPI | Paid / later channels — [`PRODUCT.md`](PRODUCT.md) · [`PACKAGING.md`](PACKAGING.md) · [`WINDOWS-ELECTRON.md`](WINDOWS-ELECTRON.md) |
+| Signed Electron/NSIS download, paid fulfilment, production PyPI | Later channels — not public how-to. Contributor packaging: [`WINDOWS-ELECTRON.md`](WINDOWS-ELECTRON.md) · [`PACKAGING.md`](PACKAGING.md) |
 | `www-theme-kit` as a required dependency | Private brand infra; public color lives in `themes/` |
 
 ## Keep public (checklist)
@@ -58,7 +58,8 @@ Current example: repo-root `output/` as the default export tree (HTML stays in
 
 ## Keep local only
 
-- Agent session ritual, `Plans/`, session memory logs, and history-rewrite notes.
+- Agent session ritual, `Plans/`, session memory logs, history-rewrite notes, and
+  maintainer channel/signing how-to (`docs/*.local.md`).
 - Live user, vault, profile, job, résumé, brand, export payload, and collage data.
 - Application workflow notes that describe real people, real work, or local paths.
 - Any secret, token, environment configuration, capture, or unpublished media.

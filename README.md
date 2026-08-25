@@ -123,11 +123,9 @@ localhost-only; stop it with `Ctrl+C` when you are done.
 The Electron/NSIS wrapper is a **pre-release local build**, not a customer download yet.
 Once installed it bundles its own runtime, so a customer will not need Python, Node, or a
 checkout; it opens the same dark Design Hub and seeds only the public Jane Example into
-`Documents\PDF Designer` on first launch. The current installer is unsigned. Azure Trusted Signing is **on hold** until
-budget allows (~$9.99 for the month an Artifact Signing account exists). Do not
+`Documents\PDF Designer` on first launch. Default packaging is unsigned. Do not
 distribute the EXE or promise a paid download. See
-[`docs/WINDOWS-ELECTRON.md`](docs/WINDOWS-ELECTRON.md) and
-[`docs/PRODUCT.md`](docs/PRODUCT.md) § Paying for PDF Designer.
+[`docs/WINDOWS-ELECTRON.md`](docs/WINDOWS-ELECTRON.md).
 
 ---
 
@@ -177,8 +175,8 @@ features.
 **Suggested tip: $3 or $5** → [paypal.me/jenninexus](https://paypal.me/jenninexus)
 · or [Patreon](https://www.patreon.com/c/JenniNexus)
 
-A Windows one-click installer (when signed) will be a separate **$5** site / **$6**
-Gumroad product. Until then, please do not expect a Setup.exe from this clone.
+A Windows one-click installer (when it exists) will be a separate paid shell over
+this same engine. Until then, please do not expect a Setup.exe from this clone.
 
 ---
 

@@ -139,6 +139,6 @@ clone-safe deliverable.
 ## Related
 
 - [`PUBLIC-LOCAL-SPLIT.md`](PUBLIC-LOCAL-SPLIT.md) — public vs local architecture
-- [`PRODUCT.md`](PRODUCT.md) — free GitHub vs future paid app · tip $3/$5 · PayPal/Gumroad/Store costs
+- [`PRODUCT.md`](PRODUCT.md) — free GitHub vs future paid app · optional tip $3/$5
 - [`VAULT.md`](VAULT.md) — only if you adopt the private claim layer
 - [`WHITE-LABEL.md`](WHITE-LABEL.md) — stub alias → this page

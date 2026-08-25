@@ -7,16 +7,16 @@ metadata:
 ---
 
 Default `npm run dist` must set `CSC_IDENTITY_AUTO_DISCOVERY=false`. A Valid
-Authenticode signature is not proof of the Azure Trusted Signing release path.
+Authenticode signature from a leftover Windows-store cert is not proof of the
+intended publisher identity.
 
 **Why:** electron-builder auto-discovers a code-signing certificate in the
-Windows store. A leftover personal or unrelated publisher cert would produce an
-installer that looks "signed" while using the wrong identity — and it would still
-not be the listable Azure Trusted Signing artifact.
+Windows store. An unrelated personal cert would produce an installer that looks
+"signed" while using the wrong identity.
 
 **How to apply:** unsigned packaging goes through `desktop/scripts/dist-nsis.cjs`.
 Listable builds go through `npm run dist:signed` plus
-`scripts/verify-authenticode.ps1 -RequireSigned`. Never attach
-`PDF-Designer-Setup-0.1.0.exe` to Gumroad or JN checkout.
+`scripts/verify-authenticode.ps1 -RequireSigned`. Never treat the default
+`PDF-Designer-Setup-*.exe` as a customer download.
 
 Related: [[lesson-clean-installer-target-must-be-proven]] · [[lesson-clean-host-is-not-a-dev-pc]] · [[lesson-vsce-pat-cannot-authenticode]]

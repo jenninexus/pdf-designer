@@ -189,6 +189,11 @@ Templates that don't `@import` the theme still follow the same equal-margin rule
   ~14–16px; footer `padding-top` ~16px. Portfolio URLs stay in a body `.links-panel` (title left,
   items centered/even in the row) — never a L/R footer row.
 
+**Defaults must match this table.** Recipe JSON is not applied at export time. If the HTML
+inlines `section { margin-bottom: 12px }` while this doc says 16–19px, the PDF follows the
+HTML. Reconcile HTML (or `@import` `themes/default-resume.css`) rather than treating the
+JSON as live CSS. Trap: [`.memory/lesson-layout-recipe-vs-inline-html.md`](../.memory/lesson-layout-recipe-vs-inline-html.md).
+
 ### ⚠ Full-row group items (stats · link chips · badge rows)
 
 When a row holds **multiple peer items** (studio-at-a-glance stats, Online Community
