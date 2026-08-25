@@ -20,7 +20,7 @@ short and public-facing; **public product detail lives here**.
 |---|---|
 | [`PUBLIC-LOCAL-SPLIT.md`](PUBLIC-LOCAL-SPLIT.md) | ⭐ Public vs local vs paid architecture |
 | [`WORKSPACE-LAYOUT.md`](WORKSPACE-LAYOUT.md) | ⭐ Target root folders (`users/` · `vaults/` · …) for the free product |
-| [`PRODUCT.md`](PRODUCT.md) | ⭐ Business / product direction — résumé creator for a broken job market |
+| [`PRODUCT.md`](PRODUCT.md) | ⭐ Business / product direction + **Paying for PDF Designer** (PayPal / Gumroad / Store / Copilot) |
 | [`GETTING-STARTED.md`](GETTING-STARTED.md) | ⭐ Clone path without vaults |
 | [`PUBLIC-RELEASE-AUDIT.md`](PUBLIC-RELEASE-AUDIT.md) | Free GitHub product vs local vs paid; clone-safety on public `main` |
 | [`../examples/resume-studio/`](../examples/resume-studio/) | Public product front door |
@@ -28,7 +28,7 @@ short and public-facing; **public product detail lives here**.
 | [`images/README.md`](images/README.md) | Current public-only Hub screenshot set; prior captures are dated archives |
 | [`PACKAGING.md`](PACKAGING.md) | PyPI / wheel spike |
 | [`WINDOWS-LAUNCHER.md`](WINDOWS-LAUNCHER.md) | Windows-first local Design Hub launcher spike + acceptance checks |
-| [`WINDOWS-ELECTRON.md`](WINDOWS-ELECTRON.md) | Pre-release Windows shell: Azure Trusted Signing, Documents/OneDrive policy, clean-VM gate |
+| [`WINDOWS-ELECTRON.md`](WINDOWS-ELECTRON.md) | Pre-release Windows shell: Azure Trusted Signing (held), Documents/OneDrive, BundledRuntimeProof |
 | [`VOICE-SEED-HANDOFF.md`](VOICE-SEED-HANDOFF.md) | Optional, public-safe voice-card boundary |
 | [`QA.md`](QA.md) | Ship gate — `check_generation` |
 
