@@ -23,9 +23,11 @@ The first app run copies `workspace-seed/` to `Documents/PDF Designer` only if t
 
 ## Signing
 
-The chosen Authenticode path is **Azure Trusted Signing**. Details:
+Default `npm run dist` is unsigned on purpose (`CSC_IDENTITY_AUTO_DISCOVERY=false`).
+Windows SmartScreen warnings are expected for those test builds. Do not treat the
+unsigned artifact as a customer download.
+
+A listable build is a separate local maintainer command (`npm run dist:signed`) that
+fails closed without gitignored credentials, then
+`scripts/verify-authenticode.ps1 -RequireSigned` must exit 0. Details:
 [`docs/WINDOWS-ELECTRON.md`](../docs/WINDOWS-ELECTRON.md).
-
-`npm run dist` is unsigned on purpose (`CSC_IDENTITY_AUTO_DISCOVERY=false`). Windows SmartScreen warnings are therefore expected for those test builds. That unsigned artifact is **not listable** — do not attach it to Gumroad, do not treat it as the JN `$5` installer, and do not ask customers to bypass SmartScreen as a product workflow.
-
-A listable build is only `npm run dist:signed` after the human fills gitignored `azure-trusted-signing.json` and sets `AZURE_TENANT_ID` / `AZURE_CLIENT_ID` / `AZURE_CLIENT_SECRET`. That command fails closed without those values, then `scripts/verify-authenticode.ps1 -RequireSigned` must exit 0.

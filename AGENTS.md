@@ -37,11 +37,11 @@ folder task runs `scripts/ensure-design-hub.ps1` — starts the hub if needed, o
 
 **Public-path smoke (no `storage/`):** `python scripts/smoke-white-label.py` — QA + light/dark PDF + ATS on
 `examples/profiles/default-resume/`. Checklist: [`docs/GETTING-STARTED.md`](docs/GETTING-STARTED.md). Product
-direction (free GitHub vs paid app · PayPal/Gumroad/Store costs): [`docs/PRODUCT.md`](docs/PRODUCT.md) § Paying for PDF Designer. Packaging / wheel gate:
+direction (free GitHub vs later paid shell): [`docs/PRODUCT.md`](docs/PRODUCT.md). Packaging / wheel gate:
 [`docs/PACKAGING.md`](docs/PACKAGING.md) · `python scripts/check-wheel-assets.py` ·
 `python scripts/testpypi-dry-run.py` (local wheel proof; `--upload` needs `TESTPYPI_TOKEN`).
 
-**Active plan (one):** [`Plans/_Active/2026-08-22-product-polish-and-release-readiness.md`](Plans/_Active/2026-08-22-product-polish-and-release-readiness.md) · index [`Plans/README.md`](Plans/README.md). Completed waves: [`Plans/_Complete/`](Plans/_Complete/). Folder UX target: [`docs/WORKSPACE-LAYOUT.md`](docs/WORKSPACE-LAYOUT.md). Product hub: `C:\Github\product-design` · `/jen:products`.
+**Active plan (one):** [`Plans/_Active/2026-08-25-remaining-release-and-document-layout.md`](Plans/_Active/2026-08-25-remaining-release-and-document-layout.md) · index [`Plans/README.md`](Plans/README.md). Folder UX target: [`docs/WORKSPACE-LAYOUT.md`](docs/WORKSPACE-LAYOUT.md). Maintainer channel/signing: `docs/CHANNELS.local.md` (gitignored).
 
 **Session start / wrap:** `/pdf-start` → local [`.claude/commands/pdf-start.md`](.claude/commands/pdf-start.md)
 (gitignored). `/pdf-wrap` → local [`.claude/commands/pdf-wrap.md`](.claude/commands/pdf-wrap.md) — **requires

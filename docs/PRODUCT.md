@@ -10,10 +10,9 @@ paid shell later. Clone path: [`GETTING-STARTED.md`](GETTING-STARTED.md). Archit
 | Paid later (hypothesis) | Packaged desktop app — installer + guided vault/export UX |
 | **Public product story** | Résumé creator for a broken job market — **vaults**, skills, palette prefs |
 | Public demo | [`../examples/resume-studio/`](../examples/resume-studio/) |
-| Folder UX (clone tree) | [`WORKSPACE-LAYOUT.md`](WORKSPACE-LAYOUT.md) — root-noun README scaffolds; SEGO data migrated and `storage/` retired |
-| Product hub (local) | `C:\Github\product-design` · `docs/LAUNCH-PDF-DESIGNER.md` (Patreon first; Gumroad when extras exist) |
-| Private marketing (local) | `docs/MARKETING.md` (gitignored — same folder as public docs) |
-| Engineering checklist | [`../Plans/_Active/2026-08-22-product-polish-and-release-readiness.md`](../Plans/_Active/2026-08-22-product-polish-and-release-readiness.md) |
+| Folder UX (clone tree) | [`WORKSPACE-LAYOUT.md`](WORKSPACE-LAYOUT.md) — root-noun README scaffolds; `storage/` retired |
+| Private marketing / channel ops | `docs/MARKETING.md` · `docs/CHANNELS.local.md` (gitignored) |
+| Engineering checklist | [`../Plans/_Active/2026-08-25-remaining-release-and-document-layout.md`](../Plans/_Active/2026-08-25-remaining-release-and-document-layout.md) |
 
 ---
 
@@ -87,43 +86,20 @@ Prefer a **thin shell** over a second renderer.
 ```
 
 Packaging precursor: [`PACKAGING.md`](PACKAGING.md) (wheel must include `themes/` + `layouts/`).
-TestPyPI upload and fresh-install proof passed for `pdf-designer 0.4.0` on 2026-08-21. We deliberately will not publish production PyPI now: it is a developer library channel, while the Windows Electron/NSIS route is the customer install path. Installer proof: [`WINDOWS-ELECTRON.md`](WINDOWS-ELECTRON.md).
+TestPyPI upload and fresh-install proof passed for `pdf-designer 0.4.0` on 2026-08-21. We deliberately will not publish production PyPI now: it is a developer library channel, while the Windows Electron/NSIS route is the customer install path. Installer notes for contributors: [`WINDOWS-ELECTRON.md`](WINDOWS-ELECTRON.md).
 
-## Paying for PDF Designer (PayPal · Gumroad · Microsoft Store)
+## Support (public)
 
-**Today (2026-08-25):** the honest ask is a **tip** on the free GitHub clone. There is
-no listable installer. **Do not create an Azure Artifact Signing (Trusted Signing)
-account this month** — that is the $9.99 click. Resume signing next month if budget
-allows. Unsigned `PDF-Designer-Setup-0.1.0.exe` stays local-only.
+The GitHub repo is **free MIT**. There is no customer installer download yet.
+If the Design Hub or the smoke path helped, a suggested tip is **$3 or $5** via
+[PayPal.Me/jenninexus](https://paypal.me/jenninexus) or
+[Patreon](https://www.patreon.com/c/JenniNexus). A tip is not a paid product and
+does not unlock extra features.
 
-| Channel | What they pay | What we pay | Role |
-|---|---|---|---|
-| **GitHub clone** | $0 | $0 | Always live. README suggested tip **$3 or $5** via [PayPal.Me/jenninexus](https://paypal.me/jenninexus) or [Patreon](https://www.patreon.com/c/JenniNexus). Tip ≠ installer. |
-| **JN `/products` $5** (later) | $5 | PayPal merchant fees on that sale | Preferred paid link **after** a Valid-signed NSIS. PayPal **Standard Checkout** + webhook fulfilment — not PayPal.Me as the product button. |
-| **Gumroad $6** (later) | $6 | Gumroad’s cut (higher than direct PayPal) | Same signed EXE; convenience listing, not a premium edition. |
-| **Azure Trusted Signing** | — | **$9.99 for each month the Artifact Signing account exists** (Basic, not pro-rated). $0 in months you delete the account after a timestamped sign. | Stamps a **sideload** `.exe` so Windows is not “Unknown publisher.” Required for Gumroad / JN `$5` EXE. Not required for GitHub. |
-| **Microsoft Store (Copilot model)** | $0 for Copilot | **$0/month** | Martian Copilot (`9PN7W26D3JQ3`) is a **free Hosted PWA**. Partner Center is **not a monthly bill**. Microsoft signs the MSIX. No Azure $9.99. |
-| **Microsoft Store (paid PDF Designer)** | customer pays Store price | **15%** of net receipts (non-game Microsoft commerce; games 12%). Plus MSIX packaging + certification of a ~350 MB local Python/Chromium app | Possible later as a **second** channel. Cannot copy Copilot’s “just wrap a website.” JN page would be “Get it on Microsoft Store,” not PayPal for that binary. Do not publish PDF Designer under the **Martian Games** publisher name. |
-
-**Best route while broke:** keep GitHub free + visible PayPal.Me / Patreon tips. Hold
-Azure. Do not list unsigned EXE. Do not turn on JN `$5` checkout or Gumroad.
-
-**Best route when we can spare ~$10 for one release month:** create Artifact Signing
-Basic (East US) → identity validation → `npm run dist:signed` → `verify-authenticode.ps1 -RequireSigned` → upload **that** EXE to Gumroad `$6` / later JN Checkout `$5` → **delete the Artifact Signing account** so it does not recur. Timestamped signature on that build stays Valid; a **new** Setup EXE needs the account again that month.
-
-**Why not Store instead of $9.99:** Copilot avoided Azure because it is a free website
-shell (`copilot.martiangames.com`). PDF Designer is local-first (`127.0.0.1`). A Store
-listing would still need a real MSIX, Store review on every binary, and either a free
-listing (no installer money) or 15% of each paid sale. Playbook:
-`C:\Github\martian-portal\docs\publish\MICROSOFT-STORE.md`.
-
-**Partner Center:** the existing MG developer account does **not** charge monthly for
-a free app sitting in the Store. Fees are the old one-time registration (already paid /
-waived on new individual flow) and a **cut of paid Store commerce only**. Copilot IAP
-is unused; that listing costs $0/month.
-
-Engineering gates for any paid EXE: [`WINDOWS-ELECTRON.md`](WINDOWS-ELECTRON.md).
-Hub card + catalog: `C:\Github\product-design\docs\PDF-DESIGNER.md`.
+A one-click Windows installer, if it ships later, is a **thin shell** over this
+same engine — not a second feature set, and not a reason to delay clone-safe
+fixes. Contributor build notes: [`WINDOWS-ELECTRON.md`](WINDOWS-ELECTRON.md).
+Maintainer channel/signing notes stay local (`docs/CHANNELS.local.md`).
 
 ## How to market it (public-safe)
 
@@ -138,7 +114,7 @@ Channels: README + Hub GIF from **`examples/` only** · TestPyPI only for develo
 package rehearsal (no production PyPI release) · short “export +
 check_generation” clips. Keep personal career work and Patreon drafts out.
 
-Longer SEGO channel plan: `docs/MARKETING.md` (gitignored).
+Longer private channel notes: `docs/MARKETING.md` · `docs/CHANNELS.local.md` (gitignored).
 
 ## Non-goals
 
@@ -162,4 +138,4 @@ Longer SEGO channel plan: `docs/MARKETING.md` (gitignored).
 
 ---
 
-*Last updated 2026-08-25 — free GitHub + tip is the live ask; Azure Trusted Signing held until budget allows; unsigned NSIS is not listable.*
+*Last updated 2026-08-25 — free GitHub + optional tip is the public ask; a packaged installer is a later shell over the same engine.*

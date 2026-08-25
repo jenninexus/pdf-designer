@@ -1,7 +1,7 @@
 # ROADMAP — pdf-designer
 
 > **This is a pointer, not the roadmap.** The single active working checklist is
-> [`Plans/_Active/2026-08-22-product-polish-and-release-readiness.md`](../Plans/_Active/2026-08-22-product-polish-and-release-readiness.md).
+> [`Plans/_Active/2026-08-25-remaining-release-and-document-layout.md`](../Plans/_Active/2026-08-25-remaining-release-and-document-layout.md).
 > `/jen:roadmap` resolves here. Plans index: [`Plans/README.md`](../Plans/README.md).
 >
 > Product UX target: [`WORKSPACE-LAYOUT.md`](WORKSPACE-LAYOUT.md) (root `users/` · `vaults/` · `_job-apps/` · …).  
@@ -14,11 +14,8 @@
 - [x] **History scrub** (2026-08-18) — `docs/HISTORY-SCRUB.md`; force-push `8c1c631`. BEE re-clones.
 - [x] **Push origin/main** — private repo; clone-safe Hub + stills `3f5ebe8` (2026-08-18).
 - [x] **Core public product** — GitHub **public** 2026-08-19; blog walkthrough live; Jane Example covers every Hub document kind. Social publication records are owned in the Socials workspace.
-- [ ] Keep **SSOT + QA docs** honest as the engine evolves; consolidate the 2026-08-22 public-safe
-  product polish, visual evidence, product-channel record, and LIVPHI mirror in the active plan.
-- [x] Optional: TestPyPI upload + fresh-install proof (`pdf-designer 0.4.0`, 2026-08-21)
-- [ ] **Held:** Azure Trusted Signing (~$9.99 only in months the Artifact Signing account exists) ·
-  then signed installer + `-RequireAuthenticode` · paid fulfilment · Hub visual matrix
+- [ ] **Document layout / spacing** — Jenni + Shade + Jane résumé / cover / work-examples vs [`LAYOUT-SYSTEM.md`](LAYOUT-SYSTEM.md) (active plan §1)
+- [ ] **Later:** signed Windows installer + paid fulfilment (maintainer notes local: `docs/CHANNELS.local.md`)
 
 ### Recently landed
 
@@ -31,6 +28,8 @@
 - [x] **Commands privacy** — `*.example.md` only on GitHub
 - [x] **Hub drawer / layouts / letterhead** (2026-08-10)
 - [x] **Repo-root `output/<user>/<kind>/`** (2026-08-22) — generated PDFs/PNGs; HTML stays in `resumes/` · `collages/`; `storage/` leftover is not the SSOT; `_exports/` retired
+- [x] **Start vault import** (2026-08-23) — Hub `/wizard` upload + inferred claims (`seed_from_resume.py`)
+- [x] **Product polish wave closed** (2026-08-25) — remaining gates + layout pass live in the 2026-08-25 active plan
 
 ### Parked
 

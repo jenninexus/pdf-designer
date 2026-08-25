@@ -34,7 +34,7 @@ is invisible to the next clone. Thin the *reading* obligation, not the files.
 | Lesson | Standing rule lives in |
 |---|---|
 | ask-before-calling-it-a-gap · track-tags-hide-true-claims | [`docs/VAULT.md`](../docs/VAULT.md) |
-| overflow-fix-is-move-not-shrink · work-samples-footer-row-false-collision · fixed-height-clips-content-silently | [`docs/LAYOUT-SYSTEM.md`](../docs/LAYOUT-SYSTEM.md) · [`docs/QA.md`](../docs/QA.md) |
+| overflow-fix-is-move-not-shrink · work-samples-footer-row-false-collision · fixed-height-clips-content-silently · layout-recipe-vs-inline-html | [`docs/LAYOUT-SYSTEM.md`](../docs/LAYOUT-SYSTEM.md) · [`docs/QA.md`](../docs/QA.md) |
 | ats-section-cues · jobright-content-score-is-not-parse-fail | [`docs/JOB-ASSESSMENT.md`](../docs/JOB-ASSESSMENT.md) § Tier 4.5 |
 | twin-files-always-fork | [`AGENTS.md`](../AGENTS.md) (`.example` vs bare commands) |
 | public-clone-path-stays-tracked | [`docs/GETTING-STARTED.md`](../docs/GETTING-STARTED.md) · [`docs/PUBLIC-LOCAL-SPLIT.md`](../docs/PUBLIC-LOCAL-SPLIT.md) |
@@ -104,10 +104,11 @@ codebase · `reference`: pointer to an external resource.
 | [lesson-voice-preview-never-heuristically-redacts-private-text.md](lesson-voice-preview-never-heuristically-redacts-private-text.md) | A browser card cannot prove arbitrary local voice prose public-safe — use a skeletal private card until owner approval |
 | [lesson-electron-packaged-playwright-needs-explicit-browser-path.md](lesson-electron-packaged-playwright-needs-explicit-browser-path.md) | A frozen desktop runtime must explicitly use its copied Playwright Chromium and accept the actual `chrome-win*` folder layout |
 | [lesson-clean-installer-target-must-be-proven.md](lesson-clean-installer-target-must-be-proven.md) | A reachable Windows PC is not a clean installer target until checkout, runtime, install, and workspace preflight all pass |
-| [lesson-clean-host-is-not-a-dev-pc.md](lesson-clean-host-is-not-a-dev-pc.md) | BEE/LIVPHI/SEGOPC are not listing-proof hosts; `-BundledRuntimeProof` is the LAN substitute, not a skip-toolchain cheat |
-| [lesson-unsigned-dist-must-disable-cert-auto-discovery.md](lesson-unsigned-dist-must-disable-cert-auto-discovery.md) | Default NSIS dist must disable cert-store auto-discovery; Azure Trusted Signing is the only listable Authenticode path |
-| [lesson-vsce-pat-cannot-authenticode.md](lesson-vsce-pat-cannot-authenticode.md) | Syn Themes `VSCE_PAT` publishes a VSIX — it cannot stamp `PDF-Designer-Setup.exe`; gate is `verify-authenticode.ps1` |
+| [lesson-clean-host-is-not-a-dev-pc.md](lesson-clean-host-is-not-a-dev-pc.md) | A PC that already has Python/Node/a checkout is not listing-proof; `-BundledRuntimeProof` is the named substitute, not a skip-toolchain cheat |
+| [lesson-unsigned-dist-must-disable-cert-auto-discovery.md](lesson-unsigned-dist-must-disable-cert-auto-discovery.md) | Default NSIS dist must disable cert-store auto-discovery so a leftover Windows cert cannot stamp the wrong publisher |
+| [lesson-vsce-pat-cannot-authenticode.md](lesson-vsce-pat-cannot-authenticode.md) | A VS Code Marketplace PAT publishes a VSIX — it cannot stamp `PDF-Designer-Setup.exe`; gate is `verify-authenticode.ps1` |
 | [lesson-hidden-electron-close-needs-stop-process.md](lesson-hidden-electron-close-needs-stop-process.md) | Hidden Electron often has no main window — `CloseMainWindow()` false is not an installer fail; Stop-Process then assert runtime death |
+| [lesson-layout-recipe-vs-inline-html.md](lesson-layout-recipe-vs-inline-html.md) | Layout JSON is an authoring contract — default HTML inlines CSS and can pack tighter than LAYOUT-SYSTEM |
 
 ## Related
 

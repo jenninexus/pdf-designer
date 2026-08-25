@@ -26,7 +26,7 @@ Sibling pattern: [`agency/docs/PUBLIC-LOCAL-SPLIT.md`](../../agency/docs/PUBLIC-
 | Commands | `.claude/commands/*.example.md` only | Bare `start` / `wrap` / `make-*` / commands `README` + generated `.codex/` adapters |
 | Config | `.config/mcp-pdf-designer.example.json` | `mcp-pdf-designer.json` (absolute paths) |
 | Theme kit | Public default themes in-repo | `www-theme-kit` profiles + `brands/` (private kits) |
-| Docs | This folder (public `*.md`) | `MARKETING.md` · `WORKSPACE.md` · `HISTORY-SCRUB.md` · `*.local.md` · `Plans/` |
+| Docs | This folder (public `*.md`) | `MARKETING.md` · `WORKSPACE.md` · `HISTORY-SCRUB.md` · `CHANNELS.local.md` · `WINDOWS-ELECTRON.local.md` · other `*.local.md` · `Plans/` |
 | Lessons | `.memory/README.md` · `.memory/lesson-*.md` | Other `.memory/` notes · `dev-log-sego.yaml` |
 
 ## Track public files
@@ -52,7 +52,7 @@ Never commit from a personal machine:
 |---|---|
 | Root nouns (`users/` · `vaults/` · `resumes/` · …) real files; leftover `storage/` | Vaults, contacts, source HTML, exports |
 | `output/*` except `output/README.md` | Generated PDFs/PNGs |
-| `docs/MARKETING.md` · `WORKSPACE.md` · `HISTORY-SCRUB.md` · `docs/*.local.md` | SEGO marketing, machine paths, rewrite runbooks |
+| `docs/MARKETING.md` · `WORKSPACE.md` · `HISTORY-SCRUB.md` · `docs/*.local.md` | SEGO marketing, channel/signing ops, machine paths, rewrite runbooks |
 | `Plans/` | Local engineering checklists |
 | `.claude/commands/{start,wrap,pdf-start,pdf-wrap,README,make-*}.md` | Dev ritual + personal specifics |
 | `.codex/` | Generated local adapters for the bare commands |
