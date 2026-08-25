@@ -17,9 +17,8 @@
 - [ ] Keep **SSOT + QA docs** honest as the engine evolves; consolidate the 2026-08-22 public-safe
   product polish, visual evidence, product-channel record, and LIVPHI mirror in the active plan.
 - [x] Optional: TestPyPI upload + fresh-install proof (`pdf-designer 0.4.0`, 2026-08-21)
-- [ ] Signed Azure Trusted Signing installer (`npm run dist:signed` after portal identity) · listing
-  proof with `-RequireAuthenticode` (clean VM preferred; LAN substitute is `-BundledRuntimeProof`) ·
-  release-gated paid desktop fulfilment · recurring responsive Hub visual matrix
+- [ ] **Held:** Azure Trusted Signing (~$9.99 only in months the Artifact Signing account exists) ·
+  then signed installer + `-RequireAuthenticode` · paid fulfilment · Hub visual matrix
 
 ### Recently landed
 

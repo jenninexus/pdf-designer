@@ -1,11 +1,12 @@
 # Windows Electron installer
 
-**Status (2026-08-24):** Authenticode for Gumroad is **Azure Trusted Signing** (not
-the Syn Themes `VSCE_PAT`). No signed EXE exists until identity validation in
-Azure Portal is finished. SEGOPC Documents is OneDrive
-(`<user-home>\OneDrive\Documents`). Closest installer proof on this LAN is
-`-BundledRuntimeProof` from a drop folder — not a clean VM. LIVPHI `Github`
-share is the writable source-mirror route (`git` share stays denied).
+**Status (2026-08-25):** **Hold Azure Trusted Signing this month** (no Artifact
+Signing account → no $9.99). Unsigned NSIS is still **not listable**. Money /
+channel comparison (PayPal · Gumroad · Microsoft Store · Copilot):
+[`PRODUCT.md`](PRODUCT.md) § Paying for PDF Designer. Authenticode path when
+budget allows: Azure Trusted Signing (not Syn Themes `VSCE_PAT`). SEGOPC
+Documents is OneDrive. Closest installer proof is `-BundledRuntimeProof`, not a
+clean VM. LIVPHI source mirror is `\\LIVPHI\Github`.
 
 ## One engine, two local processes
 

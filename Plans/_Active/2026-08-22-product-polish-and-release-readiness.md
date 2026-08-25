@@ -127,9 +127,10 @@ linked repository remains owner of its own implementation.
 
 ## Deferred / human-owned
 
-- Provision Azure Trusted Signing (identity validation + Entra app). Store `AZURE_TENANT_ID`,
-  `AZURE_CLIENT_ID`, `AZURE_CLIENT_SECRET` in sys-admin; fill gitignored
-  `desktop/azure-trusted-signing.json` from the tracked example. Then `npm run dist:signed`.
+- Provision Azure Trusted Signing **when budget allows** (held 2026-08-25). Identity
+  validation + Entra app. Store `AZURE_*` in sys-admin; fill gitignored
+  `desktop/azure-trusted-signing.json`. Then `npm run dist:signed`. Do **not** create
+  the Artifact Signing account until ready to sign that same month ($9.99, not pro-rated).
 - Run the **signed** Electron installer on an independently preflighted clean Windows 10/11 x64
   VM with `scripts/verify-clean-machine.ps1 -ShowAppWindow -RequireAuthenticode`; copy only the
   Setup EXE and that script, never a checkout. SEGOPC / BEETHOVEN / LIVPHI cannot be that host.

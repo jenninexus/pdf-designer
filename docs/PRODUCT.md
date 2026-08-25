@@ -89,6 +89,42 @@ Prefer a **thin shell** over a second renderer.
 Packaging precursor: [`PACKAGING.md`](PACKAGING.md) (wheel must include `themes/` + `layouts/`).
 TestPyPI upload and fresh-install proof passed for `pdf-designer 0.4.0` on 2026-08-21. We deliberately will not publish production PyPI now: it is a developer library channel, while the Windows Electron/NSIS route is the customer install path. Installer proof: [`WINDOWS-ELECTRON.md`](WINDOWS-ELECTRON.md).
 
+## Paying for PDF Designer (PayPal · Gumroad · Microsoft Store)
+
+**Today (2026-08-25):** the honest ask is a **tip** on the free GitHub clone. There is
+no listable installer. **Do not create an Azure Artifact Signing (Trusted Signing)
+account this month** — that is the $9.99 click. Resume signing next month if budget
+allows. Unsigned `PDF-Designer-Setup-0.1.0.exe` stays local-only.
+
+| Channel | What they pay | What we pay | Role |
+|---|---|---|---|
+| **GitHub clone** | $0 | $0 | Always live. README suggested tip **$3 or $5** via [PayPal.Me/jenninexus](https://paypal.me/jenninexus) or [Patreon](https://www.patreon.com/c/JenniNexus). Tip ≠ installer. |
+| **JN `/products` $5** (later) | $5 | PayPal merchant fees on that sale | Preferred paid link **after** a Valid-signed NSIS. PayPal **Standard Checkout** + webhook fulfilment — not PayPal.Me as the product button. |
+| **Gumroad $6** (later) | $6 | Gumroad’s cut (higher than direct PayPal) | Same signed EXE; convenience listing, not a premium edition. |
+| **Azure Trusted Signing** | — | **$9.99 for each month the Artifact Signing account exists** (Basic, not pro-rated). $0 in months you delete the account after a timestamped sign. | Stamps a **sideload** `.exe` so Windows is not “Unknown publisher.” Required for Gumroad / JN `$5` EXE. Not required for GitHub. |
+| **Microsoft Store (Copilot model)** | $0 for Copilot | **$0/month** | Martian Copilot (`9PN7W26D3JQ3`) is a **free Hosted PWA**. Partner Center is **not a monthly bill**. Microsoft signs the MSIX. No Azure $9.99. |
+| **Microsoft Store (paid PDF Designer)** | customer pays Store price | **15%** of net receipts (non-game Microsoft commerce; games 12%). Plus MSIX packaging + certification of a ~350 MB local Python/Chromium app | Possible later as a **second** channel. Cannot copy Copilot’s “just wrap a website.” JN page would be “Get it on Microsoft Store,” not PayPal for that binary. Do not publish PDF Designer under the **Martian Games** publisher name. |
+
+**Best route while broke:** keep GitHub free + visible PayPal.Me / Patreon tips. Hold
+Azure. Do not list unsigned EXE. Do not turn on JN `$5` checkout or Gumroad.
+
+**Best route when we can spare ~$10 for one release month:** create Artifact Signing
+Basic (East US) → identity validation → `npm run dist:signed` → `verify-authenticode.ps1 -RequireSigned` → upload **that** EXE to Gumroad `$6` / later JN Checkout `$5` → **delete the Artifact Signing account** so it does not recur. Timestamped signature on that build stays Valid; a **new** Setup EXE needs the account again that month.
+
+**Why not Store instead of $9.99:** Copilot avoided Azure because it is a free website
+shell (`copilot.martiangames.com`). PDF Designer is local-first (`127.0.0.1`). A Store
+listing would still need a real MSIX, Store review on every binary, and either a free
+listing (no installer money) or 15% of each paid sale. Playbook:
+`C:\Github\martian-portal\docs\publish\MICROSOFT-STORE.md`.
+
+**Partner Center:** the existing MG developer account does **not** charge monthly for
+a free app sitting in the Store. Fees are the old one-time registration (already paid /
+waived on new individual flow) and a **cut of paid Store commerce only**. Copilot IAP
+is unused; that listing costs $0/month.
+
+Engineering gates for any paid EXE: [`WINDOWS-ELECTRON.md`](WINDOWS-ELECTRON.md).
+Hub card + catalog: `C:\Github\product-design\docs\PDF-DESIGNER.md`.
+
 ## How to market it (public-safe)
 
 | Layer | Message | Proof |
@@ -126,4 +162,4 @@ Longer SEGO channel plan: `docs/MARKETING.md` (gitignored).
 
 ---
 
-*Last updated 2026-08-24 — core toolkit shipped; production PyPI is intentionally deferred. Authenticode approach is Azure Trusted Signing; unsigned Windows Electron/NSIS dist is not listable until `dist:signed` and a clean-VM proof both pass.*
+*Last updated 2026-08-25 — free GitHub + tip is the live ask; Azure Trusted Signing held until budget allows; unsigned NSIS is not listable.*

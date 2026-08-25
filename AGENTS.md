@@ -37,7 +37,7 @@ folder task runs `scripts/ensure-design-hub.ps1` — starts the hub if needed, o
 
 **Public-path smoke (no `storage/`):** `python scripts/smoke-white-label.py` — QA + light/dark PDF + ATS on
 `examples/profiles/default-resume/`. Checklist: [`docs/GETTING-STARTED.md`](docs/GETTING-STARTED.md). Product
-direction (free GitHub vs paid app): [`docs/PRODUCT.md`](docs/PRODUCT.md). Packaging / wheel gate:
+direction (free GitHub vs paid app · PayPal/Gumroad/Store costs): [`docs/PRODUCT.md`](docs/PRODUCT.md) § Paying for PDF Designer. Packaging / wheel gate:
 [`docs/PACKAGING.md`](docs/PACKAGING.md) · `python scripts/check-wheel-assets.py` ·
 `python scripts/testpypi-dry-run.py` (local wheel proof; `--upload` needs `TESTPYPI_TOKEN`).
 
