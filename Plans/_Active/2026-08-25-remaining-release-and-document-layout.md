@@ -24,7 +24,7 @@ rewrite notes live in `docs/CHANNELS.local.md` (gitignored), not `docs/PRODUCT.m
 | **JN `/products`** | Local catalog already **free card + tip** (`jenninexus/public_html/includes/products.json`, 2026-08-25). Confirm live [jenninexus.com/products](https://jenninexus.com/products)#pdf-designer if not deployed this machine. Checkout stays off. |
 | **product-design hub** | Local-only. Card: `C:\Github\product-design\docs\PDF-DESIGNER.md`. Money board: `product-registry.md`. Command: `/products`. |
 | **Jenni defaults** | HTML `resumes/jenni/defaults/` · PDFs `output/jenni/resumes/` (work-examples ~1.18 MB, 2026-08-22). |
-| **Shade defaults** | Same recipes. Work-examples PDF still ~12 MB (board follow-up). |
+| **Shade defaults** | Same recipes. Work-examples **v2** ≈ 2.05 MB (`html_to_pdf --max-mb 5`). Pre-inline leftovers ~11.8 MB still sit beside them. |
 
 ---
 
@@ -37,7 +37,7 @@ rewrite notes live in `docs/CHANNELS.local.md` (gitignored), not `docs/PRODUCT.m
 
 ---
 
-## 1. Document layout / spacing (engineering — next)
+## 1. Document layout / spacing (landed 2026-08-25)
 
 Recipes (shared by Jenni and Shade — not per-person files):
 
@@ -82,4 +82,5 @@ From the closed 2026-08-22 polish plan. Detail: `docs/CHANNELS.local.md` + `docs
 - VERIFIED — wizard import tests exist; `output/` engine default landed (`190963f` / later).
 - VERIFIED — JN local `products.json` sku `pdf-designer` is `status: free` + tip CTA (2026-08-25).
 - UNVERIFIED — live droplet `/products` if deploy has not run since that catalog edit.
-- UNVERIFIED — résumé/cover/work-examples raster vs LAYOUT-SYSTEM rhythm (layout pass not started).
+- VERIFIED — Jenni + Shade résumé / cover / 3-page work-examples `check_generation` PASS (2026-08-25). Jane résumé + cover PASS. Jane Hub mosaic still FAIL `footer-collision` (collage tiles vs signature scan).
+- VERIFIED — Shade work-examples `*-v2.pdf` ≈ 2.05 MB. `html_to_pdf` now refuses positional paths that start with `-` (pytest `test_paths`).
