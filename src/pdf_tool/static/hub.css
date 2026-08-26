@@ -24,10 +24,10 @@
  *   .hub-main          — library LEFT column + viewer RIGHT (side-by-side from ≥576px).
  *                        Library width is a persisted sash (--hub-library-w), Dockview-inspired
  *                        but not Dockview. Phones stack; the sash hides ≤575.98.
- *   .hub-drawer        — offcanvas-end panel (Bungie-style, MG/JN pattern).
- *                        Holds everything that loses its label at narrow widths:
+ *   .hub-drawer        — full-bleed offcanvas sheet (kit `_offcanvas-nav.scss` contract).
+ *                        Holds everything that loses its label at compact widths:
  *                        navlinks, kind chips, folder/person/palette/fmt selects,
- *                        output folder, refresh. Export stays in the bar (primary CTA).
+ *                        output folder, refresh, tip links. Export stays in the bar.
  *   .hub-search-ovl    — full-screen glass overlay; magnifier or Cmd/Ctrl+K opens it.
  *
  * Breakpoint contract:
@@ -35,14 +35,12 @@
  *   THIS FILE — pdf-designer's implemented layout and nav-switch behavior
  *   .config/mcp-pdf-designer*.json + C:\mcp\.config\mcp-breakpoints.json — pointers/cache only
  *
- * Cascade (per .config/mcp-pdf-designer.example.json):
+ * Cascade (nav_switch = xxl so iPad Pro 12.9 landscape 1366 stays hamburger):
  *   xxs < 390         floor: horizontal scroll lives, nothing hides
  *   xs  ≤ 575.98      library stacks above stage (phones only)
- *   sm  ≤ 767.98      hamburger on; navlinks + selects live in drawer; split retained
- *   md  ≤ 991.98      bar still full; library stays LEFT (narrower column)
- *   lg  992–1199.98   full bar; navlinks inline
- *   xl  1200–1399.98  comfortable
- *   xxl ≥ 1400        widescreen
+ *   short landscape   max-height 480 — stack like a phone (iPhone rotated)
+ *   until-xxl ≤1399.98 hamburger; full-bleed drawer; header chips hidden; split retained ≥576
+ *   xxl ≥ 1400        full header buttons; widescreen
  *   hd  ≥ 1920        display refs (2k/4k caps)
  */
 
@@ -400,9 +398,9 @@ a.hub-brand {
   pointer-events: none;
 }
 
-/* Compact magnifier button (replaces the input ≤ drawer; opens overlay). */
+/* Compact magnifier — visible through until-xxl; hidden ≥1400 (search input returns). */
 .hub-search-trigger {
-  display: none;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   width: var(--hub-icon-box);
@@ -714,9 +712,7 @@ a.hub-brand {
 .fa-star { --hub-fa-icon: url("/_hub/fa-star.svg"); }
 .hub-bar button.hub-icon-btn,
 .hub-drawer-head-actions button.hub-icon-btn,
-.hub-search-trigger,
-.hub-more > summary,
-.hub-drawer-toggle {
+.hub-more > summary {
   display: inline-flex !important;
   align-items: center;
   justify-content: center;
@@ -730,9 +726,6 @@ a.hub-brand {
   padding: 0 !important;
   gap: 0;
 }
-/* The shared icon-box rule above uses !important; reassert the desktop state
-   here so only the drawer-switch media query can reveal the hamburger. */
-.hub-drawer-toggle { display: none !important; }
 .hub-bar button.hub-icon-btn.primary {
   padding: 0 !important;
   width: 28px;
@@ -806,9 +799,9 @@ a.hub-brand {
 }
 .hub-bar button.primary:hover { filter: brightness(1.06); }
 
-/* Menu trigger — only visible ≤ drawer switch. */
+/* Menu trigger — compact default (390 through iPad Pro landscape). Hide at xxl. */
 .hub-drawer-toggle {
-  display: none;
+  display: inline-flex;
   width: var(--hub-icon-box);
   height: var(--hub-icon-box);
   min-width: var(--hub-icon-box);
@@ -864,6 +857,77 @@ a.hub-brand {
   display: flex;
   flex-direction: column;
   min-height: 0;
+}
+
+/* Support / tip — splash, drawer, wizard. Public URLs from docs/PRODUCT.md. */
+.hub-support {
+  display: grid;
+  gap: 8px;
+  pointer-events: auto;
+}
+.hub-support-kicker {
+  margin: 0;
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--dash-text-dim);
+}
+.hub-support-copy {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--dash-text-dim);
+  line-height: 1.4;
+}
+.hub-support-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.hub-support-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid var(--dash-card-border);
+  text-decoration: none;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--dash-text-bright);
+  background: rgba(255, 255, 255, 0.04);
+}
+.hub-support-btn:hover { filter: brightness(1.08); }
+.hub-support-btn.patreon {
+  background: #FF424D;
+  border-color: #FF424D;
+  color: #fff;
+}
+.hub-support-btn.paypal {
+  background: #0070BA;
+  border-color: #0070BA;
+  color: #fff;
+}
+.hub-splash .hub-support {
+  margin-top: 22px;
+  justify-items: center;
+  text-align: center;
+  max-width: 28rem;
+  animation: hub-splash-rise 0.6s 1s ease both;
+}
+.hub-drawer .hub-support {
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid var(--dash-card-border);
+}
+.wizard-support {
+  margin-top: 28px;
+  padding: 18px 20px;
+  border-radius: var(--dash-radius);
+  border: 1px solid var(--dash-card-border);
+  background: var(--dash-card);
 }
 .hub-drawer.open { transform: translateX(0); }
 .hub-drawer-resize {
@@ -1302,7 +1366,7 @@ html.drawer-resizing, html.drawer-resizing * { cursor: ew-resize !important; use
   flex: 1;
   min-height: 0;
   overflow: auto;
-  padding: 28px 32px 40px;
+  padding: clamp(12px, 2.4vw, 32px) clamp(12px, 3vw, 32px) 40px;
   background:
     radial-gradient(1200px 480px at 12% -10%, rgba(66, 244, 200, 0.12), transparent 60%),
     radial-gradient(900px 420px at 110% 8%, rgba(157, 140, 217, 0.12), transparent 55%),
@@ -1332,10 +1396,11 @@ html.drawer-resizing, html.drawer-resizing * { cursor: ew-resize !important; use
 .hub-home-lead code { font-family: var(--dash-mono); color: var(--dash-accent); font-size: 0.88em; }
 .hub-home-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
   gap: 12px;
   margin-top: 22px;
-  max-width: 920px;
+  width: 100%;
+  max-width: none;
 }
 .hub-home-card {
   appearance: none;
@@ -1766,6 +1831,8 @@ body.wizard-page {
   .hub-folder-trigger { max-width: 180px; }
   .hub-bar #palette { max-width: 160px; }
   .hub-page-wrap { max-width: 1280px; }
+  .hub-bar .hub-drawer-toggle,
+  .hub-bar .hub-search-trigger { display: none !important; }
 }
 
 /* ── hd (≥1920) — display refs (2k/4k caps) ─────────────── */
@@ -1787,9 +1854,7 @@ body.wizard-page {
   .hub-page-wrap { max-width: 1180px; padding: 24px 28px 56px; }
 }
 
-/* ── lg / md-max (≤991.98) — keep split; slightly tighter library ──
-   Side-by-side stays on (yesterday's "great" desktop look). Drawer still
-   at ≤767.98. Only phones stack. */
+/* ── lg / md-max (≤991.98) — keep split; slightly tighter library ── */
 @media (max-width: 991.98px) {
   .hub-search input { width: 110px; }
   .hub-search input:focus { width: 140px; }
@@ -1802,11 +1867,17 @@ body.wizard-page {
   .hub-palette-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
 }
 
-/* ── md (≤767.98) — DRAWER SWITCH; library still LEFT ─────
-   Navlinks + chips + selects + output-folder move into the drawer.
-   Search collapses to magnifier. Split layout retained so the
-   viewer keeps most of the viewport. */
-@media (max-width: 767.98px) {
+/* ── until-xxl (≤1399.98) — DRAWER SWITCH through iPad Pro landscape ─
+   Header chips / nav / selects move into a full-bleed offcanvas sheet.
+   Library stays LEFT from ≥576 so the stage still fills the rest.
+   Desktop inline chrome returns at 1400 (xxl). */
+@media (max-width: 1399.98px) {
+  :root {
+    --hub-bar-h: 44px;
+    --hub-icon-box: 36px;
+    --hub-library-w: 240px;
+    --hub-library-max: 320px;
+  }
   /* Hide the empty desktop groups themselves, not only their children. Otherwise
      their divider borders survive as stray vertical lines beside the logo/actions. */
   .hub-bar-scroll > .hub-group:not(.hub-brand-group):not(.spacer) { display: none; }
@@ -1821,19 +1892,46 @@ body.wizard-page {
   .hub-bar .hub-search-kbd,
   .hub-bar .hub-folder-picker { display: none !important; }
 
-  .hub-drawer-toggle,
-  .hub-search-trigger { display: inline-flex !important; }
+  .hub-bar .hub-drawer-toggle,
+  .hub-bar .hub-search-trigger { display: inline-flex !important; }
 
-  /* Keep ⋯ in the pin on tablet? Hide — outdir lives in drawer. */
   .hub-bar .hub-more { display: none !important; }
-
   .hub-bar .hub-group.spacer { display: none; }
 
-  .hub-page-wrap { padding: 12px 12px 36px; }
-  .hub-page-wrap h1 { font-size: 1.18rem; }
+  .hub-page-wrap { max-width: none; padding: 14px 14px 36px; }
+  .hub-page-wrap h1 { font-size: 1.22rem; }
   .hub-page-wrap table { min-width: 420px; font-size: 0.84rem; }
-  .hub-palette-grid { grid-template-columns: 1fr; }
+  .hub-palette-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); }
   #status { max-width: 90px; }
+
+  .hub-drawer {
+    left: 0;
+    width: 100vw;
+    max-width: 100vw;
+    border-left: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .hub-drawer-resize { display: none !important; }
+  .hub-drawer-body { padding: 16px; gap: 20px; }
+  .hub-drawer .hub-nav .hub-link,
+  .hub-drawer .chip,
+  .hub-drawer-close,
+  .hub-drawer-head-actions button.hub-icon-btn,
+  .hub-drawer select,
+  .hub-drawer input[type="text"],
+  .hub-drawer .hub-folder-trigger {
+    min-height: 44px;
+  }
+  .hub-bar .hub-drawer-toggle {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
+  }
+  .hub-drawer .chips { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; }
+  .hub-drawer .chip { font-size: 0.82rem; }
+  .hub-drawer .hub-nav .hub-link { font-size: 0.88rem; padding-inline: 10px; }
 }
 
 /* ── sm (≤575.98) — phones: stack library above stage ───── */
@@ -1860,10 +1958,8 @@ body.wizard-page {
   /* Discovery controls are easier to scan as a centred, shared mobile set. */
   .hub-drawer-section > .hub-drawer-label { align-self: center; }
   .hub-page-wrap .hub-chips { justify-content: center; }
-  .hub-drawer { width: clamp(var(--hub-drawer-min), var(--hub-drawer-w), calc(100vw - 16px)); }
-  .hub-drawer .hub-nav .hub-link { font-size: 0.78rem; padding-inline: 5px; }
-  .hub-drawer .chips { grid-template-columns: repeat(auto-fit, minmax(112px, 1fr)); gap: 5px; }
-  .hub-drawer .chip { font-size: 0.72rem; padding-inline: 6px; }
+  .hub-home-grid { grid-template-columns: 1fr; }
+  .hub-drawer .chips { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
   .wizard-shell { padding-top: 16px; }
   .wizard-hero { grid-template-columns: 1fr; gap: 22px; padding: 24px 20px; border-radius: 16px; }
   .wizard-hero h1 { max-width: 11ch; font-size: clamp(2.25rem, 13vw, 3.25rem); }
@@ -1879,6 +1975,24 @@ body.wizard-page {
 @media (max-width: 389.98px) {
   .hub-bar { padding: 0 8px; }
   .hub-brand { font-size: 0.84rem; }
+}
+
+/* ── short landscape (phone rotated, iPhone 14 landscape 844×390) ──
+   Shared kit alias: short-landscape / max-height 480. Stack like xs. */
+@media (max-height: 480px) {
+  .hub-main {
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(88px, 28vh) minmax(0, 1fr);
+  }
+  .library {
+    max-height: 28vh;
+    height: auto;
+    border-right: 0;
+    border-bottom: 1px solid var(--dash-card-border);
+  }
+  .library-resize { display: none; }
+  .hub-home { padding: 10px 12px 24px; }
+  .hub-home h2 { font-size: 1.25rem; }
 }
 
 /* ── Launch title (Sylva grain/orbs + Syna letter stagger; kit pdf-designer.json) ── */

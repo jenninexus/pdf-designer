@@ -31,6 +31,14 @@ try {
     <p class="hub-splash-sub">Design Hub</p>
     <div class="hub-splash-bar" aria-hidden="true"><i></i></div>
     <p class="hub-splash-hint">Enter to skip</p>
+    <div class="hub-support" role="group" aria-label="Support JenniNexus">
+      <p class="hub-support-kicker">Support JenniNexus</p>
+      <p class="hub-support-copy">Free MIT toolkit. A tip is optional — it never unlocks extra features.</p>
+      <div class="hub-support-actions">
+        <a class="hub-support-btn patreon" href="https://www.patreon.com/c/JenniNexus" target="_blank" rel="noopener noreferrer">Patreon</a>
+        <a class="hub-support-btn paypal" href="https://paypal.me/jenninexus" target="_blank" rel="noopener noreferrer">PayPal</a>
+      </div>
+    </div>
   </div>
 </div>
 <header class="hub-bar" aria-label="Vault toolbar">
@@ -83,6 +91,14 @@ try {
       <div class="hub-drawer-field">
         <label for="drawerPersonFilter">Profiles</label>
         <select id="drawerPersonFilter" aria-label="Profiles"><option value="examples">examples</option></select>
+      </div>
+    </div>
+    <div class="hub-drawer-section hub-support" role="group" aria-label="Support JenniNexus">
+      <p class="hub-support-kicker">Support JenniNexus</p>
+      <p class="hub-support-copy">Free MIT toolkit. A tip is optional — it never unlocks extra features.</p>
+      <div class="hub-support-actions">
+        <a class="hub-support-btn patreon" href="https://www.patreon.com/c/JenniNexus" target="_blank" rel="noopener noreferrer">Patreon</a>
+        <a class="hub-support-btn paypal" href="https://paypal.me/jenninexus" target="_blank" rel="noopener noreferrer">PayPal</a>
       </div>
     </div>
   </div>
@@ -268,27 +284,11 @@ function setProfile(v) {
   load();
 }
 document.getElementById("refreshBtn").onclick = load;
-document.getElementById("drawerRefresh").onclick = () => { load(); closeDrawer(); };
 document.getElementById("personFilter").addEventListener("change", () => setProfile(document.getElementById("personFilter").value));
-document.getElementById("drawerPersonFilter").addEventListener("change", () => { setProfile(document.getElementById("drawerPersonFilter").value); closeDrawer(); });
-function openDrawer() {
-  document.getElementById("hubDrawer").classList.add("open");
-  document.getElementById("hubDrawer").setAttribute("aria-hidden", "false");
-  const backdrop = document.getElementById("hubDrawerBackdrop"); backdrop.hidden = false; backdrop.classList.add("open");
-  document.body.classList.add("drawer-open"); document.getElementById("drawerToggle").setAttribute("aria-expanded", "true");
-}
-function closeDrawer() {
-  document.getElementById("hubDrawer").classList.remove("open");
-  document.getElementById("hubDrawer").setAttribute("aria-hidden", "true");
-  const backdrop = document.getElementById("hubDrawerBackdrop"); backdrop.classList.remove("open"); backdrop.hidden = true;
-  document.body.classList.remove("drawer-open"); document.getElementById("drawerToggle").setAttribute("aria-expanded", "false");
-}
-document.getElementById("drawerToggle").onclick = openDrawer;
-document.getElementById("drawerClose").onclick = closeDrawer;
-document.getElementById("hubDrawerBackdrop").onclick = closeDrawer;
-document.addEventListener("keydown", e => { if (e.key === "Escape") closeDrawer(); });
+document.getElementById("drawerPersonFilter").addEventListener("change", () => { setProfile(document.getElementById("drawerPersonFilter").value); window.hubCloseDrawer?.(); });
 load();
 </script>
+<script src="/_hub/hub-chrome.js"></script>
 <script src="/_hub/splash.js"></script>
 </body>
 </html>

@@ -30,6 +30,7 @@
 
   const timer = setTimeout(dismiss, HOLD_MS);
   function skip(event) {
+    if (event && event.type === "click" && event.target.closest(".hub-support, a, button")) return;
     if (event && event.type === "keydown" && !["Enter", "Escape", " "].includes(event.key)) return;
     if (event && event.key === " ") event.preventDefault();
     clearTimeout(timer);

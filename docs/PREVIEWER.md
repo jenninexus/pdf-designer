@@ -38,15 +38,15 @@ Library, Recipes, Vault, and Start open with a **PDF Designer** title screen
 (cyan/violet hub chrome from `www-theme-kit/profiles/pdf-designer.json`): **3s hold**,
 then a **2s fade-out**. Click, Enter, or Escape skips it; `?no-splash=1` disables it;
 `?splash=1` forces it (the packaged app always launches this way). After the first view
-in a browser tab, the same session does not replay it.
+in a browser tab, the same session does not replay it. **Patreon + PayPal.Me** tip
+buttons sit on the splash (clicks on `.hub-support` do not skip the title), in the
+drawer, and on `/wizard` about. URLs: `docs/PRODUCT.md`.
 
 **No MCP / always-on server.** Optional temporary localhost only. CLI export works without it.
 
-On compact layouts, the Design Hub drawer closes with its top-right **X**, the
-backdrop, or Escape. Its manual **Refresh** control sits beside that X; the drawer
-does not repeat keyboard instructions in a footer. Its left grab edge is resizable
-(or keyboard-adjustable) and stores only a local browser width preference. The
-Library, Recipes, and Vault use that same drawer contract at `<=767.98px`.
+On compact layouts, the Design Hub drawer is a **full-bleed sheet** (no leftover strip). It closes with its top-right **X**, the
+backdrop, or Escape. Its manual **Refresh** control sits beside that X. The grab-edge sash is **hidden ≤1399.98**
+(hamburger through iPad Pro 12.9 landscape). Library, Recipes, Vault, and Start share that drawer contract.
 
 For the Windows-first browser launcher and its acceptance checks, see
 [`WINDOWS-LAUNCHER.md`](WINDOWS-LAUNCHER.md).
@@ -78,11 +78,12 @@ fast on a large tree. If the server is briefly down mid-poll, the client just re
 | `hub.css` `@media` | Hard-codes the same `.98px` maxes (CSS cannot `var()` inside `@media`) |
 
 Hub layout: **library left + viewer right** from **576px** up (desktop / tablet). Stacks only below
-**575.98px** (phones). Drawer (hamburger) from **≤767.98px**. Comfortable from **1200px** (xl);
-widescreen from **1400px** (xxl). Compact bar is **~40px**.
-The regression matrix covers 390, 576, 768, 992, 1200, 1400, 1920, 2560, and 3840px; the 2K/4K
-checks protect the same capped HD layout rather than introducing a second nav switch.
-**Vault + Recipes** use the same switch points (shared `hub.css` + `Library | Recipes | Vault` nav). Library is `body.hub-shell` (fixed panes); subpages are `body.hub-page` (document scroll). Tables get a horizontal scroll wrapper below md.
+**575.98px** (phones) and in **short landscape** (`max-height: 480px`). Drawer (hamburger) from
+**≤1399.98px** (`nav_switch: xxl`) so iPad Pro landscape 1366 keeps offcanvas, not header chips.
+Comfortable / widescreen from **1400px**. Compact bar is **44px**. Full-bleed offcanvas contract:
+`www-theme-kit/scss/_offcanvas-nav.scss`.
+The regression matrix covers 390, 576, 768, 992, 1024, 1366, 1400, 1920, 2560, and 3840px.
+**Vault + Recipes + Start** use the same switch points (shared `hub.css` + `Library | Recipes | Vault | Start` nav). Library is `body.hub-shell` (fixed panes); subpages are `body.hub-page` (document scroll). Tables get a horizontal scroll wrapper below md.
 
 Each `.html` file is its **own template** in the library (one card = one file).
 
@@ -90,7 +91,7 @@ Each `.html` file is its **own template** in the library (one card = one file).
 
 Local-first library + filters (Jobright-style UX inspiration — not cloud match scores):
 
-- **Kind chips (leading, after Profiles):** All · Resumes · Cover Letters · Letters · Work Samples · **Collages** · Galleries — then Library / Recipes / Vault / search / folder / palette scroll horizontally. **Refresh (icon) + Export (download icon) stay pinned** on the right; **⋯** opens the output-folder popover (also pinned — not clipped). ≤767.98px: hamburger drawer holds filters + outdir; magnifier opens search overlay (Ctrl/Cmd+K). Mouse wheel over the header strip scrolls that row horizontally.
+- **Kind chips (leading, after Profiles):** All · Resumes · Cover Letters · Letters · Work Samples · **Collages** · Galleries — then Library / Recipes / Vault / search / folder / palette scroll horizontally. **Refresh (icon) + Export (download icon) stay pinned** on the right; **⋯** opens the output-folder popover (also pinned — not clipped). ≤1399.98px: hamburger drawer holds filters + outdir + tip links; magnifier opens search overlay (Ctrl/Cmd+K). Mouse wheel over the header strip scrolls that row horizontally.
 - **Folder:** custom picker (not a bare `<select>`). Open the list → hover a row for a **ghost ★**; click the star to pin / unpin. Pinned folders sort to the **top** and persist in `localStorage` (`pdf-designer.hub.pinnedFolders`) across Refresh and full reloads. No separate pin button in the toolbar. Menu is `position:fixed` (JS places it from the trigger rect) so `.hub-bar-scroll`’s `overflow-y:hidden` cannot clip it.
 - **Profiles** (was “Who”): `all profiles` plus **`examples` first** (Jane Example, from tracked `profiles/examples.json`) then every workspace id from `users/` + `profiles/`. Path ownership (`resumes/<id>/` · legacy `storage/<id>/` URLs resolve to the same files) or a hyphen-bounded token (`jenni-…`, `meet-jenni-bot`) tags the card. Preference: `pdf-designer.hub.profileFilter`. First visit with no stored preference selects `examples`. **Design Hub** logo returns to the home landing (kind cards) and clears `?doc=`.
   - Choosing a profile **scopes** the folder picker and kind-chip counts to that profile. Kind chips click the first matching card. A leftover folder filter is **not** restored across reload (that hid the library behind one template dir).

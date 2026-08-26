@@ -456,6 +456,14 @@ try {
     <p class="hub-splash-sub">Design Hub</p>
     <div class="hub-splash-bar" aria-hidden="true"><i></i></div>
     <p class="hub-splash-hint">Enter to skip</p>
+    <div class="hub-support" role="group" aria-label="Support JenniNexus">
+      <p class="hub-support-kicker">Support JenniNexus</p>
+      <p class="hub-support-copy">Free MIT toolkit. A tip is optional — it never unlocks extra features.</p>
+      <div class="hub-support-actions">
+        <a class="hub-support-btn patreon" href="https://www.patreon.com/c/JenniNexus" target="_blank" rel="noopener noreferrer">Patreon</a>
+        <a class="hub-support-btn paypal" href="https://paypal.me/jenninexus" target="_blank" rel="noopener noreferrer">PayPal</a>
+      </div>
+    </div>
   </div>
 </div>
 <header class="hub-bar" aria-label="Design Hub toolbar">
@@ -583,6 +591,14 @@ try {
       <div class="hub-drawer-field">
         <label for="outdirDrawer">Output folder</label>
         <input id="outdirDrawer" type="text" placeholder="output/<user>/<kind> (default)">
+      </div>
+    </div>
+    <div class="hub-drawer-section hub-support" role="group" aria-label="Support JenniNexus">
+      <p class="hub-support-kicker">Support JenniNexus</p>
+      <p class="hub-support-copy">Free MIT toolkit. A tip is optional — it never unlocks extra features.</p>
+      <div class="hub-support-actions">
+        <a class="hub-support-btn patreon" href="https://www.patreon.com/c/JenniNexus" target="_blank" rel="noopener noreferrer">Patreon</a>
+        <a class="hub-support-btn paypal" href="https://paypal.me/jenninexus" target="_blank" rel="noopener noreferrer">PayPal</a>
       </div>
     </div>
   </div>
@@ -1297,7 +1313,7 @@ syncSelectPair("palette", "drawerPalette", () => {
   });
 })();
 
-/* ---- Drawer + search overlay (responsive ≤767.98) ---- */
+/* ---- Drawer + search overlay (responsive ≤1399.98 / nav_switch xxl) ---- */
 function openDrawer() {
   const drawer = document.getElementById("hubDrawer");
   const backdrop = document.getElementById("hubDrawerBackdrop");
