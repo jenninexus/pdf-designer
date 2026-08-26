@@ -35,6 +35,7 @@
   - 1366×1024: hamburger 44px, chips `none`, drawer 1366, grid 1102 (fills stage beside library)
   - 1400×900: hamburger `none`, chips/nav `flex`, until-xxl false
 - **VERIFIED** HTTP smoke: splash/drawer Patreon + PayPal.Me; `/wizard` hamburger + support; `/_hub/hub-chrome.js` 200; hub.css has 1399.98 + `width: 100vw`, no 920px cap.
+- **VERIFIED** Playwright 1024×1366 follow-up (2026-08-26): home grid **1 column** (card ~140×762); open drawer `x=0` width 1024; palette custom menu x=16 w=992 (inside viewport); copy 15.2px / tip pills min-height 34px; `hub-select.js` loaded.
 - **UNVERIFIED** headed iPhone/iPad Safari (no device in this run). Jen DJ booth UI not implemented.
 
 ## Deferred

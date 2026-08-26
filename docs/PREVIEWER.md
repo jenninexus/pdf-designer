@@ -73,7 +73,7 @@ fast on a large tree. If the server is briefly down mid-poll, the client just re
 | Pointer | Role |
 |---|---|
 | [`.config/mcp-pdf-designer.example.json#breakpoints`](../.config/mcp-pdf-designer.example.json) | ⭐ Tracked seed — copy to local `mcp-pdf-designer.json` (gitignored) for machine paths |
-| Global breakpoint cache (optional) | e.g. shared `mcp-breakpoints.json` → `bootstrap_5_3_8_extended_390_4k` |
+| Global breakpoint **registry** (optional, not SSOT) | e.g. `C:\mcp\.config\mcp-breakpoints.json` → project → set → nav_switch |
 | `www-theme-kit/scss/_breakpoint-tokens.scss` | Shared numeric tokens / mixins (www-theme-kit is the consumer SSOT for this repo) |
 | `hub.css` `@media` | Hard-codes the same `.98px` maxes (CSS cannot `var()` inside `@media`) |
 
@@ -93,6 +93,7 @@ Local-first library + filters (Jobright-style UX inspiration — not cloud match
 
 - **Kind chips (leading, after Profiles):** All · Resumes · Cover Letters · Letters · Work Samples · **Collages** · Galleries — then Library / Recipes / Vault / search / folder / palette scroll horizontally. **Refresh (icon) + Export (download icon) stay pinned** on the right; **⋯** opens the output-folder popover (also pinned — not clipped). ≤1399.98px: hamburger drawer holds filters + outdir + tip links; magnifier opens search overlay (Ctrl/Cmd+K). Mouse wheel over the header strip scrolls that row horizontally.
 - **Folder:** custom picker (not a bare `<select>`). Open the list → hover a row for a **ghost ★**; click the star to pin / unpin. Pinned folders sort to the **top** and persist in `localStorage` (`pdf-designer.hub.pinnedFolders`) across Refresh and full reloads. No separate pin button in the toolbar. Menu is `position:fixed` (JS places it from the trigger rect) so `.hub-bar-scroll`’s `overflow-y:hidden` cannot clip it.
+- **Drawer palette / profiles / format:** also custom lists (`hub-select.js`). Native `<select>` popups ignore Chrome’s device-mode frame and clip off iPad portrait. Folder stays `.hub-folder-native` (hidden) + the pin picker. Compact footer (Support JenniNexus) is centered with smaller tip pills and larger copy ≤1399.98. Home kind-cards stack to one column ≤1199.98 (iPad portrait 1024).
 - **Profiles** (was “Who”): `all profiles` plus **`examples` first** (Jane Example, from tracked `profiles/examples.json`) then every workspace id from `users/` + `profiles/`. Path ownership (`resumes/<id>/` · legacy `storage/<id>/` URLs resolve to the same files) or a hyphen-bounded token (`jenni-…`, `meet-jenni-bot`) tags the card. Preference: `pdf-designer.hub.profileFilter`. First visit with no stored preference selects `examples`. **Design Hub** logo returns to the home landing (kind cards) and clears `?doc=`.
   - Choosing a profile **scopes** the folder picker and kind-chip counts to that profile. Kind chips click the first matching card. A leftover folder filter is **not** restored across reload (that hid the library behind one template dir).
   - Copy `profiles/you-resume.example.json` → `profiles/you-resume.json` for yourself; keep `profiles/examples.json` so the public cards stay in the dropdown.
