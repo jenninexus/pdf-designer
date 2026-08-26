@@ -512,8 +512,9 @@ a.hub-brand {
   top: 0;
   z-index: 120;
   min-width: 240px;
-  max-width: min(420px, 70vw);
+  max-width: min(420px, calc(100vw - 16px));
   max-height: min(420px, 60vh);
+  box-sizing: border-box;
   overflow-y: auto;
   padding: 4px;
   background: var(--dash-bg-2);
@@ -1056,7 +1057,95 @@ html.drawer-resizing, html.drawer-resizing * { cursor: ew-resize !important; use
   box-shadow: 0 0 0 2px rgba(66, 244, 200, 0.18);
 }
 
-.hub-drawer-field { display: flex; flex-direction: column; gap: 4px; }
+.hub-drawer-field { display: flex; flex-direction: column; gap: 4px; position: relative; }
+
+/* Custom in-drawer list — never a native popup (those ignore the device frame). */
+.hub-select-wrap { position: relative; width: 100%; max-width: 100%; }
+.hub-select-native {
+  position: absolute;
+  width: 1px;
+  height: 1px !important;
+  min-height: 0 !important;
+  opacity: 0;
+  pointer-events: none;
+  overflow: hidden;
+  padding: 0;
+  border: 0;
+}
+.hub-select-trigger {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 12px;
+  background: var(--dash-bg);
+  color: var(--dash-text);
+  border: 1px solid var(--dash-card-border);
+  border-radius: 6px;
+  font-size: 0.82rem;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.hub-select-trigger::after {
+  content: "";
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 5px solid var(--dash-text-dim);
+  flex-shrink: 0;
+}
+.hub-select-wrap.open .hub-select-trigger { border-color: var(--dash-accent); }
+.hub-select-menu {
+  display: none;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + 4px);
+  z-index: 8;
+  width: 100%;
+  max-width: 100%;
+  max-height: min(40vh, 320px);
+  overflow-x: hidden;
+  overflow-y: auto;
+  box-sizing: border-box;
+  padding: 4px;
+  background: var(--dash-bg-2, var(--dash-bg));
+  border: 1px solid var(--dash-card-border);
+  border-radius: 8px;
+}
+.hub-select-wrap.open .hub-select-menu { display: block; }
+.hub-select-option {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  border: 0;
+  border-radius: 5px;
+  background: transparent;
+  color: var(--dash-text);
+  font-family: inherit;
+  font-size: 0.82rem;
+  text-align: left;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.hub-select-option:hover,
+.hub-select-option:focus-visible {
+  background: rgba(66, 244, 200, 0.08);
+  outline: none;
+}
+.hub-select-option[aria-selected="true"] {
+  background: rgba(66, 244, 200, 0.14);
+  color: var(--dash-text-bright);
+}
 .hub-drawer-field > label {
   font-size: 0.62rem;
   text-transform: uppercase;
@@ -1906,12 +1995,14 @@ body.wizard-page {
 
   .hub-drawer {
     left: 0;
+    right: auto;
     width: 100vw;
     max-width: 100vw;
     border-left: 0;
     border-radius: 0;
     box-shadow: none;
   }
+  .hub-drawer.open { transform: translateX(0); }
   .hub-drawer-resize { display: none !important; }
   .hub-drawer-body { padding: 16px; gap: 20px; }
   .hub-drawer .hub-nav .hub-link,
@@ -1929,9 +2020,49 @@ body.wizard-page {
     min-width: 44px;
     min-height: 44px;
   }
-  .hub-drawer .chips { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; }
-  .hub-drawer .chip { font-size: 0.82rem; }
+  .hub-drawer .chips { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 8px; }
+  .hub-drawer .chip { font-size: 0.88rem; min-height: 44px; height: auto; }
   .hub-drawer .hub-nav .hub-link { font-size: 0.88rem; padding-inline: 10px; }
+
+  .hub-home-grid {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+    gap: 14px;
+  }
+  .hub-home-card { min-height: 124px; padding: 18px 20px; }
+  .hub-home-name { font-size: 1.05rem; }
+
+  .hub-drawer .hub-support,
+  .hub-splash .hub-support {
+    justify-items: center;
+    text-align: center;
+  }
+  .hub-drawer .hub-support-copy {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    max-width: 36ch;
+  }
+  .hub-drawer .hub-support-kicker { font-size: 0.72rem; }
+  .hub-drawer .hub-support-actions { justify-content: center; }
+  .hub-drawer .hub-support-btn {
+    min-height: 34px;
+    padding: 0 12px;
+    font-size: 0.72rem;
+  }
+  .hub-select-menu { max-width: 100%; }
+  .wizard-support.hub-support {
+    justify-items: center;
+    text-align: center;
+  }
+  .wizard-support .hub-support-actions { justify-content: center; }
+}
+
+/* ── lg-max (≤1199.98) — iPad portrait 1024: one large stacked kind-card ─ */
+@media (max-width: 1199.98px) {
+  .hub-home-grid { grid-template-columns: 1fr; gap: 14px; }
+  .hub-home-card { min-height: 140px; padding: 22px 24px; }
+  .hub-home-name { font-size: 1.14rem; }
+  .hub-home-kind { font-size: 0.74rem; }
+  .hub-home-path { font-size: 0.78rem; }
 }
 
 /* ── sm (≤575.98) — phones: stack library above stage ───── */

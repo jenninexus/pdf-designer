@@ -29,7 +29,7 @@
 - [x] **Hub drawer / layouts / letterhead** (2026-08-10)
 - [x] **Repo-root `output/<user>/<kind>/`** (2026-08-22) — generated PDFs/PNGs; HTML stays in `resumes/` · `collages/`; `storage/` leftover is not the SSOT; `_exports/` retired
 - [x] **Start vault import** (2026-08-23) — Hub `/wizard` upload + inferred claims (`seed_from_resume.py`)
-- [x] **Hub compact chrome** (2026-08-26) — hamburger through iPad Pro landscape (`nav_switch: xxl`); full-bleed offcanvas; home grid fills the stage. Plan: [`Plans/_Active/2026-08-26-hub-compact-offcanvas.md`](../Plans/_Active/2026-08-26-hub-compact-offcanvas.md).
+- [x] **Hub compact chrome** (2026-08-26) — hamburger through iPad Pro landscape (`nav_switch: xxl`); full-bleed offcanvas; iPad portrait stacked kind-cards; in-drawer custom selects (native popups ignore device-mode). Plan: [`Plans/_Active/2026-08-26-hub-compact-offcanvas.md`](../Plans/_Active/2026-08-26-hub-compact-offcanvas.md).
 
 ### Parked
 

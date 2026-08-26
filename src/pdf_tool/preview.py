@@ -700,7 +700,7 @@ function positionFolderMenu(picker, btn, menu) {
   const vw = window.innerWidth;
   const vh = window.innerHeight;
   const minW = Math.max(240, Math.round(r.width));
-  const maxW = Math.min(420, Math.floor(vw * 0.7));
+  const maxW = Math.min(420, Math.max(160, vw - 16));
   const width = Math.min(minW, maxW);
   let left = Math.round(r.left);
   if (left + width > vw - 8) left = Math.max(8, vw - 8 - width);
@@ -714,6 +714,7 @@ function positionFolderMenu(picker, btn, menu) {
   menu.style.left = left + "px";
   menu.style.top = top + "px";
   menu.style.minWidth = width + "px";
+  menu.style.maxWidth = maxW + "px";
   menu.style.maxHeight = maxH + "px";
 }
 
@@ -1571,6 +1572,7 @@ openPaletteFromQuery();
 })();
 </script>
 <script src="/_hub/drawer-resize.js"></script>
+<script src="/_hub/hub-select.js"></script>
 <script src="/_hub/splash.js"></script>
 </body>
 </html>

@@ -47,7 +47,7 @@
     "voice_seed": "<VOICE_SEED>"
   },
   "breakpoints": {
-    "_role": "Project pointer only. Shared breakpoint numbers live in www-theme-kit SCSS; src/pdf_tool/static/hub.css owns pdf-designer behavior. The MCP global file is a cross-project cache/index, not an SSOT.",
+    "_role": "Project pointer only. Shared breakpoint numbers live in www-theme-kit SCSS; src/pdf_tool/static/hub.css owns pdf-designer behavior. The MCP global file is a cross-project registry, not an SSOT.",
     "set": "bootstrap_5_3_8_extended_390_4k",
     "framework": "Bootstrap 5.3.8 extended (xxs + HD/2K/4K)",
     "global_cache": "<MCP_CONFIG_DIR>\\mcp-breakpoints.json",
@@ -82,7 +82,9 @@
       576,
       768,
       992,
+      1024,
       1200,
+      1366,
       1400,
       1920,
       2560,
