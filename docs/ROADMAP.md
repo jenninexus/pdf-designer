@@ -15,7 +15,7 @@
 - [x] **Push origin/main** — private repo; clone-safe Hub + stills `3f5ebe8` (2026-08-18).
 - [x] **Core public product** — GitHub **public** 2026-08-19; blog walkthrough live; Jane Example covers every Hub document kind. Social publication records are owned in the Socials workspace.
 - [x] **Document layout / spacing** — Jenni + Shade résumé / cover / 3-page work-examples vs [`LAYOUT-SYSTEM.md`](LAYOUT-SYSTEM.md) (2026-08-25). Jane Hub mosaic is collage-family; Azure signing still held.
-- [ ] **Later:** signed Windows installer + paid fulfilment (maintainer notes local: `docs/CHANNELS.local.md`)
+- [x] **Azure signing / paid fulfilment** — **held until further notice**. Public product = GitHub free + suggested tip. Do not list unsigned EXE. Maintainer notes: `docs/CHANNELS.local.md`.
 
 ### Recently landed
 
@@ -29,7 +29,7 @@
 - [x] **Hub drawer / layouts / letterhead** (2026-08-10)
 - [x] **Repo-root `output/<user>/<kind>/`** (2026-08-22) — generated PDFs/PNGs; HTML stays in `resumes/` · `collages/`; `storage/` leftover is not the SSOT; `_exports/` retired
 - [x] **Start vault import** (2026-08-23) — Hub `/wizard` upload + inferred claims (`seed_from_resume.py`)
-- [x] **Product polish wave closed** (2026-08-25) — remaining gates + layout pass live in the 2026-08-25 active plan
+- [x] **Hub compact chrome** (2026-08-26) — hamburger through iPad Pro landscape (`nav_switch: xxl`); full-bleed offcanvas; home grid fills the stage. Plan: [`Plans/_Active/2026-08-26-hub-compact-offcanvas.md`](../Plans/_Active/2026-08-26-hub-compact-offcanvas.md).
 
 ### Parked
 

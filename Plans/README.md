@@ -12,6 +12,7 @@ Working plans for pdf-designer. Keep **one** active product roadmap; move finish
 | Plan | Status |
 |---|---|
 | [`_Active/2026-08-25-remaining-release-and-document-layout.md`](_Active/2026-08-25-remaining-release-and-document-layout.md) | ⭐ **THE** working plan — document spacing pass; Shade ≤5 MB work-examples; Azure/signing still held |
+| [`_Active/2026-08-26-hub-compact-offcanvas.md`](_Active/2026-08-26-hub-compact-offcanvas.md) | Design Hub tablet/phone offcanvas (`nav_switch: xxl`) — landed 2026-08-26; Jen DJ follow-up is a sibling repo |
 
 > **`/jen:roadmap` entry point:** [`../docs/ROADMAP.md`](../docs/ROADMAP.md).  
 > **Business:** [`../docs/PRODUCT.md`](../docs/PRODUCT.md).  

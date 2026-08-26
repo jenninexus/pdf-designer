@@ -10,12 +10,15 @@
     const defaultWidth = opts.defaultWidth;
     const invert = !!opts.invert;
     const stackedMq = window.matchMedia("(max-width: 575.98px)");
+    const compactNavMq = window.matchMedia("(max-width: 1399.98px)");
     const maxWidth = () => {
       const cap = typeof opts.max === "function" ? opts.max() : opts.max;
       return Math.max(min, cap);
     };
     const clamp = value => Math.round(Math.max(min, Math.min(maxWidth(), value)));
+    const compactOff = () => compactNavMq.matches && opts.hideWhenCompact;
     const setWidth = (value, persist = true) => {
+      if (compactOff()) return;
       if (stackedMq.matches && opts.hideWhenStacked) return;
       const width = clamp(value);
       document.documentElement.style.setProperty(opts.cssVar, width + "px");
@@ -29,10 +32,12 @@
       if (Number.isFinite(saved)) setWidth(saved, false);
     } catch (_) {}
     window.addEventListener("resize", () => {
+      if (compactOff()) return;
       if (stackedMq.matches && opts.hideWhenStacked) return;
       setWidth(pane.getBoundingClientRect().width, false);
     });
     handle.addEventListener("pointerdown", event => {
+      if (compactOff()) return;
       if (stackedMq.matches && opts.hideWhenStacked) return;
       event.preventDefault();
       const startX = event.clientX;
@@ -77,6 +82,7 @@
     min: 280,
     defaultWidth: 320,
     invert: true,
+    hideWhenCompact: true,
     max: () => Math.min(560, window.innerWidth - (window.innerWidth <= 576 ? 16 : 24)),
   });
 
