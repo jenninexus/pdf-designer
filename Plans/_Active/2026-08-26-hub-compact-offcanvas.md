@@ -39,7 +39,7 @@
 - **UNVERIFIED** headed iPhone/iPad Safari (no device in this run). Jen DJ booth UI not implemented.
 
 ## Deferred
-- Jen DJ booth-nav hamburger implementation (other agent) — contract in syna-theme-kit `_offcanvas-nav.scss` + `profiles/jen-dj.json`
-- Headed Playwright on LIVPHI
+- Jen DJ Minimized icon-only BoothNav, fonts accordion, tri-pane catalog, desktop drag-resize (do **not** Hub-hamburger phone mixer tabs)
+- Headed Playwright / Safari on a QA host (not SEGOPC foreground)
 - Raising other www sites' nav_switch to xxl (MG stays md)
-- www-theme-kit commit sat on sibling branch `codex/social-notifier-release` — explicit-path commit only, no push of that branch
+- www-theme-kit compact-offcanvas docs landed on **main** (`ae3f6a5`); sibling `codex/social-notifier-release` still holds unrelated WIP — do not push that branch
