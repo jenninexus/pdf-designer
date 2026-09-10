@@ -38,6 +38,11 @@ from pathlib import Path
 from .browser import chromium_launch_kwargs
 
 
+def resolve_pdf_theme(pdf_theme: str | None) -> str:
+    """Return the effective print theme; omitted/blank always means light."""
+    return (pdf_theme or "light").strip().lower() or "light"
+
+
 def _next_available_path(base: Path) -> Path:
     """Return base, or the next base-vN sibling that doesn't exist yet."""
     if not base.exists():
@@ -67,8 +72,10 @@ def export_html_to_pdf(
     For deterministic resume output, pair this with an explicit CSS rule:
     `@page { size: Letter; margin: ... }`.
 
-    If pdf_theme is given, it is exposed to the document as:
-    `document.documentElement.dataset.pdfTheme = "<value>"`.
+    The resolved theme is always exposed to the document as:
+    `document.documentElement.dataset.pdfTheme = "<value>"`. An omitted or
+    blank pdf_theme resolves to ``light`` so a dark value embedded in the
+    source HTML cannot produce a mislabeled light export.
     Templates can use selectors such as
     `@media print { html[data-pdf-theme="dark"] { ... } }` to keep Letter
     pagination while rendering a branded dark PDF variant.
@@ -88,6 +95,8 @@ def export_html_to_pdf(
     if not html_path.exists():
         raise FileNotFoundError(html_path)
 
+    resolved_theme = resolve_pdf_theme(pdf_theme)
+
     if pdf_path:
         out_path = Path(pdf_path).resolve()
     else:
@@ -97,19 +106,17 @@ def export_html_to_pdf(
         export_dir.mkdir(parents=True, exist_ok=True)
         # Dual-mode convention: stem-light.pdf (ATS) / stem-dark.pdf (branded).
         # Explicit pdf_path still wins when the caller wants a custom name.
-        theme_label = (pdf_theme or "light").strip().lower() or "light"
-        default_path = export_dir / f"{html_path.stem}-{theme_label}.pdf"
+        default_path = export_dir / f"{html_path.stem}-{resolved_theme}.pdf"
         out_path = default_path if force else _next_available_path(default_path)
 
     with sync_playwright() as p:
         browser = p.chromium.launch(**chromium_launch_kwargs())
         page = browser.new_page()
         page.goto(html_path.as_uri())
-        if pdf_theme:
-            page.evaluate(
-                "theme => { document.documentElement.dataset.pdfTheme = theme; }",
-                pdf_theme,
-            )
+        page.evaluate(
+            "theme => { document.documentElement.dataset.pdfTheme = theme; }",
+            resolved_theme,
+        )
         if css_vars:
             # Palette override (e.g. from the preview server's palette swapper):
             # inline styles on <html> outrank :root rules, so the exported PDF

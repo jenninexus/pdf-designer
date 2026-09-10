@@ -28,6 +28,7 @@ Setup: pip install -e .   (Playwright only -- Apache-2.0)
 from pathlib import Path
 
 from .browser import chromium_launch_kwargs
+from .html_to_pdf import resolve_pdf_theme
 import sys
 
 # US Letter at 96 CSS px/in.
@@ -76,11 +77,10 @@ def render_to_png(
         )
         page.goto(src.as_uri(), wait_until="networkidle")
 
-        if pdf_theme:
-            page.evaluate(
-                "t => document.documentElement.setAttribute('data-pdf-theme', t)",
-                pdf_theme,
-            )
+        page.evaluate(
+            "t => document.documentElement.setAttribute('data-pdf-theme', t)",
+            resolve_pdf_theme(pdf_theme),
+        )
 
         # Print media, so @media print rules apply -- exactly as in html_to_pdf.
         page.emulate_media(media="print")
