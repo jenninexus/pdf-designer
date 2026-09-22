@@ -88,6 +88,10 @@ From the closed 2026-08-22 polish plan. Detail: `docs/CHANNELS.local.md` + `docs
   **Open original** action and match the library's cyan scrollbar.
 - [ ] Review and land the existing mixed Design Hub/docs working batch after its whitespace findings
   are normalized; do not combine private applicant payload with the public commit.
+  - Preserved on local `main` as `cdb5173` after full tests, wheel proof, white-label smoke, privacy scan,
+    and live Hub verification. Remote landing is blocked: GitHub rejected the configured `MonoFinity`
+    HTTPS identity for `jenninexus/pdf-designer` with HTTP 403. Next action: push local `main` with an
+    already-authorized `jenninexus` credential; do not recreate or cherry-pick the batch elsewhere.
 
 ## 4. Product evolution carryover (wanted, not release blockers)
 
