@@ -41,7 +41,10 @@ direction (free GitHub vs later paid shell): [`docs/PRODUCT.md`](docs/PRODUCT.md
 [`docs/PACKAGING.md`](docs/PACKAGING.md) · `python scripts/check-wheel-assets.py` ·
 `python scripts/testpypi-dry-run.py` (local wheel proof; `--upload` needs `TESTPYPI_TOKEN`).
 
-**Active product plan:** [`Plans/_Active/2026-08-25-remaining-release-and-document-layout.md`](Plans/_Active/2026-08-25-remaining-release-and-document-layout.md) — the sole product/carryover checklist · index [`Plans/README.md`](Plans/README.md) · pointer [`docs/ROADMAP.md`](docs/ROADMAP.md). Closed narrative moves to `Plans/_Complete/`; do not create a second active checklist. Folder UX target: [`docs/WORKSPACE-LAYOUT.md`](docs/WORKSPACE-LAYOUT.md). Maintainer channel/signing: `docs/CHANNELS.local.md` (gitignored).
+**Product backlog:** [`docs/ROADMAP.md`](docs/ROADMAP.md) · plan index [`Plans/README.md`](Plans/README.md).
+`Plans/_Active/` may be empty; create at most one public-safe checklist for a concrete accepted slice, then
+move it to `Plans/_Complete/`. Folder UX target: [`docs/WORKSPACE-LAYOUT.md`](docs/WORKSPACE-LAYOUT.md).
+Maintainer channel/signing: `docs/CHANNELS.local.md` (gitignored).
 
 **Session start / wrap:** `/pdf-start` → local [`.claude/commands/pdf-start.md`](.claude/commands/pdf-start.md)
 (gitignored). `/pdf-wrap` → local [`.claude/commands/pdf-wrap.md`](.claude/commands/pdf-wrap.md) — **requires
@@ -51,7 +54,7 @@ aliases in `start.md` / `wrap.md` that defer here. Public protocol seeds:
 private maps in `brands/` (was `storage/brand-design/`). Product front door: [`examples/resume-studio/`](examples/resume-studio/).
 
 **Where learnings go — two surfaces, do not confuse them.** Session narrative lives in
-the sole **`Plans/_Active/2026-08-25-remaining-release-and-document-layout.md`** checklist with a pointer in
+an active `Plans/_Active/` checklist when a concrete slice exists, with the durable backlog in
 [`docs/ROADMAP.md`](docs/ROADMAP.md); move completed narrative to `_Complete`. Root `dev-log-sego.yaml` is **deprecated** (frozen
 2026-09-08 under `Plans/_Complete/_archive/` — do not append). Durable lessons — a trap, its
 root cause, and the guard that now prevents it — go to **tracked**
@@ -191,7 +194,7 @@ marketed résumé-creator demo path (vault shape + palettes + smoke), not privat
 | `examples/_job-listings/` | one-folder-per-job-application workflow + copyable template |
 | `docs/` | ARCHITECTURE · SSOT · PRODUCT · PACKAGING · GETTING-STARTED · PUBLIC-LOCAL-SPLIT · STORAGE · VAULT · JOB-ASSESSMENT · THEME-DESIGN · LAYOUT-SYSTEM · EXPORTS · COLLAGE-DESIGN · PREVIEWER · APPLICATIONS · LICENSING-NOTES ([`docs/README.md`](docs/README.md) is the index) |
 | `.config/mcp-pdf-designer.example.json` | ⭐ Tracked project config **seed** (breakpoints + hub/palette/layout pointers). Copy → local `mcp-pdf-designer.json` (gitignored — machine paths). |
-| `Plans/_Active/` | ⭐ the working roadmap (one file) — see [`Plans/README.md`](Plans/README.md) |
+| `Plans/_Active/` | Optional one-plan execution slice; durable backlog is [`docs/ROADMAP.md`](docs/ROADMAP.md) |
 | `output/` | ⭐ **public engine/example output** — tracked README only; payload ignored. Engine default. |
 | `_exports/` | ⭐ **private personal deliverables** — tracked README only; applicant/studio payload ignored. |
 | `storage/` | **Retired legacy residue** (keep private; never ship or add new live work). Dual-run resolver still maps old `storage/<user>/` URLs. |

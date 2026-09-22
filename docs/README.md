@@ -14,7 +14,7 @@ then use [`PUBLIC-LOCAL-SPLIT.md`](PUBLIC-LOCAL-SPLIT.md) for the tracking/priva
 | Public product docs · `themes/` · `layouts/` · `examples/` | Live vaults / brands / jobs / collages / exports (`_job-apps/` + `storage/` alias) |
 | `.config/mcp-pdf-designer.example.json` | `mcp-pdf-designer.json` (machine paths) |
 | `*.example.md` command seeds only | Bare `start`/`wrap`/`README`/`make-*.md` |
-| [`PRODUCT.md`](PRODUCT.md) · [`GETTING-STARTED.md`](GETTING-STARTED.md) · `resume-studio/` · the named public-safe active product plan | Personal/session plans, agent notes, application records, and local marketing / workspace / history notes |
+| [`PRODUCT.md`](PRODUCT.md) · [`GETTING-STARTED.md`](GETTING-STARTED.md) · `resume-studio/` · optional public-safe product plan | Personal/session plans, agent notes, application records, and local marketing / workspace / history notes |
 
 ## Start here
 
@@ -46,11 +46,29 @@ then use [`PUBLIC-LOCAL-SPLIT.md`](PUBLIC-LOCAL-SPLIT.md) for the tracking/priva
 | [`COLLAGE-DESIGN.md`](COLLAGE-DESIGN.md) | Layout families, canvas presets, backgrounds, fit |
 | [`LICENSING-NOTES.md`](LICENSING-NOTES.md) | MIT honesty + AGPL removal story |
 
+## Workflow & local data
+
+These remain separate because each owns a different decision boundary; they are not alternate getting-started guides.
+
+| Doc | Owns |
+|---|---|
+| [`SSOT.md`](SSOT.md) | One-screen ownership map and authoritative-file lookup |
+| [`STORAGE.md`](STORAGE.md) | Public/private folders, root nouns, aliases, and brand paths |
+| [`VAULT.md`](VAULT.md) | Claim provenance, voice, role tracks, and vault schema |
+| [`APPLICATIONS.md`](APPLICATIONS.md) | One-folder-per-job workflow and where application artifacts live |
+| [`JOB-ASSESSMENT.md`](JOB-ASSESSMENT.md) | Apply-link, remote/pay, evidence, gap-check, and ATS assessment protocol |
+| [`ROADMAP.md`](ROADMAP.md) | Durable product backlog plus the optional current execution-plan pointer |
+
+## Compatibility pointer
+
+[`WHITE-LABEL.md`](WHITE-LABEL.md) is intentionally only a redirect for older links. Its maintained
+content lives in [`GETTING-STARTED.md`](GETTING-STARTED.md); do not grow a second white-label guide there.
+
 ## Local operating records
 
 Personal/session plans, agent runbooks, working vault payload, and application records stay
-gitignored. The one active product plan is tracked only while it remains clone-safe; reviewed
-product-history plans may remain tracked. The public walkthrough is the fictional
+gitignored. `Plans/_Active/` may be empty and holds at most one explicitly unignored, clone-safe
+execution slice; reviewed product-history plans may remain tracked. The public walkthrough is the fictional
 [`../examples/resume-studio/`](../examples/resume-studio/) example plus
 [`GETTING-STARTED.md`](GETTING-STARTED.md).
 

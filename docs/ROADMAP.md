@@ -1,10 +1,11 @@
 # ROADMAP — pdf-designer
 
-> **This is a pointer, not the roadmap.**
+> **This is the durable product backlog and status map.**
 >
 > | Kind | File |
 > |---|---|
-> | **Product checklist** | [`Plans/_Active/2026-08-25-remaining-release-and-document-layout.md`](../Plans/_Active/2026-08-25-remaining-release-and-document-layout.md) |
+> | **Active product slice** | None — create at most one file under [`Plans/_Active/`](../Plans/_Active/) when a concrete slice is accepted |
+> | **Latest completed plan** | [`Plans/_Complete/2026-08-25-remaining-release-and-document-layout.md`](../Plans/_Complete/2026-08-25-remaining-release-and-document-layout.md) |
 >
 > `/jen:roadmap` resolves here. Plans index: [`Plans/README.md`](../Plans/README.md).
 > Session narrative **does not** go in `dev-log-sego.yaml` (frozen 2026-09-08 → [`Plans/_Complete/_archive/`](../Plans/_Complete/_archive/)).
@@ -36,14 +37,20 @@
 - [x] **Start vault import** (2026-08-23) — Hub `/wizard` upload + inferred claims (`seed_from_resume.py`)
 - [x] **Hub compact chrome** (2026-08-26) — hamburger through iPad Pro landscape (`nav_switch: xxl`); iPad portrait stacked kind-cards; in-drawer custom selects. Plan: [`Plans/_Complete/2026-08-26-hub-compact-offcanvas.md`](../Plans/_Complete/2026-08-26-hub-compact-offcanvas.md). **2026-09-02:** full-bleed sheet on phones only (≤575.98 + short landscape); 576–1399.98 is an almost-full flexible end-panel.
 
-### Parked
+### Parked / decision-gated
 
 - [ ] **pywebview shell** — [`Plans/_Complete/2026-07-11-design-hub-parked-phases.md`](../Plans/_Complete/2026-07-11-design-hub-parked-phases.md)
+- [ ] **Signed binary channel** — only reopen after a private channel decision; require Valid
+  Authenticode plus clean Win10/11 x64 VM proof before any binary listing. Unsigned listing stays off.
 
 ### Product evolution carryover
 
-- [ ] Canvas editor, collage books, desktop output-folder picker, and the production-PyPI decision are
-  tracked only in the [sole active product plan](../Plans/_Active/2026-08-25-remaining-release-and-document-layout.md#4-product-evolution-carryover-wanted-not-release-blockers).
+- [ ] **Canvas editor** — drag/drop image tray, canvas presets, layout-family starts, hero selection,
+  and text blocks over the same `collage-source.json` used by the CLI.
+- [ ] **Collage books** — multi-page project manifest → render pages → `merge_pdfs`.
+- [ ] **Desktop output-folder picker** — only in the signed desktop shell; retain editable path text.
+- [ ] **Production PyPI decision** — only after TestPyPI proof and an explicit channel decision; the
+  GitHub clone remains the complete free product.
 
 ### Never
 

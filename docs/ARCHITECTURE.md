@@ -130,8 +130,8 @@ examples/
   _job-listings/              the one-folder-per-application workflow + its templates
 docs/                         you are here
 storage/                      ⛔ GITIGNORED alias — real data also at users/ vaults/ _job-apps/ resumes/
-Plans/_Active/                ⭐ one live product roadmap
-Plans/_Archive/               shipped / parked plans
+Plans/_Active/                optional one-plan execution slice
+Plans/_Complete/              shipped / parked plans; docs/ROADMAP.md owns the backlog
 .claude/commands/             the /make-resume protocol (agent-agnostic markdown)
 pyproject.toml                `pip install -e .` → `pdf_tool` importable from the repo root
 ```
@@ -162,7 +162,7 @@ Honest status — nothing below exists yet.
 
 | What | Status |
 |---|---|
-| **Design Hub app** — Electron shell over the existing previewer; variant generation; canvas editor | Shell built but release-signing held; canvas/books remain later carryover. See [`PREVIEWER.md`](PREVIEWER.md) and the sole active checklist: [`../Plans/_Active/2026-08-25-remaining-release-and-document-layout.md`](../Plans/_Active/2026-08-25-remaining-release-and-document-layout.md). |
+| **Design Hub app** — Electron shell over the existing previewer; variant generation; canvas editor | Shell built but release-signing held; canvas/books remain later carryover. See [`PREVIEWER.md`](PREVIEWER.md) and [`ROADMAP.md`](ROADMAP.md). |
 | **PDF form filling** — AcroForm field filling, flat-PDF overlay filling | **Deferred indefinitely.** This was the repo's *original* premise and has never once been needed — every real document has been HTML → PDF. Don't build it until something actually demands it. |
 
 > The previous version of this document described a `src/application_assistant/` package

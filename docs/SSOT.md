@@ -17,7 +17,7 @@ Hub:       python -m pdf_tool.preview → :8787 (workspace auto-starts via scrip
 Smoke:     python scripts/smoke-white-label.py   ← ⭐ fresh-clone proof (examples/ only, no storage/)
 Package:   docs/PACKAGING.md + scripts/check-wheel-assets.py  ← wheel must include themes/layouts
 Engine:    python -m pdf_tool  (hub) / individual modules
-Plans:     Plans/_Active/ (one product/carryover checklist) · pointer docs/ROADMAP.md
+Plans:     docs/ROADMAP.md (durable backlog) · Plans/_Active/ (optional one-slice checklist)
 Product hub: C:\Github\product-design  (local; /jen:products)
 ```
 
@@ -53,8 +53,9 @@ Compact map of what this repo owns vs what it only points at. Agents: start here
 | Make-collage | `.claude/commands/make-collage.example.md` | Multi-image collage routine (public seed) |
 | Public examples | `examples/resume-studio/`, `examples/profiles/`, `examples/brand-design/` | Clone-safe templates |
 | Project config | `.config/mcp-pdf-designer.example.json` | Seed only — local `mcp-pdf-designer.json` is gitignored |
-| Active product plan | `Plans/_Active/2026-08-25-remaining-release-and-document-layout.md` | Remaining product gates (Azure/signing held) |
-| Completed/session history | `Plans/_Complete/` | Closed narrative and reviewed public-safe product history; no second active checklist |
+| Product backlog | `docs/ROADMAP.md` | Remaining and parked product work; authoritative when `_Active/` is empty |
+| Active execution slice | `Plans/_Active/` | Zero or one public-safe checklist for accepted work |
+| Completed/session history | `Plans/_Complete/` | Closed narrative and reviewed public-safe product history |
 
 ---
 
@@ -187,4 +188,4 @@ short public-facing entry.
 | [`VAULT.md`](VAULT.md) | Claim + voice rules |
 | [`PREVIEWER.md`](PREVIEWER.md) | Design Hub how-to |
 | [`STORAGE.md`](STORAGE.md) | Private workspace layout |
-| [`Plans/_Active/2026-08-25-remaining-release-and-document-layout.md`](../Plans/_Active/2026-08-25-remaining-release-and-document-layout.md) | Product remaining gates |
+| [`ROADMAP.md`](ROADMAP.md) | Product backlog and current plan pointer |

@@ -81,7 +81,7 @@ Plans/*
 !Plans/README.md
 !Plans/_Active/
 Plans/_Active/*
-!Plans/_Active/2026-08-25-remaining-release-and-document-layout.md
+!Plans/_Active/README.md
 docs/APPLICATIONS.md
 docs/JOB-ASSESSMENT.md
 docs/LAYOUT-SYSTEM.md
@@ -125,6 +125,7 @@ job-listing-capture-*.md
 # They may contain the same private/dev specifics as their source, so they stay local and untracked.
 # Public command seeds are only .claude/commands/*.example.md; never generate public mirrors here.
 .codex/
+.agents/
 
 # Generated output + personal images (collage sets, screenshots) — real image
 # files stay local; a future tracked example image needs an explicit ! exception

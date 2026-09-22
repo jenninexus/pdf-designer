@@ -12,7 +12,7 @@ paid shell later. Clone path: [`GETTING-STARTED.md`](GETTING-STARTED.md). Archit
 | Public demo | [`../examples/resume-studio/`](../examples/resume-studio/) |
 | Folder UX (clone tree) | [`WORKSPACE-LAYOUT.md`](WORKSPACE-LAYOUT.md) — root-noun README scaffolds; `storage/` retired |
 | Private marketing / channel ops | `docs/MARKETING.md` · `docs/CHANNELS.local.md` (gitignored) |
-| Engineering checklist | [`../Plans/_Active/2026-08-25-remaining-release-and-document-layout.md`](../Plans/_Active/2026-08-25-remaining-release-and-document-layout.md) |
+| Engineering backlog | [`ROADMAP.md`](ROADMAP.md); `Plans/_Active/` is optional and holds at most one accepted execution slice |
 
 ---
 
