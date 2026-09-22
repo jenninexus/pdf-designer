@@ -30,13 +30,17 @@ try {
     <p class="hub-splash-name">Designer</p>
     <p class="hub-splash-sub">Design Hub</p>
     <div class="hub-splash-bar" aria-hidden="true"><i></i></div>
-    <p class="hub-splash-hint">Enter to skip</p>
+    <div class="hub-splash-actions">
+      <button type="button" class="hub-splash-open" id="hubSplashOpen">Open</button>
+      <a class="hub-splash-wizard" id="hubSplashWizard" href="/wizard">Start wizard</a>
+    </div>
+    <p class="hub-splash-hint">Enter opens the Hub · Esc closes</p>
     <div class="hub-support" role="group" aria-label="Support JenniNexus">
       <p class="hub-support-kicker">Support JenniNexus</p>
       <p class="hub-support-copy">Free MIT toolkit. A tip is optional — it never unlocks extra features.</p>
       <div class="hub-support-actions">
-        <a class="hub-support-btn patreon" href="https://www.patreon.com/c/JenniNexus" target="_blank" rel="noopener noreferrer">Patreon</a>
-        <a class="hub-support-btn paypal" href="https://paypal.me/jenninexus" target="_blank" rel="noopener noreferrer">PayPal</a>
+        <a class="hub-support-btn patreon" href="https://www.patreon.com/c/JenniNexus" target="_blank" rel="noopener noreferrer"><span class="hub-fa-icon fa-patreon" aria-hidden="true"></span>Patreon</a>
+        <a class="hub-support-btn paypal" href="https://paypal.me/jenninexus" target="_blank" rel="noopener noreferrer"><span class="hub-fa-icon fa-paypal" aria-hidden="true"></span>PayPal</a>
       </div>
     </div>
   </div>
@@ -50,7 +54,7 @@ try {
       <a class="hub-link" href="/" title="Document library">Library</a>
       <a class="hub-link" href="/recipes" title="Browse layouts/ + themes/presets">Recipes</a>
       <a class="hub-link on" href="/vault" title="Readable vault · skills · go-to résumés" aria-current="page">Vault</a>
-      <a class="hub-link" href="/wizard" title="Start a local résumé workspace">Start</a>
+      <a class="hub-link" href="/wizard" title="Start wizard — local résumé workspace">Wizard</a>
     </nav>
     <div class="hub-group" title="Profiles">
       <select id="personFilter" title="Profiles" aria-label="Profiles">
@@ -84,7 +88,7 @@ try {
         <a class="hub-link" href="/">Library</a>
         <a class="hub-link" href="/recipes">Recipes</a>
         <a class="hub-link on" href="/vault" aria-current="page">Vault</a>
-        <a class="hub-link" href="/wizard">Start</a>
+        <a class="hub-link" href="/wizard" title="Start wizard — local résumé workspace">Wizard</a>
       </nav>
     </div>
     <div class="hub-drawer-section">
@@ -97,8 +101,8 @@ try {
       <p class="hub-support-kicker">Support JenniNexus</p>
       <p class="hub-support-copy">Free MIT toolkit. A tip is optional — it never unlocks extra features.</p>
       <div class="hub-support-actions">
-        <a class="hub-support-btn patreon" href="https://www.patreon.com/c/JenniNexus" target="_blank" rel="noopener noreferrer">Patreon</a>
-        <a class="hub-support-btn paypal" href="https://paypal.me/jenninexus" target="_blank" rel="noopener noreferrer">PayPal</a>
+        <a class="hub-support-btn patreon" href="https://www.patreon.com/c/JenniNexus" target="_blank" rel="noopener noreferrer"><span class="hub-fa-icon fa-patreon" aria-hidden="true"></span>Patreon</a>
+        <a class="hub-support-btn paypal" href="https://paypal.me/jenninexus" target="_blank" rel="noopener noreferrer"><span class="hub-fa-icon fa-paypal" aria-hidden="true"></span>PayPal</a>
       </div>
     </div>
   </div>
@@ -161,7 +165,7 @@ async function load() {
     root.innerHTML = "";
     if (data.hiddenPersonal) {
       const note = document.createElement("p");
-      note.className = "hub-page-lead";
+      note.className = "hub-page-lead hub-banner-note";
       note.textContent = data.hiddenPersonal + " personal vault"
         + (data.hiddenPersonal === 1 ? "" : "s")
         + " hidden — pick that profile in the header to open it.";
@@ -193,17 +197,19 @@ async function load() {
         <h3 class="hub-section-label">Go-to résumé packs</h3>
         <div class="hub-table-scroll">
         <table>
-          <thead><tr><th>Pack</th><th>Targets</th><th>Open</th></tr></thead>
+          <thead><tr><th>Pack</th><th>Targets</th><th class="hub-col-actions">Open</th></tr></thead>
           <tbody>
             ${packs.length ? packs.map(p => `
               <tr>
                 <td><strong>${esc(p.label)}</strong>${p.rule ? "<br><span class='hub-meta'>" + esc(p.rule) + "</span>" : ""}</td>
                 <td>${esc(p.targets || p.focus || "")}</td>
-                <td>${p.htmlExists
-                  ? `<a class="hub-open" href="/?doc=${encodeURIComponent(p.html)}" title="Select in Design Hub library">Open in library</a>
-                     <span class="ok">✓</span>
-                     <br><a class="raw" href="/${esc(p.html)}" target="_blank" rel="noopener" title="Raw HTML">raw HTML</a>
-                     <code class="path-mini">${esc(p.html)}</code>`
+                <td class="hub-col-actions">${p.htmlExists
+                  ? `<div class="hub-cell-actions">
+                       <a class="hub-open" href="/?doc=${encodeURIComponent(p.html)}" title="Select in Design Hub library">Open in library</a>
+                       <span class="ok">✓</span>
+                       <a class="raw" href="/${esc(p.html)}" target="_blank" rel="noopener" title="Raw HTML">raw HTML</a>
+                       <code class="path-mini">${esc(p.html)}</code>
+                     </div>`
                   : `<span class="missing">${esc(p.html || "—")} missing</span>`}</td>
               </tr>`).join("") : "<tr><td colspan='3' class='empty'>No goToPacks</td></tr>"}
           </tbody>

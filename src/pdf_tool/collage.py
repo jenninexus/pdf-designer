@@ -51,11 +51,12 @@ project, replacing copying finished renders around by hand.
 --bg sets the page background instead of the theme's flat color. It takes a
 named preset from themes/default-collage.json#backgrounds (discord-slate,
 discord-deep, discord-ember, discord-signal, discord-radial, martian-ember,
-flat-dark, flat-white) or any raw CSS color/gradient string, which is passed
+jenni-nexus, flat-dark, flat-white) or any raw CSS color/gradient string, which is passed
 through verbatim.
 """
 
 import hashlib
+import html
 import json
 import struct
 import sys
@@ -185,6 +186,7 @@ BACKGROUNDS = {
     "discord-signal": "linear-gradient(145deg, #313338 0%, #26323d 60%, #1b2733 100%)",
     "discord-radial": "radial-gradient(120% 90% at 50% 0%, #3a3d44 0%, #2b2d31 45%, #1a1b1e 100%)",
     "martian-ember":  "linear-gradient(150deg, #2b2d31 0%, #3a2622 55%, #f0561d 190%)",
+    "jenni-nexus":    "radial-gradient(120% 90% at 50% 0%, #2a1248 0%, #12071e 48%, #0A0710 100%)",
     "flat-dark":      "#0b0d12",
     "flat-white":     "#ffffff",
 }
@@ -194,6 +196,7 @@ BACKGROUNDS = {
 FRAMES = {
     "discord-slate": "#3f434b", "discord-deep": "#383b42", "discord-ember": "#5a3a2c",
     "discord-signal": "#2f4457", "discord-radial": "#454951", "martian-ember": "#f0561d",
+    "jenni-nexus": "#A563D1",
     "flat-dark": "#2a2e36", "flat-white": "#ffffff",
 }
 
@@ -433,11 +436,22 @@ def body_filmstrip(images, canvas, src, opts):
     return f'<div class="filmstrip">{rows_html}</div>'
 
 
+def _source_text(source: dict, role: str, index: int) -> str | None:
+    """Title/subtitle from collage-source.json `text[]` or a top-level key."""
+    if source.get(role):
+        return source[role]
+    blocks = source.get("text") or []
+    if index < len(blocks) and isinstance(blocks[index], dict):
+        return blocks[index].get("content")
+    return None
+
+
 def body_spotlight_caption(images, canvas, src, opts):
-    title = opts.get("title") or "Untitled Collage"
+    title = html.escape(opts.get("title") or "Untitled Collage")
+    subtitle = html.escape(opts.get("subtitle") or "")
     card = (
         '<div class="cell textcard"><div>'
-        f"<h2>{title}</h2><p>{opts.get('subtitle', '')}</p>"
+        f"<h2>{title}</h2><p>{subtitle}</p>"
         "</div></div>"
     )
     return body_hero_mosaic(images, canvas, src, opts, text_card=card)
@@ -627,7 +641,7 @@ def render_index(families, images, canvas, out_dir: Path, opts, stem: str = "") 
 # ---------------------------------------------------------------- generation
 
 def generate(images_dir, canvas_name=None, layout=None, hero=None, title=None,
-             theme=None, out_dir=None, png=False, px=None, background=None, fit=None,
+             subtitle=None, theme=None, out_dir=None, png=False, px=None, background=None, fit=None,
              recipe=None, promote=None, best_for=None, shelve=False):
     images_dir = Path(images_dir).resolve()
     if not images_dir.is_dir():
@@ -649,7 +663,8 @@ def generate(images_dir, canvas_name=None, layout=None, hero=None, title=None,
     layout = layout or rec.get("family") or source.get("layout") or "auto"
     opts = {
         "hero": hero or source.get("hero"),
-        "title": title or (source.get("text", [{}])[0].get("content") if source.get("text") else None),
+        "title": title or _source_text(source, "title", 0),
+        "subtitle": subtitle or _source_text(source, "subtitle", 1),
         "theme": theme or rec.get("theme") or source.get("theme") or "dark",
         "background": background or rec.get("background") or source.get("background"),
         "fit": fit or rec.get("fit") or source.get("fit"),
@@ -742,8 +757,8 @@ def generate(images_dir, canvas_name=None, layout=None, hero=None, title=None,
 
 def main() -> None:
     raw = sys.argv[1:]
-    flags = {"--canvas": None, "--layout": None, "--hero": None, "--title": None, "--theme": None,
-             "--out": None, "--px": None, "--bg": None, "--fit": None, "--recipe": None,
+    flags = {"--canvas": None, "--layout": None, "--hero": None, "--title": None, "--subtitle": None,
+             "--theme": None, "--out": None, "--px": None, "--bg": None, "--fit": None, "--recipe": None,
              "--promote": None, "--best-for": None, "--archive": None}
     png = False
     shelve = False
@@ -795,6 +810,7 @@ def main() -> None:
             layout=flags["--layout"],
             hero=flags["--hero"],
             title=flags["--title"],
+            subtitle=flags["--subtitle"],
             theme=flags["--theme"],
             out_dir=flags["--out"],
             png=png,

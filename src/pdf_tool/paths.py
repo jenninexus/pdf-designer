@@ -8,11 +8,10 @@ Checkout wins over ``share/`` so a local ``sync-wheel-share`` run cannot shadow
 live edits to repo-root ``themes/`` / ``layouts/``.
 
 Workspace nouns (``users/`` · ``vaults/`` · ``_job-apps/`` · …) are the product
-layout — see ``docs/WORKSPACE-LAYOUT.md``. Live data still sits under
-``storage/`` until the alias is dropped. Every helper here accepts **both**
-trees: an existing new-noun file wins; otherwise the ``storage/`` alias; if
-neither file exists, prefer the legacy path while ``storage/`` is still present
-so SEGO keeps working. Job folders: ``_job-apps/`` (canonical) ·
+layout — see ``docs/WORKSPACE-LAYOUT.md``. Live data uses the root nouns;
+``storage/`` is retained only as ignored legacy residue. Every helper here
+accepts **both** trees: an existing new-noun file wins; otherwise the
+``storage/`` alias. Job folders: ``_job-apps/`` (canonical) ·
 ``applications/`` (brief 2026-08 name) · ``storage/_job-listings/`` (legacy).
 """
 
@@ -503,6 +502,8 @@ def workspace_rel_info(rel: str) -> RelInfo:
         return RelInfo(bucket="_job-listings")
     if low.startswith("collages/") or low.startswith("storage/collages/"):
         return RelInfo(bucket="collages")
+    if low.startswith("_exports/") and len(parts) >= 2:
+        return RelInfo(bucket="exports", profile=parts[1])
     if low.startswith("resumes/") and len(parts) >= 2:
         return RelInfo(bucket="vault-renders", profile=parts[1])
     if low.startswith("storage/") and len(parts) >= 2 and parts[1] not in _RESERVED_STORAGE:

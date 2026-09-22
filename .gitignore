@@ -5,7 +5,9 @@ pdf-designer.code-workspace
 #   .config/mcp-pdf-designer.example.json → copy to mcp-pdf-designer.json
 .config/mcp-pdf-designer.json
 
-# Per-machine private session log (names private storage paths + related repos) — local only
+# Per-machine private session log — DEPRECATED 2026-09-08 (do not recreate at repo root).
+# Frozen copy: Plans/_Complete/_archive/dev-log-sego.yaml
+# New session narrative: Plans/_Active/YYYY-MM-DD-<topic>.md + docs/ROADMAP.md
 dev-log-sego.yaml
 dev-log-*.yaml
 
@@ -75,10 +77,11 @@ AGENTS.md
 .memory/*
 !.memory/README.md
 !.memory/lesson-*.md
-Plans/
+Plans/*
 !Plans/README.md
+!Plans/_Active/
+Plans/_Active/*
 !Plans/_Active/2026-08-25-remaining-release-and-document-layout.md
-!Plans/_Active/2026-08-26-hub-compact-offcanvas.md
 docs/APPLICATIONS.md
 docs/JOB-ASSESSMENT.md
 docs/LAYOUT-SYSTEM.md
@@ -87,6 +90,8 @@ docs/SSOT.md
 docs/STORAGE.md
 docs/VAULT.md
 docs/*.local.md
+docs/private/
+docs/**/*.private.md
 
 # Localized commands/docs — the TRACKED <name>.md is the generalized, shareable version;
 # <name>.local.md is your copy with real company names, clients, and lessons in it.
@@ -127,15 +132,20 @@ job-listing-capture-*.md
 !docs/pdf-designer-overview.pdf
 *.png
 !docs/images/**/*.png
+# Real-applicant Hub captures belong in private _exports/, never public docs media.
+docs/images/hub-resume-*.png
 *.jpg
 *.jpeg
 *.webp
 *.gif
 output/*
 !output/README.md
-# Retired alias (2026-08-22). Live generated files are output/<user>/<kind>/.
-_exports/
+# Personal/private generated deliverables. Keep the root guide visible in public clones;
+# ignore every payload and any accidental nested _exports directory.
 **/_exports/
+!/_exports/
+/_exports/*
+!/_exports/README.md
 # CLI mishap: pdf_to_png treats a leftover flag as a positional out-dir
 --output-dir/
 _variants/

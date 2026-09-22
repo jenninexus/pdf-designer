@@ -3,20 +3,21 @@
 **Read this before authoring any resume or cover letter.** It is agent-agnostic: Claude,
 Codex, Cursor, or a human should all be able to work from this page alone.
 
-> **Tracked protocol** (this file). Private data lives under gitignored `storage/`.
+> **Tracked protocol** (this file). Private data lives under gitignored root nouns (`users/`,
+> `vaults/`, `profiles/`, `resumes/`, `_job-apps/`, `brands/`, and `_exports/`).
 > Layout + brand SSOT: [`STORAGE.md`](STORAGE.md). Job capture: [`JOB-ASSESSMENT.md`](JOB-ASSESSMENT.md).
-> Engineering next-steps (one active plan): [`../Plans/_Active/2026-08-22-product-polish-and-release-readiness.md`](../Plans/_Active/2026-08-22-product-polish-and-release-readiness.md).
+> Engineering next-steps (one active plan): [`../Plans/_Active/2026-08-25-remaining-release-and-document-layout.md`](../Plans/_Active/2026-08-25-remaining-release-and-document-layout.md).
 
 ---
 
 ## What "the vault" is
 
-**The vault = `storage/<user>/resume-source.json`.** One per person:
+**The vault = `vaults/<user>.json`.** One per person:
 
 | Person | Vault |
 |---|---|
-| Jenni | `storage/jenni/resume-source.json` |
-| Shade | `storage/shade/resume-source.json` |
+| Jenni | `vaults/jenni.json` |
+| Shade | `vaults/shade.json` |
 
 It is the **permanent career database** — the single source of truth for everything that
 person may truthfully claim. It holds skills, employment, clients, credits, education,
@@ -92,7 +93,7 @@ person's structure or assets:
 > **jenni's Agency agent grid** and the **Agency banner** onto a Shade portfolio (2026-07-20).
 
 **Shared vs personal files (assets, not structure):** Martian Games **title stills** live once at
-`storage/studio/resources/images/martiangames/` — both people point there via
+`resumes/studio/resources/images/martiangames/` — both people point there via
 `portfolio.workSampleAssets.mgGallerySsot`. Agency art stays under `jenni/…`; Synagen logo/engine
 shots under `shade/…`. See [`STORAGE.md`](STORAGE.md) § Shared studio assets.
 
@@ -377,7 +378,7 @@ true; they are different numbers. Never write anything implying Jenni has 25 yea
 
 **⚠ The audio split (updated 2026-07-24).** AAA spatial / WWISE / reactive middleware depth is **Shade's**.
 **Jenni owns** voice acting, narration, game SFX, and session audio engineering — use her **`roleTracks.voice`**
-go-to pack (`storage/jenni/defaults/jenni-default-voice-resume.html`) for VO / AI speech-training jobs.
+go-to pack (`resumes/jenni/defaults/jenni-default-voice-resume.html`) for VO / AI speech-training jobs.
 Do **not** put Shade's WWISE/spatial claims on Jenni's résumé.
 
 ---
@@ -461,18 +462,16 @@ Persuasion is the goal; fabrication is never the method.
 ## House rules that bite
 
 - **🛑 Ask before you call something a gap.** The one at the top. It's the one we keep learning.
-- **Output location:** finished PDFs/PNGs go to **`output/<user>/resumes/<Application-Dir>/`** —
+- **Output location:** private finished PDFs/PNGs go to **`_exports/<user>/resumes/<Application-Dir>/`** —
   never into the application folder (that keeps the listing, `application.json`, `theme.json`, and the
-  HTML sources only). Go-to packs: `output/<user>/resumes/` (HTML stays in `resumes/<user>/defaults/`).
+  HTML sources only). Go-to packs: `_exports/<user>/resumes/` (HTML stays in `resumes/<user>/defaults/`).
 - **Palette:** **no brown, no mustard, no puke/lime green.** Amber cannot be darkened for white paper
   without turning brown — on light, hand the amber role to another hue. Full rule + the guard:
   [`../themes/PALETTE-RULES.md`](../themes/PALETTE-RULES.md). Run `python -m pdf_tool.check_palette` before every export.
-- **Emails — the default is the default; don't deliberate.** Jenni → **`jenni@jenninexus.com`**.
-  Shade → **`shade@martiangames.com`** (that one *is* the studio domain, so it covers her
-  studio-voice applications too). Use them on every résumé and letter, automatically, without
-  asking. The gmails (`jenninexus@gmail.com`, `martiangames@gmail.com`) are **valid addresses but
-  not the preferred ones** — recorded so an agent can *recognize* them (an old résumé, a job-board
-  account), **never** to auto-select. Being on file is not permission. Only the person naming one
+- **Emails — the default is the default; don't deliberate.** Read
+  `users/<user>.json#contact.emailRules.default` and use that address on every résumé and letter
+  automatically. Other addresses on file are recognition/recovery data, **never** permission to
+  auto-select them. Only the person naming one
   in the conversation overrides the default.
 - **Clients:** *"contract/outsourced development for Hasbro, Halfbrick, and Oddworld Inhabitants."*
   Never imply employment there. (Kixeye IS genuine prior employment — for **Shade** only.)

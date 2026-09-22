@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>PDF preview</title>
+  <link rel="stylesheet" href="/_hub/pdf-viewer.css">
+</head>
+<body>
+  <header class="pdf-toolbar" aria-label="PDF preview controls">
+    <span class="pdf-title" id="pdfTitle">PDF preview</span>
+    <span class="pdf-pages"><strong id="currentPage">1</strong> of <span id="pageCount">-</span></span>
+    <span class="pdf-spacer"></span>
+    <button type="button" id="zoomOut" aria-label="Zoom out">-</button>
+    <button type="button" id="fitWidth" aria-label="Fit page width">Fit</button>
+    <button type="button" id="zoomIn" aria-label="Zoom in">+</button>
+    <a id="openPdf" target="_blank" rel="noopener" aria-label="Open original PDF in browser viewer">Open original</a>
+  </header>
+  <main class="pdf-canvas" id="pdfCanvas" aria-live="polite">
+    <p class="pdf-loading" id="pdfLoading">Loading PDF preview...</p>
+  </main>
+  <script src="/_hub/pdf-viewer.js"></script>
+</body>
+</html>

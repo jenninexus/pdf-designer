@@ -1,13 +1,10 @@
-# `output/` — generated PDFs and PNGs
+# `output/` — public engine/example output
 
-Repo-root folder for **finished renders**. Source HTML stays in `resumes/` and
-`collages/` (and public examples stay in `examples/`). The engine default
+Repo-root folder for the **clone-safe engine default and public examples**. Source HTML stays in
+`resumes/` and `collages/` (and public examples stay in `examples/`). The engine default
 (no `--output-dir`) is `pdf_tool.paths.default_output_dir`.
 
 ```text
-output/<user>/resumes/             go-to packs (flat)
-output/<user>/resumes/<App>/       this job
-output/<user>/collages/<project>/  that person's collage renders
 output/collages/<project>/         collage with no inferred profile
 output/examples/                   public Jane Example / smoke PDFs
 output/                            truly unknown source
@@ -17,8 +14,7 @@ output/                            truly unknown source
 |---|---|
 | this README | every PDF, PNG, and job folder |
 
-`storage/` is a private leftover and is **not** the output SSOT. `_exports/` is a
-retired alias (gitignored); do not write new files there.
+`storage/` is private legacy residue and is **not** the output SSOT. Real personal/applicant
+deliverables use [`../_exports/`](../_exports/) through private profiles and command copies.
 
-Personal clone and the shipped product use the same layout. A stranger's first
-export from `examples/profiles/default-resume/` lands in `output/examples/`.
+A stranger's first export from `examples/profiles/default-resume/` lands in `output/examples/`.

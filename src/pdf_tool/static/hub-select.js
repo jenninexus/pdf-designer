@@ -91,11 +91,8 @@
         menu.style.top = "";
         menu.style.bottom = "";
         requestAnimationFrame(() => {
-          const r = menu.getBoundingClientRect();
-          if (r.bottom > window.innerHeight - 8) {
-            menu.style.top = "auto";
-            menu.style.bottom = "calc(100% + 4px)";
-          }
+          menu.querySelector('[aria-selected="true"]')?.scrollIntoView({ block: "nearest" });
+          wrap.scrollIntoView({ block: "nearest" });
         });
       } else {
         closeWrap(wrap);
@@ -103,8 +100,6 @@
     });
 
     select.addEventListener("change", syncLabel);
-    const mo = new MutationObserver(syncLabel);
-    mo.observe(select, { childList: true, subtree: true, characterData: true });
     syncLabel();
   }
 
@@ -122,12 +117,6 @@
     closeAll();
   }, true);
 
-  const drawer = document.getElementById("hubDrawer");
-  if (drawer) {
-    new MutationObserver(() => {
-      if (!drawer.classList.contains("open")) closeAll();
-    }).observe(drawer, { attributes: true, attributeFilter: ["class"] });
-  }
   window.hubCloseContainedSelects = closeAll;
 
   if (document.readyState === "loading") {

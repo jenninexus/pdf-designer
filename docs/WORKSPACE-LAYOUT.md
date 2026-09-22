@@ -1,6 +1,6 @@
 # Workspace layout — product UX for local files
 
-**Status:** path resolver + root README scaffolds + SEGO **data copy** (2026-08-13).  
+**Status:** path resolver + root README scaffolds + SEGO **data copy** (2026-08-13).
 **`storage/` is retired (2026-08-17).** Private application material remains local and the
 private font moved to `brands/fonts/`. The engine still accepts `storage/`
 aliases. Copy script (historical): `python scripts/migrate-workspace.py`.
@@ -10,11 +10,69 @@ repo root, vs what stays private on their machine.
 
 ---
 
+## Two journeys, one engine
+
+```mermaid
+flowchart LR
+  Engine["Shared engine<br/>pdf_tool + Design Hub + themes + layouts"]
+
+  subgraph Public["1. Public app / new user"]
+    Clone["Clone the public repo"] --> Setup["Wizard<br/>or copy *.example files"]
+    Setup --> Seeds["users/you.json<br/>vaults/you.json<br/>profiles/you-resume.json"]
+    Seeds --> PublicSource["examples/ + your local HTML"]
+    PublicSource --> PublicHub["Design Hub<br/>Library · Recipes · Vault · Wizard"]
+    PublicHub --> PublicOut["output/examples/<br/>or output/<kind>/"]
+  end
+
+  subgraph Personal["2. Personal workspace / Jenni, Shade, studio"]
+    Identity["users/<user>.json = who<br/>vaults/<user>.json = truthful claims<br/>profiles/<user>-resume.json = how"]
+    Job["_job-apps/<application>/<br/>listing · theme · source HTML"]
+    Collage["collages/<project>/<br/>images · candidates"]
+    Commands["/make-resume<br/>/make-cover-letter<br/>/make-collage"]
+    PrivateHub["Design Hub<br/>profile = jenni/shade/etc.<br/>folder = _exports"]
+    PrivateOut["_exports/<user>/resumes/<application>/<br/>_exports/<user>/collages/<project>/"]
+    Identity --> Commands
+    Job --> Commands
+    Collage --> Commands
+    Commands --> PrivateOut --> PrivateHub
+  end
+
+  Engine --> PublicHub
+  Engine --> Commands
+```
+
+The split is about **content and defaults**, not two applications. Public/example exports use
+`output/`; personal commands explicitly send final deliverables to `_exports/`. Both are ignored
+payload trees with tracked README anchors. In the Hub, select a personal profile to see its source
+documents, choose **`_exports`** in the folder picker to see finished PDFs/images, and open **Vault**
+to inspect that profile's claims.
+
+### Find or edit something quickly
+
+| I want to… | Go here |
+|---|---|
+| Set up as a new user | Run `/wizard`, or copy `users/you.example.json`, `vaults/you.example.json`, and `profiles/you-resume.example.json` to non-`.example` local files |
+| Customize the public command workflow | Copy `.claude/commands/make-*.example.md` to the matching bare `.md`; edit the bare copy locally |
+| Edit Jenni/Shade identity or contact | `users/<user>.json` |
+| Edit truthful résumé facts or application voice | `vaults/<user>.json` |
+| Edit layout/export behavior | `profiles/<user>-resume.json` |
+| Edit reusable résumé HTML | `resumes/<user>/` |
+| Edit one job application | `_job-apps/<application>/` |
+| Edit collage sources/candidates | `collages/<project>/` |
+| Find finished personal PDFs/images | `_exports/<user>/<kind>/...`, or Hub → profile → folder `_exports` |
+| Find public/example smoke output | `output/` |
+| Add reusable colors or structure | `themes/` or `layouts/` (tracked; never personal content) |
+
+This is the authoritative two-journey map. [`GETTING-STARTED.md`](GETTING-STARTED.md) owns installation,
+[`PREVIEWER.md`](PREVIEWER.md) owns Hub controls, and [`STORAGE.md`](STORAGE.md) owns path-resolution details.
+
+---
+
 ## Verdict (short)
 
 **Yes — move personal workspace to the repo root.** A single opaque `storage/` bag feels like
 dev plumbing, not a résumé product. Root nouns (`users/`, `vaults/`, `profiles/`, `resumes/`,
-`collages/`, `_job-apps/`, `brands/`) match how people think and how we want the free
+`collages/`, `_job-apps/`, `brands/`, `_exports/`) match how people think and how we want the free
 GitHub product to teach itself.
 
 **Do not** dump live Jenni/Shade data into tracked folders. Root dirs ship as **empty scaffolds
@@ -37,7 +95,8 @@ pdf-designer/
   vaults/           # WHAT — vaults/<id>.json  (was <user>/resume-source.json)
   profiles/         # HOW  — profiles/<id>-resume.json
   resumes/          # WORK — resumes/<id>/{html,defaults,resources}
-  output/           # OUT  — output/<id>/{resumes,collages}/ (+ examples/)
+  output/           # ENGINE OUT — clone-safe default + public examples
+  _exports/         # PERSONAL OUT — _exports/<id>/{resumes,collages}/
   _job-apps/        # JOB  — _job-apps/<Track>/  (canonical; applications/ is README-only)
   collages/         # collage projects
   brands/           # private brand maps (was storage/brand-design/)
@@ -61,7 +120,8 @@ pdf-designer/
 | `vaults/` | What may I claim? | `storage/<user>/resume-source.json` |
 | `profiles/` | How does it print? | `storage/profiles/` |
 | `resumes/` | Working HTML + defaults | `storage/jenni/` · `shade/` · `studio/` |
-| `output/` | Generated PDFs/PNGs | `storage/<user>/_exports/` · beside-HTML `_exports/` |
+| `output/` | Public engine/example output | ad-hoc generated files beside source HTML |
+| `_exports/` | Private personal/applicant deliverables | `storage/<user>/_exports/` · personal payload previously mixed into `output/` |
 | `_job-apps/` | This job | **canonical.** `applications/` is a tracked README redirect only (no listings). `storage/_job-listings/` is a retired alias — do not store listings there. |
 | `collages/` | Image layouts | `storage/collages/` |
 | `brands/` | My palette map | `storage/brand-design/` |
@@ -118,7 +178,13 @@ brands/*
 output/*
 !output/README.md
 
-# Legacy during migration (delete after cutover)
+# Private personal deliverables; keep only the public guide
+**/_exports/
+!/_exports/
+/_exports/*
+!/_exports/README.md
+
+# Local legacy residue; retain for recovery/history, never add new live work
 storage/
 ```
 

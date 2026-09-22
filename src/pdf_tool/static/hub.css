@@ -24,7 +24,9 @@
  *   .hub-main          — library LEFT column + viewer RIGHT (side-by-side from ≥576px).
  *                        Library width is a persisted sash (--hub-library-w), Dockview-inspired
  *                        but not Dockview. Phones stack; the sash hides ≤575.98.
- *   .hub-drawer        — full-bleed offcanvas sheet (kit `_offcanvas-nav.scss` contract).
+ *   .hub-drawer        — offcanvas sheet (kit `_offcanvas-nav.scss` contract).
+ *                        Phone (≤575.98 + short landscape): full-bleed. sm–xl
+ *                        (576–1399.98): almost-full flexible end-panel (sash on).
  *                        Holds everything that loses its label at compact widths:
  *                        navlinks, kind chips, folder/person/palette/fmt selects,
  *                        output folder, refresh, tip links. Export stays in the bar.
@@ -39,7 +41,8 @@
  *   xxs < 390         floor: horizontal scroll lives, nothing hides
  *   xs  ≤ 575.98      library stacks above stage (phones only)
  *   short landscape   max-height 480 — stack like a phone (iPhone rotated)
- *   until-xxl ≤1399.98 hamburger; full-bleed drawer; header chips hidden; split retained ≥576
+ *   until-xxl ≤1399.98 hamburger; end-panel drawer (full-bleed only ≤575.98);
+ *                      header chips hidden; split retained ≥576
  *   xxl ≥ 1400        full header buttons; widescreen
  *   hd  ≥ 1920        display refs (2k/4k caps)
  */
@@ -144,6 +147,50 @@ body.hub-page {
   overflow-x: hidden;
   overflow-y: auto;
   height: auto;
+}
+
+/* Discreet back-to-top — hub-page only (injected by hub-chrome.js). Library
+   (hub-shell) never gets this: that stage does not document-scroll. */
+.hub-to-top {
+  position: fixed;
+  right: max(16px, env(safe-area-inset-right));
+  bottom: max(16px, env(safe-area-inset-bottom));
+  z-index: 35;
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  border-radius: 10px;
+  border: 1px solid rgba(66, 244, 200, 0.22);
+  background: rgba(17, 20, 27, 0.62);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: var(--dash-accent);
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+  cursor: pointer;
+  transition: opacity 0.22s ease, transform 0.22s ease, background 0.18s ease, border-color 0.18s ease;
+}
+.hub-to-top .hub-fa-icon { width: 0.85em; height: 0.85em; }
+.hub-to-top.is-visible {
+  opacity: 0.48;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+.hub-to-top.is-visible:hover,
+.hub-to-top.is-visible:focus-visible {
+  opacity: 1;
+  background: rgba(17, 20, 27, 0.88);
+  border-color: rgba(66, 244, 200, 0.45);
+  outline: none;
+}
+body.drawer-open .hub-to-top {
+  opacity: 0 !important;
+  pointer-events: none !important;
 }
 
 /* When the offcanvas drawer is open, lock the body scroll on the underlying page. */
@@ -290,7 +337,11 @@ a.hub-brand {
   border: 1px solid transparent;
   white-space: nowrap;
   transition: all var(--motion);
-  line-height: 1.2;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 .hub-link:hover { border-color: var(--dash-card-border); color: var(--dash-text-bright); }
 .hub-link.on {
@@ -693,7 +744,8 @@ a.hub-brand {
   margin: 0;
 }
 /* Font Awesome Free 6.7.2 SVGs, copied unchanged from the local Bootstrap
-   checkout. Masks preserve currentColor without inventing a parallel icon set.
+   checkout (solid + brands: patreon, paypal). Masks preserve currentColor
+   without inventing a parallel icon set.
    Attribution: static/FONT-AWESOME-LICENSE.txt. */
 .hub-fa-icon {
   display: inline-block;
@@ -710,28 +762,34 @@ a.hub-brand {
 .fa-download { --hub-fa-icon: url("/_hub/fa-download.svg"); }
 .fa-ellipsis { --hub-fa-icon: url("/_hub/fa-ellipsis.svg"); }
 .fa-chevron-down { --hub-fa-icon: url("/_hub/fa-chevron-down.svg"); }
+.fa-chevron-up { --hub-fa-icon: url("/_hub/fa-chevron-up.svg"); }
 .fa-star { --hub-fa-icon: url("/_hub/fa-star.svg"); }
-.hub-bar button.hub-icon-btn,
-.hub-drawer-head-actions button.hub-icon-btn,
-.hub-more > summary {
+.fa-patreon { --hub-fa-icon: url("/_hub/fa-patreon.svg"); }
+.fa-paypal { --hub-fa-icon: url("/_hub/fa-paypal.svg"); }
+
+/* Every header / drawer-head icon control is the same square. Export is
+   `primary` for the gradient only — never a wider pill. */
+.hub-bar .hub-icon-btn,
+.hub-bar .hub-icon-btn.primary,
+.hub-bar .hub-search-trigger,
+.hub-bar .hub-drawer-toggle,
+.hub-bar .hub-more > summary,
+.hub-drawer-head-actions .hub-icon-btn,
+.hub-drawer-close {
   display: inline-flex !important;
   align-items: center;
   justify-content: center;
-  line-height: 0;
-}
-.hub-bar button.hub-icon-btn,
-.hub-drawer-head-actions button.hub-icon-btn {
   width: var(--hub-icon-box);
   min-width: var(--hub-icon-box);
+  max-width: var(--hub-icon-box);
   height: var(--hub-icon-box);
+  min-height: var(--hub-icon-box);
+  aspect-ratio: 1 / 1;
   padding: 0 !important;
   gap: 0;
-}
-.hub-bar button.hub-icon-btn.primary {
-  padding: 0 !important;
-  width: 28px;
-  min-width: 28px;
-  height: var(--hub-icon-box);
+  line-height: 0;
+  box-sizing: border-box;
+  flex-shrink: 0;
 }
 .hub-more > summary .hub-icon { width: 12px; height: 12px; }
 .hub-search-trigger .hub-icon { width: 12px; height: 12px; }
@@ -796,19 +854,11 @@ a.hub-brand {
   font-weight: 700;
   border-color: transparent;
   box-shadow: var(--hub-glow);
-  padding: 0 12px;
 }
 .hub-bar button.primary:hover { filter: brightness(1.06); }
 
 /* Menu trigger — compact default (390 through iPad Pro landscape). Hide at xxl. */
 .hub-drawer-toggle {
-  display: inline-flex;
-  width: var(--hub-icon-box);
-  height: var(--hub-icon-box);
-  min-width: var(--hub-icon-box);
-  padding: 0;
-  justify-content: center;
-  align-items: center;
   font-size: 0.9rem;
 }
 .hub-drawer-toggle .hub-menu-icon { width: 14px; height: 14px; }
@@ -883,14 +933,17 @@ a.hub-brand {
 .hub-support-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 10px;
+  justify-content: center;
 }
 .hub-support-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 8px;
   min-height: 44px;
-  padding: 0 14px;
+  min-width: 7.75rem;
+  padding: 0 16px;
   border-radius: 999px;
   border: 1px solid var(--dash-card-border);
   text-decoration: none;
@@ -899,6 +952,10 @@ a.hub-brand {
   letter-spacing: 0.04em;
   color: var(--dash-text-bright);
   background: rgba(255, 255, 255, 0.04);
+}
+.hub-support-btn .hub-fa-icon {
+  width: 1.05em;
+  height: 1.05em;
 }
 .hub-support-btn:hover { filter: brightness(1.08); }
 .hub-support-btn.patreon {
@@ -984,8 +1041,6 @@ html.drawer-resizing, html.drawer-resizing * { cursor: ew-resize !important; use
   border-color: var(--dash-card-hover);
 }
 .hub-drawer-close {
-  width: 32px; height: 32px;
-  display: inline-flex; align-items: center; justify-content: center;
   background: transparent;
   border: 1px solid var(--dash-card-border);
   border-radius: 6px;
@@ -1014,13 +1069,18 @@ html.drawer-resizing, html.drawer-resizing * { cursor: ew-resize !important; use
   font-weight: 600;
 }
 
-.hub-drawer .hub-nav { flex-wrap: wrap; gap: 4px; justify-content: center; }
+.hub-drawer .hub-nav { flex-wrap: wrap; gap: 4px; justify-content: center; align-items: stretch; }
 .hub-drawer .hub-nav .hub-link {
+  display: inline-flex;
   flex: 1 1 0;
+  align-items: center;
   justify-content: center;
+  text-align: center;
   min-width: 0;
+  min-height: 44px;
   font-size: 0.82rem;
-  padding: 7px 8px;
+  padding: 0 10px;
+  line-height: 1;
   white-space: nowrap;
 }
 
@@ -1032,10 +1092,13 @@ html.drawer-resizing, html.drawer-resizing * { cursor: ew-resize !important; use
 }
 .hub-drawer .chip {
   width: 100%;
-  height: 32px;
+  height: auto;
+  min-height: 44px;
   min-width: 0;
   font-size: 0.75rem;
-  padding: 4px 7px 4px 10px;
+  padding: 0 10px;
+  justify-content: center;
+  align-items: center;
 }
 
 .hub-drawer select,
@@ -1120,6 +1183,37 @@ html.drawer-resizing, html.drawer-resizing * { cursor: ew-resize !important; use
   border-radius: 8px;
 }
 .hub-select-wrap.open .hub-select-menu { display: block; }
+.hub-drawer .hub-select-menu {
+  /* Drawer controls share one scroll column. Expanded menus participate in
+     that flow so they never cover the next field or create a second overlay. */
+  position: static;
+  inset: auto;
+  margin-top: 6px;
+  max-height: min(240px, 40vh);
+  box-shadow: none;
+}
+
+.artifact-frame {
+  display: grid;
+  place-content: center;
+  gap: 6px;
+  text-align: center;
+  background:
+    linear-gradient(145deg, rgba(66, 244, 200, 0.08), rgba(139, 92, 246, 0.08)),
+    var(--dash-bg-2);
+}
+.artifact-format {
+  color: var(--dash-accent);
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+.artifact-note {
+  color: var(--dash-text-dim);
+  font-size: 0.64rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
 .hub-select-option {
   display: block;
   width: 100%;
@@ -1297,7 +1391,25 @@ html.drawer-resizing, html.drawer-resizing * { cursor: ew-resize !important; use
   align-items: center;
   min-height: 32px;
 }
-.library-head span { color: var(--dash-accent); font-family: var(--dash-mono); }
+.library-title { color: var(--dash-text-dim); }
+.library-title strong { color: var(--dash-accent); font-family: var(--dash-mono); }
+.library-compare { display: flex; align-items: center; gap: 5px; }
+.library-compare button {
+  min-height: 22px;
+  padding: 2px 7px;
+  border: 1px solid var(--dash-card-border);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--dash-text-dim);
+  font: 600 var(--dash-fs-2xs) var(--dash-body);
+  letter-spacing: 0;
+  text-transform: none;
+  cursor: pointer;
+}
+.library-compare button:hover,
+.library-compare button:focus-visible,
+.library-compare button.on { border-color: var(--dash-accent); color: var(--dash-accent); outline: none; }
+.library-compare button:disabled { opacity: 0.42; cursor: default; }
 
 .library-scroll {
   flex: 1;
@@ -1350,6 +1462,8 @@ html.drawer-resizing, html.drawer-resizing * { cursor: ew-resize !important; use
   border-color: var(--dash-accent);
   box-shadow: 0 0 0 2px rgba(66, 244, 200, 0.35), var(--hub-glow);
 }
+.thumb.compare-excluded { opacity: 0.46; }
+.thumb.compare-excluded:hover { opacity: 0.78; }
 .thumb .frame {
   height: 132px;
   overflow: hidden;
@@ -1371,7 +1485,10 @@ html.drawer-resizing, html.drawer-resizing * { cursor: ew-resize !important; use
   display: grid;
   gap: 4px;
 }
+.thumb-title-row { display: flex; align-items: center; gap: 7px; min-width: 0; }
 .thumb .name {
+  flex: 1;
+  min-width: 0;
   font-size: var(--dash-fs-xs);
   color: var(--dash-text-bright);
   white-space: nowrap;
@@ -1379,6 +1496,30 @@ html.drawer-resizing, html.drawer-resizing * { cursor: ew-resize !important; use
   text-overflow: ellipsis;
   font-weight: 600;
 }
+.compare-check {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  flex: 0 0 22px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+.compare-check input { position: absolute; opacity: 0; pointer-events: none; }
+.compare-check span {
+  width: 14px;
+  height: 14px;
+  border: 1px solid var(--dash-card-border);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.04);
+}
+.compare-check input:checked + span {
+  border-color: var(--dash-accent);
+  background: var(--dash-accent);
+  box-shadow: inset 0 0 0 3px rgba(13, 15, 20, 0.88);
+}
+.compare-check input:focus-visible + span { outline: 2px solid var(--dash-accent); outline-offset: 2px; }
 .thumb .badges { display: flex; flex-wrap: wrap; gap: 4px; }
 
 .badge {
@@ -1543,20 +1684,23 @@ html.drawer-resizing, html.drawer-resizing * { cursor: ew-resize !important; use
   color: var(--dash-text-bright);
 }
 .hub-page-lead { color: var(--dash-text-dim); margin: 0 0 22px; font-size: 0.95rem; max-width: 68ch; }
+.hub-banner-note { max-width: none; text-align: center; font-style: italic; }
 .hub-page-lead code, .hub-page-wrap code { font-family: var(--dash-mono); font-size: 0.85em; }
 
 .hub-card {
   border: 1px solid var(--dash-card-border);
   border-radius: var(--dash-radius);
-  padding: 16px 18px;
+  padding: 18px 20px 20px;
   margin-bottom: 18px;
   background: var(--dash-card);
   backdrop-filter: blur(var(--dash-glass-blur));
   -webkit-backdrop-filter: blur(var(--dash-glass-blur));
 }
-.hub-card h2 { margin: 0 0 4px; font-size: 1.12rem; color: var(--dash-text-bright); }
+.hub-card h2 { margin: 0 0 4px; font-size: 1.12rem; color: var(--dash-text-bright); text-align: center; }
 .hub-card .sub, .hub-meta { color: var(--dash-text-dim); font-size: 0.85rem; margin: 0 0 12px; }
-.hub-card .sub { margin-bottom: 14px; }
+.hub-card .sub { margin-bottom: 14px; text-align: center; }
+.hub-card > .hub-meta,
+.hub-card > p.hub-meta { text-align: center; }
 .hub-card h3,
 .hub-page-wrap > h3,
 .hub-section-label {
@@ -1565,8 +1709,9 @@ html.drawer-resizing, html.drawer-resizing * { cursor: ew-resize !important; use
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--dash-accent);
+  text-align: center;
 }
-.hub-chips { display: flex; flex-wrap: wrap; gap: 7px; }
+.hub-chips { display: flex; flex-wrap: wrap; gap: 7px; justify-content: center; }
 .hub-tag {
   border: 1px solid rgba(66, 244, 200, 0.28);
   border-radius: 999px;
@@ -1581,7 +1726,7 @@ html.drawer-resizing, html.drawer-resizing * { cursor: ew-resize !important; use
 .hub-page-wrap table { width: 100%; border-collapse: collapse; font-size: 0.88rem; min-width: 480px; }
 .hub-page-wrap th, .hub-page-wrap td {
   text-align: left;
-  padding: 8px 10px;
+  padding: 12px 14px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   vertical-align: top;
 }
@@ -1599,9 +1744,12 @@ html.drawer-resizing, html.drawer-resizing * { cursor: ew-resize !important; use
 .hub-page-wrap #err { color: var(--dash-danger); }
 
 a.hub-open, button.copy {
-  display: inline-block;
-  margin: 0 6px 4px 0;
-  padding: 3px 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 4px 6px;
+  padding: 8px 14px;
+  min-height: 36px;
   border-radius: 999px;
   border: 1px solid rgba(66, 244, 200, 0.4);
   background: rgba(66, 244, 200, 0.14);
@@ -1616,33 +1764,67 @@ button.copy { color: var(--dash-text); background: rgba(255, 255, 255, 0.06); bo
 button.copy:hover, a.hub-open:hover { filter: brightness(1.08); }
 
 a.raw {
+  display: inline-block;
   font-size: 0.72rem;
   opacity: 0.75;
-  margin-right: 6px;
+  margin: 2px 6px;
+  padding: 4px 8px;
   color: var(--dash-accent);
 }
 
 code.path-mini, code.cmd {
   display: block;
-  margin-top: 4px;
+  margin: 8px 4px 0;
+  padding: 0 4px;
   font-size: 0.68rem;
   color: var(--dash-text-dim);
-  word-break: break-all;
+  overflow-wrap: anywhere;
+  word-break: break-word;
   white-space: pre-wrap;
+  text-align: center;
   font-family: var(--dash-mono);
 }
 
-.hub-swatches { display: flex; gap: 4px; margin: 4px 0; }
+.hub-col-actions {
+  text-align: center;
+  vertical-align: middle;
+}
+.hub-cell-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  text-align: center;
+  padding: 4px 8px;
+}
+.hub-cell-actions .hub-open,
+.hub-cell-actions button.copy,
+.hub-cell-actions a.raw {
+  margin: 0;
+}
+
+.hub-swatches { display: flex; flex-wrap: wrap; gap: 4px; margin: 6px 0 10px; justify-content: center; }
 .hub-swatch { width: 18px; height: 18px; border-radius: 4px; border: 1px solid rgba(255, 255, 255, 0.2); flex-shrink: 0; }
-.hub-palette-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+.hub-palette-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
 .hub-palette-card {
   border: 1px solid var(--dash-card-border);
   border-radius: var(--dash-radius);
-  padding: 12px 14px;
+  padding: 16px 18px 18px;
   background: rgba(0, 0, 0, 0.18);
+  text-align: center;
 }
 .hub-palette-card h3 { margin: 0 0 6px; font-size: 0.95rem; letter-spacing: 0; text-transform: none; color: var(--dash-text); }
-.hub-hint { margin-top: 8px; font-size: 0.8rem; color: var(--dash-text-dim); max-width: 72ch; }
+.hub-palette-card .hub-meta { text-align: center; }
+.hub-palette-mode { margin: 10px 0 0; }
+.hub-palette-card .hub-open { margin: 4px 8px 8px; }
+.hub-hint {
+  margin: 12px auto 0;
+  font-size: 0.8rem;
+  color: var(--dash-text-dim);
+  max-width: 72ch;
+  text-align: center;
+}
 
 /* ── First local résumé wizard ────────────────────────────── */
 .wizard-progress {
@@ -1957,7 +2139,9 @@ body.wizard-page {
 }
 
 /* ── until-xxl (≤1399.98) — DRAWER SWITCH through iPad Pro landscape ─
-   Header chips / nav / selects move into a full-bleed offcanvas sheet.
+   Header chips / nav / selects move into an offcanvas sheet.
+   sm–xl: almost-full flexible end-panel (peek of stage; sash on).
+   Phone full-bleed is the xs / short-landscape blocks below.
    Library stays LEFT from ≥576 so the stage still fills the rest.
    Desktop inline chrome returns at 1400 (xxl). */
 @media (max-width: 1399.98px) {
@@ -1966,6 +2150,8 @@ body.wizard-page {
     --hub-icon-box: 36px;
     --hub-library-w: 240px;
     --hub-library-max: 320px;
+    --hub-drawer-w: 92vw;
+    --hub-drawer-max: calc(100vw - 24px);
   }
   /* Hide the empty desktop groups themselves, not only their children. Otherwise
      their divider borders survive as stray vertical lines beside the logo/actions. */
@@ -1994,35 +2180,25 @@ body.wizard-page {
   #status { max-width: 90px; }
 
   .hub-drawer {
-    left: 0;
-    right: auto;
-    width: 100vw;
-    max-width: 100vw;
-    border-left: 0;
+    left: auto;
+    right: 0;
+    width: clamp(var(--hub-drawer-min), var(--hub-drawer-w), min(92vw, calc(100vw - 24px)));
+    max-width: calc(100vw - 24px);
+    border-left: 1px solid var(--dash-card-border);
     border-radius: 0;
-    box-shadow: none;
   }
   .hub-drawer.open { transform: translateX(0); }
-  .hub-drawer-resize { display: none !important; }
   .hub-drawer-body { padding: 16px; gap: 20px; }
   .hub-drawer .hub-nav .hub-link,
   .hub-drawer .chip,
-  .hub-drawer-close,
-  .hub-drawer-head-actions button.hub-icon-btn,
   .hub-drawer select,
   .hub-drawer input[type="text"],
   .hub-drawer .hub-folder-trigger {
     min-height: 44px;
   }
-  .hub-bar .hub-drawer-toggle {
-    width: 44px;
-    height: 44px;
-    min-width: 44px;
-    min-height: 44px;
-  }
   .hub-drawer .chips { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 8px; }
-  .hub-drawer .chip { font-size: 0.88rem; min-height: 44px; height: auto; }
-  .hub-drawer .hub-nav .hub-link { font-size: 0.88rem; padding-inline: 10px; }
+  .hub-drawer .chip { font-size: 0.88rem; min-height: 44px; height: auto; padding: 0 10px; }
+  .hub-drawer .hub-nav .hub-link { font-size: 0.88rem; padding: 0 10px; }
 
   .hub-home-grid {
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
@@ -2044,9 +2220,10 @@ body.wizard-page {
   .hub-drawer .hub-support-kicker { font-size: 0.72rem; }
   .hub-drawer .hub-support-actions { justify-content: center; }
   .hub-drawer .hub-support-btn {
-    min-height: 34px;
-    padding: 0 12px;
-    font-size: 0.72rem;
+    min-height: 40px;
+    padding: 0 14px;
+    font-size: 0.78rem;
+    gap: 6px;
   }
   .hub-select-menu { max-width: 100%; }
   .wizard-support.hub-support {
@@ -2079,6 +2256,15 @@ body.wizard-page {
     border-bottom: 1px solid var(--dash-card-border);
   }
   .library-resize { display: none; }
+  .hub-drawer {
+    left: 0;
+    right: auto;
+    width: 100vw;
+    max-width: 100vw;
+    border-left: 0;
+    box-shadow: none;
+  }
+  .hub-drawer-resize { display: none !important; }
   .hub-page-wrap { padding: 12px 10px 36px; }
   .hub-page-wrap h1 { font-size: 1.12rem; }
   .hub-page-lead { font-size: 0.88rem; margin-bottom: 16px; }
@@ -2122,6 +2308,15 @@ body.wizard-page {
     border-bottom: 1px solid var(--dash-card-border);
   }
   .library-resize { display: none; }
+  .hub-drawer {
+    left: 0;
+    right: auto;
+    width: 100vw;
+    max-width: 100vw;
+    border-left: 0;
+    box-shadow: none;
+  }
+  .hub-drawer-resize { display: none !important; }
   .hub-home { padding: 10px 12px 24px; }
   .hub-home h2 { font-size: 1.25rem; }
 }
@@ -2138,7 +2333,7 @@ html.hub-splash-skip .hub-splash { display: none !important; }
   overflow: hidden;
   background: var(--dash-bg, #0d0f14);
   color: var(--dash-text-bright, #fff);
-  cursor: pointer;
+  cursor: default;
   transition: opacity 2s ease, visibility 2s ease;
 }
 .hub-splash.is-out {
@@ -2242,6 +2437,7 @@ html.hub-splash-skip .hub-splash { display: none !important; }
 .hub-splash-name,
 .hub-splash-sub,
 .hub-splash-bar,
+.hub-splash-actions,
 .hub-splash-hint {
   position: relative;
   z-index: 1;
@@ -2306,13 +2502,54 @@ html.hub-splash-skip .hub-splash { display: none !important; }
   background: var(--hub-grad, linear-gradient(90deg, var(--dash-accent, #42f4c8), var(--dash-accent-2, #8b5cf6)));
   animation: hub-splash-load 3s ease-out forwards;
 }
+.hub-splash-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 22px;
+  animation: hub-splash-rise 0.6s 1.05s ease both;
+}
+.hub-splash-open,
+.hub-splash-wizard {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  min-width: 8.5rem;
+  padding: 0 20px;
+  border-radius: 999px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+}
+.hub-splash-open {
+  border: 0;
+  color: #0d0f14;
+  background: var(--hub-grad, linear-gradient(90deg, var(--dash-accent, #42f4c8), var(--dash-accent-2, #8b5cf6)));
+}
+.hub-splash-open:hover { filter: brightness(1.08); }
+.hub-splash-open:focus-visible,
+.hub-splash-wizard:focus-visible {
+  outline: 2px solid var(--dash-accent, #42f4c8);
+  outline-offset: 3px;
+}
+.hub-splash-wizard {
+  border: 1px solid var(--dash-card-border, rgba(255, 255, 255, 0.10));
+  color: var(--dash-text-bright, #fff);
+  background: rgba(255, 255, 255, 0.04);
+}
+.hub-splash-wizard:hover { filter: brightness(1.08); }
 .hub-splash-hint {
   margin: 16px 0 0;
   font-size: 0.62rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: rgba(232, 230, 240, 0.38);
-  animation: hub-splash-rise 0.6s 0.9s ease both;
+  animation: hub-splash-rise 0.6s 1.2s ease both;
 }
 
 @keyframes hub-splash-letter {
@@ -2345,5 +2582,9 @@ html.hub-splash-skip .hub-splash { display: none !important; }
   .hub-splash * {
     animation: none !important;
     transition: opacity 0.2s ease !important;
+  }
+  .hub-to-top {
+    transform: none;
+    transition: opacity 0.2s ease;
   }
 }

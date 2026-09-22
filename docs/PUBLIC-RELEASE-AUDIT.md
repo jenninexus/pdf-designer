@@ -24,14 +24,14 @@ gets:
 | Protocol seeds | `.claude/commands/*.example.md` (placeholders only) |
 | Docs | Public `docs/*.md` in this index · `README.md` · `LICENSE` (MIT) |
 | Lessons | `.memory/README.md` + `.memory/lesson-*.md` |
-| Export layout | Tracked `output/README.md` — engine default is `output/<user>/<kind>/` (PDF/PNG payload gitignored) |
+| Export layout | Tracked `output/README.md` for the engine/example default + `_exports/README.md` for private personal deliverables (all PDF/PNG payload gitignored) |
 | Proof | `python scripts/smoke-white-label.py` · `python scripts/check-wheel-assets.py` |
 
 **Intended public fixes** (engine/docs/examples that a clone needs) land on
 `main` and are pushed. They are the free product. Do not hold them for a paid
 installer, TestPyPI, or a clean-machine Electron gate.
 
-Current example: repo-root `output/` as the default export tree (HTML stays in
+Current example: repo-root `output/` as the public engine default and `_exports/` as the private personal tree (HTML stays in
 `resumes/` / `collages/` / `examples/`). That is clone UX, not a paid feature.
 
 ## What the free product does not include
@@ -39,9 +39,10 @@ Current example: repo-root `output/` as the default export tree (HTML stays in
 | Keep off GitHub / out of the pitch | Why |
 |---|---|
 | Live `users/` · `vaults/` · `profiles/` · `resumes/` payload · `_job-apps/` listings · `collages/` images · `brands/` hex | Real people and jobs |
-| Generated `output/**/*.pdf` (and PNG) | Personal renders; the folder *shape* is public, the files are not |
+| Generated `_exports/**/*.pdf` (and PNG) | Personal renders; the folder *shape* is public, the files are not |
+| Generated `output/**` payload | Public/example engine renders; only the folder guide is tracked |
 | Bare `.claude/commands/*.md` (`start` / `wrap` / `make-*` / commands README) | Dev ritual + personal specifics |
-| `Plans/` · `dev-log-sego.yaml` · `docs/MARKETING.md` · `WORKSPACE.md` · `HISTORY-SCRUB.md` | Operating records |
+| `Plans/` · `Plans/_Complete/_archive/dev-log-sego.yaml` · `docs/MARKETING.md` · `WORKSPACE.md` · `HISTORY-SCRUB.md` | Operating records |
 | Machine `.config/mcp-pdf-designer.json` | Absolute paths |
 | Signed Electron/NSIS download, paid fulfilment, production PyPI | Later channels — not public how-to. Contributor packaging: [`WINDOWS-ELECTRON.md`](WINDOWS-ELECTRON.md) · [`PACKAGING.md`](PACKAGING.md) |
 | `www-theme-kit` as a required dependency | Private brand infra; public color lives in `themes/` |
@@ -50,7 +51,7 @@ Current example: repo-root `output/` as the default export tree (HTML stays in
 
 - The engine, layouts, public themes and font notices.
 - Fictional examples and the white-label smoke test.
-- Product-facing technical documentation: setup, exports (including `output/`),
+- Product-facing technical documentation: setup, exports (including `output/` + `_exports/`),
   previewer, packaging, quality checks, licensing, theming, collage design, and
   the optional Voice Seed handoff contract.
 - Deliberately approved promotional images under `docs/images/`.

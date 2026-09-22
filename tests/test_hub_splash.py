@@ -16,9 +16,11 @@ def test_splash_assets_and_hub_pages_include_title_screen():
     assert ".hub-splash" in css
     assert "hub-splash-mark" in css
     assert "pdf-designer.hub.splash" in js
-    assert "const HOLD_MS = reduced ? 400 : 3000" in js
+    assert "HOLD_MS" not in js
+    assert "hubSplashOpen" in js
     assert "const FADE_MS = reduced ? 0 : 2000" in js
     assert "hub-splash-load 3s" in css
+    assert ".hub-splash-open" in css
 
     pages = [APP_HTML]
     for name in ("wizard.html", "vault.html", "recipes.html"):
@@ -30,3 +32,14 @@ def test_splash_assets_and_hub_pages_include_title_screen():
         assert ">P</span>" in html
         assert ">D</span>" in html
         assert ">F</span>" in html
+        assert 'id="hubSplashOpen"' in html
+        assert 'id="hubSplashWizard"' in html
+        assert "Enter to skip" not in html
+
+
+def test_splash_stays_until_open():
+    js = (ROOT / "splash.js").read_text(encoding="utf-8")
+    assert "setTimeout(dismiss" not in js
+    assert "splash.addEventListener(\"click\"" not in js
+    assert 'dismiss("/")' in js
+    assert 'dismiss("/wizard")' in js

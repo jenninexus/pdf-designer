@@ -1,18 +1,20 @@
 # Docs — pdf-designer
 
 Index for product users and contributors. The root [`README.md`](../README.md) stays
-short and public-facing; **public product detail lives here**.
+a short GitHub postcard; **setup and product detail live here** (start at
+[`GETTING-STARTED.md`](GETTING-STARTED.md)).
 
 ## Public vs private
 
-⭐ Full map: [`PUBLIC-LOCAL-SPLIT.md`](PUBLIC-LOCAL-SPLIT.md) · folder UX target: [`WORKSPACE-LAYOUT.md`](WORKSPACE-LAYOUT.md)
+⭐ Start with the [`public app vs personal workspace diagram`](WORKSPACE-LAYOUT.md#two-journeys-one-engine),
+then use [`PUBLIC-LOCAL-SPLIT.md`](PUBLIC-LOCAL-SPLIT.md) for the tracking/privacy rules.
 
 | On GitHub (clone-safe) | Local only (gitignored) |
 |---|---|
 | Public product docs · `themes/` · `layouts/` · `examples/` | Live vaults / brands / jobs / collages / exports (`_job-apps/` + `storage/` alias) |
 | `.config/mcp-pdf-designer.example.json` | `mcp-pdf-designer.json` (machine paths) |
 | `*.example.md` command seeds only | Bare `start`/`wrap`/`README`/`make-*.md` |
-| [`PRODUCT.md`](PRODUCT.md) · [`GETTING-STARTED.md`](GETTING-STARTED.md) · `resume-studio/` | Operating plans, agent notes, application protocol records, and local marketing / workspace / history notes |
+| [`PRODUCT.md`](PRODUCT.md) · [`GETTING-STARTED.md`](GETTING-STARTED.md) · `resume-studio/` · the named public-safe active product plan | Personal/session plans, agent notes, application records, and local marketing / workspace / history notes |
 
 ## Start here
 
@@ -46,9 +48,9 @@ short and public-facing; **public product detail lives here**.
 
 ## Local operating records
 
-The active plan, agent runbook, working vault protocol, and application records stay
-gitignored. They may contain local paths or personal working context and are not part
-of the public product. The public walkthrough is the fictional
+Personal/session plans, agent runbooks, working vault payload, and application records stay
+gitignored. The one active product plan is tracked only while it remains clone-safe; reviewed
+product-history plans may remain tracked. The public walkthrough is the fictional
 [`../examples/resume-studio/`](../examples/resume-studio/) example plus
 [`GETTING-STARTED.md`](GETTING-STARTED.md).
 
@@ -66,3 +68,7 @@ Root workspace nouns (`users/` · `vaults/` · `_job-apps/` · …) are **gitign
 tracked `README` scaffolds and `*.example.json`; real JSON/HTML stay ignored. `storage/` is
 retired and accepted only as an old-path alias. Public docs must not include machine pointers,
 personal data, or operational history. One checkout; no `.env` (the engine reads none).
+
+The local Design Hub can still browse ignored `_exports/` PDFs and images: select the virtual
+`_exports` folder in Library. Those artifact cards are read-only and exist only on loopback; the
+public repository continues to track the folder README, never the payload.

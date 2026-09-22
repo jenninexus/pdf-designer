@@ -72,6 +72,7 @@ from memory):
 |---|---|---|
 | **playwright** | Apache-2.0 | ✅ Permissive. Patent grant included. |
 | **pypdf** | BSD-3-Clause | ✅ Permissive. |
+| **pypdfium2** | Apache-2.0 / BSD-3-Clause | ✅ Permissive. Rasterizes actual PDF pages for artifact QA and the local dark Hub preview. |
 | **Pillow** | MIT-CMU | ✅ Permissive. |
 | ~~pymupdf~~ | ~~AGPL-3.0~~ | ❌ **REMOVED 2026-07-13.** |
 

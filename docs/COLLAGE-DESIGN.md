@@ -22,7 +22,7 @@ Canvas presets below are mirrored in the root
 ## The feature in one flow
 
 1. Point the tool at a directory of images (typically under
-   `storage/collages/<project>/images/`).
+   `collages/<project>/images/`).
 2. It reads each image's dimensions/orientation and generates **several
    candidate layouts** (different layout families, see below) as HTML pages.
 3. You open the candidates side by side (or render them all to PNG contact
@@ -144,6 +144,7 @@ link blue `#00a8fc` as accents:
 | `discord-ember` | Grey warming into the Martian orange |
 | `discord-signal` | Grey cooling into the embed link blue |
 | `martian-ember` | Strongest brand lean |
+| `jenni-nexus` | JenniNexus dark — purple glow into `#0A0710` |
 | `flat-dark` / `flat-white` | The pre-gradient flat defaults |
 
 ```bash
@@ -176,19 +177,19 @@ examples/profiles/default-collage/
   profile.json                     which theme/canvas/layout the profile uses
   default-collage.html             reference render (hero mosaic, 6 images, Letter)
   collage-source.example.json      the input schema: image list + text blocks + options
-storage/collages/<project>/
+collages/<project>/
   images/                          your source images + collage-source.json
   _candidates/                     ALL generated variants, one flat dir
-storage/collages/layouts/          published picks across every project,
-                                   prefixed <project>__<family>__<variant>.png
-                                   + index.html picker (gitignored)
+_exports/<user>/collages/<project>/
+                                   private finished picks from personal commands
+output/collages/<project>/         public/example finished picks
 ```
 
-`storage/collages/layouts/` is the shared, flat shelf for finished collages —
-one directory for every project, kept apart by the `<project>__` filename
-prefix rather than by nesting. Serve it through the Design Hub
-(`python -m pdf_tool.preview` → <http://127.0.0.1:8787/storage/collages/layouts/index.html>);
-opening the file over `file://` is not the supported path.
+Working candidate galleries stay with the private project at
+`collages/<project>/_candidates/`. Personal final picks go to
+`_exports/<user>/collages/<project>/`; public/example output goes to `output/collages/<project>/`.
+Serve them through the Design Hub at <http://127.0.0.1:8787/>; opening picker HTML over `file://`
+is not the supported path.
 
 `collage-source.json` schema (see the example file for a filled version):
 

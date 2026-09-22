@@ -6,7 +6,7 @@ sign-off always lands where it should. Established 2026-07-19 while refining the
 > **Sibling docs:** [`THEME-DESIGN.md`](THEME-DESIGN.md) (tokens, dual light/dark, signature pin) ·
 > [`EXPORTS.md`](EXPORTS.md) (export commands + pagination traps) ·
 > [`../themes/PALETTE-RULES.md`](../themes/PALETTE-RULES.md) (color guard).
-> **Profile hook:** `storage/profiles/jenni-resume.json → layout.system` points here.
+> **Profile hook:** `profiles/jenni-resume.json → layout.system` points here.
 
 ## Design Hub responsive shell
 
@@ -239,12 +239,12 @@ fully self-contained — no external image hosts:
 1. Author `<doc>.template.html` with `{{img:name}}` placeholders; keep sources in the application's
    `assets/` dir.
 2. A small Python inliner replaces each `{{img:name}}` with a base64 `data:` URI → `<doc>.html`.
-3. Export light + dark to `output/<user>/resumes/<App>/`. **Upload the dark version** for impact;
+3. Export private personal light + dark files to `_exports/<user>/resumes/<App>/`. **Upload the dark version** for impact;
    keep the ATS `resume-light` as the primary Resume upload.
 
-Worked example: `storage/_job-listings/Netflix-App/jenni-netflix-genai-work-samples.template.html`.
-Profile contract: `storage/profiles/jenni-resume.json → workSamples`. Asset sources + flagship beats:
-`storage/users/jenni.json → portfolio`.
+Worked example: `_job-apps/Netflix-App/jenni-netflix-genai-work-samples.template.html`.
+Profile contract: `profiles/jenni-resume.json → workSamples`. Asset sources + flagship beats:
+`users/jenni.json → portfolio`.
 
 ---
 

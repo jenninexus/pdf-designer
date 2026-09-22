@@ -7,7 +7,7 @@ a drifting margin, an unpinned signature, or a neon color painted over a photo.
 ```bash
 python -m pdf_tool.check_generation <doc>.html            # auto-detects the user; runs all checks
 python -m pdf_tool.check_generation <doc>.html --user shade   # force per-user rules (no-magenta)
-python -m pdf_tool.check_generation --scan storage/shade/defaults   # sweep a folder of .html
+python -m pdf_tool.check_generation --scan resumes/shade/defaults   # sweep a folder of .html
 python -m pdf_tool.check_generation <doc>.html --no-render     # skip render checks (fast source-only)
 python -m pdf_tool.check_generation <doc>.html --json          # machine-readable
 ```
@@ -122,7 +122,7 @@ Override detection with `--user <name>` when the filename doesn't say.
 
 ```
 ============================================================================
-FAIL  storage/shade/…/foo.html   (user=shade, no-magenta=True)
+FAIL  resumes/shade/…/foo.html   (user=shade, no-magenta=True)
   OK palette       …
   XX margins       equal/consistent @page margins
         - @page margin '0.42in 0.48in 0.48in' is asymmetric (drift) — use equal margins…
@@ -138,10 +138,10 @@ an unpinned signature are all cheap to fix and each has bitten a real doc).
 - **make-resume** step 8 and **make-work-examples** step 4/5 call this as the final gate before an export
   is considered done — it replaces running `check_palette` + `check_overflow` separately.
 - **Before any submission**, run it on the final `.html`.
-- **After a bulk change** (palette swap, dir move), `--scan storage/<user>/defaults` sweeps the go-to set.
-- **Go-to defaults:** after editing `storage/<user>/*-resume.html` (**any** applicant), re-export
-  **light + dark** into `storage/<user>/defaults/`, run `check_generation` on the source HTML, and
-  `python -m pdf_tool.check_ats <defaults/*-resume-light.pdf>` before treating the pack as board-ready.
+- **After a bulk change** (palette swap, dir move), `--scan resumes/<user>/defaults` sweeps the go-to set.
+- **Go-to defaults:** after editing `resumes/<user>/*-resume.html` (**any** applicant), re-export
+  **light + dark** into `_exports/<user>/resumes/defaults/`, run `check_generation` on the source HTML, and
+  `python -m pdf_tool.check_ats _exports/<user>/resumes/defaults/*-resume-light.pdf` before treating the pack as board-ready.
 > This tool found and fixed real margin drift in **both** favorite resumes (Shade `0.42/0.48/0.48`,
 > Jenni `0.45/0.5/0.55`) the day it was written — exactly the "consistent margin/padding" class of bug
 > it exists to catch. The 816px overflow correction later exposed a real jenni-resume footer overlap

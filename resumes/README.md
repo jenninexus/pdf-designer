@@ -1,7 +1,8 @@
 # `resumes/` — working HTML (not the PDFs)
 
 Per-person **source** tree: `resumes/<id>/{html,defaults,resources,templates}`.
-Generated PDFs and PNGs live in **[`output/<id>/resumes/`](../output/README.md)**.
+Personal generated PDFs and PNGs live in **[`_exports/<id>/resumes/`](../_exports/README.md)**.
+Public examples and direct engine runs still use [`output/`](../output/README.md).
 
 | Tracked | Gitignored |
 |---|---|
@@ -12,8 +13,9 @@ Generated PDFs and PNGs live in **[`output/<id>/resumes/`](../output/README.md)*
 | What | Where |
 |---|---|
 | Go-to HTML | `resumes/<id>/defaults/` |
-| Go-to PDFs | `output/<id>/resumes/` (flat) |
-| Per-job PDFs | `output/<id>/resumes/<App>/` |
+| Go-to personal PDFs | `_exports/<id>/resumes/` (flat) |
+| Per-job personal PDFs | `_exports/<id>/resumes/<App>/` |
+| Public/example PDFs | `output/examples/` |
 | Shared MG gallery | `resumes/studio/resources/images/martiangames/` (junctions from jenni/shade) |
 
 There is no repo-root `--output-dir/` folder — that name is a CLI flag

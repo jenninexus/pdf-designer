@@ -1,4 +1,4 @@
-/* Design Hub launch title. Holds 3s, then fades 2s; click / Enter / Escape skips. */
+/* Design Hub launch title. Stays until Open, Start wizard, Enter, or Escape. */
 (function () {
   const splash = document.getElementById("hubSplash");
   if (!splash) return;
@@ -8,18 +8,27 @@
   }
 
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const HOLD_MS = reduced ? 400 : 3000;
   const FADE_MS = reduced ? 0 : 2000;
   let closed = false;
+  const openBtn = document.getElementById("hubSplashOpen");
+  const wizardLink = document.getElementById("hubSplashWizard");
 
-  function dismiss() {
+  function samePath(href) {
+    const here = (location.pathname.replace(/\/+$/, "") || "/");
+    const there = (href.replace(/\/+$/, "") || "/");
+    return here === there;
+  }
+
+  function dismiss(href) {
     if (closed) return;
     closed = true;
-    window.removeEventListener("keydown", skip);
-    splash.removeEventListener("click", skip);
+    window.removeEventListener("keydown", onKey);
     try { sessionStorage.setItem("pdf-designer.hub.splash", "1"); } catch (_) {}
     splash.classList.add("is-out");
-    const drop = function () { splash.remove(); };
+    const drop = function () {
+      splash.remove();
+      if (href && !samePath(href)) location.assign(href);
+    };
     if (reduced) {
       drop();
       return;
@@ -28,14 +37,36 @@
     setTimeout(drop, FADE_MS + 120);
   }
 
-  const timer = setTimeout(dismiss, HOLD_MS);
-  function skip(event) {
-    if (event && event.type === "click" && event.target.closest(".hub-support, a, button")) return;
-    if (event && event.type === "keydown" && !["Enter", "Escape", " "].includes(event.key)) return;
-    if (event && event.key === " ") event.preventDefault();
-    clearTimeout(timer);
-    dismiss();
+  function onKey(event) {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      dismiss();
+      return;
+    }
+    if (event.key === "Enter" && event.target && event.target.closest("a, button")) return;
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      dismiss("/");
+    }
   }
-  splash.addEventListener("click", skip);
-  window.addEventListener("keydown", skip);
+
+  if (openBtn) {
+    openBtn.addEventListener("click", function (event) {
+      event.preventDefault();
+      event.stopPropagation();
+      dismiss("/");
+    });
+  }
+  if (wizardLink) {
+    wizardLink.addEventListener("click", function (event) {
+      event.preventDefault();
+      event.stopPropagation();
+      dismiss("/wizard");
+    });
+  }
+
+  window.addEventListener("keydown", onKey);
+  if (openBtn) {
+    try { openBtn.focus(); } catch (_) {}
+  }
 })();

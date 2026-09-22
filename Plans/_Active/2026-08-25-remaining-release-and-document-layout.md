@@ -1,17 +1,20 @@
 # Remaining — release gates + document layout / spacing
 
-**Date:** 2026-08-25  
-**Status:** Active — the only working checklist  
-**Closed parents:**  
-[`../_Complete/2026-08-22-product-polish-and-release-readiness.md`](../_Complete/2026-08-22-product-polish-and-release-readiness.md) ·  
-[`../_Complete/2026-08-22-root-output-folder.md`](../_Complete/2026-08-22-root-output-folder.md) ·  
+**Date:** 2026-08-25
+**Status:** Active — the only working checklist
+**Closed parents:**
+[`../_Complete/2026-08-22-product-polish-and-release-readiness.md`](../_Complete/2026-08-22-product-polish-and-release-readiness.md) ·
+[`../_Complete/2026-08-22-root-output-folder.md`](../_Complete/2026-08-22-root-output-folder.md) ·
 [`../_Complete/2026-08-23-start-vault-import.md`](../_Complete/2026-08-23-start-vault-import.md)
 
-Hub polish, LIVPHI **source** mirror, `/wizard` vault import, `output/<user>/<kind>/`, and
-unsigned BundledRuntimeProof are done. This file is only what is left.
+Hub polish, LIVPHI **source** mirror, `/wizard` vault import, the public `output/` versus private
+`_exports/` split, and unsigned BundledRuntimeProof are done. This is the sole active plan and holds
+only remaining product/release carryover.
 
-Public GitHub must stay clone-safe. Azure / Store / Partner Center / live `/products`
-rewrite notes live in `docs/CHANNELS.local.md` (gitignored), not `docs/PRODUCT.md`.
+Public GitHub must stay clone-safe. Signing-account, Store, Partner Center, and channel-specific notes
+stay in `docs/CHANNELS.local.md` (gitignored), not `docs/PRODUCT.md`; the sibling product handoff is
+`../product-design/Plans/_Active/2026-09-03-pdf-designer-first-signed-release.md`. JN `$5` checkout
+stays off until fulfilment is wired.
 
 ---
 
@@ -20,10 +23,10 @@ rewrite notes live in `docs/CHANNELS.local.md` (gitignored), not `docs/PRODUCT.m
 | Surface | State |
 |---|---|
 | **pdf-designer GitHub** | Public MIT clone. Suggested tip $3/$5 on README. No Setup.exe download. |
-| **Design Hub** | http://127.0.0.1:8787/ — recipes at `/recipes` |
+| **Design Hub** | http://127.0.0.1:8787/ — recipes at `/recipes`; ignored `_exports/` PDFs/images are visible as read-only local artifacts |
 | **JN `/products`** | Local catalog already **free card + tip** (`jenninexus/public_html/includes/products.json`, 2026-08-25). Confirm live [jenninexus.com/products](https://jenninexus.com/products)#pdf-designer if not deployed this machine. Checkout stays off. |
-| **product-design hub** | Local-only. Card: `C:\Github\product-design\docs\PDF-DESIGNER.md`. Money board: `product-registry.md`. Command: `/products`. |
-| **Jenni defaults** | HTML `resumes/jenni/defaults/` · PDFs `output/jenni/resumes/` (work-examples ~1.18 MB, 2026-08-22). |
+| **product-design hub** | Local-only sibling. Card: `../product-design/docs/PDF-DESIGNER.md`. Money board: `../product-design/product-registry.md`. Command: `/products`. |
+| **Jenni defaults** | HTML `resumes/jenni/defaults/` · private PDFs `_exports/jenni/resumes/` (work-examples ~1.18 MB, 2026-08-22). |
 | **Shade defaults** | Same recipes. Work-examples **v2** ≈ 2.05 MB (`html_to_pdf --max-mb 5`). Pre-inline leftovers ~11.8 MB still sit beside them. |
 
 ---
@@ -31,9 +34,8 @@ rewrite notes live in `docs/CHANNELS.local.md` (gitignored), not `docs/PRODUCT.m
 ## Done when
 
 - [x] Jenni + Shade résumé / cover / work-examples match [`docs/LAYOUT-SYSTEM.md`](../../docs/LAYOUT-SYSTEM.md) rhythm. `check_generation` PASS 2026-08-25. Jane résumé + cover PASS. Jane Hub mosaic is collage-family (`0.6in` / `9.8in`) — `footer-collision` still FAILs (colored tiles vs résumé signature scan); not the 3-page pack.
-- [x] Shade work-examples PDFs ≤ 5 MB — `output/shade/resumes/shade-default-work-examples-{light,dark}-v2.pdf` ≈ **2.05 MB** (`html_to_pdf --max-mb 5`). Older `*-light.pdf` / `*-dark.pdf` (~11.8 MB) are pre-inline leftovers.
-- [ ] Signed NSIS exists **or** Azure remains explicitly held (no unsigned listing).
-- [ ] Clean Win10/11 x64 VM proof with `-RequireAuthenticode` **or** documented LAN substitute only after a Valid signature.
+- [x] Shade work-examples PDFs ≤ 5 MB — `_exports/shade/resumes/shade-default-work-examples-{light,dark}-v2.pdf` ≈ **2.05 MB** (`html_to_pdf --max-mb 5`). Older `*-light.pdf` / `*-dark.pdf` (~11.8 MB) are pre-inline leftovers.
+- [ ] Authenticode signing plus clean Win10/11 x64 VM proof before any binary listing; unsigned listing stays off.
 
 ---
 
@@ -63,11 +65,42 @@ Recipes (shared by Jenni and Shade — not per-person files):
 
 From the closed 2026-08-22 polish plan. Detail: `docs/CHANNELS.local.md` + `docs/WINDOWS-ELECTRON.local.md`.
 
-- [ ] **Hold Azure Artifact Signing** until a signing month is budgeted. Then `npm run dist:signed` + `verify-authenticode.ps1 -RequireSigned`. Detail stays in `docs/CHANNELS.local.md`.
+- [ ] When the private channel decision authorizes a signing run, use `dist:signed` and require Valid Authenticode. Detail stays in `docs/CHANNELS.local.md`.
 - [ ] Clean VM (or `-BundledRuntimeProof -RequireAuthenticode` after Valid). Not a daily-driver PC as listing proof.
-- [ ] Do not enable live checkout, Gumroad overlay, or Microsoft Store on `/products`.
+- [x] Do not enable live checkout, Gumroad overlay, or Microsoft Store on `/products`.
 - [x] Shade work-examples ≤ 5 MB.
-- [ ] Production PyPI still out of scope.
+
+## 3. 2026-09-21 Design Hub / privacy consolidation
+
+- [x] Align the PDF Designer nav switch at `xxl`/1400 across Hub CSS, the authoritative
+  `www-theme-kit` profile, the byte-mirrored offcanvas SCSS, and the Syna cross-kit pointer profile.
+- [x] Keep full-bleed drawer behavior phone-only (≤575.98 or short landscape ≤480px high); use the
+  almost-full resizable end-panel from 576–1399.98; restore inline toolbar at 1400.
+- [x] Expanded profile/folder/palette/format menus participate in the drawer's single scroll flow and
+  cannot overlap adjacent controls.
+- [x] Browse ignored `_exports/**/*.{pdf,png,jpg,jpeg,webp}` from the virtual `_exports` folder as
+  read-only local artifacts; never re-export an artifact or track its payload.
+- [x] Consolidate `Plans/_Active/` to this one file; move the completed PlayGo session to `_Complete/`.
+- [x] Add one authoritative public-app versus personal-workspace diagram and path lookup; point the
+  README/docs hubs to it instead of maintaining competing diagrams.
+- [x] Add per-card comparison inclusion controls: uncheck unwanted cards, **Focus N**, edit, or reset.
+- [x] Replace the browser-native light PDF surface with a dark Hub-owned real-page preview; retain an
+  **Open original** action and match the library's cyan scrollbar.
+- [ ] Review and land the existing mixed Design Hub/docs working batch after its whitespace findings
+  are normalized; do not combine private applicant payload with the public commit.
+
+## 4. Product evolution carryover (wanted, not release blockers)
+
+These are the remaining public-app capabilities described in [`docs/PREVIEWER.md`](../../docs/PREVIEWER.md).
+They stay here so completed plans do not masquerade as a backlog.
+
+- [ ] **Canvas editor:** drag/drop image tray, canvas-size presets, layout-family starting points, hero
+  selection, and text blocks; read/write the same `collage-source.json` the CLI uses.
+- [ ] **Collage books:** multi-page project manifest → render each page → `merge_pdfs` into one book.
+- [ ] **Native output-folder picker in the signed desktop shell:** preserve editable path text plus Browse;
+  do not add a browser-only fake absolute-path control.
+- [ ] **Production PyPI decision:** only after TestPyPI proof and explicit channel decision; GitHub clone
+  remains the complete free product meanwhile.
 
 ---
 
@@ -79,6 +112,12 @@ From the closed 2026-08-22 polish plan. Detail: `docs/CHANNELS.local.md` + `docs
 
 ## Evidence
 
+- VERIFIED — 2026-09-21 live Hub pass against a real three-page `_exports/shade/…` PDF: comparison
+  deselect → Focus → Edit all works; `/pdf-viewer` contains its toolbar and three rendered page images;
+  the dark canvas, white page boundary, and cyan left/right scrollbars are visibly distinct.
+- VERIFIED — 2026-09-21 `pytest -q` = 118 passed; `scripts/check-wheel-assets.py` includes the viewer
+  assets and excludes generated PDF/image payload; `scripts/smoke-white-label.py` passes light/dark/ATS.
+- VERIFIED — 2026-09-03 Hub stills recaptured (`docs/images/hub-{library,home,recipes,vault,start}.png` from a git-tracked clone; `hub-resume-jennifer-nexus.png` from the local screenshot pack). Nav shows Wizard; wizard shows Patreon/PayPal. Script: `scripts/capture-hub-stills.py`.
 - VERIFIED — wizard import tests exist; `output/` engine default landed (`190963f` / later).
 - VERIFIED — JN local `products.json` sku `pdf-designer` is `status: free` + tip CTA (2026-08-25).
 - UNVERIFIED — live droplet `/products` if deploy has not run since that catalog edit.

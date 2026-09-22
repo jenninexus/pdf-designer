@@ -3,9 +3,9 @@
 One **project folder** per set (`collages/<project>/{images,_candidates,_raw,faves}`).
 Run `python -m pdf_tool.collage <imagesDir> --recipe <id> --png`.
 
-Finished PNG/PDF/`--shelve` copies go to
-**[`output/<user>/collages/<project>/`](../output/README.md)** when the project
-maps to a profile, otherwise `output/collages/<project>/`.
+Working candidates stay beside the source project under `_candidates/`. Personal finished picks go to
+**[`_exports/<user>/collages/<project>/`](../_exports/README.md)** when a personal command supplies
+`--out`; public/example engine runs use [`output/collages/<project>/`](../output/README.md).
 
 | Tracked | Gitignored |
 |---|---|

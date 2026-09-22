@@ -20,14 +20,14 @@ Sibling pattern: [`agency/docs/PUBLIC-LOCAL-SPLIT.md`](../../agency/docs/PUBLIC-
 | Engine | `src/pdf_tool/`, `themes/` (including licensed `themes/fonts/`), `layouts/`, QA guards | — |
 | Product story | [`PRODUCT.md`](PRODUCT.md) · [`examples/resume-studio/`](../examples/resume-studio/) | [`MARKETING.md`](MARKETING.md) (gitignored) |
 | Folder UX | [`WORKSPACE-LAYOUT.md`](WORKSPACE-LAYOUT.md) · [`STORAGE.md`](STORAGE.md) (alias notes) | Real data under root nouns; leftover `storage/` |
-| Generated files | [`../output/README.md`](../output/README.md) (layout only) | `output/**/*.pdf` · `output/**/*.png` |
+| Generated files | [`../output/README.md`](../output/README.md) (public engine default) · [`../_exports/README.md`](../_exports/README.md) (private layout only) | `_exports/**/*.pdf` · `_exports/**/*.png` · `output/` payload |
 | Clone path | [`GETTING-STARTED.md`](GETTING-STARTED.md) | — |
 | Protocol (rules) | [`VAULT.md`](VAULT.md) · [`JOB-ASSESSMENT.md`](JOB-ASSESSMENT.md) | Real vaults / listings / PII |
 | Commands | `.claude/commands/*.example.md` only | Bare `start` / `wrap` / `make-*` / commands `README` + generated `.codex/` adapters |
 | Config | `.config/mcp-pdf-designer.example.json` | `mcp-pdf-designer.json` (absolute paths) |
 | Theme kit | Public default themes in-repo | `www-theme-kit` profiles + `brands/` (private kits) |
-| Docs | This folder (public `*.md`) | `MARKETING.md` · `WORKSPACE.md` · `HISTORY-SCRUB.md` · `CHANNELS.local.md` · `WINDOWS-ELECTRON.local.md` · other `*.local.md` · `Plans/` |
-| Lessons | `.memory/README.md` · `.memory/lesson-*.md` | Other `.memory/` notes · `dev-log-sego.yaml` |
+| Docs | This folder (public `*.md`) · one public-safe active product plan · public-safe product history | `MARKETING.md` · `WORKSPACE.md` · `HISTORY-SCRUB.md` · `CHANNELS.local.md` · `WINDOWS-ELECTRON.local.md` · other `*.local.md` / `*.private.md` · personal/session plans |
+| Lessons | `.memory/README.md` · `.memory/lesson-*.md` | Other `.memory/` notes · frozen `Plans/_Complete/_archive/dev-log-sego.yaml` |
 
 ## Track public files
 
@@ -40,7 +40,8 @@ Commit when they are clone-safe and reusable:
 - `.claude/commands/*.example.md` — generalized protocol seeds; placeholders only
 - `.config/*.example.json` · `.vscode/mcp.json.example`
 - `.memory/lesson-*.md` — durable traps (no vault bodies)
-- `output/README.md` — where generated PDFs go; never the PDFs themselves
+- `output/README.md` — public engine/example output layout; never the PDFs themselves
+- `_exports/README.md` — private personal deliverable layout; never the payload itself
 - `users/examples.json` · `vaults/examples.json` · `profiles/examples.json` — fictional Jane Example so the Hub Vault and profile dropdown have a clone-safe card. Copy-me seeds stay `*.example.json`.
 - `_job-apps/_template/README.md` — generic folder-shape pointer only. Real listings, provider-specific material, employer notes, submission evidence, phone numbers, and real names never belong in this tracked tree.
 
@@ -51,14 +52,23 @@ Never commit from a personal machine:
 | Path | Why |
 |---|---|
 | Root nouns (`users/` · `vaults/` · `resumes/` · …) real files; leftover `storage/` | Vaults, contacts, source HTML, exports |
-| `output/*` except `output/README.md` | Generated PDFs/PNGs |
+| `_exports/*` except `_exports/README.md` | Personal/applicant PDFs, PNGs, and generated documentation previews |
+| `output/*` except `output/README.md` | Public engine/example smoke output |
 | `docs/MARKETING.md` · `WORKSPACE.md` · `HISTORY-SCRUB.md` · `docs/*.local.md` | SEGO marketing, channel/signing ops, machine paths, rewrite runbooks |
-| `Plans/` | Local engineering checklists |
+| Personal/application/session plans under `Plans/` | Local working context; only the named active product plan and already-reviewed product history are public |
 | `.claude/commands/{start,wrap,pdf-start,pdf-wrap,README,make-*}.md` | Dev ritual + personal specifics |
 | `.codex/` | Generated local adapters for the bare commands |
 | `.config/mcp-pdf-designer.json` | Absolute machine paths |
-| `dev-log-sego.yaml` | Session narrative with private paths |
+| `Plans/_Complete/_archive/dev-log-sego.yaml` | Frozen historical session log (do not append) |
 | `*.pdf` / `*.png` (except deliberate example fixtures under `docs/images/`) | Exports / captures |
+
+### Local visibility is not publication
+
+The Design Hub may discover ignored `_exports/**/*.{pdf,png,jpg,jpeg,webp}` inside the selected
+workspace and show them as **read-only local previews** at `127.0.0.1`. This does not weaken the
+privacy boundary: discovery is runtime-only, the server remains loopback-only, `_archive` is skipped,
+and Git still tracks only `_exports/README.md`. A public clone therefore shows the folder contract but
+never another person's generated documents.
 
 ### Named public seeds, not broad private-root exceptions
 
@@ -70,27 +80,11 @@ their contact details, and every real application from an accidental public push
 
 ## Product surfaces (do not blur)
 
-```
-┌──────────────────────────────────────────────────────────────┐
-│  PUBLIC — free GitHub (live) / optional TestPyPI later       │
-│  pdf_tool + themes + layouts + Design Hub + *.example.md     │
-│  docs: PRODUCT · GETTING-STARTED · VAULT shape · QA          │
-│  output/README.md (layout) · examples/resume-studio/         │
-│  demo: python scripts/smoke-white-label.py                   │
-└──────────────────────────┬───────────────────────────────────┘
-                           │ optional local data
-┌──────────────────────────▼───────────────────────────────────┐
-│  PRIVATE — your machine                                      │
-│  vaults · jobs · brands · collages · output/*.pdf            │
-│  MARKETING.md · bare /make-resume · /start · /wrap           │
-└──────────────────────────┬───────────────────────────────────┘
-                           │ future (hypothesis)
-┌──────────────────────────▼───────────────────────────────────┐
-│  PAID APP — thin shell over the same engine                  │
-│  installer → Design Hub · guided vault/export wizard         │
-│  never requires cloud vaults; never ships someone else's PII │
-└──────────────────────────────────────────────────────────────┘
-```
+The authoritative public-app versus personal-workspace diagram and path lookup table live in
+[`WORKSPACE-LAYOUT.md`](WORKSPACE-LAYOUT.md#two-journeys-one-engine). In short: the public clone provides
+the engine, Wizard, examples, themes, layouts, and `*.example` seeds; local users add ignored root-noun
+data and receive private deliverables under `_exports/`; a future paid shell wraps the same Hub and
+renderer rather than creating a second product.
 
 Thesis: [`PRODUCT.md`](PRODUCT.md). Clone without vaults: [`GETTING-STARTED.md`](GETTING-STARTED.md).
 Private marketing detail: `docs/MARKETING.md` (gitignored).
@@ -113,7 +107,7 @@ Document tokens that strangers need live in **`themes/`**. Real studio hex stays
 
 | Repo | Public | Private / local |
 |---|---|---|
-| **pdf-designer** (this) | Engine + product docs + examples + `output/` layout | Root-noun payload, bare commands, `Plans/` |
+| **pdf-designer** (this) | Engine + product docs + examples + public-safe product plan/history + `output/`/`_exports/` layout guides | Root-noun payload, `_exports/` deliverables, bare commands, personal/session plans |
 | **agency** | `agents/`, `docs/`, media masters | `projects/`, `mcp.json`, audits |
 | **socials** | Generic `docs/` + MCP tools | `storage/docs/*` IDs, `.env`, brand YAMLs |
 | **dashboard** | Seed profiles + fictional sample data | `my-dashboard/`, `.env` |

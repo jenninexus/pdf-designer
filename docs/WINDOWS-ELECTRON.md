@@ -79,10 +79,10 @@ harness `Stop-Process`es the Electron PID and still asserts runtime death.
    desktop shortcut. No checkout, Node, or system Python is required by the packaged app.
 2. On a genuinely new workspace, the app copies the public fictional Jane Example to
    `Documents\PDF Designer`; it never overwrites an existing folder.
-3. The window always opens the Hub title screen (**3s hold**, then **2s fade-out**;
-   Enter / Escape / click skips). After that, the local Design Hub is in its
-   dark-default workspace chrome. Choose **Start** for the guided route: local vault
-   → source-backed skills → palette → light and dark export.
+3. The window always opens the Hub title screen. It stays until **Open**, **Start
+   wizard**, Enter, or Escape (no auto-dismiss). After that, the local Design Hub is in its
+   dark-default workspace chrome. Choose **Start wizard** (or **Wizard** in the header) for
+   the guided route: local vault → source-backed skills → palette → light and dark export.
    The document's own palette is independent of the Hub theme.
 4. Jane Example is a clearly labelled fictional template. The guided path creates no
    account, cloud connection, claim, or automatic submission. It uses the bundled local

@@ -275,7 +275,7 @@ the shape of a single-voice resume:
 - technology
 
 Copy it for new public-safe examples. For private profiles, extend it from a
-gitignored file under `storage/profiles/`.
+gitignored file under `profiles/`.
 
 ## Dark and Light Modes
 

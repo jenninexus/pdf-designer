@@ -1,48 +1,35 @@
 # Plans
 
-Working plans for pdf-designer. Keep **one** active product roadmap; move finished waves to `_Complete`.
+Working plans for pdf-designer. Keep **one** active **product** checklist. The active product plan and
+public-safe product history may be tracked. Personal job/application/session plans stay ignored and move
+to `_Complete` when done.
+
+This repo’s spelling is **`_Active` / `_Complete`** (JN website uses lowercase `_active`; do not rename here).
 
 | Folder | Rule |
 |---|---|
-| [`_Active/`](_Active/) | Current working checklist only — preferably a single file |
-| [`_Complete/`](_Complete/) | Shipped or parked plans (history; do not treat as next-steps) |
+| `_Active/` | Exactly one tracked, public-safe product/carryover checklist |
+| `_Complete/` | Completed or parked plans; product history may remain tracked, personal/session payload stays ignored |
+| `_Complete/_archive/` | Frozen local session logs — **do not append** |
+
+**Session narrative (2026-09-08+):** update the sole remaining-product checklist in `_Active/`, move closed topic plans to `_Complete/`, and keep [`docs/ROADMAP.md`](../docs/ROADMAP.md) honest. Durable traps still go in tracked [`.memory/`](../.memory/). Do **not** recreate root `dev-log-sego.yaml`.
 
 ## Active
 
 | Plan | Status |
 |---|---|
-| [`_Active/2026-08-25-remaining-release-and-document-layout.md`](_Active/2026-08-25-remaining-release-and-document-layout.md) | ⭐ **THE** working plan — document spacing pass; Shade ≤5 MB work-examples; Azure/signing still held |
-| [`_Active/2026-08-26-hub-compact-offcanvas.md`](_Active/2026-08-26-hub-compact-offcanvas.md) | Design Hub tablet/phone offcanvas (`nav_switch: xxl`) — landed 2026-08-26; Jen DJ follow-up is a sibling repo |
+| [`_Active/2026-08-25-remaining-release-and-document-layout.md`](_Active/2026-08-25-remaining-release-and-document-layout.md) | ⭐ Sole product checklist — current release gates plus non-blocking canvas/books/desktop/PyPI carryover |
 
-> **`/jen:roadmap` entry point:** [`../docs/ROADMAP.md`](../docs/ROADMAP.md).  
-> **Business:** [`../docs/PRODUCT.md`](../docs/PRODUCT.md).  
-> **Folder UX target:** [`../docs/WORKSPACE-LAYOUT.md`](../docs/WORKSPACE-LAYOUT.md).  
-> **Product hub:** `C:\Github\product-design` · `/jen:products`.  
+> **`/jen:roadmap` entry point:** [`../docs/ROADMAP.md`](../docs/ROADMAP.md).
+> **Business:** [`../docs/PRODUCT.md`](../docs/PRODUCT.md).
+> **Folder UX target:** [`../docs/WORKSPACE-LAYOUT.md`](../docs/WORKSPACE-LAYOUT.md).
+> **Product hub:** private sibling `product-design` workspace · `/jen:products`.
 > **Private marketing:** `docs/MARKETING.md` (gitignored).
 
-## Complete (recent)
+## Complete
 
-| Plan | Why complete |
-|---|---|
-| [`2026-08-22-product-polish-and-release-readiness.md`](_Complete/2026-08-22-product-polish-and-release-readiness.md) | Hub polish, LIVPHI source mirror, vault import, unsigned BundledRuntimeProof — remaining gates moved 2026-08-25 |
-| [`2026-08-22-root-output-folder.md`](_Complete/2026-08-22-root-output-folder.md) | `output/<user>/<kind>/` engine default |
-| [`2026-08-23-start-vault-import.md`](_Complete/2026-08-23-start-vault-import.md) | `/wizard` upload + inferred claims |
-| [`2026-08-21-standalone-app-remaining.md`](_Complete/2026-08-21-standalone-app-remaining.md) | Superseded 2026-08-22; built work is retained as history and the remaining clean-machine/payment gates are consolidated into the active plan |
-| [`2026-08-21-public-surface-audit.local.md`](_Complete/2026-08-21-public-surface-audit.local.md) | Local-only release audit complete; evidence is retained, not a second active roadmap |
-| [`2026-08-20-pdf-designer-remaining-sisters/`](_Complete/2026-08-20-pdf-designer-remaining-sisters/) | Posting-day snapshot; Patreon/Discord complete and remaining work consolidated 2026-08-21 |
-| [`2026-08-17-early-release-remaining.md`](_Complete/2026-08-17-early-release-remaining.md) | Early-release handoff superseded by the unified standalone-app plan |
-| [`2026-08-17-hub-examples-storage-retire/`](_Complete/2026-08-17-hub-examples-storage-retire/) | Public Hub examples, `_job-apps/` sole listing, `storage/` retired, history scrub |
-| [`2026-08-13-intuitive-workspace-product.md`](_Complete/2026-08-13-intuitive-workspace-product.md) | Root nouns, path resolver, dual-run copy, `_job-apps/` rename |
-| [`2026-08-13-launch-ready-workspace.md`](_Complete/2026-08-13-launch-ready-workspace.md) | Data copy, tracker dedupe, launch *copy* in Socials (not posted) |
-| [`2026-08-13-previewer-path-header-repair.md`](_Complete/2026-08-13-previewer-path-header-repair.md) | Hub discovers live profiles/folders; sticky profile scopes library |
-| [`2026-08-12-product-privacy-packaging.md`](_Complete/2026-08-12-product-privacy-packaging.md) | Privacy packaging · resume-studio · smoke/wheel · commands `*.example.md` |
-| [`2026-08-12-public-private-split/`](_Complete/2026-08-12-public-private-split/) | PUBLIC-LOCAL-SPLIT · GETTING-STARTED · sibling splits |
-| [`2026-08-10-hub-layouts-letterhead.md`](_Complete/2026-08-10-hub-layouts-letterhead.md) | Hub drawer/icons · layout categories · letterhead |
-| [`2026-07-21-next-agent-product-prompt.md`](_Complete/2026-07-21-next-agent-product-prompt.md) | Product checklist wave |
-| [`2026-07-24-jenni-vault-hub-handoff.md`](_Complete/2026-07-24-jenni-vault-hub-handoff.md) | Hub `/vault` + goToPacks |
-| [`2026-07-14-professional-product-roadmap.md`](_Complete/2026-07-14-professional-product-roadmap.md) | Public path, QA, packaging spike |
-| [`2026-07-11-design-hub-app-roadmap.md`](_Complete/2026-07-11-design-hub-app-roadmap.md) | Phase 1 + hub UX |
-| [`2026-07-11-design-hub-parked-phases.md`](_Complete/2026-07-11-design-hub-parked-phases.md) | pywebview / canvas — parked |
-| [`2026-07-14-character-voice-ssot.md`](_Complete/2026-07-14-character-voice-ssot.md) | Voice layers |
+Completed plans are historical evidence, not next-step lists. Keep a plan tracked only when its content
+is public-safe product history. Personal/application/session payload stays ignored. Promote reusable
+rules into `docs/` and durable traps into `.memory/`.
 
 Protocol for agents lives in `docs/` and `AGENTS.md` — not in Plans.

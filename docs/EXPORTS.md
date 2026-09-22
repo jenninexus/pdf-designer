@@ -39,10 +39,10 @@ After `pip install -e .` you also get console scripts: `pdf-designer`,
 `pdf-designer-preview`, `pdf-designer-check-palette`, `pdf-designer-check-vault`,
 `pdf-designer-check-ats`, `pdf-designer-tracker`, `pdf-designer-variants`.
 
-## Default Folders
+## Public engine default vs private personal exports
 
 If no output path is supplied, exports go under repo-root **`output/`**, grouped
-by profile then kind:
+by profile then kind. This is the clone-safe engine/example behavior:
 
 | Inference | Destination |
 |---|---|
@@ -56,18 +56,22 @@ by profile then kind:
 Dual-mode default names are **`<stem>-light.pdf`** / **`<stem>-dark.pdf`**.
 Re-exports never overwrite — they bump to `-v2`, `-v3`, …
 
+Real personal/applicant builds are deliberately separate: private profiles and bare `make-*`
+commands pass **`--output-dir _exports/<user>/<kind>/<App>/`**. Only `_exports/README.md` is
+tracked; its payload stays local. Do not change the engine default merely to route private work.
+
 Pick the folder on purpose only when the inference is wrong:
 
 | What you're exporting | Put the PDFs here | Flag |
 |---|---|---|
-| **Go-to pack** (generic résumé / cover / work-examples) | `output/<user>/resumes/` (HTML stays in `resumes/<user>/defaults/`) | omit `--output-dir`, or `--output-dir output/<user>/resumes --force` |
-| **This job** | `output/<user>/resumes/<App>/` | `--output-dir output/<user>/resumes/<App>` |
+| **Private go-to pack** (generic résumé / cover / work-examples) | `_exports/<user>/resumes/` (HTML stays in `resumes/<user>/defaults/`) | `--output-dir _exports/<user>/resumes --force` |
+| **Private job application** | `_exports/<user>/resumes/<App>/` | `--output-dir _exports/<user>/resumes/<App>` |
 | Public example / smoke | `output/examples/` | (default from `examples/…`) |
 | Unspecified / one-off | `output/` | (default) |
 
-Never write go-to PDFs into `defaults/` or a retired `_exports/defaults/` folder.
+Never write go-to PDFs into `defaults/` or a nested `docs/_exports/` folder.
 The Design Hub picker reads HTML under `resumes/<user>/defaults/`. Vault
-`goToPacks.*.exportDir` must match the PDF location (`output/<user>/resumes/`).
+`goToPacks.*.exportDir` must match the private PDF location (`_exports/<user>/resumes/`).
 
 ```text
 resumes/jenni/defaults/
@@ -75,7 +79,7 @@ resumes/jenni/defaults/
   jenni-default-cover-letter.html
   jenni-default-work-examples.html
 
-output/jenni/resumes/
+_exports/jenni/resumes/
   jenni-default-resume-light.pdf
   jenni-default-resume-dark.pdf
   jenni-default-work-examples-light.pdf
