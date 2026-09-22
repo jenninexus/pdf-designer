@@ -1,5 +1,5 @@
 > **COMPLETE (2026-08-12).** Hub / layouts / letterhead wave shipped. Open leftovers
-> (TestPyPI upload, packaging) → [../_Active/2026-08-12-product-privacy-packaging.md](../_Active/2026-08-12-product-privacy-packaging.md).
+> (TestPyPI upload, packaging) → [2026-08-12-product-privacy-packaging.md](2026-08-12-product-privacy-packaging.md).
 # Active plan — Hub fix · layout categories · personal letterhead
 
 **Date:** 2026-08-10 · **Host:** SEGOPC · **Updated:** 2026-08-11  

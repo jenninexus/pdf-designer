@@ -1,10 +1,10 @@
 > **COMPLETE / SUPERSEDED (2026-08-12).** Leftovers live in
-> [../_Active/2026-08-12-product-privacy-packaging.md](../_Active/2026-08-12-product-privacy-packaging.md).
+> [2026-08-12-product-privacy-packaging.md](2026-08-12-product-privacy-packaging.md).
 > Kept for history — do not treat as the working checklist.
 # Active plan + next-agent handoff — pdf-designer
 
 **Single active plan** (2026-07-21). Supersedes the archived
-[`../_Archive/2026-07-14-professional-product-roadmap.md`](../_Archive/2026-07-14-professional-product-roadmap.md)
+[`2026-07-14-professional-product-roadmap.md`](2026-07-14-professional-product-roadmap.md)
 wave (public path · QA · packaging spike · paid-app design — all shipped).
 
 | Pointer | Role |
@@ -32,7 +32,7 @@ wave (public path · QA · packaging spike · paid-app design — all shipped).
 
 ### Parked
 
-- [ ] **pywebview shell** — parked; shell-over-Hub first ([archived](../_Archive/2026-07-11-design-hub-parked-phases.md))
+- [ ] **pywebview shell** — parked; shell-over-Hub first ([archived](2026-07-11-design-hub-parked-phases.md))
 
 ### Never
 
@@ -42,7 +42,7 @@ wave (public path · QA · packaging spike · paid-app design — all shipped).
 
 ## Shipped in prior wave (do not redo)
 
-Full history: [`../_Archive/2026-07-14-professional-product-roadmap.md`](../_Archive/2026-07-14-professional-product-roadmap.md).
+Full history: [`2026-07-14-professional-product-roadmap.md`](2026-07-14-professional-product-roadmap.md).
 
 Highlights: `check_generation` (10 checks) · white-label smoke · dark-PDF specificity fix ·
 `paths.repo_root` + wheel share pipeline · shell-over-Hub design in PRODUCT.md.

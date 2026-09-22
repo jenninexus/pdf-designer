@@ -1,7 +1,7 @@
 # Complete / superseded plan — PDF Designer remaining sisters
 
 > **Superseded 2026-08-21.** The remaining release record and standalone-app work are consolidated in
-> [`../../_Active/2026-08-21-standalone-app-remaining.md`](../../_Active/2026-08-21-standalone-app-remaining.md).
+> [`../2026-08-21-standalone-app-remaining.md`](../2026-08-21-standalone-app-remaining.md).
 > This was a posting-day snapshot; do not revive completed Discord or Patreon actions from it.
 
 **Date:** 2026-08-20 · **Host:** SEGOPC · **Mode:** `/auto-goal`

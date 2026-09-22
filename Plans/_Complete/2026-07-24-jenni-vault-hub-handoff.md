@@ -9,7 +9,7 @@
 | [`docs/PREVIEWER.md`](../../docs/PREVIEWER.md) | Hub `/vault` · `/recipes` · `/?doc=` · `/?palette=` |
 | [`docs/PACKAGING.md`](../../docs/PACKAGING.md) | Wheel gate + `scripts/testpypi-dry-run.py` |
 | [`docs/VAULT.md`](../../docs/VAULT.md) | Vault + audio split |
-| [`storage/README.md`](../../storage/README.md) | Private protocol index (exportPrefs, boardSkills, Alignerr) |
+| [`docs/STORAGE.md`](../../docs/STORAGE.md) | Current workspace/storage protocol; the old `storage/README.md` was retired |
 | [`.claude/commands/wrap.md`](../../.claude/commands/wrap.md) | `/wrap` · `/jen:wrap` |
 | Global router | `~/.claude/commands/jen/pdf.md` → thin links into this repo |
 

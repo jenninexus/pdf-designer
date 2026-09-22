@@ -169,8 +169,8 @@ installer around **this** Design Hub—not a second renderer. See
 | Engine | same `pdf_tool.preview` HTTP | same | same |
 
 Recipe gallery chrome: **shipped** at `/recipes` (see Features above). Packaging
-precursor for installers: [`PACKAGING.md`](PACKAGING.md). The remaining implementation checklist is
-[`../Plans/_Active/2026-08-25-remaining-release-and-document-layout.md`](../Plans/_Active/2026-08-25-remaining-release-and-document-layout.md).
+precursor for installers: [`PACKAGING.md`](PACKAGING.md). Remaining accepted and parked product ideas
+are tracked in [`ROADMAP.md`](ROADMAP.md).
 
 ### Phase 4 — canvas editor (drag & drop)
 

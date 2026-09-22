@@ -26,7 +26,7 @@ Sibling pattern: [`agency/docs/PUBLIC-LOCAL-SPLIT.md`](../../agency/docs/PUBLIC-
 | Commands | `.claude/commands/*.example.md` only | Bare `start` / `wrap` / `make-*` / commands `README` + generated `.codex/` adapters |
 | Config | `.config/mcp-pdf-designer.example.json` | `mcp-pdf-designer.json` (absolute paths) |
 | Theme kit | Public default themes in-repo | `www-theme-kit` profiles + `brands/` (private kits) |
-| Docs | This folder (public `*.md`) · one public-safe active product plan · public-safe product history | `MARKETING.md` · `WORKSPACE.md` · `HISTORY-SCRUB.md` · `CHANNELS.local.md` · `WINDOWS-ELECTRON.local.md` · other `*.local.md` / `*.private.md` · personal/session plans |
+| Docs | This folder (public `*.md`) · optional one-plan public-safe execution slice · reviewed product history | `MARKETING.md` · `WORKSPACE.md` · `HISTORY-SCRUB.md` · `CHANNELS.local.md` · `WINDOWS-ELECTRON.local.md` · other `*.local.md` / `*.private.md` · personal/session plans |
 | Lessons | `.memory/README.md` · `.memory/lesson-*.md` | Other `.memory/` notes · frozen `Plans/_Complete/_archive/dev-log-sego.yaml` |
 
 ## Track public files
@@ -55,7 +55,7 @@ Never commit from a personal machine:
 | `_exports/*` except `_exports/README.md` | Personal/applicant PDFs, PNGs, and generated documentation previews |
 | `output/*` except `output/README.md` | Public engine/example smoke output |
 | `docs/MARKETING.md` · `WORKSPACE.md` · `HISTORY-SCRUB.md` · `docs/*.local.md` | SEGO marketing, channel/signing ops, machine paths, rewrite runbooks |
-| Personal/application/session plans under `Plans/` | Local working context; only the named active product plan and already-reviewed product history are public |
+| Personal/application/session plans under `Plans/` | Local working context; only an explicitly unignored public-safe product slice and already-reviewed product history are public |
 | `.claude/commands/{start,wrap,pdf-start,pdf-wrap,README,make-*}.md` | Dev ritual + personal specifics |
 | `.codex/` | Generated local adapters for the bare commands |
 | `.config/mcp-pdf-designer.json` | Absolute machine paths |

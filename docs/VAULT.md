@@ -6,7 +6,7 @@ Codex, Cursor, or a human should all be able to work from this page alone.
 > **Tracked protocol** (this file). Private data lives under gitignored root nouns (`users/`,
 > `vaults/`, `profiles/`, `resumes/`, `_job-apps/`, `brands/`, and `_exports/`).
 > Layout + brand SSOT: [`STORAGE.md`](STORAGE.md). Job capture: [`JOB-ASSESSMENT.md`](JOB-ASSESSMENT.md).
-> Engineering next-steps (one active plan): [`../Plans/_Active/2026-08-25-remaining-release-and-document-layout.md`](../Plans/_Active/2026-08-25-remaining-release-and-document-layout.md).
+> Engineering next-steps: [`ROADMAP.md`](ROADMAP.md); `Plans/_Active/` is optional and holds at most one accepted slice.
 
 ---
 

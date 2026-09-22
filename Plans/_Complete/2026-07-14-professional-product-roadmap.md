@@ -2,7 +2,7 @@
 
 > **Wave complete.** Public path, QA subsystem, packaging spike, and paid-app design
 > shipped. Open follow-ups (TestPyPI · Hub recipe gallery · optional polish) live in
-> [`../_Active/2026-07-21-next-agent-product-prompt.md`](../_Active/2026-07-21-next-agent-product-prompt.md).
+> [`2026-07-21-next-agent-product-prompt.md`](2026-07-21-next-agent-product-prompt.md).
 > Do not treat this file as next-steps.
 
 Started 2026-07-14 · archived 2026-07-21.
@@ -10,7 +10,7 @@ Started 2026-07-14 · archived 2026-07-21.
 | Pointer | Role |
 |---|---|
 | **This file** | Historical checklist (shipped wave) |
-| **Active plan** | [`../_Active/2026-07-21-next-agent-product-prompt.md`](../_Active/2026-07-21-next-agent-product-prompt.md) |
+| **Next plan** | [`2026-07-21-next-agent-product-prompt.md`](2026-07-21-next-agent-product-prompt.md) |
 | [`docs/SSOT.md`](../../docs/SSOT.md) | SSOT dashboard |
 | [`docs/PRODUCT.md`](../../docs/PRODUCT.md) | Free GitHub vs future paid app |
 | [`docs/PACKAGING.md`](../../docs/PACKAGING.md) | PyPI / wheel asset rules |
@@ -169,7 +169,7 @@ the only renderer. No MCP / always-on server required for core value.
 ## Next (rolled forward 2026-07-21 → active plan)
 
 Wave goals below are **done**. Remaining checkboxes moved to
-[`../_Active/2026-07-21-next-agent-product-prompt.md`](../_Active/2026-07-21-next-agent-product-prompt.md).
+[`2026-07-21-next-agent-product-prompt.md`](2026-07-21-next-agent-product-prompt.md).
 
 - [x] **Public-repo readiness (demo path)** — README 5-minute path + smoke script from `examples/` only
 - [x] **PyPI / wheel spike** — path resolve + share sync + wheel gate ([`PACKAGING.md`](../../docs/PACKAGING.md))

@@ -1,7 +1,7 @@
 # Roadmap (ARCHIVED 2026-07-14)
 
 > **Superseded** — see archived wave [`2026-07-14-professional-product-roadmap.md`](2026-07-14-professional-product-roadmap.md);
-> active checklist is [`../_Active/2026-07-21-next-agent-product-prompt.md`](../_Active/2026-07-21-next-agent-product-prompt.md).
+> next checklist was [`2026-07-21-next-agent-product-prompt.md`](2026-07-21-next-agent-product-prompt.md).
 > Phase 1 Design Hub shipped.
 > Parked pywebview/canvas: [`2026-07-11-design-hub-parked-phases.md`](2026-07-11-design-hub-parked-phases.md).
 
@@ -74,7 +74,7 @@ multi-page collage book).
 ## Parked — app shell (Phases 3–5)
 
 Not cancelled. Detail archived for history: see
-[`../_Archive/2026-07-11-design-hub-parked-phases.md`](../_Archive/2026-07-11-design-hub-parked-phases.md).
+[`2026-07-11-design-hub-parked-phases.md`](2026-07-11-design-hub-parked-phases.md).
 
 - Phase 3: pywebview window around the preview server — polish only
 - Phases 4–5: canvas editor & collage books — blocked on demand

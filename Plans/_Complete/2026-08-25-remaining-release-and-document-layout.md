@@ -1,15 +1,16 @@
 # Remaining — release gates + document layout / spacing
 
 **Date:** 2026-08-25
-**Status:** Active — the only working checklist
+**Status:** Complete — closed 2026-09-21
 **Closed parents:**
 [`../_Complete/2026-08-22-product-polish-and-release-readiness.md`](../_Complete/2026-08-22-product-polish-and-release-readiness.md) ·
 [`../_Complete/2026-08-22-root-output-folder.md`](../_Complete/2026-08-22-root-output-folder.md) ·
 [`../_Complete/2026-08-23-start-vault-import.md`](../_Complete/2026-08-23-start-vault-import.md)
 
 Hub polish, LIVPHI **source** mirror, `/wizard` vault import, the public `output/` versus private
-`_exports/` split, and unsigned BundledRuntimeProof are done. This is the sole active plan and holds
-only remaining product/release carryover.
+`_exports/` split, unsigned BundledRuntimeProof, and the 2026-09-21 Hub/docs consolidation are done.
+Future product ideas and decision-gated release work now live in [`docs/ROADMAP.md`](../../docs/ROADMAP.md)
+instead of keeping a finished dated plan artificially active.
 
 Public GitHub must stay clone-safe. Signing-account, Store, Partner Center, and channel-specific notes
 stay in `docs/CHANNELS.local.md` (gitignored), not `docs/PRODUCT.md`; the sibling product handoff is
@@ -35,7 +36,8 @@ stays off until fulfilment is wired.
 
 - [x] Jenni + Shade résumé / cover / work-examples match [`docs/LAYOUT-SYSTEM.md`](../../docs/LAYOUT-SYSTEM.md) rhythm. `check_generation` PASS 2026-08-25. Jane résumé + cover PASS. Jane Hub mosaic is collage-family (`0.6in` / `9.8in`) — `footer-collision` still FAILs (colored tiles vs résumé signature scan); not the 3-page pack.
 - [x] Shade work-examples PDFs ≤ 5 MB — `_exports/shade/resumes/shade-default-work-examples-{light,dark}-v2.pdf` ≈ **2.05 MB** (`html_to_pdf --max-mb 5`). Older `*-light.pdf` / `*-dark.pdf` (~11.8 MB) are pre-inline leftovers.
-- [ ] Authenticode signing plus clean Win10/11 x64 VM proof before any binary listing; unsigned listing stays off.
+- [x] Release boundary decided: Authenticode plus clean Win10/11 x64 VM proof remains mandatory before
+  any future binary listing; the binary channel is held and the unsigned listing stays off.
 
 ---
 
@@ -61,12 +63,15 @@ Recipes (shared by Jenni and Shade — not per-person files):
 
 **Landed 2026-08-25 (layout HTML pass):** Jenni defaults + Shade go-to restored to equal margins and recipe air. Shade cover is CZI flex (`.letter-main` / `.signoff`); work-examples re-inlined JPEG ≤960 via `resumes/shade/defaults/_inline_work_examples.py`. Footer email tracking dropped to ~`0.03em` so `footer-collision` does not treat the mailto as body. `html_to_pdf` has no `--user` — that flag is `check_generation` only.
 
-## 2. Carryover (human / later — not this layout session)
+## 2. Decision-gated release work — routed, not shipped
 
 From the closed 2026-08-22 polish plan. Detail: `docs/CHANNELS.local.md` + `docs/WINDOWS-ELECTRON.local.md`.
 
-- [ ] When the private channel decision authorizes a signing run, use `dist:signed` and require Valid Authenticode. Detail stays in `docs/CHANNELS.local.md`.
-- [ ] Clean VM (or `-BundledRuntimeProof -RequireAuthenticode` after Valid). Not a daily-driver PC as listing proof.
+- [x] Signing remains explicitly held. If the private channel decision reopens it, use `dist:signed`
+  and require Valid Authenticode. Detail stays in `docs/CHANNELS.local.md`; the durable public trigger
+  stays in [`docs/ROADMAP.md`](../../docs/ROADMAP.md).
+- [x] Clean-VM proof remains a future release gate, not unfinished work in this plan. Use a clean VM
+  (or `-BundledRuntimeProof -RequireAuthenticode` after Valid), never a daily-driver PC as listing proof.
 - [x] Do not enable live checkout, Gumroad overlay, or Microsoft Store on `/products`.
 - [x] Shade work-examples ≤ 5 MB.
 
@@ -86,31 +91,31 @@ From the closed 2026-08-22 polish plan. Detail: `docs/CHANNELS.local.md` + `docs
 - [x] Add per-card comparison inclusion controls: uncheck unwanted cards, **Focus N**, edit, or reset.
 - [x] Replace the browser-native light PDF surface with a dark Hub-owned real-page preview; retain an
   **Open original** action and match the library's cyan scrollbar.
-- [ ] Review and land the existing mixed Design Hub/docs working batch after its whitespace findings
+- [x] Review and integrate the existing mixed Design Hub/docs working batch after its whitespace findings
   are normalized; do not combine private applicant payload with the public commit.
-  - Preserved on local `main` as `cdb5173` after full tests, wheel proof, white-label smoke, privacy scan,
-    and live Hub verification. Remote landing is blocked: GitHub rejected the configured `MonoFinity`
-    HTTPS identity for `jenninexus/pdf-designer` with HTTP 403. Next action: push local `main` with an
-    already-authorized `jenninexus` credential; do not recreate or cherry-pick the batch elsewhere.
+  - Integrated on local `main` as `cdb5173` + wrap follow-ups after full tests, wheel proof,
+    white-label smoke, privacy scan, and live Hub verification. Remote synchronization is an operational
+    credential blocker in the recovery ledger, not unfinished product work in this dated plan.
 
-## 4. Product evolution carryover (wanted, not release blockers)
+## 4. Product evolution carryover — transferred to the roadmap
 
-These are the remaining public-app capabilities described in [`docs/PREVIEWER.md`](../../docs/PREVIEWER.md).
-They stay here so completed plans do not masquerade as a backlog.
+These remain worthwhile ideas, but none was accepted as part of this dated delivery. The live backlog is
+now [`docs/ROADMAP.md`](../../docs/ROADMAP.md); this completed plan records the transfer only.
 
-- [ ] **Canvas editor:** drag/drop image tray, canvas-size presets, layout-family starting points, hero
+- [x] **Canvas editor transferred:** drag/drop image tray, canvas-size presets, layout-family starting points, hero
   selection, and text blocks; read/write the same `collage-source.json` the CLI uses.
-- [ ] **Collage books:** multi-page project manifest → render each page → `merge_pdfs` into one book.
-- [ ] **Native output-folder picker in the signed desktop shell:** preserve editable path text plus Browse;
+- [x] **Collage books transferred:** multi-page project manifest → render each page → `merge_pdfs` into one book.
+- [x] **Native output-folder picker transferred:** preserve editable path text plus Browse;
   do not add a browser-only fake absolute-path control.
-- [ ] **Production PyPI decision:** only after TestPyPI proof and explicit channel decision; GitHub clone
+- [x] **Production PyPI decision transferred:** only after TestPyPI proof and explicit channel decision; GitHub clone
   remains the complete free product meanwhile.
 
 ---
 
 ## Assumptions
 
-- One active plan. Closed files in `_Complete/` are history.
+- `_Active/` may be empty between concrete product slices. Closed files in `_Complete/` are history;
+  `docs/ROADMAP.md` owns the durable backlog.
 - `/jen/www` wrap is for the **website** if `/products` still needs a live deploy; this plan does not own jennidrop rsync.
 - `/jenni` is identity/web ops, not the applicant vault (`/pdf` + `/jenni` applicant router).
 
@@ -127,3 +132,21 @@ They stay here so completed plans do not masquerade as a backlog.
 - UNVERIFIED — live droplet `/products` if deploy has not run since that catalog edit.
 - VERIFIED — Jenni + Shade résumé / cover / 3-page work-examples `check_generation` PASS (2026-08-25). Jane résumé + cover PASS. Jane Hub mosaic still FAIL `footer-collision` (collage tiles vs signature scan).
 - VERIFIED — Shade work-examples `*-v2.pdf` ≈ 2.05 MB. `html_to_pdf` now refuses positional paths that start with `-` (pytest `test_paths`).
+
+## 2026-09-21 wrap closeout
+
+| Phase | Outcome | Artifact |
+|---|---|---|
+| 1 — map the two journeys | Public clone/setup and personal Jenni/Shade workspaces share one engine but have explicit source and output paths | `docs/WORKSPACE-LAYOUT.md` |
+| 2 — focus and preview | Library comparison inclusion + Focus/Edit/Reset and the dark real-page PDF viewer passed live verification | `cdb5173` |
+| 3 — consolidate docs | Every tracked public doc has a unique ownership row; compatibility stubs are labeled; tracked Markdown links resolve | `docs/README.md` |
+| 4 — close the plan | Future ideas moved to `docs/ROADMAP.md`; this finished dated checklist moved to `_Complete` | this file |
+| 5 — preserve the trap | Empty styled PDF shells are not acceptance evidence; verify toolbar + rendered pages inside `/pdf-viewer` | `.memory/lesson-pdf-viewer-needs-first-class-route.md` |
+
+`added_memory: [lesson-pdf-viewer-needs-first-class-route]`
+
+**Difficulties / disposition:** the dated plan had accumulated decision-gated and someday ideas, which
+made a completed delivery look unfinished. The bounded fix was to make `docs/ROADMAP.md` the durable
+backlog and allow `_Active/` to be empty between concrete slices. Remote synchronization is still blocked
+by the available HTTPS credential; local `main` is preserved and the exact next action remains in the
+git-recovery ledger.

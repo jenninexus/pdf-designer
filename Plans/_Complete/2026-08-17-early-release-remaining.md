@@ -1,7 +1,7 @@
 # Complete / superseded plan — Early release remaining (human publication)
 
 > **Superseded 2026-08-21.** Its remaining release, distribution, and desktop-shell work now lives in
-> [`../_Active/2026-08-21-standalone-app-remaining.md`](../_Active/2026-08-21-standalone-app-remaining.md).
+> [`2026-08-21-standalone-app-remaining.md`](2026-08-21-standalone-app-remaining.md).
 > X composer completion was recorded at the human's direction; the live URL and `x:notify:jn` remain
 > separate follow-up work. This file is historical context, not a working checklist.
 

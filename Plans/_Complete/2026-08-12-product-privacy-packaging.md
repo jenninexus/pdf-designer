@@ -55,7 +55,8 @@
 SSOT for free-vs-paid: [`docs/PRODUCT.md`](../../docs/PRODUCT.md).  
 Architecture: [`docs/PUBLIC-LOCAL-SPLIT.md`](../../docs/PUBLIC-LOCAL-SPLIT.md).  
 Clone how-to: [`docs/GETTING-STARTED.md`](../../docs/GETTING-STARTED.md) · [`examples/resume-studio/`](../../examples/resume-studio/).  
-Private notes: [`storage/docs/`](../../storage/docs/) (bodies gitignored; `README.md` placeholder tracked).
+Private notes formerly lived under `storage/docs/`; that tree was later retired in favor of gitignored
+files beside the public docs. Current boundary: [`docs/STORAGE.md`](../../docs/STORAGE.md).
 
 ---
 
