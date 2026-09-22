@@ -20,6 +20,7 @@ license = "MIT"
 dependencies = [
     "playwright>=1.40",   # Apache-2.0
     "pypdf>=4.0",         # BSD-3-Clause
+    "pypdfium2>=4.30",    # Apache-2.0 / BSD-3-Clause — real PDF-page previews + rendered QA
     "Pillow>=10.0",       # MIT-CMU
 ]
 

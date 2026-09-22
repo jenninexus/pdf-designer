@@ -148,20 +148,20 @@ All checks must pass for every mode being shipped. A source grep or browser prev
 
 ```bash
 # Light / ATS
-python -m pdf_tool.html_to_pdf <resume>.html --output-dir output/<user>/resumes/<App>/
+python -m pdf_tool.html_to_pdf <resume>.html --output-dir _exports/<user>/resumes/<App>/
 
 # Dark / branded
-python -m pdf_tool.html_to_pdf <resume>.html --pdf-theme dark --output-dir output/<user>/resumes/<App>/
+python -m pdf_tool.html_to_pdf <resume>.html --pdf-theme dark --output-dir _exports/<user>/resumes/<App>/
 ```
 
 The normal profile contract is light + dark. Do not infer optional cover-letter or work-sample output
-from another profile. Go-to reusable packs export into `output/<user>/resumes/` (HTML stays in
+from another profile. Go-to reusable packs export into `_exports/<user>/resumes/` (HTML stays in
 `resumes/<user>/defaults/`).
 
 ### 11. Gate the board file
 
 ```bash
-python -m pdf_tool.check_ats output/<user>/resumes/<App>/<resume>-light.pdf
+python -m pdf_tool.check_ats _exports/<user>/resumes/<App>/<resume>-light.pdf
 ```
 
 Read the extracted text. It must contain contiguous job-title, work-experience, and education cues,

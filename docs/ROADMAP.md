@@ -1,8 +1,13 @@
 # ROADMAP — pdf-designer
 
-> **This is a pointer, not the roadmap.** The single active working checklist is
-> [`Plans/_Active/2026-08-25-remaining-release-and-document-layout.md`](../Plans/_Active/2026-08-25-remaining-release-and-document-layout.md).
+> **This is a pointer, not the roadmap.**
+>
+> | Kind | File |
+> |---|---|
+> | **Product checklist** | [`Plans/_Active/2026-08-25-remaining-release-and-document-layout.md`](../Plans/_Active/2026-08-25-remaining-release-and-document-layout.md) |
+>
 > `/jen:roadmap` resolves here. Plans index: [`Plans/README.md`](../Plans/README.md).
+> Session narrative **does not** go in `dev-log-sego.yaml` (frozen 2026-09-08 → [`Plans/_Complete/_archive/`](../Plans/_Complete/_archive/)).
 >
 > Product UX target: [`WORKSPACE-LAYOUT.md`](WORKSPACE-LAYOUT.md) (root `users/` · `vaults/` · `_job-apps/` · …).  
 > Live data today: those root nouns. [`STORAGE.md`](STORAGE.md) documents the layout + the `storage/` dual-run alias.
@@ -27,13 +32,18 @@
 - [x] **Clone-safe Resume Studio walkthrough** + smoke / wheel gates
 - [x] **Commands privacy** — `*.example.md` only on GitHub
 - [x] **Hub drawer / layouts / letterhead** (2026-08-10)
-- [x] **Repo-root `output/<user>/<kind>/`** (2026-08-22) — generated PDFs/PNGs; HTML stays in `resumes/` · `collages/`; `storage/` leftover is not the SSOT; `_exports/` retired
+- [x] **Split public engine output from private deliverables** (2026-09-21) — `output/` remains the clone-safe engine/example default; personal commands and profiles use `_exports/<user>/<kind>/`; HTML stays in `resumes/` · `collages/`; legacy `storage/` residue remains local
 - [x] **Start vault import** (2026-08-23) — Hub `/wizard` upload + inferred claims (`seed_from_resume.py`)
-- [x] **Hub compact chrome** (2026-08-26) — hamburger through iPad Pro landscape (`nav_switch: xxl`); full-bleed offcanvas; iPad portrait stacked kind-cards; in-drawer custom selects (native popups ignore device-mode). Plan: [`Plans/_Active/2026-08-26-hub-compact-offcanvas.md`](../Plans/_Active/2026-08-26-hub-compact-offcanvas.md).
+- [x] **Hub compact chrome** (2026-08-26) — hamburger through iPad Pro landscape (`nav_switch: xxl`); iPad portrait stacked kind-cards; in-drawer custom selects. Plan: [`Plans/_Complete/2026-08-26-hub-compact-offcanvas.md`](../Plans/_Complete/2026-08-26-hub-compact-offcanvas.md). **2026-09-02:** full-bleed sheet on phones only (≤575.98 + short landscape); 576–1399.98 is an almost-full flexible end-panel.
 
 ### Parked
 
 - [ ] **pywebview shell** — [`Plans/_Complete/2026-07-11-design-hub-parked-phases.md`](../Plans/_Complete/2026-07-11-design-hub-parked-phases.md)
+
+### Product evolution carryover
+
+- [ ] Canvas editor, collage books, desktop output-folder picker, and the production-PyPI decision are
+  tracked only in the [sole active product plan](../Plans/_Active/2026-08-25-remaining-release-and-document-layout.md#4-product-evolution-carryover-wanted-not-release-blockers).
 
 ### Never
 

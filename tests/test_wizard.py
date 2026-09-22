@@ -42,13 +42,19 @@ def test_wizard_is_a_design_hub_route_and_navigation_target():
     root = Path(__file__).resolve().parents[1]
     handler = make_handler(root, scan_documents(root), load_palettes(root))
     assert 'href="/wizard"' in APP_HTML
+    assert ">Wizard</a>" in APP_HTML
+    assert 'class="hub-fa-icon fa-patreon"' in APP_HTML
     server = ThreadingHTTPServer(("127.0.0.1", 0), handler)
     thread = threading.Thread(target=server.serve_forever, daemon=True)
     thread.start()
     try:
         with urlopen(f"http://127.0.0.1:{server.server_port}/wizard") as response:
             assert response.status == 200
-            assert "Start a local résumé" in response.read().decode("utf-8")
+            html = response.read().decode("utf-8")
+            assert "Start wizard" in html
+            assert ">Wizard</a>" in html
+            assert 'class="hub-fa-icon fa-patreon"' in html
+            assert 'class="hub-fa-icon fa-paypal"' in html
         with urlopen(f"http://127.0.0.1:{server.server_port}/api/voice-card") as response:
             payload = __import__("json").loads(response.read())
             assert payload["ok"] is True
@@ -69,6 +75,7 @@ def test_wizard_is_a_design_hub_route_and_navigation_target():
         server.shutdown()
         thread.join()
         server.server_close()
-    for page in ("vault.html", "recipes.html"):
+    for page in ("vault.html", "recipes.html", "wizard.html"):
         html = (root / "src" / "pdf_tool" / "static" / page).read_text(encoding="utf-8")
         assert 'href="/wizard"' in html
+        assert ">Wizard</a>" in html

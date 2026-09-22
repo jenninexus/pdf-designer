@@ -138,4 +138,4 @@ Longer private channel notes: `docs/MARKETING.md` · `docs/CHANNELS.local.md` (g
 
 ---
 
-*Last updated 2026-08-25 — free GitHub + optional tip is the public ask; a packaged installer is a later shell over the same engine.*
+*Last updated 2026-08-25 — free GitHub + optional tip is the public ask; Azure signing is held until further notice.*

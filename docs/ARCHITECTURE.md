@@ -33,7 +33,7 @@ built versus planned.
 | `check_vault` | Vault schema / `--explain` / `--coverage`. | ✅ built |
 | `check_ats` | ATS text-layer guard on light PDF. | ✅ built |
 | `audit_resume` | Diff rendered HTML vs vault (lead omissions). | ✅ built |
-| `tracker` | List / status over `storage/_job-listings/**/application.json`. | ✅ built |
+| `tracker` | List / status over `_job-apps/**/application.json`. | ✅ built |
 | `collage` | Six layout families from a folder of images, plus a picker gallery. | ✅ built |
 | `preview` | The **Design Hub** — local previewer, live thumbnails, palette swapper, export. | ✅ built |
 
@@ -162,7 +162,7 @@ Honest status — nothing below exists yet.
 
 | What | Status |
 |---|---|
-| **Design Hub app** — pywebview shell around the existing previewer; variant generation; canvas editor | Parked / mid-term. See [`PREVIEWER.md`](PREVIEWER.md) and [`../Plans/_Complete/2026-07-11-design-hub-parked-phases.md`](../Plans/_Complete/2026-07-11-design-hub-parked-phases.md). Active checklist: [`../Plans/_Active/2026-08-22-product-polish-and-release-readiness.md`](../Plans/_Active/2026-08-22-product-polish-and-release-readiness.md). |
+| **Design Hub app** — Electron shell over the existing previewer; variant generation; canvas editor | Shell built but release-signing held; canvas/books remain later carryover. See [`PREVIEWER.md`](PREVIEWER.md) and the sole active checklist: [`../Plans/_Active/2026-08-25-remaining-release-and-document-layout.md`](../Plans/_Active/2026-08-25-remaining-release-and-document-layout.md). |
 | **PDF form filling** — AcroForm field filling, flat-PDF overlay filling | **Deferred indefinitely.** This was the repo's *original* premise and has never once been needed — every real document has been HTML → PDF. Don't build it until something actually demands it. |
 
 > The previous version of this document described a `src/application_assistant/` package

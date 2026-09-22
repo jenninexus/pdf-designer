@@ -28,20 +28,20 @@ Ship gate: `python -m pdf_tool.check_generation <doc>.html`.
 
 | Layer | Path |
 |---|---|
-| Application prose | `storage/<user>/resume-source.json#voice` |
-| Personality | `storage/users/<user>.json#characterVoice` |
+| Application prose | `vaults/<user>.json#voice` |
+| Personality | `users/<user>.json#characterVoice` |
 
 Edit via `/voice application <user>` · `/voice character <user>`. No Discord emoji on ATS PDFs.
 Never studio “we” on a solo application.
 
 ### Checklist
 
-0. Voice layers loaded  
-1. Listing + apply URL + theme  
-2. Gap check — ask before writing gaps  
-3. Write letter (company-specific content lives HERE)  
-4. Export per `exportPrefs` → `output/<user>/resumes/<Job>/`  
-5. Verify 1 page US Letter  
+0. Voice layers loaded
+1. Listing + apply URL + theme
+2. Gap check — ask before writing gaps
+3. Write letter (company-specific content lives HERE)
+4. Export per `exportPrefs` → `_exports/<user>/resumes/<Job>/`
+5. Verify 1 page US Letter
 6. Log paths in `application.json`
 
 Contracts: [`AGENTS.md`](../../AGENTS.md) · sibling [`make-resume.example.md`](make-resume.example.md).

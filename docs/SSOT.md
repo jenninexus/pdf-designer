@@ -12,12 +12,12 @@ Theme:     themes/default-{resume,collage}.json + themes/presets/* + PALETTE-RUL
 Gen-rules: themes/GENERATION-RULES.md   ← ⭐ house rules for ALL generated docs (casing · overlays · framing · no-magenta)
 QA gate:   docs/QA.md + python -m pdf_tool.check_generation   ← ⭐ 10 checks; judge the ARTIFACT (render), not the source
 Layouts:   layouts/{cover-letter,letter,resume,work-examples,collage}/*  (python -m pdf_tool.collage --list-recipes)  ← STRUCTURE
-Private:   root nouns (users/vaults/profiles/resumes/_job-apps/collages/brands/output) + storage/ alias (gitignored)
+Private:   root nouns (users/vaults/profiles/resumes/_job-apps/collages/brands/_exports) + storage/ residue (gitignored)
 Hub:       python -m pdf_tool.preview → :8787 (workspace auto-starts via scripts/ensure-design-hub.ps1)
 Smoke:     python scripts/smoke-white-label.py   ← ⭐ fresh-clone proof (examples/ only, no storage/)
 Package:   docs/PACKAGING.md + scripts/check-wheel-assets.py  ← wheel must include themes/layouts
 Engine:    python -m pdf_tool  (hub) / individual modules
-Plans:     Plans/_Active/2026-08-21-standalone-app-remaining.md
+Plans:     Plans/_Active/ (one product/carryover checklist) · pointer docs/ROADMAP.md
 Product hub: C:\Github\product-design  (local; /jen:products)
 ```
 
@@ -37,13 +37,13 @@ Compact map of what this repo owns vs what it only points at. Agents: start here
 | **Layouts** | `layouts/{cover-letter,letter,resume,work-examples}/*` + `layouts/collage/*` | ⭐ **STRUCTURE** — cover=`one-page-letter` · résumé=`two-page-standard` · samples=`work-examples` · collage recipes under `collage/` |
 | Page layout | `docs/LAYOUT-SYSTEM.md` + `themes/default-resume.{json,css}#document` | ⭐ Equal margins (0.65in default) + header-flows/footer-pins; one knob `--resume-page-margin`; content-fit rule |
 | Page signature | `themes/default-resume.json#document.signature` | Bottom-right page-footer pin (`.page` / `.page-main` / `.page-sig`) |
-| Previewer | `src/pdf_tool/preview.py` (`docs/PREVIEWER.md`) | Design Hub; `/recipes` · `/vault`; **auto-refreshes** via `/api/version` on new exports |
+| Previewer | `src/pdf_tool/preview.py` (`docs/PREVIEWER.md`) | Design Hub; `/recipes` · `/vault`; **auto-refreshes** via `/api/version`; focused comparison checkboxes; dark real-PDF page preview |
 | Palette rule | `themes/PALETTE-RULES.md` | No brown / mustard / lime — enforced by `check_palette` |
 | **Generation rules** | `themes/GENERATION-RULES.md` | ⭐ House rules for ALL generated docs: **name/company never all-lowercase**, no neon over images (dark scrim only), 16:9 no-crop framing, no-magenta pointer |
 | **QA gate** | `docs/QA.md` + `pdf_tool.check_generation` | ⭐ ONE command · **10 checks** (palette·rgba-magenta·casing·overlay·signature·margins·page-bg·rendered-color·overflow·footer-collision). Per-user + per-doc aware. **Judge the artifact.** Run before shipping. |
 | Protocol docs | `docs/{STORAGE,VAULT,JOB-ASSESSMENT,ARCHITECTURE}.md` | Claim rules + workflow |
 | **Work-samples SSOT** | `profiles/<user>-resume.json#workSamples` + `users/<user>.json#portfolio` | ⭐ **PER-USER** page structure + personal assets — never copy another person's page ([VAULT.md](VAULT.md) § Work-samples) |
-| **Shared MG gallery** | `storage/studio/resources/images/martiangames/` | ⭐ Title stills + MG logo used by **both** applicants; per-user `…/images/martiangames/` junctions here ([STORAGE.md](STORAGE.md)) |
+| **Shared MG gallery** | `resumes/studio/resources/images/martiangames/` | ⭐ Title stills + MG logo used by **both** applicants; per-user `…/images/martiangames/` junctions here ([STORAGE.md](STORAGE.md)) |
 | Agent map | `AGENTS.md` | Capability / command SSOT for assistants |
 | **Product / business** | [`PRODUCT.md`](PRODUCT.md) | ⭐ Free GitHub toolkit vs future paid app; shell-over-Hub |
 | **Public vs local** | [`PUBLIC-LOCAL-SPLIT.md`](PUBLIC-LOCAL-SPLIT.md) | ⭐ Tracked vs gitignored; sibling-repo map |
@@ -53,7 +53,8 @@ Compact map of what this repo owns vs what it only points at. Agents: start here
 | Make-collage | `.claude/commands/make-collage.example.md` | Multi-image collage routine (public seed) |
 | Public examples | `examples/resume-studio/`, `examples/profiles/`, `examples/brand-design/` | Clone-safe templates |
 | Project config | `.config/mcp-pdf-designer.example.json` | Seed only — local `mcp-pdf-designer.json` is gitignored |
-| Active plan | `Plans/_Active/2026-08-21-standalone-app-remaining.md` | Current release record, optional distribution, and desktop-shell checklist |
+| Active product plan | `Plans/_Active/2026-08-25-remaining-release-and-document-layout.md` | Remaining product gates (Azure/signing held) |
+| Completed/session history | `Plans/_Complete/` | Closed narrative and reviewed public-safe product history; no second active checklist |
 
 ---
 
@@ -92,7 +93,7 @@ not either. Full checklist: [`JOB-ASSESSMENT.md`](JOB-ASSESSMENT.md) § Tier 4.5
 | “Section looks fine on screen” | Not enough. Montserrat can split `WORK EXPERIENCE` → `W ORK EXPERIENCE` and body words → `Gam es` / `m aterials` while the page looks perfect. **Print body + h2 use a system font.** |
 | “Jobright rank D means unparseable” | **False.** Rank / IMPROVABLE / “Insufficient skills” / “Lack of Accomplishment” is their **content AI**. Missing Job Title / Work Experience / Education is the **parse** warning. Different gates. |
 
-**Defaults:** ship **both** light and dark for go-to résumés under `output/<user>/resumes/`
+**Personal defaults:** ship **both** light and dark for go-to résumés under `_exports/<user>/resumes/`
 (HTML stays in `resumes/<user>/defaults/`) so the board
 file and the branded file stay in sync. Per-job `exportPrefs` may still emphasize dark for email —
 that does **not** remove the need for a light file when a board will parse the upload. Cover letters
@@ -115,7 +116,7 @@ www-theme-kit/profiles/{jenninexus,martiangames}.json
 
 | Who | Edit this file | Pointed by |
 |---|---|---|
-| Jenni | `brands/brand-jenninexus.json` | `users/jenni.json` · `profiles/jenni-resume.json` · defaults triad HTML under `resumes/jenni/defaults/`; PDFs under `output/jenni/resumes/` (same footer-mail legibility: `--text` ≥11px) |
+| Jenni | `brands/brand-jenninexus.json` | `users/jenni.json` · `profiles/jenni-resume.json` · defaults triad HTML under `resumes/jenni/defaults/`; PDFs under `_exports/jenni/resumes/` (same footer-mail legibility: `--text` ≥11px) |
 | Shade (Synagen) | `brands/brand-synagen.json` | `users/shade.json` · `profiles/shade-resume.json` |
 | Martian studio | `brands/brand-martian.json` | Shade studio/games profiles + kit `#martian-resume` |
 
@@ -186,4 +187,4 @@ short public-facing entry.
 | [`VAULT.md`](VAULT.md) | Claim + voice rules |
 | [`PREVIEWER.md`](PREVIEWER.md) | Design Hub how-to |
 | [`STORAGE.md`](STORAGE.md) | Private workspace layout |
-| [`Plans/_Active/2026-08-21-standalone-app-remaining.md`](../Plans/_Active/2026-08-21-standalone-app-remaining.md) | Working checklist + standalone-app handoff |
+| [`Plans/_Active/2026-08-25-remaining-release-and-document-layout.md`](../Plans/_Active/2026-08-25-remaining-release-and-document-layout.md) | Product remaining gates |

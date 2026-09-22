@@ -8,15 +8,15 @@ argument-hint: <images-dir-or-project> [recipe] [--bg <background>]
 > **Public seed (`*.example.md`).** Copy to bare `make-collage.md` locally if you add personal
 > paths or recipes. Bare command files are gitignored — only this `.example` ships on GitHub.
 
-Repo-local command for **pdf-designer**. Real image sets live under `storage/collages/`
+Repo-local command for **pdf-designer**. Real image sets live under `collages/`
 (gitignored); **reusable layouts live in tracked [`layouts/collage/`](../../layouts/collage/)**.
 
 ## Usage
 
 ```
-/make-collage storage/collages/<project>/images                          # all families + picker
-/make-collage storage/collages/<project>/images scatter-showcase-16x9    # one named recipe
-/make-collage storage/collages/<project>/images --bg discord-ember       # override the background
+/make-collage collages/<project>/images                          # all families + picker
+/make-collage collages/<project>/images scatter-showcase-16x9    # one named recipe
+/make-collage collages/<project>/images --bg discord-ember       # override the background
 /make-collage <project> --canvas hd-portrait --px 1080x1920              # re-target another size
 ```
 
@@ -50,8 +50,8 @@ layout with what it's best for — run it before inventing flags.
       resolution, which is often **not** the most important one.
 - [ ] **5. Render with `--png`**, then **LOOK AT EVERY PNG YOU PRODUCED.** Read them back. Do not
       report a collage you have not seen — see the failure table below for what to look for.
-- [ ] **6. Serve the picker, don't hand over a file path.** The Design Hub serves `storage/`:
-      <http://127.0.0.1:8787/storage/collages/<project>/_candidates/index.html>
+- [ ] **6. Serve the picker, don't hand over a file path.** The Design Hub serves the workspace:
+      <http://127.0.0.1:8787/collages/<project>/_candidates/index.html>
       A `C:\...` path is **not** a clickable link and fails the task-completion rule.
 - [ ] **7. Verify the links resolve** (200) before saying it's ready.
 - [ ] **8. 📌 PROMOTE OR ARCHIVE — never leave a good layout as a one-off.**
@@ -110,17 +110,17 @@ declared frame falls back to the theme mode's border color.
 ```
 layouts/collage/<recipe>.json        ⭐ TRACKED — reusable layout recipes
 themes/default-collage.json          ⭐ TRACKED — canvas presets, backgrounds, frames
-storage/collages/<project>/
+collages/<project>/
   images/                              your source images (+ optional collage-source.json)
   _candidates/                         ⭐ ALL renders — ONE FLAT DIR, no subfolders
-storage/collages/layouts/            finished picks across every project, <project>__ prefixed
+_exports/<user>/collages/<project>/  private finished picks (`--out`)
 ```
 
 **Output is flat.** Variants never nest into subfolders — canvas, background, and fit are encoded
 in the filename (`<family>__<canvas>-<W>x<H>[__<bg>][__contain].png`), so nothing collides and
 everything for a project sits in one place.
 
-**Reusable layouts do NOT belong in `storage/`.** `storage/` is private content (real images,
+**Reusable layouts do NOT belong in `collages/`.** `collages/` is private content (real images,
 finished exports). A layout you'd use again is tracked in `layouts/collage/` so it survives, is
 discoverable, and ships with a clone.
 
@@ -135,7 +135,7 @@ discoverable, and ships with a clone.
 - **Serve, don't hand over a path.** Observable = an `http://127.0.0.1:8787/...` link.
 - **Look at what you rendered** before reporting it. Every failure in the table above was
   shipped once by not looking.
-- **Privacy:** `storage/` is gitignored. Real images never move into tracked paths.
+- **Privacy:** `collages/` and `_exports/` payloads are gitignored. Real images never move into tracked paths.
 
 ## Related
 

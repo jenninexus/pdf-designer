@@ -30,13 +30,17 @@ try {
     <p class="hub-splash-name">Designer</p>
     <p class="hub-splash-sub">Design Hub</p>
     <div class="hub-splash-bar" aria-hidden="true"><i></i></div>
-    <p class="hub-splash-hint">Enter to skip</p>
+    <div class="hub-splash-actions">
+      <button type="button" class="hub-splash-open" id="hubSplashOpen">Open</button>
+      <a class="hub-splash-wizard" id="hubSplashWizard" href="/wizard">Start wizard</a>
+    </div>
+    <p class="hub-splash-hint">Enter opens the Hub · Esc closes</p>
     <div class="hub-support" role="group" aria-label="Support JenniNexus">
       <p class="hub-support-kicker">Support JenniNexus</p>
       <p class="hub-support-copy">Free MIT toolkit. A tip is optional — it never unlocks extra features.</p>
       <div class="hub-support-actions">
-        <a class="hub-support-btn patreon" href="https://www.patreon.com/c/JenniNexus" target="_blank" rel="noopener noreferrer">Patreon</a>
-        <a class="hub-support-btn paypal" href="https://paypal.me/jenninexus" target="_blank" rel="noopener noreferrer">PayPal</a>
+        <a class="hub-support-btn patreon" href="https://www.patreon.com/c/JenniNexus" target="_blank" rel="noopener noreferrer"><span class="hub-fa-icon fa-patreon" aria-hidden="true"></span>Patreon</a>
+        <a class="hub-support-btn paypal" href="https://paypal.me/jenninexus" target="_blank" rel="noopener noreferrer"><span class="hub-fa-icon fa-paypal" aria-hidden="true"></span>PayPal</a>
       </div>
     </div>
   </div>
@@ -50,7 +54,7 @@ try {
       <a class="hub-link" href="/" title="Document library">Library</a>
       <a class="hub-link on" href="/recipes" title="Browse layouts/ + themes/presets" aria-current="page">Recipes</a>
       <a class="hub-link" href="/vault" title="Readable vault · skills · go-to résumés">Vault</a>
-      <a class="hub-link" href="/wizard" title="Start a local résumé workspace">Start</a>
+      <a class="hub-link" href="/wizard" title="Start wizard — local résumé workspace">Wizard</a>
     </nav>
   </div>
   <div class="hub-bar-pin" aria-label="Pinned actions">
@@ -79,15 +83,15 @@ try {
         <a class="hub-link" href="/">Library</a>
         <a class="hub-link on" href="/recipes" aria-current="page">Recipes</a>
         <a class="hub-link" href="/vault">Vault</a>
-        <a class="hub-link" href="/wizard">Start</a>
+        <a class="hub-link" href="/wizard" title="Start wizard — local résumé workspace">Wizard</a>
       </nav>
     </div>
     <div class="hub-drawer-section hub-support" role="group" aria-label="Support JenniNexus">
       <p class="hub-support-kicker">Support JenniNexus</p>
       <p class="hub-support-copy">Free MIT toolkit. A tip is optional — it never unlocks extra features.</p>
       <div class="hub-support-actions">
-        <a class="hub-support-btn patreon" href="https://www.patreon.com/c/JenniNexus" target="_blank" rel="noopener noreferrer">Patreon</a>
-        <a class="hub-support-btn paypal" href="https://paypal.me/jenninexus" target="_blank" rel="noopener noreferrer">PayPal</a>
+        <a class="hub-support-btn patreon" href="https://www.patreon.com/c/JenniNexus" target="_blank" rel="noopener noreferrer"><span class="hub-fa-icon fa-patreon" aria-hidden="true"></span>Patreon</a>
+        <a class="hub-support-btn paypal" href="https://paypal.me/jenninexus" target="_blank" rel="noopener noreferrer"><span class="hub-fa-icon fa-paypal" aria-hidden="true"></span>PayPal</a>
       </div>
     </div>
   </div>
@@ -176,7 +180,7 @@ function collageTable(rows) {
   wrap.className = "hub-table-scroll";
   wrap.innerHTML = `
     <table>
-      <thead><tr><th>Id</th><th>Structure</th><th>Best for</th><th>Use</th></tr></thead>
+      <thead><tr><th>Id</th><th>Structure</th><th>Best for</th><th class="hub-col-actions">Use</th></tr></thead>
       <tbody>
         ${rows.map(r => `
           <tr>
@@ -187,10 +191,12 @@ function collageTable(rows) {
               ${r.fit ? " · fit=" + esc(r.fit) : ""}
               ${r.background ? " · bg=" + esc(r.background) : ""}</span></td>
             <td>${esc(r.bestFor || "")}${r.notes ? "<br><span class='hub-meta'>" + esc(r.notes) + "</span>" : ""}</td>
-            <td>
-              <button type="button" class="copy" data-copy="${escAttr(r.cli || "")}">Copy CLI</button>
-              <a class="hub-open" href="/${esc(r.path || "")}" target="_blank" rel="noopener">raw JSON</a>
-              <code class="cmd">${esc(r.cli || "")}</code>
+            <td class="hub-col-actions">
+              <div class="hub-cell-actions">
+                <button type="button" class="copy" data-copy="${escAttr(r.cli || "")}">Copy CLI</button>
+                <a class="hub-open" href="/${esc(r.path || "")}" target="_blank" rel="noopener">raw JSON</a>
+                <code class="cmd">${esc(r.cli || "")}</code>
+              </div>
             </td>
           </tr>`).join("")}
       </tbody>
@@ -237,10 +243,10 @@ function paletteGrid(rows) {
       <h3>${esc(p.name || p.id)}</h3>
       <p class="hub-meta">${esc(p.description || "")}</p>
       <p class="hub-meta">${esc(p.aesthetic || "")}</p>
-      <div class="hub-meta" style="margin-top:8px">Dark</div>
+      <div class="hub-meta hub-palette-mode">Dark</div>
       ${swatchRow(dark.swatches)}
       <a class="hub-open" href="${esc(dark.hubUrl || "/")}">Try dark in Hub</a>
-      <div class="hub-meta" style="margin-top:8px">Light</div>
+      <div class="hub-meta hub-palette-mode">Light</div>
       ${swatchRow(light.swatches)}
       <a class="hub-open" href="${esc(light.hubUrl || "/")}">Try light in Hub</a>
       <code class="cmd">${esc(p.path || "")}</code>`;

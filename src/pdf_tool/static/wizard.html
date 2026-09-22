@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="dark">
-<title>pdf-designer — Start a local résumé</title>
+<title>pdf-designer — Start wizard</title>
 <link rel="stylesheet" href="/_hub/hub.css">
 <script>
 try {
@@ -31,13 +31,17 @@ try {
     <p class="hub-splash-name">Designer</p>
     <p class="hub-splash-sub">Design Hub</p>
     <div class="hub-splash-bar" aria-hidden="true"><i></i></div>
-    <p class="hub-splash-hint">Enter to skip</p>
+    <div class="hub-splash-actions">
+      <button type="button" class="hub-splash-open" id="hubSplashOpen">Open</button>
+      <a class="hub-splash-wizard" id="hubSplashWizard" href="/wizard">Start wizard</a>
+    </div>
+    <p class="hub-splash-hint">Enter opens the Hub · Esc closes</p>
     <div class="hub-support" role="group" aria-label="Support JenniNexus">
       <p class="hub-support-kicker">Support JenniNexus</p>
       <p class="hub-support-copy">Free MIT toolkit. A tip is optional — it never unlocks extra features.</p>
       <div class="hub-support-actions">
-        <a class="hub-support-btn patreon" href="https://www.patreon.com/c/JenniNexus" target="_blank" rel="noopener noreferrer">Patreon</a>
-        <a class="hub-support-btn paypal" href="https://paypal.me/jenninexus" target="_blank" rel="noopener noreferrer">PayPal</a>
+        <a class="hub-support-btn patreon" href="https://www.patreon.com/c/JenniNexus" target="_blank" rel="noopener noreferrer"><span class="hub-fa-icon fa-patreon" aria-hidden="true"></span>Patreon</a>
+        <a class="hub-support-btn paypal" href="https://paypal.me/jenninexus" target="_blank" rel="noopener noreferrer"><span class="hub-fa-icon fa-paypal" aria-hidden="true"></span>PayPal</a>
       </div>
     </div>
   </div>
@@ -49,7 +53,7 @@ try {
       <a class="hub-link" href="/">Library</a>
       <a class="hub-link" href="/recipes">Recipes</a>
       <a class="hub-link" href="/vault">Vault</a>
-      <a class="hub-link on" href="/wizard" aria-current="page">Start</a>
+      <a class="hub-link on" href="/wizard" title="Start wizard — local résumé workspace" aria-current="page">Wizard</a>
     </nav>
   </div>
   <div class="hub-bar-pin" aria-label="Pinned actions">
@@ -59,7 +63,7 @@ try {
   </div>
 </header>
 <div class="hub-drawer-backdrop" id="hubDrawerBackdrop" hidden></div>
-<aside class="hub-drawer" id="hubDrawer" aria-hidden="true" aria-label="Start menu">
+<aside class="hub-drawer" id="hubDrawer" aria-hidden="true" aria-label="Wizard menu">
   <div class="hub-drawer-head">
     <span class="hub-brand">Design Hub</span>
     <div class="hub-drawer-head-actions">
@@ -73,15 +77,15 @@ try {
         <a class="hub-link" href="/">Library</a>
         <a class="hub-link" href="/recipes">Recipes</a>
         <a class="hub-link" href="/vault">Vault</a>
-        <a class="hub-link on" href="/wizard" aria-current="page">Start</a>
+        <a class="hub-link on" href="/wizard" title="Start wizard — local résumé workspace" aria-current="page">Wizard</a>
       </nav>
     </div>
     <div class="hub-drawer-section hub-support" role="group" aria-label="Support JenniNexus">
       <p class="hub-support-kicker">Support JenniNexus</p>
       <p class="hub-support-copy">Free MIT toolkit. A tip is optional — it never unlocks extra features.</p>
       <div class="hub-support-actions">
-        <a class="hub-support-btn patreon" href="https://www.patreon.com/c/JenniNexus" target="_blank" rel="noopener noreferrer">Patreon</a>
-        <a class="hub-support-btn paypal" href="https://paypal.me/jenninexus" target="_blank" rel="noopener noreferrer">PayPal</a>
+        <a class="hub-support-btn patreon" href="https://www.patreon.com/c/JenniNexus" target="_blank" rel="noopener noreferrer"><span class="hub-fa-icon fa-patreon" aria-hidden="true"></span>Patreon</a>
+        <a class="hub-support-btn paypal" href="https://paypal.me/jenninexus" target="_blank" rel="noopener noreferrer"><span class="hub-fa-icon fa-paypal" aria-hidden="true"></span>PayPal</a>
       </div>
     </div>
   </div>
@@ -103,8 +107,8 @@ try {
     <p class="hub-support-kicker">About this app</p>
     <p class="hub-support-copy">PDF Designer is a local-first résumé studio by JenniNexus. Files stay on your machine. If the Hub helped, a $3 or $5 tip is welcome — it never unlocks extra features.</p>
     <div class="hub-support-actions">
-      <a class="hub-support-btn patreon" href="https://www.patreon.com/c/JenniNexus" target="_blank" rel="noopener noreferrer">Patreon</a>
-      <a class="hub-support-btn paypal" href="https://paypal.me/jenninexus" target="_blank" rel="noopener noreferrer">PayPal</a>
+      <a class="hub-support-btn patreon" href="https://www.patreon.com/c/JenniNexus" target="_blank" rel="noopener noreferrer"><span class="hub-fa-icon fa-patreon" aria-hidden="true"></span>Patreon</a>
+      <a class="hub-support-btn paypal" href="https://paypal.me/jenninexus" target="_blank" rel="noopener noreferrer"><span class="hub-fa-icon fa-paypal" aria-hidden="true"></span>PayPal</a>
     </div>
   </aside>
 

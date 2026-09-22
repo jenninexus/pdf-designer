@@ -1,9 +1,9 @@
 <div align="center">
 
-# 🖨️ PDF Designer
+# PDF Designer
 
-### Design in HTML. Print what you see.
-### A local résumé studio that keeps your career data **yours**.
+## Design in HTML. Print what you see.
+## A local résumé studio that keeps your career data yours.
 
 ![MIT](https://img.shields.io/badge/license-MIT-9b5cf6?style=flat-square&labelColor=1a1a2e)
 ![Runtime](https://img.shields.io/badge/runtime-python%20%2B%20playwright-63b3ed?style=flat-square&labelColor=1a1a2e)
@@ -14,53 +14,54 @@
 
 </div>
 
+![Design Hub title screen](docs/images/hub-splash.png)
+
 ![Design Hub home — public examples](docs/images/hub-home.png)
 
-Pick a kind. Swap a palette. Export two PDFs from the same HTML: a **light** file for job boards, and a **dark** branded twin with the **same pages**.
+One HTML file becomes two PDFs: a **light** ATS upload for job boards, and a **dark** branded twin with the **same pages**. Palettes change color, never paper size.
 
-**ATS** means *Applicant Tracking System* — the software employers and boards use to parse résumés. Upload the **light** PDF there. Keep the dark one for humans.
-
-| Create | Verify | Keep control |
-|---|---|---|
-| Light + dark PDFs from one HTML | Palette, overflow, and ATS text-layer guards | Private vaults stay on disk and gitignored |
-| Résumés, letters, work samples, collages | `check_generation` before every ship | No SaaS, no account, no `.env` |
+- Light + dark export from the same document
+- Palette, overflow, and ATS text-layer guards
+- Private vaults stay on disk and gitignored
+- No SaaS, no account, no `.env`
 
 ---
 
-## Peek inside the Hub
+## Quick start
+
+```bash
+git clone https://github.com/jenninexus/pdf-designer.git
+cd pdf-designer
+pip install -e ".[dev]"
+playwright install chromium
+python scripts/smoke-white-label.py
+python -m pdf_tool.preview          # → http://127.0.0.1:8787/
+```
+
+Clone setup, Design Hub wizard, Windows wrapper, and export recipes live in **[`docs/GETTING-STARTED.md`](docs/GETTING-STARTED.md)** — not here.
+
+See the **[public app vs personal workspace diagram](docs/WORKSPACE-LAYOUT.md#two-journeys-one-engine)**
+for exactly where new-user `.example` setup, Jenni/Shade vaults, job sources, collages, `output/`,
+and private `_exports/` deliverables live.
+
+---
+
+## Peek
 
 <table>
 <tr>
 <td width="50%">
 
-**Jennifer Nexus — light résumé**<br>
-Public-brand screenshot pack: real first name, Nexus (not a legal last name), email only.
+**Light résumé**<br>
+Public-brand pack: first name, Nexus, email only.
 
 ![Jennifer Nexus résumé](docs/images/hub-resume-jennifer-nexus.png)
 
 </td>
 <td width="50%">
 
-**Work samples mosaic**<br>
-Hero-mosaic, Letter portrait, six tiles — the same family as collage recipes.
-
-![Work samples](docs/images/hub-work-samples.png)
-
-</td>
-</tr>
-<tr>
-<td width="50%">
-
-**Vault card**<br>
-Skills and go-to packs. Clone default is Jane Example; this still is the public-brand pack.
-
-![Vault](docs/images/hub-vault.png)
-
-</td>
-<td width="50%">
-
 **Recipes**<br>
-Named collage layouts + audition palettes. Try a preset without touching geometry.
+Named layouts + audition palettes. Geometry stays locked.
 
 ![Recipes](docs/images/hub-recipes.png)
 
@@ -68,127 +69,33 @@ Named collage layouts + audition palettes. Try a preset without touching geometr
 </tr>
 </table>
 
-More stills (collage + Jane Example clone template): [`docs/images/review.html`](docs/images/review.html) — open that file in a browser on your machine.
-
----
-
-## Five minutes on the public path
-
-Works from **tracked files only** — `examples/` + `themes/`. No private folders required.
-
-```bash
-git clone https://github.com/jenninexus/pdf-designer.git
-cd pdf-designer
-pip install -e ".[dev]"
-playwright install chromium
-
-# QA + light/dark PDFs + ATS text-layer check
-python scripts/smoke-white-label.py
-
-# Design Hub
-python -m pdf_tool.preview         # → http://127.0.0.1:8787/
-```
-
-```bash
-python -m pdf_tool.html_to_pdf examples/profiles/default-resume/default-resume.html
-python -m pdf_tool.html_to_pdf examples/profiles/default-resume/default-resume.html --pdf-theme dark
-```
-
-Exports land in `output/` as `<stem>-light.pdf` / `<stem>-dark.pdf` (grouped by
-profile then kind when the source lives under `resumes/` / `collages/` / `examples/`)
-and **never overwrite** (`-v2`, `-v3`).
-
-Full commands → [`docs/EXPORTS.md`](docs/EXPORTS.md) · ship gate → [`docs/QA.md`](docs/QA.md).
-
----
-
-## Start locally in the Design Hub
-
-The Hub is intentionally **dark by default**. It is app chrome only: picking a document
-palette changes that document's preview/export tokens, not the Hub's local workspace theme.
-
-```powershell
-python -m pdf_tool.preview --no-open
-```
-
-Open [http://127.0.0.1:8787/wizard](http://127.0.0.1:8787/wizard) for the guided
-local path: vault → source-backed skills → palette → light and dark export. Copy the
-ignored templates, or upload an old résumé/cover letter to seed a starter vault
-(imported claims stay `inferred` until you review them). It creates no account and uses
-the same Playwright renderer as the CLI and Library. The server is temporary and
-localhost-only; stop it with `Ctrl+C` when you are done.
-
-## Windows standalone status
-
-The Electron/NSIS wrapper is a **pre-release local build**, not a customer download yet.
-Once installed it bundles its own runtime, so a customer will not need Python, Node, or a
-checkout; it opens the same dark Design Hub and seeds only the public Jane Example into
-`Documents\PDF Designer` on first launch. Default packaging is unsigned. Do not
-distribute the EXE or promise a paid download. See
-[`docs/WINDOWS-ELECTRON.md`](docs/WINDOWS-ELECTRON.md).
-
----
-
-## The loop
-
-1. **Start with Jane Example.** Browse [`examples/resume-studio/`](examples/resume-studio/), or copy the profile + theme that fit your work.
-2. **Design once.** Light board-upload PDF + dark human-facing PDF, same pagination.
-3. **Verify.** `python -m pdf_tool.check_generation <doc>.html` — then `check_ats` on the light PDF before a board upload.
-
-The optional vault workflow keeps claims source-backed. It never auto-submits, and it asks before treating a missing claim as a skill gap.
+More stills: [`docs/images/`](docs/images/README.md).
 
 ---
 
 ## Docs
 
-| Start here | |
+| | |
 |---|---|
-| [`docs/README.md`](docs/README.md) | Docs index |
-| [`docs/PRODUCT.md`](docs/PRODUCT.md) | Free GitHub core vs future paid app |
-| [`docs/PUBLIC-LOCAL-SPLIT.md`](docs/PUBLIC-LOCAL-SPLIT.md) | What clones see vs what stays local |
-| [`docs/GETTING-STARTED.md`](docs/GETTING-STARTED.md) | Clone path without vaults |
-| [`docs/PACKAGING.md`](docs/PACKAGING.md) | Wheel must ship themes + layouts |
-| [`AGENTS.md`](AGENTS.md) | Agent map + contracts |
+| [`docs/GETTING-STARTED.md`](docs/GETTING-STARTED.md) | Clone path, Hub, smoke, commands |
+| [`docs/README.md`](docs/README.md) | Full index |
+| [`docs/PRODUCT.md`](docs/PRODUCT.md) | Free GitHub vs later paid shell |
+| [`AGENTS.md`](AGENTS.md) | Agent map (contributors) |
 
-Visual tour: [`docs/pdf-designer-overview.html`](docs/pdf-designer-overview.html) · [`printable PDF`](docs/pdf-designer-overview.pdf).
-
-> Protocol seeds on GitHub are `*.example.md` only. Personal vaults, résumés, and job folders stay gitignored.
-
----
-
-## Principles
-
-- **Local-first** — no upload, no telemetry
-- **Source-backed** — generated copy never outruns verified claims
-- **No auto-submission** — the tool prepares; the human submits
-- **Geometry is locked** — palettes change color, never paper size or pagination
-- **Equal margins** on all four edges (default `0.65in`) — [`docs/LAYOUT-SYSTEM.md`](docs/LAYOUT-SYSTEM.md)
-
----
-
-## Support the clone
-
-The GitHub repo is **free MIT**. If the Design Hub or the smoke path saved you time,
-a tip keeps Jenni shipping — it is **not** a paid installer and does not unlock extra
-features.
-
-**Suggested tip: $3 or $5** → [paypal.me/jenninexus](https://paypal.me/jenninexus)
-· or [Patreon](https://www.patreon.com/c/JenniNexus)
-
-A Windows one-click installer (when it exists) will be a separate paid shell over
-this same engine. Until then, please do not expect a Setup.exe from this clone.
+Protocol seeds on GitHub are `*.example.md` only. Personal vaults stay gitignored.
 
 ---
 
 MIT — use, fork, customize. See [`LICENSE`](LICENSE). © 2026 Jenni Nexus.
 
-Honest MIT: every dependency is permissive (playwright, pypdf, Pillow). AGPL history → [`docs/LICENSING-NOTES.md`](docs/LICENSING-NOTES.md).
+Honest MIT: playwright, pypdf, pypdfium2, Pillow. AGPL history → [`docs/LICENSING-NOTES.md`](docs/LICENSING-NOTES.md).
 
 <div align="center">
 
-Made with care by [Jenni](https://github.com/jenninexus) at [Monofinity Studio](https://github.com/monofinitystudio).
+If this saves you a night of fighting a job board, a **$3 or $5** tip is welcome — it never unlocks extra features.
 
-If this saves you a night of fighting a job board: suggested **$3 or $5** via
-[PayPal](https://paypal.me/jenninexus) or [Patreon](https://www.patreon.com/c/JenniNexus).
+[Star this repo](https://github.com/jenninexus/pdf-designer) · [Links](https://jenninexus.com/links) · [Patreon](https://www.patreon.com/c/JenniNexus) · [PayPal](https://paypal.me/jenninexus)
+
+Published by [Jenni](https://github.com/jenninexus) at [Monofinity Studio](https://github.com/monofinitystudio).
 
 </div>

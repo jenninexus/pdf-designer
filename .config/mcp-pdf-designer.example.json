@@ -28,7 +28,7 @@
       "check_vault": "Vault schema / --explain / --coverage",
       "check_ats": "ATS text-layer guard on light PDF",
       "audit_resume": "Diff rendered HTML vs vault omissions",
-      "tracker": "List / status over storage/_job-listings",
+      "tracker": "List / status over _job-apps",
       "collage": "Collage candidates + picker gallery",
       "preview": "Design Hub (localhost previewer)"
     }
@@ -37,9 +37,9 @@
     "map": "<VOICE_SEED>",
     "public_cards": "voice-seed/characters/humans/",
     "seed_template": "voice-seed/templates/character-voice.seed.json",
-    "characterVoice": "storage/users/<user>.json#characterVoice",
-    "applicationVoice": "storage/<user>/resume-source.json#voice",
-    "rule": "voice-seed = map/public overview; pdf-designer storage = deep edit SSOT; agency agents ≠ applicants"
+    "characterVoice": "users/<user>.json#characterVoice",
+    "applicationVoice": "vaults/<user>.json#voice",
+    "rule": "voice-seed = map/public overview; pdf-designer root nouns = deep edit SSOT; agency agents ≠ applicants"
   },
   "external": {
     "breakpoints": "<MCP_CONFIG_DIR>\\mcp-breakpoints.json",
@@ -58,7 +58,7 @@
     "nav_switch": "xxl (1400px) — hamburger through iPad Pro landscape; library/viewer still split until xs",
     "hub_layout_switch": {
       "stack_below": "575.98px (xs-max) — library stacks above stage (phones only)",
-      "drawer_below": "1399.98px (xl-max) — hamburger; full-bleed drawer; split retained ≥576",
+      "drawer_below": "1399.98px (xl-max) — hamburger; phone full-bleed; 576–1399.98 almost-full end-panel; split retained ≥576",
       "short_landscape": "max-height 480px — stack like a phone",
       "comfortable_from": "1400px (xxl) — full header buttons",
       "widescreen_from": "1400px (xxl) — max content breathing room"
@@ -104,18 +104,18 @@
     "document_palettes": [
       "themes/default-resume.json",
       "themes/presets/*.json",
-      "storage/brand-design/brand-*.json"
+      "brands/brand-*.json"
     ],
-    "users_dir": "storage/users/",
-    "person_file_pattern": "storage/users/<user>.json",
-    "profile_file_pattern": "storage/profiles/<user>-resume.json",
+    "users_dir": "users/",
+    "person_file_pattern": "users/<user>.json",
+    "profile_file_pattern": "profiles/<user>-resume.json",
     "public_profile_example": "examples/profiles/default-resume/profile.example.json"
   },
   "palette_registry": {
     "_role": "COLOR. Structure lives in `layouts` below — the two compose.",
     "public_presets": "themes/presets/",
     "kit_registry": "www-theme-kit/palettes/resume-palettes.json",
-    "private_brands": "storage/brand-design/",
+    "private_brands": "brands/",
     "rules": "themes/PALETTE-RULES.md"
   },
   "layouts": {

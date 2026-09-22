@@ -8,7 +8,8 @@ Chrome tokens live in ``static/hub.css`` (vendored from www-theme-kit dashboard
 tokens + syna glass). Document brand palettes still come from ``themes/`` +
 ``brands/`` (legacy ``storage/brand-design/``).
 
-Zero new dependencies: stdlib http.server; exports reuse html_to_pdf / pdf_to_png.
+The server uses stdlib http.server; PDF viewing uses packaged pypdfium2, while
+exports continue to reuse html_to_pdf / pdf_to_png.
 Binds to 127.0.0.1 only. No MCP / always-on server required.
 
 Usage:
@@ -24,6 +25,7 @@ import re
 import sys
 import threading
 import webbrowser
+from io import BytesIO
 from html import escape
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -61,6 +63,9 @@ EXCLUDE_PARTS = {
     ".eggs",
     "egg-info",
 }
+
+EXPORT_ARTIFACT_SUFFIXES = {".pdf", ".png", ".jpg", ".jpeg", ".webp"}
+_EXPORT_EXCLUDE_PARTS = EXCLUDE_PARTS - {"_exports"}
 
 KINDS = (
     "resume",
@@ -258,11 +263,24 @@ def classify_document(rel: str, stem: str, profile_ids: tuple[str, ...] = ()) ->
         "profile": profile,
         "person": profile,  # alias — Hub filter + badges
         "template": True,  # each HTML file is its own selectable template
+        "artifact": False,
+        "format": "html",
+        "exportable": True,
     }
 
 
 def _is_excluded_rel(rel_parts: tuple[str, ...]) -> bool:
     if EXCLUDE_PARTS.intersection(rel_parts):
+        return True
+    # Generated desktop/package mirrors duplicate the canonical examples and
+    # make the folder picker look like several unrelated workspaces. Keep the
+    # authoring sources; omit their staged runtime copies from Hub discovery.
+    generated_prefixes = (
+        ("desktop", "runtime"),
+        ("desktop", "workspace-seed"),
+        ("src", "pdf_tool", "share"),
+    )
+    if any(rel_parts[: len(prefix)] == prefix for prefix in generated_prefixes):
         return True
     # setuptools egg-info dirs are named <pkg>.egg-info
     if any(part.endswith(".egg-info") for part in rel_parts):
@@ -284,6 +302,30 @@ def scan_documents(root: Path) -> list[dict]:
         if p.name.endswith(".template.html"):
             continue
         docs.append(classify_document(str(rel).replace("\\", "/"), p.stem, profile_ids))
+
+    # Finished personal deliverables are browseable in the local Hub, but remain
+    # gitignored and read-only. A public clone contains only _exports/README.md,
+    # so discovery never adds personal data to the package or repository.
+    exports_root = root / "_exports"
+    if exports_root.is_dir():
+        for p in sorted(exports_root.rglob("*")):
+            if not p.is_file() or p.suffix.lower() not in EXPORT_ARTIFACT_SUFFIXES:
+                continue
+            rel = p.relative_to(root)
+            if _EXPORT_EXCLUDE_PARTS.intersection(rel.parts):
+                continue
+            if any(part.endswith(".egg-info") for part in rel.parts):
+                continue
+            doc = classify_document(str(rel).replace("\\", "/"), p.stem, profile_ids)
+            doc.update(
+                {
+                    "template": False,
+                    "artifact": True,
+                    "format": p.suffix.lower().lstrip("."),
+                    "exportable": False,
+                }
+            )
+            docs.append(doc)
     return docs
 
 
@@ -312,11 +354,55 @@ def resolve_preview_file(root: Path, rel: str) -> Path | None:
     return aliased if aliased.is_file() else None
 
 
+def pdf_preview_info(path: Path) -> dict:
+    """Return page geometry for the Hub's themed PDF preview surface."""
+    import pypdfium2 as pdfium
+
+    pdf = pdfium.PdfDocument(str(path))
+    try:
+        pages = []
+        for index in range(len(pdf)):
+            page = pdf[index]
+            try:
+                width, height = page.get_size()
+            finally:
+                page.close()
+            pages.append({"index": index, "widthPt": width, "heightPt": height})
+        return {"name": path.name, "pageCount": len(pages), "pages": pages}
+    finally:
+        pdf.close()
+
+
+def render_pdf_preview_page(path: Path, page_index: int, scale: float = 2.0) -> bytes:
+    """Rasterize one real PDF page in memory for the dark Hub viewer."""
+    import pypdfium2 as pdfium
+
+    pdf = pdfium.PdfDocument(str(path))
+    try:
+        if page_index < 0 or page_index >= len(pdf):
+            raise IndexError("PDF page out of range")
+        page = pdf[page_index]
+        try:
+            bitmap = page.render(scale=max(0.75, min(scale, 3.0)))
+            try:
+                image = bitmap.to_pil()
+                out = BytesIO()
+                image.save(out, format="PNG", optimize=True)
+                return out.getvalue()
+            finally:
+                bitmap.close()
+        finally:
+            page.close()
+    finally:
+        pdf.close()
+
+
 # File suffixes the auto-refresh watcher tracks. HTML sources change the doc
 # list; PDFs/PNGs land in output/ when a resume is exported and are what the
 # "refresh when I output a new resume" feature keys on.
 _WATCH_SUFFIXES = {".html", ".json", ".pdf", ".png", ".jpg", ".jpeg", ".webp"}
-# output/ and leftover _exports/ are excluded from the DOC scan but MUST be watched.
+# output/ is excluded from the library; _exports/ artifacts are read-only cards.
+# Both trees must still wake the auto-refresh watcher.
 _WATCH_EXCLUDE = EXCLUDE_PARTS - {"_exports", "output"}
 
 
@@ -338,7 +424,8 @@ def tree_signature(root: Path) -> str:
             rel_parts = p.relative_to(root).parts
         except ValueError:
             continue
-        # Watch output/ (and leftover _exports/) even though scan_documents excludes them.
+        # Watch output/ and private _exports/ even though only _exports artifacts
+        # are surfaced in the document library.
         if _WATCH_EXCLUDE.intersection(rel_parts):
             continue
         if any(part.endswith(".egg-info") for part in rel_parts):
@@ -455,13 +542,17 @@ try {
     <p class="hub-splash-name">Designer</p>
     <p class="hub-splash-sub">Design Hub</p>
     <div class="hub-splash-bar" aria-hidden="true"><i></i></div>
-    <p class="hub-splash-hint">Enter to skip</p>
+    <div class="hub-splash-actions">
+      <button type="button" class="hub-splash-open" id="hubSplashOpen">Open</button>
+      <a class="hub-splash-wizard" id="hubSplashWizard" href="/wizard">Start wizard</a>
+    </div>
+    <p class="hub-splash-hint">Enter opens the Hub · Esc closes</p>
     <div class="hub-support" role="group" aria-label="Support JenniNexus">
       <p class="hub-support-kicker">Support JenniNexus</p>
       <p class="hub-support-copy">Free MIT toolkit. A tip is optional — it never unlocks extra features.</p>
       <div class="hub-support-actions">
-        <a class="hub-support-btn patreon" href="https://www.patreon.com/c/JenniNexus" target="_blank" rel="noopener noreferrer">Patreon</a>
-        <a class="hub-support-btn paypal" href="https://paypal.me/jenninexus" target="_blank" rel="noopener noreferrer">PayPal</a>
+        <a class="hub-support-btn patreon" href="https://www.patreon.com/c/JenniNexus" target="_blank" rel="noopener noreferrer"><span class="hub-fa-icon fa-patreon" aria-hidden="true"></span>Patreon</a>
+        <a class="hub-support-btn paypal" href="https://paypal.me/jenninexus" target="_blank" rel="noopener noreferrer"><span class="hub-fa-icon fa-paypal" aria-hidden="true"></span>PayPal</a>
       </div>
     </div>
   </div>
@@ -484,7 +575,7 @@ try {
       <a class="hub-link on" href="/" title="Document library" aria-current="page">Library</a>
       <a class="hub-link" href="/recipes" title="Browse layouts/ + themes/presets">Recipes</a>
       <a class="hub-link" href="/vault" title="Readable vault · skills · go-to résumés">Vault</a>
-      <a class="hub-link" href="/wizard" title="Start a local résumé workspace">Start</a>
+      <a class="hub-link" href="/wizard" title="Start wizard — local résumé workspace">Wizard</a>
     </nav>
     <div class="hub-group hub-filters">
       <input id="search" type="search" placeholder="Search…" autocomplete="off" title="Search name or path" aria-label="Search">
@@ -549,7 +640,7 @@ try {
         <a class="hub-link on" href="/">Library</a>
         <a class="hub-link" href="/recipes">Recipes</a>
         <a class="hub-link" href="/vault">Vault</a>
-        <a class="hub-link" href="/wizard">Start</a>
+        <a class="hub-link" href="/wizard" title="Start wizard — local résumé workspace">Wizard</a>
       </nav>
     </div>
     <div class="hub-drawer-section">
@@ -597,8 +688,8 @@ try {
       <p class="hub-support-kicker">Support JenniNexus</p>
       <p class="hub-support-copy">Free MIT toolkit. A tip is optional — it never unlocks extra features.</p>
       <div class="hub-support-actions">
-        <a class="hub-support-btn patreon" href="https://www.patreon.com/c/JenniNexus" target="_blank" rel="noopener noreferrer">Patreon</a>
-        <a class="hub-support-btn paypal" href="https://paypal.me/jenninexus" target="_blank" rel="noopener noreferrer">PayPal</a>
+        <a class="hub-support-btn patreon" href="https://www.patreon.com/c/JenniNexus" target="_blank" rel="noopener noreferrer"><span class="hub-fa-icon fa-patreon" aria-hidden="true"></span>Patreon</a>
+        <a class="hub-support-btn paypal" href="https://paypal.me/jenninexus" target="_blank" rel="noopener noreferrer"><span class="hub-fa-icon fa-paypal" aria-hidden="true"></span>PayPal</a>
       </div>
     </div>
   </div>
@@ -614,7 +705,13 @@ try {
 
 <main class="hub-main">
   <aside class="library" id="hubLibrary">
-    <div class="library-head">Library <span id="visibleCount">0</span></div>
+    <div class="library-head">
+      <span class="library-title">Library <strong id="visibleCount">0</strong></span>
+      <span class="library-compare" aria-label="Comparison focus controls">
+        <button type="button" id="compareFocusBtn" title="Uncheck cards, then focus the comparison">Focus</button>
+        <button type="button" id="compareResetBtn" title="Include every filtered card again" hidden>Reset</button>
+      </span>
+    </div>
     <div class="library-scroll" id="sidebar"></div>
     <div class="library-resize" id="libraryResize" role="separator" aria-label="Resize library" aria-orientation="vertical" tabindex="0"></div>
   </aside>
@@ -1004,7 +1101,12 @@ function buildProfileSelects() {
 }
 
 function uniqueFolders() {
-  return [...new Set(docsForProfile(activeProfile()).map(d => d.group))].sort();
+  const pool = docsForProfile(activeProfile());
+  const folders = new Set(pool.map(d => d.group));
+  if (pool.some(d => String(d.path || "").replace(/\\\\/g, "/").startsWith("_exports/"))) {
+    folders.add("_exports");
+  }
+  return [...folders].sort();
 }
 
 function filteredDocs() {
@@ -1013,7 +1115,11 @@ function filteredDocs() {
   const profile = document.getElementById("personFilter").value;
   const docs = DOCS.filter(d => {
     if (kindFilter !== "all" && d.kind !== kindFilter) return false;
-    if (folder && d.group !== folder) return false;
+    if (folder) {
+      const path = String(d.path || "").replace(/\\\\/g, "/");
+      const folderPrefix = folder.endsWith("/") ? folder.slice(0, -1) : folder;
+      if (d.group !== folder && !path.startsWith(folderPrefix + "/")) return false;
+    }
     const dProfile = d.profile || d.person || null;
     if (profile === "examples") {
       if (!isExampleDoc(d)) return false;
@@ -1036,12 +1142,50 @@ function filteredDocs() {
   return docs;
 }
 
+const HUB_COMPARE_EXCLUDED_KEY = "pdf-designer.hub.compareExcluded";
+let compareFocus = false;
+let compareExcluded = new Set(loadCompareExcluded());
+
+function loadCompareExcluded() {
+  try {
+    const raw = JSON.parse(sessionStorage.getItem(HUB_COMPARE_EXCLUDED_KEY) || "[]");
+    return Array.isArray(raw) ? raw.map(String) : [];
+  } catch (_) { return []; }
+}
+
+function saveCompareExcluded() {
+  try { sessionStorage.setItem(HUB_COMPARE_EXCLUDED_KEY, JSON.stringify([...compareExcluded])); }
+  catch (_) {}
+}
+
+function renderCompareControls(baseDocs) {
+  const included = baseDocs.filter(d => !compareExcluded.has(d.path)).length;
+  const excluded = baseDocs.length - included;
+  const count = document.getElementById("visibleCount");
+  const focus = document.getElementById("compareFocusBtn");
+  const reset = document.getElementById("compareResetBtn");
+  if (count) count.textContent = compareFocus ? `${included}/${baseDocs.length}` : String(baseDocs.length);
+  if (focus) {
+    focus.disabled = !baseDocs.length || (!excluded && !compareFocus);
+    focus.classList.toggle("on", compareFocus);
+    focus.textContent = compareFocus ? `Edit all ${baseDocs.length}` : `Focus ${included}`;
+    focus.title = compareFocus
+      ? "Show every filtered item so you can change the comparison set"
+      : "Hide unchecked items and focus this comparison set";
+  }
+  if (reset) {
+    reset.hidden = !excluded;
+    reset.textContent = `Reset ${excluded}`;
+  }
+}
+
 const THUMB_W = 248;
 const sidebar = document.getElementById("sidebar");
 
 function renderLibrary() {
-  const docs = filteredDocs();
-  document.getElementById("visibleCount").textContent = String(docs.length);
+  const baseDocs = filteredDocs();
+  const docs = compareFocus ? baseDocs.filter(d => !compareExcluded.has(d.path)) : baseDocs;
+  renderCompareControls(baseDocs);
   sidebar.innerHTML = "";
   if (selected && !docs.some(d => d.path === selected.path)) {
     // Selection hidden by filters — keep preview, drop false sidebar highlight
@@ -1050,7 +1194,9 @@ function renderLibrary() {
     const profile = activeProfile();
     const owned = docsForProfile(profile).length;
     let msg = "No templates match these filters.";
-    if (profile && owned === 0) {
+    if (compareFocus && baseDocs.length) {
+      msg = "No items remain in this focused comparison. Choose Edit all or Reset.";
+    } else if (profile && owned === 0) {
       msg = "No documents tagged “" + profile + "” yet. Pick all profiles, or add HTML under resumes/" + profile + "/.";
     } else if (profile) {
       msg = "No “" + profile + "” documents match this folder or kind. Try All or another folder.";
@@ -1071,15 +1217,32 @@ function renderLibrary() {
       const el = document.createElement("div");
       el.className = "thumb" + (selected && selected.path === d.path ? " sel" : "");
       el.dataset.path = d.path;
+      const compareChecked = !compareExcluded.has(d.path);
       const badges = [`<span class="badge kind-${d.kind}">${d.kind}</span>`];
       const prof = d.profile || d.person;
       if (prof) badges.push(`<span class="badge person-${prof}">${prof}</span>`);
       if (d.bucket === "examples") badges.push('<span class="badge">template</span>');
+      if (d.artifact) badges.push(`<span class="badge">${d.format || "export"}</span>`);
+      const preview = d.artifact
+        ? `<div class="frame artifact-frame"><span class="artifact-format">${String(d.format || "file").toUpperCase()}</span><span class="artifact-note">Open export</span></div>`
+        : `<div class="frame"><iframe loading="lazy" src="/${d.path}" scrolling="no" tabindex="-1" title=""></iframe></div>`;
       el.innerHTML =
-        `<div class="frame"><iframe loading="lazy" src="/${d.path}" scrolling="no" tabindex="-1" title=""></iframe></div>` +
-        `<div class="meta"><div class="name" title="${d.path}">${d.name}</div><div class="badges">${badges.join("")}</div></div>`;
+        preview +
+        `<div class="meta"><div class="thumb-title-row"><div class="name" title="${d.path}">${d.name}</div>` +
+        `<label class="compare-check" title="Include in focused comparison"><input type="checkbox" ${compareChecked ? "checked" : ""} aria-label="Include ${d.name} in comparison"><span aria-hidden="true"></span></label></div>` +
+        `<div class="badges">${badges.join("")}</div></div>`;
+      el.classList.toggle("compare-excluded", !compareChecked);
+      el.querySelector(".compare-check")?.addEventListener("click", (event) => event.stopPropagation());
+      const compareBox = el.querySelector(".compare-check input");
+      if (compareBox) compareBox.addEventListener("click", (event) => {
+        event.stopPropagation();
+        if (compareBox.checked) compareExcluded.delete(d.path);
+        else compareExcluded.add(d.path);
+        saveCompareExcluded();
+        renderLibrary();
+      });
       const ifr = el.querySelector("iframe");
-      ifr.addEventListener("load", () => {
+      if (ifr) ifr.addEventListener("load", () => {
         try {
           const w = ifr.contentDocument?.body?.scrollWidth || 850;
           const s = THUMB_W / Math.max(w, 320);
@@ -1095,6 +1258,17 @@ function renderLibrary() {
     sidebar.appendChild(det);
   }
 }
+
+document.getElementById("compareFocusBtn").addEventListener("click", () => {
+  compareFocus = !compareFocus;
+  renderLibrary();
+});
+document.getElementById("compareResetBtn").addEventListener("click", () => {
+  for (const d of filteredDocs()) compareExcluded.delete(d.path);
+  compareFocus = false;
+  saveCompareExcluded();
+  renderLibrary();
+});
 
 const main = document.getElementById("main");
 main.addEventListener("load", () => applyPalette(main));
@@ -1119,6 +1293,8 @@ function showHome() {
   document.querySelectorAll(".thumb").forEach(t => t.classList.remove("sel"));
   const bar = document.getElementById("stagebar");
   if (bar) bar.innerHTML = "<span>Public examples — pick a kind, or a card in the library</span>";
+  const exportBtn = document.getElementById("exportBtn");
+  if (exportBtn) exportBtn.disabled = true;
   buildHomeGrid();
 }
 function goHome(opts) {
@@ -1187,7 +1363,16 @@ function select(d, el, { pushUrl = true } = {}) {
     (d.person ? `<span class="badge person-${d.person}">${d.person}</span>` : "") +
     `<span class="badge">${d.bucket}</span>` +
     `<span class="path" title="${d.path}">${d.path}</span>`;
-  main.src = "/" + d.path;
+  main.src = d.artifact && d.format === "pdf"
+    ? "/pdf-viewer?doc=" + encodeURIComponent(d.path)
+    : "/" + d.path;
+  const exportBtn = document.getElementById("exportBtn");
+  if (exportBtn) {
+    exportBtn.disabled = d.exportable === false;
+    exportBtn.title = d.exportable === false
+      ? "Exported artifacts are preview-only — select an HTML source to export"
+      : "Export selected document";
+  }
   if (pushUrl) {
     try {
       const u = new URL(location.href);
@@ -1264,6 +1449,7 @@ function applyProfileChange() {
   buildFolderSelect();
   renderLibrary();
 }
+document.getElementById("personFilter").addEventListener("change", applyProfileChange);
 document.getElementById("hubHomeLink").addEventListener("click", (ev) => {
   if (ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.altKey) return;
   ev.preventDefault();
@@ -1336,6 +1522,7 @@ function closeDrawer() {
   if (backdrop) { backdrop.classList.remove("open"); backdrop.hidden = true; }
   document.body.classList.remove("drawer-open");
   if (toggle) toggle.setAttribute("aria-expanded", "false");
+  window.hubCloseContainedSelects?.();
 }
 function openSearchOvl() {
   const ovl = document.getElementById("hubSearchOvl");
@@ -1440,6 +1627,10 @@ function renderSearchOvl() {
 document.getElementById("exportBtn").addEventListener("click", async () => {
   const status = document.getElementById("status");
   if (!selected) { status.textContent = "select a template first"; return; }
+  if (selected.exportable === false) {
+    status.textContent = "preview only · select an HTML source to export";
+    return;
+  }
   status.textContent = "exporting…";
   const idx = paletteSel.value;
   const body = {
@@ -1525,7 +1716,13 @@ openPaletteFromQuery();
     buildKindChips();
     buildFolderSelect();
     renderLibrary();
-    if (selected) { try { main.src = "/" + selected.path + "?t=" + Date.now(); } catch (_) {} }
+    if (selected) {
+      try {
+        main.src = selected.artifact && selected.format === "pdf"
+          ? "/pdf-viewer?doc=" + encodeURIComponent(selected.path) + "&t=" + Date.now()
+          : "/" + selected.path + "?t=" + Date.now();
+      } catch (_) {}
+    }
     return DOCS.length - prevCount;
   }
 
@@ -1608,7 +1805,7 @@ def make_handler(root: Path, docs: list[dict], palettes: list[dict]):
             if path == "/api/version":
                 # Auto-refresh poll: current tree signature + a fresh doc list.
                 # Re-scanning docs here keeps the sidebar live when HTML sources
-                # or output/ (leftover _exports) change, without restarting the server.
+                # or generated output/_exports artifacts change, without restarting the server.
                 sig = tree_signature(root)
                 current_docs = scan_documents(root)
                 payload = {
@@ -1636,6 +1833,34 @@ def make_handler(root: Path, docs: list[dict], palettes: list[dict]):
                 payload = build_recipe_gallery(root)
                 self._send(200, json.dumps(payload).encode("utf-8"), "application/json")
                 return
+            if path == "/api/pdf-info":
+                qs = parse_qs(urlparse(self.path).query)
+                target = resolve_preview_file(root, (qs.get("doc") or [""])[0])
+                if target is None or target.suffix.lower() != ".pdf":
+                    self._send(404, b'{"ok": false, "error": "PDF not found"}', "application/json")
+                    return
+                try:
+                    payload = {"ok": True, **pdf_preview_info(target)}
+                    self._send(200, json.dumps(payload).encode("utf-8"), "application/json")
+                except Exception as exc:
+                    payload = {"ok": False, "error": str(exc)}
+                    self._send(500, json.dumps(payload).encode("utf-8"), "application/json")
+                return
+            if path == "/api/pdf-page":
+                qs = parse_qs(urlparse(self.path).query)
+                target = resolve_preview_file(root, (qs.get("doc") or [""])[0])
+                if target is None or target.suffix.lower() != ".pdf":
+                    self._send(404, b"PDF not found", "text/plain")
+                    return
+                try:
+                    page_index = int((qs.get("page") or ["0"])[0])
+                    scale = float((qs.get("scale") or ["2"])[0])
+                    self._send(200, render_pdf_preview_page(target, page_index, scale), "image/png")
+                except (ValueError, IndexError) as exc:
+                    self._send(400, str(exc).encode("utf-8"), "text/plain; charset=utf-8")
+                except Exception as exc:
+                    self._send(500, str(exc).encode("utf-8"), "text/plain; charset=utf-8")
+                return
             if path in ("/vault", "/vault.html"):
                 target = (_STATIC_DIR / "vault.html").resolve()
                 if not target.is_file():
@@ -1654,6 +1879,13 @@ def make_handler(root: Path, docs: list[dict], palettes: list[dict]):
                 target = (_STATIC_DIR / "recipes.html").resolve()
                 if not target.is_file():
                     self._send(404, b"recipes.html missing", "text/plain")
+                    return
+                self._send(200, target.read_bytes(), "text/html; charset=utf-8")
+                return
+            if path in ("/pdf-viewer", "/pdf-viewer.html"):
+                target = (_STATIC_DIR / "pdf-viewer.html").resolve()
+                if not target.is_file():
+                    self._send(404, b"pdf-viewer.html missing", "text/plain")
                     return
                 self._send(200, target.read_bytes(), "text/html; charset=utf-8")
                 return
@@ -1688,6 +1920,7 @@ def make_handler(root: Path, docs: list[dict], palettes: list[dict]):
                 ".webp": "image/webp",
                 ".gif": "image/gif",
                 ".svg": "image/svg+xml",
+                ".pdf": "application/pdf",
             }.get(target.suffix.lower(), "application/octet-stream")
             self._send(200, target.read_bytes(), ctype)
 

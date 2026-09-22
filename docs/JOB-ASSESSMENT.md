@@ -169,7 +169,7 @@ light résumé only; work-samples are visual; cover letters go where the portal 
 | 3 | **Read the text dump** in that command | Contiguous phrases — not `W ORK EXPERIENCE`, not `Martian Gam es`, not two-column gibberish |
 | 4 | Board upload (Jobright / Indeed / LinkedIn) | Upload **light** only · no “missing Job Title / Work Experience / Education” warning |
 
-**Applies to every profile under `storage/profiles/`** (jenni · shade · studio · martian) and the
+**Applies to every private profile under `profiles/`** (jenni · shade · studio · martian) and the
 public `examples/profiles/default-resume/`. Each private profile’s
 `#exports.exportPrefs` must keep `resumeDefault: light-and-dark` + `includeLightAts: true` —
 that is the shared board contract, not a Jenni-only preference. Creative headings (`My Journey`, bare
@@ -258,14 +258,14 @@ on ATS-critical labels. `check_ats` fails when mid-word splits exceed the thresh
 ## 🗂 What ends up on disk
 
 ```
-storage/_job-listings/<Role-Track>/
+_job-apps/<Role-Track>/
   <Company>.md                       ← the assessment (Tiers 1–5) + verbatim listing below a ---
   evidence/
     <board>-posting-<date>.jpeg      ← screenshot proving it was live, and what it said
   <user>-<company>-<track>-resume.html
   <user>-<company>-<track>-cover-letter.html
 
-output/<user>/resumes/<Role-Track>/   ← ALL PDFs + PNGs (never in the application folder)
+_exports/<user>/resumes/<Role-Track>/   ← private PDFs + PNGs (never in the application folder)
 ```
 
 **Also log** into `profiles/<user>-<track>-resume.json → roleTrack.applications[]`:

@@ -57,12 +57,12 @@ _job-apps/
   …
 ```
 
-**⭐ No PDFs in here.** Finished PDFs and PNGs go to **`output/<user>/resumes/<Track>/`**
+**⭐ No PDFs in here.** Private finished PDFs and PNGs go to **`_exports/<user>/resumes/<Track>/`**
 per *person*, so everything one applicant needs to send sits in one place:
 
 ```text
-output/jenni/resumes/3D-Visualizer/     one applicant's PDFs for that job
-output/shade/resumes/3D-Visualizer/     the other's, for the same job
+_exports/jenni/resumes/3D-Visualizer/     one applicant's PDFs for that job
+_exports/shade/resumes/3D-Visualizer/     the other's, for the same job
 ```
 
 Facts about the *job* (the apply link, the pay, the company palette) belong to the *job* — so
@@ -82,7 +82,7 @@ between them.
 ## Build it
 
 ```bash
-/make-resume <user> storage/_job-listings/<Track>
+/make-resume <user> _job-apps/<Track>
 ```
 
 One command runs the routine end to end: capture the apply link → verify remote + pay →
@@ -96,7 +96,7 @@ can follow it.
 ## Then log it — three places
 
 1. `<Track>/application.json` — the machine record
-2. `storage/_job-listings/README.md` — the human index, with the status and any ⚠ caveat
+2. `_job-apps/applied-index.md` — the human index, with the status and any ⚠ caveat
 3. `<Track>/<Company>.md` — the status line + the materials index
 
 *A finished application nobody can find in a month wasn't finished.*

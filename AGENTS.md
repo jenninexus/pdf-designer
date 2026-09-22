@@ -25,7 +25,7 @@ per section below.
    (`characterVoice` + vault `voice`), the capability matrix, the role tracks.
 5. [`docs/JOB-ASSESSMENT.md`](docs/JOB-ASSESSMENT.md) — how to assess a listing (apply URL is blocking;
    remote? pay vs. market?; the evidence map).
-6. [`docs/STORAGE.md`](docs/STORAGE.md) — the four private layers and the `storage/` layout.
+6. [`docs/STORAGE.md`](docs/STORAGE.md) — the four private layers, root `_exports/`, and legacy `storage/` residue.
 7. [`themes/PALETTE-RULES.md`](themes/PALETTE-RULES.md) — the color rule and its guard.
 8. [`docs/LAYOUT-SYSTEM.md`](docs/LAYOUT-SYSTEM.md) — the page model (equal margins, header-flows /
    footer-pins, content-fit).
@@ -41,7 +41,7 @@ direction (free GitHub vs later paid shell): [`docs/PRODUCT.md`](docs/PRODUCT.md
 [`docs/PACKAGING.md`](docs/PACKAGING.md) · `python scripts/check-wheel-assets.py` ·
 `python scripts/testpypi-dry-run.py` (local wheel proof; `--upload` needs `TESTPYPI_TOKEN`).
 
-**Active plan (one):** [`Plans/_Active/2026-08-25-remaining-release-and-document-layout.md`](Plans/_Active/2026-08-25-remaining-release-and-document-layout.md) · index [`Plans/README.md`](Plans/README.md). Folder UX target: [`docs/WORKSPACE-LAYOUT.md`](docs/WORKSPACE-LAYOUT.md). Maintainer channel/signing: `docs/CHANNELS.local.md` (gitignored).
+**Active product plan:** [`Plans/_Active/2026-08-25-remaining-release-and-document-layout.md`](Plans/_Active/2026-08-25-remaining-release-and-document-layout.md) — the sole product/carryover checklist · index [`Plans/README.md`](Plans/README.md) · pointer [`docs/ROADMAP.md`](docs/ROADMAP.md). Closed narrative moves to `Plans/_Complete/`; do not create a second active checklist. Folder UX target: [`docs/WORKSPACE-LAYOUT.md`](docs/WORKSPACE-LAYOUT.md). Maintainer channel/signing: `docs/CHANNELS.local.md` (gitignored).
 
 **Session start / wrap:** `/pdf-start` → local [`.claude/commands/pdf-start.md`](.claude/commands/pdf-start.md)
 (gitignored). `/pdf-wrap` → local [`.claude/commands/pdf-wrap.md`](.claude/commands/pdf-wrap.md) — **requires
@@ -50,12 +50,13 @@ aliases in `start.md` / `wrap.md` that defer here. Public protocol seeds:
 `.claude/commands/*.example.md`. Palette prefs: [`docs/SSOT.md`](docs/SSOT.md) § Personal palette prefs ·
 private maps in `brands/` (was `storage/brand-design/`). Product front door: [`examples/resume-studio/`](examples/resume-studio/).
 
-**Where learnings go — two surfaces, do not confuse them.** `dev-log-sego.yaml` is **gitignored**, so
-a lesson recorded only there is invisible to every other clone and to the next agent. Durable
-lessons — a trap, its root cause, and the guard that now prevents it — go to **tracked**
-[`.memory/lesson-*.md`](.memory/) with a row in [`.memory/README.md`](.memory/README.md). Session
-narrative (what happened today, next steps) stays in the dev-log. If the lesson changes a standing
-rule, edit the owning `docs/` page **as well**.
+**Where learnings go — two surfaces, do not confuse them.** Session narrative lives in
+the sole **`Plans/_Active/2026-08-25-remaining-release-and-document-layout.md`** checklist with a pointer in
+[`docs/ROADMAP.md`](docs/ROADMAP.md); move completed narrative to `_Complete`. Root `dev-log-sego.yaml` is **deprecated** (frozen
+2026-09-08 under `Plans/_Complete/_archive/` — do not append). Durable lessons — a trap, its
+root cause, and the guard that now prevents it — go to **tracked**
+[`.memory/lesson-*.md`](.memory/) with a row in [`.memory/README.md`](.memory/README.md). If
+the lesson changes a standing rule, edit the owning `docs/` page **as well**.
 
 **Netflix — CLOSED:** both founders submitted. Keep any `_job-apps/Netflix*` schemas —
 do not delete. Do not reopen/rebuild/re-apply unless the human explicitly asks.
@@ -98,7 +99,7 @@ python -m pdf_tool.pdf_to_png <doc>.html                        # one PNG per pa
 python -m pdf_tool.check_generation <doc>.html                  # ⭐ ONE QA gate — 10 checks; run before EVERY ship
 python -m pdf_tool.check_generation --scan resumes/<user>/defaults  #    sweep go-to set
 python -m pdf_tool.check_palette <doc>.html                     # palette only (also inside check_generation)
-python -m pdf_tool.check_palette --scan storage/                #    sweep a whole tree
+python -m pdf_tool.check_palette --scan resumes/                #    sweep private source HTML
 python -m pdf_tool.check_overflow <doc>.html --pdf-theme dark   # overflow only (also inside check_generation)
 python -m pdf_tool.check_vault --all                            # vault schema — catches invisible claims
 python -m pdf_tool.check_vault --explain <user> <track>         # ranked claims preview (blocks on schema/thin)
@@ -117,6 +118,8 @@ node scripts/wcag-resume-palettes.mjs                           # optional WCAG 
 `PYTHONPATH=src`). Exports default to repo-root **`output/<user>/<kind>/`** (or `output/<kind>/` /
 `output/` when no profile) and **never overwrite** (auto
 `-v2`, `-v3`). Default dual-mode names: `<stem>-light.pdf` (ATS) and `<stem>-dark.pdf` (branded).
+That is the clone-safe engine default. Personal command copies and private profiles explicitly route
+real applicant/studio deliverables to **`_exports/<user>/<kind>/`**.
 **Verification without a screen:** export, then `pdf_to_png` and *read* the PNGs — the intended agent loop.
 
 Full command/export recipes: [`docs/EXPORTS.md`](docs/EXPORTS.md).
@@ -175,7 +178,7 @@ marketed résumé-creator demo path (vault shape + palettes + smoke), not privat
 
 | Path | What it is |
 |---|---|
-| `.memory/` | ⭐ **tracked durable learnings** — one `lesson-*.md` per trap already hit here (root cause + the guard that now prevents it) + an index. Read at session start; written at wrap. Travels with every clone, unlike the gitignored dev-log. |
+| `.memory/` | ⭐ **tracked durable learnings** — one `lesson-*.md` per trap already hit here (root cause + the guard that now prevents it) + an index. Read at session start; written at wrap. Travels with every clone, unlike gitignored session Plans. |
 | `src/pdf_tool/` | the engine (html_to_pdf, variants, tracker, merge_pdfs, pdf_to_png, **check_generation**, check_palette, check_overflow, check_rendered_color, check_vault, check_ats, collage, preview) |
 | `themes/default-resume.{json,css}` | public default theme — JSON is the token SSOT, CSS its mirror |
 | `themes/presets/*.json` | public audition palettes (Design Hub swapper) |
@@ -189,18 +192,19 @@ marketed résumé-creator demo path (vault shape + palettes + smoke), not privat
 | `docs/` | ARCHITECTURE · SSOT · PRODUCT · PACKAGING · GETTING-STARTED · PUBLIC-LOCAL-SPLIT · STORAGE · VAULT · JOB-ASSESSMENT · THEME-DESIGN · LAYOUT-SYSTEM · EXPORTS · COLLAGE-DESIGN · PREVIEWER · APPLICATIONS · LICENSING-NOTES ([`docs/README.md`](docs/README.md) is the index) |
 | `.config/mcp-pdf-designer.example.json` | ⭐ Tracked project config **seed** (breakpoints + hub/palette/layout pointers). Copy → local `mcp-pdf-designer.json` (gitignored — machine paths). |
 | `Plans/_Active/` | ⭐ the working roadmap (one file) — see [`Plans/README.md`](Plans/README.md) |
-| `output/` | ⭐ **generated PDFs/PNGs** — `output/<user>/<kind>/` (tracked README only). Engine default. `_exports/` is retired. |
-| `storage/` | **Retired leftover** (keep private; never ship). Live data is root nouns + `output/`. Dual-run resolver still maps old `storage/<user>/` URLs. |
+| `output/` | ⭐ **public engine/example output** — tracked README only; payload ignored. Engine default. |
+| `_exports/` | ⭐ **private personal deliverables** — tracked README only; applicant/studio payload ignored. |
+| `storage/` | **Retired legacy residue** (keep private; never ship or add new live work). Dual-run resolver still maps old `storage/<user>/` URLs. |
 | `resumes/studio/resources/images/martiangames/` | ⭐ **shared** MG title gallery (WebP) — both applicants; see [`docs/STORAGE.md`](docs/STORAGE.md) |
 
 ### Privacy split (do not blur this)
 
 | Public / tracked (safe to clone) | Private / gitignored (root nouns; `storage/` retired — live data is root nouns) |
 |---|---|
-| `src/pdf_tool/`, `themes/`, `examples/`, `docs/`, `AGENTS.md`, `*.example.md`, `output/README.md` | `users/`, `vaults/`, `profiles/`, `_job-apps/`, `brands/`, `resumes/`, `collages/`, `output/*` (payload), `_exports/` |
+| `src/pdf_tool/`, `themes/`, `examples/`, `docs/`, `AGENTS.md`, `*.example.md`, `output/README.md`, `_exports/README.md` | `users/`, `vaults/`, `profiles/`, `_job-apps/`, `brands/`, `resumes/`, `collages/`, `_exports/*` (payload), `output/*` (engine payload), legacy `storage/` |
 | Brand-neutral default theme | Real brand maps (`brands/brand-jenninexus.json`, `brand-martian`, `brand-synagen`) |
 | Example brand shape (`examples/brand-design/`) | Real vault claims, contacts, employer research |
-| Public seed commands (`*.example.md` only) | Bare commands (`pdf-start`/`pdf-wrap`/`start`/`wrap`/`make-*`/`README`), `.codex/`, `dev-log-*.yaml` |
+| Public seed commands (`*.example.md` only) | Bare commands (`pdf-start`/`pdf-wrap`/`start`/`wrap`/`make-*`/`README`), `.codex/`, frozen `Plans/_Complete/_archive/dev-log-*.yaml` |
 
 `themes/` is deliberately **public** — it's the engine's default theme + palette rule a fresh clone needs
 to render. Private brand palettes live in `brands/` (legacy `storage/brand-design/`), read by the previewer alongside `themes/`.
@@ -261,7 +265,7 @@ Read [`docs/VAULT.md`](docs/VAULT.md) before authoring any resume claim.
 - **Emails — the default is the default.** Each person file has one `contact.emailRules.default`. Use it,
   every time, automatically. A personal gmail on record is **recognition, not authorization**.
 - **No auto-submission.** Prepare materials; the human submits.
-- **Privacy split.** `storage/`, `*.pdf`, `*.png`, `output/` payload, leftover `_exports/`, non-`.example` source/capture files, and
+- **Privacy split.** `storage/`, `*.pdf`, `*.png`, `_exports/` personal payload, `output/` engine payload, non-`.example` source/capture files, and
   the personal `.md` commands are gitignored. Never move real personal data into tracked paths.
 
 ---

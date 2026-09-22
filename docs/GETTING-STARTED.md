@@ -1,9 +1,16 @@
 # Getting started — public clone path
 
+This page is the **clone setup SSOT**. The root [`README.md`](../README.md) stays a short
+GitHub postcard (what it is, one smoke command, pictures). Install, Hub wizard, Windows
+wrapper, export recipes, and the tracked-files checklist live **here**.
+
 Use this repo **without** private vaults, PII, or studio brand maps.
+
+Before setup, see the one-page [public app vs personal workspace diagram](WORKSPACE-LAYOUT.md#two-journeys-one-engine).
 
 ```bash
 git clone https://github.com/jenninexus/pdf-designer.git
+cd pdf-designer
 ```
 
 Public defaults and presets *are* the product.
@@ -30,8 +37,12 @@ Public defaults and presets *are* the product.
 
 You do **not** need `users/`, vaults, or `brands/` to export PDFs.
 The clone also shows **README stubs** at `users/` · `vaults/` · `profiles/` · `resumes/` ·
-`output/` · `_job-apps/` · `collages/` · `brands/` so the product folders are visible — copy from
+`output/` · `_exports/` · `_job-apps/` · `collages/` · `brands/` so the product folders are visible — copy from
 `examples/` (or the in-folder `*.example.json`) into those names when you add your own data. Layout: [`WORKSPACE-LAYOUT.md`](WORKSPACE-LAYOUT.md).
+
+New users edit the **copies**, not the `.example` seeds themselves: copy `you.example.json` to a
+non-`.example` filename, then fill in the copy. The Wizard performs the same local setup and leaves
+the tracked examples unchanged.
 
 ---
 
@@ -42,10 +53,10 @@ You and a stranger use the **same engine**. Privacy is gitignore, not a second i
 | Layer | What |
 |---|---|
 | **Tracked (clone)** | Engine, `themes/`, `layouts/`, `examples/`, README stubs, `users/you.example.json`, `vaults/you.example.json` |
-| **Local (you)** | Real `users/*.json`, vaults, `_job-apps/`, `resumes/**`, `output/**`, `brands/` |
+| **Local (you)** | Real `users/*.json`, vaults, `_job-apps/`, `resumes/**`, `_exports/**`, `brands/` |
 | **Optional pointers** | `.config/mcp-pdf-designer.json` (copy the `.example`) |
 
-The engine **reads no environment variables**. Do not add `.env` / `.env.local` unless a new tool actually reads them — it would document a fiction. `storage/` was retired after the root-noun migration; the resolver only accepts old URLs when a live root-noun file exists. Exports live under `output/<user>/<kind>/`.
+The engine **reads no environment variables**. Do not add `.env` / `.env.local` unless a new tool actually reads them — it would document a fiction. `storage/` was retired after the root-noun migration; the resolver only accepts old URLs when a live root-noun file exists. Public/example engine exports default to `output/`; private personal command copies explicitly route deliverables to `_exports/<user>/<kind>/`.
 
 ---
 
@@ -61,7 +72,16 @@ Every step uses **tracked** paths only.
 | 4. (Optional) variants | `python -m pdf_tool.variants examples/profiles/default-resume/default-resume.html` | one light PDF per public palette |
 
 The smoke script runs `check_generation`, exports light + dark PDFs, runs `check_ats` on
-the light file, and writes under `output/examples/` (gitignored payload).
+the light file, and writes under `output/examples/` (gitignored payload). Manual twins:
+
+```bash
+python -m pdf_tool.html_to_pdf examples/profiles/default-resume/default-resume.html
+python -m pdf_tool.html_to_pdf examples/profiles/default-resume/default-resume.html --pdf-theme dark
+```
+
+Exports land in `output/` as `<stem>-light.pdf` / `<stem>-dark.pdf` and **never overwrite**
+(`-v2`, `-v3`). Grouped by profile then kind when the source lives under `resumes/` /
+`collages/` / `examples/`. Full map: [`EXPORTS.md`](EXPORTS.md).
 
 **If smoke fails on a clean clone, the public product path is broken — fix before anything else.**
 
@@ -77,7 +97,7 @@ python -m pdf_tool.preview --no-open
 ```
 
 The Hub starts dark by default. Its theme is only the local app chrome; document palettes
-still control the preview and exported PDF. The Start route guides a local vault →
+still control the preview and exported PDF. The Wizard route guides a local vault →
 source-backed skills → palette → light/dark export. You can copy the ignored templates
 or upload an old résumé/cover letter (PDF/TXT/MD/HTML) to seed a starter vault; every
 imported claim is `inferred` until you review it. It creates no account and uses the

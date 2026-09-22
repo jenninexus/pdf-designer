@@ -34,19 +34,18 @@ the release experience exactly, run `python -m pdf_tool.preview examples`: the l
 only the tracked default resume, cover letter, letter, work samples, collage, and gallery examples.
 `examples/resume-studio/` is the walkthrough data and docs, not a renderable document directory by itself.
 
-Library, Recipes, Vault, and Start open with a **PDF Designer** title screen
-(cyan/violet hub chrome from `www-theme-kit/profiles/pdf-designer.json`): **3s hold**,
-then a **2s fade-out**. Click, Enter, or Escape skips it; `?no-splash=1` disables it;
-`?splash=1` forces it (the packaged app always launches this way). After the first view
-in a browser tab, the same session does not replay it. **Patreon + PayPal.Me** tip
-buttons sit on the splash (clicks on `.hub-support` do not skip the title), in the
-drawer, and on `/wizard` about. URLs: `docs/PRODUCT.md`.
+Library, Recipes, Vault, and Wizard open with a **PDF Designer** title screen
+(cyan/violet hub chrome from `www-theme-kit/profiles/pdf-designer.json`). It **stays
+until Open, Start wizard, Enter, or Escape** — no auto-dismiss (the 3s bar is entrance
+motion, not a countdown). `?no-splash=1` disables it; `?splash=1` forces it (the packaged
+app always launches this way). After the first view in a browser tab, the same session
+does not replay it. **Patreon + PayPal.Me** tip buttons sit on the splash (they do not
+close the title), in the drawer, and on `/wizard` about. URLs: `docs/PRODUCT.md`.
 
 **No MCP / always-on server.** Optional temporary localhost only. CLI export works without it.
 
-On compact layouts, the Design Hub drawer is a **full-bleed sheet** (no leftover strip). It closes with its top-right **X**, the
-backdrop, or Escape. Its manual **Refresh** control sits beside that X. The grab-edge sash is **hidden ≤1399.98**
-(hamburger through iPad Pro 12.9 landscape). Library, Recipes, Vault, and Start share that drawer contract.
+On compact layouts, the Design Hub drawer is a hamburger sheet through **1399.98px**. **Phones** (≤575.98 and short landscape max-height 480) get a **full-bleed** sheet (no leftover strip). **Tablet / laptop hamburger** (576–1399.98) gets an **almost-full flexible end-panel** (`min(92vw, 100vw - 24px)`) with the grab-edge sash on — a peek of the stage stays visible; never 100vw on a laptop. It closes with its top-right **X**, the
+backdrop, or Escape. Its manual **Refresh** control sits beside that X. Library, Recipes, Vault, and Wizard share that drawer contract.
 
 For the Windows-first browser launcher and its acceptance checks, see
 [`WINDOWS-LAUNCHER.md`](WINDOWS-LAUNCHER.md).
@@ -80,10 +79,10 @@ fast on a large tree. If the server is briefly down mid-poll, the client just re
 Hub layout: **library left + viewer right** from **576px** up (desktop / tablet). Stacks only below
 **575.98px** (phones) and in **short landscape** (`max-height: 480px`). Drawer (hamburger) from
 **≤1399.98px** (`nav_switch: xxl`) so iPad Pro landscape 1366 keeps offcanvas, not header chips.
-Comfortable / widescreen from **1400px**. Compact bar is **44px**. Full-bleed offcanvas contract:
+Comfortable / widescreen from **1400px**. Compact bar is **44px**. Header icon buttons share one 1:1 square (`--hub-icon-box`). Offcanvas: phone full-bleed; sm–xl almost-full end-panel. Contract:
 `www-theme-kit/scss/_offcanvas-nav.scss`.
 The regression matrix covers 390, 576, 768, 992, 1024, 1366, 1400, 1920, 2560, and 3840px.
-**Vault + Recipes + Start** use the same switch points (shared `hub.css` + `Library | Recipes | Vault | Start` nav). Library is `body.hub-shell` (fixed panes); subpages are `body.hub-page` (document scroll). Tables get a horizontal scroll wrapper below md.
+**Vault + Recipes + Wizard** use the same switch points (shared `hub.css` + `Library | Recipes | Vault | Wizard` nav). Library is `body.hub-shell` (fixed panes); subpages are `body.hub-page` (document scroll). After ~280px of page scroll a discreet back-to-top chevron appears (bottom-right; `hub-chrome.js`). Tables get a horizontal scroll wrapper below md.
 
 Each `.html` file is its **own template** in the library (one card = one file).
 
@@ -99,12 +98,22 @@ Local-first library + filters (Jobright-style UX inspiration — not cloud match
   - Copy `profiles/you-resume.example.json` → `profiles/you-resume.json` for yourself; keep `profiles/examples.json` so the public cards stay in the dropdown.
   - **Trap:** collage projects **without** a profile token (`profile: null`) still disappear when Profiles ≠ `all profiles`. Search the folder name, or pick All. Lesson: `.memory/lesson-hub-collage-hidden-by-profile-filter.md`.
 - **Search:** name or path substring
+- **Focused comparison:** every filtered card starts included. Uncheck cards you do not want, then
+  choose **Focus N** to hide the unchecked cards. Choose **Edit all** to bring them back for another
+  pass, or **Reset** to include the whole filtered set again. The comparison set lasts for the browser
+  tab only; it never changes or deletes source files.
 
 Sidebar is a **left column**; the stage / iframe viewer fills the rest of the viewport. Groups stay collapsible by folder. Stage bar shows kind · profile · bucket · path.
 
 ### Features
 
-- **Live thumbnails** for every renderable `.html` (excludes `output/`, leftover `_exports/`, etc.)
+- **Live thumbnails** for every renderable source `.html`; generated `output/` stays outside the library.
+- **Private export browser:** local `_exports/**/*.{pdf,png,jpg,jpeg,webp}` appears as lightweight,
+  read-only artifact cards. Choose the virtual **`_exports`** folder to see every export, or a nested
+  application folder for one pack. The artifact opens in the main viewer only when selected and cannot
+  be re-exported. `_archive` remains excluded. PDFs open in the Hub's dark, page-bounded preview with
+  the same cyan scrollbar as the library; **Open original** is still available for the browser's native
+  PDF toolbar. The preview rasterizes the actual PDF pages on demand rather than re-rendering source HTML.
 - **Palette swapper** → injects CSS vars into the previewed document (and into export)
 - **Export selected** → PDF light/dark or PNG pages
 - **Vault overview** → [http://127.0.0.1:8787/vault](http://127.0.0.1:8787/vault) · `GET /api/vault-overview?profile=examples`
@@ -114,10 +123,15 @@ Sidebar is a **left column**; the stage / iframe viewer fills the rest of the vi
   public audition palettes). Copy collage CLI (`--recipe <id>`), open raw JSON, or
   **Try in Hub** via `/?palette=<id>&mode=dark|light` (selects the palette swapper).
   Discovery chrome only — still one renderer.
-- **Start a local résumé** → [http://127.0.0.1:8787/wizard](http://127.0.0.1:8787/wizard) — a dark-default, four-step, no-account walkthrough. Copy ignored local templates **or** upload an old résumé/cover letter (PDF/TXT/MD/HTML) to seed a gitignored starter vault. Imported claims are `inferred` until reviewed. Then add source-backed skills (programs in vault-root `software` plus `kind: "tool"` claims), audition a public palette, and use the existing Library export (Jane Example until you author HTML from your vault). Hub chrome and document palettes remain separate. No second renderer.
-- **Optional Voice Seed preview** → the Start route includes a read-only, redacted local card preview. It defaults to Jane Example; an explicitly named local profile receives a generic skeletal card, never free-form local text. No card is saved, copied, exported, or synced.
-- Zero new deps (stdlib server; Playwright only for export/render)
-  Binds to 127.0.0.1 only.
+- **Start wizard** → [http://127.0.0.1:8787/wizard](http://127.0.0.1:8787/wizard) — a dark-default, four-step, no-account walkthrough. Copy ignored local templates **or** upload an old résumé/cover letter (PDF/TXT/MD/HTML) to seed a gitignored starter vault. Imported claims are `inferred` until reviewed. Then add source-backed skills (programs in vault-root `software` plus `kind: "tool"` claims), audition a public palette, and use the existing Library export (Jane Example until you author HTML from your vault). Hub chrome and document palettes remain separate. No second renderer.
+- **Optional Voice Seed preview** → the Wizard route includes a read-only, redacted local card preview. It defaults to Jane Example; an explicitly named local profile receives a generic skeletal card, never free-form local text. No card is saved, copied, exported, or synced.
+- One lightweight PDF-view dependency: the server remains stdlib-based, packaged
+  `pypdfium2` renders real PDF pages into the themed comparison surface, and
+  Playwright remains the HTML export/render dependency. The Hub binds to
+  `127.0.0.1` only.
+- The PDF document surface is a first-class `/pdf-viewer` route; `/_hub/` remains
+  static-asset-only. Acceptance requires the viewer toolbar and rendered page
+  images inside the iframe—a dark empty shell is not a passing preview.
 
 Typical flows:
 
@@ -156,7 +170,7 @@ installer around **this** Design Hub—not a second renderer. See
 
 Recipe gallery chrome: **shipped** at `/recipes` (see Features above). Packaging
 precursor for installers: [`PACKAGING.md`](PACKAGING.md). The remaining implementation checklist is
-[`../Plans/_Active/2026-08-22-product-polish-and-release-readiness.md`](../Plans/_Active/2026-08-22-product-polish-and-release-readiness.md).
+[`../Plans/_Active/2026-08-25-remaining-release-and-document-layout.md`](../Plans/_Active/2026-08-25-remaining-release-and-document-layout.md).
 
 ### Phase 4 — canvas editor (drag & drop)
 
