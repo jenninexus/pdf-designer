@@ -21,7 +21,7 @@ tracked [`.memory/`](../.memory/). Do **not** recreate root `dev-log-sego.yaml`.
 
 | Plan | Status |
 |---|---|
-| — | No active plan. Start from [`docs/ROADMAP.md`](../docs/ROADMAP.md) and create one only when a concrete slice is accepted. |
+| [`2026-09-26-private-preview-routing-and-product-carryover.md`](_Active/2026-09-26-private-preview-routing-and-product-carryover.md) | Private-preview fidelity verified; remaining decision gates and product evolution are carried forward here. |
 
 > **`/jen:roadmap` entry point:** [`../docs/ROADMAP.md`](../docs/ROADMAP.md).
 > **Business:** [`../docs/PRODUCT.md`](../docs/PRODUCT.md).
@@ -37,4 +37,4 @@ rules into `docs/` and durable traps into `.memory/`.
 
 Protocol for agents lives in `docs/` and `AGENTS.md` — not in Plans.
 
-Latest closeout: [`_Complete/2026-08-25-remaining-release-and-document-layout.md`](_Complete/2026-08-25-remaining-release-and-document-layout.md).
+Latest history consolidation: [`_Complete/2026-09-26-roadmap-completed-archive.md`](_Complete/2026-09-26-roadmap-completed-archive.md).

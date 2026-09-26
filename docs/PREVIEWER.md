@@ -102,8 +102,13 @@ Local-first library + filters (Jobright-style UX inspiration — not cloud match
   choose **Focus N** to hide the unchecked cards. Choose **Edit all** to bring them back for another
   pass, or **Reset** to include the whole filtered set again. The comparison set lasts for the browser
   tab only; it never changes or deletes source files.
+- **Selected-document chips:** the stage bar's kind, profile, and root-folder pills are buttons. Click
+  one to scope the left library to that dimension while leaving the selected preview open. For example,
+  `Galleries` + `martian` + `collages` gives progressively broader/narrower comparison views without
+  making the path text itself behave like a fragile filesystem link.
 
-Sidebar is a **left column**; the stage / iframe viewer fills the rest of the viewport. Groups stay collapsible by folder. Stage bar shows kind · profile · bucket · path.
+Sidebar is a **left column**; the stage / iframe viewer fills the rest of the viewport. Groups stay
+collapsible by folder. Stage bar shows filterable kind · profile · root folder, then the exact path.
 
 ### Features
 

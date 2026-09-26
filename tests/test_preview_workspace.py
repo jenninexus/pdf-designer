@@ -80,6 +80,7 @@ def test_classify_fallback_tokens_without_workspace_card():
         (),
     )
     assert tagged["profile"] == "jenni"
+    assert tagged["root"] == "storage"
 
 
 def test_profile_card_without_html_still_appears_in_header(tmp_path: Path):
@@ -98,6 +99,14 @@ def test_hub_js_restores_profile_before_folder_rebuild():
     assert 'const cur = sel ? sel.value : "";' in APP_HTML
     boot = APP_HTML.split("if (!openFromQuery())", 1)[0]
     assert boot.rfind("restoreHubPrefs") < boot.rfind("buildFolderSelect();")
+
+
+def test_stagebar_badges_filter_kind_profile_and_root():
+    assert 'function stageFilterButton(label, type, value, className, pressed)' in APP_HTML
+    assert 'button.className = "badge stage-filter"' in APP_HTML
+    assert 'function applyStageFilter(type, value)' in APP_HTML
+    assert 'setFolderFilterValue(value);' in APP_HTML
+    assert 'new Set(pool.flatMap(d => [d.root, d.group]).filter(Boolean))' in APP_HTML
 
 
 def test_hub_offcanvas_controls_are_in_the_header_and_close_from_the_backdrop():
@@ -203,6 +212,7 @@ def test_public_example_rel_tags_examples_profile():
     assert tagged["profile"] == "examples"
     assert tagged["kind"] == "resume"
     assert tagged["bucket"] == "examples"
+    assert tagged["root"] == "examples"
     work = classify_document(
         "profiles/default-work-examples/default-work-examples.html",
         "default-work-examples",

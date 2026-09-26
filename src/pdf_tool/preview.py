@@ -249,6 +249,7 @@ def classify_document(rel: str, stem: str, profile_ids: tuple[str, ...] = ()) ->
     group = str(Path(path).parent).replace("\\", "/")
     if group == ".":
         group = "(root)"
+    root = path.split("/", 1)[0] if "/" in path else "(root)"
 
     # Short template label for the stage bar
     label = stem.replace("-", " ")
@@ -258,6 +259,7 @@ def classify_document(rel: str, stem: str, profile_ids: tuple[str, ...] = ()) ->
         "name": stem,
         "label": label,
         "group": group,
+        "root": root,
         "kind": kind,
         "bucket": bucket,
         "profile": profile,
@@ -1102,7 +1104,7 @@ function buildProfileSelects() {
 
 function uniqueFolders() {
   const pool = docsForProfile(activeProfile());
-  const folders = new Set(pool.map(d => d.group));
+  const folders = new Set(pool.flatMap(d => [d.root, d.group]).filter(Boolean));
   if (pool.some(d => String(d.path || "").replace(/\\\\/g, "/").startsWith("_exports/"))) {
     folders.add("_exports");
   }
@@ -1348,6 +1350,72 @@ function buildHomeGrid() {
   }
 }
 
+function stageFilterButton(label, type, value, className, pressed) {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "badge stage-filter" + (className ? " " + className : "");
+  button.textContent = label;
+  button.dataset.filterType = type;
+  button.dataset.filterValue = value;
+  button.setAttribute("aria-label", "Filter library by " + type + ": " + label);
+  button.setAttribute("aria-pressed", pressed ? "true" : "false");
+  button.addEventListener("click", () => applyStageFilter(type, value));
+  return button;
+}
+
+function renderStagebar(d) {
+  const bar = document.getElementById("stagebar");
+  if (!bar || !d) return;
+  bar.replaceChildren();
+  bar.appendChild(stageFilterButton(
+    KIND_LABEL[d.kind] || d.kind,
+    "kind",
+    d.kind,
+    "kind-" + d.kind,
+    kindFilter === d.kind,
+  ));
+  const profile = d.profile || d.person;
+  if (profile) {
+    bar.appendChild(stageFilterButton(
+      profile,
+      "profile",
+      profile,
+      "person-" + profile,
+      activeProfile() === profile,
+    ));
+  }
+  const root = d.root || String(d.path || "").split("/")[0] || "(root)";
+  bar.appendChild(stageFilterButton(
+    root,
+    "root",
+    root,
+    "",
+    document.getElementById("folderFilter")?.value === root,
+  ));
+  const path = document.createElement("span");
+  path.className = "path";
+  path.textContent = d.path;
+  bar.appendChild(path);
+}
+
+function applyStageFilter(type, value) {
+  if (type === "kind") {
+    kindFilter = value;
+    setFolderFilterValue("", { silent: true });
+    buildKindChips();
+    renderLibrary();
+  } else if (type === "profile") {
+    const profile = document.getElementById("personFilter");
+    if (!profile || !PROFILE_IDS.includes(value)) return;
+    profile.value = value;
+    applyProfileChange();
+  } else if (type === "root") {
+    buildFolderSelect();
+    setFolderFilterValue(value);
+  }
+  renderStagebar(selected);
+}
+
 function select(d, el, { pushUrl = true } = {}) {
   selected = d;
   hideHome();
@@ -1357,12 +1425,7 @@ function select(d, el, { pushUrl = true } = {}) {
     const match = document.querySelector(`.thumb[data-path="${CSS.escape(d.path)}"]`);
     if (match) match.classList.add("sel");
   }
-  const bar = document.getElementById("stagebar");
-  bar.innerHTML =
-    `<span class="badge kind-${d.kind}">${d.kind}</span>` +
-    (d.person ? `<span class="badge person-${d.person}">${d.person}</span>` : "") +
-    `<span class="badge">${d.bucket}</span>` +
-    `<span class="path" title="${d.path}">${d.path}</span>`;
+  renderStagebar(d);
   main.src = d.artifact && d.format === "pdf"
     ? "/pdf-viewer?doc=" + encodeURIComponent(d.path)
     : "/" + d.path;
