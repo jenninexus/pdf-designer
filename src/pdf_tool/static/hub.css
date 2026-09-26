@@ -1543,6 +1543,22 @@ html.drawer-resizing, html.drawer-resizing * { cursor: ew-resize !important; use
 .badge.person-shade { color: #a78bfa; border-color: rgba(167, 139, 250, 0.4); }
 .badge.person-studio { color: #67e8f9; border-color: rgba(103, 232, 249, 0.4); }
 .badge.person-martian { color: #fb923c; border-color: rgba(251, 146, 60, 0.45); }
+.stage-filter {
+  appearance: none;
+  font-family: inherit;
+  line-height: inherit;
+  cursor: pointer;
+}
+.stage-filter:hover,
+.stage-filter[aria-pressed="true"] {
+  color: var(--dash-text-bright);
+  border-color: var(--dash-accent);
+  background: var(--dash-card-hover);
+}
+.stage-filter:focus-visible {
+  outline: 2px solid var(--dash-accent);
+  outline-offset: 2px;
+}
 
 .empty {
   padding: var(--dash-space-6);

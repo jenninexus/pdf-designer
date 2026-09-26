@@ -82,6 +82,10 @@ Plans/*
 !Plans/_Active/
 Plans/_Active/*
 !Plans/_Active/README.md
+!Plans/_Active/2026-09-26-private-preview-routing-and-product-carryover.md
+!Plans/_Complete/
+Plans/_Complete/*
+!Plans/_Complete/2026-09-26-roadmap-completed-archive.md
 docs/APPLICATIONS.md
 docs/JOB-ASSESSMENT.md
 docs/LAYOUT-SYSTEM.md
