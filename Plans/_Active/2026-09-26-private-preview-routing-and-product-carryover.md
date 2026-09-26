@@ -1,6 +1,6 @@
 # Private preview routing and product carryover
 
-**Status:** Active carryover; the 2026-09-26 preview-fidelity slice is verified
+**Status:** Active carryover; preview fidelity is verified, remote containment awaits write access
 **Public safety:** no names, employers, vault claims, machine paths, or private media are recorded here.
 
 ## Accepted slice
@@ -11,8 +11,44 @@
 - [x] Correct the two private favorite-page paths that traversed above their project image folders.
 - [x] Turn the selected-document kind, profile, and root-folder pills into accessible library filters.
 - [x] Complete automated, HTTP, and browser-level verification.
+- [ ] Push verified local `main` to `origin/main` after an authorized `jenninexus` credential becomes
+  active; fetch and prove the remote contains the wrap commit before closing this gate.
 - [ ] Select the next accepted carryover slice before implementation; do not start a decision-gated
   item without its named decision.
+
+## Session wrap — 2026-09-26
+
+| Phase | Outcome | Artifact |
+|---|---|---|
+| 1 — repair private sources | Restored nine ignored Martian PNG source copies and corrected two favorite-page relative-path sets. | local/private |
+| 2 — make stage chips useful | Kind, profile, and root-folder pills now scope the left library and retain the selected preview. | `3ab3034` |
+| 3 — consolidate plans/docs | Completed roadmap history moved out of the live backlog; one carryover plan remains. | tracked |
+| 4 — verify | 119 tests, white-label smoke, wheel gate, 21 HTTP assets, browser dimensions, and three filter transitions passed. | local evidence |
+| 5 — deliver | Commit created; push correctly failed because `MonoFinity` has `READ` permission on `jenninexus/pdf-designer`. | recovery queue |
+
+### Reflection
+
+- **Mode:** friction + leverage.
+- **Observation:** ignored private HTML remained discoverable while the media it referenced existed only
+  in `_exports`; two shallower favorite pages also inherited deeper candidate-page relative paths.
+- **Root cause (high):** source and deliverable lifecycles were treated as interchangeable, and path
+  depth was not verified from the generated page's directory.
+- **Landed now:** `.memory/lesson-private-collage-source-assets.md` defines source placement, copy-not-move
+  export behavior, and the HTTP plus `naturalWidth` closeout guard.
+- **Validated by:** 21/21 HTTP responses and 21/21 nonzero browser image dimensions. The
+  [W3C button pattern](https://www.w3.org/WAI/ARIA/apg/patterns/button/) also confirms `aria-pressed`
+  is the appropriate exposed state for these persistent filter buttons.
+- **Expected signal:** a comparable collage wrap finds source media beside its HTML and fails verification
+  before any broken card is accepted.
+
+### Synabrain review
+
+- `ctxreq_c509e490a84b44bdb8bbef6fc01b5d21`: grounded and useful for recovering the prior Design Hub
+  public/private routing decisions.
+- Delegated review `ctxrev_4e10c624050c464bb9291b4113548f52` was resolved without indexing ignored
+  application data; replay `ctxreq_e0cb8c9084eb45198b46fde945f79782` was grounded and its focused
+  privacy/scoping tests passed 6/6. Synabrain containment: `37d8492f` on its `origin/main`.
+- This project intentionally has no live `dev-log-sego.yaml`; the roadmap plus this plan are the handoff.
 
 ## Carryover — next accepted slices
 
