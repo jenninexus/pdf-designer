@@ -15,6 +15,9 @@
 
 ## Active carryover
 
+- [ ] **Remote containment gate:** local `main` is verified and committed but cannot reach
+  `origin/main` while the active GitHub account has read-only repository permission. The exact next
+  action and commit evidence are in the active plan.
 - [ ] Select the next accepted slice from the decision-gated and product-evolution work below. The
   active plan keeps the acceptance constraints and sequencing in one place.
 
