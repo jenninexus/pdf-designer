@@ -936,38 +936,41 @@ a.hub-brand {
   gap: 10px;
   justify-content: center;
 }
+/* Support links: badge-sized text pills (the Hub's filter-chip scale), brand colour on text +
+   outline, fill on hover. The visible pill is small; ::before keeps a ≥44px touch target. */
 .hub-support-btn {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  min-height: 44px;
-  min-width: 7.75rem;
-  padding: 0 16px;
+  gap: 6px;
+  min-height: 26px;
+  padding: 3px 12px;
   border-radius: 999px;
-  border: 1px solid var(--dash-card-border);
+  border: 1px solid currentColor;
   text-decoration: none;
-  font-size: 0.82rem;
+  font-size: 0.74rem;
   font-weight: 700;
   letter-spacing: 0.04em;
   color: var(--dash-text-bright);
-  background: rgba(255, 255, 255, 0.04);
+  background: transparent;
+  transition: background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+}
+.hub-support-btn::before {
+  content: "";
+  position: absolute;
+  inset: -9px -4px;
 }
 .hub-support-btn .hub-fa-icon {
-  width: 1.05em;
-  height: 1.05em;
+  width: 1em;
+  height: 1em;
 }
-.hub-support-btn:hover { filter: brightness(1.08); }
-.hub-support-btn.patreon {
-  background: #FF424D;
-  border-color: #FF424D;
-  color: #fff;
-}
-.hub-support-btn.paypal {
-  background: #0070BA;
-  border-color: #0070BA;
-  color: #fff;
-}
+.hub-support-btn.patreon { color: #FF5C66; }
+.hub-support-btn.paypal { color: #3AA8E8; }
+.hub-support-btn.patreon:hover,
+.hub-support-btn.patreon:focus-visible { background: #FF424D; border-color: #FF424D; color: #fff; }
+.hub-support-btn.paypal:hover,
+.hub-support-btn.paypal:focus-visible { background: #0070BA; border-color: #0070BA; color: #fff; }
 .hub-splash .hub-support {
   margin-top: 22px;
   justify-items: center;
@@ -979,7 +982,13 @@ a.hub-brand {
   margin-top: auto;
   padding-top: 12px;
   border-top: 1px solid var(--dash-card-border);
+  /* The drawer section is a flex column, so `justify-items` is inert here —
+     centre with align-items, and let the width-capped copy block auto-centre. */
+  align-items: center;
+  text-align: center;
 }
+.hub-drawer .hub-support-copy { margin-inline: auto; }
+.hub-drawer .hub-support-actions { justify-content: center; width: 100%; }
 .wizard-support {
   margin-top: 28px;
   padding: 18px 20px;
@@ -2235,12 +2244,6 @@ body.wizard-page {
   }
   .hub-drawer .hub-support-kicker { font-size: 0.72rem; }
   .hub-drawer .hub-support-actions { justify-content: center; }
-  .hub-drawer .hub-support-btn {
-    min-height: 40px;
-    padding: 0 14px;
-    font-size: 0.78rem;
-    gap: 6px;
-  }
   .hub-select-menu { max-width: 100%; }
   .wizard-support.hub-support {
     justify-items: center;
