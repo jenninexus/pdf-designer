@@ -1,9 +1,9 @@
 {
   "_meta": {
-    "description": "EXAMPLE brand token map for pdf-designer. Copy to storage/brand-design/brand-<yours>.json and replace values. Contains no personal data.",
+    "description": "EXAMPLE brand token map for pdf-designer. Copy to brands/brand-<yours>.json and replace values. Contains no personal data.",
     "source": "Replace with a pointer to your website profile, e.g. www-theme-kit/profiles/<site>.json",
     "paletteRules": "themes/PALETTE-RULES.md",
-    "privacy": "This file is tracked on purpose as a template. Real brand maps belong in gitignored storage/brand-design/."
+    "privacy": "This file is tracked on purpose as a template. Real brand maps belong in gitignored brands/."
   },
   "_paletteRuleNote": "On LIGHT, do not darken warm amber/gold accents — that turns brown. Hand the warm-highlight role to another hue already in the palette (violet, teal, blue, magenta).",
   "tokens": {

@@ -29,9 +29,6 @@ storage/
 # Tracked brand TEMPLATE (no personal data): examples/brand-design/
 private/
 notes/
-# Legacy private workspace (migration target: root users/vaults/profiles/… — see docs/WORKSPACE-LAYOUT.md)
-storage/
-
 # Root workspace nouns — track README + *.example.* only; real data stays local
 users/*
 !users/README.md
@@ -55,9 +52,8 @@ _job-apps/*
 !_job-apps/README.md
 !_job-apps/_template/
 
-# Brief 2026-08 name — README redirect only; listings live in _job-apps/
-applications/*
-!applications/README.md
+# Brief 2026-08 name — runtime alias only; listings live in _job-apps/
+applications/
 
 collages/*
 !collages/README.md
@@ -71,8 +67,7 @@ brands/*
 docs/MARKETING.md
 docs/WORKSPACE.md
 docs/HISTORY-SCRUB.md
-# Internal operating records: retain locally, never add to the public product.
-AGENTS.md
+# AGENTS.md is the tracked, vendor-neutral contributor SSOT.
 # Lessons travel with the clone (README + lesson-*.md). Other .memory/ notes stay local.
 .memory/*
 !.memory/README.md
@@ -143,6 +138,7 @@ docs/images/hub-resume-*.png
 *.jpeg
 *.webp
 *.gif
+# Explicit automation/test scratch only. User-facing exports live in _exports/.
 output/*
 !output/README.md
 # Personal/private generated deliverables. Keep the root guide visible in public clones;

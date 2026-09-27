@@ -1,13 +1,14 @@
 ---
 name: lesson-scaffold-readme-must-not-win-path-resolution
-description: A tracked README in users/ or applications/ must not steal live storage/ paths during dual-run
+description: README-only root-noun scaffolds must not steal legacy payload paths; applications/ no longer ships a scaffold
 metadata:
   type: feedback
   date: 2026-08-13
 ---
 
 **Path resolution must require payload, not directory existence.** A tracked
-`applications/README.md` (or `users/README.md`) makes that folder *exist*. If
+root-noun scaffold such as `users/README.md` makes that folder *exist*. (The retired
+`applications/README.md` was removed in 2026-09; `applications/` is now runtime-only.) If
 `resolve_rel` treats “directory exists” as a hit, Hub / tracker / vault skip
 the live `storage/` tree and look empty.
 

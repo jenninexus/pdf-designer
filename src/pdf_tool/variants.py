@@ -1,6 +1,6 @@
 """Export light PDFs for every public palette — palette shopping without the Hub.
 
-Writes under ``output/<user>/<kind>/_variants/<stem>/`` (never overwrites;
+Writes under ``_exports/<profile>/<kind>/_variants/<stem>/`` (never overwrites;
 uses the same ``-v2`` / ``-v3`` pattern as ``html_to_pdf``).
 
 Public palettes = ``themes/default-resume.json`` + ``themes/presets/*.json``.

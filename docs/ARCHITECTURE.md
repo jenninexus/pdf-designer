@@ -74,15 +74,15 @@ go; the documents and the CLI keep working without them.
 
 The job-application workflow (the claim vault, company research, gap-checking, tailoring,
 theming) lives in [`../.claude/commands/make-resume.md`](../.claude/commands/make-resume.example.md): a
-**markdown protocol** an agent — or a human — follows, backed by plain JSON under `storage/` and
-two Python guards.
+**markdown protocol** an agent—or a human—follows, backed by plain JSON in the root workspace nouns
+(`users/`, `vaults/`, `profiles/`, `_job-apps/`) and mechanical Python guards.
 
 That is a deliberate architectural choice, not an unfinished module:
 
 - **The judgment can't be coded.** *"Does this claim genuinely answer what they're asking for?"*
   and *"is this pay below market?"* are reasoning tasks, not parsing tasks. A `match_score.py`
   computing keyword overlap would emit a number that *feels* like an answer and isn't one.
-- **The data is the product.** The vault (`storage/<user>/resume-source.json`) is the real asset.
+- **The data is the product.** The vault (`vaults/<user>.json`) is the real asset.
   Plain JSON: greppable, diffable, hand-editable, readable by any agent — and it will outlive
   whatever code we wrap around it.
 - **Code only where correctness is mechanical.** Two things are: *is this hex brown?* and *does
@@ -129,7 +129,11 @@ examples/
   profiles/default-collage/
   _job-listings/              the one-folder-per-application workflow + its templates
 docs/                         you are here
-storage/                      ⛔ GITIGNORED alias — real data also at users/ vaults/ _job-apps/ resumes/
+users/ vaults/ profiles/     ignored local identity, claims, and rendering configuration
+resumes/ collages/ _job-apps/ ignored editable sources and application workspaces
+_exports/                    ignored user-facing generated-file library
+output/                      ignored explicit automation/test scratch
+storage/                     ⛔ GITIGNORED legacy alias only
 Plans/_Active/                optional one-plan execution slice
 Plans/_Complete/              shipped / parked plans; docs/ROADMAP.md owns the backlog
 .claude/commands/             the /make-resume protocol (agent-agnostic markdown)
@@ -153,7 +157,7 @@ pyproject.toml                `pip install -e .` → `pdf_tool` importable from 
 - **Ask before calling something a gap.** The vault records what someone *told* you — it is not
   the limit of what they can do.
 - **No auto-submission.** The tool prepares; the human submits.
-- **Privacy split.** `storage/`, `*.pdf`, `*.png`, leftover `_exports/`, and every non-`.example` real
+- **Privacy split.** Root-noun payloads, legacy `storage/`, `*.pdf`, `*.png`, `_exports/`, `output/`, and every non-`.example` real
   data file are gitignored. Never move real personal data into a tracked path.
 
 ## Planned

@@ -23,5 +23,5 @@
     "bundle": "A collage page is Letter HTML like any other — merge_pdfs.py can append it to a resume/portfolio bundle."
   },
   "module": "python -m pdf_tool.collage <imagesDir> --canvas <preset> --layout auto",
-  "_note": "default-collage.html is a hand-built reference render of the hero-mosaic family (6 images, Letter portrait) using CSS-gradient placeholder tiles — swap in real <img> tags or run the planned generator. Real image sets live in storage/collages/<project>/ (gitignored)."
+  "_note": "default-collage.html is a hand-built reference render of the hero-mosaic family (6 images, Letter portrait) using CSS-gradient placeholder tiles — swap in real <img> tags or run the generator. Real image sets live in collages/<project>/ (gitignored); deliberate exports land in _exports/<profile>/collages/<project>/."
 }

@@ -1,11 +1,11 @@
 {
   "_README": [
     "OPTIONAL consolidated tracker shape — not required.",
-    "Prefer scanning storage/_job-listings/**/application.json via:",
+    "Prefer scanning _job-apps/**/application.json via:",
     "  python -m pdf_tool.tracker list",
     "  python -m pdf_tool.tracker status",
     "",
-    "If you want a single flat file, copy this to storage/_job-listings/tracker.json",
+    "If you want a single flat file, copy this to _job-apps/tracker.json",
     "(gitignored). The CLI still prefers the per-folder application.json scan."
   ],
   "jobs": [

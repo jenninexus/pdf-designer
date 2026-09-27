@@ -62,17 +62,17 @@ content would be selected; they do not silently generate or invent prose.
 ```bash
 python -m pdf_tool.check_generation examples/profiles/default-resume/default-resume.html
 
-python -m pdf_tool.html_to_pdf examples/profiles/default-resume/default-resume.html --output-dir examples/resume-studio/_exports
-python -m pdf_tool.html_to_pdf examples/profiles/default-resume/default-resume.html --pdf-theme dark --output-dir examples/resume-studio/_exports
+python -m pdf_tool.html_to_pdf examples/profiles/default-resume/default-resume.html
+python -m pdf_tool.html_to_pdf examples/profiles/default-resume/default-resume.html --pdf-theme dark
 ```
 
 The first command creates `default-resume-light.pdf`; the second creates
-`default-resume-dark.pdf`. Generated files stay under the gitignored `_exports/` directory.
+`default-resume-dark.pdf`. Generated files stay under the gitignored repo-root `_exports/examples/` directory and appear under **Exports** in the Hub.
 
 ### 7. Prove the board PDF is ATS-readable
 
 ```bash
-python -m pdf_tool.check_ats examples/resume-studio/_exports/default-resume-light.pdf
+python -m pdf_tool.check_ats _exports/examples/default-resume-light.pdf
 ```
 
 A pass reports contiguous job-title, work-experience, and education cues with no unacceptable
@@ -95,6 +95,6 @@ python scripts/smoke-white-label.py
 | HTML | [`default-resume.html`](../profiles/default-resume/default-resume.html) | Browser and PDF source |
 | QA | `check_generation` + `check_ats` | Artifact and ATS gates |
 
-When you later add real information, copy the example shapes into gitignored `storage/`; never replace
+When you later add real information, copy the example shapes into the gitignored root nouns; never replace
 these tracked fixtures with personal details. See [Getting started](../../docs/GETTING-STARTED.md),
 [vault rules](../../docs/VAULT.md), and the [public/private split](../../docs/PUBLIC-LOCAL-SPLIT.md).

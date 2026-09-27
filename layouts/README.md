@@ -5,8 +5,8 @@
 *theme* answers "what color is it" (tokens, palettes, gradients). They compose: any
 layout renders in any theme.
 
-> **Nothing private lives here.** Real image sets, vaults, and finished exports stay in
-> `storage/` (gitignored). This directory is tracked so layouts survive, get reused, and
+> **Nothing private lives here.** Real image sets and vaults stay in their gitignored root nouns;
+> finished exports stay in `_exports/`. This directory is tracked so layouts survive, get reused, and
 > ship with a fresh clone — the same way `themes/presets/` does.
 
 | Path | Owns | Consumed by |
@@ -130,13 +130,13 @@ disk in `collage/_archive/`, so nothing is lost to a snap judgment.
 
 ### Finished renders (not recipes)
 
-The PNGs themselves are per-project output and stay in gitignored `storage/`. To collect a
+The PNGs themselves are per-project output and stay in gitignored `_exports/`. To collect a
 project's finished picks onto the cross-project shelf:
 
 ```bash
 python -m pdf_tool.collage <dir> --recipe <id> --png --shelve
 ```
 
-`--shelve` copies every render to `storage/collages/layouts/`, prefixed `<project>__`, in
+`--shelve` copies every render to `_exports/<profile>/collages/`, prefixed `<project>__`, in
 one flat directory. The **recipe** is the reusable artifact; the PNG is just a picture of
 one project's images.

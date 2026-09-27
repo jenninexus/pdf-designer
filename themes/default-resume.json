@@ -46,8 +46,8 @@
   },
   "paths": {
     "default_export_dir": "_exports",
-    "html_to_pdf_default": "When no explicit output PDF is supplied, write under <html directory>/_exports/.",
-    "png_default": "When no explicit PNG output directory is supplied, write under <pdf directory>/_exports/<pdf-name>-png/.",
+    "html_to_pdf_default": "When no explicit output path is supplied, write under repo-root _exports/<profile>/<kind>/ (public examples use _exports/examples/; unknown sources use _exports/unfiled/).",
+    "png_default": "When no explicit PNG output directory is supplied, write under the same repo-root _exports classification in <source-stem>-png/.",
     "override": "Use an explicit output path or --output-dir to target another folder."
   },
   "export_modes": {

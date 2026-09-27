@@ -1,20 +1,17 @@
-# `output/` — public engine/example output
+# `output/` — automation and test scratch
 
-Repo-root folder for the **clone-safe engine default and public examples**. Source HTML stays in
-`resumes/` and `collages/` (and public examples stay in `examples/`). The engine default
-(no `--output-dir`) is `pdf_tool.paths.default_output_dir`.
+Repo-root scratch space for smoke tests, packaging checks, benchmarks, and other disposable automation. It is not the default export destination and the Design Hub does not present it as the user's library.
 
 ```text
-output/collages/<project>/         collage with no inferred profile
-output/examples/                   public Jane Example / smoke PDFs
-output/                            truly unknown source
+output/smoke/
+output/test-runs/
+output/<tool-specific-scratch>/
 ```
 
 | Tracked | Gitignored |
 |---|---|
 | this README | every PDF, PNG, and job folder |
 
-`storage/` is private legacy residue and is **not** the output SSOT. Real personal/applicant
-deliverables use [`../_exports/`](../_exports/) through private profiles and command copies.
+Callers must opt in with `--output-dir output/...`; routine CLI and Hub exports default to [`../_exports/`](../_exports/). Scratch files may be deleted and must never be referenced as a submitted or final deliverable.
 
-A stranger's first export from `examples/profiles/default-resume/` lands in `output/examples/`.
+A stranger's first export from `examples/profiles/default-resume/` lands in `_exports/examples/` and is immediately visible under **Exports** in the Hub.

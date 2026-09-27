@@ -140,8 +140,8 @@ an unpinned signature are all cheap to fix and each has bitten a real doc).
 - **Before any submission**, run it on the final `.html`.
 - **After a bulk change** (palette swap, dir move), `--scan resumes/<user>/defaults` sweeps the go-to set.
 - **Go-to defaults:** after editing `resumes/<user>/*-resume.html` (**any** applicant), re-export
-  **light + dark** into `_exports/<user>/resumes/defaults/`, run `check_generation` on the source HTML, and
-  `python -m pdf_tool.check_ats _exports/<user>/resumes/defaults/*-resume-light.pdf` before treating the pack as board-ready.
+  **light + dark** into `_exports/<user>/resumes/`, run `check_generation` on the source HTML, and
+  `python -m pdf_tool.check_ats _exports/<user>/resumes/*-resume-light.pdf` before treating the pack as board-ready.
 > This tool found and fixed real margin drift in **both** favorite resumes (Shade `0.42/0.48/0.48`,
 > Jenni `0.45/0.5/0.55`) the day it was written — exactly the "consistent margin/padding" class of bug
 > it exists to catch. The 816px overflow correction later exposed a real jenni-resume footer overlap

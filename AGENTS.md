@@ -118,11 +118,11 @@ node scripts/wcag-resume-palettes.mjs                           # optional WCAG 
 ```
 
 `pip install -e .` makes `pdf_tool` importable **from the repo root** (else run from `src/` or set
-`PYTHONPATH=src`). Exports default to repo-root **`output/<user>/<kind>/`** (or `output/<kind>/` /
-`output/` when no profile) and **never overwrite** (auto
+`PYTHONPATH=src`). Exports default to repo-root **`_exports/<profile>/<kind>/`** (or
+`_exports/<kind>/` / `_exports/unfiled/`) and **never overwrite** (auto
 `-v2`, `-v3`). Default dual-mode names: `<stem>-light.pdf` (ATS) and `<stem>-dark.pdf` (branded).
-That is the clone-safe engine default. Personal command copies and private profiles explicitly route
-real applicant/studio deliverables to **`_exports/<user>/<kind>/`**.
+That is the single clone-safe and local user-facing export library. `output/` is explicit disposable
+automation/test scratch and is not scanned as a Hub document library.
 **Verification without a screen:** export, then `pdf_to_png` and *read* the PNGs — the intended agent loop.
 
 Full command/export recipes: [`docs/EXPORTS.md`](docs/EXPORTS.md).
@@ -195,8 +195,8 @@ marketed résumé-creator demo path (vault shape + palettes + smoke), not privat
 | `docs/` | ARCHITECTURE · SSOT · PRODUCT · PACKAGING · GETTING-STARTED · PUBLIC-LOCAL-SPLIT · STORAGE · VAULT · JOB-ASSESSMENT · THEME-DESIGN · LAYOUT-SYSTEM · EXPORTS · COLLAGE-DESIGN · PREVIEWER · APPLICATIONS · LICENSING-NOTES ([`docs/README.md`](docs/README.md) is the index) |
 | `.config/mcp-pdf-designer.example.json` | ⭐ Tracked project config **seed** (breakpoints + hub/palette/layout pointers). Copy → local `mcp-pdf-designer.json` (gitignored — machine paths). |
 | `Plans/_Active/` | Optional one-plan execution slice; durable backlog is [`docs/ROADMAP.md`](docs/ROADMAP.md) |
-| `output/` | ⭐ **public engine/example output** — tracked README only; payload ignored. Engine default. |
-| `_exports/` | ⭐ **private personal deliverables** — tracked README only; applicant/studio payload ignored. |
+| `_exports/` | ⭐ **all deliberate exports** — tracked README only; payload ignored; shown as **Exports** in the Hub. |
+| `output/` | **automation/test scratch** — tracked README only; payload ignored; explicit opt-in, not the engine default. |
 | `storage/` | **Retired legacy residue** (keep private; never ship or add new live work). Dual-run resolver still maps old `storage/<user>/` URLs. |
 | `resumes/studio/resources/images/martiangames/` | ⭐ **shared** MG title gallery (WebP) — both applicants; see [`docs/STORAGE.md`](docs/STORAGE.md) |
 
@@ -204,7 +204,7 @@ marketed résumé-creator demo path (vault shape + palettes + smoke), not privat
 
 | Public / tracked (safe to clone) | Private / gitignored (root nouns; `storage/` retired — live data is root nouns) |
 |---|---|
-| `src/pdf_tool/`, `themes/`, `examples/`, `docs/`, `AGENTS.md`, `*.example.md`, `output/README.md`, `_exports/README.md` | `users/`, `vaults/`, `profiles/`, `_job-apps/`, `brands/`, `resumes/`, `collages/`, `_exports/*` (payload), `output/*` (engine payload), legacy `storage/` |
+| `src/pdf_tool/`, `themes/`, `examples/`, `docs/`, `AGENTS.md`, `*.example.md`, `output/README.md`, `_exports/README.md` | `users/`, `vaults/`, `profiles/`, `_job-apps/`, `brands/`, `resumes/`, `collages/`, `_exports/*` (payload), `output/*` (scratch), legacy `storage/` |
 | Brand-neutral default theme | Real brand maps (`brands/brand-jenninexus.json`, `brand-martian`, `brand-synagen`) |
 | Example brand shape (`examples/brand-design/`) | Real vault claims, contacts, employer research |
 | Public seed commands (`*.example.md` only) | Bare commands (`pdf-start`/`pdf-wrap`/`start`/`wrap`/`make-*`/`README`), `.codex/`, frozen `Plans/_Complete/_archive/dev-log-*.yaml` |
@@ -268,7 +268,7 @@ Read [`docs/VAULT.md`](docs/VAULT.md) before authoring any resume claim.
 - **Emails — the default is the default.** Each person file has one `contact.emailRules.default`. Use it,
   every time, automatically. A personal gmail on record is **recognition, not authorization**.
 - **No auto-submission.** Prepare materials; the human submits.
-- **Privacy split.** `storage/`, `*.pdf`, `*.png`, `_exports/` personal payload, `output/` engine payload, non-`.example` source/capture files, and
+- **Privacy split.** `storage/`, `*.pdf`, `*.png`, `_exports/` export payload, `output/` scratch payload, non-`.example` source/capture files, and
   the personal `.md` commands are gitignored. Never move real personal data into tracked paths.
 
 ---

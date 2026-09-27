@@ -305,7 +305,7 @@ def scan_documents(root: Path) -> list[dict]:
             continue
         docs.append(classify_document(str(rel).replace("\\", "/"), p.stem, profile_ids))
 
-    # Finished personal deliverables are browseable in the local Hub, but remain
+    # Finished user-facing exports are browseable in the local Hub, but remain
     # gitignored and read-only. A public clone contains only _exports/README.md,
     # so discovery never adds personal data to the package or repository.
     exports_root = root / "_exports"
@@ -400,16 +400,15 @@ def render_pdf_preview_page(path: Path, page_index: int, scale: float = 2.0) -> 
 
 
 # File suffixes the auto-refresh watcher tracks. HTML sources change the doc
-# list; PDFs/PNGs land in output/ when a resume is exported and are what the
-# "refresh when I output a new resume" feature keys on.
+# list; generated-file changes wake the "refresh when I export" feature.
 _WATCH_SUFFIXES = {".html", ".json", ".pdf", ".png", ".jpg", ".jpeg", ".webp"}
-# output/ is excluded from the library; _exports/ artifacts are read-only cards.
+# output/ is automation scratch and excluded; _exports/ artifacts are read-only cards.
 # Both trees must still wake the auto-refresh watcher.
 _WATCH_EXCLUDE = EXCLUDE_PARTS - {"_exports", "output"}
 
 
 def tree_signature(root: Path) -> str:
-    """Cheap change token over the doc tree + output/ artifacts.
+    """Cheap change token over the doc tree + generated-file artifacts.
 
     Returns a string that changes whenever a watched file is added, removed, or
     modified — the client polls /api/version and refreshes when it changes.
@@ -426,7 +425,7 @@ def tree_signature(root: Path) -> str:
             rel_parts = p.relative_to(root).parts
         except ValueError:
             continue
-        # Watch output/ and private _exports/ even though only _exports artifacts
+        # Watch output/ scratch and _exports/ even though only _exports artifacts
         # are surfaced in the document library.
         if _WATCH_EXCLUDE.intersection(rel_parts):
             continue
@@ -604,8 +603,8 @@ try {
         <span class="hub-fa-icon fa-ellipsis" aria-hidden="true"></span>
       </summary>
       <div class="hub-more-panel">
-        <label>Output folder
-          <input id="outdir" type="text" placeholder="output/<user>/<kind> (default)">
+        <label>Export folder
+          <input id="outdir" type="text" placeholder="_exports/<profile>/<kind> (default)">
         </label>
       </div>
     </details>
@@ -682,8 +681,8 @@ try {
         </select>
       </div>
       <div class="hub-drawer-field">
-        <label for="outdirDrawer">Output folder</label>
-        <input id="outdirDrawer" type="text" placeholder="output/<user>/<kind> (default)">
+        <label for="outdirDrawer">Export folder</label>
+        <input id="outdirDrawer" type="text" placeholder="_exports/<profile>/<kind> (default)">
       </div>
     </div>
     <div class="hub-drawer-section hub-support" role="group" aria-label="Support JenniNexus">
@@ -837,12 +836,18 @@ function setFolderFilterValue(v, { silent = false } = {}) {
   const next = v || "";
   if (sel) sel.value = next;
   if (drawerSel) drawerSel.value = next;
-  const label = next || "all folders";
+  const label = folderDisplayName(next);
   const lab = document.getElementById("folderFilterLabel");
   const dlab = document.getElementById("drawerFolderFilterLabel");
   if (lab) { lab.textContent = label; lab.title = label; }
   if (dlab) { dlab.textContent = label; dlab.title = label; }
   if (!silent && sel) sel.dispatchEvent(new Event("change"));
+}
+
+function folderDisplayName(folder) {
+  if (!folder) return "all folders";
+  if (folder === "_exports") return "Exports";
+  return folder;
 }
 
 function folderMenuRow(folder, { selected, pinned, isAll }) {
@@ -853,7 +858,7 @@ function folderMenuRow(folder, { selected, pinned, isAll }) {
   row.dataset.value = folder;
   const label = document.createElement("span");
   label.className = "hub-folder-item-label";
-  label.textContent = isAll ? "all folders" : folder;
+  label.textContent = isAll ? "all folders" : folderDisplayName(folder);
   label.title = isAll ? "all folders" : folder;
   row.appendChild(label);
   if (!isAll) {
@@ -1386,7 +1391,7 @@ function renderStagebar(d) {
   }
   const root = d.root || String(d.path || "").split("/")[0] || "(root)";
   bar.appendChild(stageFilterButton(
-    root,
+    folderDisplayName(root),
     "root",
     root,
     "",
@@ -1494,7 +1499,7 @@ document.getElementById("folderFilter").addEventListener("change", () => {
   try { localStorage.setItem(HUB_FOLDER_KEY, v); } catch (_) {}
   const d = document.getElementById("drawerFolderFilter");
   if (d) d.value = v;
-  const label = v || "all folders";
+  const label = folderDisplayName(v);
   const lab = document.getElementById("folderFilterLabel");
   const dlab = document.getElementById("drawerFolderFilterLabel");
   if (lab) { lab.textContent = label; lab.title = label; }

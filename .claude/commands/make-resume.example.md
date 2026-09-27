@@ -189,7 +189,7 @@ Tracked and clone-safe:
 Local and gitignored:
 
 - Bare `make-resume.md`, start/wrap ritual, and generated `.codex/` adapters.
-- `storage/` vaults, profiles, real listings, brand maps, exports, and private docs.
+- Real root-noun payloads (`users/`, `vaults/`, `profiles/`, `_job-apps/`, `brands/`, `resumes/`, `_exports/`) and legacy `storage/` residue.
 
 Architecture: [`docs/PUBLIC-LOCAL-SPLIT.md`](../../docs/PUBLIC-LOCAL-SPLIT.md). Agent contracts:
 [`AGENTS.md`](../../AGENTS.md).

@@ -157,9 +157,9 @@
     "recipes": "layouts/collage/",
     "command": ".claude/commands/make-collage.example.md",
     "example_source": "examples/profiles/default-collage/collage-source.example.json",
-    "workspace": "storage/collages/<project>/",
-    "output": "storage/collages/<project>/_candidates/ (ONE FLAT DIR — canvas/bg/fit encoded in the filename)",
-    "shelf": "storage/collages/layouts/ (finished picks, <project>__ prefixed)",
+    "workspace": "collages/<project>/",
+    "output": "collages/<project>/_candidates/ (ONE FLAT DIR — canvas/bg/fit encoded in the filename)",
+    "shelf": "_exports/<profile>/collages/ (finished picks, <project>__ prefixed)",
     "rules": [
       "Screenshots and any image carrying text render with fit=contain — cropping destroys the content.",
       "Output stays flat: no per-canvas or per-background subfolders.",

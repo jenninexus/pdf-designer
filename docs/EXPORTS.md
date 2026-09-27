@@ -39,26 +39,26 @@ After `pip install -e .` you also get console scripts: `pdf-designer`,
 `pdf-designer-preview`, `pdf-designer-check-palette`, `pdf-designer-check-vault`,
 `pdf-designer-check-ats`, `pdf-designer-tracker`, `pdf-designer-variants`.
 
-## Public engine default vs private personal exports
+## Default export library vs automation scratch
 
-If no output path is supplied, exports go under repo-root **`output/`**, grouped
-by profile then kind. This is the clone-safe engine/example behavior:
+If no output path is supplied, exports go under repo-root **`_exports/`**, grouped
+by profile then kind. Public examples and private profiles use the same discoverable behavior:
 
 | Inference | Destination |
 |---|---|
-| Known user + résumé/letter HTML | `output/<user>/resumes/` |
-| Same, plus a job folder (`<App>/` or leftover `_exports/<App>/`) | `output/<user>/resumes/<App>/` |
-| Collage project mapped to a person | `output/<user>/collages/` |
-| Collage with no profile | `output/collages/` |
-| Public `examples/` | `output/examples/` |
-| Unknown / outside the repo | `output/` |
+| Known profile + résumé/letter HTML | `_exports/<profile>/resumes/` |
+| Same, plus a job folder | `_exports/<profile>/resumes/<App>/` |
+| Collage project mapped to a profile | `_exports/<profile>/collages/` |
+| Collage with no profile | `_exports/collages/` |
+| Public `examples/` | `_exports/examples/` |
+| Unknown / outside the repo | `_exports/unfiled/` |
 
 Dual-mode default names are **`<stem>-light.pdf`** / **`<stem>-dark.pdf`**.
 Re-exports never overwrite — they bump to `-v2`, `-v3`, …
 
-Real personal/applicant builds are deliberately separate: private profiles and bare `make-*`
-commands pass **`--output-dir _exports/<user>/<kind>/<App>/`**. Only `_exports/README.md` is
-tracked; its payload stays local. Do not change the engine default merely to route private work.
+Only `_exports/README.md` is tracked; every payload stays local. The Design Hub scans this tree and
+shows the root as **Exports**. `output/` is reserved for scripts that explicitly choose disposable
+automation/test scratch with `--output-dir output/...`; it is not scanned as a document library.
 
 Pick the folder on purpose only when the inference is wrong:
 
@@ -66,8 +66,9 @@ Pick the folder on purpose only when the inference is wrong:
 |---|---|---|
 | **Private go-to pack** (generic résumé / cover / work-examples) | `_exports/<user>/resumes/` (HTML stays in `resumes/<user>/defaults/`) | `--output-dir _exports/<user>/resumes --force` |
 | **Private job application** | `_exports/<user>/resumes/<App>/` | `--output-dir _exports/<user>/resumes/<App>` |
-| Public example / smoke | `output/examples/` | (default from `examples/…`) |
-| Unspecified / one-off | `output/` | (default) |
+| Public example | `_exports/examples/` | (default from `examples/…`) |
+| Unspecified / one-off | `_exports/unfiled/` | (default) |
+| Smoke/test scratch | `output/<tool-or-run>/` | explicit `--output-dir` only |
 
 Never write go-to PDFs into `defaults/` or a nested `docs/_exports/` folder.
 The Design Hub picker reads HTML under `resumes/<user>/defaults/`. Vault
@@ -107,10 +108,10 @@ around **5 MB**. The go-to work-examples pack must clear that bar.
 python resumes/jenni/defaults/_inline_work_examples.py
 # or: python -m pdf_tool.inline_images <template.html> <out.html> --board name=path ...
 
-# 2) QA, then export into defaults/ (same folder as the HTML)
+# 2) QA, then export into the profile's user-facing library
 python -m pdf_tool.check_generation resumes/jenni/defaults/jenni-default-work-examples.html
-python -m pdf_tool.html_to_pdf resumes/jenni/defaults/jenni-default-work-examples.html --output-dir resumes/jenni/defaults --force --max-mb 5
-python -m pdf_tool.html_to_pdf resumes/jenni/defaults/jenni-default-work-examples.html --output-dir resumes/jenni/defaults --force --pdf-theme dark --max-mb 5
+python -m pdf_tool.html_to_pdf resumes/jenni/defaults/jenni-default-work-examples.html --output-dir _exports/jenni/resumes --force --max-mb 5
+python -m pdf_tool.html_to_pdf resumes/jenni/defaults/jenni-default-work-examples.html --output-dir _exports/jenni/resumes --force --pdf-theme dark --max-mb 5
 ```
 
 `--max-mb 5` fails the export if the PDF is still over the cap. Do **not** try
@@ -125,8 +126,8 @@ inside `@media print`.
 
 ```powershell
 python -m pdf_tool.html_to_pdf resume.html
-python -m pdf_tool.html_to_pdf resume.html output/final/resume-light.pdf
-python -m pdf_tool.html_to_pdf resume.html --output-dir output/final
+python -m pdf_tool.html_to_pdf resume.html _exports/unfiled/resume-light.pdf
+python -m pdf_tool.html_to_pdf resume.html --output-dir _exports/unfiled
 ```
 
 ## Dark PDF
@@ -136,8 +137,8 @@ It keeps the same paper size and page breaks.
 
 ```powershell
 python -m pdf_tool.html_to_pdf resume.html --pdf-theme dark
-python -m pdf_tool.html_to_pdf resume.html output/final/resume-dark.pdf --pdf-theme dark
-python -m pdf_tool.html_to_pdf cover-letter.html --output-dir output/final --pdf-theme dark
+python -m pdf_tool.html_to_pdf resume.html _exports/unfiled/resume-dark.pdf --pdf-theme dark
+python -m pdf_tool.html_to_pdf cover-letter.html --output-dir _exports/unfiled --pdf-theme dark
 ```
 
 ## Combined Upload PDF
@@ -146,8 +147,8 @@ Use this when a job portal accepts only one file. Put the cover letter first,
 then the resume. Use `--require-letter` for application bundles.
 
 ```powershell
-python -m pdf_tool.merge_pdfs output/final/application.pdf output/final/cover-letter.pdf output/final/resume.pdf --require-letter
-python -m pdf_tool.merge_pdfs output/final/application-dark.pdf output/final/cover-letter-dark.pdf output/final/resume-dark.pdf --require-letter
+python -m pdf_tool.merge_pdfs _exports/unfiled/application.pdf _exports/unfiled/cover-letter.pdf _exports/unfiled/resume.pdf --require-letter
+python -m pdf_tool.merge_pdfs _exports/unfiled/application-dark.pdf _exports/unfiled/cover-letter-dark.pdf _exports/unfiled/resume-dark.pdf --require-letter
 ```
 
 ## PNG Preview
@@ -160,7 +161,7 @@ engine, so the image is exact.
 
 ```powershell
 python -m pdf_tool.pdf_to_png resume.html
-python -m pdf_tool.pdf_to_png resume.html output/preview --pdf-theme dark --scale 2
+python -m pdf_tool.pdf_to_png resume.html _exports/unfiled/preview --pdf-theme dark --scale 2
 ```
 
 > **Why HTML and not the PDF?** It used to rasterize the exported PDF with **PyMuPDF — which is
@@ -289,7 +290,7 @@ python -m pdf_tool.check_overflow resume.html --pdf-theme dark
 python -m pdf_tool.check_palette --no-magenta resume.html
 
 # 3) page count + paper size from the ACTUAL PDF (ground truth, never an HTML re-render)
-python -c "from pypdf import PdfReader; r=PdfReader('output/resume-light.pdf'); b=r.pages[0].mediabox; print(len(r.pages),'pages', f'{float(b.width)/72:.2f}x{float(b.height)/72:.2f}in')"
+python -c "from pypdf import PdfReader; r=PdfReader('_exports/unfiled/resume-light.pdf'); b=r.pages[0].mediabox; print(len(r.pages),'pages', f'{float(b.width)/72:.2f}x{float(b.height)/72:.2f}in')"
 
 # 4) eyeball it
 python -m pdf_tool.pdf_to_png resume.html

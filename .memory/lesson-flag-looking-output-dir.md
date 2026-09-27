@@ -18,6 +18,6 @@ uses `--user`. A leftover flag is a valid Windows file name.
 
 **How to apply:** `paths.reject_flag_looking_path` runs on `--output-dir` **and**
 on `html_to_pdf`'s positional output. Default exports already land under repo-root
-`output/<user>/<kind>/` (see [[lesson-output-is-repo-root]]). Never invent a
+`_exports/<profile>/<kind>/` (see [[lesson-exports-are-one-user-facing-root]]). Never invent a
 repo-root `--user` or `--output-dir` file. `html_to_pdf` has no `--user` flag —
 user is inferred from the HTML path.

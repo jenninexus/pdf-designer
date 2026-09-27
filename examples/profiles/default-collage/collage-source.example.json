@@ -1,5 +1,5 @@
 {
-  "_schema": "Input file for a collage project. Copy to storage/collages/<project>/collage-source.json and fill in. See docs/COLLAGE-DESIGN.md.",
+  "_schema": "Input file for a collage project. Copy to collages/<project>/collage-source.json and fill in. See docs/COLLAGE-DESIGN.md.",
   "imagesDir": "./images",
   "images": [
     { "file": "hero-shot.png", "caption": "Optional caption", "role": "hero" },
