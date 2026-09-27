@@ -88,6 +88,23 @@ def _jobs(draft: dict, track: str, source: str) -> list[dict]:
     return jobs
 
 
+ASSET_README = """# Your images and logos
+
+Put this person's images (headshots, project shots, game art) in `images/` and logos in `logos/`.
+Work-samples and letter templates reference them by relative path, for example
+`<img src="../../resumes/<id>/resources/images/project-hero.webp">`, and
+`python -m pdf_tool.inline_images --board <template>.html <out>.html` embeds them.
+Prefer WebP or JPEG; keep 16:9 shots uncropped. Art shared by several people lives in
+`resumes/studio/resources/images/<collection>/`. This folder is gitignored.
+"""
+
+
+def asset_dirs(slug: str) -> dict[str, str]:
+    """Repo-relative asset folders for one person — the single image/logo SSOT."""
+    base = f"resumes/{slug}/resources"
+    return {"root": f"{base}/", "images": f"{base}/images/", "logos": f"{base}/logos/"}
+
+
 def build_user(draft: dict, slug: str) -> dict:
     name = (
         draft.get("displayName")
@@ -110,6 +127,13 @@ def build_user(draft: dict, slug: str) -> dict:
             "signatureTitle": (draft.get("headline") or "").strip(),
         },
         "vault": f"../vaults/{slug}.json",
+        "portfolio": {
+            "_note": "ONE place for this person's images and logos. Templates reference these files "
+            "by relative <img src> path; inline_images embeds them for self-contained PDFs.",
+            "imagesDir": asset_dirs(slug)["images"],
+            "logosDir": asset_dirs(slug)["logos"],
+            "sharedStudioImages": "resumes/studio/resources/images/<collection>/ (art shared by several people)",
+        },
         "identity": {
             "headline": (draft.get("headline") or "").strip(),
             "company": "",
@@ -221,7 +245,7 @@ def build_profile(slug: str, template: dict, name: str) -> dict:
         "reason": "Starter profile from a local résumé import. Gitignored.",
     }
     exports = profile.get("exports") if isinstance(profile.get("exports"), dict) else {}
-    exports["dir"] = f"../output/{slug}/resumes/"
+    exports["dir"] = f"../_exports/{slug}/resumes/"
     profile["exports"] = exports
     return profile
 
@@ -253,6 +277,12 @@ def save_starter(
     _dump(user_path, user)
     _dump(vault_path, vault)
     _dump(profile_path, profile)
+    dirs = asset_dirs(ident)
+    for key in ("images", "logos"):
+        (root / dirs[key]).mkdir(parents=True, exist_ok=True)
+    readme = root / dirs["root"] / "README.md"
+    if not readme.exists():
+        readme.write_text(ASSET_README.replace("<id>", ident), encoding="utf-8")
     return {
         "ok": True,
         "slug": ident,
@@ -261,6 +291,7 @@ def save_starter(
             "vault": vault_path.as_posix(),
             "profile": profile_path.as_posix(),
         },
+        "assets": dirs,
         "warnings": list(draft.get("warnings") or []),
         "vaultHref": f"/vault?profile={ident}",
     }

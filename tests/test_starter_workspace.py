@@ -35,3 +35,18 @@ def test_save_starter_refuses_existing_without_overwrite(tmp_path: Path):
     save_starter(tmp_path, draft, slug="alex-rivera", template_root=ROOT)
     with pytest.raises(FileExistsError):
         save_starter(tmp_path, draft, slug="alex-rivera", template_root=ROOT)
+
+
+def test_save_starter_creates_one_asset_home_and_exports_to_library(tmp_path: Path):
+    import json
+
+    draft = draft_from_text(resume_text=RESUME, filenames=["alex-resume.txt"])
+    result = save_starter(tmp_path, draft, slug="alex-rivera", template_root=ROOT)
+    assert result["assets"]["images"] == "resumes/alex-rivera/resources/images/"
+    assert (tmp_path / "resumes/alex-rivera/resources/images").is_dir()
+    assert (tmp_path / "resumes/alex-rivera/resources/logos").is_dir()
+    assert (tmp_path / "resumes/alex-rivera/resources/README.md").is_file()
+    user = json.loads((tmp_path / "users/alex-rivera.json").read_text(encoding="utf-8"))
+    assert user["portfolio"]["imagesDir"] == "resumes/alex-rivera/resources/images/"
+    profile = json.loads((tmp_path / "profiles/alex-rivera-resume.json").read_text(encoding="utf-8"))
+    assert profile["exports"]["dir"] == "../_exports/alex-rivera/resumes/"
