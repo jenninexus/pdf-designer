@@ -48,7 +48,12 @@ python -m pdf_tool.check_generation <doc>.html --json          # machine-readabl
 5. **Control-test both directions.** A new guard must be shown to **FAIL the known-bad artifact** and
    **PASS the known-good one**. A check only ever verified against clean input proves nothing.
    Footer-collision's known-bad lives at
-   [`tests/fixtures/known-bad-footer-overlap.html`](../tests/fixtures/known-bad-footer-overlap.html).
+   [`tests/fixtures/known-bad-footer-overlap.html`](../tests/fixtures/known-bad-footer-overlap.html);
+   its known-good (text-dense mid-page, fitting layout) at
+   [`tests/fixtures/known-good-probe-on-text.html`](../tests/fixtures/known-good-probe-on-text.html).
+   The page background is the **modal colour of a sparse grid**, never one probe pixel.
+   A letter's sign-off lines must stay inside the left 40% band (a long title line under the script
+   reads as intrusion) — keep the title short.
 
 > **Never say "verified" after only checking the source.** Export (or let `check_generation` render),
 > then trust the PASS — or open the PNG / PDF and look. The human eye on the artifact is still the

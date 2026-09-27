@@ -74,6 +74,7 @@ codebase · `reference`: pointer to an external resource.
 |---|---|
 | [lesson-pdf-viewer-needs-first-class-route.md](lesson-pdf-viewer-needs-first-class-route.md) | A dark iframe shell is not proof that a PDF loaded — use `/pdf-viewer` and verify real page images inside the frame |
 | [lesson-default-light-must-override-dark-source.md](lesson-default-light-must-override-dark-source.md) | A `-light.pdf` filename does not make the DOM light — default PDF and PNG renders must actively override a dark source root |
+| [lesson-guard-background-probe-must-be-modal.md](lesson-guard-background-probe-must-be-modal.md) | A render guard that samples ONE "background" pixel can land on a glyph and fail a fitting page — use the modal colour of a grid |
 | [lesson-guard-assumptions-must-be-measured.md](lesson-guard-assumptions-must-be-measured.md) | A QA guard that hard-codes a layout assumption fails silently on the other layout — measure the pixels before trusting the verdict |
 | [lesson-flag-looking-output-dir.md](lesson-flag-looking-output-dir.md) | `pdf_to_png` treats leftover `--output-dir` as a folder name — refuse paths that start with `-` |
 | [lesson-ssot-dashboard-must-name-live-paths.md](lesson-ssot-dashboard-must-name-live-paths.md) | After a folder rename, update `SSOT.md` + wrap checklists in the same wrap — dual-run is not honesty |

@@ -1,0 +1,37 @@
+<!doctype html>
+<!-- Known-GOOD control for footer-collision (docs/QA.md rule 5).
+     The page FITS: nothing sits in the signature band. But a dense block of light text covers the
+     vertical middle of the left content column — exactly where the old single-pixel background
+     probe sampled (inset, H/2). That probe read a glyph as "background", every empty pixel became
+     "lit", and a fitting résumé failed (2026-09-27). check_footer_collision MUST PASS this file. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>known-good probe on text</title>
+<style>
+  @page { size: Letter; margin: 0.65in; background: #0a1422; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #0a1422; color: #f5efdc; font: 12px/1.3 sans-serif; }
+  .page { display: flex; flex-direction: column; width: 8.5in; min-height: 11in; margin: 0 auto; padding: 0.65in; }
+  .page-main { flex: 1 1 auto; min-height: 0; }
+  .spacer { height: 3.3in; }
+  /* Solid cream bar across the left column at mid-page: the old probe pixel always hit it. */
+  .band { height: 1.6in; background: #f5efdc; }
+  .page-sig { margin-top: auto; align-self: flex-end; text-align: right; padding-top: 12px; }
+  .page-sig .script { font-family: "Segoe Script", cursive; font-size: 18px; color: #f2c14e; }
+  .page-sig .mail { font-size: 10px; letter-spacing: .05em; text-transform: uppercase; }
+  @media print {
+    .page { width: auto; height: 9.7in; min-height: 0; margin: 0; padding: 0; overflow: hidden; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="page-main">
+    <div class="spacer"></div>
+    <div class="band"></div>
+  </div>
+  <div class="page-sig"><div class="script">Sample Name</div><div class="mail">name@example.com</div></div>
+</div>
+</body>
+</html>

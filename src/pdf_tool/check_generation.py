@@ -26,6 +26,7 @@ from __future__ import annotations
 import json
 import re
 import sys
+from collections import Counter
 from pathlib import Path
 
 from .browser import chromium_launch_kwargs
@@ -341,7 +342,15 @@ def check_footer_collision(path: Path):
                     # chrome (or white margin) and make the whole sheet look "lit".
                     # 0.65in ≈ 94px at scale 2; use a safe inset past equal margins.
                     inset = max(120, int(min(W, H) * 0.12))
-                    bg = im.getpixel((inset, H // 2))
+                    # Background = the MODAL colour of a sparse grid, never one probe pixel: a
+                    # single sample at (inset, H/2) landed on a text glyph on 2026-09-27, so the
+                    # whole empty sheet read as "lit" and a fitting résumé failed.
+                    samples = Counter(
+                        im.getpixel((x, y))
+                        for y in range(inset, H - inset, 23)
+                        for x in range(inset, W - inset, 31)
+                    )
+                    bg = samples.most_common(1)[0][0]
 
                     def lit(px):  # noticeably different from the page background
                         return sum(abs(a - c) for a, c in zip(px, bg)) > 90
