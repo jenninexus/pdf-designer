@@ -16,12 +16,12 @@ an explicit selection.
 ## Remaining gate — publish verified local main
 
 - [ ] Activate an existing credential with write access to `jenninexus/pdf-designer`.
-- [ ] Restore the real `origin` push URL, push local `main`, fetch, and prove `origin/main` contains
-  `6c639a37b86320c5717a5825b8e8348029eff4ff`.
+- [ ] Restore the real `origin` push URL, push local `main`, fetch, and prove `origin/main` contains the
+  current local-main tip recorded in the recovery item below.
 - [ ] Close recovery-queue item
   `203463379ec2b8182ebf6e4c5e26e695723ea1ba7d4680289274a53f039e35a5` only after that containment
-  proof. The clean checkout is currently 14 commits ahead of `origin/main`; the configured push URL is
-  intentionally blocked at `github.invalid`.
+  proof. The clean checkout remains ahead of `origin/main`; the configured push URL is intentionally
+  blocked at `github.invalid`.
 
 This is an external credential gate, not unfinished engineering in the completed organization slice.
 
