@@ -197,6 +197,7 @@ marketed résumé-creator demo path (vault shape + palettes + smoke), not privat
 | `docs/` | ARCHITECTURE · SSOT · PRODUCT · PACKAGING · GETTING-STARTED · PUBLIC-LOCAL-SPLIT · STORAGE · VAULT · JOB-ASSESSMENT · THEME-DESIGN · LAYOUT-SYSTEM · EXPORTS · COLLAGE-DESIGN · PREVIEWER · APPLICATIONS · LICENSING-NOTES ([`docs/README.md`](docs/README.md) is the index) |
 | `.config/mcp-pdf-designer.example.json` | ⭐ Tracked project config **seed** (breakpoints + hub/palette/layout pointers). Copy → local `mcp-pdf-designer.json` (gitignored — machine paths). |
 | `Plans/_Active/` | Optional one-plan execution slice; durable backlog is [`docs/ROADMAP.md`](docs/ROADMAP.md) |
+| `resumes/<user>/resources/{images,logos,videos,references}/` | Private reusable career-document sources for one person; not résumé-only. Job-specific evidence stays with the application. |
 | `_exports/` | **Fallback** export folder (examples · unfiled) — tracked README only; payload ignored. Personal exports live in `resumes/<user>/(<App>/)` and `collages/<project>/`. |
 | `output/` | **automation/test scratch** — tracked README only; payload ignored; explicit opt-in, not the engine default. |
 | `storage/` | **Retired legacy residue** (keep private; never ship or add new live work). Dual-run resolver still maps old `storage/<user>/` URLs. |

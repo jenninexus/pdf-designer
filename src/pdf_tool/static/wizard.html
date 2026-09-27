@@ -146,7 +146,7 @@ try {
         <button type="button" id="starterImport">Read files into a draft</button>
       </div>
       <p class="wizard-hint">PDF, TXT, MD, or HTML. No account, no network parse. Cover-letter filenames should include “cover” or “letter”.</p>
-      <p class="wizard-hint">Images and logos live in one place per person: <code>resumes/&lt;id&gt;/resources/images/</code> and <code>resumes/&lt;id&gt;/resources/logos/</code> — created for you on Save. Templates point at them by relative path.</p>
+      <p class="wizard-hint">Reusable document resources live in one place per person: <code>resumes/&lt;id&gt;/resources/</code> (<code>images/</code>, <code>logos/</code>, <code>videos/</code>, and <code>references/</code>) — created for you on Save. Templates point at media by relative path.</p>
     </div>
     <div id="starterEditor" class="wizard-editor" hidden>
       <p id="starterWarnings" class="wizard-callout" hidden></p>
@@ -349,7 +349,7 @@ try {
       if (!result.ok) throw new Error(result.error || 'Save failed');
       const imagesDir = result.assets && result.assets.images ? result.assets.images : '';
       status.innerHTML = 'Saved <code>' + (result.files && result.files.vault ? result.files.vault : draft.slug) + '</code>. <a href="' + result.vaultHref + '">Open in Vault</a>.'
-        + (imagesDir ? ' Put your images in <code>' + imagesDir + '</code> and logos in <code>' + result.assets.logos + '</code>.' : '');
+        + (imagesDir ? ' Reusable document resources are under <code>' + result.assets.root + '</code>.' : '');
     } catch (err) {
       status.textContent = err.message || 'Save failed.';
     }

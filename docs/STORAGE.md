@@ -121,7 +121,7 @@ twice. Personal / brand-identity art stays per-user.
 | **MG title stills + MG logo** | `resumes/studio/resources/images/martiangames/` | Jenni **and** Shade |
 | Agency banner + agent faces | `resumes/jenni/resources/images/agency/` | **Jenni only** |
 | Synagen logo / engine shots | `resumes/shade/resources/logos/` (+ `images/synagen/` when present) | **Shade lead** (Jenni may reference the logo file under her own `logos/` copy) |
-| Source CVs / owner quotes | `resumes/<user>/resources/refrence/` | That person |
+| Source CVs / owner quotes | `resumes/<user>/resources/references/` | That person |
 
 ```
 resumes/studio/resources/images/
@@ -156,13 +156,14 @@ resumes/<user>/
   defaults/                 ⭐ GO-TO reusable HTML — the generic "best-of" resume, cover letter,
                             and work-examples sources (company-agnostic). PDFs live in
                             resumes/<user>/ (flat), not in this folder.
-  resources/                reusable user assets (NOT job-specific)
+  resources/                reusable career-document sources (NOT job-specific; not résumé-only)
       images/
         martiangames/       JUNCTION → resumes/studio/resources/images/martiangames/ (shared)
         agency/             (jenni only) Agency showcase
         synagen/            (shade — when engine screenshots arrive)
       logos/                brand marks — synagen-logo-16-9.png, etc. (per-user)
-      refrence/             source CVs + owner quote docs (mg_cv_2025.pdf, Self-Described.md, …)
+      videos/               reusable clips; keep job-specific captures with that application instead
+      references/           source CVs + owner quote docs (mg_cv_2025.pdf, Self-Described.md, …)
   (PDFs)                    resumes/<user>/<Track>/  — private generated files (per-job subfolder)
   _archive/                 ⛔ retired/superseded material — DO NOT DELETE on a "clean stale" pass
   _submitted/               (shade) sent-application record — DO NOT DELETE on a "clean stale" pass

@@ -88,10 +88,11 @@ def _jobs(draft: dict, track: str, source: str) -> list[dict]:
     return jobs
 
 
-ASSET_README = """# Your images and logos
+ASSET_README = """# Your reusable document resources
 
-Put this person's images (headshots, project shots, game art) in `images/` and logos in `logos/`.
-Work-samples and letter templates reference them by relative path, for example
+Put this person's images (headshots, project shots, game art) in `images/`, brand marks in `logos/`,
+reusable clips in `videos/`, and source CVs or owner-supplied notes in `references/`.
+Résumé, work-samples, and letter templates reference media by relative path, for example
 `<img src="../../resumes/<id>/resources/images/project-hero.webp">`, and
 `python -m pdf_tool.inline_images --board <template>.html <out>.html` embeds them.
 Prefer WebP or JPEG; keep 16:9 shots uncropped. Art shared by several people lives in
@@ -100,17 +101,20 @@ Prefer WebP or JPEG; keep 16:9 shots uncropped. Art shared by several people liv
 
 
 def asset_dirs(slug: str) -> dict[str, str]:
-    """Repo-relative asset folders for one person — the single image/logo SSOT."""
+    """Repo-relative resource folders for one person's career documents."""
     base = f"resumes/{slug}/resources"
-    return {"root": f"{base}/", "images": f"{base}/images/", "logos": f"{base}/logos/"}
+    return {
+        "root": f"{base}/",
+        "images": f"{base}/images/",
+        "logos": f"{base}/logos/",
+        "videos": f"{base}/videos/",
+        "references": f"{base}/references/",
+    }
 
 
 def build_user(draft: dict, slug: str) -> dict:
-    name = (
-        draft.get("displayName")
-        or draft.get("displayName")
-        or slug.replace("-", " ").title()
-    ).strip()
+    name = (draft.get("displayName") or slug.replace("-", " ").title()).strip()
+    dirs = asset_dirs(slug)
     return {
         "id": slug,
         "aliases": [slug],
@@ -120,7 +124,7 @@ def build_user(draft: dict, slug: str) -> dict:
         "created": date.today().isoformat(),
         "contact": {
             "email": (draft.get("email") or "").strip(),
-            "web": (draft.get("web") or draft.get("web") or "").strip(),
+            "web": (draft.get("web") or "").strip(),
             "github": "",
             "location": "",
             "signatureName": name,
@@ -128,10 +132,12 @@ def build_user(draft: dict, slug: str) -> dict:
         },
         "vault": f"../vaults/{slug}.json",
         "portfolio": {
-            "_note": "ONE place for this person's images and logos. Templates reference these files "
-            "by relative <img src> path; inline_images embeds them for self-contained PDFs.",
-            "imagesDir": asset_dirs(slug)["images"],
-            "logosDir": asset_dirs(slug)["logos"],
+            "_note": "ONE resource home for this person's career documents. Templates reference media "
+            "by relative paths; inline_images embeds images for self-contained PDFs.",
+            "imagesDir": dirs["images"],
+            "logosDir": dirs["logos"],
+            "videosDir": dirs["videos"],
+            "referencesDir": dirs["references"],
             "sharedStudioImages": "resumes/studio/resources/images/<collection>/ (art shared by several people)",
         },
         "identity": {
@@ -139,7 +145,7 @@ def build_user(draft: dict, slug: str) -> dict:
             "company": "",
             "role": "",
             "voice": "Imported draft — replace with the person's real application voice.",
-            "background": (draft.get("coverLetterNotes") or draft.get("coverLetterNotes") or "")[:280],
+            "background": (draft.get("coverLetterNotes") or "")[:280],
         },
         "_imported": {
             "warning": "Starter files from a local résumé parse. Every claim is inferred until reviewed.",
@@ -278,7 +284,7 @@ def save_starter(
     _dump(vault_path, vault)
     _dump(profile_path, profile)
     dirs = asset_dirs(ident)
-    for key in ("images", "logos"):
+    for key in ("images", "logos", "videos", "references"):
         (root / dirs[key]).mkdir(parents=True, exist_ok=True)
     readme = root / dirs["root"] / "README.md"
     if not readme.exists():

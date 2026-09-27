@@ -45,8 +45,12 @@ def test_save_starter_creates_one_asset_home_and_exports_to_library(tmp_path: Pa
     assert result["assets"]["images"] == "resumes/alex-rivera/resources/images/"
     assert (tmp_path / "resumes/alex-rivera/resources/images").is_dir()
     assert (tmp_path / "resumes/alex-rivera/resources/logos").is_dir()
+    assert (tmp_path / "resumes/alex-rivera/resources/videos").is_dir()
+    assert (tmp_path / "resumes/alex-rivera/resources/references").is_dir()
     assert (tmp_path / "resumes/alex-rivera/resources/README.md").is_file()
     user = json.loads((tmp_path / "users/alex-rivera.json").read_text(encoding="utf-8"))
     assert user["portfolio"]["imagesDir"] == "resumes/alex-rivera/resources/images/"
+    assert user["portfolio"]["videosDir"] == "resumes/alex-rivera/resources/videos/"
+    assert user["portfolio"]["referencesDir"] == "resumes/alex-rivera/resources/references/"
     profile = json.loads((tmp_path / "profiles/alex-rivera-resume.json").read_text(encoding="utf-8"))
     assert profile["exports"]["dir"] == "../resumes/alex-rivera/"
