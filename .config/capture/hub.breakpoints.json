@@ -1,0 +1,48 @@
+{
+  "name": "pdf-designer-design-hub",
+  "description": "OPTIONAL page x breakpoint manifest for screenshotting the Design Hub UI with an external breakpoint-capture tool. pdf-designer never needs it: documents are captured by the built-in python -m pdf_tool.pdf_to_png. Public-safe (examples-profile routes only). Start the Hub first: python -m pdf_tool.preview --no-open --port 8787.",
+  "breakpointProfile": "common-web",
+  "breakpoints": [],
+  "pages": [
+    {
+      "path": "/?no-splash&profile=examples",
+      "slug": "hub-library"
+    },
+    {
+      "path": "/?no-splash&profile=examples&doc=examples/profiles/default-resume/default-resume.html",
+      "slug": "hub-doc-resume"
+    },
+    {
+      "path": "/vault?profile=examples",
+      "slug": "hub-vault"
+    },
+    {
+      "path": "/recipes",
+      "slug": "hub-recipes"
+    },
+    {
+      "path": "/wizard",
+      "slug": "hub-wizard"
+    }
+  ],
+  "capture": {
+    "fullPageBgFix": false,
+    "injectCssBeforeShot": ""
+  },
+  "defaults": {
+    "baseUrl": "http://127.0.0.1:8787",
+    "localUrl": "http://127.0.0.1:8787",
+    "themes": [
+      "dark"
+    ],
+    "fullPage": false,
+    "flat": true,
+    "filenameDate": true
+  },
+  "notes": {
+    "splash": "?no-splash skips the launch title; the Hub also skips it for the rest of a session once dismissed.",
+    "output": "Captures are ephemeral QA evidence: write to a scratch/temp directory and delete after review. Never commit PNGs; _exports/ is the user-facing document library, not a screenshot dump.",
+    "matrix": "breakpointProfile names a shared sampling matrix in the capture tool; tools without that profile can use the Hub's own tiers (390, 576, 768, 992, 1200, 1400, 1920) from src/pdf_tool/static/hub.css.",
+    "interaction": "Drawer open/resize, custom selects, and hover states need a real pointer — use a human-sim / pointer-driven QA tool, not a static sweep."
+  }
+}

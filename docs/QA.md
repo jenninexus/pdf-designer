@@ -151,3 +151,18 @@ an unpinned signature are all cheap to fix and each has bitten a real doc).
 > Jenni `0.45/0.5/0.55`) the day it was written — exactly the "consistent margin/padding" class of bug
 > it exists to catch. The 816px overflow correction later exposed a real jenni-resume footer overlap
 > that the old viewport had hidden; that is now fixed at the source and guarded by check 10.
+
+## Screenshots and optional external QA
+
+The toolkit needs **no** external QA service. Pick the lane by what you are proving:
+
+| Proving | Use | Ships with pdf-designer? |
+|---|---|---|
+| A document renders right (résumé, letter, work samples, collage) | `python -m pdf_tool.pdf_to_png <doc>.html` (one PNG per `.page`) + `check_generation` | ✅ built in |
+| An exported PDF is what it claims | render the **PDF** (for example `pypdfium2`) and count embedded images with `pypdf` — a template opened raw in a viewer is not evidence | ✅ (dependencies of the engine) |
+| The Design Hub UI holds up across widths | [`.config/capture/hub.breakpoints.json`](../.config/capture/hub.breakpoints.json) — a page × breakpoint manifest (`?no-splash`, examples profile only) for any breakpoint-capture tool | manifest only; bring your own capture tool |
+| Hover, focus, drag, drawer resize, custom selects | a real-pointer (human-simulated) QA pass | ❌ external |
+
+Rules: captures are **ephemeral evidence** — write them to a scratch directory, never commit them,
+and never put them in `_exports/` (that is the document library). Static screenshots do not prove
+interaction behavior, and a rendered page is not a semantic pass by itself.
