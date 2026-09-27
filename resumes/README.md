@@ -17,6 +17,7 @@ Public examples and direct engine runs still use [`output/`](../output/README.md
 | Go-to HTML | `resumes/<id>/defaults/` |
 | Go-to personal PDFs | `resumes/<id>/` (flat) |
 | Per-job personal PDFs | `resumes/<id>/<App>/` |
+| Reusable person resources | `resumes/<id>/resources/{images,logos,videos,references}/` |
 | Public/example PDFs | `output/examples/` |
 | Shared MG gallery | `resumes/studio/resources/images/martiangames/` (junctions from jenni/shade) |
 

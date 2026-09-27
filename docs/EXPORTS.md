@@ -84,7 +84,7 @@ resumes/<user>/
     <user>-default-resume.html
     <user>-default-cover-letter.html
     <user>-default-work-examples.html
-  resources/images/ · resources/logos/     source assets (never exports)
+  resources/images/ · logos/ · videos/ · references/   reusable sources (never exports)
   <user>-default-resume-light.pdf
   <user>-default-resume-dark.pdf
   <user>-default-work-examples-light.pdf
