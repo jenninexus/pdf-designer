@@ -24,10 +24,12 @@
 The 2026-09-26 private-preview repair and stage filters are verified and archived in the
 completed-history file linked above.
 
-The same active plan now records the completed workspace/export organization slice: `_exports/` is
-the only user-facing generated library, `output/` is explicit automation scratch, editable sources
-remain in their document roots, and `applications/` is only a runtime compatibility alias. The plan
-stays active solely for the remote-containment gate and the next explicitly accepted product slice.
+The completed workspace/export organization slice is archived at
+[`Plans/_Complete/2026-09-26-export-library-organization.md`](../Plans/_Complete/2026-09-26-export-library-organization.md):
+`_exports/` is the only user-facing generated library, `output/` is explicit automation scratch,
+editable sources remain in their document roots, and `applications/` is only a runtime compatibility
+alias. The one active plan now contains only the remote-containment gate and the next explicitly
+accepted product slice.
 
 ### Parked / decision-gated
 

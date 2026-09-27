@@ -8,8 +8,9 @@ remains in Git history, the linked completed plans, and the owning docs.
 - Root duplicates were archived and legacy `storage/` was retired; the dual-run URL resolver remains.
 - `_job-apps/` became the one live application noun; only generalized seeds are public.
 - Repository history was scrubbed, the clone-safe Hub was published, and the GitHub product became public.
-- Public engine output (`output/`) and private deliverables (`_exports/<profile>/<kind>/`) were split;
-  source HTML stays under private root nouns.
+- Deliberate exports were consolidated under `_exports/<profile>/<kind>/`; `output/` is explicit
+  automation/test scratch, and source HTML stays under its public/private authoring roots. Full
+  evidence: [`2026-09-26-export-library-organization.md`](2026-09-26-export-library-organization.md).
 - Personal commands stay local; only `.example.md` protocol seeds ship.
 
 ## Public product and Design Hub
