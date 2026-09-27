@@ -39,53 +39,57 @@ After `pip install -e .` you also get console scripts: `pdf-designer`,
 `pdf-designer-preview`, `pdf-designer-check-palette`, `pdf-designer-check-vault`,
 `pdf-designer-check-ats`, `pdf-designer-tracker`, `pdf-designer-variants`.
 
-## Default export library vs automation scratch
+## Where exports land (beside their family) vs automation scratch
 
-If no output path is supplied, exports go under repo-root **`_exports/`**, grouped
-by profile then kind. Public examples and private profiles use the same discoverable behavior:
+Exports live **with their document family**, so a person's finished files sit next to the rest of
+their work (owner directive 2026-09-27). With no output path supplied, the engine infers:
 
-| Inference | Destination |
+| Source | Destination |
 |---|---|
-| Known profile + résumé/letter HTML | `_exports/<profile>/resumes/` |
-| Same, plus a job folder | `_exports/<profile>/resumes/<App>/` |
-| Collage project mapped to a profile | `_exports/<profile>/collages/` |
-| Collage with no profile | `_exports/collages/` |
-| Public `examples/` | `_exports/examples/` |
-| Unknown / outside the repo | `_exports/unfiled/` |
+| `_job-apps/<App>/<user>-….html` (filename prefix = a `users/<id>.json` or `resumes/<id>/`) | `resumes/<user>/<App>/` |
+| `resumes/<user>/defaults/…` or `resumes/<user>/…` | `resumes/<user>/` |
+| `resumes/<user>/<App>/…` | `resumes/<user>/<App>/` |
+| `collages/<project>/…` | `collages/<project>/` (beside `images/` and `_candidates/`) |
+| Public `examples/` | `_exports/examples/` (fallback) |
+| Unknown / outside the repo | `_exports/unfiled/` (fallback) |
 
 Dual-mode default names are **`<stem>-light.pdf`** / **`<stem>-dark.pdf`**.
 Re-exports never overwrite — they bump to `-v2`, `-v3`, …
 
-Only `_exports/README.md` is tracked; every payload stays local. The Design Hub scans this tree and
-shows the root as **Exports**. `output/` is reserved for scripts that explicitly choose disposable
-automation/test scratch with `--output-dir output/...`; it is not scanned as a document library.
+`resumes/`, `collages/`, and `_exports/` payloads are all gitignored; only READMEs are tracked. The
+Design Hub discovers finished files beside their family (any PDF under `resumes/`, images outside
+`resources/`, files at a collage project root, and everything in `_exports/`) and lists them all
+under **Exports (all finished files)** in the folder picker. `output/` is reserved for scripts that
+explicitly choose disposable automation/test scratch with `--output-dir output/...`; it is not
+scanned as a document library.
 
 Pick the folder on purpose only when the inference is wrong:
 
 | What you're exporting | Put the PDFs here | Flag |
 |---|---|---|
-| **Private go-to pack** (generic résumé / cover / work-examples) | `_exports/<user>/resumes/` (HTML stays in `resumes/<user>/defaults/`) | `--output-dir _exports/<user>/resumes --force` |
-| **Private job application** | `_exports/<user>/resumes/<App>/` | `--output-dir _exports/<user>/resumes/<App>` |
+| **Private go-to pack** (generic résumé / cover / work-examples) | `resumes/<user>/` (HTML stays in `resumes/<user>/defaults/`) | (default) · or `--output-dir resumes/<user> --force` |
+| **Private job application** | `resumes/<user>/<App>/` | (default from `_job-apps/<App>/<user>-….html`) |
+| Collage | `collages/<project>/` | (default) · `--shelve` copies chosen renders there |
 | Public example | `_exports/examples/` | (default from `examples/…`) |
 | Unspecified / one-off | `_exports/unfiled/` | (default) |
 | Smoke/test scratch | `output/<tool-or-run>/` | explicit `--output-dir` only |
 
 Never write go-to PDFs into `defaults/` or a nested `docs/_exports/` folder.
 The Design Hub picker reads HTML under `resumes/<user>/defaults/`. Vault
-`goToPacks.*.exportDir` must match the private PDF location (`_exports/<user>/resumes/`).
+`goToPacks.*.exportDir` must match the private PDF location (`resumes/<user>/`).
 
 ```text
-resumes/jenni/defaults/
-  jenni-default-resume.html
-  jenni-default-cover-letter.html
-  jenni-default-work-examples.html
-
-_exports/jenni/resumes/
-  jenni-default-resume-light.pdf
-  jenni-default-resume-dark.pdf
-  jenni-default-work-examples-light.pdf
-  Netflix-App/
-    jenni-netflix-genai-resume-light.pdf
+resumes/<user>/
+  defaults/
+    <user>-default-resume.html
+    <user>-default-cover-letter.html
+    <user>-default-work-examples.html
+  resources/images/ · resources/logos/     source assets (never exports)
+  <user>-default-resume-light.pdf
+  <user>-default-resume-dark.pdf
+  <user>-default-work-examples-light.pdf
+  Example-Role/
+    <user>-example-role-resume-light.pdf
 ```
 
 Use `--output-dir <dir>` or a full output path when a project needs a specific folder.
@@ -113,8 +117,8 @@ python resumes/jenni/defaults/_inline_work_examples.py
 
 # 2) QA, then export into the profile's user-facing library
 python -m pdf_tool.check_generation resumes/jenni/defaults/jenni-default-work-examples.html
-python -m pdf_tool.html_to_pdf resumes/jenni/defaults/jenni-default-work-examples.html --output-dir _exports/jenni/resumes --force --max-mb 5
-python -m pdf_tool.html_to_pdf resumes/jenni/defaults/jenni-default-work-examples.html --output-dir _exports/jenni/resumes --force --pdf-theme dark --max-mb 5
+python -m pdf_tool.html_to_pdf resumes/jenni/defaults/jenni-default-work-examples.html --output-dir resumes/jenni --force --max-mb 5
+python -m pdf_tool.html_to_pdf resumes/jenni/defaults/jenni-default-work-examples.html --output-dir resumes/jenni --force --pdf-theme dark --max-mb 5
 ```
 
 `--max-mb 5` fails the export if the PDF is still over the cap. Do **not** try

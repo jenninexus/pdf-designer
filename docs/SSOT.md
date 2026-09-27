@@ -94,7 +94,7 @@ not either. Full checklist: [`JOB-ASSESSMENT.md`](JOB-ASSESSMENT.md) § Tier 4.5
 | “Section looks fine on screen” | Not enough. Montserrat can split `WORK EXPERIENCE` → `W ORK EXPERIENCE` and body words → `Gam es` / `m aterials` while the page looks perfect. **Print body + h2 use a system font.** |
 | “Jobright rank D means unparseable” | **False.** Rank / IMPROVABLE / “Insufficient skills” / “Lack of Accomplishment” is their **content AI**. Missing Job Title / Work Experience / Education is the **parse** warning. Different gates. |
 
-**Personal defaults:** ship **both** light and dark for go-to résumés under `_exports/<user>/resumes/`
+**Personal defaults:** ship **both** light and dark for go-to résumés under `resumes/<user>/` (flat)
 (HTML stays in `resumes/<user>/defaults/`) so the board
 file and the branded file stay in sync. Per-job `exportPrefs` may still emphasize dark for email —
 that does **not** remove the need for a light file when a board will parse the upload. Cover letters
@@ -117,7 +117,7 @@ www-theme-kit/profiles/{jenninexus,martiangames}.json
 
 | Who | Edit this file | Pointed by |
 |---|---|---|
-| Jenni | `brands/brand-jenninexus.json` | `users/jenni.json` · `profiles/jenni-resume.json` · defaults triad HTML under `resumes/jenni/defaults/`; PDFs under `_exports/jenni/resumes/` (same footer-mail legibility: `--text` ≥11px) |
+| Jenni | `brands/brand-jenninexus.json` | `users/jenni.json` · `profiles/jenni-resume.json` · defaults triad HTML under `resumes/jenni/defaults/`; PDFs under `resumes/jenni/` (same footer-mail legibility: `--text` ≥11px) |
 | Shade (Synagen) | `brands/brand-synagen.json` | `users/shade.json` · `profiles/shade-resume.json` |
 | Martian studio | `brands/brand-martian.json` | Shade studio/games profiles + kit `#martian-resume` |
 

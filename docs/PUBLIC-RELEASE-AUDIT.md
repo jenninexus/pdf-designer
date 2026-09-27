@@ -24,22 +24,23 @@ gets:
 | Protocol seeds | `.claude/commands/*.example.md` (placeholders only) |
 | Docs | Public `docs/*.md` in this index · `README.md` · `LICENSE` (MIT) |
 | Lessons | `.memory/README.md` + `.memory/lesson-*.md` |
-| Export layout | Tracked `_exports/README.md` for the one user-facing export library + `output/README.md` for explicit automation/test scratch (all PDF/PNG payload gitignored) |
+| Export layout | Tracked `STORAGE.md` for the family-local export contract + `_exports/README.md` for the fallback library + `output/README.md` for explicit automation/test scratch (all PDF/PNG payload gitignored) |
 | Proof | `python scripts/smoke-white-label.py` · `python scripts/check-wheel-assets.py` |
 
 **Intended public fixes** (engine/docs/examples that a clone needs) land on
 `main` and are pushed. They are the free product. Do not hold them for a paid
 installer, TestPyPI, or a clean-machine Electron gate.
 
-Current example: repo-root `output/` as the public engine default and `_exports/` as the private personal tree (HTML stays in
-`resumes/` / `collages/` / `examples/`). That is clone UX, not a paid feature.
+Current example: repo-root `output/` as the public engine default and personal exports landing
+beside their document family (`resumes/<user>/`, `collages/<project>/`), with `_exports/` as the
+fallback for public examples or an unmatched source. That is clone UX, not a paid feature.
 
 ## What the free product does not include
 
 | Keep off GitHub / out of the pitch | Why |
 |---|---|
 | Live `users/` · `vaults/` · `profiles/` · `resumes/` payload · `_job-apps/` listings · `collages/` images · `brands/` hex | Real people and jobs |
-| Generated `_exports/**/*.pdf` (and PNG) | Personal renders; the folder *shape* is public, the files are not |
+| Generated PDFs/PNGs under `resumes/**` and `collages/**`, plus fallback `_exports/**` | Personal renders; the folder *shape* is public, the files are not |
 | Generated `output/**` payload | Public/example engine renders; only the folder guide is tracked |
 | Bare `.claude/commands/*.md` (`start` / `wrap` / `make-*` / commands README) | Dev ritual + personal specifics |
 | `Plans/` · `Plans/_Complete/_archive/dev-log-sego.yaml` · `docs/MARKETING.md` · `WORKSPACE.md` · `HISTORY-SCRUB.md` | Operating records |

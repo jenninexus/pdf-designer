@@ -88,7 +88,7 @@ Anything the next person to touch this application needs to know.*
 
 | | Path |
 |---|---|
-| Résumé (light / ATS) | `../../../_exports/<user>/resumes/<Track>/…-resume-light.pdf` |
+| Résumé (light / ATS) | `../../../resumes/<user>/<Track>/…-resume-light.pdf` |
 | Résumé (dark / branded) | `…-resume-dark.pdf` |
 | Cover letter (light / dark) | `…-cover-letter-{light,dark}.pdf` |
 | **Submission bundle** | `FINAL-<Name>-<Role>-Cover-Letter-and-Resume.pdf` |

@@ -40,7 +40,7 @@ Never studio “we” on a solo application.
 1. Listing + apply URL + theme
 2. Gap check — ask before writing gaps
 3. Write letter (company-specific content lives HERE)
-4. Export per `exportPrefs` → `_exports/<user>/resumes/<Job>/`
+4. Export per `exportPrefs` → `resumes/<user>/<Job>/`
 5. Verify 1 page US Letter
 6. Log paths in `application.json`
 

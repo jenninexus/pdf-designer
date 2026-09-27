@@ -12,6 +12,9 @@ output/<tool-specific-scratch>/
 |---|---|
 | this README | every PDF, PNG, and job folder |
 
-Callers must opt in with `--output-dir output/...`; routine CLI and Hub exports default to [`../_exports/`](../_exports/). Scratch files may be deleted and must never be referenced as a submitted or final deliverable.
+Callers must opt in with `--output-dir output/...`; routine CLI and Hub exports default to beside
+their document family (`resumes/<user>/`, `collages/<project>/`), falling back to
+[`../_exports/`](../_exports/) for public examples or an unmatched source. Scratch files may be
+deleted and must never be referenced as a submitted or final deliverable.
 
 A stranger's first export from `examples/profiles/default-resume/` lands in `_exports/examples/` and is immediately visible under **Exports** in the Hub.

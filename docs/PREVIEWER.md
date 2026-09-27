@@ -113,9 +113,12 @@ collapsible by folder. Stage bar shows filterable kind · profile · root folder
 ### Features
 
 - **Live thumbnails** for every renderable source `.html`; generated `output/` stays outside the library.
-- **Export browser:** local `_exports/**/*.{pdf,png,jpg,jpeg,webp}` appears as lightweight,
-  read-only artifact cards. Choose **Exports** (the friendly label for `_exports/`) to see every export, or a nested
-  application folder for one pack. The artifact opens in the main viewer only when selected and cannot
+- **Export browser:** finished files are discovered beside their document family — any PDF under
+  `resumes/`, images under `resumes/` (except `resources/`), files at a collage project root, plus
+  everything under `_exports/**/*.{pdf,png,jpg,jpeg,webp}` — and appear as lightweight, read-only
+  artifact cards. The folder filter offers a virtual **Exports (all finished files)** entry across
+  every family, plus `_exports` itself labeled **_exports (fallback)**, or a nested application
+  folder for one pack. The artifact opens in the main viewer only when selected and cannot
   be re-exported. `_archive` remains excluded. PDFs open in the Hub's dark, page-bounded preview with
   the same cyan scrollbar as the library; **Open original** is still available for the browser's native
   PDF toolbar. The preview rasterizes the actual PDF pages on demand rather than re-rendering source HTML.

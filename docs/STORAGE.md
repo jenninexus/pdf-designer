@@ -13,7 +13,9 @@
 > **Tracked protocol SSOT:** this page lives in `docs/` so a fresh clone can learn the flow.
 
 Everything under `storage/` is **local-only legacy residue**. Keep it for recovery/history, but
-route live career data through the root nouns and every deliberate generated deliverable through `_exports/`.
+route live career data through the root nouns; deliberate generated deliverables now export
+beside their document family (`resumes/<user>/…`, `collages/<project>/`), with `_exports/`
+as the fallback for unmatched sources.
 Private *notes* (`MARKETING` · `WORKSPACE` · history scrub) now live under **`docs/`** (gitignored)
 — not a second docs tree here.
 
@@ -83,22 +85,26 @@ Each layer answers exactly one question.
                        <Company>.md · application.json · theme.json · *.html
                                     │
                                     ▼
-  → OUT ─────────────  _exports/<profile>/<kind>/<Track>/
+  → OUT ─────────────  resumes/<profile>/<Track>/  (or collages/<project>/; _exports/ fallback)
 ```
 
 ## The generated-file rule
 
-`_exports/` is the only user-facing generated-file library—for personal profiles, studio profiles,
-and public examples. The Hub labels this root **Exports** while preserving `_exports/` on disk for
-stable paths and top-level sorting.
+Exports live **with their document family**, not in one central library. Per-job résumé/cover-letter/
+work-sample PDFs and PNGs go to `resumes/<profile>/<Track>/` (HTML sources stay in `_job-apps/<Track>/`).
+Go-to/default packs export flat into `resumes/<profile>/` (HTML stays in `resumes/<profile>/defaults/`).
+Studio exports live under `resumes/studio/…`. Collage exports land at the collage project root,
+`collages/<project>/`. The Hub labels the union of these **Exports**.
+
+`_exports/` is now the **fallback only**, used when a source can't be matched to a document family:
 
 ```text
 _exports/examples/                         public/example exports
-_exports/<profile>/resumes/                reusable résumé/letter/work-sample packs
-_exports/<profile>/resumes/<application>/  one application pack
-_exports/<profile>/collages/<project>/     finished collage choices
 _exports/unfiled/                          source with no inferred profile or kind
 ```
+
+A fresh public clone (before any `resumes/<profile>/` or `collages/<project>/` exists) still exports
+here by default.
 
 `output/` is not a second library. It is explicit, disposable automation/test scratch and is not
 scanned by the Hub. Editable HTML and image sources remain in `examples/`, `resumes/`, `collages/`,
@@ -141,14 +147,15 @@ Air Wars preferred hero source: `<mg-repo>/src/assets/images/airwars/gallery/11b
 
 Each person's résumé folder holds their **go-to source documents** + reusable assets and
 finished-run history. Identity and claims live separately in `users/` and `vaults/`; generated
-deliverables live in `_exports/`. Updated architecture 2026-07-20 / root-noun split 2026-08-17:
+deliverables live beside this folder, under `resumes/<user>/…` (fallback `_exports/` only for an
+unmatched source). Updated architecture 2026-07-20 / root-noun split 2026-08-17 / export-beside-family 2026-09-27:
 
 ```
 resumes/<user>/
   <user>-resume.html / shade-default-resume.html   the favorite/default source HTML (root)
   defaults/                 ⭐ GO-TO reusable HTML — the generic "best-of" resume, cover letter,
                             and work-examples sources (company-agnostic). PDFs live in
-                            _exports/<user>/resumes/ (flat), not in this folder.
+                            resumes/<user>/ (flat), not in this folder.
   resources/                reusable user assets (NOT job-specific)
       images/
         martiangames/       JUNCTION → resumes/studio/resources/images/martiangames/ (shared)
@@ -156,20 +163,21 @@ resumes/<user>/
         synagen/            (shade — when engine screenshots arrive)
       logos/                brand marks — synagen-logo-16-9.png, etc. (per-user)
       refrence/             source CVs + owner quote docs (mg_cv_2025.pdf, Self-Described.md, …)
-  (PDFs)                    _exports/<user>/resumes/<Track>/  — private generated files, not this folder
+  (PDFs)                    resumes/<user>/<Track>/  — private generated files (per-job subfolder)
   _archive/                 ⛔ retired/superseded material — DO NOT DELETE on a "clean stale" pass
   _submitted/               (shade) sent-application record — DO NOT DELETE on a "clean stale" pass
 ```
 
 > **⛔ `_archive/` and `_submitted/` are protected.** Never delete their contents during
 > a "clean stale" / dangling-reference sweep — they are history the owner keeps on
-> purpose. Private finished PDFs now live under **`_exports/<user>/resumes/`** (also protected).
+> purpose. Private finished PDFs now live under **`resumes/<user>/`** itself (also protected;
+> `_exports/<user>/resumes/` is fallback only, for a source the engine can't match here).
 > Stale-cleaning applies to broken *pointers*, not to these directories.
 >
-> **`defaults/` vs `_exports/`.** `_exports/<user>/resumes/<Track>/` is per-job output;
+> **`defaults/` vs the per-job folder.** `resumes/<user>/<Track>/` is per-job output;
 > **`defaults/` is HTML only** — the generic "best-of" résumé / cover / work-examples
-> sources. Grab the matching PDFs from `_exports/<user>/resumes/` (flat go-to files).
-> Vault `goToPacks.*.exportDir` must point at `_exports/<user>/resumes/`. After editing
+> sources. Grab the matching go-to PDFs from `resumes/<user>/` (flat).
+> Vault `goToPacks.*.exportDir` must point at `resumes/<user>/`. After editing
 > a default HTML, re-export **light + dark** (no `--output-dir` needed), run
 > `python -m pdf_tool.check_generation` on the source, and `python -m pdf_tool.check_ats` on the light
 > PDF (see [`QA.md`](QA.md) · [`JOB-ASSESSMENT.md`](JOB-ASSESSMENT.md) § Tier 4.5).

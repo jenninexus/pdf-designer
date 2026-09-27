@@ -1,20 +1,32 @@
-# `_exports/` — the export library
+# `_exports/` — fallback export folder
 
-This is the single user-facing destination for deliberate PDFs, PNG previews, collages, and other generated deliverables. It is used by public examples and local profiles alike:
+**Personal exports no longer live here.** Finished files live with their document family, so
+a job's PDFs sit next to everything else about that person (owner directive 2026-09-27):
 
 ```text
-_exports/<profile>/resumes/<application>/
-_exports/<profile>/collages/<project>/
-_exports/examples/
-_exports/unfiled/
+resumes/<profile>/<application>/   per-job résumé · cover letter · work samples (+ <stem>-png/)
+resumes/<profile>/                 go-to packs (sources stay in resumes/<profile>/defaults/)
+collages/<project>/                finished collage PNGs (inputs in images/, renders in _candidates/)
 ```
 
-Only this README is tracked. Export payloads stay ignored. Keep editable source in `examples/`, `resumes/`, `collages/`, or `_job-apps/`; never treat an exported PDF as the source of truth.
+This folder is only the **fallback** the engine uses when a source has no family:
 
-The engine defaults here so every export appears in the Design Hub. `output/` is separate disposable automation/test scratch and is never the user's document library.
+```text
+_exports/examples/   renders of the public examples/ documents (a fresh clone lands here)
+_exports/unfiled/    anything the engine cannot place
+```
 
-Do not create `docs/_exports/` or other nested export roots. Documentation images intended for publication belong in `docs/images/`; generated documentation previews belong here.
+Only this README is tracked; payloads stay ignored. Keep editable sources in `examples/`,
+`resumes/`, `collages/`, or `_job-apps/`, and never treat an exported PDF as the source of truth.
+`output/` is separate disposable automation/test scratch.
 
-To browse these files without exposing them, run the Design Hub, select the matching profile, then
-choose **Exports** in the folder picker. The UI uses that friendly label while the physical folder remains `_exports/`. PDF/image cards are read-only. Use the per-card comparison
-checkboxes and **Focus N** when comparing a smaller set.
+`python -m pdf_tool.html_to_pdf <doc>.html` picks the destination for you:
+`_job-apps/<App>/<user>-….html` → `resumes/<user>/<App>/`, `resumes/<user>/…` → `resumes/<user>/`,
+`collages/<project>/…` → `collages/<project>/`, everything else → here. Pass `--output-dir` to override.
+
+**Design Hub:** choose **Exports (all finished files)** in the folder picker to see every exported
+PDF and image in one view wherever it lives; `_exports (fallback)` shows only this folder. Cards are
+read-only; use the comparison checkboxes and **Focus N** to compare a smaller set.
+
+Do not create `docs/_exports/` or other nested export roots. Documentation images intended for
+publication belong in `docs/images/`.

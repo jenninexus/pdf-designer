@@ -113,7 +113,8 @@ themes/default-collage.json          ⭐ TRACKED — canvas presets, backgrounds
 collages/<project>/
   images/                              your source images (+ optional collage-source.json)
   _candidates/                         ⭐ ALL renders — ONE FLAT DIR, no subfolders
-_exports/<user>/collages/<project>/  private finished picks (`--out`)
+  (finished picks land at this project root via `--shelve`; `_exports/<user>/collages/<project>/`
+   is fallback only, for a source the engine can't match here)
 ```
 
 **Output is flat.** Variants never nest into subfolders — canvas, background, and fit are encoded

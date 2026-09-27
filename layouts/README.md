@@ -6,7 +6,8 @@
 layout renders in any theme.
 
 > **Nothing private lives here.** Real image sets and vaults stay in their gitignored root nouns;
-> finished exports stay in `_exports/`. This directory is tracked so layouts survive, get reused, and
+> finished exports stay beside their document family (`resumes/<user>/`, `collages/<project>/`), with
+> `_exports/` as the fallback. This directory is tracked so layouts survive, get reused, and
 > ship with a fresh clone — the same way `themes/presets/` does.
 
 | Path | Owns | Consumed by |
@@ -130,13 +131,14 @@ disk in `collage/_archive/`, so nothing is lost to a snap judgment.
 
 ### Finished renders (not recipes)
 
-The PNGs themselves are per-project output and stay in gitignored `_exports/`. To collect a
-project's finished picks onto the cross-project shelf:
+The PNGs themselves are per-project output and stay in the gitignored collage project. To collect a
+project's finished picks onto the project's own shelf:
 
 ```bash
 python -m pdf_tool.collage <dir> --recipe <id> --png --shelve
 ```
 
-`--shelve` copies every render to `_exports/<profile>/collages/`, prefixed `<project>__`, in
-one flat directory. The **recipe** is the reusable artifact; the PNG is just a picture of
+`--shelve` copies every render to the collage project root, `collages/<project>/`, prefixed
+`<project>__`, in one flat directory (falls back to `_exports/<profile>/collages/` when the source
+can't be matched to a project). The **recipe** is the reusable artifact; the PNG is just a picture of
 one project's images.

@@ -132,13 +132,14 @@ job-listing-capture-*.md
 !docs/pdf-designer-overview.pdf
 *.png
 !docs/images/**/*.png
-# Real-applicant Hub captures belong in private _exports/, never public docs media.
+# Real-applicant Hub captures belong beside their document family (or the _exports/ fallback), never public docs media.
 docs/images/hub-resume-*.png
 *.jpg
 *.jpeg
 *.webp
 *.gif
-# Explicit automation/test scratch only. User-facing exports live in _exports/.
+# Explicit automation/test scratch only. User-facing exports live beside their document family
+# (resumes/<user>/, collages/<project>/); _exports/ is the fallback.
 output/*
 !output/README.md
 # Personal/private generated deliverables. Keep the root guide visible in public clones;

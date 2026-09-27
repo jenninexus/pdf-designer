@@ -180,14 +180,14 @@ examples/profiles/default-collage/
 collages/<project>/
   images/                          your source images + collage-source.json
   _candidates/                     ALL generated variants, one flat dir
-_exports/<user>/collages/<project>/
-                                   private finished picks from personal commands
+  (finished picks)                 --shelve copies chosen renders to this project root
 output/collages/<project>/         public/example finished picks
 ```
 
 Working candidate galleries stay with the private project at
-`collages/<project>/_candidates/`. Personal final picks go to
-`_exports/<user>/collages/<project>/`; public/example output goes to `output/collages/<project>/`.
+`collages/<project>/_candidates/`. `--shelve` copies chosen final picks to the collage project
+root, `collages/<project>/`; public/example output goes to `output/collages/<project>/`.
+`_exports/` is now only the fallback for a collage source the engine can't match to a project.
 Serve them through the Design Hub at <http://127.0.0.1:8787/>; opening picker HTML over `file://`
 is not the supported path.
 
