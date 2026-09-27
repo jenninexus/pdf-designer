@@ -21,7 +21,7 @@ tracked [`.memory/`](../.memory/). Do **not** recreate root `dev-log-sego.yaml`.
 
 | Plan | Status |
 |---|---|
-| [`2026-09-26-private-preview-routing-and-product-carryover.md`](_Active/2026-09-26-private-preview-routing-and-product-carryover.md) | Private-preview fidelity verified; remaining decision gates and product evolution are carried forward here. |
+| _none_ | No product slice is accepted. The closed carryover plan is [`_Complete/2026-09-26-private-preview-routing-and-product-carryover.md`](_Complete/2026-09-26-private-preview-routing-and-product-carryover.md); its open items live in [`docs/ROADMAP.md`](../docs/ROADMAP.md). |
 
 > **`/jen:roadmap` entry point:** [`../docs/ROADMAP.md`](../docs/ROADMAP.md).
 > **Business:** [`../docs/PRODUCT.md`](../docs/PRODUCT.md).

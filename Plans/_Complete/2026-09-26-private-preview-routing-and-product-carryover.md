@@ -1,15 +1,17 @@
 # Product carryover and remote containment
 
-**Status:** Active — verified local main awaits authorized publication; the next product slice requires
-an explicit selection.
+**Status:** Closed 2026-09-27 — moved to `_Complete` at owner direction. Nothing was dropped: every open
+item below is carried verbatim in [`docs/ROADMAP.md`](../../docs/ROADMAP.md) (remote containment gate with
+the recovery-queue id; decision-gated and product-evolution slices). No product slice was accepted, so
+`Plans/_Active/` holds only its README until one is.
 **Public safety:** no names, employers, vault claims, machine paths, or private media belong here.
 
 ## Completed context
 
 - Workspace/export organization:
-  [`../_Complete/2026-09-26-roadmap-completed-archive.md#export-library-organization`](../_Complete/2026-09-26-roadmap-completed-archive.md#export-library-organization)
+  [`2026-09-26-roadmap-completed-archive.md#export-library-organization`](2026-09-26-roadmap-completed-archive.md#export-library-organization)
 - Earlier roadmap, private-preview repair, and stage-filter history:
-  [`../_Complete/2026-09-26-roadmap-completed-archive.md`](../_Complete/2026-09-26-roadmap-completed-archive.md)
+  [`2026-09-26-roadmap-completed-archive.md`](2026-09-26-roadmap-completed-archive.md)
 - Canonical current map: [`../../docs/PUBLIC-LOCAL-SPLIT.md`](../../docs/PUBLIC-LOCAL-SPLIT.md) and
   [`../../docs/STORAGE.md`](../../docs/STORAGE.md)
 
@@ -30,7 +32,7 @@ This is an external credential gate, not unfinished engineering in the completed
 ### Decision-gated
 
 - [ ] **pywebview shell** — remains parked; see
-  [`../_Complete/2026-07-11-design-hub-parked-phases.md`](../_Complete/2026-07-11-design-hub-parked-phases.md).
+  [`2026-07-11-design-hub-parked-phases.md`](2026-07-11-design-hub-parked-phases.md).
 - [ ] **Signed binary channel** — reopen only after a private-channel decision; require valid
   Authenticode and clean Windows 10/11 x64 VM evidence. Do not list an unsigned executable.
 - [ ] **Production PyPI** — proceed only after TestPyPI proof and an explicit channel decision; the
@@ -47,4 +49,4 @@ This is an external credential gate, not unfinished engineering in the completed
 
 - Remote gate closes only with fresh destination containment evidence for the exact intended mainline.
 - Product work starts only after one slice is explicitly accepted and receives its own bounded plan.
-- Keep exactly this one non-README file in `Plans/_Active/` until one of those conditions changes.
+- ~~Keep exactly this one non-README file in `Plans/_Active/`~~ — superseded 2026-09-27: the open items live in ROADMAP; `_Active` is empty until a slice is accepted.

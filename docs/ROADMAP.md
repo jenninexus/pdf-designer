@@ -4,7 +4,7 @@
 >
 > | Kind | File |
 > |---|---|
-> | **Active product slice** | [`Plans/_Active/2026-09-26-private-preview-routing-and-product-carryover.md`](../Plans/_Active/2026-09-26-private-preview-routing-and-product-carryover.md) |
+> | **Active product slice** | _none accepted_ — `Plans/_Active/` holds only its README. Last carryover plan (closed 2026-09-27): [`Plans/_Complete/2026-09-26-private-preview-routing-and-product-carryover.md`](../Plans/_Complete/2026-09-26-private-preview-routing-and-product-carryover.md) |
 > | **Completed history** | [`Plans/_Complete/2026-09-26-roadmap-completed-archive.md`](../Plans/_Complete/2026-09-26-roadmap-completed-archive.md) |
 >
 > `/jen:roadmap` resolves here. Plans index: [`Plans/README.md`](../Plans/README.md).
@@ -15,11 +15,15 @@
 
 ## Active carryover
 
-- [ ] **Remote containment gate:** local `main` is verified and committed but cannot reach
-  `origin/main` while the active GitHub account has read-only repository permission. The exact next
-  action and commit evidence are in the active plan.
-- [ ] Select the next accepted slice from the decision-gated and product-evolution work below. The
-  active plan keeps the acceptance constraints and sequencing in one place.
+- [ ] **Remote containment gate (human credential):** local `main` is verified and committed but cannot
+  reach `origin/main`. The push URL is deliberately `github.invalid`, SSH has no jenninexus key, and the
+  signed-in GitHub CLI account has **read-only** permission on `jenninexus/pdf-designer`
+  (re-checked 2026-09-27). Next action: activate an existing jenninexus write credential, restore the
+  real push URL, push `main`, fetch, and prove `origin/main` contains the local tip. Then close
+  recovery-queue item `203463379ec2b8182ebf6e4c5e26e695723ea1ba7d4680289274a53f039e35a5`.
+- [ ] Select the next accepted slice from the decision-gated and product-evolution work below, then
+  give it its own dated, public-safe checklist in `Plans/_Active/`. Acceptance rule: product work
+  starts only after one slice is explicitly accepted.
 
 The 2026-09-26 private-preview repair and stage filters are verified and archived in the
 completed-history file linked above.
@@ -28,8 +32,7 @@ The completed workspace/export organization slice is archived at
 [`Plans/_Complete/2026-09-26-roadmap-completed-archive.md#export-library-organization`](../Plans/_Complete/2026-09-26-roadmap-completed-archive.md#export-library-organization):
 `_exports/` is the only user-facing generated library, `output/` is explicit automation scratch,
 editable sources remain in their document roots, and `applications/` is only a runtime compatibility
-alias. The one active plan now contains only the remote-containment gate and the next explicitly
-accepted product slice.
+alias. The 2026-09-26 carryover plan was closed on 2026-09-27; its open items are the carryover list above.
 
 ### Parked / decision-gated
 

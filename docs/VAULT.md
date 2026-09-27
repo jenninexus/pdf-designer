@@ -394,6 +394,7 @@ what to demote for that role family). Every claim's `tracks` array says which tr
 | **`3d-art`** | 3D Artist / Animator / Character Artist — modeling, rigging, animation, characters, environments | both |
 | **`3d-viz`** | 3D Visualization — archviz, retail, product viz; lighting, materials, composition, photoreal + stylized | both |
 | **`ui-ux`** | UI / UX / product design — interface, interaction, design systems | Jenni |
+| **`graphic-art`** | Graphic artist / 2D game art — card and deck design, icons, UI assets, layout, visual identity | Shade (added 2026-09-27; `ui-ux` stays thin for her) |
 | **`ai`** | Principal ML / Research Scientist *(Shade)* — memory HRM, RAG, agentic systems · applied AI creative pipelines *(Jenni)* | both, different depth |
 | **`audio`** | Audio engineer / composer / sound designer — spatial, reactive, WWISE | **Shade only** |
 | **`synagen`** | Custom software on the Synagen Engine — bespoke tools, pipelines, WebGPU, AI tooling, team training | both |
