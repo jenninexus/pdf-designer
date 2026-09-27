@@ -1863,7 +1863,13 @@ def make_handler(root: Path, docs: list[dict], palettes: list[dict]):
             self.send_header("Content-Type", ctype)
             self.send_header("Content-Length", str(len(body)))
             self.end_headers()
-            self.wfile.write(body)
+            try:
+                self.wfile.write(body)
+            except (BrokenPipeError, ConnectionAbortedError, ConnectionResetError):
+                # Browser refreshes and closed preview tabs can abandon an
+                # in-flight poll. The response is no longer observable, so do
+                # not turn a normal client disconnect into a server traceback.
+                return
 
         def do_GET(self):
             path = unquote(urlparse(self.path).path)

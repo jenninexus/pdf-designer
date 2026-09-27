@@ -272,6 +272,12 @@ Local and intentionally ignored:
   retries and one restart attempt. **Verified:** failures reproduced; PDF Designer verification was
   independent and remained green. **Why unresolved:** Synabrain activity/restart infrastructure is
   outside this repository and its own review endpoint was unavailable.
+- **Observation:** responsive reloads could abandon an in-flight `/api/version` response and print a
+  `ConnectionAbortedError` traceback even though the Hub stayed healthy. **Cause / confidence:** high —
+  the stdlib handler wrote after the local browser closed the socket. **Effect:** noisy runtime logs
+  obscured actionable errors. **Remedy status:** enacted. **Action:** `_send()` now ignores only the
+  three normal client-disconnect exceptions. **Verified:** focused preview tests and repeated live
+  reloads complete without a new traceback.
 
 ### Synabrain review — organization refinement
 
