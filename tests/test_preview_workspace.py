@@ -107,10 +107,11 @@ def test_stagebar_badges_filter_kind_profile_and_root():
     assert 'function applyStageFilter(type, value)' in APP_HTML
     assert 'setFolderFilterValue(value);' in APP_HTML
     assert 'new Set(pool.flatMap(d => [d.root, d.group]).filter(Boolean))' in APP_HTML
-    assert 'if (folder === "_exports") return "Exports";' in APP_HTML
+    assert 'if (folder === "@exports") return "Exports (all finished files)";' in APP_HTML
+    assert 'if (folder === "_exports") return "_exports (fallback)";' in APP_HTML
     assert 'folderDisplayName(root)' in APP_HTML
     assert 'const label = folderDisplayName(v);' in APP_HTML
-    assert 'placeholder="_exports/<profile>/<kind> (default)"' in APP_HTML
+    assert 'placeholder="beside source: resumes/&lt;profile&gt;/… (default)"' in APP_HTML
 
 
 def test_hub_offcanvas_controls_are_in_the_header_and_close_from_the_backdrop():
@@ -131,6 +132,7 @@ def test_hub_offcanvas_controls_are_in_the_header_and_close_from_the_backdrop():
     assert ".hub-drawer .hub-select-menu {" in css
     assert "position: static;" in css
     assert 'folders.add("_exports")' in APP_HTML
+    assert 'if (pool.some(d => d.artifact)) folders.add("@exports");' in APP_HTML
     assert "selected.exportable === false" in APP_HTML
     assert 'class="frame artifact-frame"' in APP_HTML
     assert 'id="compareFocusBtn"' in APP_HTML
@@ -287,6 +289,31 @@ def test_scan_includes_private_exports_as_read_only_preview_artifacts(tmp_path: 
     assert resume["artifact"] is True and resume["exportable"] is False
     assert resume["format"] == "pdf"
     assert not any("_archive" in path for path in docs)
+
+
+def test_scan_finds_exports_beside_their_family(tmp_path: Path):
+    job = tmp_path / "resumes" / "alex" / "Example-Role"
+    job.mkdir(parents=True)
+    (job / "alex-example-resume-light.pdf").write_bytes(b"%PDF-1.4\n")
+    (tmp_path / "resumes" / "alex" / "alex-default-resume-dark.pdf").write_bytes(b"%PDF-1.4\n")
+    assets = tmp_path / "resumes" / "alex" / "resources" / "images"
+    assets.mkdir(parents=True)
+    (assets / "project-hero.png").write_bytes(b"png")
+    project = tmp_path / "collages" / "demo-set"
+    (project / "images").mkdir(parents=True)
+    (project / "images" / "input.png").write_bytes(b"png")
+    (project / "_candidates").mkdir()
+    (project / "_candidates" / "grid.png").write_bytes(b"png")
+    (project / "demo-set-landscape.png").write_bytes(b"png")
+
+    docs = {doc["path"].replace("\\", "/"): doc for doc in scan_documents(tmp_path)}
+    assert docs["resumes/alex/Example-Role/alex-example-resume-light.pdf"]["artifact"] is True
+    assert docs["resumes/alex/alex-default-resume-dark.pdf"]["artifact"] is True
+    assert docs["collages/demo-set/demo-set-landscape.png"]["artifact"] is True
+    # Source assets and working renders are not exports.
+    assert "resumes/alex/resources/images/project-hero.png" not in docs
+    assert "collages/demo-set/images/input.png" not in docs
+    assert "collages/demo-set/_candidates/grid.png" not in docs
 
 
 def test_dark_pdf_viewer_renders_the_real_pdf_pages(tmp_path: Path):

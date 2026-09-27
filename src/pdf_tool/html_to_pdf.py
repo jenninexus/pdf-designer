@@ -23,7 +23,9 @@ Usage:
 By default, re-running against the same document.html does NOT overwrite a
 previous export - it writes document-v2.pdf, document-v3.pdf, etc., so you
 always keep the last version you sent somewhere. Default exports go under
-repo-root ``_exports/<user>/<kind>/`` (see ``pdf_tool.paths.default_output_dir``).
+the document family — ``resumes/<user>/`` (plus ``<App>/``) or ``collages/<project>/`` —
+with ``_exports/`` as the fallback for examples and unfiled sources (see
+``pdf_tool.paths.default_output_dir``).
 ``output/`` is reserved for callers that explicitly choose automation/test scratch.
 Pass an explicit output path (second positional arg), --output-dir, or --force
 to control that behavior.
@@ -82,7 +84,7 @@ def export_html_to_pdf(
     pagination while rendering a branded dark PDF variant.
 
     If pdf_path is not given, the default output lives under
-    ``_exports/<profile>/<kind>/`` (inferred from the source path), or under
+    beside the document family (``resumes/<user>/…``, inferred from the source path), or under
     output_dir when provided. Unless
     force=True, an existing file at that default path is never overwritten -
     a -v2, -v3, ... suffix is used instead, so previously-sent PDFs are never

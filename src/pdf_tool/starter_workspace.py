@@ -245,7 +245,7 @@ def build_profile(slug: str, template: dict, name: str) -> dict:
         "reason": "Starter profile from a local résumé import. Gitignored.",
     }
     exports = profile.get("exports") if isinstance(profile.get("exports"), dict) else {}
-    exports["dir"] = f"../_exports/{slug}/resumes/"
+    exports["dir"] = f"../resumes/{slug}/"
     profile["exports"] = exports
     return profile
 

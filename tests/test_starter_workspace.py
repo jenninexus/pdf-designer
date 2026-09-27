@@ -49,4 +49,4 @@ def test_save_starter_creates_one_asset_home_and_exports_to_library(tmp_path: Pa
     user = json.loads((tmp_path / "users/alex-rivera.json").read_text(encoding="utf-8"))
     assert user["portfolio"]["imagesDir"] == "resumes/alex-rivera/resources/images/"
     profile = json.loads((tmp_path / "profiles/alex-rivera-resume.json").read_text(encoding="utf-8"))
-    assert profile["exports"]["dir"] == "../_exports/alex-rivera/resumes/"
+    assert profile["exports"]["dir"] == "../resumes/alex-rivera/"

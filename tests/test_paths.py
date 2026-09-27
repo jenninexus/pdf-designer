@@ -39,7 +39,7 @@ def test_default_output_dir_user_then_kind(tmp_path: Path):
     src = tmp_path / "resumes" / "jenni" / "defaults" / "pack.html"
     src.parent.mkdir(parents=True)
     src.write_text("<p></p>", encoding="utf-8")
-    assert paths.default_output_dir(src, root=tmp_path) == tmp_path / "_exports" / "jenni" / "resumes"
+    assert paths.default_output_dir(src, root=tmp_path) == tmp_path / "resumes" / "jenni"
 
 
 def test_default_output_dir_job_leaf(tmp_path: Path):
@@ -48,7 +48,7 @@ def test_default_output_dir_job_leaf(tmp_path: Path):
     src.write_text("<p></p>", encoding="utf-8")
     assert (
         paths.default_output_dir(src, root=tmp_path)
-        == tmp_path / "_exports" / "jenni" / "resumes" / "Netflix-App"
+        == tmp_path / "resumes" / "jenni" / "Netflix-App"
     )
 
 
@@ -58,15 +58,15 @@ def test_default_output_dir_job_folder_beside_user(tmp_path: Path):
     src.write_text("<p></p>", encoding="utf-8")
     assert (
         paths.default_output_dir(src, root=tmp_path)
-        == tmp_path / "_exports" / "jenni" / "resumes" / "CZI"
+        == tmp_path / "resumes" / "jenni" / "CZI"
     )
 
 
-def test_default_output_dir_collage_maps_user(tmp_path: Path):
+def test_default_output_dir_collage_stays_in_project(tmp_path: Path):
     src = tmp_path / "collages" / "meet-jenni-bot" / "images" / "a.png"
     src.parent.mkdir(parents=True)
     src.write_text("x", encoding="utf-8")
-    assert paths.default_output_dir(src, root=tmp_path) == tmp_path / "_exports" / "jenni" / "collages"
+    assert paths.default_output_dir(src, root=tmp_path) == tmp_path / "collages" / "meet-jenni-bot"
 
 
 def test_default_output_dir_unknown_is_unfiled_export_root(tmp_path: Path):
@@ -81,6 +81,20 @@ def test_default_output_dir_examples_kind_at_root(tmp_path: Path):
     src.parent.mkdir(parents=True)
     src.write_text("<p></p>", encoding="utf-8")
     assert paths.default_output_dir(src, root=tmp_path) == tmp_path / "_exports" / "examples"
+
+
+def test_default_output_dir_job_app_routes_to_user_resumes(tmp_path: Path):
+    (tmp_path / "users").mkdir()
+    (tmp_path / "users" / "alex.json").write_text("{}", encoding="utf-8")
+    (tmp_path / "users" / "alex-rivera.json").write_text("{}", encoding="utf-8")
+    src = tmp_path / "_job-apps" / "Acme-Designer" / "alex-rivera-acme-resume.html"
+    src.parent.mkdir(parents=True)
+    src.write_text("<p></p>", encoding="utf-8")
+    # Longest matching id wins, and the application folder becomes the job leaf.
+    assert paths.default_output_dir(src, root=tmp_path) == tmp_path / "resumes" / "alex-rivera" / "Acme-Designer"
+    other = src.parent / "listing-notes.html"
+    other.write_text("<p></p>", encoding="utf-8")
+    assert paths.default_output_dir(other, root=tmp_path) == tmp_path / "_exports" / "unfiled"
 
 
 def test_output_and_export_roots_have_distinct_roles(tmp_path: Path):

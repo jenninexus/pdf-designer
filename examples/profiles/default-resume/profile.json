@@ -60,7 +60,7 @@
   },
   "paths": {
     "defaultExportDir": "_exports/examples",
-    "note": "html_to_pdf.py writes under repo-root _exports/ when no explicit output PDF is passed; use --output-dir or a full output path to override. Public examples land in _exports/examples/ and appear under Exports in the Hub. output/ is explicit automation/test scratch."
+    "note": "html_to_pdf.py writes beside the document family when no explicit output PDF is passed (resumes/<profile>/… for personal documents); public examples have no family, so they land in the _exports/examples/ fallback and appear under Exports (all finished files) in the Hub. Use --output-dir or a full output path to override. output/ is explicit automation/test scratch."
   },
   "exportModes": {
     "lightPdf": "Default ATS-safe print mode — ALWAYS ship for every profile; board upload file.",

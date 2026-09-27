@@ -45,9 +45,9 @@
     "layout_system": "⭐ SHARED PINNED-FOOTER SYSTEM (all doc types): .page is a flex column; the body region (.page-main / .letter-main) grows with flex:1; the footer/signature pins to the bottom with margin-top:auto. The header flows at the top inside the equal margin. The equal @page margin frames content identically on all four edges. Full spec + per-doc guidance: docs/LAYOUT-SYSTEM.md."
   },
   "paths": {
-    "default_export_dir": "_exports",
-    "html_to_pdf_default": "When no explicit output path is supplied, write under repo-root _exports/<profile>/<kind>/ (public examples use _exports/examples/; unknown sources use _exports/unfiled/).",
-    "png_default": "When no explicit PNG output directory is supplied, write under the same repo-root _exports classification in <source-stem>-png/.",
+    "default_export_dir": "beside the document family (resumes/<profile>/, collages/<project>/); _exports/ fallback",
+    "html_to_pdf_default": "When no explicit output path is supplied, write beside the document family: _job-apps/<App>/<user>-*.html -> resumes/<user>/<App>/, resumes/<user>/... -> resumes/<user>/, collages/<project>/... -> collages/<project>/; public examples use _exports/examples/ and unknown sources _exports/unfiled/.",
+    "png_default": "When no explicit PNG output directory is supplied, write to the same default export folder in <source-stem>-png/.",
     "override": "Use an explicit output path or --output-dir to target another folder."
   },
   "export_modes": {
