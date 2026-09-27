@@ -21,7 +21,7 @@ flowchart LR
     Setup --> Seeds["users/you.json<br/>vaults/you.json<br/>profiles/you-resume.json"]
     Seeds --> PublicSource["examples/ + your local HTML"]
     PublicSource --> PublicHub["Design Hub<br/>Library · Recipes · Vault · Wizard"]
-    PublicHub --> PublicOut["output/examples/<br/>or output/<kind>/"]
+    PublicHub --> PublicOut["_exports/examples/<br/>or _exports/unfiled/"]
   end
 
   subgraph Personal["2. Personal workspace / Jenni, Shade, studio"]
@@ -29,7 +29,7 @@ flowchart LR
     Job["_job-apps/<application>/<br/>listing · theme · source HTML"]
     Collage["collages/<project>/<br/>images · candidates"]
     Commands["/make-resume<br/>/make-cover-letter<br/>/make-collage"]
-    PrivateHub["Design Hub<br/>profile = jenni/shade/etc.<br/>folder = _exports"]
+    PrivateHub["Design Hub<br/>profile = jenni/shade/etc.<br/>folder = Exports"]
     PrivateOut["_exports/<user>/resumes/<application>/<br/>_exports/<user>/collages/<project>/"]
     Identity --> Commands
     Job --> Commands
@@ -41,10 +41,10 @@ flowchart LR
   Engine --> Commands
 ```
 
-The split is about **content and defaults**, not two applications. Public/example exports use
-`output/`; personal commands explicitly send final deliverables to `_exports/`. Both are ignored
-payload trees with tracked README anchors. In the Hub, select a personal profile to see its source
-documents, choose **`_exports`** in the folder picker to see finished PDFs/images, and open **Vault**
+The split is about **source privacy**, not two applications or two export systems. Every deliberate
+export uses `_exports/`; `output/` is explicit disposable automation/test scratch. Both are ignored
+payload trees with tracked README anchors. In the Hub, select a profile to see its source
+documents, choose **Exports** in the folder picker to see finished PDFs/images, and open **Vault**
 to inspect that profile's claims.
 
 ### Find or edit something quickly
@@ -59,8 +59,9 @@ to inspect that profile's claims.
 | Edit reusable résumé HTML | `resumes/<user>/` |
 | Edit one job application | `_job-apps/<application>/` |
 | Edit collage sources/candidates | `collages/<project>/` |
-| Find finished personal PDFs/images | `_exports/<user>/<kind>/...`, or Hub → profile → folder `_exports` |
-| Find public/example smoke output | `output/` |
+| Find any finished PDFs/images | `_exports/<profile>/<kind>/...`, or Hub → profile → **Exports** |
+| Find public/example exports | `_exports/examples/` |
+| Find disposable smoke/test artifacts | `output/` (automation only; not in the Hub library) |
 | Add reusable colors or structure | `themes/` or `layouts/` (tracked; never personal content) |
 
 This is the authoritative two-journey map. [`GETTING-STARTED.md`](GETTING-STARTED.md) owns installation,
@@ -95,9 +96,9 @@ pdf-designer/
   vaults/           # WHAT — vaults/<id>.json  (was <user>/resume-source.json)
   profiles/         # HOW  — profiles/<id>-resume.json
   resumes/          # WORK — resumes/<id>/{html,defaults,resources}
-  output/           # ENGINE OUT — clone-safe default + public examples
-  _exports/         # PERSONAL OUT — _exports/<id>/{resumes,collages}/
-  _job-apps/        # JOB  — _job-apps/<Track>/  (canonical; applications/ is README-only)
+  _exports/         # USER OUT — every deliberate export; shown as “Exports” in the Hub
+  output/           # SCRATCH — explicit automation/test output, not the user library
+  _job-apps/        # JOB  — _job-apps/<Track>/  (canonical; applications/ is runtime-only)
   collages/         # collage projects
   brands/           # private brand maps (was storage/brand-design/)
 
@@ -120,9 +121,9 @@ pdf-designer/
 | `vaults/` | What may I claim? | `storage/<user>/resume-source.json` |
 | `profiles/` | How does it print? | `storage/profiles/` |
 | `resumes/` | Working HTML + defaults | `storage/jenni/` · `shade/` · `studio/` |
-| `output/` | Public engine/example output | ad-hoc generated files beside source HTML |
-| `_exports/` | Private personal/applicant deliverables | `storage/<user>/_exports/` · personal payload previously mixed into `output/` |
-| `_job-apps/` | This job | **canonical.** `applications/` is a tracked README redirect only (no listings). `storage/_job-listings/` is a retired alias — do not store listings there. |
+| `_exports/` | Every deliberate user-facing export | `storage/<user>/_exports/` · split public/private output destinations |
+| `output/` | Disposable automation/test scratch | ad-hoc generated test files beside source HTML |
+| `_job-apps/` | This job | **canonical.** `applications/` and `storage/_job-listings/` are retired runtime aliases — do not store listings there. |
 | `collages/` | Image layouts | `storage/collages/` |
 | `brands/` | My palette map | `storage/brand-design/` |
 
@@ -164,9 +165,8 @@ _job-apps/*
 !_job-apps/README.md
 !_job-apps/_template/
 
-# Optional alias — README redirect only; do not store listings here
-applications/*
-!applications/README.md
+# Runtime compatibility alias only; do not store listings here
+applications/
 
 collages/*
 !collages/README.md

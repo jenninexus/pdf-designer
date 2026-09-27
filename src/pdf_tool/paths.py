@@ -102,7 +102,7 @@ def reject_flag_looking_path(path: str | None, *, flag: str = "--output-dir") ->
     if path and path.lstrip().startswith("-"):
         raise SystemExit(
             f"refusing {flag} path {path!r} — that looks like a CLI flag, not a folder.\n"
-            "Pass a real directory (for example output/jenni/resumes or resumes/jenni/defaults)."
+            "Pass a real directory (for example _exports/jenni/resumes or resumes/jenni/defaults)."
         )
 
 
@@ -122,8 +122,13 @@ COLLAGE_PROJECT_USERS = {
 
 
 def output_root(*, root: Path | None = None) -> Path:
-    """Repo-root ``output/`` — generated PDFs/PNGs, never source HTML."""
+    """Repo-root ``output/`` — disposable automation/test scratch only."""
     return _root(root) / "output"
+
+
+def export_root(*, root: Path | None = None) -> Path:
+    """Repo-root ``_exports/`` — the one user-facing generated-file library."""
+    return _root(root) / "_exports"
 
 
 def _strip_output_prefixes(parts: tuple[str, ...]) -> tuple[str, ...]:
@@ -229,18 +234,22 @@ def default_output_dir(
     root: Path | None = None,
     leaf: str | None = None,
 ) -> Path:
-    """Where a generated PDF/PNG goes when the caller does not pass ``--output-dir``.
+    """Where a deliberate export goes when the caller omits ``--output-dir``.
 
-    ``output/<user>/<kind>/`` when a profile is known, ``output/<kind>/`` when
-    only the kind is known, otherwise ``output/``. Optional ``leaf`` nests one
-    more folder (a job name, or ``<stem>-png``).
+    ``_exports/<user>/<kind>/`` when a profile is known,
+    ``_exports/<kind>/`` when only the kind is known, otherwise
+    ``_exports/unfiled/``. Optional ``leaf`` nests one more folder (a job name,
+    or ``<stem>-png``). ``output/`` is reserved for callers that explicitly
+    choose disposable automation/test scratch.
     """
     user, inferred_kind = infer_output_user_kind(source, kind=kind, root=root)
-    dest = output_root(root=root)
+    dest = export_root(root=root)
     if user and inferred_kind:
         dest = dest / user / inferred_kind
     elif inferred_kind:
         dest = dest / inferred_kind
+    else:
+        dest = dest / "unfiled"
     job = leaf if leaf is not None else output_job_leaf(source, root=root)
     if job:
         dest = dest / job

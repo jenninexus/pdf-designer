@@ -87,6 +87,6 @@ tracked `README` scaffolds and `*.example.json`; real JSON/HTML stay ignored. `s
 retired and accepted only as an old-path alias. Public docs must not include machine pointers,
 personal data, or operational history. One checkout; no `.env` (the engine reads none).
 
-The local Design Hub can still browse ignored `_exports/` PDFs and images: select the virtual
-`_exports` folder in Library. Those artifact cards are read-only and exist only on loopback; the
+The local Design Hub can still browse ignored `_exports/` PDFs and images: select **Exports** in
+Library. Those artifact cards are read-only and exist only on loopback; the
 public repository continues to track the folder README, never the payload.

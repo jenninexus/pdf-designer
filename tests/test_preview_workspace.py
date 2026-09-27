@@ -107,6 +107,10 @@ def test_stagebar_badges_filter_kind_profile_and_root():
     assert 'function applyStageFilter(type, value)' in APP_HTML
     assert 'setFolderFilterValue(value);' in APP_HTML
     assert 'new Set(pool.flatMap(d => [d.root, d.group]).filter(Boolean))' in APP_HTML
+    assert 'if (folder === "_exports") return "Exports";' in APP_HTML
+    assert 'folderDisplayName(root)' in APP_HTML
+    assert 'const label = folderDisplayName(v);' in APP_HTML
+    assert 'placeholder="_exports/<profile>/<kind> (default)"' in APP_HTML
 
 
 def test_hub_offcanvas_controls_are_in_the_header_and_close_from_the_backdrop():

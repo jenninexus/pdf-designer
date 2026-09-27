@@ -36,7 +36,7 @@ site-packages install breaks that assumption.
 | **SSOT** | Repo-root `themes/` + `layouts/` + `examples/` stay the edit surface |
 | **Wheel payload** | Copy public trees into `src/pdf_tool/share/` at build time |
 | **Runtime resolve** | `pdf_tool.paths.repo_root()` — **checkout wins** over `share/` (so live edits aren't shadowed); wheel-only installs fall through to `pdf_tool/share/` |
-| **Private data** | Never package `storage/` |
+| **Private data** | Never package live root-noun payloads (`users/`, `vaults/`, `profiles/`, `_job-apps/`, `resumes/`, `collages/`, `brands/`, `_exports/`) or legacy `storage/` |
 | **Chromium** | Still a post-install step: `playwright install chromium` |
 | **Desktop installer** | Windows x64 Electron/NSIS builder exists locally; see [`WINDOWS-ELECTRON.md`](WINDOWS-ELECTRON.md). It remains unsigned and needs a clean-machine install proof before release. |
 

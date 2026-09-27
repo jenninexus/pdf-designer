@@ -25,7 +25,6 @@ PUBLIC_FILES = (
     "profiles/examples.json",
     "resumes/README.md",
     "_job-apps/README.md",
-    "applications/README.md",
     "collages/README.md",
     "brands/README.md",
 )

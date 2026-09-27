@@ -11,4 +11,4 @@ Copy [`examples/_job-listings/example-application/`](../examples/_job-listings/e
 Human log (who sent what, outcome when you hear back): `applied-index.md` in this folder.
 Do **not** treat tracker counts as a daily check.
 
-`applications/` is a README redirect only. Do **not** store listings there or under a second `_job-listings` tree. Protocol: [`docs/APPLICATIONS.md`](../docs/APPLICATIONS.md) · [`docs/JOB-ASSESSMENT.md`](../docs/JOB-ASSESSMENT.md).
+`applications/` remains a runtime compatibility alias only and is not a second visible workspace. Do **not** store listings there or under a second `_job-listings` tree. Protocol: [`docs/APPLICATIONS.md`](../docs/APPLICATIONS.md) · [`docs/JOB-ASSESSMENT.md`](../docs/JOB-ASSESSMENT.md).

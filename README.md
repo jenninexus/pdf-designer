@@ -41,8 +41,8 @@ python -m pdf_tool.preview          # → http://127.0.0.1:8787/
 Clone setup, Design Hub wizard, Windows wrapper, and export recipes live in **[`docs/GETTING-STARTED.md`](docs/GETTING-STARTED.md)** — not here.
 
 See the **[public app vs personal workspace diagram](docs/WORKSPACE-LAYOUT.md#two-journeys-one-engine)**
-for exactly where new-user `.example` setup, Jenni/Shade vaults, job sources, collages, `output/`,
-and private `_exports/` deliverables live.
+for exactly where new-user `.example` setup, local vaults, job sources, collages, the `_exports/`
+library, and `output/` automation scratch live.
 
 ---
 

@@ -39,7 +39,7 @@ def test_default_output_dir_user_then_kind(tmp_path: Path):
     src = tmp_path / "resumes" / "jenni" / "defaults" / "pack.html"
     src.parent.mkdir(parents=True)
     src.write_text("<p></p>", encoding="utf-8")
-    assert paths.default_output_dir(src, root=tmp_path) == tmp_path / "output" / "jenni" / "resumes"
+    assert paths.default_output_dir(src, root=tmp_path) == tmp_path / "_exports" / "jenni" / "resumes"
 
 
 def test_default_output_dir_job_leaf(tmp_path: Path):
@@ -48,7 +48,7 @@ def test_default_output_dir_job_leaf(tmp_path: Path):
     src.write_text("<p></p>", encoding="utf-8")
     assert (
         paths.default_output_dir(src, root=tmp_path)
-        == tmp_path / "output" / "jenni" / "resumes" / "Netflix-App"
+        == tmp_path / "_exports" / "jenni" / "resumes" / "Netflix-App"
     )
 
 
@@ -58,7 +58,7 @@ def test_default_output_dir_job_folder_beside_user(tmp_path: Path):
     src.write_text("<p></p>", encoding="utf-8")
     assert (
         paths.default_output_dir(src, root=tmp_path)
-        == tmp_path / "output" / "jenni" / "resumes" / "CZI"
+        == tmp_path / "_exports" / "jenni" / "resumes" / "CZI"
     )
 
 
@@ -66,18 +66,23 @@ def test_default_output_dir_collage_maps_user(tmp_path: Path):
     src = tmp_path / "collages" / "meet-jenni-bot" / "images" / "a.png"
     src.parent.mkdir(parents=True)
     src.write_text("x", encoding="utf-8")
-    assert paths.default_output_dir(src, root=tmp_path) == tmp_path / "output" / "jenni" / "collages"
+    assert paths.default_output_dir(src, root=tmp_path) == tmp_path / "_exports" / "jenni" / "collages"
 
 
-def test_default_output_dir_unknown_is_output_root(tmp_path: Path):
+def test_default_output_dir_unknown_is_unfiled_export_root(tmp_path: Path):
     src = tmp_path / "scratch" / "one-off.html"
     src.parent.mkdir(parents=True)
     src.write_text("<p></p>", encoding="utf-8")
-    assert paths.default_output_dir(src, root=tmp_path) == tmp_path / "output"
+    assert paths.default_output_dir(src, root=tmp_path) == tmp_path / "_exports" / "unfiled"
 
 
 def test_default_output_dir_examples_kind_at_root(tmp_path: Path):
     src = tmp_path / "examples" / "profiles" / "default-resume" / "resume.html"
     src.parent.mkdir(parents=True)
     src.write_text("<p></p>", encoding="utf-8")
-    assert paths.default_output_dir(src, root=tmp_path) == tmp_path / "output" / "examples"
+    assert paths.default_output_dir(src, root=tmp_path) == tmp_path / "_exports" / "examples"
+
+
+def test_output_and_export_roots_have_distinct_roles(tmp_path: Path):
+    assert paths.output_root(root=tmp_path) == tmp_path / "output"
+    assert paths.export_root(root=tmp_path) == tmp_path / "_exports"

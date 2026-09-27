@@ -2,14 +2,14 @@
   "_README": [
     "THE PERSON FILE — layer ① of four. Answers: WHO is applying?",
     "",
-    "Copy to storage/users/<you>.json and fill in. That copy is gitignored (it holds",
+    "Copy to users/<you>.json and fill in. That copy is gitignored (it holds",
     "real contact details); THIS file is the tracked shape.",
     "",
     "The four layers:",
     "  ① users/<you>.json          WHO      <- you are here",
-    "  ② <you>/resume-source.json  WHAT     the VAULT (see resume-source.example.json)",
+    "  ② vaults/<you>.json         WHAT     the VAULT (see resume-source.example.json)",
     "  ③ profiles/<you>-resume.json HOW     (see profile.example.json)",
-    "  ④ _job-listings/<Track>/      THE JOB (see examples/_job-listings/)"
+    "  ④ _job-apps/<Track>/          THE JOB (see examples/_job-listings/)"
   ],
 
   "id": "yourname",

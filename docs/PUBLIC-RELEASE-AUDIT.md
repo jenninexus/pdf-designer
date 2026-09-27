@@ -24,7 +24,7 @@ gets:
 | Protocol seeds | `.claude/commands/*.example.md` (placeholders only) |
 | Docs | Public `docs/*.md` in this index · `README.md` · `LICENSE` (MIT) |
 | Lessons | `.memory/README.md` + `.memory/lesson-*.md` |
-| Export layout | Tracked `output/README.md` for the engine/example default + `_exports/README.md` for private personal deliverables (all PDF/PNG payload gitignored) |
+| Export layout | Tracked `_exports/README.md` for the one user-facing export library + `output/README.md` for explicit automation/test scratch (all PDF/PNG payload gitignored) |
 | Proof | `python scripts/smoke-white-label.py` · `python scripts/check-wheel-assets.py` |
 
 **Intended public fixes** (engine/docs/examples that a clone needs) land on

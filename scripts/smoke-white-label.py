@@ -209,7 +209,7 @@ def main() -> int:
     _assert_public_path()
     _assert_public_privacy()
 
-    # Prefer a clean temp dir; also mirror into output/examples for Hub browsing.
+    # Prefer a clean temp dir; also mirror into output/examples as durable smoke evidence.
     with tempfile.TemporaryDirectory(prefix="pdf-designer-smoke-") as tmp:
         tmp_out = Path(tmp)
         _run(
@@ -224,7 +224,7 @@ def main() -> int:
             [sys.executable, "-m", "pdf_tool.check_ats", str(light)],
         )
 
-        # Leave a copy next to the example for Design Hub / human inspection.
+        # Leave disposable proof files in the explicit automation scratch tree.
         EXPORT_DIR.mkdir(parents=True, exist_ok=True)
         for src in (light, dark):
             dest = EXPORT_DIR / src.name

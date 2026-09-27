@@ -54,7 +54,7 @@ For the Windows-first browser launcher and its acceptance checks, see
 
 The hub **refreshes itself** when documents change — you don't restart it after exporting a new resume
 or editing a source. A client poller hits **`GET /api/version`** (~every 1.5s), which returns a cheap
-tree *signature* (count + newest mtime + total size over `*.html` sources **and** `output/**` outputs)
+tree *signature* (count + newest mtime + total size over `*.html` sources and generated-file trees)
 plus a fresh document list. When the signature changes, the sidebar re-renders, the open preview reloads
 (cache-busted), and a small toast flashes (`＋1 document`). So the loop is simply: **export or edit → the
 hub updates on its own.** The signature is coarse and content-free (never reads file bytes), so it stays
@@ -113,8 +113,8 @@ collapsible by folder. Stage bar shows filterable kind · profile · root folder
 ### Features
 
 - **Live thumbnails** for every renderable source `.html`; generated `output/` stays outside the library.
-- **Private export browser:** local `_exports/**/*.{pdf,png,jpg,jpeg,webp}` appears as lightweight,
-  read-only artifact cards. Choose the virtual **`_exports`** folder to see every export, or a nested
+- **Export browser:** local `_exports/**/*.{pdf,png,jpg,jpeg,webp}` appears as lightweight,
+  read-only artifact cards. Choose **Exports** (the friendly label for `_exports/`) to see every export, or a nested
   application folder for one pack. The artifact opens in the main viewer only when selected and cannot
   be re-exported. `_archive` remains excluded. PDFs open in the Hub's dark, page-bounded preview with
   the same cyan scrollbar as the library; **Open original** is still available for the browser's native
@@ -207,8 +207,8 @@ Selecting a **header profile** must list that profile's documents. Restore the
 profile chip **before** rebuilding folder options; scope folder + kind counts
 to the selected profile or the library goes empty. README-only root-noun
 scaffolds must not win over live root-noun payloads — `pdf_tool.paths._has_payload`
-is the rule. Application identity is the path relative to `_job-apps/` (or the tracked
-`applications/` README redirect), not the leaf folder name. Hub scan excludes `_archive/`
+is the rule. Application identity is the path relative to `_job-apps/` (the runtime-only
+`applications/` name is accepted as a compatibility alias), not the leaf folder name. Hub scan excludes `_archive/`
 and `*.template.html`; stale `/storage/<user>/…` links resolve via `resolve_preview_file`.
 
 Durable *why*: `.memory/lesson-hub-profile-scopes-folder-and-kind.md` ·

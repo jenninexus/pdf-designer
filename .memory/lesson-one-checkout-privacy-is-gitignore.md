@@ -10,7 +10,7 @@ Use **one pdf-designer checkout**. Privacy is gitignore of personal trees (`user
 
 **Why:** Asking “do I need two versions?” usually means mixing SEGO vaults with the public seed. A `.env` would document a fiction (`AGENTS.md`: reads no environment variables). Machine paths already live in `.config/mcp-pdf-designer.json`.
 
-**How to apply:** Clone-safe teaching files at `users/you.example.json`, `vaults/you.example.json`, `profiles/you-resume.example.json`. Hub demos use `examples/resume-studio/`. After the 2026-08-13 copy, `_exports` live under `resumes/<user>/_exports/` — deleting `storage/` later does not delete those copies, but wait until dual-run smoke has lived.
+**How to apply:** Clone-safe teaching files live at `users/you.example.json`, `vaults/you.example.json`, and `profiles/you-resume.example.json`; Hub demos use `examples/resume-studio/`. Real payload stays ignored in the same checkout. Deliberate generated files use repo-root `_exports/<profile>/<kind>/`; source HTML stays in `resumes/` or `collages/`.
 
 Tracker is **who × job** (`_job-apps/applied-index.md` + `python -m pdf_tool.tracker list`). Do not daily-count submissions.
 

@@ -5,7 +5,7 @@
 
     "theOneIdea": "A RESUME IS A QUERY AGAINST THIS FILE — not a document you rewrite each time. Select the claims that fit the job, rewrite them in that job's vocabulary, and leave the rest out. A resume that dumps the whole vault is a bad resume.",
 
-    "copyTo": "storage/<you>/resume-source.json  (gitignored — THIS file is the tracked shape)",
+    "copyTo": "vaults/<you>.json  (gitignored — THIS file is the tracked shape)",
 
     "howToQuery": [
       "1. Read the listing. Its literal vocabulary is the ATS surface.",
@@ -21,7 +21,7 @@
 
     "howToExtend": "Add the fact to the right section. Every entry needs `source` and `confidence`. If the person states it in conversation, that IS a valid source — record it as `owner directive <YYYY-MM-DD>`.",
 
-    "validate": "python -m pdf_tool.check_vault storage/<you>/resume-source.json",
+    "validate": "python -m pdf_tool.check_vault vaults/<you>.json",
 
     "hardRule": "SOURCE-BACKED ONLY. Never write a resume claim that isn't backed by an entry here. But this is NOT a gag order — the job is to elaborate PERSUASIVELY on what genuinely matches: take a real skill and show precisely why it is valuable to THIS employer. That isn't spin, it's translation."
   },

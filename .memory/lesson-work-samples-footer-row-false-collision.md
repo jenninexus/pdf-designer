@@ -17,7 +17,7 @@ A **full-bleed collage mosaic** named `work-examples` (Jane Hub demo) will also 
 **How to apply:**
 
 1. Work-samples recipe: [`layouts/work-examples/work-examples.json`](../layouts/work-examples/work-examples.json).
-2. Export go-to packs into `output/<user>/resumes/` — HTML stays in `resumes/<user>/defaults/`.
+2. Export go-to packs into `_exports/<profile>/resumes/` — HTML stays in `resumes/<profile>/defaults/`.
 3. After editing the `.template.html`, re-inline images, then `check_generation` before export.
 
 Related: [[lesson-guard-assumptions-must-be-measured]] · [[lesson-fixed-height-clips-content-silently]]

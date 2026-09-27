@@ -124,10 +124,10 @@ nothing. BSL and AGPL exist precisely to stop that.
 | Layer | Where it lives | License |
 |---|---|---|
 | **The engine** — `pdf_tool`, themes, examples, the docs | this repo | **MIT**, public |
-| **The vault + your real applications** | `storage/` | **gitignored, never published** |
+| **Your vault + real applications + exports** | Root nouns (`users/`, `vaults/`, `_job-apps/`, `resumes/`, `_exports/`) | **gitignored, never published** |
 | **Anything paid later** — hosted service, cloud sync, team features, premium theme packs | **a separate private repo** that depends on this one | your choice, decided then |
 
-The split already exists — `storage/` is gitignored and the guards keep real data out of tracked
+The split already exists — live root-noun payloads and legacy `storage/` are gitignored, and the guards keep real data out of tracked
 paths. **Open core isn't a future migration; it's the shape the repo is already in.**
 
 ### The one rule that keeps the option open

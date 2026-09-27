@@ -56,7 +56,7 @@ You and a stranger use the **same engine**. Privacy is gitignore, not a second i
 | **Local (you)** | Real `users/*.json`, vaults, `_job-apps/`, `resumes/**`, `_exports/**`, `brands/` |
 | **Optional pointers** | `.config/mcp-pdf-designer.json` (copy the `.example`) |
 
-The engine **reads no environment variables**. Do not add `.env` / `.env.local` unless a new tool actually reads them — it would document a fiction. `storage/` was retired after the root-noun migration; the resolver only accepts old URLs when a live root-noun file exists. Public/example engine exports default to `output/`; private personal command copies explicitly route deliverables to `_exports/<user>/<kind>/`.
+The engine **reads no environment variables**. Do not add `.env` / `.env.local` unless a new tool actually reads them — it would document a fiction. `storage/` was retired after the root-noun migration; the resolver only accepts old URLs when a live root-noun file exists. Every deliberate export defaults to `_exports/<profile>/<kind>/`; `output/` is explicit disposable automation/test scratch.
 
 ---
 
@@ -72,14 +72,14 @@ Every step uses **tracked** paths only.
 | 4. (Optional) variants | `python -m pdf_tool.variants examples/profiles/default-resume/default-resume.html` | one light PDF per public palette |
 
 The smoke script runs `check_generation`, exports light + dark PDFs, runs `check_ats` on
-the light file, and writes under `output/examples/` (gitignored payload). Manual twins:
+the light file, and writes its disposable proof under `output/examples/` (gitignored payload). Manual exports instead default to `_exports/examples/`. Manual twins:
 
 ```bash
 python -m pdf_tool.html_to_pdf examples/profiles/default-resume/default-resume.html
 python -m pdf_tool.html_to_pdf examples/profiles/default-resume/default-resume.html --pdf-theme dark
 ```
 
-Exports land in `output/` as `<stem>-light.pdf` / `<stem>-dark.pdf` and **never overwrite**
+Exports land in `_exports/` as `<stem>-light.pdf` / `<stem>-dark.pdf` and **never overwrite**
 (`-v2`, `-v3`). Grouped by profile then kind when the source lives under `resumes/` /
 `collages/` / `examples/`. Full map: [`EXPORTS.md`](EXPORTS.md).
 

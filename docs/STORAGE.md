@@ -13,7 +13,7 @@
 > **Tracked protocol SSOT:** this page lives in `docs/` so a fresh clone can learn the flow.
 
 Everything under `storage/` is **local-only legacy residue**. Keep it for recovery/history, but
-route live career data through the root nouns and generated personal deliverables through `_exports/`.
+route live career data through the root nouns and every deliberate generated deliverable through `_exports/`.
 Private *notes* (`MARKETING` · `WORKSPACE` · history scrub) now live under **`docs/`** (gitignored)
 — not a second docs tree here.
 
@@ -23,7 +23,7 @@ Private *notes* (`MARKETING` · `WORKSPACE` · history scrub) now live under **`
 
 | Tracked in the repo (safe to clone) | Private at repo root (gitignored) | Lives in theme kits (website SSOT) |
 |---|---|---|
-| `src/`, `themes/`, `examples/`, `docs/`, `AGENTS.md`, `output/README.md`, `_exports/README.md` | `users/`, `vaults/`, `profiles/`, `_job-apps/`, `brands/`, `collages/`, `resumes/`, `_exports/*` payload, legacy `storage/` | `www-theme-kit/profiles/…` (official kit) |
+| `src/`, `themes/`, `examples/`, `docs/`, `AGENTS.md`, `output/README.md`, `_exports/README.md` | `users/`, `vaults/`, `profiles/`, `_job-apps/`, `brands/`, `collages/`, `resumes/`, `_exports/*` payload, `output/*` scratch, legacy `storage/` | `www-theme-kit/profiles/…` (official kit) |
 | Brand-neutral default theme + `examples/brand-design/` | Real brand maps + vaults + contacts + private notes | Live site primary/secondary/accent |
 | `.config/mcp-pdf-designer.example.json` | Local `mcp-pdf-designer.json` (absolute paths) | — |
 
@@ -83,8 +83,27 @@ Each layer answers exactly one question.
                        <Company>.md · application.json · theme.json · *.html
                                     │
                                     ▼
-  → OUT ─────────────  _exports/<user>/resumes/<Track>/
+  → OUT ─────────────  _exports/<profile>/<kind>/<Track>/
 ```
+
+## The generated-file rule
+
+`_exports/` is the only user-facing generated-file library—for personal profiles, studio profiles,
+and public examples. The Hub labels this root **Exports** while preserving `_exports/` on disk for
+stable paths and top-level sorting.
+
+```text
+_exports/examples/                         public/example exports
+_exports/<profile>/resumes/                reusable résumé/letter/work-sample packs
+_exports/<profile>/resumes/<application>/  one application pack
+_exports/<profile>/collages/<project>/     finished collage choices
+_exports/unfiled/                          source with no inferred profile or kind
+```
+
+`output/` is not a second library. It is explicit, disposable automation/test scratch and is not
+scanned by the Hub. Editable HTML and image sources remain in `examples/`, `resumes/`, `collages/`,
+or `_job-apps/`; identity, claims, and render configuration remain in `users/`, `vaults/`, and
+`profiles/`.
 
 ### Shared studio assets vs per-user assets (⭐ read before hunting images)
 
