@@ -14,6 +14,7 @@ import mimetypes
 import re
 from io import BytesIO
 from pathlib import Path
+from urllib.parse import unquote
 
 from PIL import Image
 
@@ -108,6 +109,44 @@ def inline_placeholders(
     return out
 
 
+_LOCAL_IMG = re.compile(r'(<img\b[^>]*?\bsrc=")([^"]+)(")', re.IGNORECASE)
+_NOT_LOCAL = ("data:", "http:", "https:", "//", "{{", "#", "mailto:", "blob:")
+
+
+def inline_local_srcs(
+    html: str,
+    base_dir: Path | str,
+    *,
+    max_edge: int | None = None,
+    jpeg_quality: int | None = None,
+) -> str:
+    """Inline every ``<img src="relative/path">`` that points at a local file.
+
+    Lets a template reference the asset SSOT directly (for example
+    ``../../resumes/<user>/resources/images/project-hero.webp``), so it
+    previews correctly in a browser or the Design Hub before inlining. Fails loudly
+    on a relative path that does not resolve — a silently dropped image is the defect.
+    """
+    base = Path(base_dir)
+    missing: list[str] = []
+
+    def repl(match: re.Match[str]) -> str:
+        src = match.group(2).strip()
+        if src.lower().startswith(_NOT_LOCAL):
+            return match.group(0)
+        path = (base / unquote(src)).resolve()
+        if not path.is_file():
+            missing.append(f"{src} -> {path}")
+            return match.group(0)
+        uri = data_uri_for_path(path, max_edge=max_edge, jpeg_quality=jpeg_quality)
+        return f"{match.group(1)}{uri}{match.group(3)}"
+
+    out = _LOCAL_IMG.sub(repl, html)
+    if missing:
+        raise FileNotFoundError("Missing local image sources: " + "; ".join(missing))
+    return out
+
+
 def inline_template_file(
     template: Path | str,
     dest: Path | str,
@@ -116,6 +155,7 @@ def inline_template_file(
     max_edge: int | None = None,
     jpeg_quality: int | None = None,
 ) -> Path:
+    """Inline ``{{img:name}}`` placeholders AND relative ``<img src>`` paths."""
     template = Path(template)
     dest = Path(dest)
     html = inline_placeholders(
@@ -124,6 +164,7 @@ def inline_template_file(
         max_edge=max_edge,
         jpeg_quality=jpeg_quality,
     )
+    html = inline_local_srcs(html, template.parent, max_edge=max_edge, jpeg_quality=jpeg_quality)
     dest.write_text(html, encoding="utf-8")
     return dest
 
@@ -155,7 +196,10 @@ def _parse_mapping(pairs: list[str]) -> dict[str, str]:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         prog="python -m pdf_tool.inline_images",
-        description="Inline {{img:name}} placeholders for a self-contained work-samples HTML.",
+        description=(
+            "Inline {{img:name}} placeholders and relative <img src> paths for a "
+            "self-contained work-samples HTML."
+        ),
     )
     parser.add_argument("template")
     parser.add_argument("out")
@@ -181,7 +225,8 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help=f"Indeed-class pack: --max-edge {BOARD_MAX_EDGE} --jpeg-quality {BOARD_JPEG_QUALITY}",
     )
-    args = parser.parse_args(argv)
+    # Intermixed: accept --board before OR after the name=path pairs.
+    args = parser.parse_intermixed_args(argv)
     max_edge = BOARD_MAX_EDGE if args.board and args.max_edge is None else args.max_edge
     jpeg_quality = (
         BOARD_JPEG_QUALITY if args.board and args.jpeg_quality is None else args.jpeg_quality

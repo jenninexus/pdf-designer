@@ -128,6 +128,9 @@ resumes/<user>/resources/images/martiangames/   → Windows JUNCTION → studio/
 **Keep both current:** edit files only under `studio/…/martiangames/`. The junctions mean
 `jenni/.../martiangames/` and `shade/.../martiangames/` always resolve to the same bytes.
 Person files point at the studio path via `users/<user>.json#portfolio.workSampleAssets.mgGallerySsot`.
+Work-samples templates should reference these files by **relative `<img src>` path** (not `{{img:…}}`
+placeholders): the template then previews correctly as-is, and `inline_images` inlines every relative
+source automatically, failing loudly on a missing file.
 Prefer **WebP** for new drops (PNG inlined in HTML balloons PDF size past upload caps).
 
 Refresh MG atlas from the local website checkout: `<mg-repo>/html/resources/images/atlas/`.

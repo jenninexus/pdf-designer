@@ -23,7 +23,7 @@ see `.memory/lesson-work-samples-footer-row-false-collision.md`).
 - Dual mode (light + dark) when prefs say so
 - `python -m pdf_tool.check_generation <doc>.html` before ship
 - Work-examples must stay **≤5 MB** (Indeed-class additional-documents cap):
-  `python -m pdf_tool.inline_images --board <tpl>.html <out>.html name=path …` (`--board` is a bare flag; put it before the positionals)
+  `python -m pdf_tool.inline_images --board <tpl>.html <out>.html` — write template images as **relative paths to the asset SSOT** (they preview as-is and are inlined automatically; `{{img:name}}` + `name=path` pairs still work)
   then `python -m pdf_tool.html_to_pdf … --max-mb 5`
 - Keep source HTML under `resumes/<user>/defaults/`; export personal go-to packs to `_exports/<user>/resumes/` and per-job packs to `_exports/<user>/resumes/<Job>/`
 
