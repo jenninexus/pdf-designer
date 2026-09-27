@@ -102,7 +102,7 @@ def reject_flag_looking_path(path: str | None, *, flag: str = "--output-dir") ->
     if path and path.lstrip().startswith("-"):
         raise SystemExit(
             f"refusing {flag} path {path!r} — that looks like a CLI flag, not a folder.\n"
-            "Pass a real directory (for example _exports/jenni/resumes or resumes/jenni/defaults)."
+            "Pass a real directory (for example resumes/jenni or resumes/jenni/<App>)."
         )
 
 
@@ -127,7 +127,11 @@ def output_root(*, root: Path | None = None) -> Path:
 
 
 def export_root(*, root: Path | None = None) -> Path:
-    """Repo-root ``_exports/`` — the one user-facing generated-file library."""
+    """Repo-root ``_exports/`` — fallback library for examples and unfiled exports.
+
+    Personal documents export beside their family instead: ``resumes/<user>/`` and
+    ``collages/<project>/`` (see :func:`default_output_dir`).
+    """
     return _root(root) / "_exports"
 
 
@@ -227,6 +231,38 @@ def output_job_leaf(source: Path | str, *, root: Path | None = None) -> str | No
     return None
 
 
+def _workspace_user_ids(root: Path) -> set[str]:
+    """Person ids known to this workspace: ``users/<id>.json`` plus ``resumes/<id>/`` folders."""
+    ids: set[str] = set()
+    users = root / "users"
+    if users.is_dir():
+        ids.update(p.stem for p in users.glob("*.json") if _is_workspace_json(p) and p.stem != "examples")
+    resumes = root / "resumes"
+    if resumes.is_dir():
+        ids.update(d.name for d in resumes.iterdir() if d.is_dir() and not d.name.startswith(("_", ".")))
+    return ids
+
+
+def _job_app_user_and_leaf(source: Path, root: Path) -> tuple[str | None, str | None]:
+    """``_job-apps/<App>/<user>-….html`` → ``(user, App)``; the user is the filename prefix."""
+    try:
+        parts = source.resolve().relative_to(root.resolve()).parts
+    except ValueError:
+        return None, None
+    rel = "/".join(parts)
+    for prefix in _JOB_APP_PREFIXES:
+        if not rel.startswith(prefix + "/"):
+            continue
+        rest = rel[len(prefix) + 1 :].split("/")
+        if len(rest) < 2:
+            return None, None
+        app, name = rest[0], rest[-1].lower()
+        users = sorted(_workspace_user_ids(root), key=len, reverse=True)
+        user = next((u for u in users if name.startswith(u.lower() + "-")), None)
+        return user, app
+    return None, None
+
+
 def default_output_dir(
     source: Path | str,
     *,
@@ -236,20 +272,40 @@ def default_output_dir(
 ) -> Path:
     """Where a deliberate export goes when the caller omits ``--output-dir``.
 
-    ``_exports/<user>/<kind>/`` when a profile is known,
-    ``_exports/<kind>/`` when only the kind is known, otherwise
-    ``_exports/unfiled/``. Optional ``leaf`` nests one more folder (a job name,
-    or ``<stem>-png``). ``output/`` is reserved for callers that explicitly
-    choose disposable automation/test scratch.
+    Exports live WITH their document family (owner directive 2026-09-27):
+
+    * ``resumes/<user>/…`` and ``_job-apps/<App>/<user>-….html`` → ``resumes/<user>/``
+      (plus the job folder, e.g. ``resumes/<user>/<App>/``);
+    * ``collages/<project>/…`` → ``collages/<project>/`` (beside ``images/`` and
+      ``_candidates/``);
+    * anything else — public ``examples/`` or an unrecognised source — falls back to
+      ``_exports/<kind>/`` or ``_exports/unfiled/`` so a fresh clone still works.
+
+    Optional ``leaf`` nests one more folder (a job name, or ``<stem>-png``).
+    ``output/`` stays reserved for callers that explicitly choose disposable scratch.
     """
+    root_path = _root(root)
+    source_path = Path(source)
+    job_user, job_app = _job_app_user_and_leaf(source_path, root_path)
+    if job_user:
+        dest = root_path / "resumes" / job_user
+        job = leaf if leaf is not None else job_app
+        return dest / job if job else dest
+    try:
+        parts = source_path.resolve().relative_to(root_path.resolve()).parts
+    except ValueError:
+        parts = ()
+    parts = _strip_output_prefixes(parts)
+    if len(parts) >= 2 and parts[0] == "collages":
+        dest = root_path / "collages" / parts[1]
+        return dest / leaf if leaf else dest
     user, inferred_kind = infer_output_user_kind(source, kind=kind, root=root)
-    dest = export_root(root=root)
-    if user and inferred_kind:
-        dest = dest / user / inferred_kind
+    if parts[:1] == ("resumes",) and len(parts) >= 2:
+        dest = root_path / "resumes" / parts[1]
     elif inferred_kind:
-        dest = dest / inferred_kind
+        dest = export_root(root=root) / inferred_kind
     else:
-        dest = dest / "unfiled"
+        dest = export_root(root=root) / "unfiled"
     job = leaf if leaf is not None else output_job_leaf(source, root=root)
     if job:
         dest = dest / job

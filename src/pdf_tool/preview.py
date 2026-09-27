@@ -305,30 +305,67 @@ def scan_documents(root: Path) -> list[dict]:
             continue
         docs.append(classify_document(str(rel).replace("\\", "/"), p.stem, profile_ids))
 
-    # Finished user-facing exports are browseable in the local Hub, but remain
-    # gitignored and read-only. A public clone contains only _exports/README.md,
-    # so discovery never adds personal data to the package or repository.
-    exports_root = root / "_exports"
-    if exports_root.is_dir():
-        for p in sorted(exports_root.rglob("*")):
-            if not p.is_file() or p.suffix.lower() not in EXPORT_ARTIFACT_SUFFIXES:
-                continue
-            rel = p.relative_to(root)
-            if _EXPORT_EXCLUDE_PARTS.intersection(rel.parts):
-                continue
-            if any(part.endswith(".egg-info") for part in rel.parts):
-                continue
-            doc = classify_document(str(rel).replace("\\", "/"), p.stem, profile_ids)
-            doc.update(
-                {
-                    "template": False,
-                    "artifact": True,
-                    "format": p.suffix.lower().lstrip("."),
-                    "exportable": False,
-                }
-            )
-            docs.append(doc)
+    # Finished exports are browseable in the local Hub as read-only cards. They live
+    # WITH their document family (resumes/<user>/…, collages/<project>/…), with
+    # _exports/ as the fallback for examples/unfiled output. All of these roots are
+    # gitignored in a real workspace, so discovery never adds personal data to a
+    # package or the repository.
+    for p in iter_export_artifacts(root):
+        rel = p.relative_to(root)
+        doc = classify_document(str(rel).replace("\\", "/"), p.stem, profile_ids)
+        doc.update(
+            {
+                "template": False,
+                "artifact": True,
+                "format": p.suffix.lower().lstrip("."),
+                "exportable": False,
+            }
+        )
+        docs.append(doc)
     return docs
+
+
+def _is_artifact_file(p: Path, root: Path) -> bool:
+    if not p.is_file() or p.suffix.lower() not in EXPORT_ARTIFACT_SUFFIXES:
+        return False
+    rel = p.relative_to(root)
+    if _EXPORT_EXCLUDE_PARTS.intersection(rel.parts):
+        return False
+    return not any(part.endswith(".egg-info") for part in rel.parts)
+
+
+def iter_export_artifacts(root: Path):
+    """Yield finished export files: PDFs/PNGs beside their family, plus _exports/.
+
+    * ``resumes/<user>/…`` — any PDF, and images outside ``resources/`` (those are
+      source assets such as logos and game shots, not exports);
+    * ``collages/<project>/<file>`` — only files at the project root (``images/``
+      inputs and ``_candidates/`` renders are working material);
+    * ``_exports/…`` — everything (examples and unfiled fallback).
+    """
+    seen: set[Path] = set()
+    resumes = root / "resumes"
+    if resumes.is_dir():
+        for p in sorted(resumes.rglob("*")):
+            if not _is_artifact_file(p, root):
+                continue
+            parts = p.relative_to(resumes).parts
+            if p.suffix.lower() != ".pdf" and "resources" in parts:
+                continue
+            seen.add(p)
+            yield p
+    collages = root / "collages"
+    if collages.is_dir():
+        for project in sorted(d for d in collages.iterdir() if d.is_dir() and not d.name.startswith(("_", "."))):
+            for p in sorted(project.iterdir()):
+                if p not in seen and _is_artifact_file(p, root):
+                    seen.add(p)
+                    yield p
+    exports = root / "_exports"
+    if exports.is_dir():
+        for p in sorted(exports.rglob("*")):
+            if p not in seen and _is_artifact_file(p, root):
+                yield p
 
 
 def resolve_preview_file(root: Path, rel: str) -> Path | None:
@@ -604,7 +641,7 @@ try {
       </summary>
       <div class="hub-more-panel">
         <label>Export folder
-          <input id="outdir" type="text" placeholder="_exports/<profile>/<kind> (default)">
+          <input id="outdir" type="text" placeholder="beside source: resumes/&lt;profile&gt;/… (default)">
         </label>
       </div>
     </details>
@@ -682,7 +719,7 @@ try {
       </div>
       <div class="hub-drawer-field">
         <label for="outdirDrawer">Export folder</label>
-        <input id="outdirDrawer" type="text" placeholder="_exports/<profile>/<kind> (default)">
+        <input id="outdirDrawer" type="text" placeholder="beside source: resumes/&lt;profile&gt;/… (default)">
       </div>
     </div>
     <div class="hub-drawer-section hub-support" role="group" aria-label="Support JenniNexus">
@@ -846,7 +883,8 @@ function setFolderFilterValue(v, { silent = false } = {}) {
 
 function folderDisplayName(folder) {
   if (!folder) return "all folders";
-  if (folder === "_exports") return "Exports";
+  if (folder === "@exports") return "Exports (all finished files)";
+  if (folder === "_exports") return "_exports (fallback)";
   return folder;
 }
 
@@ -1113,6 +1151,7 @@ function uniqueFolders() {
   if (pool.some(d => String(d.path || "").replace(/\\\\/g, "/").startsWith("_exports/"))) {
     folders.add("_exports");
   }
+  if (pool.some(d => d.artifact)) folders.add("@exports");
   return [...folders].sort();
 }
 
@@ -1122,7 +1161,9 @@ function filteredDocs() {
   const profile = document.getElementById("personFilter").value;
   const docs = DOCS.filter(d => {
     if (kindFilter !== "all" && d.kind !== kindFilter) return false;
-    if (folder) {
+    if (folder === "@exports") {
+      if (!d.artifact) return false;
+    } else if (folder) {
       const path = String(d.path || "").replace(/\\\\/g, "/");
       const folderPrefix = folder.endsWith("/") ? folder.slice(0, -1) : folder;
       if (d.group !== folder && !path.startsWith(folderPrefix + "/")) return false;
