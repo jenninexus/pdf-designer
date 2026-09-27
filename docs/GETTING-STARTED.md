@@ -56,7 +56,7 @@ You and a stranger use the **same engine**. Privacy is gitignore, not a second i
 | **Local (you)** | Real `users/*.json`, vaults, `_job-apps/`, `resumes/**`, `_exports/**`, `brands/` |
 | **Optional pointers** | `.config/mcp-pdf-designer.json` (copy the `.example`) |
 
-The engine **reads no environment variables**. Do not add `.env` / `.env.local` unless a new tool actually reads them — it would document a fiction. `storage/` was retired after the root-noun migration; the resolver only accepts old URLs when a live root-noun file exists. Every deliberate export defaults to `_exports/<profile>/<kind>/`; `output/` is explicit disposable automation/test scratch.
+The engine **reads no environment variables**. Do not add `.env` / `.env.local` unless a new tool actually reads them — it would document a fiction. `storage/` was retired after the root-noun migration; the resolver only accepts old URLs when a live root-noun file exists. Every deliberate export defaults to beside its document family (`resumes/<profile>/…`, `collages/<project>/`), with `_exports/<kind>/` as the fallback; `output/` is explicit disposable automation/test scratch.
 
 ---
 
@@ -79,9 +79,10 @@ python -m pdf_tool.html_to_pdf examples/profiles/default-resume/default-resume.h
 python -m pdf_tool.html_to_pdf examples/profiles/default-resume/default-resume.html --pdf-theme dark
 ```
 
-Exports land in `_exports/` as `<stem>-light.pdf` / `<stem>-dark.pdf` and **never overwrite**
-(`-v2`, `-v3`). Grouped by profile then kind when the source lives under `resumes/` /
-`collages/` / `examples/`. Full map: [`EXPORTS.md`](EXPORTS.md).
+Exports land as `<stem>-light.pdf` / `<stem>-dark.pdf` and **never overwrite**
+(`-v2`, `-v3`). A source under `resumes/<user>/` or `collages/<project>/` exports beside that
+family; a source under `examples/` (like this one) falls back to `_exports/examples/`. Full map:
+[`EXPORTS.md`](EXPORTS.md).
 
 **If smoke fails on a clean clone, the public product path is broken — fix before anything else.**
 

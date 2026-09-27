@@ -25,7 +25,7 @@ see `.memory/lesson-work-samples-footer-row-false-collision.md`).
 - Work-examples must stay **≤5 MB** (Indeed-class additional-documents cap):
   `python -m pdf_tool.inline_images --board <tpl>.html <out>.html` — write template images as **relative paths to the asset SSOT** (they preview as-is and are inlined automatically; `{{img:name}}` + `name=path` pairs still work)
   then `python -m pdf_tool.html_to_pdf … --max-mb 5`
-- Keep source HTML under `resumes/<user>/defaults/`; export personal go-to packs to `_exports/<user>/resumes/` and per-job packs to `_exports/<user>/resumes/<Job>/`
+- Keep source HTML under `resumes/<user>/defaults/`; export personal go-to packs to `resumes/<user>/` (flat) and per-job packs to `resumes/<user>/<Job>/`
 
 ### Checklist
 

@@ -30,9 +30,12 @@ completed-history file linked above.
 
 The completed workspace/export organization slice is archived at
 [`Plans/_Complete/2026-09-26-roadmap-completed-archive.md#export-library-organization`](../Plans/_Complete/2026-09-26-roadmap-completed-archive.md#export-library-organization):
-`_exports/` is the only user-facing generated library, `output/` is explicit automation scratch,
-editable sources remain in their document roots, and `applications/` is only a runtime compatibility
-alias. The 2026-09-26 carryover plan was closed on 2026-09-27; its open items are the carryover list above.
+`_exports/` was the only user-facing generated library at the time, `output/` is explicit automation
+scratch, editable sources remain in their document roots, and `applications/` is only a runtime
+compatibility alias. That export-library decision was itself superseded 2026-09-27: exports now live
+beside their document family (`resumes/<user>/…`, `collages/<project>/`), with `_exports/` as the
+fallback — see [`STORAGE.md`](STORAGE.md). The 2026-09-26 carryover plan was closed on 2026-09-27;
+its open items are the carryover list above.
 
 ### Parked / decision-gated
 

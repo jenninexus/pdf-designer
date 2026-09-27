@@ -89,7 +89,8 @@ The public default is intentionally brand-neutral. It supports:
 - light ATS-safe PDF export
 - optional dark branded PDF export through `--pdf-theme dark`
 - US Letter output, 8.5 x 11 inches
-- `_exports/` user-facing generated files and `output/` automation/test scratch
+- user-facing generated files beside their document family (`resumes/<user>/`, `collages/<project>/`,
+  `_exports/` fallback) and `output/` automation/test scratch
 - cover-letter + resume bundles through `merge_pdfs.py --require-letter`
 
 **Page layout (SSOT):** [`docs/LAYOUT-SYSTEM.md`](LAYOUT-SYSTEM.md) + `themes/default-resume.json#document`.

@@ -38,7 +38,7 @@ is invisible to the next clone. Thin the *reading* obligation, not the files.
 | ats-section-cues · jobright-content-score-is-not-parse-fail | [`docs/JOB-ASSESSMENT.md`](../docs/JOB-ASSESSMENT.md) § Tier 4.5 |
 | twin-files-always-fork | [`AGENTS.md`](../AGENTS.md) (`.example` vs bare commands) |
 | public-clone-path-stays-tracked | [`docs/GETTING-STARTED.md`](../docs/GETTING-STARTED.md) · [`docs/PUBLIC-LOCAL-SPLIT.md`](../docs/PUBLIC-LOCAL-SPLIT.md) |
-| exports-are-one-user-facing-root | [`docs/EXPORTS.md`](../docs/EXPORTS.md) · [`_exports/README.md`](../_exports/README.md) · [`output/README.md`](../output/README.md) |
+| exports-live-with-their-family (supersedes exports-are-one-user-facing-root) | [`docs/EXPORTS.md`](../docs/EXPORTS.md) · [`_exports/README.md`](../_exports/README.md) · [`output/README.md`](../output/README.md) |
 | utf8-json-roundtrip-on-windows | `/jen/sys-admin` UTF-8 note · [`docs/QA.md`](../docs/QA.md) |
 
 Hub-specific traps (profile scope, scaffold vs payload, drawer clip) stay as lesson files until [`docs/PREVIEWER.md`](../docs/PREVIEWER.md) absorbs them — those are still the cheapest *why*.
@@ -88,7 +88,8 @@ codebase · `reference`: pointer to an external resource.
 | [lesson-work-samples-footer-row-false-collision.md](lesson-work-samples-footer-row-false-collision.md) | Work-samples L/R footer (name·links) false-triggers footer-collision — pin bottom-RIGHT; portfolio URLs in a body panel |
 | [lesson-defaults-export-beside-html.md](lesson-defaults-export-beside-html.md) | **Superseded** — go-to PDFs do not sit beside source HTML; they use the repo-root export library |
 | [lesson-output-is-repo-root.md](lesson-output-is-repo-root.md) | **Superseded 2026-09-26** — `output/` is now automation/test scratch |
-| [lesson-exports-are-one-user-facing-root.md](lesson-exports-are-one-user-facing-root.md) | Deliberate exports use repo-root `_exports/`, which the Hub presents as **Exports**; `output/` is explicit scratch |
+| [lesson-exports-live-with-their-family.md](lesson-exports-live-with-their-family.md) | Exports live beside their family (`resumes/<user>/<App>/`, `collages/<project>/`); `_exports/` is only the examples/unfiled fallback — the Hub must scan every family root |
+| [lesson-exports-are-one-user-facing-root.md](lesson-exports-are-one-user-facing-root.md) | **Superseded 2026-09-27** — the single `_exports/` library; kept for the CLI-vs-Hub divergence *why* |
 | [lesson-utf8-json-roundtrip-on-windows.md](lesson-utf8-json-roundtrip-on-windows.md) | PowerShell/cp1252 round-trips corrupt UTF-8 JSON with ⭐ — surgical Edit + `encoding=utf-8` only |
 | [lesson-ats-section-cues-must-be-contiguous.md](lesson-ats-section-cues-must-be-contiguous.md) | Jobright misses Job Title / Work Experience / Education when cues are creative, buried, or split in the text layer (Montserrat `W ORK`) — `check_ats` + system-font h2 |
 | [lesson-jobright-content-score-is-not-parse-fail.md](lesson-jobright-content-score-is-not-parse-fail.md) | Jobright rank D / skills-count ≠ ATS parse fail — upload light; print body on system font; mid-word splits are the real shredder |
@@ -107,7 +108,7 @@ codebase · `reference`: pointer to an external resource.
 | [lesson-hub-profile-scopes-folder-and-kind.md](lesson-hub-profile-scopes-folder-and-kind.md) | Restore profile before folders; scope folder/kind to the selected profile or the library goes empty |
 | [lesson-hub-archive-not-found.md](lesson-hub-archive-not-found.md) | Hub "not found" for galleries/work-samples — exclude `_archive` + `*.template.html`; resolve stale `/storage/<user>/` to `resumes/<user>/` |
 | [lesson-one-checkout-privacy-is-gitignore.md](lesson-one-checkout-privacy-is-gitignore.md) | One engine; gitignore + examples; no .env; tracker is who×job not a count |
-| [lesson-private-collage-source-assets.md](lesson-private-collage-source-assets.md) | Private collage HTML can stay discoverable while its source media goes missing — keep media beside source, copy (do not move) to `_exports`, and verify `naturalWidth` |
+| [lesson-private-collage-source-assets.md](lesson-private-collage-source-assets.md) | Private collage HTML can stay discoverable while its source media goes missing — keep media beside source, keep finished renders at the collage project root, and verify `naturalWidth` |
 | [lesson-platform-drafts-are-owned-by-platform.md](lesson-platform-drafts-are-owned-by-platform.md) | Release sisters live in the Socials platform's sibling `drafts/` / `published/` folders — never inside a devlog topic directory |
 | [lesson-voice-preview-never-heuristically-redacts-private-text.md](lesson-voice-preview-never-heuristically-redacts-private-text.md) | A browser card cannot prove arbitrary local voice prose public-safe — use a skeletal private card until owner approval |
 | [lesson-electron-packaged-playwright-needs-explicit-browser-path.md](lesson-electron-packaged-playwright-needs-explicit-browser-path.md) | A frozen desktop runtime must explicitly use its copied Playwright Chromium and accept the actual `chrome-win*` folder layout |

@@ -130,8 +130,9 @@ examples/
   _job-listings/              the one-folder-per-application workflow + its templates
 docs/                         you are here
 users/ vaults/ profiles/     ignored local identity, claims, and rendering configuration
-resumes/ collages/ _job-apps/ ignored editable sources and application workspaces
-_exports/                    ignored user-facing generated-file library
+resumes/ collages/ _job-apps/ ignored editable sources, application workspaces, and generated
+                              exports (beside their document family)
+_exports/                    ignored fallback export library (unmatched sources, public examples)
 output/                      ignored explicit automation/test scratch
 storage/                     ⛔ GITIGNORED legacy alias only
 Plans/_Active/                optional one-plan execution slice

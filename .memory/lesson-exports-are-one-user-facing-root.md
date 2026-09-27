@@ -6,7 +6,11 @@ metadata:
   date: 2026-09-26
 ---
 
-**How to apply:** omit `--output-dir` for a normal export. `pdf_tool.paths.default_output_dir`
+> **SUPERSEDED 2026-09-27** by [[lesson-exports-live-with-their-family]]: exports now live beside
+> their document family; `_exports/` is only the examples/unfiled fallback. Kept for the *why*
+> (CLI output and the Hub library must never diverge — still true).
+
+**How to apply (historical):** omit `--output-dir` for a normal export. `pdf_tool.paths.default_output_dir`
 writes `_exports/<profile>/<kind>/` (or `_exports/examples/`, `_exports/<kind>/`, or
 `_exports/unfiled/`). The Hub displays the physical `_exports/` root as **Exports** and scans its
 artifacts read-only. Scripts that need disposable proof files must opt into `output/<run>/`.

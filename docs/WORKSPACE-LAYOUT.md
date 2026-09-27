@@ -30,7 +30,7 @@ flowchart LR
     Collage["collages/<project>/<br/>images · candidates"]
     Commands["/make-resume<br/>/make-cover-letter<br/>/make-collage"]
     PrivateHub["Design Hub<br/>profile = jenni/shade/etc.<br/>folder = Exports"]
-    PrivateOut["_exports/<user>/resumes/<application>/<br/>_exports/<user>/collages/<project>/"]
+    PrivateOut["resumes/<user>/<application>/<br/>collages/<project>/ (project root)"]
     Identity --> Commands
     Job --> Commands
     Collage --> Commands
@@ -42,8 +42,9 @@ flowchart LR
 ```
 
 The split is about **source privacy**, not two applications or two export systems. Every deliberate
-export uses `_exports/`; `output/` is explicit disposable automation/test scratch. Both are ignored
-payload trees with tracked README anchors. In the Hub, select a profile to see its source
+export lands beside its document family (`resumes/<user>/…`, `collages/<project>/`), with `_exports/`
+as the fallback for unmatched sources; `output/` is explicit disposable automation/test scratch.
+All of these are ignored payload trees with tracked README anchors. In the Hub, select a profile to see its source
 documents, choose **Exports** in the folder picker to see finished PDFs/images, and open **Vault**
 to inspect that profile's claims.
 
@@ -59,7 +60,7 @@ to inspect that profile's claims.
 | Edit reusable résumé HTML | `resumes/<user>/` |
 | Edit one job application | `_job-apps/<application>/` |
 | Edit collage sources/candidates | `collages/<project>/` |
-| Find any finished PDFs/images | `_exports/<profile>/<kind>/...`, or Hub → profile → **Exports** |
+| Find any finished PDFs/images | beside the document family — `resumes/<profile>/...` or `collages/<project>/` — or Hub → profile → **Exports**; `_exports/` is the fallback |
 | Find public/example exports | `_exports/examples/` |
 | Find disposable smoke/test artifacts | `output/` (automation only; not in the Hub library) |
 | Add reusable colors or structure | `themes/` or `layouts/` (tracked; never personal content) |
@@ -95,8 +96,9 @@ pdf-designer/
   users/            # WHO  — users/<id>.json (+ users/README.md tracked)
   vaults/           # WHAT — vaults/<id>.json  (was <user>/resume-source.json)
   profiles/         # HOW  — profiles/<id>-resume.json
-  resumes/          # WORK — resumes/<id>/{html,defaults,resources}
-  _exports/         # USER OUT — every deliberate export; shown as “Exports” in the Hub
+  resumes/          # WORK — resumes/<id>/{html,defaults,resources,<Track>}; also holds that
+                    #        person's go-to and per-job PDF/PNG exports (shown as "Exports" in the Hub)
+  _exports/         # FALLBACK OUT — only for a source the engine can't match to a family
   output/           # SCRATCH — explicit automation/test output, not the user library
   _job-apps/        # JOB  — _job-apps/<Track>/  (canonical; applications/ is runtime-only)
   collages/         # collage projects
@@ -120,8 +122,8 @@ pdf-designer/
 | `users/` | Who am I? contact, voice prefs | `storage/users/` |
 | `vaults/` | What may I claim? | `storage/<user>/resume-source.json` |
 | `profiles/` | How does it print? | `storage/profiles/` |
-| `resumes/` | Working HTML + defaults | `storage/jenni/` · `shade/` · `studio/` |
-| `_exports/` | Every deliberate user-facing export | `storage/<user>/_exports/` · split public/private output destinations |
+| `resumes/` | Working HTML + defaults + that person's exports | `storage/jenni/` · `shade/` · `studio/` |
+| `_exports/` | Fallback export when a source can't be matched to `resumes/`/`collages/` | `storage/<user>/_exports/` · split public/private output destinations |
 | `output/` | Disposable automation/test scratch | ad-hoc generated test files beside source HTML |
 | `_job-apps/` | This job | **canonical.** `applications/` and `storage/_job-listings/` are retired runtime aliases — do not store listings there. |
 | `collages/` | Image layouts | `storage/collages/` |

@@ -25,7 +25,7 @@ per section below.
    (`characterVoice` + vault `voice`), the capability matrix, the role tracks.
 5. [`docs/JOB-ASSESSMENT.md`](docs/JOB-ASSESSMENT.md) — how to assess a listing (apply URL is blocking;
    remote? pay vs. market?; the evidence map).
-6. [`docs/STORAGE.md`](docs/STORAGE.md) — the four private layers, root `_exports/`, and legacy `storage/` residue.
+6. [`docs/STORAGE.md`](docs/STORAGE.md) — the four private layers, where exports land (beside their family; `_exports/` fallback), and legacy `storage/` residue.
 7. [`themes/PALETTE-RULES.md`](themes/PALETTE-RULES.md) — the color rule and its guard.
 8. [`docs/LAYOUT-SYSTEM.md`](docs/LAYOUT-SYSTEM.md) — the page model (equal margins, header-flows /
    footer-pins, content-fit).
@@ -118,11 +118,13 @@ node scripts/wcag-resume-palettes.mjs                           # optional WCAG 
 ```
 
 `pip install -e .` makes `pdf_tool` importable **from the repo root** (else run from `src/` or set
-`PYTHONPATH=src`). Exports default to repo-root **`_exports/<profile>/<kind>/`** (or
-`_exports/<kind>/` / `_exports/unfiled/`) and **never overwrite** (auto
-`-v2`, `-v3`). Default dual-mode names: `<stem>-light.pdf` (ATS) and `<stem>-dark.pdf` (branded).
-That is the single clone-safe and local user-facing export library. `output/` is explicit disposable
-automation/test scratch and is not scanned as a Hub document library.
+`PYTHONPATH=src`). Exports land **beside their document family** and **never overwrite** (auto
+`-v2`, `-v3`): `_job-apps/<App>/<user>-….html` → **`resumes/<user>/<App>/`**, `resumes/<user>/…` →
+**`resumes/<user>/`**, `collages/<project>/…` → **`collages/<project>/`**; public examples and
+unrecognised sources fall back to `_exports/examples/` / `_exports/unfiled/` (so a fresh clone still
+works). Default dual-mode names: `<stem>-light.pdf` (ATS) and `<stem>-dark.pdf` (branded). The Hub's
+**Exports (all finished files)** folder shows every export wherever it lives. `output/` is explicit
+disposable automation/test scratch and is not scanned as a Hub document library.
 **Verification without a screen:** export, then `pdf_to_png` and *read* the PNGs — the intended agent loop.
 
 Full command/export recipes: [`docs/EXPORTS.md`](docs/EXPORTS.md).
@@ -195,7 +197,7 @@ marketed résumé-creator demo path (vault shape + palettes + smoke), not privat
 | `docs/` | ARCHITECTURE · SSOT · PRODUCT · PACKAGING · GETTING-STARTED · PUBLIC-LOCAL-SPLIT · STORAGE · VAULT · JOB-ASSESSMENT · THEME-DESIGN · LAYOUT-SYSTEM · EXPORTS · COLLAGE-DESIGN · PREVIEWER · APPLICATIONS · LICENSING-NOTES ([`docs/README.md`](docs/README.md) is the index) |
 | `.config/mcp-pdf-designer.example.json` | ⭐ Tracked project config **seed** (breakpoints + hub/palette/layout pointers). Copy → local `mcp-pdf-designer.json` (gitignored — machine paths). |
 | `Plans/_Active/` | Optional one-plan execution slice; durable backlog is [`docs/ROADMAP.md`](docs/ROADMAP.md) |
-| `_exports/` | ⭐ **all deliberate exports** — tracked README only; payload ignored; shown as **Exports** in the Hub. |
+| `_exports/` | **Fallback** export folder (examples · unfiled) — tracked README only; payload ignored. Personal exports live in `resumes/<user>/(<App>/)` and `collages/<project>/`. |
 | `output/` | **automation/test scratch** — tracked README only; payload ignored; explicit opt-in, not the engine default. |
 | `storage/` | **Retired legacy residue** (keep private; never ship or add new live work). Dual-run resolver still maps old `storage/<user>/` URLs. |
 | `resumes/studio/resources/images/martiangames/` | ⭐ **shared** MG title gallery (WebP) — both applicants; see [`docs/STORAGE.md`](docs/STORAGE.md) |
