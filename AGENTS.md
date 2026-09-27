@@ -94,7 +94,7 @@ python -m pdf_tool.html_to_pdf <doc>.html                       # light/ATS PDF 
 python -m pdf_tool.html_to_pdf <doc>.html --pdf-theme dark      # dark branded PDF, same pagination
 python -m pdf_tool.html_to_pdf <doc>.html --output-dir <dir>    # control export location
 python -m pdf_tool.html_to_pdf <doc>.html --max-mb 5            # fail if PDF > 5 MB (Indeed-class)
-python -m pdf_tool.inline_images <tpl>.html <out>.html --board name=path ...  # JPEG ≤960px
+python -m pdf_tool.inline_images --board <tpl>.html <out>.html name=path ...  # JPEG ≤960px (flag BEFORE positionals)
 python -m pdf_tool.html_to_pdf <doc>.html --variants            # light PDF per public palette → _variants/<stem>/
 python -m pdf_tool.variants <doc>.html                          # same as --variants
 python -m pdf_tool.merge_pdfs out.pdf a.pdf b.pdf --require-letter   # bundle, validate 8.5x11
