@@ -15,7 +15,7 @@ python -m pdf_tool.html_to_pdf <doc>.html                       # → <stem>-lig
 python -m pdf_tool.html_to_pdf <doc>.html --pdf-theme dark      # → <stem>-dark.pdf
 python -m pdf_tool.html_to_pdf <doc>.html --output-dir <dir>
 python -m pdf_tool.html_to_pdf <doc>.html --max-mb 5            # fail if PDF > 5 MB (Indeed)
-python -m pdf_tool.inline_images --board <tpl>.html <out>.html name=path ...
+python -m pdf_tool.inline_images --board <tpl>.html <out>.html [name=path ...]   # also inlines relative <img src>
 python -m pdf_tool.html_to_pdf <doc>.html --variants            # light PDF per public palette
 python -m pdf_tool.variants <doc>.html                          # same as --variants
 python -m pdf_tool.merge_pdfs out.pdf a.pdf b.pdf --require-letter
@@ -106,7 +106,10 @@ around **5 MB**. The go-to work-examples pack must clear that bar.
 ```powershell
 # 1) Inline at print resolution (JPEG, longest edge 960px)
 python resumes/jenni/defaults/_inline_work_examples.py
-# or: python -m pdf_tool.inline_images --board <template.html> <out.html> name=path ...
+# or: python -m pdf_tool.inline_images --board <template.html> <out.html> [name=path ...]
+#    Preferred template style: <img src="../../resumes/<user>/resources/images/project-hero.webp">
+#    — relative paths to the asset SSOT preview as-is and are inlined automatically (missing file = hard error).
+#    {{img:name}} placeholders still work but render broken until inlined.
 
 # 2) QA, then export into the profile's user-facing library
 python -m pdf_tool.check_generation resumes/jenni/defaults/jenni-default-work-examples.html
