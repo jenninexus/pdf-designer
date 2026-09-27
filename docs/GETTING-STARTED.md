@@ -147,6 +147,7 @@ Do not put real brand hex into tracked `themes/` or `examples/` unless you inten
 | `_job-apps/` | Real listings, pay, apply links |
 | `brands/` | Studio / personal palettes |
 | `collages/` | Real images |
+| `resumes/<id>/resources/{images,logos}/` | ⭐ The one home for a person's images and logos (the wizard creates it on Save); shared studio art → `resumes/studio/resources/images/<collection>/`. Templates use relative `<img src>` paths to these files. |
 | `.config/mcp-pdf-designer.json` | Absolute machine paths (use `.example.json`) |
 | Bare `make-*.md` / `start.md` / `wrap.md` | Personal / SEGO ritual |
 | Real PII | Never commit; never move into `examples/` |
