@@ -47,3 +47,9 @@
 - Cause (high confidence): the resource feature was initially scoped to visual work samples and inherited an older private-folder typo.
 - Effect: videos and source evidence had no generated home, and future agents could perpetuate two spellings.
 - Remedy: one four-lane per-person contract, live pointer migration, focused tests, and recoverable archival of the old folders. Verified by path scans, hashes, vault validation, and document generation gates.
+
+## Synabrain
+
+- Request `ctxreq_e8795ff1aff04f0ea485ea4ece969859`: `grounded`, useful — it identified the TDX Lodge Concepts application and distinguished it from the earlier Santa Barbara Games application.
+- Review: 1 useful, 0 suboptimal; activity healthy; no performance review required.
+- Durable link: `ctxlink_0130d475ac944f37bb913ff2a7def92b` associates the request with this completed plan.
