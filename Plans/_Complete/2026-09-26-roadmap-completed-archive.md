@@ -32,3 +32,33 @@ remains in Git history, the linked completed plans, and the owning docs.
   GitHub product with an optional tip; unsigned executable listings remain prohibited.
 - The previous release/layout closeout remains at
   [`2026-08-25-remaining-release-and-document-layout.md`](2026-08-25-remaining-release-and-document-layout.md).
+
+## Export library organization
+
+Completed 2026-09-26:
+
+- `_exports/` is the one user-facing generated-deliverables library. Private output uses
+  `_exports/<profile>/<kind>/<project-or-application>/`; public example output uses
+  `_exports/examples/`; unknown one-offs use `_exports/unfiled/`.
+- `output/` is explicit disposable automation, smoke-test, and build scratch. It is not the engine
+  default and is not indexed as a Design Hub document library.
+- Editable source stays in `examples/`, `resumes/`, `collages/`, and `_job-apps/`. Person, claim,
+  presentation, and brand data stays in `users/`, `vaults/`, `profiles/`, and `brands/`.
+- `applications/` is a runtime compatibility alias only; its tracked scaffold and the obsolete reverse
+  migration script were removed.
+- The Hub shows **Exports** while physical paths remain `_exports/...`; both label-update paths have
+  interaction coverage.
+- Public docs/examples, local commands, 8 Codex + 8 Agents adapters, ignore rules, desktop seed, and
+  `www-theme-kit/profiles/pdf-designer.json` now agree on the map.
+- Verification: 120 full-suite tests; 22 focused preview tests after the client-disconnect log fix;
+  white-label light/dark + 10/10 generation + ATS smoke; 89-file wheel gate; 66-file desktop seed;
+  mobile/desktop live browser checks and repeated clean reloads.
+- Theme-kit commits `6465819` and `d836cab` landed on its `origin/main`. PDF Designer commits
+  `a39eda8`, `6c639a3`, and the plan-closeout successors remain preserved on clean local `main`; the
+  active plan owns the external credential/publication gate.
+
+Reflection: the former engine-default `output/` versus Hub-indexed `_exports/` split caused successful
+exports to disappear from the working library. `export_root()`, routing/UI tests, and
+`.memory/lesson-exports-are-one-user-facing-root.md` now guard the decision. A stale local command-sync
+entry point was corrected and both adapter trees were regenerated. Synabrain's required request audit
+and review write timed out during wrap; no false request or review ID was recorded.

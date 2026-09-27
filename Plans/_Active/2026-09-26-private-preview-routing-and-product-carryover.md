@@ -7,7 +7,7 @@ an explicit selection.
 ## Completed context
 
 - Workspace/export organization:
-  [`../_Complete/2026-09-26-export-library-organization.md`](../_Complete/2026-09-26-export-library-organization.md)
+  [`../_Complete/2026-09-26-roadmap-completed-archive.md#export-library-organization`](../_Complete/2026-09-26-roadmap-completed-archive.md#export-library-organization)
 - Earlier roadmap, private-preview repair, and stage-filter history:
   [`../_Complete/2026-09-26-roadmap-completed-archive.md`](../_Complete/2026-09-26-roadmap-completed-archive.md)
 - Canonical current map: [`../../docs/PUBLIC-LOCAL-SPLIT.md`](../../docs/PUBLIC-LOCAL-SPLIT.md) and
@@ -48,4 +48,3 @@ This is an external credential gate, not unfinished engineering in the completed
 - Remote gate closes only with fresh destination containment evidence for the exact intended mainline.
 - Product work starts only after one slice is explicitly accepted and receives its own bounded plan.
 - Keep exactly this one non-README file in `Plans/_Active/` until one of those conditions changes.
-
