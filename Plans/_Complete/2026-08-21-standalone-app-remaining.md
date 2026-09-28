@@ -54,7 +54,7 @@ the non-developer desktop product is a separate, unstarted implementation phase.
 ## Paid desktop shell — Windows Electron delivery
 
 - [x] Owner decision (2026-08-21): support **Windows 10/11 x64** first, delivered as a per-user NSIS installer. Electron is a thin desktop host over the existing local `pdf_tool.preview` service; it is never a second document renderer.
-- [x] Write a small acceptance spec for the first launcher: starts the existing Hub on localhost, opens the browser, and leaves all vault data local. See [`docs/WINDOWS-LAUNCHER.md`](../../docs/WINDOWS-LAUNCHER.md).
+- [x] Write a small acceptance spec for the first launcher: starts the existing Hub on localhost, opens the browser, and leaves all vault data local. Historical evidence: [`docs/_archive/WINDOWS-LAUNCHER.md`](../../docs/_archive/WINDOWS-LAUNCHER.md).
 - [x] Build and test the Windows launcher spike without forking the renderer or introducing a cloud account.
 - [x] Add the smallest guided vault → skills → palette → light/dark export wizard after the launcher proof: [`/wizard`](http://127.0.0.1:8787/wizard) keeps input in local ignored templates and proves dual export with fictional Jane Example through the existing Library renderer (2026-08-21).
 - [x] Build the Windows Electron NSIS installer: bundle only the Python/Playwright runtime it needs, start one ephemeral loopback Hub child, and show that route in a sandboxed Electron window. Static shell checks, frozen-runtime export, unpacked-resource inspection, and local NSIS build passed (2026-08-21).
@@ -89,7 +89,7 @@ Related: [`../../docs/PRODUCT.md`](../../docs/PRODUCT.md) ·
 ### Done when
 
 - [x] The production-PyPI decision is documented: **do not publish to production PyPI now**. TestPyPI remains the proven developer-package rehearsal; the Windows customer route is an Electron NSIS installer, and production PyPI would add public Python-package support obligations without completing that route.
-- [x] A Windows launcher starts the existing local Hub, opens the browser, and keeps all data local. Acceptance record: [`docs/WINDOWS-LAUNCHER.md`](../../docs/WINDOWS-LAUNCHER.md).
+- [x] A Windows launcher starts the existing local Hub, opens the browser, and keeps all data local. Acceptance record: [`docs/_archive/WINDOWS-LAUNCHER.md`](../../docs/_archive/WINDOWS-LAUNCHER.md).
 - [x] A guided local wizard covers vault → skills → palette → dual export without a second renderer (Jane Example public proof; `/wizard`).
 - [x] The optional Voice Seed flow presents a redacted, read-only card preview and never needs a network dependency (`/wizard` → `/api/voice-card`, 2026-08-21). Saving/copying a human-approved card remains deliberately out of scope.
 - [x] A Windows x64 Electron NSIS artifact is built with an isolated bundled Hub runtime, public workspace seed, and only the existing Playwright renderer; the frozen runtime made an actual light PDF export without a system Python interpreter (2026-08-21).

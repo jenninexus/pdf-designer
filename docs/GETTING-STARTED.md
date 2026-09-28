@@ -97,6 +97,15 @@ Run the Hub without opening a browser automatically, then visit
 python -m pdf_tool.preview --no-open
 ```
 
+On Windows, the small browser-first launcher performs the same loopback readiness check and reuses an
+already-running Hub:
+
+```powershell
+pwsh -NoProfile -File scripts/launch-design-hub.ps1
+```
+
+Use `-NoOpen` for automation. The launcher is not an installer or a second renderer.
+
 The Hub starts dark by default. Its theme is only the local app chrome; document palettes
 still control the preview and exported PDF. The Wizard route guides a local vault →
 source-backed skills → palette → light/dark export. You can copy the ignored templates

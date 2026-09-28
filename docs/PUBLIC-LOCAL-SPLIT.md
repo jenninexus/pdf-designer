@@ -9,8 +9,8 @@ hex maps, or SEGO session ritual.
 
 The **free product** is that clone. A possible paid app is a thin installer/wizard
 over the same engine later — not a second feature set, and not a reason to delay
-clone-safe fixes. Boundary audit: [`PUBLIC-RELEASE-AUDIT.md`](PUBLIC-RELEASE-AUDIT.md).
-Thesis: [`PRODUCT.md`](PRODUCT.md).
+clone-safe fixes. Thesis: [`PRODUCT.md`](PRODUCT.md). The completed release-boundary audit is retained
+only as [`_archive/PUBLIC-RELEASE-AUDIT.md`](_archive/PUBLIC-RELEASE-AUDIT.md).
 
 Sibling pattern: [`agency/docs/PUBLIC-LOCAL-SPLIT.md`](../../agency/docs/PUBLIC-LOCAL-SPLIT.md)
 (framework agents). Same idea here for a **résumé / PDF toolkit**.
@@ -75,6 +75,18 @@ Never commit from a personal machine:
 | `.config/mcp-pdf-designer.json` | Absolute machine paths |
 | `Plans/_Complete/_archive/dev-log-sego.yaml` | Frozen historical session log (do not append) |
 | `*.pdf` / `*.png` (except deliberate example fixtures under `docs/images/`) | Exports / captures |
+
+## Ongoing clone-safety gate
+
+Before a public push:
+
+1. Stage explicit clone-safe paths; never use `git add -A` and never force-add ignored payload.
+2. Keep public docs free of machine paths, private names, vault bodies, and operational credentials.
+3. Treat `*.example.*` as a naming convention, not proof of safety; inspect its contents.
+4. Run `python scripts/smoke-white-label.py` and `python scripts/check-wheel-assets.py` when engine,
+   examples, or packaged assets change.
+5. Require explicit human approval for any history rewrite or force-push. Ordinary fast-forward
+   clone-safe commits remain the normal public-product update path.
 
 ### Local visibility is not publication
 
@@ -142,7 +154,7 @@ Files that once lived on `main` (bare commands, machine MCP config) can still ex
 ## Related
 
 - [`README.md`](README.md) — docs hub
-- [`PUBLIC-RELEASE-AUDIT.md`](PUBLIC-RELEASE-AUDIT.md) — free vs paid vs local checklist
+- [`_archive/README.md`](_archive/README.md) — completed audits and superseded spikes
 - [`STORAGE.md`](STORAGE.md) — layout protocol + `storage/` alias
 - [`../_exports/README.md`](../_exports/README.md) — fallback export layout (see `STORAGE.md` for the family-local default)
 - [`../output/README.md`](../output/README.md) — automation/test scratch layout

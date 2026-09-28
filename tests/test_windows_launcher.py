@@ -18,7 +18,7 @@ def test_windows_launcher_is_loopback_only_and_waits_for_design_hub():
 
 def test_launcher_acceptance_spec_covers_local_data_and_breakpoint_matrix():
     root = Path(__file__).resolve().parents[1]
-    doc = (root / "docs" / "WINDOWS-LAUNCHER.md").read_text(encoding="utf-8")
+    doc = (root / "docs" / "_archive" / "WINDOWS-LAUNCHER.md").read_text(encoding="utf-8")
     for width in (390, 576, 768, 992, 1200, 1400, 1920, 2560, 3840):
         assert str(width) in doc
     assert "127.0.0.1" in doc

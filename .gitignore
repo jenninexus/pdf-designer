@@ -5,11 +5,13 @@ pdf-designer.code-workspace
 #   .config/mcp-pdf-designer.example.json → copy to mcp-pdf-designer.json
 .config/mcp-pdf-designer.json
 
-# Per-machine private session log — DEPRECATED 2026-09-08 (do not recreate at repo root).
+# Per-machine private session logs/channels — DEPRECATED (do not recreate at repo root).
 # Frozen copy: Plans/_Complete/_archive/dev-log-sego.yaml
-# New session narrative: Plans/_Active/YYYY-MM-DD-<topic>.md + docs/ROADMAP.md
+# Current work lives in Plans/_Active/9-27-2026-pdf-work.md + docs/ROADMAP.md.
+dev-log.yaml
 dev-log-sego.yaml
 dev-log-*.yaml
+dev-chat.md
 
 # Personal/private data — anything real (not *.example.*) that could name you, an employer,
 # or contain unverified/sensitive claims stays local only. Applies at the repo root AND inside
@@ -77,18 +79,12 @@ Plans/*
 !Plans/_Active/
 Plans/_Active/*
 !Plans/_Active/README.md
+!Plans/_Active/9-27-2026-pdf-work.md
 !Plans/_Complete/
 Plans/_Complete/*
 !Plans/_Complete/2026-09-26-roadmap-completed-archive.md
 !Plans/_Complete/2026-09-26-private-preview-routing-and-product-carryover.md
 !Plans/_Complete/2026-09-27-shade-resource-audit.md
-docs/APPLICATIONS.md
-docs/JOB-ASSESSMENT.md
-docs/LAYOUT-SYSTEM.md
-docs/ROADMAP.md
-docs/SSOT.md
-docs/STORAGE.md
-docs/VAULT.md
 docs/*.local.md
 docs/private/
 docs/**/*.private.md

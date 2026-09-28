@@ -10,7 +10,7 @@ remains in Git history, the linked completed plans, and the owning docs.
 - Repository history was scrubbed, the clone-safe Hub was published, and the GitHub product became public.
 - Deliberate exports were consolidated under `_exports/<profile>/<kind>/`; `output/` is explicit
   automation/test scratch, and source HTML stays under its public/private authoring roots. Full
-  evidence: [`2026-09-26-export-library-organization.md`](2026-09-26-export-library-organization.md).
+  evidence: [Export library organization](#export-library-organization) below.
 - Personal commands stay local; only `.example.md` protocol seeds ship.
 
 ## Public product and Design Hub

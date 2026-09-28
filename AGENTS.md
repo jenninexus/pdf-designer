@@ -42,21 +42,26 @@ direction (free GitHub vs later paid shell): [`docs/PRODUCT.md`](docs/PRODUCT.md
 `python scripts/testpypi-dry-run.py` (local wheel proof; `--upload` needs `TESTPYPI_TOKEN`).
 
 **Product backlog:** [`docs/ROADMAP.md`](docs/ROADMAP.md) · plan index [`Plans/README.md`](Plans/README.md).
-`Plans/_Active/` may be empty; create at most one public-safe checklist for a concrete accepted slice, then
-move it to `Plans/_Complete/`. Folder UX target: [`docs/WORKSPACE-LAYOUT.md`](docs/WORKSPACE-LAYOUT.md).
+`Plans/_Active/` holds at most one public-safe checklist; current work is
+[`9-27-2026-pdf-work.md`](Plans/_Active/9-27-2026-pdf-work.md). Move it to `Plans/_Complete/` only when
+its remaining work is verified or routed. Folder UX target: [`docs/WORKSPACE-LAYOUT.md`](docs/WORKSPACE-LAYOUT.md).
 Maintainer channel/signing: `docs/CHANNELS.local.md` (gitignored).
 
-**Session start / wrap:** `/pdf-start` → local [`.claude/commands/pdf-start.md`](.claude/commands/pdf-start.md)
-(gitignored). `/pdf-wrap` → local [`.claude/commands/pdf-wrap.md`](.claude/commands/pdf-wrap.md) — **requires
-`/reflect`** + next-agent handoff. `/start` and `/wrap` (and `/jen:start` / `/jen:wrap`) are thin
+**Session start / wrap:** after `/clear`, run only `/pdf-start` → local
+[`.claude/commands/pdf-start.md`](.claude/commands/pdf-start.md) (gitignored). It incorporates the
+project-relevant base start checks; do not also run `/session-start`. `/pdf-wrap` → local
+[`.claude/commands/pdf-wrap.md`](.claude/commands/pdf-wrap.md) — **requires `/reflect-universal`**,
+updates the active plan + roadmap, and incorporates the base wrap checks without a separate
+`/session-wrap`. `/start` and `/wrap` (and `/jen:start` / `/jen:wrap`) are thin
 aliases in `start.md` / `wrap.md` that defer here. Public protocol seeds:
 `.claude/commands/*.example.md`. Palette prefs: [`docs/SSOT.md`](docs/SSOT.md) § Personal palette prefs ·
 private maps in `brands/` (was `storage/brand-design/`). Product front door: [`examples/resume-studio/`](examples/resume-studio/).
 
 **Where learnings go — two surfaces, do not confuse them.** Session narrative lives in
 an active `Plans/_Active/` checklist when a concrete slice exists, with the durable backlog in
-[`docs/ROADMAP.md`](docs/ROADMAP.md); move completed narrative to `_Complete`. Root `dev-log-sego.yaml` is **deprecated** (frozen
-2026-09-08 under `Plans/_Complete/_archive/` — do not append). Durable lessons — a trap, its
+[`docs/ROADMAP.md`](docs/ROADMAP.md); move completed narrative to `_Complete`. Do not create or update
+`dev-log.yaml`, `dev-log-sego.yaml`, or `dev-chat.md`; the old YAML is frozen under
+`Plans/_Complete/_archive/`. Durable lessons — a trap, its
 root cause, and the guard that now prevents it — go to **tracked**
 [`.memory/lesson-*.md`](.memory/) with a row in [`.memory/README.md`](.memory/README.md). If
 the lesson changes a standing rule, edit the owning `docs/` page **as well**.
@@ -146,7 +151,7 @@ and follow it."*
 | `make-cover-letter.example.md` | ✅ public seed | Standalone cover letter (not auto-bundled with resume) |
 | `make-work-examples.example.md` | ✅ public seed | Standalone work-samples / portfolio |
 | `make-collage.example.md` | ✅ public seed | Collage / layout builder over `layouts/` + `themes/` |
-| `pdf-start.md` · `pdf-wrap.md` | 🔒 **dev-only** (gitignored) | Canonical session start/wrap — include `/reflect`; never push |
+| `pdf-start.md` · `pdf-wrap.md` | 🔒 **dev-only** (gitignored) | Canonical, self-contained project start/wrap — wrap includes `/reflect-universal`; never push |
 | `start.md` · `wrap.md` · `README.md` | 🔒 **dev-only** (gitignored) | Thin aliases → `pdf-start.md` / `pdf-wrap.md` + local index |
 | `make-resume.md` · `make-cover-letter.md` · `make-work-examples.md` · `make-collage.md` | 🔒 personal (gitignored) | Your copies with real specifics |
 
@@ -154,7 +159,7 @@ and follow it."*
 `/shade` · `/jenni` · `/studio` · `/martian` · `both` resolve vault + profile + export dir.
 
 **Global commands in scope here** (personal, `~/.claude/commands/`, not in this repo): **`/pdf`**
-· **`/voice`** · **`/reflect`** (`jen/reflect-universal` — required at wrap) · `/roadmap` →
+· **`/voice`** · **`/reflect-universal`** (`/reflect` alias — required at wrap) · `/roadmap` →
 [`docs/ROADMAP.md`](docs/ROADMAP.md).
 
 **Shared-agent tooling:** source commands stay in `.claude/commands/`; Codex uses the generated local

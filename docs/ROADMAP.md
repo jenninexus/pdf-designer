@@ -4,53 +4,57 @@
 >
 > | Kind | File |
 > |---|---|
-> | **Active product slice** | _none accepted_ — `Plans/_Active/` holds only its README. Last carryover plan (closed 2026-09-27): [`Plans/_Complete/2026-09-26-private-preview-routing-and-product-carryover.md`](../Plans/_Complete/2026-09-26-private-preview-routing-and-product-carryover.md) |
+> | **Active product slice** | [`Plans/_Active/9-27-2026-pdf-work.md`](../Plans/_Active/9-27-2026-pdf-work.md) — session protocol/docs cleanup plus the ordered remaining-work checklist |
 > | **Completed history** | [`Plans/_Complete/2026-09-26-roadmap-completed-archive.md`](../Plans/_Complete/2026-09-26-roadmap-completed-archive.md) |
 >
 > `/jen:roadmap` resolves here. Plans index: [`Plans/README.md`](../Plans/README.md).
-> Session narrative **does not** go in `dev-log-sego.yaml` (frozen 2026-09-08 → [`Plans/_Complete/_archive/`](../Plans/_Complete/_archive/)).
+> `/pdf-start` and `/pdf-wrap` use the active plan plus this roadmap. Do not create or update
+> `dev-log.yaml`, `dev-log-sego.yaml`, or `dev-chat.md`; the old YAML is frozen under
+> [`Plans/_Complete/_archive/`](../Plans/_Complete/_archive/).
 >
 > Product UX target: [`WORKSPACE-LAYOUT.md`](WORKSPACE-LAYOUT.md) (root `users/` · `vaults/` · `_job-apps/` · …).  
 > Live data today: those root nouns. [`STORAGE.md`](STORAGE.md) documents the layout + the `storage/` dual-run alias.
 
-## Active carryover
+## Current execution
 
-- [ ] **Remote containment gate (human credential):** local `main` is verified and committed but cannot
-  reach `origin/main`. The push URL is deliberately `github.invalid`, SSH has no jenninexus key, and the
-  signed-in GitHub CLI account has **read-only** permission on `jenninexus/pdf-designer`
-  (re-checked 2026-09-27). Next action: activate an existing jenninexus write credential, restore the
-  real push URL, push `main`, fetch, and prove `origin/main` contains the local tip. Then close
-  recovery-queue item `203463379ec2b8182ebf6e4c5e26e695723ea1ba7d4680289274a53f039e35a5`.
-- [ ] Select the next accepted slice from the decision-gated and product-evolution work below, then
-  give it its own dated, public-safe checklist in `Plans/_Active/`. Acceptance rule: product work
-  starts only after one slice is explicitly accepted.
+The exact checklist, blocker evidence, and next action live in
+[`Plans/_Active/9-27-2026-pdf-work.md`](../Plans/_Active/9-27-2026-pdf-work.md). The current accepted
+organization slice completed on 2026-09-27: `/pdf-start` and `/pdf-wrap` are self-contained, superseded
+docs are archived, ignore rules are corrected, and generated command adapters match their sources.
+The active plan remains open because the release and product queue below is not complete.
+
+After that slice, priority remains:
+
+1. Resolve the existing remote containment gate when a writable jenninexus credential is available;
+   prove the intended remote mainline contains the local tip and close recovery item
+   `203463379ec2b8182ebf6e4c5e26e695723ea1ba7d4680289274a53f039e35a5`.
+2. Select one next product-evolution slice from the decision-gated work below.
 
 The 2026-09-26 private-preview repair and stage filters are verified and archived in the
 completed-history file linked above.
 
 The completed workspace/export organization slice is archived at
-[`Plans/_Complete/2026-09-26-roadmap-completed-archive.md#export-library-organization`](../Plans/_Complete/2026-09-26-roadmap-completed-archive.md#export-library-organization):
-`_exports/` was the only user-facing generated library at the time, `output/` is explicit automation
-scratch, editable sources remain in their document roots, and `applications/` is only a runtime
-compatibility alias. That export-library decision was itself superseded 2026-09-27: exports now live
-beside their document family (`resumes/<user>/…`, `collages/<project>/`), with `_exports/` as the
-fallback — see [`STORAGE.md`](STORAGE.md). The 2026-09-26 carryover plan was closed on 2026-09-27;
-its open items are the carryover list above.
+[`Plans/_Complete/2026-09-26-roadmap-completed-archive.md#export-library-organization`](../Plans/_Complete/2026-09-26-roadmap-completed-archive.md#export-library-organization).
+Its original centralized `_exports/` decision was superseded 2026-09-27: exports now live beside
+their document family (`resumes/<user>/…`, `collages/<project>/`), with `_exports/` as the fallback.
+See [`STORAGE.md`](STORAGE.md).
 
 ### Parked / decision-gated
 
-- [ ] **pywebview shell** — [`Plans/_Complete/2026-07-11-design-hub-parked-phases.md`](../Plans/_Complete/2026-07-11-design-hub-parked-phases.md)
-- [ ] **Signed binary channel** — only reopen after a private channel decision; require Valid
-  Authenticode plus clean Win10/11 x64 VM proof before any binary listing. Unsigned listing stays off.
+- **PyWebView or Electron shell** — reopen only after enough local-first workflow evidence exists to
+  choose the smallest maintainable shell. Historical PyWebView plan:
+  [`Plans/_Complete/2026-07-11-design-hub-parked-phases.md`](../Plans/_Complete/2026-07-11-design-hub-parked-phases.md).
+- **Signed binary channel** — only after a private channel decision; require valid Authenticode plus
+  clean Windows 10/11 x64 VM proof before any binary listing. Unsigned listing stays off.
+- **Production PyPI** — only after TestPyPI proof and an explicit channel decision; the GitHub clone
+  remains the complete free product.
 
-### Product evolution carryover
+### Product evolution
 
-- [ ] **Canvas editor** — drag/drop image tray, canvas presets, layout-family starts, hero selection,
-  and text blocks over the same `collage-source.json` used by the CLI.
-- [ ] **Collage books** — multi-page project manifest → render pages → `merge_pdfs`.
-- [ ] **Desktop output-folder picker** — only in the signed desktop shell; retain editable path text.
-- [ ] **Production PyPI decision** — only after TestPyPI proof and an explicit channel decision; the
-  GitHub clone remains the complete free product.
+- **Canvas editor** — drag/drop image tray, canvas presets, layout-family starts, hero selection, and
+  text blocks over the same `collage-source.json` used by the CLI.
+- **Collage books** — multi-page project manifest → render pages → `merge_pdfs`.
+- **Desktop output-folder picker** — only in a packaged desktop shell; retain editable path text.
 
 ### Never
 

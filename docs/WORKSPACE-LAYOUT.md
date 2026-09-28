@@ -199,14 +199,14 @@ files) and copy from `examples/` — they never pull your vault.
 
 | Tracked (public) | Local-only (same `docs/` folder, gitignored) |
 |---|---|
-| `PRODUCT.md` · `WORKSPACE-LAYOUT.md` · `GETTING-STARTED.md` · `STORAGE.md` (legacy until cutover) · `PUBLIC-LOCAL-SPLIT.md` · … | `MARKETING.md` · `WORKSPACE.md` · `HISTORY-SCRUB.md` · `*.local.md` |
+| `PRODUCT.md` · `WORKSPACE-LAYOUT.md` · `GETTING-STARTED.md` · `STORAGE.md` (current paths + legacy alias contract) · `PUBLIC-LOCAL-SPLIT.md` · … | `MARKETING.md` · `WORKSPACE.md` · `HISTORY-SCRUB.md` · `*.local.md` |
 
 No second docs tree under `storage/docs/`. Private notes live beside public docs; gitignore
 hides them from clones.
 
 ---
 
-## Migration phases (see active plan)
+## Completed root-noun migration
 
 1. **Docs + ignore** — private notes → `docs/`; stop using `storage/docs/` ✅
 2. **Path resolver** — `pdf_tool.paths` accepts both trees (Hub + CLI) ✅
