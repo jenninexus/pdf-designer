@@ -24,12 +24,10 @@ then use [`PUBLIC-LOCAL-SPLIT.md`](PUBLIC-LOCAL-SPLIT.md) for the tracking/priva
 | [`WORKSPACE-LAYOUT.md`](WORKSPACE-LAYOUT.md) | ⭐ Target root folders (`users/` · `vaults/` · …) for the free product |
 | [`PRODUCT.md`](PRODUCT.md) | ⭐ Business / product direction (free GitHub + optional tip; installer is a later shell) |
 | [`GETTING-STARTED.md`](GETTING-STARTED.md) | ⭐ Clone path without vaults |
-| [`PUBLIC-RELEASE-AUDIT.md`](PUBLIC-RELEASE-AUDIT.md) | Free GitHub product vs local vs paid; clone-safety on public `main` |
 | [`../examples/resume-studio/`](../examples/resume-studio/) | Public product front door |
 | [`pdf-designer-overview.html`](pdf-designer-overview.html) · [`PDF`](pdf-designer-overview.pdf) | Browser-openable product overview + PDF rendered by this engine |
 | [`images/README.md`](images/README.md) | Current public-only Hub screenshot set; prior captures are dated archives |
 | [`PACKAGING.md`](PACKAGING.md) | PyPI / wheel spike |
-| [`WINDOWS-LAUNCHER.md`](WINDOWS-LAUNCHER.md) | Windows-first local Design Hub launcher spike + acceptance checks |
 | [`WINDOWS-ELECTRON.md`](WINDOWS-ELECTRON.md) | Pre-release Windows shell: unsigned packaging, Documents/OneDrive, clean-machine harness |
 | [`VOICE-SEED-HANDOFF.md`](VOICE-SEED-HANDOFF.md) | Optional, public-safe voice-card boundary |
 | [`QA.md`](QA.md) | Ship gate — `check_generation` |
@@ -64,11 +62,17 @@ These remain separate because each owns a different decision boundary; they are 
 [`WHITE-LABEL.md`](WHITE-LABEL.md) is intentionally only a redirect for older links. Its maintained
 content lives in [`GETTING-STARTED.md`](GETTING-STARTED.md); do not grow a second white-label guide there.
 
+## Historical records
+
+Completed audits and superseded spikes live under [`_archive/`](_archive/). They preserve evidence but
+are not current instructions. The maintained authorities remain the docs listed above.
+
 ## Local operating records
 
 Personal/session plans, agent runbooks, working vault payload, and application records stay
-gitignored. `Plans/_Active/` may be empty and holds at most one explicitly unignored, clone-safe
-execution slice; reviewed product-history plans may remain tracked. The public walkthrough is the fictional
+gitignored. `Plans/_Active/` holds at most one explicitly unignored, clone-safe execution slice; the
+current slice is [`9-27-2026-pdf-work.md`](../Plans/_Active/9-27-2026-pdf-work.md). Reviewed
+product-history plans may remain tracked. The public walkthrough is the fictional
 [`../examples/resume-studio/`](../examples/resume-studio/) example plus
 [`GETTING-STARTED.md`](GETTING-STARTED.md).
 

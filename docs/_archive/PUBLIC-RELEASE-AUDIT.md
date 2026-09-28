@@ -1,5 +1,8 @@
 # Public release content boundary
 
+> **Archived 2026-09-27.** This one-time audit is complete. The maintained privacy and clone-safety
+> contract is [`../PUBLIC-LOCAL-SPLIT.md`](../PUBLIC-LOCAL-SPLIT.md).
+
 **Status:** [github.com/jenninexus/pdf-designer](https://github.com/jenninexus/pdf-designer)
 is a **public MIT** repo today. This page is the clone-safety checklist for that
 free product — not a “someday publish” plan.
@@ -8,8 +11,8 @@ Paid work (signed Windows installer, storefront, guided-wizard chrome) is a
 **later shell** over the same engine. It is **not** required for the GitHub
 product and must not gate clone-safe engine/docs fixes.
 
-Companion: [`PUBLIC-LOCAL-SPLIT.md`](PUBLIC-LOCAL-SPLIT.md) · thesis:
-[`PRODUCT.md`](PRODUCT.md) · clone path: [`GETTING-STARTED.md`](GETTING-STARTED.md).
+Companion: [`PUBLIC-LOCAL-SPLIT.md`](../PUBLIC-LOCAL-SPLIT.md) · thesis:
+[`PRODUCT.md`](../PRODUCT.md) · clone path: [`GETTING-STARTED.md`](../GETTING-STARTED.md).
 
 ## What the free GitHub product includes
 
@@ -24,7 +27,7 @@ gets:
 | Protocol seeds | `.claude/commands/*.example.md` (placeholders only) |
 | Docs | Public `docs/*.md` in this index · `README.md` · `LICENSE` (MIT) |
 | Lessons | `.memory/README.md` + `.memory/lesson-*.md` |
-| Export layout | Tracked `STORAGE.md` for the family-local export contract + `_exports/README.md` for the fallback library + `output/README.md` for explicit automation/test scratch (all PDF/PNG payload gitignored) |
+| Export layout | Tracked [`STORAGE.md`](../STORAGE.md) for the family-local export contract + `_exports/README.md` for the fallback library + `output/README.md` for explicit automation/test scratch (all PDF/PNG payload gitignored) |
 | Proof | `python scripts/smoke-white-label.py` · `python scripts/check-wheel-assets.py` |
 
 **Intended public fixes** (engine/docs/examples that a clone needs) land on
@@ -45,7 +48,7 @@ fallback for public examples or an unmatched source. That is clone UX, not a pai
 | Bare `.claude/commands/*.md` (`start` / `wrap` / `make-*` / commands README) | Dev ritual + personal specifics |
 | `Plans/` · `Plans/_Complete/_archive/dev-log-sego.yaml` · `docs/MARKETING.md` · `WORKSPACE.md` · `HISTORY-SCRUB.md` | Operating records |
 | Machine `.config/mcp-pdf-designer.json` | Absolute paths |
-| Signed Electron/NSIS download, paid fulfilment, production PyPI | Later channels — not public how-to. Contributor packaging: [`WINDOWS-ELECTRON.md`](WINDOWS-ELECTRON.md) · [`PACKAGING.md`](PACKAGING.md) |
+| Signed Electron/NSIS download, paid fulfilment, production PyPI | Later channels — not public how-to. Contributor packaging: [`WINDOWS-ELECTRON.md`](../WINDOWS-ELECTRON.md) · [`PACKAGING.md`](../PACKAGING.md) |
 | `www-theme-kit` as a required dependency | Private brand infra; public color lives in `themes/` |
 
 ## Keep public (checklist)

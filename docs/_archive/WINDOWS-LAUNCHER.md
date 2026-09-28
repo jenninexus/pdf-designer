@@ -1,5 +1,9 @@
 # Windows launcher spike
 
+> **Archived 2026-09-27.** The spike was accepted. Current setup lives in
+> [`../GETTING-STARTED.md`](../GETTING-STARTED.md); desktop packaging lives in
+> [`../WINDOWS-ELECTRON.md`](../WINDOWS-ELECTRON.md).
+
 The launcher is deliberately a small PowerShell wrapper around the existing
 `pdf_tool.preview` server. It is the first acceptance-tested desktop-distribution
 step, not an installer, native shell, or second renderer.
@@ -39,6 +43,6 @@ profiles, palettes, and exports remain in the existing checkout's local files.
 
 This launcher remains the browser-first fallback. The separate pre-release
 Windows Electron/NSIS path is documented in
-[`WINDOWS-ELECTRON.md`](WINDOWS-ELECTRON.md); it embeds this same local Hub and
+[`WINDOWS-ELECTRON.md`](../WINDOWS-ELECTRON.md); it embeds this same local Hub and
 Python renderer rather than introducing a second renderer. Neither path creates
 paid checkout or cloud sync.

@@ -47,8 +47,9 @@ close the title), in the drawer, and on `/wizard` about. URLs: `docs/PRODUCT.md`
 On compact layouts, the Design Hub drawer is a hamburger sheet through **1399.98px**. **Phones** (≤575.98 and short landscape max-height 480) get a **full-bleed** sheet (no leftover strip). **Tablet / laptop hamburger** (576–1399.98) gets an **almost-full flexible end-panel** (`min(92vw, 100vw - 24px)`) with the grab-edge sash on — a peek of the stage stays visible; never 100vw on a laptop. It closes with its top-right **X**, the
 backdrop, or Escape. Its manual **Refresh** control sits beside that X. Library, Recipes, Vault, and Wizard share that drawer contract.
 
-For the Windows-first browser launcher and its acceptance checks, see
-[`WINDOWS-LAUNCHER.md`](WINDOWS-LAUNCHER.md).
+For the Windows-first browser launcher, see
+[`GETTING-STARTED.md`](GETTING-STARTED.md#first-local-hub-session). The completed acceptance spike is
+retained under [`_archive/WINDOWS-LAUNCHER.md`](_archive/WINDOWS-LAUNCHER.md).
 
 ### Auto-refresh (no restart when you export)
 

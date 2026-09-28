@@ -1,5 +1,9 @@
 # Windows Electron installer
 
+The browser-first PowerShell launcher remains documented in
+[`GETTING-STARTED.md`](GETTING-STARTED.md). Its original acceptance spike is historical evidence in
+[`_archive/WINDOWS-LAUNCHER.md`](_archive/WINDOWS-LAUNCHER.md); this page owns the desktop shell.
+
 Pre-release **contributor** notes for the thin Windows shell. This is not a
 customer download page. Public product story: [`PRODUCT.md`](PRODUCT.md).
 Maintainer signing and LAN proof stay local (`WINDOWS-ELECTRON.local.md`).
