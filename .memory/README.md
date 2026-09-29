@@ -81,6 +81,7 @@ codebase · `reference`: pointer to an external resource.
 | [lesson-public-github-must-update-live-blog.md](lesson-public-github-must-update-live-blog.md) | GitHub public ≠ live blog honest — replace “still private / clone URL later” on the HTTP 200 post in the same session |
 | [lesson-socials-api-preflight-before-posting-day.md](lesson-socials-api-preflight-before-posting-day.md) | Discord/Patreon live ≠ X/Meta callable — run `x:ready:jn` + `fb-auth` before promising CLI posts |
 | [lesson-track-tags-hide-true-claims.md](lesson-track-tags-hide-true-claims.md) | A true claim tagged for the wrong track goes invisible — nothing errors, the evidence just vanishes |
+| [lesson-evidence-says-only-what-it-shows.md](lesson-evidence-says-only-what-it-shows.md) | Vault claims from press kits / collages / screenshots: read each item literally, claim the weakest level all support — a two-post collage is not "entries" |
 | [lesson-ask-before-calling-it-a-gap.md](lesson-ask-before-calling-it-a-gap.md) | `doNotClaim` means "not yet confirmed", never "cannot do" — ask before writing anything off |
 | [lesson-overflow-fix-is-move-not-shrink.md](lesson-overflow-fix-is-move-not-shrink.md) | Page overflow is fixed by moving or cutting content, never by shrinking the equal margins |
 | [lesson-fixed-height-clips-content-silently.md](lesson-fixed-height-clips-content-silently.md) | ⚠ A print `height` + `overflow:hidden` on a cover letter CLIPS the sign-off while every guard passes — verify the bottom of the page by eye |
