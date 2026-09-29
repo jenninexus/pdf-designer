@@ -34,6 +34,12 @@ per section below.
 **Fire up the Design Hub:** `python -m pdf_tool.preview` → http://127.0.0.1:8787/ (on workspace open the
 folder task runs `scripts/ensure-design-hub.ps1` — starts the hub if needed, opens the browser; accept the
 "allow automatic tasks" prompt the first time). **One-time setup:** `pip install -e ".[dev]" && playwright install chromium`.
+**Chromium location:** `playwright install chromium` downloads into the **per-user** Playwright cache
+(`%LOCALAPPDATA%\ms-playwright` on Windows, `~/.cache/ms-playwright` on Linux) that every Playwright tool on the
+machine shares. The cache keeps one Chromium per Playwright *version*, so on a dev machine keep this venv's
+`playwright` on the same version as your other Playwright tools rather than pointing each at its own folder.
+`PLAYWRIGHT_BROWSERS_PATH` moves the shared cache for development only — never set it for the installed app
+([lesson](.memory/lesson-electron-packaged-playwright-needs-explicit-browser-path.md)).
 
 **Public-path smoke (no `storage/`):** `python scripts/smoke-white-label.py` — QA + light/dark PDF + ATS on
 `examples/profiles/default-resume/`. Checklist: [`docs/GETTING-STARTED.md`](docs/GETTING-STARTED.md). Product
