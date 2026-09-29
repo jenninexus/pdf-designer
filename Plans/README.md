@@ -23,7 +23,8 @@ in tracked [`.memory/`](../.memory/). Do **not** create root `dev-log.yaml`, `de
 
 | Plan | Status |
 |---|---|
-| [`_Active/9-27-2026-pdf-work.md`](_Active/9-27-2026-pdf-work.md) | Active — project organization/session protocol, then the ordered remaining product queue. |
+| [`_Active/2026-09-29-pdf-work.md`](_Active/2026-09-29-pdf-work.md) | Active — carry-over product queue + pagefit/ATS guard follow-ups. |
+| [`_Complete/2026-09-27-pdf-work.md`](_Complete/2026-09-27-pdf-work.md) | Complete — project organization/session protocol slice; remaining items carried to 2026-09-29. |
 
 > **`/jen:roadmap` entry point:** [`../docs/ROADMAP.md`](../docs/ROADMAP.md).
 > **Business:** [`../docs/PRODUCT.md`](../docs/PRODUCT.md).
