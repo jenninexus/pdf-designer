@@ -23,8 +23,7 @@ in tracked [`.memory/`](../.memory/). Do **not** create root `dev-log.yaml`, `de
 
 | Plan | Status |
 |---|---|
-| [`_Active/2026-09-29-pdf-work.md`](_Active/2026-09-29-pdf-work.md) | Active — carry-over product queue + pagefit/ATS guard follow-ups. |
-| [`_Complete/2026-09-27-pdf-work.md`](_Complete/2026-09-27-pdf-work.md) | Complete — project organization/session protocol slice; remaining items carried to 2026-09-29. |
+| _none open_ | Pick the next slice from [`../docs/ROADMAP.md`](../docs/ROADMAP.md); name it in [`_Active/README.md`](_Active/README.md). |
 
 > **`/jen:roadmap` entry point:** [`../docs/ROADMAP.md`](../docs/ROADMAP.md).
 > **Business:** [`../docs/PRODUCT.md`](../docs/PRODUCT.md).
@@ -39,5 +38,10 @@ is public-safe product history. Personal/application/session payload stays ignor
 rules into `docs/` and durable traps into `.memory/`.
 
 Protocol for agents lives in `docs/` and `AGENTS.md` — not in Plans.
+
+| Plan | Status |
+|---|---|
+| [`_Complete/2026-09-29-pdf-work.md`](_Complete/2026-09-29-pdf-work.md) | Complete — pagefit/ATS/footer-collision guard fixes; product items routed to ROADMAP. |
+| [`_Complete/2026-09-27-pdf-work.md`](_Complete/2026-09-27-pdf-work.md) | Complete — project organization/session protocol slice. |
 
 Latest history consolidation: [`_Complete/2026-09-26-roadmap-completed-archive.md`](_Complete/2026-09-26-roadmap-completed-archive.md).
