@@ -461,6 +461,41 @@ def check_rendered(path: Path):
     return (not msgs), msgs
 
 
+def check_ats_text(path: Path):
+    """RÉSUMÉ TEXT LAYER in BOTH themes — a dark copy gets uploaded too.
+
+    `check_ats` only ever ran on the light PDF, and templates tend to force a system print font only
+    under `html:not([data-pdf-theme="dark"])`. A dark export then keeps a display webfont (Montserrat)
+    whose glyph advances split words in the PDF text layer ("m ultiplayer", "W eb") — 25 splits on a
+    real dark résumé on 2026-09-29 while light passed. Export both themes to a temp dir and fail if
+    either exceeds check_ats's mid-word threshold. Non-résumé docs are image-led: skipped.
+    """
+    if _doc_type(path, _read(path)) != "resume":
+        return True, ["(not a résumé — skipped)"]
+    try:
+        import tempfile
+        from .html_to_pdf import export_html_to_pdf
+        from .check_ats import extract_ats_text, _MAX_MIDWORD_HITS
+    except Exception as e:
+        return True, [f"(skipped — {e})"]
+    msgs = []
+    try:
+        with tempfile.TemporaryDirectory() as td:
+            for theme in ("light", "dark"):
+                pdf = export_html_to_pdf(str(path), pdf_path=str(Path(td) / f"ats-{theme}.pdf"),
+                                         force=True, pdf_theme=theme)
+                midword = extract_ats_text(pdf)[5]
+                if len(midword) > _MAX_MIDWORD_HITS:
+                    msgs.append(f"[{theme}] {len(midword)} mid-word splits (max {_MAX_MIDWORD_HITS}), "
+                                f"e.g. {midword[:4]!r}")
+    except Exception as e:
+        return True, [f"(skipped render — {e})"]
+    if msgs:
+        msgs.append("FIX: system print font (Segoe UI / Arial) for body text in EVERY print theme — "
+                    "not only html:not([data-pdf-theme=\"dark\"]).")
+    return (not msgs), msgs
+
+
 CHECKS = [
     ("palette", "no brown/mustard/lime (+ no magenta for shade/martian)", check_palette_hex, True),
     ("rgba-magenta", "no magenta/pink smuggled via rgba()/hsl()", check_rgba_magenta, True),
@@ -476,6 +511,7 @@ CHECKS = [
     ("letter-geometry", "⭐ a cover letter never pins a print height (that CLIPS the sign-off)",
      lambda p: __import__("pdf_tool.check_pagefit", fromlist=["check_source_geometry"])
      .check_source_geometry(p), False),
+    ("ats-text", "⭐ résumé text layer parses in BOTH light and dark (no mid-word splits)", check_ats_text, False),
 ]
 
 
@@ -486,7 +522,7 @@ def run_file(path: Path, user: str | None = None, do_render: bool = True) -> dic
     no_mag = _no_magenta_for(user)
     results = []
     for key, desc, fn, needs_nomag in CHECKS:
-        if key in ("overflow", "rendered-color", "footer-collision") and not do_render:
+        if key in ("overflow", "rendered-color", "footer-collision", "ats-text") and not do_render:
             results.append({"check": key, "ok": True, "skipped": True, "messages": ["(render skipped)"]})
             continue
         if needs_nomag:

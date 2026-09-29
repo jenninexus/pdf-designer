@@ -109,6 +109,10 @@ def check_pagefit(pdf_path: Path, expect: int = None):
 
     if not pdf_path.exists():
         return False, [f"no such PDF: {pdf_path}"]
+    if pdf_path.suffix.lower() in (".html", ".htm"):
+        # PDFium reports an HTML file as "Data format error", which reads like a broken export.
+        return False, [f"{pdf_path.name} is the HTML source -- pass the exported PDF "
+                       f"(or use --source {pdf_path.name} for the letter-geometry rule alone)"]
 
     msgs = []
     want, kind = (expect, "explicit") if expect else _expected_for(pdf_path)

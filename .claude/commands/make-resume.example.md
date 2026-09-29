@@ -167,6 +167,10 @@ python -m pdf_tool.check_ats resumes/<user>/<App>/<resume>-light.pdf
 Read the extracted text. It must contain contiguous job-title, work-experience, and education cues,
 with no shredded mid-word splits. A board's content grade is not the same as parse failure.
 
+If the dark PDF will be sent anywhere a parser reads it (a recruiter often uploads what you email),
+it must parse too: `check_generation` runs the **ats-text** check on both themes. Put the system print
+font on body text for **every** print theme, not only `html:not([data-pdf-theme="dark"])`.
+
 Board upload = the light résumé only. Dark PDFs, cover letters, work samples, and merged bundles are
 not substitutes for the ATS upload.
 

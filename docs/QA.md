@@ -77,6 +77,7 @@ rules they didn't cover (**11 checks**):
 | 9 | **overflow** | no page overflows its print box at **816px** paper width. **Render-based**; `--no-render` skips | LAYOUT-SYSTEM.md §content-fit |
 | 10 | **footer-collision** | ⭐ **PDF ground truth**: nothing overlaps the pinned signature band (catches 2-col text under the script that DOM height can miss). Detects signature alignment (résumé right / letter left) rather than assuming right | LAYOUT-SYSTEM.md |
 | 11 | **letter-geometry** | ⭐ a **cover letter** must never declare a print `.page` `height` **together with** `overflow: hidden` — that combination CLIPS the sign-off at the box boundary while every DOM-based guard passes | [one-page-letter.json](../layouts/cover-letter/one-page-letter.json) · LAYOUT-SYSTEM.md |
+| 12 | **ats-text** | ⭐ **résumé only:** export light **and** dark and fail on mid-word splits in either text layer. A system print font scoped to `html:not([data-pdf-theme="dark"])` leaves the dark copy in a display webfont that shreds words (25 splits on a real dark résumé, 2026-09-29) | [default-resume profile](../examples/profiles/default-resume/profile.json) `printBodyFont` · `check_ats` |
 
 Checks 1 / 8 / 9 / 11 shell out to the standalone `check_palette` / `check_rendered_color` /
 `check_overflow` / `check_pagefit` so there is one implementation of each rule, not two.
