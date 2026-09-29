@@ -82,11 +82,15 @@ def _expected_for(path: Path):
     return None, None
 
 
-def _page_ink(im, bg_probe_inset=120):
+def _page_ink(im, corner_inset=6):
     """Return (rows_with_ink, W, H, lit_fn) for one rendered page."""
     W, H = im.size
-    inset = max(bg_probe_inset, int(min(W, H) * 0.12))
-    bg = im.getpixel((inset, H // 2))
+    # Sample the paper colour from the four corners — always inside the @page margin, so always
+    # background. An interior probe lands on a dark image mat on work-sample pages and turns every
+    # white pixel into "ink" (false TOP/BOTTOM-edge failures).
+    c = corner_inset
+    corners = [im.getpixel(p) for p in ((c, c), (W - 1 - c, c), (c, H - 1 - c), (W - 1 - c, H - 1 - c))]
+    bg = max(set(corners), key=corners.count)
 
     def lit(px):
         return sum(abs(a - c) for a, c in zip(px, bg)) > 90
