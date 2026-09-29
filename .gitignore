@@ -7,7 +7,7 @@ pdf-designer.code-workspace
 
 # Per-machine private session logs/channels — DEPRECATED (do not recreate at repo root).
 # Frozen copy: Plans/_Complete/_archive/dev-log-sego.yaml
-# Current work lives in Plans/_Active/9-27-2026-pdf-work.md + docs/ROADMAP.md.
+# Current work lives in the dated plan named by Plans/_Active/README.md + docs/ROADMAP.md.
 dev-log.yaml
 dev-log-sego.yaml
 dev-log-*.yaml
@@ -79,12 +79,15 @@ Plans/*
 !Plans/_Active/
 Plans/_Active/*
 !Plans/_Active/README.md
-!Plans/_Active/9-27-2026-pdf-work.md
+# Any dated public checklist (YYYY-MM-DD-slug.md) is tracked; *.local.md stays private.
+!Plans/_Active/[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]-*.md
+Plans/_Active/*.local.md
 !Plans/_Complete/
 Plans/_Complete/*
 !Plans/_Complete/2026-09-26-roadmap-completed-archive.md
 !Plans/_Complete/2026-09-26-private-preview-routing-and-product-carryover.md
 !Plans/_Complete/2026-09-27-shade-resource-audit.md
+!Plans/_Complete/2026-09-27-pdf-work.md
 docs/*.local.md
 docs/private/
 docs/**/*.private.md
