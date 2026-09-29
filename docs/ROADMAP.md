@@ -4,7 +4,7 @@
 >
 > | Kind | File |
 > |---|---|
-> | **Active product slice** | [`Plans/_Active/9-27-2026-pdf-work.md`](../Plans/_Active/9-27-2026-pdf-work.md) — session protocol/docs cleanup plus the ordered remaining-work checklist |
+> | **Active product slice** | [`Plans/_Active/README.md`](../Plans/_Active/README.md) → the one dated checklist (ordered remaining work) |
 > | **Completed history** | [`Plans/_Complete/2026-09-26-roadmap-completed-archive.md`](../Plans/_Complete/2026-09-26-roadmap-completed-archive.md) |
 >
 > `/jen:roadmap` resolves here. Plans index: [`Plans/README.md`](../Plans/README.md).
@@ -18,7 +18,7 @@
 ## Current execution
 
 The exact checklist, blocker evidence, and next action live in
-[`Plans/_Active/9-27-2026-pdf-work.md`](../Plans/_Active/9-27-2026-pdf-work.md). The current accepted
+the dated checklist named in [`Plans/_Active/README.md`](../Plans/_Active/README.md). The current accepted
 organization slice completed on 2026-09-27: `/pdf-start` and `/pdf-wrap` are self-contained, superseded
 docs are archived, ignore rules are corrected, and generated command adapters match their sources.
 The active plan remains open because the release and product queue below is not complete.

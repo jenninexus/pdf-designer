@@ -49,7 +49,7 @@ direction (free GitHub vs later paid shell): [`docs/PRODUCT.md`](docs/PRODUCT.md
 
 **Product backlog:** [`docs/ROADMAP.md`](docs/ROADMAP.md) · plan index [`Plans/README.md`](Plans/README.md).
 `Plans/_Active/` holds at most one public-safe checklist; current work is
-[`9-27-2026-pdf-work.md`](Plans/_Active/9-27-2026-pdf-work.md). Move it to `Plans/_Complete/` only when
+the single dated checklist named in [`Plans/_Active/README.md`](Plans/_Active/README.md). Move it to `Plans/_Complete/` only when
 its remaining work is verified or routed. Folder UX target: [`docs/WORKSPACE-LAYOUT.md`](docs/WORKSPACE-LAYOUT.md).
 Maintainer channel/signing: `docs/CHANNELS.local.md` (gitignored).
 
