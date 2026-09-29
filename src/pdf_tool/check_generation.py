@@ -373,6 +373,12 @@ def check_footer_collision(path: Path):
                     right_bot = bottom_lit(right_x0, right_x1)
                     if left_bot is None and right_bot is None:
                         continue
+                    # A PINNED signature sits on the bottom margin (content box ends at ≥ 93% of the
+                    # sheet for margins ≤ 0.75in). A lowest cluster well above that is a page WITHOUT a
+                    # signature (page 1–2 of a multi-page report): a 2-col image+text block there read
+                    # as "signature + intruding body" and failed a fitting doc (2026-09-29).
+                    if max(b for b in (left_bot, right_bot) if b is not None) < int(H * 0.88):
+                        continue
 
                     # Whichever side reaches LOWER on the page is the signature; the other
                     # column is where intruding body text would be. A résumé signs bottom-right,
