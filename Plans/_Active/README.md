@@ -1,7 +1,7 @@
 # Active product plan
 
-Current checklist: **none open.** Last closed: [`../_Complete/2026-09-29-pdf-work.md`](../_Complete/2026-09-29-pdf-work.md).
-Next session: pick one slice from [`docs/ROADMAP.md`](../../docs/ROADMAP.md) and open a dated checklist here.
+Current checklist: [`2026-09-29-spoken-voice-profiles.md`](2026-09-29-spoken-voice-profiles.md) — designed-voice
+profiles written; install, audition, and owner review remain. Last closed: [`../_Complete/2026-09-29-pdf-work.md`](../_Complete/2026-09-29-pdf-work.md).
 ⭐ This README is the ONLY place that names the dated file;
 commands and docs link here so a plan rotation never breaks them. The durable backlog and decision
 context remain in [`docs/ROADMAP.md`](../../docs/ROADMAP.md).

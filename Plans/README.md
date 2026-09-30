@@ -23,7 +23,7 @@ in tracked [`.memory/`](../.memory/). Do **not** create root `dev-log.yaml`, `de
 
 | Plan | Status |
 |---|---|
-| _none open_ | Pick the next slice from [`../docs/ROADMAP.md`](../docs/ROADMAP.md); name it in [`_Active/README.md`](_Active/README.md). |
+| One open (spoken-voice profiles) | Named in [`_Active/README.md`](_Active/README.md). |
 
 > **`/jen:roadmap` entry point:** [`../docs/ROADMAP.md`](../docs/ROADMAP.md).
 > **Business:** [`../docs/PRODUCT.md`](../docs/PRODUCT.md).
