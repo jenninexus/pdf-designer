@@ -18,3 +18,8 @@ Person + vault companions: [`users/examples.json`](../users/examples.json) · [`
 Voice is edited in exactly two places, never in a profile: `users/<you>.json#characterVoice`
 holds personality and cross-register routing; `vaults/<you>.json#voice` holds application prose.
 The profile's `voice` field is a pointer only, so it cannot become a conflicting third source.
+
+**Spoken voice is a different job.** `profiles/voices/` (gitignored, like the rest of `profiles/`) may hold
+private *designed-voice* profiles for an external TTS tool (e.g. VoiceStudio). They describe how a voice
+*sounds*, never how prose reads, and never contain recordings. Rules and public briefs: voice-seed
+`docs/SPOKEN-VOICE.md`.
