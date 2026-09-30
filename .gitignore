@@ -1,4 +1,4 @@
-# Personal workspace (contains private machine paths) — the .example version is tracked instead
+# Personal workspace (contains private machine paths) — local only, never tracked
 pdf-designer.code-workspace
 
 # Local project config (machine absolute paths). Tracked seed:
