@@ -74,6 +74,8 @@ docs/HISTORY-SCRUB.md
 .memory/*
 !.memory/README.md
 !.memory/lesson-*.md
+# MEMORY.md is a tracked pointer to README.md (the /start convention looks for it).
+!.memory/MEMORY.md
 Plans/*
 !Plans/README.md
 !Plans/_Active/
@@ -88,6 +90,7 @@ Plans/_Complete/*
 !Plans/_Complete/2026-09-26-private-preview-routing-and-product-carryover.md
 !Plans/_Complete/2026-09-27-shade-resource-audit.md
 !Plans/_Complete/2026-09-27-pdf-work.md
+!Plans/_Complete/2026-09-29-pdf-work.md
 docs/*.local.md
 docs/private/
 docs/**/*.private.md
