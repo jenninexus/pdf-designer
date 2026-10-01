@@ -135,8 +135,7 @@ resumes/ collages/ _job-apps/ ignored editable sources, application workspaces, 
 _exports/                    ignored fallback export library (unmatched sources, public examples)
 output/                      ignored explicit automation/test scratch
 storage/                     ⛔ GITIGNORED legacy alias only
-Plans/_Active/                optional one-plan execution slice
-Plans/_Complete/              shipped / parked plans; docs/ROADMAP.md owns the backlog
+Plans/                        ignored local-only session plans; docs/ROADMAP.md owns the backlog
 .claude/commands/             the /make-resume protocol (agent-agnostic markdown)
 pyproject.toml                `pip install -e .` → `pdf_tool` importable from the repo root
 ```

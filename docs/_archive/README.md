@@ -9,5 +9,5 @@ evidence, not current setup or operating instructions.
 | [`WINDOWS-LAUNCHER.md`](WINDOWS-LAUNCHER.md) | The initial PowerShell launcher spike was accepted; the browser-first command remains available, while desktop distribution moved to the Electron plan. | [`../GETTING-STARTED.md`](../GETTING-STARTED.md) · [`../WINDOWS-ELECTRON.md`](../WINDOWS-ELECTRON.md) |
 
 Do not add new work here. Update the current authority and use
-[`../../Plans/_Complete/2026-09-27-pdf-work.md`](../../Plans/_Complete/2026-09-27-pdf-work.md) for the
-remaining execution checklist.
+[`../ROADMAP.md`](../ROADMAP.md) for remaining work (local session plans under `Plans/` are
+gitignored).

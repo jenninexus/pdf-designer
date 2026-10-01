@@ -4,13 +4,14 @@
 >
 > | Kind | File |
 > |---|---|
-> | **Active product slice** | [`Plans/_Active/README.md`](../Plans/_Active/README.md) → the one dated checklist (ordered remaining work) |
-> | **Completed history** | [`Plans/_Complete/2026-09-26-roadmap-completed-archive.md`](../Plans/_Complete/2026-09-26-roadmap-completed-archive.md) |
+> | **Active product slice** | `Plans/_Active/README.md` → the one dated checklist (local-only) |
+> | **Completed history** | `Plans/_Complete/2026-09-26-roadmap-completed-archive.md` (local-only) |
 >
-> `/jen:roadmap` resolves here. Plans index: [`Plans/README.md`](../Plans/README.md).
+> `/jen:roadmap` resolves here. `Plans/` is local-only working context (gitignored, public repo
+> rule 2026-09-30); this file is the public backlog.
 > `/pdf-start` and `/pdf-wrap` use the active plan plus this roadmap. Do not create or update
 > `dev-log.yaml`, `dev-log-sego.yaml`, or `dev-chat.md`; the old YAML is frozen under
-> [`Plans/_Complete/_archive/`](../Plans/_Complete/_archive/).
+> `Plans/_Complete/_archive/` (local-only).
 >
 > Product UX target: [`WORKSPACE-LAYOUT.md`](WORKSPACE-LAYOUT.md) (root `users/` · `vaults/` · `_job-apps/` · …).  
 > Live data today: those root nouns. [`STORAGE.md`](STORAGE.md) documents the layout + the `storage/` dual-run alias.
@@ -18,7 +19,7 @@
 ## Current execution
 
 The exact checklist, blocker evidence, and next action live in
-the dated checklist named in [`Plans/_Active/README.md`](../Plans/_Active/README.md). The current accepted
+the dated checklist named in the local-only `Plans/_Active/README.md`. The current accepted
 organization slice completed on 2026-09-27: `/pdf-start` and `/pdf-wrap` are self-contained, superseded
 docs are archived, ignore rules are corrected, and generated command adapters match their sources.
 The active plan remains open because the release and product queue below is not complete.
@@ -34,7 +35,7 @@ The 2026-09-26 private-preview repair and stage filters are verified and archive
 completed-history file linked above.
 
 The completed workspace/export organization slice is archived at
-[`Plans/_Complete/2026-09-26-roadmap-completed-archive.md#export-library-organization`](../Plans/_Complete/2026-09-26-roadmap-completed-archive.md#export-library-organization).
+`Plans/_Complete/2026-09-26-roadmap-completed-archive.md` § Export library organization (local-only).
 Its original centralized `_exports/` decision was superseded 2026-09-27: exports now live beside
 their document family (`resumes/<user>/…`, `collages/<project>/`), with `_exports/` as the fallback.
 See [`STORAGE.md`](STORAGE.md).
@@ -43,7 +44,7 @@ See [`STORAGE.md`](STORAGE.md).
 
 - **PyWebView or Electron shell** — reopen only after enough local-first workflow evidence exists to
   choose the smallest maintainable shell. Historical PyWebView plan:
-  [`Plans/_Complete/2026-07-11-design-hub-parked-phases.md`](../Plans/_Complete/2026-07-11-design-hub-parked-phases.md).
+  `Plans/_Complete/2026-07-11-design-hub-parked-phases.md` (local-only).
 - **Signed binary channel** — only after a private channel decision; require valid Authenticode plus
   clean Windows 10/11 x64 VM proof before any binary listing. Unsigned listing stays off.
 - **Production PyPI** — only after TestPyPI proof and an explicit channel decision; the GitHub clone

@@ -47,9 +47,9 @@ direction (free GitHub vs later paid shell): [`docs/PRODUCT.md`](docs/PRODUCT.md
 [`docs/PACKAGING.md`](docs/PACKAGING.md) · `python scripts/check-wheel-assets.py` ·
 `python scripts/testpypi-dry-run.py` (local wheel proof; `--upload` needs `TESTPYPI_TOKEN`).
 
-**Product backlog:** [`docs/ROADMAP.md`](docs/ROADMAP.md) · plan index [`Plans/README.md`](Plans/README.md).
-`Plans/_Active/` holds at most one public-safe checklist; current work is
-the single dated checklist named in [`Plans/_Active/README.md`](Plans/_Active/README.md). Move it to `Plans/_Complete/` only when
+**Product backlog:** [`docs/ROADMAP.md`](docs/ROADMAP.md) owns the public backlog. `Plans/` is local-only
+working context (gitignored, never pushed); locally, current work is
+the single dated checklist named in `Plans/_Active/README.md`. Move it to `Plans/_Complete/` only when
 its remaining work is verified or routed. Folder UX target: [`docs/WORKSPACE-LAYOUT.md`](docs/WORKSPACE-LAYOUT.md).
 Maintainer channel/signing: `docs/CHANNELS.local.md` (gitignored).
 
@@ -207,7 +207,7 @@ marketed résumé-creator demo path (vault shape + palettes + smoke), not privat
 | `examples/_job-listings/` | one-folder-per-job-application workflow + copyable template |
 | `docs/` | ARCHITECTURE · SSOT · PRODUCT · PACKAGING · GETTING-STARTED · PUBLIC-LOCAL-SPLIT · STORAGE · VAULT · JOB-ASSESSMENT · THEME-DESIGN · LAYOUT-SYSTEM · EXPORTS · COLLAGE-DESIGN · PREVIEWER · APPLICATIONS · LICENSING-NOTES ([`docs/README.md`](docs/README.md) is the index) |
 | `.config/mcp-pdf-designer.example.json` | ⭐ Tracked project config **seed** (breakpoints + hub/palette/layout pointers). Copy → local `mcp-pdf-designer.json` (gitignored — machine paths). |
-| `Plans/_Active/` | Optional one-plan execution slice; durable backlog is [`docs/ROADMAP.md`](docs/ROADMAP.md) |
+| `Plans/` | 🔒 Local-only session plans (gitignored); durable backlog is [`docs/ROADMAP.md`](docs/ROADMAP.md) |
 | `resumes/<user>/resources/{images,logos,videos,references}/` | Private reusable career-document sources for one person; not résumé-only. Job-specific evidence stays with the application. |
 | `_exports/` | **Fallback** export folder (examples · unfiled) — tracked README only; payload ignored. Personal exports live in `resumes/<user>/(<App>/)` and `collages/<project>/`. |
 | `output/` | **automation/test scratch** — tracked README only; payload ignored; explicit opt-in, not the engine default. |
@@ -221,7 +221,7 @@ marketed résumé-creator demo path (vault shape + palettes + smoke), not privat
 | `src/pdf_tool/`, `themes/`, `examples/`, `docs/`, `AGENTS.md`, `*.example.md`, `output/README.md`, `_exports/README.md` | `users/`, `vaults/`, `profiles/`, `_job-apps/`, `brands/`, `resumes/`, `collages/`, `_exports/*` (payload), `output/*` (scratch), legacy `storage/` |
 | Brand-neutral default theme | Real brand maps (`brands/brand-jenninexus.json`, `brand-martian`, `brand-synagen`) |
 | Example brand shape (`examples/brand-design/`) | Real vault claims, contacts, employer research |
-| Public seed commands (`*.example.md` only) | Bare commands (`pdf-start`/`pdf-wrap`/`start`/`wrap`/`make-*`/`README`), `.codex/`, frozen `Plans/_Complete/_archive/dev-log-*.yaml` |
+| Public seed commands (`*.example.md` only) | Bare commands (`pdf-start`/`pdf-wrap`/`start`/`wrap`/`make-*`/`README`), `.codex/`, all of `Plans/` (incl. frozen `Plans/_Complete/_archive/dev-log-*.yaml`) |
 
 `themes/` is deliberately **public** — it's the engine's default theme + palette rule a fresh clone needs
 to render. Private brand palettes live in `brands/` (legacy `storage/brand-design/`), read by the previewer alongside `themes/`.
