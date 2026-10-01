@@ -70,9 +70,8 @@ are not current instructions. The maintained authorities remain the docs listed 
 ## Local operating records
 
 Personal/session plans, agent runbooks, working vault payload, and application records stay
-gitignored. `Plans/_Active/` holds at most one explicitly unignored, clone-safe execution slice; the
-current slice is the dated checklist named in [`Plans/_Active/README.md`](../Plans/_Active/README.md). Reviewed
-product-history plans may remain tracked. The public walkthrough is the fictional
+gitignored. All of `Plans/` is local-only working context; the public backlog is
+[`ROADMAP.md`](ROADMAP.md). The public walkthrough is the fictional
 [`../examples/resume-studio/`](../examples/resume-studio/) example plus
 [`GETTING-STARTED.md`](GETTING-STARTED.md).
 

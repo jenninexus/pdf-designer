@@ -225,4 +225,4 @@ Durable *why*: `.memory/lesson-hub-profile-scopes-folder-and-kind.md` ·
 - [`THEME-DESIGN.md`](THEME-DESIGN.md) — token contract the palette swapper relies on
 - [`EXPORTS.md`](EXPORTS.md) — export command reference
 - [`WORKSPACE-LAYOUT.md`](WORKSPACE-LAYOUT.md) — root nouns (`storage/` retired; URL resolver only)
-- [`Plans/README.md`](../Plans/README.md) — active vs archive index
+- [`ROADMAP.md`](ROADMAP.md) — product backlog (`Plans/` is local-only, gitignored)

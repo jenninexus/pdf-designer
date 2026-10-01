@@ -17,7 +17,7 @@ Hub:       python -m pdf_tool.preview → :8787 (workspace auto-starts via scrip
 Smoke:     python scripts/smoke-white-label.py   ← ⭐ fresh-clone proof (examples/ only, no storage/)
 Package:   docs/PACKAGING.md + scripts/check-wheel-assets.py  ← wheel must include themes/layouts
 Engine:    python -m pdf_tool  (hub) / individual modules
-Plans:     docs/ROADMAP.md (durable backlog) · Plans/_Active/ (optional one-slice checklist)
+Plans:     docs/ROADMAP.md (durable backlog) · Plans/ (local-only, gitignored)
 Product hub: C:\Github\product-design  (local; /jen:products)
 ```
 
@@ -54,8 +54,7 @@ Compact map of what this repo owns vs what it only points at. Agents: start here
 | Public examples | `examples/resume-studio/`, `examples/profiles/`, `examples/brand-design/` | Clone-safe templates |
 | Project config | `.config/mcp-pdf-designer.example.json` | Seed only — local `mcp-pdf-designer.json` is gitignored |
 | Product backlog | `docs/ROADMAP.md` | Remaining and parked product work; authoritative when `_Active/` is empty |
-| Active execution slice | `Plans/_Active/` | Zero or one public-safe checklist for accepted work |
-| Completed/session history | `Plans/_Complete/` | Closed narrative and reviewed public-safe product history |
+| Session plans (local-only) | `Plans/` | Gitignored working context: `_Active/` slice + `_Complete/` history; never pushed |
 
 ---
 

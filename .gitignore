@@ -76,21 +76,8 @@ docs/HISTORY-SCRUB.md
 !.memory/lesson-*.md
 # MEMORY.md is a tracked pointer to README.md (the /start convention looks for it).
 !.memory/MEMORY.md
-Plans/*
-!Plans/README.md
-!Plans/_Active/
-Plans/_Active/*
-!Plans/_Active/README.md
-# Any dated public checklist (YYYY-MM-DD-slug.md) is tracked; *.local.md stays private.
-!Plans/_Active/[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]-*.md
-Plans/_Active/*.local.md
-!Plans/_Complete/
-Plans/_Complete/*
-!Plans/_Complete/2026-09-26-roadmap-completed-archive.md
-!Plans/_Complete/2026-09-26-private-preview-routing-and-product-carryover.md
-!Plans/_Complete/2026-09-27-shade-resource-audit.md
-!Plans/_Complete/2026-09-27-pdf-work.md
-!Plans/_Complete/2026-09-29-pdf-work.md
+# Session plans are local-only (public repo rule 2026-09-30). Backlog: docs/ROADMAP.md.
+Plans/
 docs/*.local.md
 docs/private/
 docs/**/*.private.md

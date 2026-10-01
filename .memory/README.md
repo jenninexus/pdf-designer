@@ -15,7 +15,8 @@ invisible to the next person and to a fresh checkout.
 | **`.memory/*.md`** ⭐ | ✅ yes | **Durable learnings** — a trap, its root cause, and the guard that now prevents it | Permanent; survives clones |
 | `dev-log-sego.yaml` | 🔒 gitignored | Per-session narrative — what happened today, `next_steps`, `difficulties` | Local, chronological |
 | `docs/*.md` | ✅ yes | **Protocol** — the rule as it stands now | Permanent, rewritten in place |
-| `docs/ROADMAP.md` · `Plans/_Active/` | ✅ yes | Planned work | Until done |
+| `docs/ROADMAP.md` | ✅ yes | Planned work | Until done |
+| `Plans/` | 🔒 gitignored | Local session plans | Local |
 
 **The flow:** a session hits friction → `/jen:reflect` writes the `difficulties` block into
 `dev-log-sego.yaml` (local, narrative) → **if the lesson is durable, it also lands here as a

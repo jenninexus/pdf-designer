@@ -231,4 +231,4 @@ hides them from clones.
 - Live layout today: [`STORAGE.md`](STORAGE.md)
 - Architecture: [`PUBLIC-LOCAL-SPLIT.md`](PUBLIC-LOCAL-SPLIT.md)
 - Product thesis: [`PRODUCT.md`](PRODUCT.md)
-- Product backlog: [`ROADMAP.md`](ROADMAP.md) · optional execution slice: [`../Plans/_Active/`](../Plans/_Active/)
+- Product backlog: [`ROADMAP.md`](ROADMAP.md) · session plans: `Plans/` (local-only, gitignored)
