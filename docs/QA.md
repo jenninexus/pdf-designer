@@ -70,7 +70,7 @@ rules they didn't cover (**11 checks**):
 | 2 | **rgba-magenta** | magenta/pink smuggled in as `rgba()`/`hsl()` — invisible to the hex-only palette guard | GENERATION-RULES |
 | 3 | **casing** | names & company names **never all-lowercase** in display text (`jenni`, `shade`, `martian games`, `synagen`, …). Stylized wordmarks like the `jenninexus` logo are allowed | GENERATION-RULES §1 |
 | 4 | **overlay** | no bright/neon/primary **fill washed over a banner/hero/photo** — only a black→transparent scrim | GENERATION-RULES §2 |
-| 5 | **signature** | resume + work-samples: signature **bottom-pinned, bottom-right** (`margin-top:auto` + `align-self:flex-end`). Cover letter: a sign-off just needs to exist (natural flow) | LAYOUT-SYSTEM.md |
+| 5 | **signature** | resume + work-samples: signature **bottom-pinned, bottom-right** (`margin-top:auto` + `align-self:flex-end`). Cover letter: `.signoff` **bottom-pinned, bottom-LEFT** (`margin-top:auto; padding-top:30px` inside a flex `.page` with print `min-height` — never `height`+`overflow:hidden`) | [one-page-letter.json](../layouts/cover-letter/one-page-letter.json) · LAYOUT-SYSTEM.md |
 | 6 | **margins** | `@page` margins **equal on all four edges** (one value, or a symmetric v/h pair) — no drift | LAYOUT-SYSTEM.md §Equal margins |
 | 7 | **page-bg** | `@page` background (PDF border colour) agrees inside the file **and** with same-applicant sibling docs in the folder | GENERATION-RULES |
 | 8 | **rendered-color** | ⭐ no brown / large-area warm cast in **rendered pixels** (catches composited brown the hex guard cannot see) | GENERATION-RULES · `check_rendered_color` |
@@ -119,7 +119,7 @@ The tool detects **who** the doc is for (from the path or the signature/contact)
 (resume / cover-letter / work-samples), then applies the right rule set:
 
 - **Shade & Martian** → `no_magenta` is **on** (checks 1 + 2 ban pink). **Jenni** → off (her brand uses pink).
-- **Cover letters** → the sign-off flows after the body (not bottom-pinned); check 5 only requires it exists.
+- **Cover letters** → check 5 requires `margin-top:auto` on `.signoff` (bottom-LEFT pin, CZI geometry). Older letters whose comments say "a one-page letter does not pin its sign-off" (e.g. the 2026-07-25 Sony letter) predate this rule — do not copy them.
 - **Resumes / work-samples** → check 5 requires the bottom-right pin.
 
 Override detection with `--user <name>` when the filename doesn't say.
