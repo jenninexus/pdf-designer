@@ -24,6 +24,7 @@ Product hub: C:\Github\product-design  (local; /jen:products)
 Compact map of what this repo owns vs what it only points at. Agents: start here, then
 [`AGENTS.md`](../AGENTS.md). Humans shipping without private vaults:
 [`GETTING-STARTED.md`](GETTING-STARTED.md). Architecture: [`PUBLIC-LOCAL-SPLIT.md`](PUBLIC-LOCAL-SPLIT.md).
+Folder and optional agent-tooling overview: [`PROJECT-MAP.md`](PROJECT-MAP.md).
 
 ---
 
