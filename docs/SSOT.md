@@ -10,7 +10,7 @@ Product:   docs/PRODUCT.md + docs/PUBLIC-LOCAL-SPLIT.md   ← ⭐ free core vs p
 Clone:     docs/GETTING-STARTED.md   ← public reuse (ex-WHITE-LABEL stub)
 Theme:     themes/default-{resume,collage}.json + themes/presets/* + PALETTE-RULES.md   ← COLOR
 Gen-rules: themes/GENERATION-RULES.md   ← ⭐ house rules for ALL generated docs (casing · overlays · framing · no-magenta)
-QA gate:   docs/QA.md + python -m pdf_tool.check_generation   ← ⭐ 10 checks; judge the ARTIFACT (render), not the source
+QA gate:   docs/QA.md + python -m pdf_tool.check_generation   ← 12 deterministic checks; public users run locally; judge saved PDFs
 Layouts:   layouts/{cover-letter,letter,resume,work-examples,collage}/*  (python -m pdf_tool.collage --list-recipes)  ← STRUCTURE
 Private:   root nouns (users/vaults/profiles/resumes/_job-apps/collages/brands/_exports) + storage/ residue (gitignored)
 Hub:       python -m pdf_tool.preview → :8787 (workspace auto-starts via scripts/ensure-design-hub.ps1)
@@ -41,7 +41,7 @@ Folder and optional agent-tooling overview: [`PROJECT-MAP.md`](PROJECT-MAP.md).
 | Previewer | `src/pdf_tool/preview.py` (`docs/PREVIEWER.md`) | Design Hub; `/recipes` · `/vault`; **auto-refreshes** via `/api/version`; focused comparison checkboxes; dark real-PDF page preview |
 | Palette rule | `themes/PALETTE-RULES.md` | No brown / mustard / lime — enforced by `check_palette` |
 | **Generation rules** | `themes/GENERATION-RULES.md` | ⭐ House rules for ALL generated docs: **name/company never all-lowercase**, no neon over images (dark scrim only), 16:9 no-crop framing, no-magenta pointer |
-| **QA gate** | `docs/QA.md` + `pdf_tool.check_generation` | ⭐ ONE command · **10 checks** (palette·rgba-magenta·casing·overlay·signature·margins·page-bg·rendered-color·overflow·footer-collision). Per-user + per-doc aware. **Judge the artifact.** Run before shipping. |
+| **QA gate** | `docs/QA.md` + `pdf_tool.check_generation` | One command, 12 checks including letter geometry and résumé text extraction. Required render errors fail; explicit source-only mode is not acceptance. Reuse unchanged source/dependency/PDF receipts. |
 | Protocol docs | `docs/{STORAGE,VAULT,JOB-ASSESSMENT,ARCHITECTURE}.md` | Claim rules + workflow |
 | **Work-samples SSOT** | `profiles/<user>-resume.json#workSamples` + `users/<user>.json#portfolio` | ⭐ **PER-USER** page structure + personal assets — never copy another person's page ([VAULT.md](VAULT.md) § Work-samples) |
 | **Shared MG gallery** | `resumes/studio/resources/images/martiangames/` | ⭐ Title stills + MG logo used by **both** applicants; per-user `…/images/martiangames/` junctions here ([STORAGE.md](STORAGE.md)) |
@@ -154,7 +154,7 @@ The person filter is library-only — it does **not** auto-select a palette. Ful
 | `variants` | Light PDF per public palette → `_variants/<stem>/` |
 | `merge_pdfs` | Bundle PDFs; optional US Letter size check |
 | `pdf_to_png` | Screenshot each `.page` (agent visual verify) |
-| `check_generation` | ⭐ ONE QA pass — 10 checks incl. rendered-color + footer-collision (per-user/doc aware) |
+| `check_generation` | 12 deterministic document checks; local-first public workflow; source/dependency hashes allow reuse |
 | `check_palette` | Reject brown / mustard / lime (source hex) before export |
 | `check_rendered_color` | Reject brown that only appears after the browser composites |
 | `check_overflow` | Page-fit at 816px paper width (also auto-warns on export) |

@@ -1,13 +1,17 @@
 # QA — one gate for every generation
 
+**The public workflow runs on the user's own computer.** These are deterministic Python/Chromium
+checks, not an LLM reviewer, cloud service or second-PC requirement. The free GitHub toolkit and the
+planned desktop app use the same renderer and guards. Maintainers may route this command through
+their own build/QA network; that is private operating policy and adds no product dependency.
+
 **Run this before shipping any resume, cover letter, or work-samples.** One command checks every house
 rule at once, so a generation can't go out with a brown wash, a magenta Shade doc, an all-lowercase name,
 a drifting margin, an unpinned signature, or a neon color painted over a photo.
 
 ```bash
 python -m pdf_tool.check_generation <doc>.html            # auto-detects the user; runs all checks
-python -m pdf_tool.check_generation <doc>.html --user shade   # force per-user rules (no-magenta)
-python -m pdf_tool.check_generation --scan resumes/shade/defaults   # sweep a folder of .html
+python -m pdf_tool.check_generation --scan resumes/<person>/defaults   # sweep changed source HTML
 python -m pdf_tool.check_generation <doc>.html --no-render     # skip render checks (fast source-only)
 python -m pdf_tool.check_generation <doc>.html --json          # machine-readable
 ```
@@ -16,7 +20,7 @@ python -m pdf_tool.check_generation <doc>.html --json          # machine-readabl
 
 | | |
 |---|---|
-| [What it checks](#the-checks) | The 10 rules, and which SSOT owns each |
+| [What it checks](#the-checks) | The 12 checks, and which SSOT owns each |
 | [Per-user / per-doc rules](#per-user--per-doc-awareness) | Why Shade fails on magenta but Jenni doesn't |
 | [Reading a report](#reading-a-report) | PASS/FAIL/skip and how to fix |
 | [When to run](#when-to-run) | Wired into make-resume / make-work-examples |
@@ -62,7 +66,7 @@ python -m pdf_tool.check_generation <doc>.html --json          # machine-readabl
 ## The checks
 
 `check_generation` is the **one QA pass**. It composes the existing single-purpose guards and adds the
-rules they didn't cover (**11 checks**):
+rules they didn't cover (**12 checks**, some document-specific):
 
 | # | Check | Rule | SSOT |
 |---|---|---|---|
@@ -83,6 +87,14 @@ Checks 1 / 8 / 9 / 11 shell out to the standalone `check_palette` / `check_rende
 `check_overflow` / `check_pagefit` so there is one implementation of each rule, not two.
 Checks 8–10 need Playwright + pypdfium2; `--no-render` skips them (source-only — **not**
 ship-ready). Check 11 is **source-only**, so it runs even with `--no-render`.
+Check 12 also needs rendering and is skipped by `--no-render`. A required check that cannot run
+(missing browser, dependency or runtime error) fails the full gate. JSON reports label the mode
+`rendered` or `source-only`; source-only success is never final acceptance.
+
+The `ats-text` composite check detects excessive mid-word splits in both résumé themes. The separate
+`check_ats <saved-light.pdf>` also checks section cues in the actual upload artifact. Neither runs a
+particular employer's parser or proves correct job-site form filling. Claims and relevance still
+require source review; visual review requires opening/rasterizing the final saved PDFs.
 
 > ### ⚠ What check 11 exists for — and the limit of pixel checks
 >
@@ -123,6 +135,10 @@ The tool detects **who** the doc is for (from the path or the signature/contact)
 - **Resumes / work-samples** → check 5 requires the bottom-right pin.
 
 Override detection with `--user <name>` when the filename doesn't say.
+These named palette presets are maintainer defaults built into the current guard, not applicant
+data supplied to a fresh clone. New users use their own identity and vault. To apply a specific
+palette restriction independently, use `check_palette --no-magenta <doc>.html`; `--user` does not
+currently load arbitrary custom palette policy from a user's JSON file.
 
 ## Reading a report
 
@@ -167,3 +183,36 @@ The toolkit needs **no** external QA service. Pick the lane by what you are prov
 Rules: captures are **ephemeral evidence** — write them to a scratch directory, never commit them,
 and never put them under `resumes/` or `_exports/` (those are the document library). Static
 screenshots do not prove interaction behavior, and a rendered page is not a semantic pass by itself.
+
+## Submission fonts and honest ATS wording
+
+For new career documents use a portable system stack such as `Arial, Helvetica, sans-serif` for
+body, headings, names, contact, wordmarks and signatures in both light and dark modes. Keep custom
+web fonts for Hub chrome or unrelated artwork; do not require a downloaded face in a résumé.
+Avoid exaggerated tracking on words a parser needs. Preserve historical submitted PDFs unchanged.
+
+The important property is **extractable Unicode text in the PDF**, not a font brand or an image
+that resembles text. Font information must permit characters to map to text; see
+[Adobe's PDF accessibility description](https://helpx.adobe.com/acrobat/using/accessibility-features-pdfs.html).
+Our system-font policy is a conservative default based on observed extraction failures, not a claim
+that every custom font fails or every system-font PDF passes. The applicant reviews the job portal's
+populated fields before submitting. Say “passed our text-layer checks,” not “guaranteed ATS compatible.”
+
+## Efficient verification and receipt reuse
+
+| Change / purpose | Minimum useful verification |
+|---|---|
+| Editing prose or CSS | Optional `check_generation --no-render` while iterating; not acceptance |
+| Final new/changed document | Full `check_generation` once, export light/dark and inspect saved PDF pages; `check_ats` on the saved résumé upload PDF; page count/Letter geometry |
+| Accepted source reused for another posting | Verify source/CSS/assets/font hashes and saved-PDF hash against the receipt; review applicant and posting fit; reuse the PDFs |
+| Docs, tracking or folder-index change only | Link/JSON/privacy checks; no document rerender unless a dependency or content changed |
+| Engine/template/font change | Rerun affected document gates and focused regression tests; public smoke/wheel checks when packaged assets change |
+| Hub interactions or installer behavior | Separate UI/installer QA; a document-render pass does not cover it |
+
+Store a small receipt with source and stylesheet/asset hashes, renderer/browser versions, modes,
+commands, exit codes, PDF hashes, page sizes/counts, and visual-review status. Keep private receipts
+with that person's application or reusable pack; keep captures in disposable scratch. Invalidate
+the receipt when content, CSS, assets, fonts or relevant renderer settings change. Do not repeat
+individual palette/overflow render checks after a successful composite gate without a reason.
+Machine routing is execution evidence, not a requirement imposed on public users. Receipt reuse
+makes repeat use cheap without weakening acceptance.

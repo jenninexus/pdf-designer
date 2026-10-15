@@ -5,9 +5,9 @@ This repository **is public MIT**:
 
 Treat every **tracked** file as product + engine material a stranger can clone
 without inheriting machine paths, private vaults, real job applications, brand
-hex maps, or SEGO session ritual.
+hex maps, or a maintainer's session ritual.
 
-The **free product** is that clone. A possible paid app is a thin installer/wizard
+The **free product** is that clone. The planned paid app is a thin installer/wizard
 over the same engine later — not a second feature set, and not a reason to delay
 clone-safe fixes. Thesis: [`PRODUCT.md`](PRODUCT.md). The completed release-boundary audit is retained
 only as [`_archive/PUBLIC-RELEASE-AUDIT.md`](_archive/PUBLIC-RELEASE-AUDIT.md).
@@ -28,6 +28,19 @@ Sibling pattern: [`agency/docs/PUBLIC-LOCAL-SPLIT.md`](../../agency/docs/PUBLIC-
 | Theme kit | Public default themes in-repo | `www-theme-kit` profiles + `brands/` (private kits) |
 | Docs | This folder (public `*.md`) · [`ROADMAP.md`](ROADMAP.md) backlog | `MARKETING.md` · `WORKSPACE.md` · `HISTORY-SCRUB.md` · `CHANNELS.local.md` · `WINDOWS-ELECTRON.local.md` · other `*.local.md` / `*.private.md` · all `Plans/` |
 | Lessons | `.memory/README.md` · `.memory/lesson-*.md` | Other `.memory/` notes · frozen `Plans/_Complete/_archive/dev-log-sego.yaml` |
+
+## Local execution and applicant ownership
+
+Public users run the renderer, deterministic QA and preview locally. They do not need another PC,
+MCP, Synabrain, Syqo, a theme-kit checkout or an agent subscription. A maintainer's optional network
+routing belongs to private operating instructions. See [QA.md](QA.md) for one final gate and cheap
+receipt reuse; document QA does not require an LLM call.
+
+Every person owns their identity, vault and one rendering profile. Reusable specialist résumés
+select that person's sourced claims; per-posting application records own actual sent files and
+responses. Neither a sample profile nor another person's skill is an applicant default. The public
+demo uses fictional data. A future commercial installer creates a customer's own local workspace;
+it never ships the maintainers' vaults, correspondence, palettes or operational plans.
 
 ## Exports live with their document family, one scratch area
 
@@ -136,7 +149,7 @@ Document tokens that strangers need live in **`themes/`**. Real studio hex stays
 
 | Repo | Public | Private / local |
 |---|---|---|
-| **pdf-designer** (this) | Engine + product docs + examples + public-safe product plan/history + `_exports/`/`output/` layout guides | Root-noun payload, generated deliverables, bare commands, personal/session plans |
+| **pdf-designer** (this) | Engine + product docs + fictional examples + public roadmap + `_exports/`/`output/` layout guides | Root-noun payload, generated deliverables, bare commands, all `Plans/` |
 | **agency** | `agents/`, `docs/`, media masters | `projects/`, `mcp.json`, audits |
 | **socials** | Generic `docs/` + MCP tools | `storage/docs/*` IDs, `.env`, brand YAMLs |
 | **dashboard** | Seed profiles + fictional sample data | `my-dashboard/`, `.env` |
