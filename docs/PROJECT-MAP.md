@@ -42,7 +42,8 @@ installation and browser provisioning are separate setup steps.
 A standing MCP process and a chat's tool attachment are separate: verify callable tools in the
 current chat. `get_context` must use the actual caller repository path. A useful retrieved passage
 does not prove that the caller's private files or current dirty bytes were indexed. Remote QA
-uses the live Syqo machine route and a verified source snapshot rather than an assumed host.
+may use a maintainer's live machine route and verified source snapshot. Public users run the same
+deterministic document checks on their own computer; no network or LLM service is required.
 
 Index this public map and selected public protocol documents in `proj:pdf-designer`. Preserve
 source paths and revision provenance; do not recursively learn the private root nouns. Network

@@ -535,9 +535,16 @@ def run_file(path: Path, user: str | None = None, do_render: bool = True) -> dic
             ok, msgs = fn(path, no_mag)
         else:
             ok, msgs = fn(path)
+        # A requested render that could not run is incomplete verification.
+        # Only explicit --no-render may skip these checks. Non-applicable checks
+        # use a distinct "(not a ..." message and remain valid.
+        if do_render and any(m.startswith("(skipped") for m in msgs):
+            ok = False
+            msgs = [f"Required check did not run: {m}" for m in msgs]
         results.append({"check": key, "desc": desc, "ok": ok, "messages": msgs})
     passed = all(r["ok"] for r in results)
-    return {"file": str(path), "user": user, "no_magenta": no_mag, "passed": passed, "checks": results}
+    return {"file": str(path), "user": user, "no_magenta": no_mag,
+            "mode": "rendered" if do_render else "source-only", "passed": passed, "checks": results}
 
 
 def _print_report(rep: dict) -> None:

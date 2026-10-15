@@ -13,13 +13,13 @@ invisible to the next person and to a fresh checkout.
 | Surface | Tracked? | Holds | Lifetime |
 |---|---|---|---|
 | **`.memory/*.md`** ⭐ | ✅ yes | **Durable learnings** — a trap, its root cause, and the guard that now prevents it | Permanent; survives clones |
-| `dev-log-sego.yaml` | 🔒 gitignored | Per-session narrative — what happened today, `next_steps`, `difficulties` | Local, chronological |
+| `Plans/_Active/` → `Plans/_Complete/` | 🔒 gitignored | Session narrative, evidence, ownership and remaining work | Local, chronological |
 | `docs/*.md` | ✅ yes | **Protocol** — the rule as it stands now | Permanent, rewritten in place |
 | `docs/ROADMAP.md` | ✅ yes | Planned work | Until done |
 | `Plans/` | 🔒 gitignored | Local session plans | Local |
 
-**The flow:** a session hits friction → `/jen:reflect` writes the `difficulties` block into
-`dev-log-sego.yaml` (local, narrative) → **if the lesson is durable, it also lands here as a
+**The flow:** a session hits friction → reflection records it in the owning local plan
+(the old YAML logs are frozen history) → **if the lesson is durable, it also lands here as a
 `lesson-*.md` file** → if it changes a rule, the owning `docs/` page is edited too.
 
 **How to use this at session start:** read **this index**. Open a lesson file only when
@@ -73,6 +73,7 @@ codebase · `reference`: pointer to an external resource.
 
 | Lesson | Hook |
 |---|---|
+| [lesson-required-render-failure-must-fail.md](lesson-required-render-failure-must-fail.md) | A renderer/browser exception cannot become a green shipping gate; explicit source-only QA is labelled |
 | [lesson-pdf-viewer-needs-first-class-route.md](lesson-pdf-viewer-needs-first-class-route.md) | A dark iframe shell is not proof that a PDF loaded — use `/pdf-viewer` and verify real page images inside the frame |
 | [lesson-default-light-must-override-dark-source.md](lesson-default-light-must-override-dark-source.md) | A `-light.pdf` filename does not make the DOM light — default PDF and PNG renders must actively override a dark source root |
 | [lesson-guard-background-probe-must-be-modal.md](lesson-guard-background-probe-must-be-modal.md) | A render guard that samples ONE "background" pixel can land on a glyph and fail a fitting page — use the modal colour of a grid |

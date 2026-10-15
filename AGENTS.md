@@ -8,9 +8,10 @@ It is **vendor-neutral on purpose** — [`CLAUDE.md`](CLAUDE.md) and
 Human-facing intro: [`README.md`](README.md). Deep design docs live under [`docs/`](docs/) and are linked
 per section below.
 
-> **Jenni's dev note (example-machine):** for cross-workspace doc organization / search, the go-to is the
-> user-global **`/jen:docs`** (and `/jen:doc-organize`). Those are personal tools, not a repo dependency —
-> **this repo's own SSOT is [`docs/SSOT.md`](docs/SSOT.md)** and a fresh clone needs nothing outside the repo.
+> **Public core, private workspace:** the free GitHub toolkit/demo and the planned commercial app
+> share one engine. Each user owns their ignored identity/vault/profile and exports. Read
+> [`docs/PUBLIC-LOCAL-SPLIT.md`](docs/PUBLIC-LOCAL-SPLIT.md); no maintainer machine, MCP or network
+> service is required by a fresh clone.
 
 ---
 
@@ -18,7 +19,7 @@ per section below.
 
 1. **This file** — capability map + the contracts that must not break.
 2. ⭐ [`.memory/README.md`](.memory/) **index only** — the trap hooks. Open a `lesson-*.md` when
-   the hook matches the task you are about to do. Do **not** read all 19 files every session;
+   the hook matches the task you are about to do. Do **not** read the entire lesson directory every session;
    the protocol already lives in `docs/`. The directory stays tracked so clones still get the *why*.
 3. [`docs/SSOT.md`](docs/SSOT.md) — the SSOT dashboard (what this repo owns vs. points elsewhere).
 4. [`docs/VAULT.md`](docs/VAULT.md) — **the vault**: what may be claimed, how each person sounds
@@ -72,8 +73,15 @@ root cause, and the guard that now prevents it — go to **tracked**
 [`.memory/lesson-*.md`](.memory/) with a row in [`.memory/README.md`](.memory/README.md). If
 the lesson changes a standing rule, edit the owning `docs/` page **as well**.
 
-**Netflix — CLOSED:** both founders submitted. Keep any `_job-apps/Netflix*` schemas —
-do not delete. Do not reopen/rebuild/re-apply unless the human explicitly asks.
+**Submission history is private and immutable.** Keep exact sent files and confirmation evidence.
+Applicant-specific closed applications and owner decisions live in private application records;
+do not reopen, regenerate or submit them merely because you refresh a reusable pack.
+
+**QA execution:** public users run deterministic Python/Chromium document checks locally. An LLM,
+second PC, Synabrain or sys-admin is not required. A maintainer's network routing follows their own
+private operating instructions. Use the full gate once for changed final source/dependencies;
+reuse its receipt for unchanged artifacts. Source-only checks during editing are not acceptance.
+See [`docs/QA.md`](docs/QA.md) for the check types, limits and hash-based reuse policy.
 
 ---
 
@@ -110,7 +118,7 @@ python -m pdf_tool.html_to_pdf <doc>.html --variants            # light PDF per 
 python -m pdf_tool.variants <doc>.html                          # same as --variants
 python -m pdf_tool.merge_pdfs out.pdf a.pdf b.pdf --require-letter   # bundle, validate 8.5x11
 python -m pdf_tool.pdf_to_png <doc>.html                        # one PNG per page (visual verify; HTML source)
-python -m pdf_tool.check_generation <doc>.html                  # ⭐ ONE QA gate — 10 checks; run before EVERY ship
+python -m pdf_tool.check_generation <doc>.html                  # one final gate, 12 checks; reuse unchanged accepted receipts
 python -m pdf_tool.check_generation --scan resumes/<user>/defaults  #    sweep go-to set
 python -m pdf_tool.check_palette <doc>.html                     # palette only (also inside check_generation)
 python -m pdf_tool.check_palette --scan resumes/                #    sweep private source HTML
@@ -146,7 +154,7 @@ Full command/export recipes: [`docs/EXPORTS.md`](docs/EXPORTS.md).
 
 Project-scoped commands live in [`.claude/commands/`](.claude/commands/). **GitHub tracks only
 `*.example.md`** — session ritual (`start` / `wrap` / `README`) and bare `make-*.md` stay
-**local / gitignored** (example-host workspace). Any agent on this machine reads the bare file when
+**local / gitignored** (maintainer workspace). Any agent reads the bare file when
 present; a fresh public clone uses the `.example.md` seeds. Plain markdown — no vendor APIs.
 If an agent doesn't auto-load them: *"read `.claude/commands/make-resume.md` (or the `.example`)
 and follow it."*
@@ -172,7 +180,7 @@ and follow it."*
 `.codex/skills/` adapters, while Claude may use the focused optional profile in `.claude/settings.json`
 (`frontend-design`, `code-review`, `code-simplifier`). Other agents follow the same Markdown commands and this
 guide. sys-admin is optional workspace enrichment only — its user-level stdio client is already configured on
-example-machine, and `C:\mcp\sys-admin\start-sys-admin.bat` is the safe standing-helper check. The engine itself must
+the maintainer's machine. Standing-process health and per-chat tool attachment are separate. The engine must
 continue to run with no MCP, environment variables, or copied credentials.
 
 ### 📎 Public seed vs. personal / dev copy — the `.example` split
@@ -180,7 +188,7 @@ continue to run with no MCP, environment variables, or copied credentials.
 | File | Tracked? | Contains |
 |---|---|---|
 | `<name>.example.md` | ✅ yes | Generalized protocol. No real clients, employers, emails, machine paths. |
-| `<name>.md` (bare) | ❌ gitignored | Personal specifics **or** example-host session ritual (`start`/`wrap`). |
+| `<name>.md` (bare) | ❌ gitignored | Personal specifics or maintainer session ritual (`start`/`wrap`). |
 
 You type `/make-<name>`; the assistant runs the bare `<name>.md` when it exists, else the tracked
 `.example.md`. Same idea as `*.example` data files and `.config/*.example.json`.
@@ -270,9 +278,16 @@ Read [`docs/VAULT.md`](docs/VAULT.md) before authoring any resume claim.
   (darkening turns it brown); hand that role to another hue on the light palette. Enforced by
   `check_palette` (and by `check_rendered_color` for brown that only appears after compositing).
   Full rule: [`themes/PALETTE-RULES.md`](themes/PALETTE-RULES.md).
-- **QA gate.** **`python -m pdf_tool.check_generation <doc>.html` before every ship** — 10 checks
+- **QA gate.** **`python -m pdf_tool.check_generation <doc>.html` for final changed documents** — 12 checks
   including artifact-level rendered-color, overflow @ 816px, and footer-collision. Source-only
   greps are not "verified." SSOT: [`docs/QA.md`](docs/QA.md).
+- **Submission fonts.** Use system sans-serif text for body, headings, names, contacts and signatures
+  in both print themes. Keep custom fonts out of career-document dependencies. Verify extractable PDF
+  text; no font name or local check guarantees that an employer's portal maps every field correctly.
+- **Reusable specialist packs.** One vault/profile per person; select existing sourced claim IDs into
+  employer-neutral specialty documents. Compare their own resources and older packs, keep development
+  distinct from completed work, and record source/QA hashes for reuse. Per-posting records own exact
+  submissions and responses. Another applicant's specialty is never inherited. See `docs/VAULT.md`.
 - **Source-backed only.** Never write a résumé claim not in the user's vault. Employer-specific framing
   goes in the **cover letter**, never the résumé body.
 - **🛑 Ask before calling something a gap.** The vault records what the user *told* you — not the limit of

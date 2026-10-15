@@ -27,6 +27,28 @@ metrics, *and their writing voice*.
 > You select the claims that fit the job, rewrite them in that job's vocabulary, and
 > **leave the rest out.** A resume that dumps the whole vault is a bad resume.
 
+### Reusable specialist selections and submissions
+
+Each applicant keeps one private vault and one rendering profile. A reusable specialist pack is
+a **selection of existing claim IDs**, not another vault, person or employer-specific identity.
+An optional `reusableSelections.<specialty>` block may point to a canonical source HTML, profile,
+claim IDs, source-selection notes and claim boundaries. Put newly confirmed facts in the vault
+before including them; keep source and confidence. A previously generated résumé helps discover
+what to check but is not independent proof of its own claims.
+
+Compare older specialist packs and per-person `resources/references/` against the vault. Carry
+forward useful supported detail, current contact rules and the applicant's voice. Resolve source
+ambiguity explicitly: work in development, research goals, deployed systems and completed training
+are different claim levels. Do not infer numerical gains, publications or another person's credit.
+Do not combine disputed totals or turn a contract credit into employment at the client.
+
+Keep accepted light/dark exports, their source/dependency hashes and QA receipt with the person's
+pack. Review fit per posting, then reuse an unchanged accepted document instead of rebuilding it.
+Per-posting `_job-apps/<posting>/application.json` records who submitted, the exact file/hash, date,
+method and response evidence; `_job-apps/applied-index.md` is the human roll-up. An export is not
+proof of submission. Keep sent versions immutable and generate a new version when facts or fonts
+change. Fictional public examples teach this structure without publishing personal records.
+
 ### The four layers (don't confuse them)
 
 | Layer | File | Answers |

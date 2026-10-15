@@ -1,18 +1,24 @@
 # Product & commercialization — pdf-designer
 
-**Business / product-direction SSOT** for the free GitHub résumé toolkit and a possible
+**Business / product-direction SSOT** for the free GitHub résumé toolkit and a planned
 paid shell later. Clone path: [`GETTING-STARTED.md`](GETTING-STARTED.md). Architecture:
 [`PUBLIC-LOCAL-SPLIT.md`](PUBLIC-LOCAL-SPLIT.md).
 
 | | |
 |---|---|
 | Free / open core | Engine + themes + layouts + guards + Design Hub + public docs + `*.example.md` |
-| Paid later (hypothesis) | Packaged desktop app — installer + guided vault/export UX |
+| Planned commercial app (not publicly released) | Packaged desktop app — installer + guided vault/export UX over the same engine |
 | **Public product story** | Résumé creator for a broken job market — **vaults**, skills, palette prefs |
 | Public demo | [`../examples/resume-studio/`](../examples/resume-studio/) |
 | Folder UX (clone tree) | [`WORKSPACE-LAYOUT.md`](WORKSPACE-LAYOUT.md) — root-noun README scaffolds; `storage/` retired |
 | Private marketing / channel ops | `docs/MARKETING.md` · `docs/CHANNELS.local.md` (gitignored) |
 | Engineering backlog | [`ROADMAP.md`](ROADMAP.md); `Plans/` is local-only working context (gitignored) |
+
+The public GitHub toolkit and fictional résumé-studio demo are usable locally today. Desktop-shell
+implementation and unsigned artifacts are pre-release engineering, not a claim that a paid installer
+is available. Release, signing, pricing and storefront operations remain separate gates in private
+maintainer records. Both routes keep each customer's data local and use the same deterministic QA;
+neither requires a second computer, network orchestration or an LLM service to render/check a PDF.
 
 ---
 

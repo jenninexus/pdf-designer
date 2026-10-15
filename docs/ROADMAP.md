@@ -20,16 +20,16 @@
 
 The exact checklist, blocker evidence, and next action live in
 the dated checklist named in the local-only `Plans/_Active/README.md`. The current accepted
-organization slice completed on 2026-09-27: `/pdf-start` and `/pdf-wrap` are self-contained, superseded
-docs are archived, ignore rules are corrected, and generated command adapters match their sources.
-The active plan remains open because the release and product queue below is not complete.
+organization slice completed on 2026-09-27. The October15 slice adds reusable per-person specialist
+selections, system-font document policy, local-first deterministic QA with receipt reuse, and a
+fail-closed gate for required render errors. Private applicant data stays out of the public product.
+Current local work, if any, is named by the plan index; the commercial release queue remains below.
 
 After that slice, priority remains:
 
-1. Resolve the existing remote containment gate when a writable jenninexus credential is available;
-   prove the intended remote mainline contains the local tip and close recovery item
-   `203463379ec2b8182ebf6e4c5e26e695723ea1ba7d4680289274a53f039e35a5`.
-2. Select one next product-evolution slice from the decision-gated work below.
+1. Select one next product-evolution slice from the decision-gated work below. The old public-push
+   blocker is resolved: October15 mainline delivery was verified, and the historical tip has an
+   identical-tree integrated replacement. Recovery details stay in the private recovery queue.
 
 The 2026-09-26 private-preview repair and stage filters are verified and archived in the
 completed-history file linked above.
@@ -42,8 +42,8 @@ See [`STORAGE.md`](STORAGE.md).
 
 ### Parked / decision-gated
 
-- **PyWebView or Electron shell** — reopen only after enough local-first workflow evidence exists to
-  choose the smallest maintainable shell. Historical PyWebView plan:
+- **Commercial desktop shell** — Electron/NSIS has a pre-release implementation; signing, clean-machine
+  proof and fulfilment remain release gates, not a live sale. Historical PyWebView exploration:
   `Plans/_Complete/2026-07-11-design-hub-parked-phases.md` (local-only).
 - **Signed binary channel** — only after a private channel decision; require valid Authenticode plus
   clean Windows 10/11 x64 VM proof before any binary listing. Unsigned listing stays off.
@@ -59,6 +59,6 @@ See [`STORAGE.md`](STORAGE.md).
 
 ### Never
 
-- Auto-submit · invent claims · fork the renderer · commit real vaults · reopen Netflix  
+- Auto-submit · invent claims · fork the renderer · commit real vaults · reopen closed applications without an explicit request
 - Force-push history rewrite without explicit human OK + jenninexus auth  
 - Recreate `storage/` as a second vault/listing store
