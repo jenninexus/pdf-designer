@@ -20,7 +20,7 @@ Sibling pattern: [`agency/docs/PUBLIC-LOCAL-SPLIT.md`](../../agency/docs/PUBLIC-
 | Engine | `src/pdf_tool/`, `themes/` (including licensed `themes/fonts/`), `layouts/`, QA guards | — |
 | Product story | [`PRODUCT.md`](PRODUCT.md) · [`examples/resume-studio/`](../examples/resume-studio/) | [`MARKETING.md`](MARKETING.md) (gitignored) |
 | Folder UX | [`WORKSPACE-LAYOUT.md`](WORKSPACE-LAYOUT.md) · [`STORAGE.md`](STORAGE.md) (alias notes) | Real data under root nouns; leftover `storage/` |
-| Generated files | [`STORAGE.md`](STORAGE.md) (canonical export layout) · [`../_exports/README.md`](../_exports/README.md) (fallback export layout) · [`../output/README.md`](../output/README.md) (automation scratch contract) | Exports beside their document family (`resumes/`, `collages/`), plus `_exports/` and `output/` payloads |
+| Generated files | [`STORAGE.md`](STORAGE.md) (canonical export layout) · [`../_exports/README.md`](../_exports/README.md) (fallback export layout) · [`../output/README.md`](../output/README.md) (automation scratch contract) · [`APPLICATIONS.md`](APPLICATIONS.md) § freeze what you sent | Exports beside their document family (`resumes/`, `collages/`) — including every `submitted-*` sent-artifact folder, which is a permanent record — plus `_exports/` and `output/` payloads |
 | Clone path | [`GETTING-STARTED.md`](GETTING-STARTED.md) | — |
 | Protocol (rules) | [`VAULT.md`](VAULT.md) · [`JOB-ASSESSMENT.md`](JOB-ASSESSMENT.md) | Real vaults / listings / PII |
 | Commands | `.claude/commands/*.example.md` only | Bare `start` / `wrap` / `make-*` / commands `README` + generated `.codex/` adapters |

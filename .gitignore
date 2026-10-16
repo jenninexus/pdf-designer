@@ -77,6 +77,10 @@ docs/HISTORY-SCRUB.md
 # MEMORY.md is a tracked pointer to README.md (the /start convention looks for it).
 !.memory/MEMORY.md
 # Session plans are local-only (public repo rule 2026-09-30). Backlog: docs/ROADMAP.md.
+# The rotation contract is documented at docs/WORKSPACE-LAYOUT.md § Session plans.
+# ⚠ A bare `!Plans/README.md` after `Plans/` does NOT work: git cannot re-include a file whose
+# parent directory is excluded, so it fails silently. Track a scaffold only by excluding
+# `Plans/*` instead — which needs the owner rule re-decided first.
 Plans/
 docs/*.local.md
 docs/private/

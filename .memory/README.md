@@ -35,6 +35,8 @@ is invisible to the next clone. Thin the *reading* obligation, not the files.
 | Lesson | Standing rule lives in |
 |---|---|
 | ask-before-calling-it-a-gap · track-tags-hide-true-claims | [`docs/VAULT.md`](../docs/VAULT.md) |
+| referral-link-targets-a-sibling-posting · sent-artifacts-are-frozen-and-moved | [`docs/APPLICATIONS.md`](../docs/APPLICATIONS.md) § And freeze what you actually sent |
+| plans-rotation (`_Active` → `_Complete`, one slice at a time) | [`docs/WORKSPACE-LAYOUT.md`](../docs/WORKSPACE-LAYOUT.md) § Session plans (`Plans/`) |
 | overflow-fix-is-move-not-shrink · work-samples-footer-row-false-collision · fixed-height-clips-content-silently · layout-recipe-vs-inline-html | [`docs/LAYOUT-SYSTEM.md`](../docs/LAYOUT-SYSTEM.md) · [`docs/QA.md`](../docs/QA.md) |
 | ats-section-cues · jobright-content-score-is-not-parse-fail | [`docs/JOB-ASSESSMENT.md`](../docs/JOB-ASSESSMENT.md) § Tier 4.5 |
 | twin-files-always-fork | [`AGENTS.md`](../AGENTS.md) (`.example` vs bare commands) |
@@ -121,6 +123,7 @@ codebase · `reference`: pointer to an external resource.
 | [lesson-vsce-pat-cannot-authenticode.md](lesson-vsce-pat-cannot-authenticode.md) | A VS Code Marketplace PAT publishes a VSIX — it cannot stamp `PDF-Designer-Setup.exe`; gate is `verify-authenticode.ps1` |
 | [lesson-hidden-electron-close-needs-stop-process.md](lesson-hidden-electron-close-needs-stop-process.md) | Hidden Electron often has no main window — `CloseMainWindow()` false is not an installer fail; Stop-Process then assert runtime death |
 | [lesson-layout-recipe-vs-inline-html.md](lesson-layout-recipe-vs-inline-html.md) | Layout JSON is an authoring contract — default HTML inlines CSS and can pack tighter than LAYOUT-SYSTEM |
+| [lesson-git-cannot-reinclude-inside-excluded-dir.md](lesson-git-cannot-reinclude-inside-excluded-dir.md) | `!file` inside an ignored folder is silently dead — ignore `dir/*`, not `dir/`, then check `git check-ignore -v` |
 
 ## Related
 

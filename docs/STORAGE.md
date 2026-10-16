@@ -165,15 +165,24 @@ resumes/<user>/
       videos/               reusable clips; keep job-specific captures with that application instead
       references/           source CVs + owner quote docs (mg_cv_2025.pdf, Self-Described.md, …)
   (PDFs)                    resumes/<user>/<Track>/  — private generated files (per-job subfolder)
+                            resumes/<user>/<Track>/submitted-<company>-<slug>-<date>/
+                              the exact files sent for one posting + their README and hash
+                              (never edited; where the sent artifact lives — APPLICATIONS.md)
   _archive/                 ⛔ retired/superseded material — DO NOT DELETE on a "clean stale" pass
-  _submitted/               (shade) sent-application record — DO NOT DELETE on a "clean stale" pass
 ```
 
-> **⛔ `_archive/` and `_submitted/` are protected.** Never delete their contents during
+> **⛔ `_archive/` and any `submitted-*` folder are protected.** Never delete their contents during
 > a "clean stale" / dangling-reference sweep — they are history the owner keeps on
-> purpose. Private finished PDFs now live under **`resumes/<user>/`** itself (also protected;
+> purpose. A `submitted-*` folder is the only copy of what an employer received: treat it as a
+> permanent record (`docs/APPLICATIONS.md` § And freeze what you actually sent).
+> Private finished PDFs also live under **`resumes/<user>/`** itself (protected too;
 > `_exports/<user>/resumes/` is fallback only, for a source the engine can't match here).
 > Stale-cleaning applies to broken *pointers*, not to these directories.
+>
+> **Legacy note:** an older revision of this page described a single top-level `resumes/<user>/_submitted/`
+> folder. **No such folder was ever created**, and `src/pdf_tool/paths.py` keeps `_submitted` only in its
+> reserved-name list so an old path shape can never be mistaken for a job folder. The live convention is
+> the per-track `submitted-*` folder above.
 >
 > **`defaults/` vs the per-job folder.** `resumes/<user>/<Track>/` is per-job output;
 > **`defaults/` is HTML only** — the generic "best-of" résumé / cover / work-examples

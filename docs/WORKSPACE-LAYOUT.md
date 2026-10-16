@@ -216,6 +216,30 @@ hides them from clones.
 
 ---
 
+## Session plans (`Plans/`) — the one working root with no public counterpart
+
+`Plans/` is the only working root that is **wholly** local: no tracked scaffold, no public payload.
+A session's narrative names real people, listings, employers and machine paths, so it never ships
+(public repo rule 2026-09-30 — [`PUBLIC-LOCAL-SPLIT.md`](PUBLIC-LOCAL-SPLIT.md)).
+
+| Path | Holds |
+|---|---|
+| `Plans/_Active/` | **Zero or one** dated checklist for a concrete, accepted slice |
+| `Plans/_Complete/` | Completed or explicitly routed narrative — evidence, not a to-do list |
+| `Plans/_Complete/_archive/` | Frozen session logs — **never append** |
+
+**The rotation:** create one dated checklist in `_Active/` only for a concrete slice →
+`_Active/README.md` is the *only* place that names it, so commands and docs link there and a rotation
+never breaks a pointer → move it to `_Complete/` when its outcomes are verified or explicitly routed,
+carrying forward only items that are genuinely still open. This repo's spelling is **`_Active` /
+`_Complete`**; sibling projects use lowercase `_active` / `_completed` — do not rename here.
+
+A fresh clone has none of it: create `_Active/` on first use. The public backlog is
+[`ROADMAP.md`](ROADMAP.md), and the durable traps that *do* travel with a clone are in
+[`../.memory/`](../.memory/). Never create a root `dev-log.yaml`, `dev-log-sego.yaml` or `dev-chat.md`.
+
+---
+
 ## Inspiration for free → tip / pay
 
 | Moment | Free GitHub | Paid later |
