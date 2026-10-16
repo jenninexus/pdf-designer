@@ -4,6 +4,10 @@
 > `/start` ritual looks for `.memory/MEMORY.md` by convention. Read `README.md` — it holds
 > the format, the tracked-vs-local split, and the lesson index.
 
+**The table below is a shortlist, not the index.** Every lesson is listed in
+[`README.md`](README.md); add a row there when you add a lesson, and add one here too only if the
+trap is one a session-start reader must see before choosing what to read.
+
 | Lesson | Hook |
 |---|---|
 | [lesson-guard-assumptions-must-be-measured.md](lesson-guard-assumptions-must-be-measured.md) | A QA guard hard-coding one layout's assumption fails silently on the other — measure the pixels |

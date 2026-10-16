@@ -101,6 +101,32 @@ can follow it.
 
 *A finished application nobody can find in a month wasn't finished.*
 
+## And freeze what you actually sent
+
+The moment something is submitted, the **exact bytes that left** stop being a working export and become
+a record. Move them into a dated `submitted-*` folder beside their document family:
+
+```text
+resumes/<user>/<Track>/submitted-<company>-<slug>-<YYYY-MM-DD>/
+  <the exact sent file(s), unchanged>
+  README.md      what was sent · to what posting · when · how · sha256 · the confirmation
+```
+
+- **`<slug>` is the role, not the folder name.** A referral link, an Indeed "easily apply" button or a
+  recruiter can point at a *sibling* posting with different terms. Record the **posted role id and URL**
+  in `application.json#submission.<user>.postedRole*` — the folder name is not the target.
+- **`<user>` is one person.** A shared job record never makes two applicants' files one set.
+- Move, don't copy: one unambiguous artifact, and the folder's own README carries the hash so the
+  original export set is still provable.
+- **Never edit a sent file.** New facts or fonts mean a new version, and the sent one stays as-is.
+- Keep the confirmation beside the listing (`_job-apps/<Track>/evidence/`) and cite it (sender, subject,
+  timestamp, Message-ID) — **an export is not proof of submission**, an acknowledgement is.
+- A portal's *"your application is incomplete"* email is **submission proof plus a to-do**, not a
+  rejection. Record the outstanding step in `application.json#submission.nextAction`.
+
+Sent files live under `resumes/`, so they stay **local** — never commit them
+([`PUBLIC-LOCAL-SPLIT.md`](PUBLIC-LOCAL-SPLIT.md) · [`STORAGE.md`](STORAGE.md)).
+
 ## Principles
 
 - **Source-backed only** — a tailored résumé never claims anything not in the vault.
