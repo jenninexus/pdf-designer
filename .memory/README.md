@@ -124,6 +124,7 @@ codebase · `reference`: pointer to an external resource.
 | [lesson-hidden-electron-close-needs-stop-process.md](lesson-hidden-electron-close-needs-stop-process.md) | Hidden Electron often has no main window — `CloseMainWindow()` false is not an installer fail; Stop-Process then assert runtime death |
 | [lesson-layout-recipe-vs-inline-html.md](lesson-layout-recipe-vs-inline-html.md) | Layout JSON is an authoring contract — default HTML inlines CSS and can pack tighter than LAYOUT-SYSTEM |
 | [lesson-git-cannot-reinclude-inside-excluded-dir.md](lesson-git-cannot-reinclude-inside-excluded-dir.md) | `!file` inside an ignored folder is silently dead — ignore `dir/*`, not `dir/`, then check `git check-ignore -v` |
+| [lesson-rewrite-flips-crlf-in-crlf-stored-files.md](lesson-rewrite-flips-crlf-in-crlf-stored-files.md) | A full-file rewrite normalizes CRLF→LF; `src/pdf_tool/*.py` is stored CRLF — check `git ls-files --eol` or the diff balloons |
 
 ## Related
 
