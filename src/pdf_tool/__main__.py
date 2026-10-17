@@ -8,11 +8,11 @@ from . import __version__
 
 _COMMANDS: tuple[tuple[str, str], ...] = (
     ("html_to_pdf", "HTML -> PDF (light/dark; optional --variants / --max-mb 5)"),
-    ("inline_images", "Inline {{img:name}} placeholders (--board = JPEG ≤960px)"),
+    ("inline_images", "Inline {{img:name}} placeholders (--board = JPEG <=960px)"),
     ("variants", "Light PDF per public palette -> _variants/"),
     ("merge_pdfs", "Merge PDFs into one bundle"),
     ("pdf_to_png", "Screenshot each .page for visual verify"),
-    ("check_generation", "** ONE QA pass (10 checks) — judge the artifact, not the source"),
+    ("check_generation", "** ONE QA pass (12 checks) — judge the artifact, not the source"),
     ("check_palette", "Reject brown / mustard / lime (source hex)"),
     ("check_rendered_color", "Reject brown that only appears after compositing"),
     ("check_overflow", "Catch page overflow at 816px paper width"),
@@ -44,8 +44,25 @@ def _help_text() -> str:
     return "\n".join(lines)
 
 
+def _tolerate_console_encoding() -> None:
+    """Never let a console encoding abort a command.
+
+    A Windows console defaults to cp1252, so one non-Latin-1 glyph anywhere in a
+    message raises ``UnicodeEncodeError`` and kills the process — which is how
+    ``python -m pdf_tool`` (the documented front door) used to fail outright on a
+    '≤' in its own help text. Degrade the glyph instead of the command. Keep the
+    help text ASCII as well; this is the belt to that pair of braces.
+    """
+    for stream in (sys.stdout, sys.stderr):
+        try:
+            stream.reconfigure(errors="replace")  # type: ignore[union-attr]
+        except (AttributeError, ValueError, OSError):  # pragma: no cover - exotic streams
+            pass
+
+
 def main(argv: list[str] | None = None) -> int:
     """Print hub help. Exit 0 on bare invoke / --help; exit 2 on unknown argv[1]."""
+    _tolerate_console_encoding()
     args = list(sys.argv[1:] if argv is None else argv)
     if not args or args[0] in ("-h", "--help"):
         print(_help_text())
