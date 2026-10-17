@@ -55,6 +55,14 @@ GitHub ships
 **`*.example.md` only** for commands. A stranger proves the product with
 `examples/` + `themes/` alone — [`GETTING-STARTED.md`](GETTING-STARTED.md).
 
+**One output rule for all three surfaces.** A public clone, a personal workspace, and the planned paid
+shell write finished files the *same* way: **beside the document family** — `resumes/<user>/…` for a
+résumé/letter/work-sample, `collages/<project>/` for a collage — with `_exports/` as the fallback for a
+source the engine cannot match, and `output/` reserved for disposable test/automation scratch. The paid
+shell adds guided UX over that same rule; it does **not** introduce a second output folder, and no
+maintainer-specific path is required for a customer's document to land somewhere sensible.
+[`STORAGE.md`](STORAGE.md) § Which folder is which.
+
 Network brand kits (`www-theme-kit`, `syna-theme-kit`) are **private infra**, not part of
 the public GitHub pitch. Public color defaults live in-repo under `themes/`.
 
