@@ -65,6 +65,20 @@ resumes/jenni/3D-Visualizer/     one applicant's PDFs for that job
 resumes/shade/3D-Visualizer/     the other's, for the same job
 ```
 
+**A company that posts many near-identical roles gets one folder, so the role folders don't pile up
+flat** — and its role folder inside drops the company prefix:
+
+```text
+resumes/shade/Micro1/Research-Engineering/
+resumes/shade/Micro1/Art-Related-Professional/
+resumes/shade/Meta/Technical-Game-Designer/
+resumes/shade/Sony-3D-Characters/        ← single-application company stays flat
+```
+
+Group only at two-or-more applications per person, and note that **exports into a company group need an
+explicit `--output-dir`** (the engine infers a flat path from the `_job-apps/<App>/` name) —
+[`STORAGE.md`](STORAGE.md) § Company grouping.
+
 Facts about the *job* (the apply link, the pay, the company palette) belong to the *job* — so
 two people applying to the same posting share **one** record and it can never drift apart
 between them.
@@ -118,6 +132,10 @@ resumes/<user>/<Track>/submitted-<company>-<slug>-<YYYY-MM-DD>/
 - **`<user>` is one person.** A shared job record never makes two applicants' files one set.
 - Move, don't copy: one unambiguous artifact, and the folder's own README carries the hash so the
   original export set is still provable.
+- **Reusing an already-sent file verbatim? Point at the frozen original — do not duplicate it.** Record
+  the hash and the path in the new application's `submission` block; a second identical copy is a
+  second thing that can silently diverge. A rebuilt or edited document is different bytes and gets its
+  own `submitted-*` folder.
 - **Never edit a sent file.** New facts or fonts mean a new version, and the sent one stays as-is.
 - Keep the confirmation beside the listing (`_job-apps/<Track>/evidence/`) and cite it (sender, subject,
   timestamp, Message-ID) — **an export is not proof of submission**, an acknowledgement is.

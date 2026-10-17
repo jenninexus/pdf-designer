@@ -96,6 +96,53 @@ Go-to/default packs export flat into `resumes/<profile>/` (HTML stays in `resume
 Studio exports live under `resumes/studio/…`. Collage exports land at the collage project root,
 `collages/<project>/`. The Hub labels the union of these **Exports**.
 
+### Which folder is which (the four surfaces, settle it once)
+
+These have been mistaken for each other. They are not alternatives; each has exactly one job.
+
+| Folder | Job | Tracked? | Never put here |
+|---|---|---|---|
+| **`resumes/<user>/…`** | ⭐ **where finished résumé/letter/work-sample files go** — beside the person who sends them | 🔒 no | HTML sources, job research, scratch |
+| **`_job-apps/<App>/`** | the **job** — listing, `application.json`, `theme.json`, the HTML sources | 🔒 no (README only) | PDFs |
+| **`output/…`** | **disposable scratch only** — a QA staging dir, a smoke test, a bundle you are about to throw away. Reached only by an explicit `--output-dir output/…` | 🔒 payload (README yes) | anything you want to keep, and anything the Hub should show |
+| **`_exports/…`** | **fallback only** — a source the engine cannot match to a person/project (public `examples/`, or an unfiled source). A fresh clone lands here because it has no `resumes/<profile>/` yet | 🔒 payload (README yes) |
+
+**So: `output/` is not "the old output folder" and it is not the destination for a real résumé.** It is
+deliberate, disposable automation scratch, it is excluded from the Hub's document library, and the smoke
+test writes there on purpose. The user-facing answer to *"where does my PDF go?"* is
+**`resumes/<user>/…`** for a personal document, `collages/<project>/` for a collage, and `_exports/…` only
+when nothing else can be inferred.
+
+### Company grouping (multi-application companies)
+
+A company micro1/Meta-style — several near-identical postings at once — gets **its own folder** under the
+person, so the role folders do not pile up flat:
+
+```text
+resumes/shade/Micro1/Research-Engineering/          ← company group + role
+resumes/shade/Micro1/Art-Related-Professional/
+resumes/shade/Meta/Technical-Game-Designer/
+resumes/shade/Sony-3D-Characters/                   ← single-application company stays flat
+```
+
+Group a company only when it has **two or more applications** for that person; a one-off stays flat so
+the tree does not grow a level for nothing. The company group is a **browsing** convenience — the
+`_job-apps/<App>/` record stays flat and keeps its company-prefixed name
+(`_job-apps/Micro1-Research-Engineering/`).
+
+> ⚠️ **Exports for a grouped company need an explicit `--output-dir`.** The engine infers the export
+> folder from the flat `_job-apps/<App>/` name, so it would write
+> `resumes/shade/Micro1-Research-Engineering/` next to the group instead of inside it. Pass
+> `--output-dir resumes/shade/Micro1/Research-Engineering` for those. Single-application companies need
+> no flag. (`src/pdf_tool/paths.py` `default_output_dir`.)
+
+### Sent artifacts
+
+A submitted file moves into `resumes/<user>/<Track-or-company>/submitted-<company>-<slug>-<date>/` and is
+never edited again. If an already-frozen document is **reused verbatim** for another posting, point at
+that frozen original and record its hash — do not make a second copy. Protocol:
+[`APPLICATIONS.md`](APPLICATIONS.md) § And freeze what you actually sent.
+
 `_exports/` is now the **fallback only**, used when a source can't be matched to a document family:
 
 ```text
