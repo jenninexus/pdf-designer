@@ -37,6 +37,15 @@ incoming one, stops the pull with a message; `push` yours first (or rename it), 
 Two people editing the same file produce an ordinary Git merge conflict; resolve it with
 `python scripts/private-sync.py git <command>`. History is kept, so nothing shared is ever lost.
 
+## Check every local-only surface
+
+`python scripts/local-state.py` reports what GitHub never sees in one place. It covers private-sync state,
+the command wrappers (`.claude/commands/` is the source, and `.codex/` and `.agents/` are generated copies),
+and each `.config/<name>.json` compared with its tracked `.example` seed. It exits 1 when something needs
+action. A wrapper edited in another agent runtime is reported as `EDITED`. Fold it back into the source with
+`python scripts/local-state.py adopt <cmd> --from codex|agents`, then regenerate the wrappers, so the newest
+edit wins whichever tool made it.
+
 ## What is shared
 
 The private repository lives in `.git-private/` beside `.git/` and uses the same folder, so the
