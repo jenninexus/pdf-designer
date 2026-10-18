@@ -11,8 +11,8 @@ because it is reachable or lacks this repository. A clean target must be
 observed to have no checkout, Python, Node/npm, existing PDF Designer install,
 or `Documents\\PDF Designer` workspace before the run.
 
-**Why:** example-builder had no `pdf-designer` checkout and could be reached over the
-network, but it already had Python and Node tooling. example-remote was reachable but
+**Why:** one maintainer PC had no `pdf-designer` checkout and could be reached over the
+network, but it already had Python and Node tooling. Another was reachable but
 could not be authenticated for a trustworthy preflight. Either machine would
 have produced a false clean-machine claim or disturbed a shared host.
 

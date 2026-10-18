@@ -10,8 +10,8 @@ system Python, Node, npm, an existing PDF Designer workspace, or an existing tes
 installation.
 
 Those toolchain refusals are the point: the NSIS package must boot without PATH
-Python/Node. A developer PC that already has them (example-builder, example-remote, example-machine)
-cannot prove that. A drop folder such as C:\p\pdf-designer-installer-drop\ is
+Python/Node. A developer PC that already has them (any maintainer workstation)
+cannot prove that. A drop folder such as <drive>:\pdf-designer-installer-drop\ is
 the right *place* to put the EXE+script, but only on a machine that fails none
 of the preflight checks.
 

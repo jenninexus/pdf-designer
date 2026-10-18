@@ -135,6 +135,16 @@ def test_pull_never_overwrites_an_unshared_local_file(lan: tuple[Path, Path, Pat
     assert (a / "users" / "new.json").read_text(encoding="utf-8") == "A's own unshared file"
 
 
+def test_skip_list_keeps_a_file_on_this_machine(lan: tuple[Path, Path, Path]) -> None:
+    remote, a, _ = lan
+    (a / "users" / "pat.json").write_text("share me", encoding="utf-8")
+    (a / "users" / "mine.json").write_text("keep me here", encoding="utf-8")
+    (a / ".git-private").mkdir()
+    (a / ".git-private" / "skip").write_text("/users/mine.json\n", encoding="utf-8")
+    assert _sync(a, "setup", str(remote)).returncode == 0
+    assert _private_files(a) == {"users/pat.json"}
+
+
 def test_hosted_remote_is_refused(lan: tuple[Path, Path, Path]) -> None:
     _, a, _ = lan
     result = _sync(a, "setup", "https://github.com/someone/private.git")

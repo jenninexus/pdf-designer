@@ -46,6 +46,10 @@ Design Hub sees one workspace. It holds only:
 - `docs/*.local.md`, `docs/private/`, and the private notes listed in `PUBLIC-LOCAL-SPLIT.md`
 - `.config/private-markers.txt` (so every machine guards every person's identifiers)
 
+To keep something on one machine only, list it in `.git-private/skip` (gitignore syntax, one pattern
+per line, e.g. `/vaults/me.json` or `/collages/drafts/`). A path that is already shared must also be
+removed from the shared copy once: `python scripts/private-sync.py git rm --cached <path>`, then `push`.
+
 Never shared: anything the public repository tracks (README stubs, `*.example.*` seeds), the retired
 `storage/` alias, and the disposable `output/` and `_exports/` scratch trees.
 
