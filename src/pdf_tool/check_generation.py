@@ -45,18 +45,80 @@ def _read(path: Path) -> str:
     return path.read_text(encoding="utf-8", errors="replace")
 
 
-def _detect_user(path: Path, html: str) -> str | None:
-    """shade / jenni / martian / studio / None, from the path then the content."""
-    p = str(path).lower()
-    for u in ("shade", "jenni", "martian", "studio"):
-        if f"/{u}" in p.replace("\\", "/") or path.name.lower().startswith(u):
-            return u
-    # content fallback — signature name / studio line
+_EMAIL_RE = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
+
+
+def _workspace_people(root: Path) -> tuple[dict[str, str], dict[str, set[str]], dict[str, set[str]]]:
+    """Who this workspace knows, read from its own files — never hardcoded in the engine.
+
+    Returns ``(aliases, emails, names)``: every alias/id → canonical id; canonical id → contact
+    emails; canonical id → signature/display names. Ids come from ``users/*.json`` (``id`` +
+    ``aliases``), ``profiles/<id>-resume.json`` and ``resumes/<id>/``. ``examples`` is the public
+    seed and never a detected person.
+    """
+    from .paths import _workspace_user_ids, iter_profile_paths, iter_user_paths
+
+    aliases: dict[str, str] = {}
+    emails: dict[str, set[str]] = {}
+    names: dict[str, set[str]] = {}
+    for user_file in iter_user_paths(root=root):
+        try:
+            data = json.loads(user_file.read_text(encoding="utf-8-sig"))
+        except (OSError, ValueError):
+            continue
+        uid = str(data.get("id") or user_file.stem).lower()
+        if uid == "examples" or user_file.stem == "examples":
+            continue
+        for alias in (uid, user_file.stem, *(data.get("aliases") or [])):
+            if isinstance(alias, str) and alias.strip():
+                aliases.setdefault(alias.strip().lower(), uid)
+        contact = data.get("contact") if isinstance(data.get("contact"), dict) else {}
+        emails[uid] = {
+            v.strip().lower() for k, v in contact.items()
+            if k.lower().startswith("email") and isinstance(v, str) and _EMAIL_RE.match(v.strip())
+        }
+        names[uid] = {
+            v.strip().lower() for v in (contact.get("signatureName"), contact.get("fullName"), data.get("name"))
+            if isinstance(v, str) and v.strip()
+        }
+    for profile in iter_profile_paths(root=root):
+        if profile.stem.endswith("-resume"):
+            pid = profile.stem[: -len("-resume")].lower()
+            if pid and pid != "examples":
+                aliases.setdefault(pid, pid)
+    for rid in _workspace_user_ids(root):
+        aliases.setdefault(rid.lower(), rid.lower())
+    return aliases, emails, names
+
+
+def _detect_user(path: Path, html: str, *, root: Path | None = None) -> str | None:
+    """The workspace person a document belongs to, from its path, then its content; else None.
+
+    Path: a folder or filename named ``<id>`` or starting ``<id>-`` (``collages/<id>-collage/``). Content: one
+    of that person's contact emails, then their signature name as a whole element's text.
+    """
+    from .paths import repo_root
+
+    root = Path(root) if root is not None else repo_root()
+    aliases, emails, names = _workspace_people(root)
+    by_length = sorted(aliases, key=len, reverse=True)  # "jane-studio" before "jane"
+    try:  # only folders inside the workspace count, never the machine's own parent folders
+        folders = Path(path).resolve().relative_to(root.resolve()).parts[:-1]
+    except ValueError:
+        folders = Path(path).parts[:-1]
+    parts = [part.lower() for part in folders]
+    filename = Path(path).name.lower()
+    for alias in by_length:
+        named = (f"{alias}-", f"{alias}_")
+        if any(part == alias or part.startswith(named) for part in parts) or filename.startswith((*named, f"{alias}.")):
+            return aliases[alias]
     low = html.lower()
-    if "shade@martiangames" in low or ">shade<" in low:
-        return "shade"
-    if "jenni@jenninexus" in low:
-        return "jenni"
+    for uid, addresses in emails.items():
+        if any(address in low for address in addresses):
+            return uid
+    for uid, people in names.items():
+        if any(f">{name}<" in low for name in people):
+            return uid
     return None
 
 
@@ -521,10 +583,10 @@ CHECKS = [
 ]
 
 
-def run_file(path: Path, user: str | None = None, do_render: bool = True) -> dict:
+def run_file(path: Path, user: str | None = None, do_render: bool = True, *, root: Path | None = None) -> dict:
     html = _read(path)
     if user is None:
-        user = _detect_user(path, html)
+        user = _detect_user(path, html, root=root)
     no_mag = _no_magenta_for(user)
     results = []
     for key, desc, fn, needs_nomag in CHECKS:
