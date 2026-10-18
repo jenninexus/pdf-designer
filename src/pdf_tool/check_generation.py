@@ -284,7 +284,7 @@ def check_footer_collision(path: Path):
     """GROUND TRUTH: export the PDF and look for content colliding with the pinned signature.
 
     DOM measurement (check_overflow) sums heights and can still miss a real collision — it did on
-    2026-07-21, when a Toolbelt line rendered *through* the "Shade Muse" signature on page 1 while
+    2026-07-21, when a Toolbelt line rendered *through* the applicant's signature on page 1 while
     the guard reported PASS. This renders the actual PDF and inspects the signature band: if
     non-background pixels appear on the same rows as the signature but in the opposite column,
     body text is running into it.

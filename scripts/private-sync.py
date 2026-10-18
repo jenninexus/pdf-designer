@@ -39,6 +39,9 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[1]
 GIT_DIR_NAME = ".git-private"
+# Gitignore-style patterns this machine never shares (e.g. /vaults/me.json). Lives inside
+# .git-private, so neither repository can ever track it.
+SKIP_FILE_NAME = "skip"
 BRANCH = "main"
 
 # Private roots shared between your machines. storage/ (retired alias), output/ and _exports/
@@ -76,6 +79,10 @@ def exclude_rules(public_paths: set[str]) -> str:
     lines += list(NOISE)
     roots = tuple(f"{root}/" for root in SHARED_ROOTS) + ("docs/", ".config/")
     lines += [f"/{path}" for path in sorted(public_paths) if path.startswith(roots)]
+    skip = REPO / GIT_DIR_NAME / SKIP_FILE_NAME
+    if skip.is_file():
+        lines += ["# This machine's own skip list (.git-private/skip):"]
+        lines += [ln.strip() for ln in skip.read_text(encoding="utf-8-sig").splitlines() if ln.strip()]
     return "\n".join(lines) + "\n"
 
 
@@ -115,7 +122,7 @@ def remote_has_branch() -> bool:
 
 def ensure_repo(remote: str | None) -> None:
     git_dir = REPO / GIT_DIR_NAME
-    if not git_dir.is_dir():
+    if not (git_dir / "HEAD").is_file():  # the folder may already hold a skip list
         pgit("init", "--quiet", f"--initial-branch={BRANCH}")
     # Byte-identical files on every machine; the public repo's line-ending rules do not apply.
     pgit("config", "core.autocrlf", "false")
