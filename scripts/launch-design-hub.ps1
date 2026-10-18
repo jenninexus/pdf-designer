@@ -22,7 +22,10 @@ function Test-DesignHub {
 }
 
 if (-not (Test-DesignHub)) {
-    $python = Get-Command python -ErrorAction SilentlyContinue
+    # Prefer this checkout's own virtual environment: the python on PATH is often a
+    # different environment that does not have pdf_tool installed.
+    $python = Get-Command (Join-Path $repoRoot '.venv\Scripts\python.exe') -ErrorAction SilentlyContinue
+    if (-not $python) { $python = Get-Command python -ErrorAction SilentlyContinue }
     if (-not $python) { $python = Get-Command python3 -ErrorAction SilentlyContinue }
     if (-not $python) {
         throw 'Python was not found. From this checkout run: pip install -e ".[dev]"; playwright install chromium'

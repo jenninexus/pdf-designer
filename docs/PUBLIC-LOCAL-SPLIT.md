@@ -93,6 +93,10 @@ Never commit from a personal machine:
 
 Before a public push:
 
+0. Enable the enforced gate once per clone: `git config core.hooksPath .githooks`. Its pre-push
+   hook ([`PRIVATE-SYNC.md`](PRIVATE-SYNC.md) § What the push gate checks) refuses any push that
+   would publish a private path or a real person's identifiers; the steps below remain the habit.
+   Share personal files between your own machines with `scripts/private-sync.py`, never via GitHub.
 1. Stage explicit clone-safe paths; never use `git add -A` and never force-add ignored payload.
 2. Keep public docs free of machine paths, private names, vault bodies, and operational credentials.
 3. Treat `*.example.*` as a naming convention, not proof of safety; inspect its contents.

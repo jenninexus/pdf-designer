@@ -69,6 +69,7 @@ Every step uses **tracked** paths only.
 | 1. Install | `pip install -e ".[dev]" && playwright install chromium` | `python -m pdf_tool` prints the hub |
 | 2. Smoke | `python scripts/smoke-white-label.py` | exit 0 — QA + light/dark PDF + ATS |
 | 3. Hub | `python -m pdf_tool.preview` | http://127.0.0.1:8787/ |
+| 3b. (Contributors) push gate | `git config core.hooksPath .githooks` | a push carrying private files is refused — [`PRIVATE-SYNC.md`](PRIVATE-SYNC.md) |
 | 4. (Optional) variants | `python -m pdf_tool.variants examples/profiles/default-resume/default-resume.html` | one light PDF per public palette |
 
 The smoke script runs `check_generation`, exports light + dark PDFs, runs `check_ats` on

@@ -4,6 +4,11 @@ pdf-designer.code-workspace
 # Local project config (machine absolute paths). Tracked seed:
 #   .config/mcp-pdf-designer.example.json → copy to mcp-pdf-designer.json
 .config/mcp-pdf-designer.json
+# Extra private markers for the pre-push gate (scripts/check-public-push.py) — local only.
+.config/private-markers.txt
+# Second Git repository for personal data shared between your own machines
+# (scripts/private-sync.py, docs/PRIVATE-SYNC.md). Never part of the public repo.
+.git-private/
 
 # Per-machine private session logs/channels — DEPRECATED (do not recreate at repo root).
 # Frozen copy: Plans/_Complete/_archive/dev-log-sego.yaml
