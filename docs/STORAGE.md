@@ -51,10 +51,10 @@ accent `#FF4500` · support `#42F4C8` — mirrors `www-theme-kit/profiles/martia
 `www-theme-kit/palettes/resume-palettes.json#martian-resume`. Path is `brands/` (was
 `storage/brand-design/`).
 
-**Cross-PC:** root nouns are gitignored. After editing brand maps on SEGO, copy
-`brands/` → BEE `C:\p\pdf-designer\brands\` over SMB
-(`\\BEETHOVEN\p\…`). Tracked docs sync via `git pull` on BEE (pdf-designer uses a deploy key —
-see `/jen/pdf` · `/jen/bee` §11b). Prefs chain: [`SSOT.md`](SSOT.md) § Personal palette prefs.
+**Cross-PC:** root nouns are gitignored, so they never travel through GitHub. Share them between
+your own machines with `python scripts/private-sync.py push` / `pull`
+([`PRIVATE-SYNC.md`](PRIVATE-SYNC.md)) instead of copying folders by hand. Tracked files sync with
+an ordinary `git pull`. Prefs chain: [`SSOT.md`](SSOT.md) § Personal palette prefs.
 
 Tracked template for new users: [`../examples/brand-design/`](../examples/brand-design/).
 

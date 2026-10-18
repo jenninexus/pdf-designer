@@ -1,0 +1,14 @@
+#!/bin/sh
+# Public-repo privacy gate: refuse a push that would publish personal files or identifiers.
+# Enable once per clone:  git config core.hooksPath .githooks
+# Rules and manual use: scripts/check-public-push.py · docs/PRIVATE-SYNC.md
+repo=$(git rev-parse --show-toplevel) || exit 1
+gate="$repo/scripts/check-public-push.py"
+# The checkout's own venv first. python3 last: on Windows it can be the Store alias, which hangs.
+for py in "$repo/.venv/Scripts/python.exe" "$repo/.venv/bin/python" python py python3; do
+  if command -v "$py" >/dev/null 2>&1; then
+    exec "$py" "$gate" --pre-push "$@"
+  fi
+done
+echo "pre-push: no Python found, so the privacy gate cannot run; refusing the push." >&2
+exit 1
