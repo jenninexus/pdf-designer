@@ -199,3 +199,7 @@ Thumbs.db
 .env
 .env.*
 !.env.example
+
+# Windows folder metadata
+desktop.ini
+Thumbs.db
