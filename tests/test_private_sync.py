@@ -76,6 +76,22 @@ def test_first_machine_shares_only_private_roots(lan: tuple[Path, Path, Path]) -
     assert "users/README.md" not in files and "src/engine.py" not in files
 
 
+def test_personal_commands_are_shared_but_public_seeds_and_settings_are_not(lan: tuple[Path, Path, Path]) -> None:
+    remote, a, _ = lan
+    commands = a / ".claude" / "commands"
+    commands.mkdir(parents=True)
+    (commands / "make-resume.example.md").write_text("public seed\n", encoding="utf-8")
+    _git(a, "add", "-f", ".claude/commands/make-resume.example.md")
+    _git(a, "-c", "user.name=t", "-c", "user.email=t@example.com", "commit", "-q", "-m", "seed")
+    (commands / "make-resume.md").write_text("my resume command\n", encoding="utf-8")
+    (a / ".claude" / "settings.local.json").write_text("{}", encoding="utf-8")
+    assert _sync(a, "setup", str(remote)).returncode == 0
+    files = _private_files(a)
+    assert ".claude/commands/make-resume.md" in files
+    assert ".claude/commands/make-resume.example.md" not in files
+    assert ".claude/settings.local.json" not in files
+
+
 def test_joining_machine_keeps_its_own_files(lan: tuple[Path, Path, Path]) -> None:
     remote, a, b = lan
     (a / "users" / "pat.json").write_text("A version", encoding="utf-8")

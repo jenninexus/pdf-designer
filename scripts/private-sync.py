@@ -64,6 +64,9 @@ SHARED_FILES = (
     "docs/HISTORY-SCRUB.md",
     "docs/private/",
     ".config/private-markers.txt",
+    # Bare personal commands (/make-resume, /pdf-start, ...). Their .codex/.agents wrappers are
+    # generated on each machine from these, so they are not shared.
+    ".claude/commands/*.md",
 )
 NOISE = ("desktop.ini", "Thumbs.db", ".DS_Store", "__pycache__/", "*.pyc", "~$*")
 HOSTED = re.compile(r"(github\.com|gitlab\.com|bitbucket\.org|dev\.azure\.com)", re.IGNORECASE)
@@ -75,9 +78,10 @@ def exclude_rules(public_paths: set[str]) -> str:
     lines = ["# Written by scripts/private-sync.py on every run - do not edit.", "/*"]
     lines += [f"!/{root}/" for root in SHARED_ROOTS]
     lines += ["!/docs/", "/docs/*", "!/.config/", "/.config/*"]
+    lines += ["!/.claude/", "/.claude/*", "!/.claude/commands/", "/.claude/commands/*"]
     lines += [f"!/{pattern}" for pattern in SHARED_FILES]
     lines += list(NOISE)
-    roots = tuple(f"{root}/" for root in SHARED_ROOTS) + ("docs/", ".config/")
+    roots = tuple(f"{root}/" for root in SHARED_ROOTS) + ("docs/", ".config/", ".claude/")
     lines += [f"/{path}" for path in sorted(public_paths) if path.startswith(roots)]
     skip = REPO / GIT_DIR_NAME / SKIP_FILE_NAME
     if skip.is_file():
