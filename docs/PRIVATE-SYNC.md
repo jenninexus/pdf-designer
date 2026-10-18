@@ -45,6 +45,9 @@ Design Hub sees one workspace. It holds only:
 - `users/` `vaults/` `profiles/` `resumes/` `_job-apps/` `applications/` `collages/` `brands/` `Plans/`
 - `docs/*.local.md`, `docs/private/`, and the private notes listed in `PUBLIC-LOCAL-SPLIT.md`
 - `.config/private-markers.txt` (so every machine guards every person's identifiers)
+- the bare personal commands `.claude/commands/*.md` (`/make-resume`, `/pdf-start`, …), so any machine can
+  build any person's documents. The tracked `*.example.md` seeds stay public, and the `.codex/` and `.agents/`
+  wrappers are regenerated on each machine from these sources rather than shared.
 
 To keep something on one machine only, list it in `.git-private/skip` (gitignore syntax, one pattern
 per line, e.g. `/vaults/me.json` or `/collages/drafts/`). A path that is already shared must also be
