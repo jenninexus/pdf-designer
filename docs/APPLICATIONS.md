@@ -107,6 +107,36 @@ write → export light + dark for both documents → merge the bundle → log it
 **agent-agnostic**: plain markdown, no vendor APIs. Any assistant, or a human with a terminal,
 can follow it.
 
+## Fill the portal form
+
+Most company portals (Workday, Greenhouse, Lever) **autofill the form from the first file you upload**.
+That decides the upload order:
+
+| Upload | File | Why |
+|---|---|---|
+| First (the parsed file) | the **light** résumé, optionally with work samples merged *after* it | The parser reads the résumé first and fills the experience from it. Light for upload; dark is for people. |
+| Second file or Cover Letter field | the cover letter, on its own | A letter at the front of the parsed file pours letter prose into the autofill. |
+| Email or recruiter | the letter-first bundle (letter, résumé, work samples) | A person reads it top to bottom. |
+
+Build the bundles with `python -m pdf_tool.merge_pdfs <out.pdf> <first.pdf> <second.pdf> …` and run
+`check_ats` on the uploaded file.
+
+**Answer sheet.** Each application can carry `<Track>/form-answers.md`, built from `users/<id>.json` and the
+vault. It covers the portal's steps in order (contact, experience, application questions) and marks
+**OWNER** on anything the files do not prove: legal name, address, work authorization, sponsorship,
+salary, start date, and every voluntary disclosure. A preferred name or a city is not a legal name or an address.
+
+**What an agent may do with it.** In a browser, with the applicant watching and their OK in that session,
+an agent can open the apply link, upload the files in the order above, fill each field the sheet answers,
+and correct what autofill got wrong. It stops at every **OWNER** field.
+
+**What only the applicant does:**
+- Create the portal account and sign in. Agents never create accounts or type passwords.
+- Answer the voluntary disclosures: gender, race, veteran and disability status.
+- Read the review page and press **Submit**.
+
+Then record the submission and freeze the sent files (below).
+
 ## Then log it — three places
 
 1. `<Track>/application.json` — the machine record
