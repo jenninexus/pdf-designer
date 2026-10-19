@@ -126,6 +126,7 @@ codebase · `reference`: pointer to an external resource.
 | [lesson-second-git-dir-sees-public-gitignore.md](lesson-second-git-dir-sees-public-gitignore.md) | `.git-private/` inherits the public `.gitignore` and its merges overwrite ignored files — discover with `--exclude-from`, merge with `--no-overwrite-ignore` |
 | [lesson-git-cannot-reinclude-inside-excluded-dir.md](lesson-git-cannot-reinclude-inside-excluded-dir.md) | `!file` inside an ignored folder is silently dead — ignore `dir/*`, not `dir/`, then check `git check-ignore -v` |
 | [lesson-rewrite-flips-crlf-in-crlf-stored-files.md](lesson-rewrite-flips-crlf-in-crlf-stored-files.md) | A full-file rewrite normalizes CRLF→LF; `src/pdf_tool/*.py` is stored CRLF — check `git ls-files --eol` or the diff balloons |
+| [lesson-letter-signoff-width-trips-footer-collision.md](lesson-letter-signoff-width-trips-footer-collision.md) | A letter sign-off line past ~40% page width fails `footer-collision` on its own; if the rows don't move when you cut prose, shorten the sign-off |
 
 ## Related
 

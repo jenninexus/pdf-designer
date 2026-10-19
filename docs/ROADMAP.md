@@ -24,6 +24,11 @@ organization slice completed on 2026-09-27. The October15 slice adds reusable pe
 selections, system-font document policy, local-first deterministic QA with receipt reuse, and a
 fail-closed gate for required render errors. Private applicant data stays out of the public product.
 Current local work, if any, is named by the plan index; the commercial release queue remains below.
+The 2026-10-18 slice made two clones work as one workspace. `scripts/private-sync.py` now shares the
+personal commands too, and `scripts/local-state.py` checks every local-only surface: private-sync,
+command wrappers across agent runtimes, and `.config` against its seeds. `/pdf-start` and `/pdf-wrap`
+run both. [`APPLICATIONS.md`](APPLICATIONS.md) § *Fill the portal form* sets the upload order and the
+answer-sheet contract for agent-assisted portal applications.
 
 After that slice, priority remains:
 
