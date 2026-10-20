@@ -59,6 +59,10 @@ _job-apps/*
 !_job-apps/README.md
 !_job-apps/_template/
 
+# Brand / creator-collab correspondence — track README only, real records stay local.
+_collabs/*
+!_collabs/README.md
+
 # Brief 2026-08 name — runtime alias only; listings live in _job-apps/
 applications/
 
