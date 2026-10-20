@@ -52,6 +52,7 @@ SHARED_ROOTS = (
     "profiles",
     "resumes",
     "_job-apps",
+    "_collabs",
     "applications",
     "collages",
     "brands",
