@@ -1,6 +1,6 @@
 # ROADMAP — pdf-designer
 
-> **This is the durable product backlog and status map.**
+> **Durable product backlog and status map.** Completed work is archived, not restated here.
 >
 > | Kind | File |
 > |---|---|
@@ -18,32 +18,29 @@
 
 ## Current execution
 
-The exact checklist, blocker evidence, and next action live in
-the dated checklist named in the local-only `Plans/README.md`. The current accepted
-organization slice completed on 2026-09-27. The October15 slice adds reusable per-person specialist
-selections, system-font document policy, local-first deterministic QA with receipt reuse, and a
-fail-closed gate for required render errors. Private applicant data stays out of the public product.
-Current local work, if any, is named by the plan index; the commercial release queue remains below.
-The 2026-10-18 slice made two clones work as one workspace. `scripts/private-sync.py` now shares the
-personal commands too, and `scripts/local-state.py` checks every local-only surface: private-sync,
-command wrappers across agent runtimes, and `.config` against its seeds. `/pdf-start` and `/pdf-wrap`
-run both. [`APPLICATIONS.md`](APPLICATIONS.md) § *Fill the portal form* sets the upload order and the
-answer-sheet contract for agent-assisted portal applications.
+The exact checklist, blocker evidence, and next action live in the dated checklist named in the
+local-only `Plans/README.md`. This file is the durable backlog; completed slices are archived
+in `Plans/_Complete/2026-09-26-roadmap-completed-archive.md` (local-only) and are **not** restated here.
 
-After that slice, priority remains:
+**Priority: select one next product-evolution slice from the decision-gated work below.**
 
-1. Select one next product-evolution slice from the decision-gated work below. The old public-push
-   blocker is resolved: October15 mainline delivery was verified, and the historical tip has an
-   identical-tree integrated replacement. Recovery details stay in the private recovery queue.
+**Landed context — do not re-open:**
 
-The 2026-09-26 private-preview repair and stage filters are verified and archived in the
-completed-history file linked above.
-
-The completed workspace/export organization slice is archived at
-`Plans/_Complete/2026-09-26-roadmap-completed-archive.md` § Export library organization (local-only).
-Its original centralized `_exports/` decision was superseded 2026-09-27: exports now live beside
-their document family (`resumes/<user>/…`, `collages/<project>/`), with `_exports/` as the fallback.
-See [`STORAGE.md`](STORAGE.md).
+- **Exports beside their document family** (2026-09-27) — a personal document lands under
+  `resumes/<user>/…`, a collage under `collages/<project>/`; `_exports/` is the public/unfiled
+  **fallback** only and `output/` is disposable automation scratch. This supersedes the earlier
+  centralized `_exports/` decision. Four-surface table: [`STORAGE.md`](STORAGE.md).
+- **Reusable specialist packs + local-first QA** (2026-10-15) — per-person specialist claim selections,
+  the system-font document policy, deterministic local QA with hash-based receipt reuse, and a
+  fail-closed gate for required render errors ([`QA.md`](QA.md)).
+- **One workspace across clones** (2026-10-18) — `scripts/private-sync.py` shares the personal roots
+  *and* the bare personal commands through a remote you own; `scripts/local-state.py` reports every
+  local-only surface (private-sync, command wrappers per runtime, `.config` vs its seeds).
+  The portal form-fill contract is in [`APPLICATIONS.md`](APPLICATIONS.md) § *Fill the portal form*.
+- **Brand-collab tracking + local mirror** (2026-10-21) — a private `_collabs/` root noun, the
+  creator-collab counterpart to `_job-apps/` (deal detail lives in the operator's own hub); and a `lan`
+  git remote that mirrors this repo's public history to a machine you own, kept current by
+  `.githooks/post-commit`. Machine-local runbook stays out of the repo.
 
 ### Parked / decision-gated
 
