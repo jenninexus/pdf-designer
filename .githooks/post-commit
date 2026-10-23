@@ -1,0 +1,12 @@
+#!/bin/sh
+# Mirror the current branch to the LAN bare (remote "lan") after each commit. A local backup
+# that never touches GitHub. Docs: docs/LAN-SYSTEM.local.md
+#
+# No-op when the "lan" remote is absent (a fresh clone) or HEAD is detached.
+# Non-fatal by design: a blocked or unreachable mirror must never fail a commit.
+[ "$(git rev-parse --is-bare-repository 2>/dev/null)" = "false" ] || exit 0
+git remote get-url lan >/dev/null 2>&1 || exit 0
+branch=$(git symbolic-ref --short -q HEAD) || exit 0
+git push --quiet lan "refs/heads/$branch:refs/heads/$branch" >/dev/null 2>&1 || \
+  echo "post-commit: LAN mirror (lan) not updated; run: git push lan $branch" >&2
+exit 0
