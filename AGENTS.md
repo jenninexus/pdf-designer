@@ -50,7 +50,7 @@ direction (free GitHub vs later paid shell): [`docs/PRODUCT.md`](docs/PRODUCT.md
 
 **Product backlog:** [`docs/ROADMAP.md`](docs/ROADMAP.md) owns the public backlog. `Plans/` is local-only
 working context (gitignored, never pushed); locally, current work is
-the single dated checklist named in `Plans/_Active/README.md`. Move it to `Plans/_Complete/` only when
+the single dated checklist named in `Plans/README.md`. Move it to `Plans/_Complete/` only when
 its remaining work is verified or routed. Folder UX target: [`docs/WORKSPACE-LAYOUT.md`](docs/WORKSPACE-LAYOUT.md).
 Maintainer channel/signing: `docs/CHANNELS.local.md` (gitignored).
 

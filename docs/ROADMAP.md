@@ -4,7 +4,7 @@
 >
 > | Kind | File |
 > |---|---|
-> | **Active product slice** | `Plans/_Active/README.md` → the one dated checklist (local-only) |
+> | **Active product slice** | `Plans/README.md` → the one dated checklist (local-only) |
 > | **Completed history** | `Plans/_Complete/2026-09-26-roadmap-completed-archive.md` (local-only) |
 >
 > `/jen:roadmap` resolves here. `Plans/` is local-only working context (gitignored, public repo
@@ -19,7 +19,7 @@
 ## Current execution
 
 The exact checklist, blocker evidence, and next action live in
-the dated checklist named in the local-only `Plans/_Active/README.md`. The current accepted
+the dated checklist named in the local-only `Plans/README.md`. The current accepted
 organization slice completed on 2026-09-27. The October15 slice adds reusable per-person specialist
 selections, system-font document policy, local-first deterministic QA with receipt reuse, and a
 fail-closed gate for required render errors. Private applicant data stays out of the public product.
@@ -61,6 +61,29 @@ See [`STORAGE.md`](STORAGE.md).
   text blocks over the same `collage-source.json` used by the CLI.
 - **Collage books** — multi-page project manifest → render pages → `merge_pdfs`.
 - **Desktop output-folder picker** — only in a packaged desktop shell; retain editable path text.
+
+### Decks, publishing and vector editing — reference review (2026-10-22)
+
+Planning direction; these features are not yet implemented. The detailed priorities and acceptance
+criteria live in the dated checklist named by `Plans/README.md` (local-only).
+
+| Order | Product slice | Completion signal |
+|---|---|---|
+| 1 | Readable title/header, original compact app icon, accessible mode switcher, New/Open/Recent/Templates/Samples startup options | Legible chrome at Windows scaling; working modes; current templates retained |
+| 2 | Presentation recipes/masters and business story starters: pitch, proposal, kickoff, status, case study, training; slide/page sorter | Editable source, reorder/undo, correct slide dimensions, multiple palettes and deck-specific fit QA |
+| 3 | Persistent editor with undo/autosave, true side-by-side page editing, publishing masters/guides/styles/text flow, SVG and line-art editing | Edit both pages and actual vector geometry; save/reopen and export without data loss |
+| 4 | PDF organization/review; speaker notes, presentation and handouts afterward | Real PDF persistence and text/link/annotation preservation |
+
+References: [DeckCraft](https://getartcraft.com/apps/deckcraft),
+[its repository](https://github.com/storytold/deckcraft),
+[PdfCraft](https://getartcraft.com/apps/pdfcraft),
+[its repository](https://github.com/storytold/pdfcraft), and Serif Affinity Designer/Publisher.
+The supplied screenshots and source documentation inspire concepts; competitor runtime behavior was
+not tested. Two-up reading is distinct from editable spreads. PowerPoint-style layouts are distinct
+from editable PPTX exchange, which needs separate round-trip fixtures and compatibility decisions.
+Keep the existing HTML/Chromium renderer, templates, palette system, private workspace split and
+Letter career-document contracts. Use original visuals and check code/brand licenses before reuse.
+OCR, signing, secure redaction, animation/media and press-ready color need separately accepted scopes.
 
 ### Never
 

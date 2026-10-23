@@ -229,7 +229,7 @@ A session's narrative names real people, listings, employers and machine paths, 
 | `Plans/_Complete/_archive/` | Frozen session logs — **never append** |
 
 **The rotation:** create one dated checklist in `_Active/` only for a concrete slice →
-`_Active/README.md` is the *only* place that names it, so commands and docs link there and a rotation
+`Plans/README.md` is the *only* place that names it, so commands and docs link there and a rotation
 never breaks a pointer → move it to `_Complete/` when its outcomes are verified or explicitly routed,
 carrying forward only items that are genuinely still open. This repo's spelling is **`_Active` /
 `_Complete`**; sibling projects use lowercase `_active` / `_completed` — do not rename here.
