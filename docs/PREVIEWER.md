@@ -51,6 +51,17 @@ For the Windows-first browser launcher, see
 [`GETTING-STARTED.md`](GETTING-STARTED.md#first-local-hub-session). The completed acceptance spike is
 retained under [`_archive/WINDOWS-LAUNCHER.md`](_archive/WINDOWS-LAUNCHER.md).
 
+### Application identity and workspace modes
+
+The 52px toolbar uses a small original document-and-pencil app icon and a readable 16px
+**PDF Designer** title. On phones the title gives way to the icon. The adjacent icon row switches
+between the existing **Library**, **Recipes**, **Vault** and **Wizard** views; each link has a tooltip,
+accessible name, keyboard focus ring and current-page state. The drawer retains full text labels.
+Returning through the Library mode restores its selected document URL within the browser tab.
+The home icon deliberately returns to the template landing page. Templates, palettes, filters and
+export controls continue to use their existing registries and behavior. This navigation adds no
+vector editor or publishing mode; those remain planned features.
+
 ### Auto-refresh (no restart when you export)
 
 The hub **refreshes itself** when documents change — you don't restart it after exporting a new resume
@@ -80,7 +91,7 @@ fast on a large tree. If the server is briefly down mid-poll, the client just re
 Hub layout: **library left + viewer right** from **576px** up (desktop / tablet). Stacks only below
 **575.98px** (phones) and in **short landscape** (`max-height: 480px`). Drawer (hamburger) from
 **≤1399.98px** (`nav_switch: xxl`) so iPad Pro landscape 1366 keeps offcanvas, not header chips.
-Comfortable / widescreen from **1400px**. Compact bar is **44px**. Header icon buttons share one 1:1 square (`--hub-icon-box`). Offcanvas: phone full-bleed; sm–xl almost-full end-panel. Contract:
+Comfortable / widescreen from **1400px**. The toolbar is **52px** at every width. Header icon buttons share one 1:1 square (`--hub-icon-box`). Offcanvas: phone full-bleed; sm–xl almost-full end-panel. Contract:
 `www-theme-kit/scss/_offcanvas-nav.scss`.
 The regression matrix covers 390, 576, 768, 992, 1024, 1366, 1400, 1920, 2560, and 3840px.
 **Vault + Recipes + Wizard** use the same switch points (shared `hub.css` + `Library | Recipes | Vault | Wizard` nav). Library is `body.hub-shell` (fixed panes); subpages are `body.hub-page` (document scroll). After ~280px of page scroll a discreet back-to-top chevron appears (bottom-right; `hub-chrome.js`). Tables get a horizontal scroll wrapper below md.
@@ -94,7 +105,7 @@ Local-first library + filters (Jobright-style UX inspiration — not cloud match
 - **Kind chips (leading, after Profiles):** All · Resumes · Cover Letters · Letters · Work Samples · **Collages** · Galleries — then Library / Recipes / Vault / search / folder / palette scroll horizontally. **Refresh (icon) + Export (download icon) stay pinned** on the right; **⋯** opens the output-folder popover (also pinned — not clipped). ≤1399.98px: hamburger drawer holds filters + outdir + tip links; magnifier opens search overlay (Ctrl/Cmd+K). Mouse wheel over the header strip scrolls that row horizontally.
 - **Folder:** custom picker (not a bare `<select>`). Open the list → hover a row for a **ghost ★**; click the star to pin / unpin. Pinned folders sort to the **top** and persist in `localStorage` (`pdf-designer.hub.pinnedFolders`) across Refresh and full reloads. No separate pin button in the toolbar. Menu is `position:fixed` (JS places it from the trigger rect) so `.hub-bar-scroll`’s `overflow-y:hidden` cannot clip it.
 - **Drawer palette / profiles / format:** also custom lists (`hub-select.js`). Native `<select>` popups ignore Chrome’s device-mode frame and clip off iPad portrait. Folder stays `.hub-folder-native` (hidden) + the pin picker. Compact footer (Support JenniNexus) is centered with smaller tip pills and larger copy ≤1399.98. Home kind-cards stack to one column ≤1199.98 (iPad portrait 1024).
-- **Profiles** (was “Who”): `all profiles` plus **`examples` first** (Jane Example, from tracked `profiles/examples.json`) then every workspace id from `users/` + `profiles/`. Path ownership (`resumes/<id>/` · legacy `storage/<id>/` URLs resolve to the same files) or a hyphen-bounded token (`jenni-…`, `meet-jenni-bot`) tags the card. Preference: `pdf-designer.hub.profileFilter`. First visit with no stored preference selects `examples`. **Design Hub** logo returns to the home landing (kind cards) and clears `?doc=`.
+- **Profiles** (was “Who”): `all profiles` plus **`examples` first** (Jane Example, from tracked `profiles/examples.json`) then every workspace id from `users/` + `profiles/`. Path ownership (`resumes/<id>/` · legacy `storage/<id>/` URLs resolve to the same files) or a hyphen-bounded token (`jenni-…`, `meet-jenni-bot`) tags the card. Preference: `pdf-designer.hub.profileFilter`. First visit with no stored preference selects `examples`. **PDF Designer** app icon/title returns to the home landing (kind cards) and clears `?doc=`.
   - Choosing a profile **scopes** the folder picker and kind-chip counts to that profile. Kind chips click the first matching card. A leftover folder filter is **not** restored across reload (that hid the library behind one template dir).
   - Copy `profiles/you-resume.example.json` → `profiles/you-resume.json` for yourself; keep `profiles/examples.json` so the public cards stay in the dropdown.
   - **Trap:** collage projects **without** a profile token (`profile: null`) still disappear when Profiles ≠ `all profiles`. Search the folder name, or pick All. Lesson: `.memory/lesson-hub-collage-hidden-by-profile-filter.md`.

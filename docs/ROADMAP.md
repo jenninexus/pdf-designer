@@ -61,12 +61,12 @@ in `Plans/_Complete/2026-09-26-roadmap-completed-archive.md` (local-only) and ar
 
 ### Decks, publishing and vector editing — reference review (2026-10-22)
 
-Planning direction; these features are not yet implemented. The detailed priorities and acceptance
+Planning direction; except for the chrome/navigation slice below, these features are not yet implemented. The detailed priorities and acceptance
 criteria live in the dated checklist named by `Plans/README.md` (local-only).
 
 | Order | Product slice | Completion signal |
 |---|---|---|
-| 1 | Readable title/header, original compact app icon, accessible mode switcher, New/Open/Recent/Templates/Samples startup options | Legible chrome at Windows scaling; working modes; current templates retained |
+| 1 | **Chrome/navigation implemented 2026-10-23:** readable 52px toolbar, original app icon, accessible Library/Recipes/Vault/Wizard mode row; templates retained. New/Open/Recent/Templates/Samples startup expansion remains planned | Responsive browser checks and document-return navigation; native Windows scaling remains a separate desktop check |
 | 2 | Presentation recipes/masters and business story starters: pitch, proposal, kickoff, status, case study, training; slide/page sorter | Editable source, reorder/undo, correct slide dimensions, multiple palettes and deck-specific fit QA |
 | 3 | Persistent editor with undo/autosave, true side-by-side page editing, publishing masters/guides/styles/text flow, SVG and line-art editing | Edit both pages and actual vector geometry; save/reopen and export without data loss |
 | 4 | PDF organization/review; speaker notes, presentation and handouts afterward | Real PDF persistence and text/link/annotation preservation |
