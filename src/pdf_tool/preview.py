@@ -1880,6 +1880,7 @@ openPaletteFromQuery();
 <script src="/_hub/drawer-resize.js"></script>
 <script src="/_hub/hub-select.js"></script>
 <script src="/_hub/splash.js"></script>
+<script src="/_hub/hub-modes.js"></script>
 </body>
 </html>
 """
