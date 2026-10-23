@@ -156,7 +156,11 @@
         const safeIndex = Math.max(0, Math.min(index, all.length - 1));
         all.forEach((page, i) => page.classList.toggle("reader-active-page", i === safeIndex));
         updatePageControls(safeIndex);
-        if (scroll) all[safeIndex].scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
+        if (scroll) {
+          all[safeIndex].style.scrollMarginTop = (document.querySelector('.pdf-toolbar').getBoundingClientRect().height + 16) + 'px';
+          // Page commands move directly to the requested spread, below sticky controls.
+          all[safeIndex].scrollIntoView({ behavior: 'instant', block: 'start' });
+        }
       }
       function navigate(delta) {
         const all = pages().sort((a, b) => Number(a.dataset.page) - Number(b.dataset.page));
@@ -181,11 +185,17 @@
         else if (event.key === "-") document.getElementById("zoomOut").click();
         else if (event.key === "0") document.getElementById("fitWidth").click();
       });
-      readingPageObserver = new IntersectionObserver(entries => {
+      readingPageObserver = new IntersectionObserver(() => {
         if (mode.value === "single") return;
-        const visible = entries.filter(entry => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        // Observer entries contain only changed intersections, not every visible page.
+        const top = document.querySelector('.pdf-toolbar').getBoundingClientRect().bottom;
+        const visible = pages().map(page => {
+          const rect = page.getBoundingClientRect();
+          const height = Math.max(0, Math.min(rect.bottom, innerHeight) - Math.max(rect.top, top));
+          return { page, ratio: rect.height ? height / rect.height : 0 };
+        }).filter(item => item.ratio > 0).sort((a, b) => b.ratio - a.ratio || Number(a.page.dataset.page) - Number(b.page.dataset.page))[0];
         if (!visible) return;
-        const index = pages().sort((a, b) => Number(a.dataset.page) - Number(b.dataset.page)).indexOf(visible.target);
+        const index = pages().sort((a, b) => Number(a.dataset.page) - Number(b.dataset.page)).indexOf(visible.page);
         if (index >= 0) updatePageControls(index);
       }, { threshold: [0.2, 0.5, 0.8] });
       pageObserver = new MutationObserver(records => {
