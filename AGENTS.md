@@ -42,6 +42,11 @@ machine shares. The cache keeps one Chromium per Playwright *version*, so on a d
 `PLAYWRIGHT_BROWSERS_PATH` moves the shared cache for development only — never set it for the installed app
 ([lesson](.memory/lesson-electron-packaged-playwright-needs-explicit-browser-path.md)).
 
+The Hub's launch title dismisses within 2,700 ms total, including its 180 ms exit; Open, Start wizard,
+Enter, Escape, and reduced-motion preference can dismiss or skip it sooner. Support links appear after
+launch in the desktop Support menu or compact drawer. `hub-aesyna.css` is the generated visual-token
+adapter; `www-theme-kit` remains the breakpoint source of truth. See [`docs/PREVIEWER.md`](docs/PREVIEWER.md).
+
 **Public-path smoke (no `storage/`):** `python scripts/smoke-white-label.py` — QA + light/dark PDF + ATS on
 `examples/profiles/default-resume/`. Checklist: [`docs/GETTING-STARTED.md`](docs/GETTING-STARTED.md). Product
 direction (free GitHub vs later paid shell): [`docs/PRODUCT.md`](docs/PRODUCT.md). Packaging / wheel gate:
@@ -90,7 +95,8 @@ See [`docs/QA.md`](docs/QA.md) for the check types, limits and hash-based reuse 
 Local-first PDF/document toolkit. Two layers:
 
 1. **`pdf_tool`** — the engine. Render HTML → PDF via headless Chromium, merge PDFs, render PDF → PNG,
-   guard the palette, validate a vault, build collages, serve a previewer. Deterministic: what a browser
+   guard the palette, validate a vault, build collages and 16:9 HTML business-deck starters, check deck
+   fit/geometry/text, and serve a previewer. Deterministic: what a browser
    prints is what you get.
 2. **The résumé layer** — a *protocol*, not a module. The job-application workflow lives in
    [`.claude/commands/`](.claude/commands/) (agent-agnostic markdown), backed by plain JSON in root nouns
@@ -132,6 +138,9 @@ python -m pdf_tool.tracker status                               # per-applicant 
 python -m pdf_tool.collage --list-recipes                       # named layout recipes (layouts/collage/)
 python -m pdf_tool.collage <imagesDir> --recipe <id> --png      # render a named recipe
 python -m pdf_tool.collage <imagesDir> --layout auto --png      # every family + picker gallery (--fit contain for screenshots)
+python -m pdf_tool.deck --list-starters                        # pitch, proposal, kickoff, status, case-study, training
+python -m pdf_tool.deck --starter pitch --output pitch.html    # create editable semantic HTML; refuses overwrite
+python -m pdf_tool.check_deck pitch.html                       # deck-specific 16:9 fit/geometry/text guard
 python -m pdf_tool.preview --no-open --port 8787                # Design Hub server (127.0.0.1; docs/PREVIEWER.md)
 node scripts/wcag-resume-palettes.mjs                           # optional WCAG contrast spot-check (add --strict to fail)
 ```
@@ -203,7 +212,7 @@ marketed résumé-creator demo path (vault shape + palettes + smoke), not privat
 | Path | What it is |
 |---|---|
 | `.memory/` | ⭐ **tracked durable learnings** — one `lesson-*.md` per trap already hit here (root cause + the guard that now prevents it) + an index. Read at session start; written at wrap. Travels with every clone, unlike gitignored session Plans. |
-| `src/pdf_tool/` | the engine (html_to_pdf, variants, tracker, merge_pdfs, pdf_to_png, **check_generation**, check_palette, check_overflow, check_rendered_color, check_vault, check_ats, collage, preview) |
+| `src/pdf_tool/` | the engine (html_to_pdf, variants, tracker, merge_pdfs, pdf_to_png, **check_generation**, check_palette, check_overflow, check_rendered_color, check_vault, check_ats, collage, deck, **check_deck**, preview) |
 | `themes/default-resume.{json,css}` | public default theme — JSON is the token SSOT, CSS its mirror |
 | `themes/presets/*.json` | public audition palettes (Design Hub swapper) |
 | `themes/PALETTE-RULES.md` | ⭐ **the color rule** (no brown/mustard/lime) + how the guard enforces it |
@@ -259,6 +268,13 @@ Read [`docs/VAULT.md`](docs/VAULT.md) before authoring any resume claim.
   default `@page { size: Letter; margin: 0.65in; }` (a doc may open it wider, e.g. 0.75in for a formal
   cover letter, but it must stay equal). Palette changes never change paper size, margins, or pagination.
   Layout model: [`docs/LAYOUT-SYSTEM.md`](docs/LAYOUT-SYSTEM.md).
+- **Deck geometry is separate.** `pdf_tool.deck` creates editable semantic HTML business presentations
+  in 16:9; the six starters are pitch, proposal, kickoff, status, case study, and training. Use
+  `python -m pdf_tool.check_deck <deck.html>` for deck palette, fit, PDF geometry, and title order. Do not
+  apply the Letter career-document geometry or `check_generation` acceptance contract to a presentation.
+  The Design Hub PDF reader presents real rasterized PDF pages in continuous, single-page, or two-up
+  reading modes; two-up is read-only viewing, not editable spreads or PDF source editing. Open original
+  remains available. See [`docs/PREVIEWER.md`](docs/PREVIEWER.md).
 - **Content must FIT its box.** Each page's content fits (~9.7in at the default) or the pinned signature
   collides with the last lines. `check_overflow` enforces this (auto-warns on export). Fix by **moving a
   section to the next page**, never by shrinking the margin.

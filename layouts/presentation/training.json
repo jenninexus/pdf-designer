@@ -1,0 +1,10 @@
+{
+  "id": "training",
+  "family": "presentation-starters",
+  "recipeType": "business-presentation-starter",
+  "canvas": "16:9",
+  "page": { "size": "13.333333in 7.5in", "margin": "0.5in", "marginRule": "Equal inset on all four edges; 16:9 landscape slides." },
+  "slideKinds": ["title", "statement", "two-column", "process", "statement", "two-column", "quote", "closing"],
+  "bestFor": "A skill-focused learning session with a stated outcome, example, repeatable method, practice, debrief, and transfer action.",
+  "guardrails": ["Use an observable learning outcome and timebox the exercise.", "Attribute external quotations.", "Source is editable HTML; it is not PPTX."]
+}

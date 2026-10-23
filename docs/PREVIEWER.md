@@ -34,13 +34,20 @@ the release experience exactly, run `python -m pdf_tool.preview examples`: the l
 only the tracked default resume, cover letter, letter, work samples, collage, and gallery examples.
 `examples/resume-studio/` is the walkthrough data and docs, not a renderable document directory by itself.
 
-Library, Recipes, Vault, and Wizard open with a **PDF Designer** title screen
-(cyan/violet hub chrome from `www-theme-kit/profiles/pdf-designer.json`). It **stays
-until Open, Start wizard, Enter, or Escape** — no auto-dismiss (the 3s bar is entrance
-motion, not a countdown). `?no-splash=1` disables it; `?splash=1` forces it (the packaged
-app always launches this way). After the first view in a browser tab, the same session
-does not replay it. **Patreon + PayPal.Me** tip buttons sit on the splash (they do not
-close the title), in the drawer, and on `/wizard` about. URLs: `docs/PRODUCT.md`.
+Library, Recipes, Vault, and Wizard open with a **PDF Designer** title screen. It
+targets **2,700 ms total**, including the **180 ms exit fade**, with a three-second acceptance cap;
+Open, Start wizard, Enter, or Escape can dismiss it sooner. Reduced-motion preference
+skips the decorative launch immediately. `?no-splash=1` disables it; `?splash=1` forces
+it (the packaged app always launches this way). After dismissal, the same browser tab
+does not replay it. The splash has no donation prompt. Support links remain available
+after launch in the desktop toolbar's **Support** menu and the compact-layout drawer;
+`/wizard` also has a support section. URLs: `docs/PRODUCT.md`.
+
+The Hub links a generated Aesyna static adapter at `/_hub/hub-aesyna.css`; authoring
+tokens live in the `syna-theme-kit` PDF Designer profile. The `www-theme-kit` profile and
+breakpoint tokens remain the responsive breakpoint source of truth. The adapter supplies
+the local Hub's Aesyna visual tokens and motion values; it does not replace the shared
+breakpoint contract.
 
 **No MCP / always-on server.** Optional temporary localhost only. CLI export works without it.
 
@@ -59,8 +66,9 @@ between the existing **Library**, **Recipes**, **Vault** and **Wizard** views; e
 accessible name, keyboard focus ring and current-page state. The drawer retains full text labels.
 Returning through the Library mode restores its selected document URL within the browser tab.
 The home icon deliberately returns to the template landing page. Templates, palettes, filters and
-export controls continue to use their existing registries and behavior. This navigation adds no
-vector editor or publishing mode; those remain planned features.
+export controls continue to use their existing registries and behavior. The desktop toolbar includes
+a post-launch **Support** menu; compact layouts keep the same links in the existing drawer. This
+navigation adds no vector editor or publishing mode; those remain planned features.
 
 ### Auto-refresh (no restart when you export)
 
@@ -134,6 +142,10 @@ collapsible by folder. Stage bar shows filterable kind · profile · root folder
   be re-exported. `_archive` remains excluded. PDFs open in the Hub's dark, page-bounded preview with
   the same cyan scrollbar as the library; **Open original** is still available for the browser's native
   PDF toolbar. The preview rasterizes the actual PDF pages on demand rather than re-rendering source HTML.
+  The reader offers **Continuous**, **Single page**, and **Two pages** modes, optional cover-alone
+  pairing, page-number navigation, zoom and Fit controls. It displays the PDF's real raster pages;
+  two-up is a reading layout, not editable spreads or PDF source editing. Reading mode and cover
+  preference persist for that document in the browser tab.
 - **Palette swapper** → injects CSS vars into the previewed document (and into export)
 - **Export selected** → PDF light/dark or PNG pages
 - **Vault overview** → [http://127.0.0.1:8787/vault](http://127.0.0.1:8787/vault) · `GET /api/vault-overview?profile=examples`
@@ -145,6 +157,12 @@ collapsible by folder. Stage bar shows filterable kind · profile · root folder
   Discovery chrome only — still one renderer.
 - **Start wizard** → [http://127.0.0.1:8787/wizard](http://127.0.0.1:8787/wizard) — a dark-default, four-step, no-account walkthrough. Copy ignored local templates **or** upload an old résumé/cover letter (PDF/TXT/MD/HTML) to seed a gitignored starter vault. Imported claims are `inferred` until reviewed. Then add source-backed skills (programs in vault-root `software` plus `kind: "tool"` claims), audition a public palette, and use the existing Library export (Jane Example until you author HTML from your vault). Hub chrome and document palettes remain separate. No second renderer.
 - **Optional Voice Seed preview** → the Wizard route includes a read-only, redacted local card preview. It defaults to Jane Example; an explicitly named local profile receives a generic skeletal card, never free-form local text. No card is saved, copied, exported, or synced.
+- **Business-deck starters**: `python -m pdf_tool.deck --list-starters` lists six editable HTML flows
+  (pitch, proposal, kickoff, status, case study, training); `--starter <name> --output <file.html>`
+  creates one without overwriting an existing file. `python -m pdf_tool.check_deck <file.html>` checks
+  palette, print fit, 16:9 PDF geometry, and slide-title text/order in both themes when run. This is
+  an HTML-to-PDF workflow, not PPTX authoring. Deck geometry is separate from the Letter career-document
+  contract and its `check_generation` gate.
 - One lightweight PDF-view dependency: the server remains stdlib-based, packaged
   `pypdfium2` renders real PDF pages into the themed comparison surface, and
   Playwright remains the HTML export/render dependency. The Hub binds to

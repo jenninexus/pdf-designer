@@ -1,0 +1,10 @@
+{
+  "id": "pitch",
+  "family": "presentation-starters",
+  "recipeType": "business-presentation-starter",
+  "canvas": "16:9",
+  "page": { "size": "13.333333in 7.5in", "margin": "0.5in", "marginRule": "Equal inset on all four edges; 16:9 landscape slides." },
+  "slideKinds": ["title", "statement", "two-column", "process", "metrics", "two-column", "team", "closing"],
+  "bestFor": "A concise product or venture story that introduces a problem, approach, evidence, route to market, team, and a specific ask.",
+  "guardrails": ["Replace bracketed prompts with supported facts.", "Metrics begin as prompts; add values only with a source and period.", "Source is editable HTML and exports through pdf_tool.html_to_pdf; it is not PPTX."]
+}

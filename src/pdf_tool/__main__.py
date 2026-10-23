@@ -21,6 +21,8 @@ _COMMANDS: tuple[tuple[str, str], ...] = (
     ("audit_resume", "Diff rendered HTML vs vault omissions"),
     ("tracker", "Who sent which résumé to which job (_job-apps/; not a daily count)"),
     ("collage", "Collage candidates + picker gallery"),
+    ("deck", "Editable 16:9 business presentation starters"),
+    ("check_deck", "Presentation fit, PDF geometry and text acceptance"),
     ("preview", "Design Hub (localhost previewer)"),
 )
 

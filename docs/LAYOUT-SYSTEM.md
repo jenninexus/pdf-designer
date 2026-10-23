@@ -279,3 +279,17 @@ flashes (`＋1 document`). So the loop is: edit/export → the hub updates itsel
   colors, never geometry (geometry stays locked per the AGENTS.md contract).
 - Add a tiny `pdf_tool` check that fails if a template's print `.page { height }` doesn't match
   `11in − 2 × @page-margin` (catches the phantom-page trap automatically).
+
+## Presentation family (16:9)
+
+`layouts/presentation/` holds business story starter recipes. `python -m pdf_tool.deck --list-starters`
+lists pitch, proposal, kickoff, status, case-study and training. Create editable HTML with
+`python -m pdf_tool.deck --starter kickoff --output kickoff-deck.html`; optional `--input deck.json`
+replaces prompt content with your own data. Existing files are never overwritten. Nine visual slide
+kinds cover title, statement, comparison, process, timeline, metrics, team, quote and closing.
+
+Slides are 13.333333 × 7.5 inches with equal 0.5-inch margins. Export through the existing
+`pdf_tool.html_to_pdf` in light or dark. Run `python -m pdf_tool.check_deck deck.html` for real
+print-box fit, palette, PDF geometry, page count/order and extractable titles in both themes.
+Letter-only `check_generation` remains required for career documents; it does not certify slides.
+Editable source is HTML/JSON; these starters do not export editable PPTX or fabricate business data.

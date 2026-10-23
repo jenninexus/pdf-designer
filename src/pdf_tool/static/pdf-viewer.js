@@ -18,7 +18,8 @@
   function fitWidth() {
     if (!pages.length) return;
     const maxWidth = Math.max(...pages.map(page => page.widthPt * 4 / 3));
-    applyZoom(Math.min(1.5, (canvas.clientWidth - 56) / maxWidth));
+    const paired = document.getElementById('readingMode')?.value === 'two-up' && window.innerWidth >= 576;
+    applyZoom(Math.min(1.5, (canvas.clientWidth - (paired ? 96 : 56)) / (maxWidth * (paired ? 2 : 1))));
   }
 
   document.getElementById("zoomOut").addEventListener("click", () => applyZoom(zoom - 0.1));
@@ -52,11 +53,14 @@
         canvas.appendChild(image);
       }
       fitWidth();
+      // The advanced reader owns page navigation and both page indicators.
+      if (!document.getElementById('readingMode')) {
       const observer = new IntersectionObserver(entries => {
         const visible = entries.filter(entry => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
         if (visible) current.textContent = visible.target.dataset.page;
       }, { threshold: [0.2, 0.5, 0.8] });
       canvas.querySelectorAll(".pdf-page").forEach(page => observer.observe(page));
+      }
     })
     .catch(error => {
       loading.className = "pdf-error";

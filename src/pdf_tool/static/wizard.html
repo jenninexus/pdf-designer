@@ -5,8 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="dark">
 <title>pdf-designer — Start wizard</title>
+<link rel="stylesheet" href="/_hub/hub-aesyna.css">
 <link rel="stylesheet" href="/_hub/hub.css">
 <script>
+window.__pdfSplashStart = performance.now();
 try {
   var q = new URLSearchParams(location.search);
   var skip = sessionStorage.getItem("pdf-designer.hub.splash") === "1";
@@ -35,15 +37,7 @@ try {
       <button type="button" class="hub-splash-open" id="hubSplashOpen">Open</button>
       <a class="hub-splash-wizard" id="hubSplashWizard" href="/wizard">Start wizard</a>
     </div>
-    <p class="hub-splash-hint">Enter opens the Hub · Esc closes</p>
-    <div class="hub-support" role="group" aria-label="Support JenniNexus">
-      <p class="hub-support-kicker">Support JenniNexus</p>
-      <p class="hub-support-copy">Free MIT toolkit. A tip is optional — it never unlocks extra features.</p>
-      <div class="hub-support-actions">
-        <a class="hub-support-btn patreon" href="https://www.patreon.com/c/JenniNexus" target="_blank" rel="noopener noreferrer"><span class="hub-fa-icon fa-patreon" aria-hidden="true"></span>Patreon</a>
-        <a class="hub-support-btn paypal" href="https://paypal.me/jenninexus" target="_blank" rel="noopener noreferrer"><span class="hub-fa-icon fa-paypal" aria-hidden="true"></span>PayPal</a>
-      </div>
-    </div>
+    <p class="hub-splash-hint">Opens automatically · Enter or Esc to skip</p>
   </div>
 </div>
 <header class="hub-bar" aria-label="First résumé wizard toolbar">

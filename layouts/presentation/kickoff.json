@@ -1,0 +1,10 @@
+{
+  "id": "kickoff",
+  "family": "presentation-starters",
+  "recipeType": "business-presentation-starter",
+  "canvas": "16:9",
+  "page": { "size": "13.333333in 7.5in", "margin": "0.5in", "marginRule": "Equal inset on all four edges; 16:9 landscape slides." },
+  "slideKinds": ["title", "statement", "two-column", "team", "process", "timeline", "two-column", "closing"],
+  "bestFor": "A project launch that aligns the team on context, outcomes, roles, working agreements, milestones, and risks.",
+  "guardrails": ["Confirm owners and dates with the team before presenting.", "Source is editable HTML; it is not PPTX."]
+}

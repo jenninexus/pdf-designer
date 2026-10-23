@@ -1,0 +1,10 @@
+{
+  "id": "case-study",
+  "family": "presentation-starters",
+  "recipeType": "business-presentation-starter",
+  "canvas": "16:9",
+  "page": { "size": "13.333333in 7.5in", "margin": "0.5in", "marginRule": "Equal inset on all four edges; 16:9 landscape slides." },
+  "slideKinds": ["title", "statement", "two-column", "process", "metrics", "quote", "two-column", "closing"],
+  "bestFor": "A source-backed story that connects a challenge, discovery, approach, observed outcomes, and learning.",
+  "guardrails": ["Secure permission for client identity and quotations.", "Attribute measures and avoid causal claims beyond the evidence.", "Source is editable HTML; it is not PPTX."]
+}
