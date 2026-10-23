@@ -41,6 +41,14 @@ in `Plans/_Complete/2026-09-26-roadmap-completed-archive.md` (local-only) and ar
   creator-collab counterpart to `_job-apps/` (deal detail lives in the operator's own hub); and a `lan`
   git remote that mirrors this repo's public history to a machine you own, kept current by
   `.githooks/post-commit`. Machine-local runbook stays out of the repo.
+- **Aesyna launch and reader/deck baseline** (2026-10-23) — the Hub splash is capped at 2,700 ms total
+  with a 180 ms exit, supports early dismissal and reduced motion, and has no donation prompt; Support
+  is available after launch in the desktop menu or compact drawer. The generated Aesyna adapter supplies
+  local tokens while `www-theme-kit` remains the breakpoint authority. The PDF viewer has continuous,
+  single-page and two-up reading modes over actual rasterized PDF pages. `pdf_tool.deck` provides six
+  editable HTML business story starters; `pdf_tool.check_deck` is the 16:9 fit/geometry/text check.
+  Their routed browser and exported-artifact acceptance is recorded in the active
+  plan; they do not provide PDF source editing, editable spreads or PPTX authoring.
 
 ### Parked / decision-gated
 
@@ -59,17 +67,20 @@ in `Plans/_Complete/2026-09-26-roadmap-completed-archive.md` (local-only) and ar
 - **Collage books** — multi-page project manifest → render pages → `merge_pdfs`.
 - **Desktop output-folder picker** — only in a packaged desktop shell; retain editable path text.
 
-### Decks, publishing and vector editing — reference review (2026-10-22)
+### Decks, PDF reading, publishing and vector editing — reference review (2026-10-22)
 
-Planning direction; except for the chrome/navigation slice below, these features are not yet implemented. The detailed priorities and acceptance
-criteria live in the dated checklist named by `Plans/README.md` (local-only).
+The chrome, basic deck-starter, and raster-page reading slices now exist in source. Their
+runtime acceptance evidence and remaining release gates stay in the dated checklist named by
+`Plans/README.md` (local-only); runtime acceptance covers the browser/HTML/PDF paths; packaged releases remain separate.
 
-| Order | Product slice | Completion signal |
+| Order | Product slice | Acceptance and remaining work |
 |---|---|---|
-| 1 | **Chrome/navigation implemented 2026-10-23:** readable 52px toolbar, original app icon, accessible Library/Recipes/Vault/Wizard mode row; templates retained. New/Open/Recent/Templates/Samples startup expansion remains planned | Responsive browser checks and document-return navigation; native Windows scaling remains a separate desktop check |
-| 2 | Presentation recipes/masters and business story starters: pitch, proposal, kickoff, status, case study, training; slide/page sorter | Editable source, reorder/undo, correct slide dimensions, multiple palettes and deck-specific fit QA |
-| 3 | Persistent editor with undo/autosave, true side-by-side page editing, publishing masters/guides/styles/text flow, SVG and line-art editing | Edit both pages and actual vector geometry; save/reopen and export without data loss |
-| 4 | PDF organization/review; speaker notes, presentation and handouts afterward | Real PDF persistence and text/link/annotation preservation |
+| 1 | **Chrome/navigation and launch.** 52px toolbar, original app icon, accessible Library/Recipes/Vault/Wizard links; existing templates remain. Splash dismisses within 2,700 ms total (180 ms exit), supports early Open/Start wizard/Enter/Escape and reduced-motion skip. Support appears after launch in the desktop menu or compact drawer. | Browser launch and 24 route/size combinations pass; receipt is in the active plan. New/Open/Recent/Templates/Samples startup expansion remains planned. Native Windows scaling remains a separate desktop check. |
+| 2 | **Business-deck starter baseline.** `python -m pdf_tool.deck --list-starters` offers pitch, proposal, kickoff, status, case-study and training; generated semantic HTML remains editable, and `python -m pdf_tool.check_deck` checks palette, both-theme print fit, 16:9 PDF geometry and title text/order. This is not PPTX authoring. | All six starters pass both-theme export/fit acceptance, including negative guard cases. Keep Letter career-document geometry and `check_generation` contract separate. |
+| 2 | **PDF reading baseline.** `/pdf-viewer` offers continuous, single-page and two-up reading, optional cover-alone pairing, page-number navigation and zoom over real rasterized PDF pages; Open original remains. It does not edit PDF source or make editable spreads. | Real eight-page PDF reader-path acceptance passes. Thumbnails, PDF organization, annotation and editing remain planned. |
+| 3 | Presentation recipe/masters registry, richer story starters, slide sorter and an in-Hub source editor. | Persist editable source and validate slide order, layouts and content after save/reopen; richer layouts and organizer are not supplied by the six starters. |
+| 4 | Persistent editor with undo/autosave, true side-by-side page editing, publishing masters/guides/styles/text flow, SVG and line-art editing. | Edit both pages and actual vector geometry; save/reopen and export without data loss. |
+| 5 | PDF organization/review; speaker notes, presentation and handouts afterward. | Real PDF persistence and text/link/annotation preservation. |
 
 References: [DeckCraft](https://getartcraft.com/apps/deckcraft),
 [its repository](https://github.com/storytold/deckcraft),

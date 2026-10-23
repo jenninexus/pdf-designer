@@ -22,10 +22,10 @@
   nav.setAttribute('aria-label', 'Workspace modes');
 
   const modes = {
-    '/': ['Library', 'Documents and templates', '<rect x="4" y="3" width="13" height="16" rx="2"/><path d="M8 7h5M8 11h5M8 15h3M17 7h3v14H7v-2"/>'],
-    '/recipes': ['Recipes', 'Layout and palette templates', '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 10h18M11 10v11"/>'],
-    '/vault': ['Vault', 'Skills and source-backed claims', '<path d="m12 3 8 4v6c0 4-8 8-8 8s-8-4-8-8V7z"/><path d="m8 12 3 3 5-6"/>'],
-    '/wizard': ['Wizard', 'Create a resume workspace', '<path d="m4 20 11-11 3 3L7 23zM16 2v4M14 4h4M21 6v4M19 8h4M8 3v4M6 5h4"/>']
+    '/': ['Library', 'Documents and templates', 'file-lines'],
+    '/recipes': ['Recipes', 'Layout and palette templates', 'table-columns'],
+    '/vault': ['Vault', 'Skills and source-backed claims', 'shield-halved'],
+    '/wizard': ['Wizard', 'Create a resume workspace', 'wand-magic-sparkles']
   };
   const currentPath = location.pathname.replace(/\/$/, '') || '/';
   const key = 'pdf-designer.hub.modeLocations';
@@ -44,7 +44,7 @@
     if (!mode) continue;
     link.setAttribute('aria-label', mode[0]);
     link.title = `${mode[0]} — ${mode[1]}`;
-    link.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">${mode[2]}</svg><span class="hub-mode-name">${mode[0]}</span>`;
+    link.innerHTML = `<span class="hub-fa-icon fa-${mode[2]}" aria-hidden="true"></span><span class="hub-mode-name">${mode[0]}</span>`;
     const active = currentPath === path;
     link.classList.toggle('on', active);
     if (active) link.setAttribute('aria-current', 'page');
@@ -61,6 +61,23 @@
       saveLocation();
       if (active && !event.ctrlKey && !event.metaKey && !event.shiftKey && !event.altKey && event.button === 0) event.preventDefault();
     });
+  }
+  // Desktop Support lives beside actions; compact layouts keep it in the existing drawer.
+  const support = document.querySelector('.hub-drawer .hub-support');
+  const pin = bar.querySelector('.hub-bar-pin');
+  if (support && pin) {
+    const menu = document.createElement('details');
+    menu.className = 'hub-more hub-support-menu';
+    const summary = document.createElement('summary');
+    summary.textContent = 'Support';
+    summary.setAttribute('aria-label', 'Support PDF Designer');
+    const panel = document.createElement('div');
+    panel.className = 'hub-more-panel';
+    panel.append(support.cloneNode(true));
+    menu.append(summary, panel);
+    pin.prepend(menu);
+    document.addEventListener('keydown', event => { if (event.key === 'Escape') menu.open = false; });
+    document.addEventListener('pointerdown', event => { if (!menu.contains(event.target)) menu.open = false; });
   }
   window.addEventListener('pagehide', saveLocation);
 })();

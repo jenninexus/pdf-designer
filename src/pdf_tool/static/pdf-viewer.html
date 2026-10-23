@@ -4,7 +4,45 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>PDF preview</title>
+  <link rel="stylesheet" href="/_hub/hub-aesyna.css">
   <link rel="stylesheet" href="/_hub/pdf-viewer.css">
+  <style>
+    :root { --viewer-bg: var(--ae-void); --viewer-surface: var(--ae-solid); --viewer-text: var(--ae-ink); --viewer-dim: var(--ae-ink-2); --viewer-accent: var(--ae-ice); }
+    .pdf-toolbar { flex-wrap: wrap; }
+    .reader-controls { display: contents; }
+    .reader-controls label, .reader-controls button, .reader-controls select, .reader-controls input {
+      min-height: 44px; padding: 5px 9px; border: 1px solid var(--viewer-border, rgba(255,255,255,.13));
+      border-radius: 999px; background: var(--viewer-surface, #1a1d26); color: var(--viewer-text, #e8edf5);
+      font: inherit;
+    }
+    .reader-controls button, .reader-controls select { cursor: pointer; }
+    .reader-controls button:hover, .reader-controls button:focus-visible,
+    .reader-controls select:focus-visible, .reader-controls input:focus-visible {
+      border-color: var(--viewer-accent, #42f4c8); outline: 2px solid transparent;
+    }
+    .reader-controls .page-jump { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
+    .reader-controls input { width: 4.5em; text-align: center; }
+    .reader-controls .cover-option { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
+    .reader-controls .cover-option input { width: auto; min-height: auto; accent-color: var(--viewer-accent, #42f4c8); }
+    .pdf-canvas.reader-two-up .reader-spread {
+      display: grid; grid-template-columns: repeat(2, max-content); align-items: start; justify-content: center; gap: 20px;
+    }
+    .pdf-canvas.reader-two-up .reader-spread.reader-cover-spread { grid-template-columns: max-content; }
+    .pdf-canvas.reader-two-up .pdf-page { max-width: none; }
+    .pdf-canvas.reader-two-up .reader-cover-spread .pdf-page { max-width: none; }
+    .pdf-canvas.reader-single .reader-spread { display: contents; }
+    .pdf-canvas.reader-single .pdf-page { display: none; }
+    .pdf-canvas.reader-single .pdf-page.reader-active-page { display: block; }
+    @media (max-width: 575.98px) {
+      .reader-controls { display: contents; }
+      .pdf-toolbar { gap: 5px; }
+      .pdf-canvas.reader-two-up { align-items: stretch; padding-inline: 10px; }
+      .pdf-canvas.reader-two-up .reader-spread,
+      .pdf-canvas.reader-two-up .reader-spread.reader-cover-spread { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+      .pdf-canvas.reader-two-up .pdf-page,
+      .pdf-canvas.reader-two-up .reader-cover-spread .pdf-page { max-width: none; justify-self: center; }
+    }
+  </style>
 </head>
 <body>
   <header class="pdf-toolbar" aria-label="PDF preview controls">
@@ -14,11 +52,148 @@
     <button type="button" id="zoomOut" aria-label="Zoom out">-</button>
     <button type="button" id="fitWidth" aria-label="Fit page width">Fit</button>
     <button type="button" id="zoomIn" aria-label="Zoom in">+</button>
+    <div class="reader-controls" role="group" aria-label="Reading controls">
+      <label for="readingMode">View</label>
+      <select id="readingMode" aria-label="Reading mode">
+        <option value="continuous">Continuous</option>
+        <option value="single">Single page</option>
+        <option value="two-up">Two pages</option>
+      </select>
+      <label class="cover-option" for="coverAlone" title="Show the cover by itself before paired pages">
+        <input id="coverAlone" type="checkbox"> Cover alone
+      </label>
+      <button type="button" id="previousPage" aria-label="Previous page">‹</button>
+      <label class="page-jump" for="pageJump">Page <input id="pageJump" type="number" min="1" value="1" inputmode="numeric" aria-label="Go to page"> of <span id="readerPageCount">-</span></label>
+      <button type="button" id="nextPage" aria-label="Next page">›</button>
+    </div>
     <a id="openPdf" target="_blank" rel="noopener" aria-label="Open original PDF in browser viewer">Open original</a>
   </header>
   <main class="pdf-canvas" id="pdfCanvas" aria-live="polite">
     <p class="pdf-loading" id="pdfLoading">Loading PDF preview...</p>
   </main>
   <script src="/_hub/pdf-viewer.js"></script>
+  <script>
+    (() => {
+      const canvas = document.getElementById("pdfCanvas");
+      const mode = document.getElementById("readingMode");
+      const cover = document.getElementById("coverAlone");
+      const jump = document.getElementById("pageJump");
+      const count = document.getElementById("readerPageCount");
+      const current = document.getElementById("currentPage");
+      const previous = document.getElementById("previousPage");
+      const next = document.getElementById("nextPage");
+      const pages = () => Array.from(canvas.querySelectorAll(".pdf-page"));
+      const storageKey = "pdf-reader-view:v1:" + (new URLSearchParams(location.search).get("doc") || "");
+      let activePage = 0;
+      let pageObserver;
+      let readingPageObserver;
+      cover.disabled = mode.value !== "two-up";
+      previous.disabled = true;
+      next.disabled = true;
+      try {
+        const saved = JSON.parse(sessionStorage.getItem(storageKey) || "{}");
+        if (["continuous", "single", "two-up"].includes(saved.mode)) mode.value = saved.mode;
+        cover.checked = Boolean(saved.coverAlone);
+      } catch (_) {}
+
+      function savePreference() {
+        try { sessionStorage.setItem(storageKey, JSON.stringify({ mode: mode.value, coverAlone: cover.checked })); } catch (_) {}
+      }
+      function syncSpreads() {
+        pageObserver.disconnect();
+        try {
+          const all = pages().sort((a, b) => Number(a.dataset.page) - Number(b.dataset.page));
+          if (!all.length) return;
+          if (readingPageObserver) readingPageObserver.disconnect();
+          canvas.querySelectorAll(".reader-spread").forEach(spread => spread.remove());
+          const fragment = document.createDocumentFragment();
+          let spread = null;
+          let previousGroup = -1;
+          all.forEach((page, index) => {
+            const groupIndex = mode.value === "two-up"
+              ? (cover.checked && index === 0 ? 0 : Math.floor((index - (cover.checked ? 1 : 0)) / 2) + (cover.checked ? 1 : 0))
+              : index;
+            if (!spread || groupIndex !== previousGroup) {
+              spread = document.createElement("div");
+              spread.className = "reader-spread";
+              spread.dataset.readerGroup = String(groupIndex);
+              spread.classList.toggle("reader-cover-spread", mode.value === "two-up" && cover.checked && index === 0);
+              fragment.appendChild(spread);
+              previousGroup = groupIndex;
+            }
+            spread.appendChild(page);
+          });
+          canvas.appendChild(fragment);
+          canvas.classList.toggle("reader-single", mode.value === "single");
+          canvas.classList.toggle("reader-two-up", mode.value === "two-up");
+          cover.disabled = mode.value !== "two-up";
+          jump.max = String(all.length);
+          count.textContent = String(all.length);
+          activePage = Math.max(0, Math.min(activePage, all.length - 1));
+          showPage(activePage, false);
+          document.getElementById("fitWidth").click();
+          if (readingPageObserver) all.forEach(page => readingPageObserver.observe(page));
+        } finally {
+          pageObserver.observe(canvas, { childList: true });
+        }
+      }
+      function updatePageControls(index) {
+        const all = pages().sort((a, b) => Number(a.dataset.page) - Number(b.dataset.page));
+        if (!all.length) return;
+        activePage = Math.max(0, Math.min(index, all.length - 1));
+        const pageNumber = Number(all[activePage].dataset.page) || activePage + 1;
+        jump.value = String(pageNumber);
+        current.textContent = String(pageNumber);
+        const spreadList = Array.from(canvas.querySelectorAll(".reader-spread"));
+        const activeSpread = all[activePage].parentElement;
+        const spreadIndex = spreadList.indexOf(activeSpread);
+        previous.disabled = spreadIndex <= 0;
+        next.disabled = spreadIndex < 0 || spreadIndex >= spreadList.length - 1;
+      }
+      function showPage(index, scroll = true) {
+        const all = pages().sort((a, b) => Number(a.dataset.page) - Number(b.dataset.page));
+        if (!all.length) return;
+        const safeIndex = Math.max(0, Math.min(index, all.length - 1));
+        all.forEach((page, i) => page.classList.toggle("reader-active-page", i === safeIndex));
+        updatePageControls(safeIndex);
+        if (scroll) all[safeIndex].scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
+      }
+      function navigate(delta) {
+        const all = pages().sort((a, b) => Number(a.dataset.page) - Number(b.dataset.page));
+        const spreadList = Array.from(canvas.querySelectorAll(".reader-spread"));
+        const spreadIndex = spreadList.indexOf(all[activePage]?.parentElement);
+        const targetSpread = spreadList[spreadIndex + delta];
+        if (!targetSpread) return;
+        const targetPage = all.findIndex(page => page.parentElement === targetSpread);
+        if (targetPage >= 0) showPage(targetPage);
+      }
+      mode.addEventListener("change", () => { savePreference(); syncSpreads(); });
+      cover.addEventListener("change", () => { savePreference(); syncSpreads(); });
+      jump.addEventListener("change", () => showPage((Number(jump.value) || 1) - 1));
+      jump.addEventListener("keydown", event => { if (event.key === "Enter") { event.preventDefault(); jump.blur(); } });
+      previous.addEventListener("click", () => navigate(-1));
+      next.addEventListener("click", () => navigate(1));
+      document.addEventListener("keydown", event => {
+        if (event.altKey || event.ctrlKey || event.metaKey || /INPUT|SELECT|TEXTAREA/.test(event.target.tagName)) return;
+        if (event.key === "ArrowLeft" || event.key === "PageUp") { event.preventDefault(); navigate(-1); }
+        else if (event.key === "ArrowRight" || event.key === "PageDown") { event.preventDefault(); navigate(1); }
+        else if (event.key === "+" || event.key === "=") document.getElementById("zoomIn").click();
+        else if (event.key === "-") document.getElementById("zoomOut").click();
+        else if (event.key === "0") document.getElementById("fitWidth").click();
+      });
+      readingPageObserver = new IntersectionObserver(entries => {
+        if (mode.value === "single") return;
+        const visible = entries.filter(entry => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (!visible) return;
+        const index = pages().sort((a, b) => Number(a.dataset.page) - Number(b.dataset.page)).indexOf(visible.target);
+        if (index >= 0) updatePageControls(index);
+      }, { threshold: [0.2, 0.5, 0.8] });
+      pageObserver = new MutationObserver(records => {
+        if (records.some(record => Array.from(record.addedNodes).some(node => node.nodeType === 1 && node.matches(".pdf-page")))) syncSpreads();
+      });
+      pageObserver.observe(canvas, { childList: true });
+      syncSpreads();
+    })();
+  </script>
 </body>
 </html>

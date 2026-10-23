@@ -177,7 +177,7 @@ def analyze(html_path: Path, pdf_theme: str | None = None,
                 if in_image(tx + tw // 2, ty + th // 2):
                     continue  # tile sits on artwork, not on the page background
                 box = im.crop((tx, ty, tx + tw, ty + th))
-                px = list(box.getdata())
+                px = list(box.get_flattened_data() if hasattr(box, "get_flattened_data") else box.getdata())
                 n = len(px)
                 avg = (sum(p[0] for p in px) // n, sum(p[1] for p in px) // n,
                        sum(p[2] for p in px) // n)

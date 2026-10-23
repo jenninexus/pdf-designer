@@ -1,0 +1,10 @@
+{
+  "id": "status",
+  "family": "presentation-starters",
+  "recipeType": "business-presentation-starter",
+  "canvas": "16:9",
+  "page": { "size": "13.333333in 7.5in", "margin": "0.5in", "marginRule": "Equal inset on all four edges; 16:9 landscape slides." },
+  "slideKinds": ["title", "metrics", "two-column", "timeline", "two-column", "statement", "closing"],
+  "bestFor": "A recurring update centered on evidence, movement, milestone outlook, risks, and decisions.",
+  "guardrails": ["Define each measure, reporting period, and source.", "Do not present a status label without its as-of date.", "Source is editable HTML; it is not PPTX."]
+}

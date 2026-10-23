@@ -1,0 +1,10 @@
+{
+  "id": "proposal",
+  "family": "presentation-starters",
+  "recipeType": "business-presentation-starter",
+  "canvas": "16:9",
+  "page": { "size": "13.333333in 7.5in", "margin": "0.5in", "marginRule": "Equal inset on all four edges; 16:9 landscape slides." },
+  "slideKinds": ["title", "statement", "two-column", "process", "timeline", "two-column", "statement", "closing"],
+  "bestFor": "A decision-ready recommendation that lays out need, approach, timeline, scope, assumptions, and requested decision.",
+  "guardrails": ["Replace prompts with project-specific facts.", "Show estimate basis and assumptions alongside any proposed amount.", "Source is editable HTML; it is not PPTX."]
+}

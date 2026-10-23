@@ -1,0 +1,34 @@
+{
+  "title": "Example product story",
+  "subtitle": "Replace every value with your verified content",
+  "slides": [
+    {
+      "kind": "title",
+      "title": "[Your product or initiative]",
+      "subtitle": "[One-line value proposition]",
+      "eyebrow": "[PRESENTATION · DATE]"
+    },
+    {
+      "kind": "two-column",
+      "title": "The need and the approach",
+      "leftTitle": "Current experience",
+      "left": ["[Observed need]", "[Source or evidence]"],
+      "rightTitle": "Proposed experience",
+      "right": ["[What changes]", "[Why it fits]"]
+    },
+    {
+      "kind": "metrics",
+      "title": "Evidence",
+      "items": [
+        { "value": "[Verified value]", "label": "[Measure and period]", "note": "[Source and definition]" }
+      ],
+      "footer": "Do not add unsupported figures."
+    },
+    {
+      "kind": "closing",
+      "title": "[Decision or next step]",
+      "body": "[Specific request]",
+      "meta": "[Contact or source]"
+    }
+  ]
+}

@@ -13,7 +13,7 @@ from pathlib import Path
 _SWATCH_KEYS = ("--bg", "--primary", "--secondary", "--accent", "--support")
 
 # Document layout categories (structure recipes). Collage stays separate.
-_DOC_LAYOUT_DIRS = ("cover-letter", "letter", "resume", "work-examples")
+_DOC_LAYOUT_DIRS = ("cover-letter", "letter", "resume", "work-examples", "presentation")
 
 
 def _read_json(path: Path):
@@ -106,6 +106,7 @@ def _document_layouts(root: Path) -> list[dict]:
                 "kind": "document",
                 "category": category,
                 "docType": data.get("docType") or category,
+                "cli": f"python -m pdf_tool.deck --starter {rid} --output {rid}-deck.html" if category == "presentation" else "",
                 "bestFor": data.get("bestFor") or "",
                 "pageSize": page.get("size"),
                 "margin": page.get("margin"),
