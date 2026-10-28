@@ -73,6 +73,8 @@ PUBLIC_SEED_PATHS = frozenset(
 # Generated documents and captures. Public product media lives under docs/ only.
 EXPORT_SUFFIXES = (".pdf", ".png", ".jpg", ".jpeg", ".webp", ".gif", ".docx", ".doc")
 PUBLIC_MEDIA_ROOT = "docs/"
+# Hub/UI assets under src/pdf_tool/static are part of the public engine, not personal exports.
+PUBLIC_ENGINE_ASSET_ROOT = "src/pdf_tool/static/"
 PRIVATE_DOC_NAMES = frozenset({"docs/MARKETING.md", "docs/WORKSPACE.md", "docs/HISTORY-SCRUB.md"})
 
 LOCAL_MARKERS_FILE = REPO / ".config" / "private-markers.txt"
@@ -123,7 +125,7 @@ def path_floor_violation(path: str) -> str | None:
         return "local command (only *.example.md is public)"
     if path == ".config/mcp-pdf-designer.json" or path == LOCAL_MARKERS_FILE.relative_to(REPO).as_posix():
         return "machine-local config"
-    if name.lower().endswith(EXPORT_SUFFIXES) and not path.startswith(PUBLIC_MEDIA_ROOT):
+    if name.lower().endswith(EXPORT_SUFFIXES) and not path.startswith(PUBLIC_MEDIA_ROOT) and not path.startswith(PUBLIC_ENGINE_ASSET_ROOT):
         return "document/image export outside docs/"
     return None
 
