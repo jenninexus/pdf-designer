@@ -135,6 +135,7 @@ job-listing-capture-*.md
 !docs/pdf-designer-overview.pdf
 *.png
 !docs/images/**/*.png
+!src/pdf_tool/static/hub-app-icon.png
 # Real-applicant Hub captures belong beside their document family (or the _exports/ fallback), never public docs media.
 docs/images/hub-resume-*.png
 *.jpg

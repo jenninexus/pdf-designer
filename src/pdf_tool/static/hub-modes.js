@@ -8,7 +8,7 @@
 
   brand.replaceChildren();
   const icon = document.createElement('img');
-  icon.src = '/_hub/hub-app-icon.svg';
+  icon.src = '/_hub/hub-app-icon.png';
   icon.alt = '';
   icon.width = icon.height = 28;
   const name = document.createElement('span');
