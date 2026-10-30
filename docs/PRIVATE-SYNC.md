@@ -39,6 +39,29 @@ Two people editing the same file produce an ordinary Git merge conflict; resolve
 
 ## Check every local-only surface
 
+### Command sources and runtime adapters
+
+| Scope | Source of truth | Generated consumers |
+|---|---|---|
+| Project | `.claude/commands/<name>.md` (private); tracked `*.example.md` seeds for public clones | `.codex/skills/<name>/SKILL.md`, `.agents/skills/source-command-<name>/SKILL.md` |
+| User | The user's global command library, conventionally `~/.claude/commands/` | User-level `.codex/skills/`, `.agents/skills/`, and configured runtime command links |
+| Project instructions | `AGENTS.md` | `CLAUDE.md` and local runtime READMEs point here |
+
+Global commands stay global. A project-specific alias may point to one; do not copy its body into
+this checkout. Generated adapters are deliberate runtime copies, not independently editable sources.
+Private-sync shares project command sources, not generated adapters, global commands, runtime settings,
+authentication, or session history. Each machine regenerates its own adapters.
+
+For maintainers with `/sync-all`, use that command's global-plus-exact-checkout audit and repair
+entry point. Follow its current source instructions rather than calling its generator internals.
+On other setups use the installed generator's documented scoped interface; neither tool is a public
+engine dependency. Preserve and compare unexplained adapter edits before any regeneration; a baseline
+refusal requires investigation, never a forced overwrite.
+
+The session order is: pull public/private sources → inspect local edits → adopt reviewed adapter
+changes into their command source → regenerate → audit → share private sources → confirm local state.
+Keep this sequence in the session commands; keep generator mechanics in the global sync command.
+
 `python scripts/local-state.py` reports what GitHub never sees in one place. It covers private-sync state,
 the command wrappers (`.claude/commands/` is the source, and `.codex/` and `.agents/` are generated copies),
 and each `.config/<name>.json` compared with its tracked `.example` seed. It exits 1 when something needs

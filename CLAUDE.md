@@ -1,4 +1,5 @@
 # CLAUDE.md — pointer
 
-Read **[`AGENTS.md`](AGENTS.md)** in full. It is the single canonical guide for Claude, Codex, Grok, Cursor,
-and other agents; keep commands, contracts, setup, and active-plan links there rather than duplicating them here.
+Read **[AGENTS.md](AGENTS.md)** in full for this project's instructions and command map.
+Keep project rules there and user-level doctrine in the user's global instruction source.
+This file is only a pointer.
