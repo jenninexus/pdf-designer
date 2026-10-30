@@ -21,7 +21,7 @@ agents. Working-tree ignores hide current files from `git status` but leave them
 for anyone who clones an old commit.
 
 **How to apply:** When privatizing docs, ask “does a stranger need this to prove the free
-product?” If yes → tracked `docs/`. If it names example-host paths, brands, or scrub commands →
+product?” If yes → tracked `docs/`. If it names local paths, brands, or scrub commands →
 **same `docs/` folder**, gitignored (`MARKETING.md` · `WORKSPACE.md` · `HISTORY-SCRUB.md` ·
 `*.local.md`) — not a parallel `storage/docs/` tree. Before a wide public launch, run the
 HISTORY-SCRUB checklist; never force-push without jenninexus auth + explicit OK.

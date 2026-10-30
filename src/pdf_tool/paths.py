@@ -406,7 +406,7 @@ def resolve_rel(rel: str, *, root: Path | None = None) -> Path:
     """Map a repo-relative path onto an existing file, accepting both trees.
 
     If neither alias exists: keep the ``storage/`` path while that directory
-    is present (live example-host tree); otherwise return the new-noun canonical path.
+    is present (live local tree); otherwise return the new-noun canonical path.
     """
     root = _root(root)
     aliases = alias_rel_paths(rel)
