@@ -1,6 +1,6 @@
 # Workspace layout — product UX for local files
 
-**Status:** path resolver + root README scaffolds + example-host **data copy** (2026-08-13).
+**Status:** path resolver + root README scaffolds + local **data copy** (2026-08-13).
 **`storage/` is retired (2026-08-17).** Private application material remains local and the
 private font moved to `brands/fonts/`. The engine still accepts `storage/`
 aliases. Copy script (historical): `python scripts/migrate-workspace.py`.
@@ -210,7 +210,7 @@ hides them from clones.
 1. **Docs + ignore** — private notes → `docs/`; stop using `storage/docs/` ✅
 2. **Path resolver** — `pdf_tool.paths` accepts both trees (Hub + CLI) ✅
 3. **Scaffold root dirs** — README stubs on GitHub ✅
-4. **Move example-host data** — copy `storage/*` → new nouns; keep `storage/` as read-only alias  ✅ `scripts/migrate-workspace.py`
+4. **Move local data** — copy `storage/*` → new nouns; keep `storage/` as read-only alias  ✅ `scripts/migrate-workspace.py`
 5. **Delete `storage/`** — ✅ retired 2026-08-17 after smoke + Hub + tracker verification; retain the resolver only for old URLs.
 
 ---

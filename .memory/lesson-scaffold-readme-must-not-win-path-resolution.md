@@ -13,7 +13,7 @@ root-noun scaffold such as `users/README.md` makes that folder *exist*. (The ret
 the live `storage/` tree and look empty.
 
 **Why:** The free GitHub product needs those folders visible in the clone file
-tree (`WORKSPACE-LAYOUT.md`). Live example-host data still lives under `storage/` until
+tree (`WORKSPACE-LAYOUT.md`). Live local data still lives under `storage/` until
 the copy. Dual-run therefore has **README-only new nouns + full legacy tree**
 at the same time. `.exists()` on the directory is true for a scaffold; that is
 not “the jobs moved.”

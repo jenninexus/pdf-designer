@@ -109,7 +109,7 @@ job-listing-capture-*.md
 !**/*.example.md
 
 # Personal slash commands — TRACK ONLY `*.example.md` on GitHub.
-# Bare start/wrap/make-*/README are example-host/dev-only (reflect, applicant specifics, session ritual).
+# Bare start/wrap/make-*/README are local/dev-only (reflect, applicant specifics, session ritual).
 .claude/commands/*
 !.claude/commands/*.example.md
 # Legacy explicit ignores (redundant once the glob above applies; kept for clarity)
