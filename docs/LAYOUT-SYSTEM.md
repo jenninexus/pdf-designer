@@ -1,12 +1,12 @@
 # Layout System — the shared page model for résumés, cover letters & work samples
 
 **One page model for every application document**, so the three doc types read as a family and the
-sign-off always lands where it should. Established 2026-07-19 while refining the Netflix build.
+sign-off always lands where it should. Established while refining career-document layouts.
 
 > **Sibling docs:** [`THEME-DESIGN.md`](THEME-DESIGN.md) (tokens, dual light/dark, signature pin) ·
 > [`EXPORTS.md`](EXPORTS.md) (export commands + pagination traps) ·
 > [`../themes/PALETTE-RULES.md`](../themes/PALETTE-RULES.md) (color guard).
-> **Profile hook:** `profiles/jenni-resume.json → layout.system` points here.
+> **Profile hook:** `profiles/<user>-resume.json → layout.system` points here.
 
 ## Design Hub responsive shell
 
@@ -72,7 +72,7 @@ script). Ship gate: [`QA.md`](QA.md).
 ### ⛔ A COVER LETTER must NOT set a print `height` + `overflow: hidden`
 
 **Per-doc geometry differs.** Both résumés and letters use flex + `margin-top: auto` to pin the
-sign-off. Letters pin **bottom-LEFT** (CZI reference); résumés pin **bottom-RIGHT**. The clip trap
+sign-off. Letters pin **bottom-LEFT** ; résumés pin **bottom-RIGHT**. The clip trap
 is the *print height* pattern — not the flex pin itself.
 
 | Doc | Print `.page` | Sign-off | Why |
@@ -80,14 +80,13 @@ is the *print height* pattern — not the flex pin itself.
 | **Résumé / work-samples** | `height: 9.7in` + `overflow: hidden` | **bottom-RIGHT** | Page count is **fixed** — the box must hold the bottom edge. |
 | **Cover letter** | `height: auto` · `min-height: 9.5in` · **no** `overflow: hidden` | **bottom-LEFT**, `padding-top: 30px` | One page. `@page { margin }` already insets; a near-full fixed height + clip **slices the tail**. |
 
-**Reference letter (geometry / padding):** `resumes/jenni/CZI/jenni-czi-letter.html` —
-flex column · `.letter-main` grows · `.signoff { margin-top: auto; padding-top: 30px }`.
+**Letter geometry:** use a flex column, growing `.letter-main`, and `.signoff { margin-top: auto; padding-top: 30px }`.
 
 **Machine-readable:** [`../layouts/cover-letter/one-page-letter.json`](../layouts/cover-letter/one-page-letter.json)
 · [`../layouts/resume/two-page-standard.json`](../layouts/resume/two-page-standard.json)
 · [`../layouts/work-examples/work-examples.json`](../layouts/work-examples/work-examples.json) (work-samples, 3 pages).
 
-**Observed 2026-07-25 (Sony letter, shipped):** "Founder & CEO, Martian Games LLC" was sliced
+**Observed failure:** a signature line was sliced
 through the middle and the email line vanished from the PDF entirely.
 
 **Every guard passed** — this is the important part:
@@ -97,8 +96,8 @@ through the middle and the email line vanished from the PDF entirely.
 - page-count → **PASS** (exactly 1 page)
 - text layer → the clipped line still exists in it, so a grep succeeds even though nobody can read it
 
-The clip exists **only in the rasterised PDF**. Copy the **CZI** print model (`min-height`, no
-`overflow: hidden`), never the Netflix/Sony fixed-height letter.
+The clip exists **only in the rasterised PDF**. Use the letter print model (`min-height`, no
+`overflow: hidden`), never a clipped fixed-height letter.
 
 ### Why a pixel guard cannot catch this (measured)
 
@@ -211,12 +210,12 @@ layout. Prefer CSS grid with `1fr` tracks over left-justified flex clusters. Doc
 [`../layouts/work-examples/work-examples.json`](../layouts/work-examples/work-examples.json)#`fullRowGroups` and the
 résumé Online Community pattern.
 
-### Footer email (all three Jenni defaults)
+### Footer email
 
 Use `--text` (or brand `--accent`), **≥11px**, `font-weight: 600` — not `--dim2` at 9px. Same treatment
 on résumé `.page-sig .mail`, cover `.signoff .mail`, and work-samples `.footer .mail`. Keep
 `letter-spacing` modest (~`0.03em`): `0.08em` on a long uppercase address paints past `x = 0.72W` and
-fails `footer-collision` at ~70 px on every page. Palette SSOT: `brands/brand-jenninexus.json`.
+fails `footer-collision` at ~70 px on every page.
 
 ### Work-samples imagery — caption below hero; keep height
 
@@ -227,7 +226,7 @@ fails `footer-collision` at ~70 px on every page. Palette SSOT: `brands/brand-je
 | Agent cards (3-col) | ~92px image + label under |
 
 `object-fit: cover` / `contain` still crops to the box — raise a grid's height rather than fighting fit.
-Default shipped-games block has **no** Martian Games logo mark (logo optional elsewhere).
+Use only assets supported by the person’s profile and permissions.
 
 ---
 
@@ -242,9 +241,7 @@ fully self-contained — no external image hosts:
 3. Export private personal light + dark files to `_exports/<user>/resumes/<App>/`. **Upload the dark version** for impact;
    keep the ATS `resume-light` as the primary Resume upload.
 
-Worked example: `_job-apps/Netflix-App/jenni-netflix-genai-work-samples.template.html`.
-Profile contract: `profiles/jenni-resume.json → workSamples`. Asset sources + flagship beats:
-`users/jenni.json → portfolio`.
+The profile `workSamples` and user `portfolio` blocks define the selected assets and structure.
 
 ---
 
@@ -274,7 +271,7 @@ flashes (`＋1 document`). So the loop is: edit/export → the hub updates itsel
 
 - Promote the equal-margin knob (`--resume-page-margin`) is **done** in `themes/default-resume.css`;
   next: a shared `themes/application-layout.css` that templates `@import` so each HTML stops carrying its
-  own copy of the flex/print rules (the Netflix templates still inline them).
+  own copy of the flex/print rules (older templates may still inline them).
 - Parameterize per-doc image heights as CSS custom properties so a new company theme only overrides
   colors, never geometry (geometry stays locked per the AGENTS.md contract).
 - Add a tiny `pdf_tool` check that fails if a template's print `.page { height }` doesn't match

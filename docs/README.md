@@ -95,3 +95,6 @@ personal data, or operational history. One checkout; no `.env` (the engine reads
 The local Design Hub can still browse ignored `_exports/` PDFs and images: select **Exports** in
 Library. Those artifact cards are read-only and exist only on loopback; the
 public repository continues to track the folder README, never the payload.
+
+
+Browser form helper: [BROWSER-HELPER.md](BROWSER-HELPER.md) — approved local profile import and reviewed filling; browser release acceptance is separate. Microsoft Store gates: [PACKAGING.md](PACKAGING.md#microsoft-store-readiness-assessment-2026-10-30). Personal operating backlog is ignored `ROADMAP.local.md`; public product capabilities remain in [ROADMAP.md](ROADMAP.md).

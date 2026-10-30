@@ -556,6 +556,7 @@ APP_HTML = """<!doctype html>
 <title>pdf-designer — Design Hub</title>
 <link rel="stylesheet" href="/_hub/hub-aesyna.css">
 <link rel="stylesheet" href="/_hub/hub.css">
+<link rel="preload" as="image" href="/_hub/hub-app-icon.png">
 <script>
 window.__pdfSplashStart = performance.now();
 try {
@@ -592,7 +593,13 @@ try {
 <header class="hub-bar" aria-label="Design Hub toolbar">
   <div class="hub-bar-scroll" id="hubBarScroll" tabindex="0" title="Scroll horizontally — mouse wheel works here">
     <div class="hub-group hub-brand-group">
-      <a class="hub-brand" id="hubHomeLink" href="/" title="Home — public examples">Design Hub</a>
+      <a class="hub-brand" id="hubHomeLink" href="/" title="PDF Designer — home and templates" aria-label="PDF Designer — home and templates"><img src="/_hub/hub-app-icon.png" width="28" height="28" alt="" fetchpriority="high"></a>
+    <nav class="hub-group hub-nav hub-modes" aria-label="Workspace modes">
+      <a class="hub-link on" href="/" title="Library — Documents and templates" aria-label="Library" aria-current="page"><span class="hub-fa-icon fa-file-lines" aria-hidden="true"></span><span class="hub-mode-name">Library</span></a>
+      <a class="hub-link" href="/recipes" title="Recipes — Layout and palette templates" aria-label="Recipes"><span class="hub-fa-icon fa-table-columns" aria-hidden="true"></span><span class="hub-mode-name">Recipes</span></a>
+      <a class="hub-link" href="/vault" title="Vault — Skills and source-backed claims" aria-label="Vault"><span class="hub-fa-icon fa-shield-halved" aria-hidden="true"></span><span class="hub-mode-name">Vault</span></a>
+      <a class="hub-link" href="/wizard" title="Wizard — Create a resume workspace" aria-label="Wizard"><span class="hub-fa-icon fa-wand-magic-sparkles" aria-hidden="true"></span><span class="hub-mode-name">Wizard</span></a>
+    </nav>
     </div>
     <div class="hub-group" title="Profiles — applicants + studio entity decks">
       <select id="personFilter" title="Profiles" aria-label="Profiles">
@@ -603,12 +610,7 @@ try {
     <div class="hub-group">
       <div class="chips" id="kindChips" role="tablist" aria-label="Document kind"></div>
     </div>
-    <nav class="hub-group hub-nav" id="hubNav" aria-label="Hub sections">
-      <a class="hub-link on" href="/" title="Document library" aria-current="page">Library</a>
-      <a class="hub-link" href="/recipes" title="Browse layouts/ + themes/presets">Recipes</a>
-      <a class="hub-link" href="/vault" title="Readable vault · skills · go-to résumés">Vault</a>
-      <a class="hub-link" href="/wizard" title="Start wizard — local résumé workspace">Wizard</a>
-    </nav>
+
     <div class="hub-group hub-filters">
       <input id="search" type="search" placeholder="Search…" autocomplete="off" title="Search name or path" aria-label="Search">
       <select id="folderFilter" class="hub-folder-native" aria-hidden="true" tabindex="-1"><option value="">all folders</option></select>
@@ -1603,7 +1605,7 @@ syncSelectPair("palette", "drawerPalette", () => {
   });
 })();
 
-/* ---- Drawer + search overlay (responsive ≤1399.98 / nav_switch xxl) ---- */
+/* ---- Drawer + search overlay (responsive ≤991.98 / nav_switch lg) ---- */
 function openDrawer() {
   const drawer = document.getElementById("hubDrawer");
   const backdrop = document.getElementById("hubDrawerBackdrop");

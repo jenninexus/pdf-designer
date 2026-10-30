@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "PDF Designer Application Helper",
+  "version": "0.1.0",
+  "description": "Review and fill approved application fields from a local profile.",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage"
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "commands": {
+    "_execute_action": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+Y",
+        "mac": "Command+Shift+Y"
+      }
+    }
+  }
+}

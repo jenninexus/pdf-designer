@@ -110,3 +110,21 @@ this). Verifying from the checkout directory will silently use live `themes/`.
 - Product / paid shell: [`PRODUCT.md`](PRODUCT.md)
 - Public clone demo: [`GETTING-STARTED.md`](GETTING-STARTED.md)
 - License honesty: [`LICENSING-NOTES.md`](LICENSING-NOTES.md)
+
+
+## Microsoft Store readiness assessment (2026-10-30)
+
+**Not Store-ready.** The existing Electron/NSIS path is an unsigned local installer; a Store package, clean-machine installation, certification and listing have not been proven. Investigate **MSIX first** as a proposed route, subject to a real package and Windows 10/11 install/update/uninstall proof. Microsoft hosts and re-signs Store MSIX packages after certification; no CA certificate purchase is required for that Store path. Its separate MSI/EXE path requires an offline installer, stable hosted URL and publisher signing of the installer and PE files. See [Microsoft's distribution comparison](https://learn.microsoft.com/en-us/windows/apps/distribute-through-store/how-to-distribute-your-win32-app-through-microsoft-store) and [signing options](https://learn.microsoft.com/en-us/windows/apps/package-and-deploy/code-signing-options). Store signing does not cover direct downloads. The existing Azure/signing hold remains.
+
+Before any submission: choose the publisher/account type and verify eligibility; create a Store identity and truthful listing, privacy disclosures, support and rating; produce a package that includes its actual runtime and Chromium assets without personal data; prove local workspace permissions, exports, update/uninstall and no-data-loss on clean supported Windows machines; run applicable certification checks; review licenses and obtain a final release decision. [Microsoft's MSIX requirements](https://learn.microsoft.com/en-us/windows/apps/publish/publish-your-app/msix/app-package-requirements) and [developer account guidance](https://learn.microsoft.com/en-us/windows/apps/publish/partner-center/partner-center-developer-account) govern the eventual submission. This assessment authorizes no spending, registration or publication.
+
+| Gate | Current evidence | Next proof |
+|---|---|---|
+| Engine and local UI | Implemented, with deterministic document checks | Reuse accepted source/artifact receipts; test each release source |
+| Desktop shell | Electron main process, bundled-runtime builder and NSIS target exist | Rebuild from the chosen release source; old local binaries do not prove current source |
+| Store package | No MSIX target in `desktop/package.json` | Select Store identity, implement an actual package and verify bundled assets |
+| Clean Windows lifecycle | A harness exists; release-specific clean-machine proof remains open | Install, launch, export, update, uninstall and retain the private workspace on clean Windows 10/11 |
+| Publisher and paid delivery | Owner/channel decisions remain private and held | Confirm publisher, licensing, commerce and support without silently enabling checkout |
+| Store review | No certification or listing acceptance recorded | Run applicable certification checks and obtain an explicit submission decision |
+
+Google sign-in and the browser helper are separate integrations; neither is needed to export a local document or proves Store readiness.

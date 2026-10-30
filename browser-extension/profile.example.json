@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "fields": {
+    "firstName": "Alex",
+    "lastName": "Example",
+    "email": "alex@example.com",
+    "phone": "+1 555 010 1234",
+    "city": "Seattle",
+    "region": "Washington",
+    "country": "United States",
+    "postalCode": "98101",
+    "linkedin": "https://www.linkedin.com/in/example",
+    "website": "https://example.com",
+    "currentTitle": "Designer",
+    "currentCompany": "Example Studio"
+  }
+}

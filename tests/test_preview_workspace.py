@@ -177,7 +177,7 @@ def test_drawer_resize_and_compact_mobile_controls_are_shared_across_hub_routes(
     assert "--hub-library-w: 300px" in css
     assert "grid-template-columns: repeat(auto-fit, minmax(116px, 1fr))" in css
     assert "@media (max-width: 575.98px)" in css
-    assert "@media (max-width: 1399.98px)" in css
+    assert "@media (max-width: 991.98px)" in css
     assert "pointerdown" in resize_script
     assert "localStorage.setItem(opts.key" in resize_script or "localStorage.setItem(key" in resize_script
     for name in ("recipes.html", "vault.html"):

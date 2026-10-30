@@ -40,7 +40,7 @@ built versus planned.
 ### Breakpoints
 
 **One project reference:** [`.config/mcp-pdf-designer.json#breakpoints`](../.config/mcp-pdf-designer.json).  
-Numbers are not redefined there — they resolve through `C:\mcp\.config\mcp-breakpoints.json` → set
+Numbers resolve from the shared `www-theme-kit` breakpoint tokens; local caches do not own them.
 `bootstrap_5_3_8_extended_390_4k` → `www-theme-kit/scss/_breakpoint-tokens.scss` (syna mirror).  
 Design Hub hard-codes the same `.98px` ceilings in `static/hub.css` (CSS `@media` cannot use `var()`).
 Library/viewer **split** holds from **576px** up; phones stack. Drawer switch stays **≤767.98px**.
@@ -101,7 +101,7 @@ while a perfectly good palette checker sat right there, as an optional command n
 |---|---|---|
 | **Palette** | **Automatically, on every `html_to_pdf` export** | **Blocks the export.** `--skip-palette-check` overrides. |
 | **Overflow** | **Auto-WARNS on every `html_to_pdf` export**; run `check_overflow <doc>.html --pdf-theme dark` to gate | Warns (or exits non-zero as a gate) when a page overflows its box → pinned-footer collision. `--skip-overflow-check` overrides. |
-| **Magenta** | `check_palette --no-magenta <doc>.html` — **Shade + Martian docs** (opt-in; Jenni's pink is legit) | Exit 1 on magenta/pink (hue ~290–345°) |
+| **Magenta** | `check_palette --no-magenta <doc>.html` — optional policy | Exit 1 on magenta/pink (hue ~290–345°) |
 | **US Letter** | `merge_pdfs --require-letter` | Refuses to bundle |
 | **Vault schema** | `python -m pdf_tool.check_vault --all` | Non-zero exit |
 | **Vault explain** | `/make-resume` step 0: `check_vault --explain` | Blocks on schema / thin track |

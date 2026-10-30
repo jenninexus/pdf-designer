@@ -3,17 +3,17 @@
     "description": "TEMPLATE — copy to mcp-pdf-designer.json and replace the <PLACEHOLDER> paths with your own. The repo runs WITHOUT this file; it only enriches agents and tools with pointers. Nothing here is a secret.",
     "project": "pdf-designer",
     "repo": "<REPO_ROOT>",
-    "updated": "2026-08-12",
+    "updated": "2026-10-30",
     "theme_kit": {
       "official": "<WWW_THEME_KIT>",
       "hub_profile": "www-theme-kit/profiles/pdf-designer.json",
-      "note": "www-theme-kit is THE kit. syna-theme-kit = lineage only; syn-themes = VS Code extension — leave alone."
+      "note": "www-theme-kit owns Hub layout and responsive behavior; syna-theme-kit owns the generated Aesyna visual-token adapter. Consumers vendor assets; no sibling kit is needed at runtime."
     },
     "template": true,
     "setup": {
       "1": "cp .config/mcp-pdf-designer.example.json .config/mcp-pdf-designer.json",
       "2": "Replace <REPO_ROOT> with this clone's absolute path.",
-      "3": "External pointers (<WWW_THEME_KIT>, <VOICE_SEED>, <MCP_CONFIG_DIR>) may be deleted if you don't have those repos — nothing breaks."
+      "3": "External kit and voice pointers are optional; remove them if those private repos are unavailable."
     }
   },
   "ssot": "docs/SSOT.md",
@@ -42,25 +42,22 @@
     "rule": "voice-seed = map/public overview; pdf-designer root nouns = deep edit SSOT; agency agents ≠ applicants"
   },
   "external": {
-    "breakpoints": "<MCP_CONFIG_DIR>\\mcp-breakpoints.json",
     "www_kit": "<WWW_THEME_KIT>",
     "voice_seed": "<VOICE_SEED>"
   },
   "breakpoints": {
-    "_role": "Project pointer only. Shared breakpoint numbers live in www-theme-kit SCSS; src/pdf_tool/static/hub.css owns pdf-designer behavior. The MCP global file is a cross-project registry, not an SSOT.",
+    "_role": "Project pointer only; named set and numeric tokens live in www-theme-kit. Hub CSS and drawer-resize.js implement the selected profile behavior.",
     "set": "bootstrap_5_3_8_extended_390_4k",
     "framework": "Bootstrap 5.3.8 extended (xxs + HD/2K/4K)",
-    "global_cache": "<MCP_CONFIG_DIR>\\mcp-breakpoints.json",
-    "global_cache_path": "breakpoint_sets.bootstrap_5_3_8_extended_390_4k",
     "shared_token_reference": "<WWW_THEME_KIT>\\scss\\_breakpoint-tokens.scss",
     "hub_css": "src/pdf_tool/static/hub.css (hard-codes the same .98px maxes — CSS cannot var() inside @media)",
     "viewport_floor": "390x844",
-    "nav_switch": "xxl (1400px) — hamburger through iPad Pro landscape; library/viewer still split until xs",
+    "nav_switch": "lg (992px) — scrollable desktop toolbar from lg; drawer below lg",
     "hub_layout_switch": {
       "stack_below": "575.98px (xs-max) — library stacks above stage (phones only)",
-      "drawer_below": "1399.98px (xl-max) — hamburger; phone full-bleed; 576–1399.98 almost-full end-panel; split retained ≥576",
+      "drawer_below": "991.98px (md-max) — phone full-bleed; 576–991.98 flexible end-panel",
       "short_landscape": "max-height 480px — stack like a phone",
-      "comfortable_from": "1400px (xxl) — full header buttons",
+      "comfortable_from": "992px (lg) — full horizontally scrollable header controls",
       "widescreen_from": "1400px (xxl) — max content breathing room"
     },
     "key_maxes": {
@@ -89,17 +86,18 @@
       1920,
       2560,
       3840
-    ]
+    ],
+    "set_reference": "../www-theme-kit/docs/BREAKPOINTS.md",
+    "profile_reference": "../www-theme-kit/profiles/pdf-designer.json#breakpoints"
   },
   "design_hub": {
     "entry": "python -m pdf_tool.preview",
     "url": "http://127.0.0.1:8787/",
     "port": 8787,
-    "env_var": "PDF_DESIGNER_PREVIEW_PORT",
     "bind": "127.0.0.1",
-    "port_ssot": "<MCP_CONFIG_DIR>\\mcp-portmap.json → python_services.8787",
+    "port_ssot": "python -m pdf_tool.preview --port (default 8787); optional host port registry ~/.user/port-map.txt",
     "chrome_tokens": "src/pdf_tool/static/hub.css",
-    "chrome_layout": "single ~44px toolbar (.hub-bar) — Syqo/Synagen density",
+    "chrome_layout": "52px toolbar: D identity, pre-rendered mode icons, scrollable controls, pinned actions",
     "www_profile": "www-theme-kit/profiles/pdf-designer.json",
     "document_palettes": [
       "themes/default-resume.json",
@@ -168,10 +166,11 @@
     ]
   },
   "plans": {
-    "active": "Plans/_Active/2026-08-12-product-privacy-packaging.md",
+    "active": "Plans/README.md",
     "index": "Plans/README.md",
-    "complete": "Plans/_Complete/",
-    "next": "TestPyPI upload when TESTPYPI_TOKEN exists; paid shell stays shell-over-Hub"
+    "complete": "Plans/_complete/",
+    "next": "See Plans/README.md for the current slice; docs/ROADMAP.md for public product gates.",
+    "private_backlog": "docs/ROADMAP.local.md"
   },
   "protocol": {
     "storage": "docs/STORAGE.md",

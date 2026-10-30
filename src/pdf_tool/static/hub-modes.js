@@ -6,20 +6,8 @@
   const nav = bar?.querySelector('.hub-nav');
   if (!brand || !nav) return;
 
-  brand.replaceChildren();
-  const icon = document.createElement('img');
-  icon.src = '/_hub/hub-app-icon.png';
-  icon.alt = '';
-  icon.width = icon.height = 28;
-  const name = document.createElement('span');
-  name.className = 'hub-app-name';
-  name.textContent = 'PDF Designer';
-  brand.append(icon, name);
-  brand.setAttribute('aria-label', 'PDF Designer — home and templates');
-  brand.title = 'PDF Designer — home and templates';
-  brandGroup.append(nav);
-  nav.classList.add('hub-modes');
-  nav.setAttribute('aria-label', 'Workspace modes');
+  // Identity and mode icons are in the HTML so navigation never paints a text
+  // toolbar first and replaces it after scripts/data finish loading.
 
   const modes = {
     '/': ['Library', 'Documents and templates', 'file-lines'],
@@ -44,7 +32,6 @@
     if (!mode) continue;
     link.setAttribute('aria-label', mode[0]);
     link.title = `${mode[0]} — ${mode[1]}`;
-    link.innerHTML = `<span class="hub-fa-icon fa-${mode[2]}" aria-hidden="true"></span><span class="hub-mode-name">${mode[0]}</span>`;
     const active = currentPath === path;
     link.classList.toggle('on', active);
     if (active) link.setAttribute('aria-current', 'page');
@@ -61,6 +48,29 @@
       saveLocation();
       if (active && !event.ctrlKey && !event.metaKey && !event.shiftKey && !event.altKey && event.button === 0) event.preventDefault();
     });
+  }
+  // Warm the destination HTML on intent. Keep normal links, back/forward and
+  // each page's existing lifecycle; never cache private API responses in storage.
+  const warmed = new Set();
+  for (const link of document.querySelectorAll('.hub-modes a, .hub-drawer .hub-nav a')) {
+    const warm = () => {
+      const url = new URL(link.href, location.origin);
+      if (url.origin !== location.origin || !modes[url.pathname] || url.pathname === currentPath || warmed.has(url.href)) return;
+      if (navigator.connection?.saveData) return;
+      warmed.add(url.href);
+      const hint = document.createElement('link');
+      hint.rel = 'prefetch';
+      hint.href = url.href;
+      hint.as = 'document';
+      document.head.append(hint);
+    };
+    link.addEventListener('pointerenter', warm, { once: true });
+    link.addEventListener('focus', warm, { once: true });
+    link.addEventListener('pointermove', event => {
+      const box = link.getBoundingClientRect();
+      link.style.setProperty('--pointer-x', `${event.clientX - box.left}px`);
+      link.style.setProperty('--pointer-y', `${event.clientY - box.top}px`);
+    }, { passive: true });
   }
   // Desktop Support lives beside actions; compact layouts keep it in the existing drawer.
   const support = document.querySelector('.hub-drawer .hub-support');

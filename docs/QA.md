@@ -6,7 +6,7 @@ planned desktop app use the same renderer and guards. Maintainers may route this
 their own build/QA network; that is private operating policy and adds no product dependency.
 
 **Run this before shipping any resume, cover letter, or work-samples.** One command checks every house
-rule at once, so a generation can't go out with a brown wash, a magenta Shade doc, an all-lowercase name,
+rule at once, so a generation can't go out with a brown wash, a document that violates its palette policy, an all-lowercase name,
 a drifting margin, an unpinned signature, or a neon color painted over a photo.
 
 ```bash
@@ -21,7 +21,7 @@ python -m pdf_tool.check_generation <doc>.html --json          # machine-readabl
 | | |
 |---|---|
 | [What it checks](#the-checks) | The 12 checks, and which SSOT owns each |
-| [Per-user / per-doc rules](#per-user--per-doc-awareness) | Why Shade fails on magenta but Jenni doesn't |
+| [Per-user / per-doc rules](#per-user--per-doc-awareness) | How document-specific checks are selected |
 | [Reading a report](#reading-a-report) | PASS/FAIL/skip and how to fix |
 | [When to run](#when-to-run) | Wired into make-resume / make-work-examples |
 | Related | [`../themes/GENERATION-RULES.md`](../themes/GENERATION-RULES.md) · [`../themes/PALETTE-RULES.md`](../themes/PALETTE-RULES.md) · [`LAYOUT-SYSTEM.md`](LAYOUT-SYSTEM.md) |
@@ -70,9 +70,9 @@ rules they didn't cover (**12 checks**, some document-specific):
 
 | # | Check | Rule | SSOT |
 |---|---|---|---|
-| 1 | **palette** | no brown / mustard / lime; **+ no magenta/pink for Shade & Martian** | [PALETTE-RULES.md](../themes/PALETTE-RULES.md) |
+| 1 | **palette** | no brown / mustard / lime; optional no-magenta policy | [PALETTE-RULES.md](../themes/PALETTE-RULES.md) |
 | 2 | **rgba-magenta** | magenta/pink smuggled in as `rgba()`/`hsl()` — invisible to the hex-only palette guard | GENERATION-RULES |
-| 3 | **casing** | names & company names **never all-lowercase** in display text (`jenni`, `shade`, `martian games`, `synagen`, …). Stylized wordmarks like the `jenninexus` logo are allowed | GENERATION-RULES §1 |
+| 3 | **casing** | names & company names **never all-lowercase** in display text (for example, `example company`). Stylized wordmarks may be allowed | GENERATION-RULES §1 |
 | 4 | **overlay** | no bright/neon/primary **fill washed over a banner/hero/photo** — only a black→transparent scrim | GENERATION-RULES §2 |
 | 5 | **signature** | resume + work-samples: signature **bottom-pinned, bottom-right** (`margin-top:auto` + `align-self:flex-end`). Cover letter: `.signoff` **bottom-pinned, bottom-LEFT** (`margin-top:auto; padding-top:30px` inside a flex `.page` with print `min-height` — never `height`+`overflow:hidden`) | [one-page-letter.json](../layouts/cover-letter/one-page-letter.json) · LAYOUT-SYSTEM.md |
 | 6 | **margins** | `@page` margins **equal on all four edges** (one value, or a symmetric v/h pair) — no drift | LAYOUT-SYSTEM.md §Equal margins |
@@ -98,7 +98,7 @@ require source review; visual review requires opening/rasterizing the final save
 
 > ### ⚠ What check 11 exists for — and the limit of pixel checks
 >
-> On **2026-07-25** a cover letter shipped with *"Founder & CEO, Martian Games LLC"* sliced
+> A cover letter shipped with a signature line sliced
 > through the middle and the email line missing entirely, because it had copied the résumé's
 > pinned-footer CSS. **Four checks passed:** `check_overflow` (DOM: content 7.29in inside a
 > 9.6in box, `overflowBy: 0`), `check_generation` 10/10, page count 1, and the text layer —
@@ -130,8 +130,8 @@ on a final page — unprofessional even when nothing is clipped).
 The tool detects **who** the doc is for (from the path or the signature/contact) and **what** it is
 (resume / cover-letter / work-samples), then applies the right rule set:
 
-- **Shade & Martian** → `no_magenta` is **on** (checks 1 + 2 ban pink). **Jenni** → off (her brand uses pink).
-- **Cover letters** → check 5 requires `margin-top:auto` on `.signoff` (bottom-LEFT pin, CZI geometry). Older letters whose comments say "a one-page letter does not pin its sign-off" (e.g. the 2026-07-25 Sony letter) predate this rule — do not copy them.
+- The current guard contains maintainer-specific built-in presets; inspect the implementation before relying on identity detection. An optional no-magenta check can be invoked explicitly.
+- **Cover letters** → check 5 requires `margin-top:auto` on `.signoff` (bottom-LEFT pin). Do not copy older fixed-height letter geometry.
 - **Resumes / work-samples** → check 5 requires the bottom-right pin.
 
 Override detection with `--user <name>` when the filename doesn't say.
@@ -144,7 +144,7 @@ currently load arbitrary custom palette policy from a user's JSON file.
 
 ```
 ============================================================================
-FAIL  resumes/shade/…/foo.html   (user=shade, no-magenta=True)
+FAIL  resumes/<user>/…/foo.html
   OK palette       …
   XX margins       equal/consistent @page margins
         - @page margin '0.42in 0.48in 0.48in' is asymmetric (drift) — use equal margins…
@@ -164,10 +164,7 @@ an unpinned signature are all cheap to fix and each has bitten a real doc).
 - **Go-to defaults:** after editing `resumes/<user>/*-resume.html` (**any** applicant), re-export
   **light + dark** into `resumes/<user>/` (flat), run `check_generation` on the source HTML, and
   `python -m pdf_tool.check_ats resumes/<user>/*-resume-light.pdf` before treating the pack as board-ready.
-> This tool found and fixed real margin drift in **both** favorite resumes (Shade `0.42/0.48/0.48`,
-> Jenni `0.45/0.5/0.55`) the day it was written — exactly the "consistent margin/padding" class of bug
-> it exists to catch. The 816px overflow correction later exposed a real jenni-resume footer overlap
-> that the old viewport had hidden; that is now fixed at the source and guarded by check 10.
+> Equal margins and footer placement require both source and rendered-artifact checks.
 
 ## Screenshots and optional external QA
 

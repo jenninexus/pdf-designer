@@ -24,12 +24,12 @@ flowchart LR
     PublicHub --> PublicOut["_exports/examples/<br/>or _exports/unfiled/"]
   end
 
-  subgraph Personal["2. Personal workspace / Jenni, Shade, studio"]
+  subgraph Personal["2. Personal workspace / individuals and studio"]
     Identity["users/<user>.json = who<br/>vaults/<user>.json = truthful claims<br/>profiles/<user>-resume.json = how"]
     Job["_job-apps/<application>/<br/>listing · theme · source HTML"]
     Collage["collages/<project>/<br/>images · candidates"]
     Commands["/make-resume<br/>/make-cover-letter<br/>/make-collage"]
-    PrivateHub["Design Hub<br/>profile = jenni/shade/etc.<br/>folder = Exports"]
+    PrivateHub["Design Hub<br/>profile = person or studio<br/>folder = Exports"]
     PrivateOut["resumes/<user>/<application>/<br/>collages/<project>/ (project root)"]
     Identity --> Commands
     Job --> Commands
@@ -54,7 +54,7 @@ to inspect that profile's claims.
 |---|---|
 | Set up as a new user | Run `/wizard`, or copy `users/you.example.json`, `vaults/you.example.json`, and `profiles/you-resume.example.json` to non-`.example` local files |
 | Customize the public command workflow | Copy `.claude/commands/make-*.example.md` to the matching bare `.md`; edit the bare copy locally |
-| Edit Jenni/Shade identity or contact | `users/<user>.json` |
+| Edit an individual identity or contact | `users/<user>.json` |
 | Edit truthful résumé facts or application voice | `vaults/<user>.json` |
 | Edit layout/export behavior | `profiles/<user>-resume.json` |
 | Edit reusable résumé HTML | `resumes/<user>/` |
@@ -77,7 +77,7 @@ dev plumbing, not a résumé product. Root nouns (`users/`, `vaults/`, `profiles
 `collages/`, `_job-apps/`, `brands/`, `_exports/`) match how people think and how we want the free
 GitHub product to teach itself.
 
-**Do not** dump live Jenni/Shade data into tracked folders. Root dirs ship as **empty scaffolds
+**Do not** dump live personal data into tracked folders. Root dirs ship as **empty scaffolds
 + README + examples**; real JSON/HTML/PDFs stay gitignored — same privacy bar as today.
 
 The migration is complete. `preview.py`, `check_vault`, and `tracker` resolve legacy `storage/` URLs
@@ -122,7 +122,7 @@ pdf-designer/
 | `users/` | Who am I? contact, voice prefs | `storage/users/` |
 | `vaults/` | What may I claim? | `storage/<user>/resume-source.json` |
 | `profiles/` | How does it print? | `storage/profiles/` |
-| `resumes/` | Working HTML + defaults + that person's exports | `storage/jenni/` · `shade/` · `studio/` |
+| `resumes/` | Working HTML + defaults + that person's exports | legacy personal folders |
 | `_exports/` | Fallback export when a source can't be matched to `resumes/`/`collages/` | `storage/<user>/_exports/` · split public/private output destinations |
 | `output/` | Disposable automation/test scratch | ad-hoc generated test files beside source HTML |
 | `_job-apps/` | This job | **canonical.** `applications/` and `storage/_job-listings/` are retired runtime aliases — do not store listings there. |
@@ -134,8 +134,7 @@ résumés. Hiding the vault under a person folder made the pitch harder to see o
 
 ### Studio / shared assets
 
-Shared MG gallery stays under **`resumes/studio/resources/…`** (or `brands/martian/resources/`)
-with junctions from `resumes/jenni/` and `resumes/shade/` — same rule as today, clearer path.
+A shared gallery may be referenced by multiple profiles; keep attribution and source ownership clear.
 
 ---
 
@@ -224,17 +223,16 @@ A session's narrative names real people, listings, employers and machine paths, 
 
 | Path | Holds |
 |---|---|
-| `Plans/_Active/` | **Zero or one** dated checklist for a concrete, accepted slice |
-| `Plans/_Complete/` | Completed or explicitly routed narrative — evidence, not a to-do list |
-| `Plans/_Complete/_archive/` | Frozen session logs — **never append** |
+| `Plans/_active/` | **Zero or one** dated checklist for a concrete, accepted slice |
+| `Plans/_complete/` | Completed or explicitly routed narrative — evidence, not a to-do list |
+| `Plans/_complete/_archive/` | Frozen session logs — **never append** |
 
-**The rotation:** create one dated checklist in `_Active/` only for a concrete slice →
+**The rotation:** create one dated checklist in `_active/` only for a concrete slice →
 `Plans/README.md` is the *only* place that names it, so commands and docs link there and a rotation
-never breaks a pointer → move it to `_Complete/` when its outcomes are verified or explicitly routed,
-carrying forward only items that are genuinely still open. This repo's spelling is **`_Active` /
-`_Complete`**; sibling projects use lowercase `_active` / `_completed` — do not rename here.
+never breaks a pointer → move it to `_complete/` when its outcomes are verified or explicitly routed,
+carrying forward only items that are genuinely still open. This repo uses lowercase **`_active` / `_complete`**.
 
-A fresh clone has none of it: create `_Active/` on first use. The public backlog is
+A fresh clone has none of it: create `_active/` on first use. The public backlog is
 [`ROADMAP.md`](ROADMAP.md), and the durable traps that *do* travel with a clone are in
 [`../.memory/`](../.memory/). Never create a root `dev-log.yaml`, `dev-log-sego.yaml` or `dev-chat.md`.
 

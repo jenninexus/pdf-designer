@@ -55,7 +55,7 @@ direction (free GitHub vs later paid shell): [`docs/PRODUCT.md`](docs/PRODUCT.md
 
 **Product backlog:** [`docs/ROADMAP.md`](docs/ROADMAP.md) owns the public backlog. `Plans/` is local-only
 working context (gitignored, never pushed); locally, current work is
-the single dated checklist named in `Plans/README.md`. Move it to `Plans/_Complete/` only when
+the single dated checklist named in `Plans/README.md`. Move it to `Plans/_complete/` only when
 its remaining work is verified or routed. Folder UX target: [`docs/WORKSPACE-LAYOUT.md`](docs/WORKSPACE-LAYOUT.md).
 Maintainer channel/signing: `docs/CHANNELS.local.md` (gitignored).
 
@@ -70,10 +70,10 @@ aliases in `start.md` / `wrap.md` that defer here. Public protocol seeds:
 private maps in `brands/` (was `storage/brand-design/`). Product front door: [`examples/resume-studio/`](examples/resume-studio/).
 
 **Where learnings go — two surfaces, do not confuse them.** Session narrative lives in
-an active `Plans/_Active/` checklist when a concrete slice exists, with the durable backlog in
-[`docs/ROADMAP.md`](docs/ROADMAP.md); move completed narrative to `_Complete`. Do not create or update
+an active `Plans/_active/` checklist when a concrete slice exists, with the durable backlog in
+[`docs/ROADMAP.md`](docs/ROADMAP.md); move completed narrative to `_complete`. Do not create or update
 `dev-log.yaml`, `dev-log-sego.yaml`, or `dev-chat.md`; the old YAML is frozen under
-`Plans/_Complete/_archive/`. Durable lessons — a trap, its
+`Plans/_complete/_archive/`. Durable lessons — a trap, its
 root cause, and the guard that now prevents it — go to **tracked**
 [`.memory/lesson-*.md`](.memory/) with a row in [`.memory/README.md`](.memory/README.md). If
 the lesson changes a standing rule, edit the owning `docs/` page **as well**.
@@ -133,8 +133,8 @@ python -m pdf_tool.check_vault --all                            # vault schema �
 python -m pdf_tool.check_vault --explain <user> <track>         # ranked claims preview (blocks on schema/thin)
 python -m pdf_tool.check_vault --coverage <user> <track> <listing.md>  # listing gap-check
 python -m pdf_tool.check_ats <resume-light.pdf>                 # ATS text-layer guard
-python -m pdf_tool.tracker list                                 # who (jenni/shade) sent which job — not a daily count
-python -m pdf_tool.tracker status                               # per-applicant sent / not sent (optional filter: jenni|shade)
+python -m pdf_tool.tracker list                                 # which applicant sent which job — not a daily count
+python -m pdf_tool.tracker status                               # per-applicant sent / not sent (optional applicant filter)
 python -m pdf_tool.collage --list-recipes                       # named layout recipes (layouts/collage/)
 python -m pdf_tool.collage <imagesDir> --recipe <id> --png      # render a named recipe
 python -m pdf_tool.collage <imagesDir> --layout auto --png      # every family + picker gallery (--fit contain for screenshots)
@@ -179,7 +179,7 @@ and follow it."*
 | `make-resume.md` · `make-cover-letter.md` · `make-work-examples.md` · `make-collage.md` | 🔒 personal (gitignored) | Your copies with real specifics |
 
 **Applicant shorthand** (local `README.md` when present; else `/jen:pdf` applicant table).
-`/shade` · `/jenni` · `/studio` · `/martian` · `both` resolve vault + profile + export dir.
+Local operators define applicant shorthand in their private command README; public users select their own person, vault and profile. Additional operator maps may live in ignored `docs/AGENTS.local.md`; public operation never requires it.
 
 **Global commands in scope here** (personal, `~/.claude/commands/`, not in this repo): **`/pdf`**
 · **`/voice`** · **`/reflect-universal`** (`/reflect` alias — required at wrap) · `/roadmap` →
@@ -229,16 +229,16 @@ marketed résumé-creator demo path (vault shape + palettes + smoke), not privat
 | `_exports/` | **Fallback** export folder (examples · unfiled) — tracked README only; payload ignored. Personal exports live in `resumes/<user>/(<App>/)` and `collages/<project>/`. |
 | `output/` | **automation/test scratch** — tracked README only; payload ignored; explicit opt-in, not the engine default. |
 | `storage/` | **Retired legacy residue** (keep private; never ship or add new live work). Dual-run resolver still maps old `storage/<user>/` URLs. |
-| `resumes/studio/resources/images/martiangames/` | ⭐ **shared** MG title gallery (WebP) — both applicants; see [`docs/STORAGE.md`](docs/STORAGE.md) |
+| `resumes/<user>/resources/` | Private reusable images, logos, videos and references; shared assets require verified attribution. See [`docs/STORAGE.md`](docs/STORAGE.md). |
 
 ### Privacy split (do not blur this)
 
 | Public / tracked (safe to clone) | Private / gitignored (root nouns; `storage/` retired — live data is root nouns) |
 |---|---|
 | `src/pdf_tool/`, `themes/`, `examples/`, `docs/`, `AGENTS.md`, `*.example.md`, `output/README.md`, `_exports/README.md` | `users/`, `vaults/`, `profiles/`, `_job-apps/`, `brands/`, `resumes/`, `collages/`, `_exports/*` (payload), `output/*` (scratch), legacy `storage/` |
-| Brand-neutral default theme | Real brand maps (`brands/brand-jenninexus.json`, `brand-martian`, `brand-synagen`) |
+| Brand-neutral default theme | Real brand maps (`brands/brand-<name>.json`) |
 | Example brand shape (`examples/brand-design/`) | Real vault claims, contacts, employer research |
-| Public seed commands (`*.example.md` only) | Bare commands (`pdf-start`/`pdf-wrap`/`start`/`wrap`/`make-*`/`README`), `.codex/`, all of `Plans/` (incl. frozen `Plans/_Complete/_archive/dev-log-*.yaml`) |
+| Public seed commands (`*.example.md` only) | Bare commands (`pdf-start`/`pdf-wrap`/`start`/`wrap`/`make-*`/`README`), `.codex/`, all of `Plans/` (incl. frozen `Plans/_complete/_archive/dev-log-*.yaml`) |
 
 `themes/` is deliberately **public** — it's the engine's default theme + palette rule a fresh clone needs
 to render. Private brand palettes live in `brands/` (legacy `storage/brand-design/`), read by the previewer alongside `themes/`.
@@ -280,7 +280,7 @@ Read [`docs/VAULT.md`](docs/VAULT.md) before authoring any resume claim.
   section to the next page**, never by shrinking the margin.
 - **Dual mode is intentional.** Every document supports light print (`@media print` default, ATS-safe)
   AND dark branded (`html[data-pdf-theme="dark"]`). Keep both working when editing a template.
-- **Board upload = light PDF (UNIVERSAL).** Every profile (`jenni` · `shade` · `studio` · `martian`)
+- **Board upload = light PDF (UNIVERSAL).** Every applicant profile
   ships `*-resume-light.pdf` + `*-resume-dark.pdf`. Upload **light** to Jobright / Indeed / LinkedIn.
   Gate: `python -m pdf_tool.check_ats <light.pdf>` (contiguous cues + mid-word splits). Print body +
   `h2` on a system font. Jobright content rank ≠ parse fail. SSOT:

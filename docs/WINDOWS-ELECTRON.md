@@ -83,8 +83,8 @@ harness `Stop-Process`es the Electron PID and still asserts runtime death.
    desktop shortcut. No checkout, Node, or system Python is required by the packaged app.
 2. On a genuinely new workspace, the app copies the public fictional Jane Example to
    `Documents\PDF Designer`; it never overwrites an existing folder.
-3. The window always opens the Hub title screen. It stays until **Open**, **Start
-   wizard**, Enter, or Escape (no auto-dismiss). After that, the local Design Hub is in its
+3. The window always opens the Hub title screen. It dismisses within 2,700 ms including its 180 ms exit; **Open**, **Start
+   wizard**, Enter, Escape, or reduced motion can skip it sooner. After that, the local Design Hub is in its
    dark-default workspace chrome. Choose **Start wizard** (or **Wizard** in the header) for
    the guided route: local vault → source-backed skills → palette → light and dark export.
    The document's own palette is independent of the Hub theme.

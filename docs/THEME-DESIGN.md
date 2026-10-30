@@ -3,24 +3,9 @@
 pdf-designer separates public, reusable design defaults from private brand
 profiles.
 
-## Which theme kit? (official)
+## Theme sources
 
-| Kit | Role for pdf-designer |
-|---|---|
-| **`www-theme-kit`** ⭐ | **THE kit.** Hub chrome profile, resume palette catalog, website brand upstreams, breakpoint SCSS. |
-| `syna-theme-kit` | **Historical lineage only** for some `themes/presets/*` accents — not opened in the pdf workspace; not required to run the hub. |
-| `syn-themes` | **VS Code extension** — unrelated day-to-day. Never edit it for pdf-designer work. |
-
-**Official hub / palette-prefs profile:**
-[`www-theme-kit/profiles/pdf-designer.json`](../../www-theme-kit/profiles/pdf-designer.json)
-(`_meta.ssot` / `kit: www-theme-kit`). Document audition catalog:
-`www-theme-kit/palettes/resume-palettes.json`. Live-site brand inspiration:
-`www-theme-kit/profiles/{jenninexus,martiangames}.json` → map into
-`brands/brand-*.json` for exports.
-
-Hub chrome (toolbar size, library/viewer split, folder ghost-★ pins) is **not** a document
-palette concern — edit `src/pdf_tool/static/hub.css` + [`PREVIEWER.md`](PREVIEWER.md); keep
-`--dash-*` accents distinct from document `--primary` / brand maps.
+The `www-theme-kit/profiles/pdf-designer.json` profile owns the shared breakpoint contract. `syna-theme-kit/adapters/pdf-designer.json` supplies the generated Aesyna visual adapter; the vendored CSS lets a public clone run without either kit. Document palettes and private brand maps remain separate.
 
 ## Hub responsive contract
 
@@ -28,8 +13,8 @@ The shared breakpoint **numbers** live in
 [`www-theme-kit/scss/_breakpoint-tokens.scss`](../../www-theme-kit/scss/_breakpoint-tokens.scss).
 The Design Hub's actual behavior lives in
 [`src/pdf_tool/static/hub.css`](../src/pdf_tool/static/hub.css): CSS media queries cannot consume
-runtime variables. `C:\mcp\.config\mcp-breakpoints.json` is a cross-project cache/index, and
-`.config/mcp-pdf-designer*.json` is a pointer for tools; neither owns the numbers or can override
+runtime variables. Cross-project caches and
+`.config/mcp-pdf-designer*.json` are pointers for tools; neither owns the numbers or can override
 the Hub implementation.
 
 | Width | Hub behavior |
@@ -55,33 +40,7 @@ Tracked default theme files:
 - `examples/profiles/default-resume/profile.json` - default resume profile.
 - `examples/profiles/default-resume/default-resume.html` - reference render.
 
-Kit catalog (mirrors + Martian private map): `www-theme-kit/palettes/resume-palettes.json` (7 public presets + `default-resume` + `martian-resume`).
-Contrast spot-check: `node scripts/wcag-resume-palettes.mjs`.
-
-### Personal palette prefs (Jenni / Shade)
-
-| Layer | Path | Holds |
-|---|---|---|
-| Person pointer | `users/<user>.json#brandTheme.ssot` | Path only — **no hex** |
-| Profile pointer | `profiles/<user>-resume.json#theme.brandMap` | Same path, for make-resume |
-| **Hex SSOT** | `brands/brand-*.json` | Tokens Design Hub + exports use |
-| Website upstream | `www-theme-kit/profiles/{jenninexus,martiangames}.json` | Live-site inspiration; map into `brands/` when syncing |
-| Kit catalog | `www-theme-kit/palettes/resume-palettes.json` | Public presets + `martian-resume` mirror |
-
-| Who | `brandTheme.ssot` → |
-|---|---|
-| Jenni | `brands/brand-jenninexus.json` |
-| Shade (personal / Synagen) | `brands/brand-synagen.json` |
-| Shade studio / games voice | `brands/brand-martian.json` |
-
-**Jenni defaults triad (resume · cover letter · work samples)** share one mapped palette from
-`brand-jenninexus.json` (`--primary #A563D1` · `--secondary #FF2E88` · `--accent #FF6EC4` ·
-`--support #00D4AA` · `--text #E0D5EB`). Keep footers cohesive: script name in `--accent`, email in
-`--text` at ≥11px (never muted `--dim2`). Live URLs are real `<a href>` in the body; portfolio /
-agency / studio links are not footer chrome. Layout prefs for the visual pack:
-[`../layouts/work-examples/work-examples.json`](../layouts/work-examples/work-examples.json) + [`LAYOUT-SYSTEM.md`](LAYOUT-SYSTEM.md).
-
-Design Hub `load_palettes()` scans `themes/` + `themes/presets/` + `brands/` (alias `storage/brand-design/`) — the person dropdown only filters the library, it does not auto-apply a brand.
+Private brand maps belong in ignored `brands/`; profile and person files point to those maps. The Hub scans public themes and private maps independently.
 
 The public default is intentionally brand-neutral. It supports:
 
@@ -127,16 +86,7 @@ Root nouns are ignored by git. Use them for local brand profiles, private source
 paths, real output paths, and project-specific palette mappings. `storage/` remains
 a dual-run alias until retirement.
 
-**Website brands stay in `www-theme-kit/profiles/`.**
-When a resume needs that brand, **map** the kit profile into `brands/brand-*.json`
-(token names in the table below). Tracked starter: [`../examples/brand-design/`](../examples/brand-design/).
-Do not open `syna-theme-kit` or `syn-themes` for routine pdf-designer palette work.
-
-**Worked MG mapping (aligned 2026-07-22):** live site roles (`martiangames.json`) →
-`brands/brand-martian.json` + kit mirror `palettes/resume-palettes.json#martian-resume`.
-Dark = **primary `#FF6B00` · secondary `#8B5CF6` · accent `#FF4500` · support `#42F4C8`** on
-purple-tinted near-black (same role order as the site — do not swap secondary/accent). Light =
-print-safe orange-RED + violet (never darkened amber, never teal-as-secondary).
+Map any approved external palette into a private `brands/brand-*.json` using the token contract below. Public starters use fictional or neutral values.
 
 ## Token Map Contract
 

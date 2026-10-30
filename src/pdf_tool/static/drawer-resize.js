@@ -10,7 +10,7 @@
     const invert = !!opts.invert;
     const stackedMq = window.matchMedia("(max-width: 575.98px)");
     const phoneSheetMq = window.matchMedia("(max-width: 575.98px), (max-height: 480px)");
-    const compactNavMq = window.matchMedia("(max-width: 1399.98px)");
+    const compactNavMq = window.matchMedia("(max-width: 991.98px)");
     const compactPanel = () => compactNavMq.matches && !phoneSheetMq.matches;
     const defaultWidth = () => {
       if (typeof opts.defaultWidth === "function") return opts.defaultWidth();
@@ -99,7 +99,7 @@
     legacyDefault: 320,
     migrateSkinnyDefault: true,
     defaultWidth: () => {
-      if (window.matchMedia("(max-width: 1399.98px)").matches
+      if (window.matchMedia("(max-width: 991.98px)").matches
           && window.matchMedia("(min-width: 576px)").matches
           && window.matchMedia("(min-height: 481px)").matches) {
         return Math.round(window.innerWidth * 0.92);
@@ -110,7 +110,7 @@
     hideWhenPhoneSheet: true,
     max: () => {
       const peek = 24;
-      if (window.matchMedia("(max-width: 1399.98px)").matches
+      if (window.matchMedia("(max-width: 991.98px)").matches
           && window.matchMedia("(min-width: 576px)").matches
           && window.matchMedia("(min-height: 481px)").matches) {
         return window.innerWidth - peek;
