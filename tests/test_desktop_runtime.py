@@ -16,7 +16,9 @@ def test_frozen_runtime_uses_only_a_bundled_playwright_chromium(tmp_path: Path, 
     assert bundled_chromium_path(runtime, frozen=True) == browser
     monkeypatch.setattr("pdf_tool.browser.sys.frozen", True, raising=False)
     monkeypatch.setattr("pdf_tool.browser.sys.executable", str(runtime))
-    assert chromium_launch_kwargs() == {"executable_path": str(browser)}
+    kwargs = chromium_launch_kwargs()
+    assert set(kwargs) == {"executable_path"}
+    assert Path(kwargs["executable_path"]).samefile(browser)
 
 
 def test_preview_ready_file_contains_the_actual_loopback_url(tmp_path: Path):

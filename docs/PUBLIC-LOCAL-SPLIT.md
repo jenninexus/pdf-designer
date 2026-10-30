@@ -27,7 +27,7 @@ Sibling pattern: [`agency/docs/PUBLIC-LOCAL-SPLIT.md`](../../agency/docs/PUBLIC-
 | Config | `.config/mcp-pdf-designer.example.json` | `mcp-pdf-designer.json` (absolute paths) |
 | Theme kit | Public default themes in-repo | `www-theme-kit` profiles + `brands/` (private kits) |
 | Docs | This folder (public `*.md`) · [`ROADMAP.md`](ROADMAP.md) backlog | `MARKETING.md` · `WORKSPACE.md` · `HISTORY-SCRUB.md` · `CHANNELS.local.md` · `WINDOWS-ELECTRON.local.md` · other `*.local.md` / `*.private.md` · all `Plans/` |
-| Lessons | `.memory/README.md` · `.memory/lesson-*.md` | Other `.memory/` notes · frozen `Plans/_Complete/_archive/dev-log-sego.yaml` |
+| Lessons | `.memory/README.md` · `.memory/lesson-*.md` | Other `.memory/` notes · frozen `Plans/_complete/_archive/dev-log-sego.yaml` |
 
 ## Local execution and applicant ownership
 
@@ -81,12 +81,12 @@ Never commit from a personal machine:
 | Root nouns (`users/` · `vaults/` · `resumes/` · …) real files; leftover `storage/` | Vaults, contacts, source HTML, exports |
 | `_exports/*` except `_exports/README.md` | Public-example exports and any source the engine can't match to a document family |
 | `output/*` except `output/README.md` | Disposable smoke-test, packaging, benchmark, and automation scratch |
-| `docs/MARKETING.md` · `WORKSPACE.md` · `HISTORY-SCRUB.md` · `docs/*.local.md` | example-host marketing, channel/signing ops, machine paths, rewrite runbooks |
+| `docs/MARKETING.md` · `WORKSPACE.md` · `HISTORY-SCRUB.md` · `docs/*.local.md` | Private marketing, channel/signing operations, machine paths and rewrite runbooks |
 | All of `Plans/` (personal, application, and session plans) | Local working context; never pushed (public repo rule 2026-09-30). Public backlog: `docs/ROADMAP.md` |
 | `.claude/commands/{start,wrap,pdf-start,pdf-wrap,README,make-*}.md` | Dev ritual + personal specifics |
 | `.codex/` | Generated local adapters for the bare commands |
 | `.config/mcp-pdf-designer.json` | Absolute machine paths |
-| `Plans/_Complete/_archive/dev-log-sego.yaml` | Frozen historical session log (do not append) |
+| `Plans/_complete/_archive/dev-log-sego.yaml` | Frozen historical session log (do not append) |
 | `*.pdf` / `*.png` (except deliberate example fixtures under `docs/images/`) | Exports / captures |
 
 ## Ongoing clone-safety gate
@@ -157,15 +157,15 @@ Document tokens that strangers need live in **`themes/`**. Real studio hex stays
 | **agency** | `agents/`, `docs/`, media masters | `projects/`, `mcp.json`, audits |
 | **socials** | Generic `docs/` + MCP tools | `storage/docs/*` IDs, `.env`, brand YAMLs |
 | **dashboard** | Seed profiles + fictional sample data | `my-dashboard/`, `.env` |
-| **www-theme-kit** | *(network private kit — not a public app)* | Whole kit is example-host/BEE brand infra |
+| **www-theme-kit** | *(network private kit — not a public app)* | Private kit infrastructure |
 
 ## History hygiene
 
 Files that once lived on `main` (bare commands, machine MCP config) can still exist in
-**old SHAs**. Working-tree ignore is not enough — clones of those commits still see them.
+**old SHAs**. Working-tree ignore protects the current tree only; old commits remain accessible. This cleanup does not rewrite history or establish that earlier personal material has been removed.
 
 - Runbook (local): `docs/HISTORY-SCRUB.md` (gitignored)
-- Do **not** force-push until GitHub auth is confirmed and a human OK’s the rewrite
+- Do **not** force-push without the required explicit owner authorization and a reviewed history-rewrite plan
 - Fast-forward of clone-safe `main` commits **is** how the public product stays current
 
 ## Related

@@ -153,3 +153,12 @@ Longer private channel notes: `docs/MARKETING.md` · `docs/CHANNELS.local.md` (g
 ---
 
 *Last updated 2026-08-25 — free GitHub + optional tip is the public ask; Azure signing is held until further notice.*
+
+
+## Product boundary and next decisions (2026-10-30)
+
+The current public GitHub offering is the local-first engine, Design Hub, example templates and documented clone workflow. The Electron installer is a local pre-release implementation, not a released Store product. Private profiles, vaults, documents, application history and operating notes belong in ignored personal roots and may sync through an operator-owned private remote. See [PRIVATE-SYNC](PRIVATE-SYNC.md).
+
+Recommendation: retain one public engine and the existing LAN/private workspace. A separate private product-shell repository is not justified until independent ownership, licensing, release cadence or actual private source creates a concrete need; a second repository alone does not protect data already placed in public history. Personal operating backlog is `docs/ROADMAP.local.md` in a configured private workspace; this file is intentionally absent from public clones.
+
+A browser form helper is a separate, consent-driven local capability; see [BROWSER-HELPER](BROWSER-HELPER.md) for its actual scope and status. Google sign-in is a future optional identity integration, not a current PDF Designer feature or a requirement for local use. Synagen's desktop precedent opens the system browser and uses a loopback callback with its self-hosted Supabase/GoTrue OAuth flow; its provider credentials and allowlist are server-side. Reuse the architectural pattern only after reviewing its current source; do not reuse its credentials or assume its account backend is appropriate for this product. Define a separate provider project, registered redirects, state/PKCE and validated identity/session lifecycle before implementation. [Google's OpenID Connect documentation](https://developers.google.com/identity/openid-connect/openid-connect) describes the server authorization-code flow.

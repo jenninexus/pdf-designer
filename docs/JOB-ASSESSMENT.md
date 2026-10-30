@@ -5,10 +5,7 @@
 Run by `/make-resume` (Steps 2–4). This page is the SSOT for *what we track and why*.
 Sibling docs: [`VAULT.md`](VAULT.md) (what we may claim) · [`STORAGE.md`](STORAGE.md) (layout + brand SSOT).
 
-> **Why this exists.** On the Color X application we built two complete, polished applications before
-> anyone asked where the listing came from — then nearly wrote the job off as dead because Indeed's
-> company page said "no open jobs" (it was live the whole time). Both failures were *capture* failures,
-> not judgment failures. Capture first, assess second, write third.
+> Capture the direct posting and application route before assessing or writing.
 
 ---
 
@@ -30,9 +27,9 @@ If the listing is pasted as raw text with no link, **ask for the URL before doin
 
 1. **"No open jobs" on the company page ≠ the posting is dead.** Board-hosted *Easily apply* postings
    frequently never surface on the employer's company page, and many employers have **no careers page
-   at all** (Color X has none; `/careers/` 404s). **Only the direct job link is authoritative.**
-2. **Job-alert URLs are full of rot.** `?jk=069675c256f18987&tk=...&alid=...&utm_campaign=job_alerts&xkcb=...`
-   → keep **`https://www.indeed.com/viewjob?jk=069675c256f18987`**. The `tk`/`xkcb`/`xpse` tokens are
+   at all**. **Only the direct job link is authoritative.**
+2. **Job-alert URLs are full of rot.** `?jk=<job-key>&tk=...&alid=...&utm_campaign=job_alerts&xkcb=...`
+   → keep **`https://www.indeed.com/viewjob?jk=<job-key>`**. The `tk`/`xkcb`/`xpse` tokens are
    session-scoped, expire, and leak how you found the job.
 
 ---
@@ -61,11 +58,11 @@ negotiate / apply as a studio-pair / skip) and say which one you'd pick and why.
 
 | # | Capture | Use it for |
 |---|---|---|
-| 1 | **What they actually do** | The pitch angle. *Color X doesn't just design retail — they print, fabricate, and install it. So a render has to survive the shop floor.* That one sentence drove both cover letters. |
+| 1 | **What they actually do** | Connect the pitch to the employer’s actual work. |
 | 2 | **Founded / size / scale** | Credibility and stability signals. |
-| 3 | **Named clients** | The strongest personalization hook. (Color X: Nike, Bloomingdale's, J.Crew, Michael Kors, the Met.) |
+| 3 | **Named clients** | Verify relationships before using them to personalize a letter. |
 | 4 | **Their real brand colors** | Pull their site CSS → derive the resume theme. See `/make-resume` Step 5. |
-| 5 | **What the listing repeats** | Repetition = priority. Color X asked for **AI-powered creative tools twice** — that's the sleeper requirement, and most applicants have nothing real to say. |
+| 5 | **What the listing repeats** | Repeated requirements can signal priority. |
 | 6 | **What they're admitting** | *"Own our growing library… build scalable systems"* = their asset pipeline is immature. That's an opening, not a chore. |
 
 ---
@@ -78,7 +75,7 @@ While building the Tier 4 map, you will hit requirements with **no vault backing
 write them off as gaps and print the resume. **STOP and ask.**
 
 > **The vault is a record of what we've told you — not the limit of what we've done.**
-> Jenni and Shade have 14 and 25 years of experience. The vault captures a fraction of it. A
+> A vault captures only what an applicant has recorded. A
 > requirement that looks like a gap is very often just a fact nobody has written down yet.
 
 ### The rule
@@ -99,10 +96,7 @@ vault:
 
 - **Asking costs one message. Not asking costs the job.** A resume that omits a qualification you
   actually hold is strictly worse than one that includes it.
-- **It compounds.** Every answer permanently improves the vault. The Color X build alone surfaced 3ds
-  Max, V-Ray, Unreal, and CC4 apparel authoring — none of which were in the vault beforehand, and **all
-  four turned out to be central to the pitch.** Had nobody asked, we'd have submitted a resume claiming
-  only Blender and Unity for a job requiring 3ds Max. That's the whole cautionary tale.
+- **It compounds.** Confirmed answers improve the vault for later applications.
 - **It respects the honesty rule rather than straining it.** We are not inventing anything — we are
   *asking* whether a real thing exists.
 
@@ -113,7 +107,7 @@ which requirements went unverified.
 
 ## ✅ TIER 4 — Requirement → Evidence map (the honesty ledger)
 
-A table mapping **every** listing requirement to what the vault can truthfully back:
+A table mapping **every** listing requirement to what the vault can truthfully back. The following rows are fictional examples, not claims about any applicant:
 
 | Their ask | Our honest answer | Status |
 |---|---|---|
@@ -134,11 +128,9 @@ A table mapping **every** listing requirement to what the vault can truthfully b
 
 Rank by **leverage**, not by effort. State the single highest-value action plainly.
 
-- **The real gate** — for Color X it's the retail portfolio, not the tool gap. *"Render 2–3 retail
-  vignettes: a CC4 mannequin in custom garments, a lit window bay, one stylized + one photoreal pass.
-  That afternoon of work converts this from interesting outsider to obvious hire."*
+- **The real gate** — identify the actual portfolio or qualification requirement and the work needed to meet it.
 - **Questions to ask them** (W2 or 1099? extension path? equipment?).
-- **The upsell**, if there is one (Synagen as bespoke tooling).
+- **The upsell**, if there is one (a relevant bespoke service).
 - **Interview landmines** to rehearse (overqualification, the tool gap).
 
 ---
@@ -166,13 +158,13 @@ light résumé only; work-samples are visual; cover letters go where the portal 
 |---|---|---|
 | 1 | Export **light** PDF (`html_to_pdf` default — no `--pdf-theme dark`) | `*-resume-light.pdf` beside the HTML |
 | 2 | `python -m pdf_tool.check_ats <resume-light.pdf>` | Exit 0 · `[OK] job title` · `[OK] work experience` · `[OK] education` · **mid-word splits ≤ 2** |
-| 3 | **Read the text dump** in that command | Contiguous phrases — not `W ORK EXPERIENCE`, not `Martian Gam es`, not two-column gibberish |
+| 3 | **Read the text dump** in that command | Contiguous phrases — not `W ORK EXPERIENCE`, not `Example Co mpany`, not two-column gibberish |
 | 4 | Board upload (Jobright / Indeed / LinkedIn) | Upload **light** only · no “missing Job Title / Work Experience / Education” warning |
 
-**Applies to every private profile under `profiles/`** (jenni · shade · studio · martian) and the
+**Applies to every private profile under `profiles/`**  and the
 public `examples/profiles/default-resume/`. Each private profile’s
 `#exports.exportPrefs` must keep `resumeDefault: light-and-dark` + `includeLightAts: true` —
-that is the shared board contract, not a Jenni-only preference. Creative headings (`My Journey`, bare
+that is the shared board contract, not a single-person preference. Creative headings (`My Journey`, bare
 `Experience`, `Training`) are not parseable field names. Work-samples PDFs are visual — boards get the
 **light résumé**, not the portfolio. Cover-letter HTML still gets `check_generation`; it does **not**
 need Jobright section cues.
@@ -239,7 +231,7 @@ When the human *wants* a better Jobright content score (still source-backed only
 ### ⚠ Jobright / board “missing Job Title / Work Experience / Education”
 
 Owner-observed 2026-08 (Jobright.ai). Their checker warns when it cannot map those three fields —
-even if the words exist somewhere in the PDF. Fixes that cleared it on the Jenni default:
+even if the words exist somewhere in the PDF. Fixes that cleared it on the reference résumé:
 
 | Field | What fails | What to put in the HTML |
 |---|---|---|
@@ -249,7 +241,7 @@ even if the words exist somewhere in the PDF. Fixes that cleared it on the Jenni
 
 Also — **font metrics matter.** Montserrat’s `W` glyph advances made the PDF text layer extract
 `WORK EXPERIENCE` as `W ORK EXPERIENCE` (Jobright then warns the section is missing), even at
-`letter-spacing: 0`. Section `h2` cues **and print body text** on the Jenni default use
+`letter-spacing: 0`. Section `h2` cues **and print body text** on the reference résumé use
 `"Segoe UI", Arial, Helvetica` so cues and body words stay contiguous. Extreme tracking on brand
 words (`0.18em` → `je nnine xus`) has the same failure mode — keep decorative spacing ≤ `0.04em`
 on ATS-critical labels. `check_ats` fails when mid-word splits exceed the threshold.

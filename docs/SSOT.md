@@ -18,7 +18,6 @@ Smoke:     python scripts/smoke-white-label.py   ← ⭐ fresh-clone proof (exam
 Package:   docs/PACKAGING.md + scripts/check-wheel-assets.py  ← wheel must include themes/layouts
 Engine:    python -m pdf_tool  (hub) / individual modules
 Plans:     docs/ROADMAP.md (durable backlog) · Plans/ (local-only, gitignored)
-Product hub: C:\Github\product-design  (local; /jen:products)
 ```
 
 Compact map of what this repo owns vs what it only points at. Agents: start here, then
@@ -44,7 +43,6 @@ Folder and optional agent-tooling overview: [`PROJECT-MAP.md`](PROJECT-MAP.md).
 | **QA gate** | `docs/QA.md` + `pdf_tool.check_generation` | One command, 12 checks including letter geometry and résumé text extraction. Required render errors fail; explicit source-only mode is not acceptance. Reuse unchanged source/dependency/PDF receipts. |
 | Protocol docs | `docs/{STORAGE,VAULT,JOB-ASSESSMENT,ARCHITECTURE}.md` | Claim rules + workflow |
 | **Work-samples SSOT** | `profiles/<user>-resume.json#workSamples` + `users/<user>.json#portfolio` | ⭐ **PER-USER** page structure + personal assets — never copy another person's page ([VAULT.md](VAULT.md) § Work-samples) |
-| **Shared MG gallery** | `resumes/studio/resources/images/martiangames/` | ⭐ Title stills + MG logo used by **both** applicants; per-user `…/images/martiangames/` junctions here ([STORAGE.md](STORAGE.md)) |
 | Agent map | `AGENTS.md` | Capability / command SSOT for assistants |
 | **Product / business** | [`PRODUCT.md`](PRODUCT.md) | ⭐ Free GitHub toolkit vs future paid app; shell-over-Hub |
 | **Public vs local** | [`PUBLIC-LOCAL-SPLIT.md`](PUBLIC-LOCAL-SPLIT.md) | ⭐ Tracked vs gitignored; sibling-repo map |
@@ -54,8 +52,8 @@ Folder and optional agent-tooling overview: [`PROJECT-MAP.md`](PROJECT-MAP.md).
 | Make-collage | `.claude/commands/make-collage.example.md` | Multi-image collage routine (public seed) |
 | Public examples | `examples/resume-studio/`, `examples/profiles/`, `examples/brand-design/` | Clone-safe templates |
 | Project config | `.config/mcp-pdf-designer.example.json` | Seed only — local `mcp-pdf-designer.json` is gitignored |
-| Product backlog | `docs/ROADMAP.md` | Remaining and parked product work; authoritative when `_Active/` is empty |
-| Session plans (local-only) | `Plans/` | Gitignored working context: `_Active/` slice + `_Complete/` history; never pushed |
+| Product backlog | `docs/ROADMAP.md` | Remaining and parked product work; authoritative when `_active/` is empty |
+| Session plans (local-only) | `Plans/` | Gitignored working context: `_active/` slice + `_complete/` history; never pushed |
 
 ---
 
@@ -101,31 +99,9 @@ that does **not** remove the need for a light file when a board will parse the u
 and work-samples: `check_generation` always; boards still get the light **résumé**, not the portfolio.
 ---
 
-## Personal palette prefs (Jenni / Shade)
+## Personal palette preferences
 
-**One hex map each. Person files only point.**
-
-```
-users/<user>.json#brandTheme.ssot
-        │
-        ▼
-brands/brand-*.json   ← ⭐ pdf-designer COLOR SSOT (Design Hub + exports)
-        ▲
-        │  map / sync from (never a second résumé SSOT)
-www-theme-kit/profiles/{jenninexus,martiangames}.json
-```
-
-| Who | Edit this file | Pointed by |
-|---|---|---|
-| Jenni | `brands/brand-jenninexus.json` | `users/jenni.json` · `profiles/jenni-resume.json` · defaults triad HTML under `resumes/jenni/defaults/`; PDFs under `resumes/jenni/` (same footer-mail legibility: `--text` ≥11px) |
-| Shade (Synagen) | `brands/brand-synagen.json` | `users/shade.json` · `profiles/shade-resume.json` |
-| Martian studio | `brands/brand-martian.json` | Shade studio/games profiles + kit `#martian-resume` |
-
-Design Hub loads `themes/` + `themes/presets/` + `brands/` (`preview.load_palettes`; alias `storage/brand-design/`).
-The person filter is library-only — it does **not** auto-select a palette. Full contract:
-[`THEME-DESIGN.md`](THEME-DESIGN.md) · [`STORAGE.md`](STORAGE.md) · [`../themes/PALETTE-RULES.md`](../themes/PALETTE-RULES.md).
-
----
+Each person’s ignored `brands/brand-*.json` is the document color source; personal identity and profile files point to it. Keep actual mappings in private workspace notes.
 
 ## Points elsewhere (never duplicate)
 
@@ -133,12 +109,9 @@ The person filter is library-only — it does **not** auto-select a palette. Ful
 |---|---|
 | Breakpoint numbers | `www-theme-kit/scss/_breakpoint-tokens.scss` (shared numeric SSOT) |
 | Hub breakpoint / nav behavior | `src/pdf_tool/static/hub.css` (implemented pdf-designer policy) |
-| MCP breakpoint file | `C:\mcp\.config\mcp-breakpoints.json` (**registry** of project → set → nav_switch; not the numeric SSOT — that is kit SCSS) |
-| Resume palette kit catalog | `www-theme-kit/palettes/resume-palettes.json` |
+| Project breakpoint pointer | `.config/mcp-pdf-designer.json` selects the named kit set/profile. Client MCP files launch servers only; the retired MCP cache is not a dependency. |
 | Hub chrome profile ⭐ | `www-theme-kit/profiles/pdf-designer.json` |
-| Live-site brand hex (JN / MG) | `www-theme-kit/profiles/{jenninexus,martiangames}.json` — map into `brands/` for résumés |
-| Preset lineage (history only) | Some `themes/presets/*` note syna-theme-kit origins — **runtime kit is www-theme-kit**; do not open syna/syn-themes for hub work |
-| Human voice map / public cards | `C:\Github\voice-seed` (registry + `characters/humans/*.md`) |
+| Aesyna visual adapter | `syna-theme-kit/adapters/pdf-designer.json` generates the vendored `src/pdf_tool/static/hub-aesyna.css`; no private kit dependency at runtime. |
 | Application `characterVoice` + vault `voice` | **THIS** repo `users/` + `vaults/` (private) — voice-seed only points |
 | Agency fiction voices | `agency` — **NOT** applicants |
 | Social / marketing registers | `socials` |

@@ -61,18 +61,18 @@ _job-apps/
 per *person*, so everything one applicant needs to send sits in one place:
 
 ```text
-resumes/jenni/3D-Visualizer/     one applicant's PDFs for that job
-resumes/shade/3D-Visualizer/     the other's, for the same job
+resumes/alex/Example-Role/     one applicant's PDFs for that job
+resumes/blair/Example-Role/     the other's, for the same job
 ```
 
 **A company that posts many near-identical roles gets one folder, so the role folders don't pile up
 flat** — and its role folder inside drops the company prefix:
 
 ```text
-resumes/shade/Micro1/Research-Engineering/
-resumes/shade/Micro1/Art-Related-Professional/
-resumes/shade/Meta/Technical-Game-Designer/
-resumes/shade/Sony-3D-Characters/        ← single-application company stays flat
+resumes/alex/ExampleCo/Research-Engineering/
+resumes/alex/ExampleCo/Art-Related-Professional/
+resumes/alex/ExampleCo/Technical-Game-Designer/
+resumes/alex/Example-Company-Role/        ← single-application company stays flat
 ```
 
 Group only at two-or-more applications per person, and note that **exports into a company group need an

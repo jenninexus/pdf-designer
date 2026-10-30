@@ -1,17 +1,19 @@
 # ROADMAP — pdf-designer
 
+Updated 2026-10-30: public product capabilities; personal operations live in the ignored workspace roadmap.
+
 > **Durable product backlog and status map.** Completed work is archived, not restated here.
 >
 > | Kind | File |
 > |---|---|
 > | **Active product slice** | `Plans/README.md` → the one dated checklist (local-only) |
-> | **Completed history** | `Plans/_Complete/2026-09-26-roadmap-completed-archive.md` (local-only) |
+> | **Completed history** | `Plans/_complete/2026-09-26-roadmap-completed-archive.md` (local-only) |
 >
 > `/jen:roadmap` resolves here. `Plans/` is local-only working context (gitignored, public repo
 > rule 2026-09-30); this file is the public backlog.
 > `/pdf-start` and `/pdf-wrap` use the active plan plus this roadmap. Do not create or update
 > `dev-log.yaml`, `dev-log-sego.yaml`, or `dev-chat.md`; the old YAML is frozen under
-> `Plans/_Complete/_archive/` (local-only).
+> `Plans/_complete/_archive/` (local-only).
 >
 > Product UX target: [`WORKSPACE-LAYOUT.md`](WORKSPACE-LAYOUT.md) (root `users/` · `vaults/` · `_job-apps/` · …).  
 > Live data today: those root nouns. [`STORAGE.md`](STORAGE.md) documents the layout + the `storage/` dual-run alias.
@@ -20,7 +22,7 @@
 
 The exact checklist, blocker evidence, and next action live in the dated checklist named in the
 local-only `Plans/README.md`. This file is the durable backlog; completed slices are archived
-in `Plans/_Complete/2026-09-26-roadmap-completed-archive.md` (local-only) and are **not** restated here.
+in `Plans/_complete/2026-09-26-roadmap-completed-archive.md` (local-only) and are **not** restated here.
 
 **Priority: select one next product-evolution slice from the decision-gated work below.**
 
@@ -54,11 +56,17 @@ in `Plans/_Complete/2026-09-26-roadmap-completed-archive.md` (local-only) and ar
 
 - **Commercial desktop shell** — Electron/NSIS has a pre-release implementation; signing, clean-machine
   proof and fulfilment remain release gates, not a live sale. Historical PyWebView exploration:
-  `Plans/_Complete/2026-07-11-design-hub-parked-phases.md` (local-only).
+  `Plans/_complete/2026-07-11-design-hub-parked-phases.md` (local-only).
 - **Signed binary channel** — only after a private channel decision; require valid Authenticode plus
   clean Windows 10/11 x64 VM proof before any binary listing. Unsigned listing stays off.
 - **Production PyPI** — only after TestPyPI proof and an explicit channel decision; the GitHub clone
   remains the complete free product.
+
+### Optional integrations and delivery
+
+- **Browser form helper:** see [BROWSER-HELPER.md](BROWSER-HELPER.md) for implemented scope and remaining consent, privacy and compatibility gates. No automatic submission.
+- **Optional Google sign-in:** design and implement a separately configured identity flow only when account-backed features require it; preserve offline local use. [PRODUCT.md](PRODUCT.md) records the Synagen precedent and boundary.
+- **Microsoft Store:** assess MSIX packaging, clean-machine lifecycle, certification and truthful listing before release; current NSIS installer is unsigned. [PACKAGING.md](PACKAGING.md) records the route and gates.
 
 ### Product evolution
 

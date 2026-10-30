@@ -22,7 +22,7 @@ python -m pdf_tool.merge_pdfs out.pdf a.pdf b.pdf --require-letter
 python -m pdf_tool.pdf_to_png <doc>.html                        # one PNG per .page (visual QA)
 python -m pdf_tool.check_palette <doc>.html                     # palette guard (also auto on export)
 python -m pdf_tool.check_palette --scan <dir>
-python -m pdf_tool.check_palette --no-magenta <doc>.html        # + magenta/pink ban (Shade + Martian docs)
+python -m pdf_tool.check_palette --no-magenta <doc>.html        # + magenta/pink ban (optional policy)
 python -m pdf_tool.check_overflow <doc>.html --pdf-theme dark   # page-fit guard (also auto-warns on export)
 python -m pdf_tool.check_vault --all
 python -m pdf_tool.check_vault --explain <user> <track>
@@ -109,16 +109,16 @@ around **5 MB**. The go-to work-examples pack must clear that bar.
 
 ```powershell
 # 1) Inline at print resolution (JPEG, longest edge 960px)
-python resumes/jenni/defaults/_inline_work_examples.py
+python -m pdf_tool.inline_images --board <template.html> <out.html>
 # or: python -m pdf_tool.inline_images --board <template.html> <out.html> [name=path ...]
 #    Preferred template style: <img src="../../resumes/<user>/resources/images/project-hero.webp">
 #    — relative paths to the asset SSOT preview as-is and are inlined automatically (missing file = hard error).
 #    {{img:name}} placeholders still work but render broken until inlined.
 
 # 2) QA, then export into the profile's user-facing library
-python -m pdf_tool.check_generation resumes/jenni/defaults/jenni-default-work-examples.html
-python -m pdf_tool.html_to_pdf resumes/jenni/defaults/jenni-default-work-examples.html --output-dir resumes/jenni --force --max-mb 5
-python -m pdf_tool.html_to_pdf resumes/jenni/defaults/jenni-default-work-examples.html --output-dir resumes/jenni --force --pdf-theme dark --max-mb 5
+python -m pdf_tool.check_generation resumes/<user>/defaults/<user>-work-examples.html
+python -m pdf_tool.html_to_pdf resumes/<user>/defaults/<user>-work-examples.html --output-dir resumes/<user> --force --max-mb 5
+python -m pdf_tool.html_to_pdf resumes/<user>/defaults/<user>-work-examples.html --output-dir resumes/<user> --force --pdf-theme dark --max-mb 5
 ```
 
 `--max-mb 5` fails the export if the PDF is still over the cap. Do **not** try
@@ -293,7 +293,7 @@ Exporting is not finishing. Run the guards, assert the page count, and *look at 
 #    pinned footer collide with the last lines. Also auto-warns on every export.
 python -m pdf_tool.check_overflow resume.html --pdf-theme dark
 
-# 2) MAGENTA guard — Shade + Martian docs only (Jenni's brand legitimately uses pink)
+# 2) MAGENTA guard — optional policy for a document that requires it
 python -m pdf_tool.check_palette --no-magenta resume.html
 
 # 3) page count + paper size from the ACTUAL PDF (ground truth, never an HTML re-render)

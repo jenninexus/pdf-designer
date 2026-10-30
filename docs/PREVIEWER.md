@@ -51,7 +51,7 @@ breakpoint contract.
 
 **No MCP / always-on server.** Optional temporary localhost only. CLI export works without it.
 
-On compact layouts, the Design Hub drawer is a hamburger sheet through **1399.98px**. **Phones** (≤575.98 and short landscape max-height 480) get a **full-bleed** sheet (no leftover strip). **Tablet / laptop hamburger** (576–1399.98) gets an **almost-full flexible end-panel** (`min(92vw, 100vw - 24px)`) with the grab-edge sash on — a peek of the stage stays visible; never 100vw on a laptop. It closes with its top-right **X**, the
+On compact layouts, the Design Hub drawer is a hamburger sheet through **991.98px**. **Phones** (≤575.98 and short landscape max-height 480) get a **full-bleed** sheet (no leftover strip). **Tablet / laptop hamburger** (576–991.98) gets an **almost-full flexible end-panel** (`min(92vw, 100vw - 24px)`) with the grab-edge sash on — a peek of the stage stays visible; never 100vw on a laptop. It closes with its top-right **X**, the
 backdrop, or Escape. Its manual **Refresh** control sits beside that X. Library, Recipes, Vault, and Wizard share that drawer contract.
 
 For the Windows-first browser launcher, see
@@ -98,8 +98,8 @@ fast on a large tree. If the server is briefly down mid-poll, the client just re
 
 Hub layout: **library left + viewer right** from **576px** up (desktop / tablet). Stacks only below
 **575.98px** (phones) and in **short landscape** (`max-height: 480px`). Drawer (hamburger) from
-**≤1399.98px** (`nav_switch: xxl`) so iPad Pro landscape 1366 keeps offcanvas, not header chips.
-Comfortable / widescreen from **1400px**. The toolbar is **52px** at every width. Header icon buttons share one 1:1 square (`--hub-icon-box`). Offcanvas: phone full-bleed; sm–xl almost-full end-panel. Contract:
+**≤991.98px** (`nav_switch: lg`) so desktop windows from 992px retain the horizontally scrollable toolbar.
+The desktop toolbar starts at **992px**; widescreen spacing starts at **1400px**. The toolbar is **52px** at every width. Header icon buttons share one 1:1 square (`--hub-icon-box`). Offcanvas: phone full-bleed; sm–md almost-full end-panel. Contract:
 `www-theme-kit/scss/_offcanvas-nav.scss`.
 The regression matrix covers 390, 576, 768, 992, 1024, 1366, 1400, 1920, 2560, and 3840px.
 **Vault + Recipes + Wizard** use the same switch points (shared `hub.css` + `Library | Recipes | Vault | Wizard` nav). Library is `body.hub-shell` (fixed panes); subpages are `body.hub-page` (document scroll). After ~280px of page scroll a discreet back-to-top chevron appears (bottom-right; `hub-chrome.js`). Tables get a horizontal scroll wrapper below md.
@@ -110,9 +110,9 @@ Each `.html` file is its **own template** in the library (one card = one file).
 
 Local-first library + filters (Jobright-style UX inspiration — not cloud match scores):
 
-- **Kind chips (leading, after Profiles):** All · Resumes · Cover Letters · Letters · Work Samples · **Collages** · Galleries — then Library / Recipes / Vault / search / folder / palette scroll horizontally. **Refresh (icon) + Export (download icon) stay pinned** on the right; **⋯** opens the output-folder popover (also pinned — not clipped). ≤1399.98px: hamburger drawer holds filters + outdir + tip links; magnifier opens search overlay (Ctrl/Cmd+K). Mouse wheel over the header strip scrolls that row horizontally.
+- **Kind chips (leading, after Profiles):** All · Resumes · Cover Letters · Letters · Work Samples · **Collages** · Galleries — then Library / Recipes / Vault / search / folder / palette scroll horizontally. **Refresh (icon) + Export (download icon) stay pinned** on the right; **⋯** opens the output-folder popover (also pinned — not clipped). ≤991.98px: hamburger drawer holds filters + outdir + tip links; magnifier opens search overlay (Ctrl/Cmd+K). Mouse wheel over the header strip scrolls that row horizontally.
 - **Folder:** custom picker (not a bare `<select>`). Open the list → hover a row for a **ghost ★**; click the star to pin / unpin. Pinned folders sort to the **top** and persist in `localStorage` (`pdf-designer.hub.pinnedFolders`) across Refresh and full reloads. No separate pin button in the toolbar. Menu is `position:fixed` (JS places it from the trigger rect) so `.hub-bar-scroll`’s `overflow-y:hidden` cannot clip it.
-- **Drawer palette / profiles / format:** also custom lists (`hub-select.js`). Native `<select>` popups ignore Chrome’s device-mode frame and clip off iPad portrait. Folder stays `.hub-folder-native` (hidden) + the pin picker. Compact footer (Support JenniNexus) is centered with smaller tip pills and larger copy ≤1399.98. Home kind-cards stack to one column ≤1199.98 (iPad portrait 1024).
+- **Drawer palette / profiles / format:** also custom lists (`hub-select.js`). Native `<select>` popups ignore Chrome’s device-mode frame and clip off iPad portrait. Folder stays `.hub-folder-native` (hidden) + the pin picker. Compact footer (Support JenniNexus) is centered with smaller tip pills and larger copy ≤991.98. Home kind-cards stack to one column ≤1199.98 (iPad portrait 1024).
 - **Profiles** (was “Who”): `all profiles` plus **`examples` first** (Jane Example, from tracked `profiles/examples.json`) then every workspace id from `users/` + `profiles/`. Path ownership (`resumes/<id>/` · legacy `storage/<id>/` URLs resolve to the same files) or a hyphen-bounded token (`jenni-…`, `meet-jenni-bot`) tags the card. Preference: `pdf-designer.hub.profileFilter`. First visit with no stored preference selects `examples`. **PDF Designer** app icon/title returns to the home landing (kind cards) and clears `?doc=`.
   - Choosing a profile **scopes** the folder picker and kind-chip counts to that profile. Kind chips click the first matching card. A leftover folder filter is **not** restored across reload (that hid the library behind one template dir).
   - Copy `profiles/you-resume.example.json` → `profiles/you-resume.json` for yourself; keep `profiles/examples.json` so the public cards stay in the dropdown.
@@ -255,3 +255,10 @@ Durable *why*: `.memory/lesson-hub-profile-scopes-folder-and-kind.md` ·
 - [`EXPORTS.md`](EXPORTS.md) — export command reference
 - [`WORKSPACE-LAYOUT.md`](WORKSPACE-LAYOUT.md) — root nouns (`storage/` retired; URL resolver only)
 - [`ROADMAP.md`](ROADMAP.md) — product backlog (`Plans/` is local-only, gitignored)
+
+
+### Mode navigation (2026-10-30)
+
+The toolbar shows the D mark only; its accessible name remains PDF Designer. Library, Recipes, Vault and Wizard icons are present in the initial HTML, with pointer-following glow and a quiet active edge. Mode links prefetch their destination on hover or keyboard focus. Same-origin cross-document view transitions keep the identity strip continuous in supporting browsers; normal navigation and back/forward remain available, and reduced motion disables the transition. This is progressively enhanced multi-page navigation, not a persistent single-page editor. [Chrome implementation guidance](https://developer.chrome.com/docs/web-platform/view-transitions/cross-document).
+
+Project facts live in `.config/mcp-pdf-designer.json` (portable seed beside it). The named breakpoint set is `bootstrap_5_3_8_extended_390_4k`, with `lg`/992 navigation and `xs-max`/575.98 stacking. `.vscode/mcp.json` configures VS Code servers only; it is not a second breakpoint registry. Cursor reads `.cursor/mcp.json`, Claude reads `.mcp.json`, and Codex uses its own TOML registration. Keep machine launch paths private; a public clone needs none of them. [VS Code configuration](https://code.visualstudio.com/docs/agents/reference/mcp-configuration), [Cursor configuration](https://prod.cursor.com/docs/mcp).

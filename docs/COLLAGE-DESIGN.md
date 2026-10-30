@@ -7,7 +7,6 @@ offer a handful of arrangement candidates.
 
 Consumers:
 - Print / PDF / social collage pages (this repo)
-- Live web: Martian Games `/news/{slug}` collage CSS mirrors these family names
   (`filmstrip`, `hero-mosaic`, …) — see `mg/storage/docs/NEWS.md` → Collage layouts.
   Optional `collage_image:` on a news post accepts a `--png` export from this tool.
 
@@ -133,7 +132,7 @@ Presets are defined in
 [`themes/default-collage.json#backgrounds`](../themes/default-collage.json) (the
 SSOT; `collage.py` carries a matching fallback table). The Discord family is
 sampled from the real client chrome — chat `#313338`, sidebar `#2b2d31`, embed
-card `#1e1f22`, shell `#111214` — with the Martian orange `#f0561d` and embed
+card `#1e1f22`, shell `#111214` — with an orange accent `#f0561d` and embed
 link blue `#00a8fc` as accents:
 
 | Preset | Look |
@@ -141,10 +140,10 @@ link blue `#00a8fc` as accents:
 | `discord-slate` | Default Discord grey, diagonal — safest choice |
 | `discord-deep` | Darker vertical fade; keeps bright screenshots dominant |
 | `discord-radial` | Center-top glow; suits hero-mosaic and spotlight |
-| `discord-ember` | Grey warming into the Martian orange |
+| `discord-ember` | Grey warming into orange |
 | `discord-signal` | Grey cooling into the embed link blue |
-| `martian-ember` | Strongest brand lean |
-| `jenni-nexus` | JenniNexus dark — purple glow into `#0A0710` |
+| `martian-ember` | Warm orange accent |
+| `jenni-nexus` | Purple glow into `#0A0710` |
 | `flat-dark` / `flat-white` | The pre-gradient flat defaults |
 
 ```bash
