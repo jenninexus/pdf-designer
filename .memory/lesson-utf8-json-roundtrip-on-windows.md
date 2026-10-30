@@ -9,7 +9,7 @@ metadata:
 When patching tracked UTF-8 JSON that contains emoji / fancy punctuation (⭐, —), **do not** rewrite the
 whole file via a PowerShell one-liner that shells `python -c "json.dumps(...)"` and writes back.
 
-**Why:** On example-machine the console/default codec is often **cp1252**. A full round-trip can emit a corrupt
+**Why:** On Windows the console/default codec can be **cp1252**. A full round-trip can emit a corrupt
 byte (`0x90`) for characters that were valid UTF-8. The next `json.load` fails with
 `UnicodeDecodeError: 'charmap' codec can't decode byte 0x90` — and a large `git diff` can look like
 "everything changed" even when only one key was intended.
@@ -18,7 +18,7 @@ byte (`0x90`) for characters that were valid UTF-8. The next `json.load` fails w
 
 1. Prefer the editor **Edit** tool for a one-key change (e.g. `layouts.resume` → `layouts.documents`).
 2. If using Python, open/write with `encoding="utf-8"` from a `.py` file — never rely on the console codec.
-3. If corruption is already on disk: `git checkout -- <file>`, then re-apply the minimal patch.
+3. If corruption is already on disk, preserve the current file and other agents' edits, compare with the known-good Git blob, and restore only the corrupt portion before reapplying the minimal patch. Do not discard a dirty file wholesale.
 4. Verify: `json.load` + assert `"\u2b50" in data["layouts"]["_role"]`.
 
 Hit while updating `.config/mcp-pdf-designer.json` for the `layouts/resume/` → `layouts/` flatten

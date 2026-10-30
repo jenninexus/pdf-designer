@@ -24,6 +24,7 @@ then use [`PUBLIC-LOCAL-SPLIT.md`](PUBLIC-LOCAL-SPLIT.md) for the tracking/priva
 | [`PUBLIC-LOCAL-SPLIT.md`](PUBLIC-LOCAL-SPLIT.md) | ⭐ Public vs local vs paid architecture |
 | [`PRIVATE-SYNC.md`](PRIVATE-SYNC.md) | Pre-push privacy gate + sharing personal files between your own machines |
 | [`WORKSPACE-LAYOUT.md`](WORKSPACE-LAYOUT.md) | ⭐ Target root folders (`users/` · `vaults/` · …) for the free product |
+| [`DEVELOPMENT-FLOW.md`](DEVELOPMENT-FLOW.md) | Local development, private paid incubation, explicit public promotion and separate distribution gates |
 | [`PRODUCT.md`](PRODUCT.md) | ⭐ Business / product direction (free GitHub + optional tip; installer is a later shell) |
 | [`GETTING-STARTED.md`](GETTING-STARTED.md) | ⭐ Clone path without vaults |
 | [`../examples/resume-studio/`](../examples/resume-studio/) | Public product front door |

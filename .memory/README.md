@@ -5,8 +5,8 @@ the docs, or `git log`. Most importantly: **mistakes that have already been made
 happened**, so they are not repeated.
 
 This directory is **tracked in git**. It travels with every clone. That is the whole point — the
-daily dev-log (`dev-log-sego.yaml`) is gitignored and local, so anything recorded only there is
-invisible to the next person and to a fresh checkout.
+session plan is gitignored and local, so anything recorded only there is invisible to a fresh clone.
+The old YAML dev-log is frozen; current session narrative belongs in the active plan.
 
 ## The split — which surface gets what
 

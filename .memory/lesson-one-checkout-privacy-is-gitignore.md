@@ -6,11 +6,11 @@ metadata:
   date: 2026-08-13
 ---
 
-Use **one pdf-designer checkout**. Privacy is gitignore of personal trees (`users/` · `vaults/` · `_job-apps/` · `resumes/` · `brands/` · `storage/` alias) plus tracked `*.example.json` and `examples/`. Do not invent a second app, and do not add `.env` / `.env.local` unless a tool actually reads env vars — this engine does not.
+Use **one pdf-designer engine** with ignored personal trees (`users/` · `vaults/` · `_job-apps/` · `resumes/` · `brands/` · `storage/` alias) and tracked `*.example.json` / `examples/`. Ignore rules protect new additions only: they do not remove tracked files, historical blobs or private pixels from screenshots. Audit the exact staged paths, content and images; use the public-push guard and review historical exposure separately. Do not add `.env` / `.env.local` unless a tool actually reads it.
 
-**Why:** Asking “do I need two versions?” usually means mixing example-host vaults with the public seed. A `.env` would document a fiction (`AGENTS.md`: reads no environment variables). Machine paths already live in `.config/mcp-pdf-designer.json`.
+**Why:** Personal workspace data and a public engine need distinct storage boundaries, not duplicate engines. An old image archive contained real career-document pixels even though text scans and current ignores passed. Public captures must use a clone-safe workspace; `scripts/capture-hub-stills.py` no longer opens a personal screenshot pack.
 
-**How to apply:** Clone-safe teaching files live at `users/you.example.json`, `vaults/you.example.json`, and `profiles/you-resume.example.json`; Hub demos use `examples/resume-studio/`. Real payload stays ignored in the same checkout. Deliberate generated files use repo-root `_exports/<profile>/<kind>/`; source HTML stays in `resumes/` or `collages/`.
+**How to apply:** Clone-safe teaching files live at `users/you.example.json`, `vaults/you.example.json`, and `profiles/you-resume.example.json`; Hub demos use `examples/resume-studio/`. Real payload stays ignored in the same checkout, with verified private backup. Exports live beside their document family; `_exports/` is the public/unfiled fallback. Future paid-source isolation is a separate implementation slice in `docs/DEVELOPMENT-FLOW.md`; an ignored directory alone does not implement a premium loader.
 
 Tracker is **who × job** (`_job-apps/applied-index.md` + `python -m pdf_tool.tracker list`). Do not daily-count submissions.
 
