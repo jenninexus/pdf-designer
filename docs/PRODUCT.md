@@ -22,6 +22,18 @@ neither requires a second computer, network orchestration or an LLM service to r
 
 ---
 
+## Proposed product tiers and identity
+
+These are product proposals, not implemented entitlements or prices. Validate demand, costs and distribution before setting a price or promising features.
+
+| Tier | Proposed value |
+|---|---|
+| Free | Generous MIT engine, Design Hub, document QA and the basic browser helper already published. |
+| One-time purchase | Convenient desktop packaging and additional paid-only desktop capabilities, if developed and validated. |
+| Subscription | Only for sustained value such as maintained ATS integrations, updates or services with recurring costs; do not charge recurring fees for ordinary local documents. |
+
+Personal résumé data remains local and private. Optional Google sign-in is the next identity planning slice: evaluate account and licensing identity separately from résumé data, with offline local use retained. Sign-in, licensing, paid feature loading and subscriptions are not implemented by this proposal. See [DEVELOPMENT-FLOW.md](DEVELOPMENT-FLOW.md) for the explicit public promotion boundary.
+
 ## Thesis (one sentence)
 
 **Local-first résumé studio for a shitty job market:** claims live in a private vault,
@@ -152,7 +164,7 @@ Longer private channel notes: `docs/MARKETING.md` · `docs/CHANNELS.local.md` (g
 
 ---
 
-*Last updated 2026-08-25 — free GitHub + optional tip is the public ask; Azure signing is held until further notice.*
+*Product proposals updated 2026-10-30; current signing and channel decisions require verified private release evidence.*
 
 
 ## Product boundary and next decisions (2026-10-30)

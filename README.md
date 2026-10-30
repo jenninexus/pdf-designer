@@ -52,10 +52,10 @@ library, and `output/` automation scratch live.
 <tr>
 <td width="50%">
 
-**Light résumé**<br>
-Public-brand pack: first name, Nexus, email only.
+**Library**<br>
+Fictional example workspace; historical interface capture.
 
-![Jennifer Nexus résumé](docs/images/hub-resume-jennifer-nexus.png)
+![Example document library](docs/images/hub-library.png)
 
 </td>
 <td width="50%">

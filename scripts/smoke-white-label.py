@@ -48,25 +48,17 @@ PUBLIC_TRACKED_PRIVATE_PATHS = frozenset(
         "profiles/examples.json",
     }
 )
-PRIVATE_MARKERS = (
-    "jenninexus",
-    "jenni",
-    "shade",
-    "synephi",
-    "martian",
-    "martian games",
-    "hasbro",
-    "halfbrick",
-    "oddworld",
-    "kixeye",
-    "netflix",
-    "alignerr",
-    "sony",
-    "example-machine",
-    "example-builder",
-    "example-remote",
-    r"c:\github\pdf-designer",
-)
+def _private_markers() -> set[str]:
+    """Use the local push guard's private inputs without publishing their values."""
+    import importlib.util
+
+    spec = importlib.util.spec_from_file_location("public_push_guard", REPO / "scripts" / "check-public-push.py")
+    if spec is None or spec.loader is None:
+        raise RuntimeError("Cannot load the public-push privacy guard")
+    guard = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(guard)
+    return guard.derive_markers()
+
 
 
 def _run(label: str, argv: list[str]) -> None:
@@ -113,11 +105,12 @@ def _public_text_files() -> list[Path]:
 
 def _assert_public_privacy() -> None:
     offenders: list[str] = []
+    markers = _private_markers()
     for path in _public_text_files():
         text = path.read_text(encoding="utf-8").lower()
-        for marker in PRIVATE_MARKERS:
+        for marker in markers:
             if marker in text:
-                offenders.append(f"{path.relative_to(REPO)}: {marker}")
+                offenders.append(f"{path.relative_to(REPO)}: private identifier")
         normalized = text.replace("\\\\", "\\")
         if re.search(r"\b[a-z]:\\(?!\.\.\.)[a-z0-9_.-]+", normalized):
             offenders.append(f"{path.relative_to(REPO)}: absolute Windows path")

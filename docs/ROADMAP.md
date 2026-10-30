@@ -65,7 +65,7 @@ in `Plans/_complete/2026-09-26-roadmap-completed-archive.md` (local-only) and ar
 ### Optional integrations and delivery
 
 - **Browser form helper:** see [BROWSER-HELPER.md](BROWSER-HELPER.md) for implemented scope and remaining consent, privacy and compatibility gates. No automatic submission.
-- **Optional Google sign-in:** design and implement a separately configured identity flow only when account-backed features require it; preserve offline local use. [PRODUCT.md](PRODUCT.md) records the Synagen precedent and boundary.
+- **Optional Google sign-in — next identity planning slice:** design a separately configured account/licensing identity, independent of résumé data; preserve offline local use. Implementation depends on a validated account-backed use and security design. [PRODUCT.md](PRODUCT.md) records the Synagen precedent and boundary.
 - **Microsoft Store:** assess MSIX packaging, clean-machine lifecycle, certification and truthful listing before release; current NSIS installer is unsigned. [PACKAGING.md](PACKAGING.md) records the route and gates.
 
 ### Product evolution

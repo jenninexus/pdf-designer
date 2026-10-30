@@ -53,6 +53,8 @@ direction (free GitHub vs later paid shell): [`docs/PRODUCT.md`](docs/PRODUCT.md
 [`docs/PACKAGING.md`](docs/PACKAGING.md) · `python scripts/check-wheel-assets.py` ·
 `python scripts/testpypi-dry-run.py` (local wheel proof; `--upload` needs `TESTPYPI_TOKEN`).
 
+**Development and promotion:** [`docs/DEVELOPMENT-FLOW.md`](docs/DEVELOPMENT-FLOW.md) owns the local-to-public flow and private paid-source boundary. Proposed tiers and optional identity are in [`docs/PRODUCT.md`](docs/PRODUCT.md).
+
 **Product backlog:** [`docs/ROADMAP.md`](docs/ROADMAP.md) owns the public backlog. `Plans/` is local-only
 working context (gitignored, never pushed); locally, current work is
 the single dated checklist named in `Plans/README.md`. Move it to `Plans/_complete/` only when

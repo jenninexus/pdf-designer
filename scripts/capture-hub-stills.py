@@ -6,11 +6,9 @@ git-tracked checkout so the shots match a fresh clone: Jane Example only, no
 local vaults or job listings. Hub chrome still comes from this working tree
 (``src/pdf_tool/static``), so Wizard, centered Open, and tip icons are current.
 
-The optional Jennifer Nexus peek still is captured from the real workspace
-only when that gitignored screenshot pack exists on disk.
+Public capture never opens the personal workspace.
 
     python scripts/capture-hub-stills.py
-    python scripts/capture-hub-stills.py --skip-nexus
 """
 
 from __future__ import annotations
@@ -33,7 +31,6 @@ from pdf_tool.preview import serve
 REPO = Path(__file__).resolve().parents[1]
 IMAGES = REPO / "docs" / "images"
 ARCHIVE = IMAGES / "_archive" / "2026-08-22-public-set"
-NEXUS_RESUME = REPO / "resumes" / "jenni-nexus" / "defaults" / "jenni-nexus-resume.html"
 
 VIEWPORT = {"width": 1440, "height": 900}
 
@@ -186,65 +183,28 @@ def capture_public(base: str) -> None:
         browser.close()
 
 
-def capture_nexus(base: str) -> None:
-    if not NEXUS_RESUME.is_file():
-        print("skip hub-resume-jennifer-nexus.png — jenni-nexus pack not on disk")
-        return
-    rel = NEXUS_RESUME.relative_to(REPO).as_posix()
-    with sync_playwright() as pw:
-        browser = pw.chromium.launch()
-        context = browser.new_context(
-            viewport=VIEWPORT,
-            device_scale_factor=1,
-            color_scheme="dark",
-        )
-        page = new_page(context, "jenni-nexus")
-        page.goto(f"{base}/?doc={rel}&no-splash=1", wait_until="domcontentloaded")
-        page.locator("#main").wait_for(state="visible", timeout=20000)
-        frame = page.frame_locator("#main")
-        frame.locator("h1").first.wait_for(state="visible", timeout=20000)
-        heading = frame.locator("h1").first.inner_text()
-        if "Jennifer Nexus" not in heading:
-            raise SystemExit(f"nexus resume heading was {heading!r}")
-        visible = page.inner_text("body")
-        if "resumes/jenni/" in visible or "resumes/shade/" in visible or "_job-apps" in visible:
-            raise SystemExit("nexus still leaked a private applicant path")
-        dest = IMAGES / "hub-resume-jennifer-nexus.png"
-        page.screenshot(path=str(dest), full_page=False)
-        print(f"wrote {dest.relative_to(REPO)} ({dest.stat().st_size} bytes)")
-        browser.close()
-
-
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--port", type=int, default=8791, help="Clone-safe Hub port")
-    parser.add_argument("--nexus-port", type=int, default=8792)
-    parser.add_argument("--skip-nexus", action="store_true")
+    parser.add_argument("--skip-nexus", action="store_true", help=argparse.SUPPRESS)  # compatibility; personal capture removed
     parser.add_argument("--splash-only", action="store_true")
     args = parser.parse_args()
 
     archive_current()
-    if args.splash_only:
-        start_hub(REPO, args.port, "splash")
-        with sync_playwright() as pw:
-            browser = pw.chromium.launch()
-            context = browser.new_context(
-                viewport=VIEWPORT,
-                device_scale_factor=1,
-                color_scheme="dark",
-            )
-            capture_splash(context, f"http://127.0.0.1:{args.port}")
-            browser.close()
-        return
     clone = public_clone()
     try:
         start_hub(clone, args.port, "public-clone")
-        capture_public(f"http://127.0.0.1:{args.port}")
-        if not args.skip_nexus:
-            start_hub(REPO, args.nexus_port, "workspace")
-            capture_nexus(f"http://127.0.0.1:{args.nexus_port}")
+        if args.splash_only:
+            with sync_playwright() as pw:
+                browser = pw.chromium.launch()
+                context = browser.new_context(viewport=VIEWPORT, device_scale_factor=1, color_scheme="dark")
+                capture_splash(context, f"http://127.0.0.1:{args.port}")
+                browser.close()
+        else:
+            capture_public(f"http://127.0.0.1:{args.port}")
     finally:
         shutil.rmtree(clone, ignore_errors=True)
+
 
 
 if __name__ == "__main__":
