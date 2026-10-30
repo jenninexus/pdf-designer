@@ -27,6 +27,8 @@ assert.equal(inputs[1].value,'old@example.com');
 assert.equal(context.inspectPage('fill',[{...email,previous:email.value,value:'new@example.com',overwrite:true}]).filled,1);
 assert.equal(inputs[1].value,'new@example.com');
 assert.equal(context.inspectPage('fill',[{...email,previous:email.value,value:'again@example.com',overwrite:true}]).skipped,1);
+inputs[0] = new Input('First name');
+assert.equal(context.inspectPage('fill',[{...first,previous:first.value,value:'Alex',overwrite:false}]).skipped,1, 'replacement control requires a new review');
 const manifest = JSON.parse(fs.readFileSync(require('node:path').join(__dirname,'manifest.json'),'utf8').replace(/^\uFEFF/,''));
 assert.deepEqual(manifest.permissions.sort(),['activeTab','scripting','storage']);
 assert.equal(manifest.host_permissions,undefined); assert.equal(manifest.content_scripts,undefined);

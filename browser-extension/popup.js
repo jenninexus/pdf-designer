@@ -38,11 +38,16 @@ function inspectPage(action, selections) {
     if (keys.length !== 1) return null;
     return {index,key:keys[0],label:label.slice(0,200),value:el.value,signature:clues.join('|')};
   }
-  if (action === 'scan') return controls.map(candidate).filter(Boolean);
+  if (action === 'scan') {
+    // Keep the actual elements in this document's isolated world. An SPA can
+    // replace a form with identical labels and values without changing its URL.
+    globalThis.__pdfHelperReviewedControls = controls;
+    return controls.map(candidate).filter(Boolean);
+  }
   let filled=0, skipped=0;
   for (const item of selections) {
     const el=controls[item.index], now=el && candidate(el,item.index);
-    if (!now || now.key!==item.key || now.signature!==item.signature || now.value!==item.previous || (now.value && !item.overwrite)) { skipped++; continue; }
+    if (!now || !globalThis.__pdfHelperReviewedControls || globalThis.__pdfHelperReviewedControls[item.index] !== el || now.key!==item.key || now.signature!==item.signature || now.value!==item.previous || (now.value && !item.overwrite)) { skipped++; continue; }
     const setter=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set;
     setter.call(el,item.value); el.dispatchEvent(new Event('input',{bubbles:true})); el.dispatchEvent(new Event('change',{bubbles:true})); filled++;
   }
