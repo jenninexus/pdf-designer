@@ -3,7 +3,10 @@
 **The single agent-facing SSOT for this repo.** Any AI assistant (Claude, Codex, Cursor, Copilot, a
 local model) or a human with a terminal should be able to drive the whole toolkit from this one page.
 It is **vendor-neutral on purpose** — [`CLAUDE.md`](CLAUDE.md) and
-[`.claude/commands/README.md`](.claude/commands/README.md) are thin pointers back here.
+the local [command index](.claude/commands/README.md) point here rather than repeat project rules.
+
+Read any user-level instructions supplied by your runtime as well. Keep personal doctrine and
+global command bodies in that user's command library; this public guide owns project contracts.
 
 Human-facing intro: [`README.md`](README.md). Deep design docs live under [`docs/`](docs/) and are linked
 per section below.
@@ -187,12 +190,14 @@ Local operators define applicant shorthand in their private command README; publ
 · **`/voice`** · **`/reflect-universal`** (`/reflect` alias — required at wrap) · `/roadmap` →
 [`docs/ROADMAP.md`](docs/ROADMAP.md).
 
-**Shared-agent tooling:** source commands stay in `.claude/commands/`; Codex uses the generated local
-`.codex/skills/` adapters, while Claude may use the focused optional profile in `.claude/settings.json`
-(`frontend-design`, `code-review`, `code-simplifier`). Other agents follow the same Markdown commands and this
-guide. sys-admin is optional workspace enrichment only — its user-level stdio client is already configured on
-the maintainer's machine. Standing-process health and per-chat tool attachment are separate. The engine must
-continue to run with no MCP, environment variables, or copied credentials.
+**Shared-agent tooling:** command Markdown is the source; `.codex/skills/` and `.agents/skills/`
+are generated local adapters. Keep global commands in the user library and project commands here;
+link to global commands instead of copying their bodies. Never hand-edit generated `SKILL.md` files.
+The source/runtime map and safe refresh order live in
+[`docs/PRIVATE-SYNC.md`](docs/PRIVATE-SYNC.md#command-sources-and-runtime-adapters).
+Claude may use the optional `.claude/settings.json` profile. sys-admin enriches a maintainer's
+workspace; standing-process health and per-chat attachment are separate. The engine must continue
+to run without MCP, environment variables, or copied credentials.
 
 ### 📎 Public seed vs. personal / dev copy — the `.example` split
 

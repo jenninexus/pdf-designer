@@ -26,6 +26,11 @@ in `Plans/_complete/2026-09-26-roadmap-completed-archive.md` (local-only) and ar
 
 **Priority: select one next product-evolution slice from the decision-gated work below.**
 
+Command and instruction maintenance uses `AGENTS.md` as the project guide, with `CLAUDE.md` as a
+pointer. Global commands remain in the user library; project adapters are generated from local
+command sources. The owning [source/runtime map](PRIVATE-SYNC.md#command-sources-and-runtime-adapters)
+and local active plan hold maintenance procedure and verification, rather than a second product backlog.
+
 **Landed context — do not re-open:**
 
 - **Exports beside their document family** (2026-09-27) — a personal document lands under
