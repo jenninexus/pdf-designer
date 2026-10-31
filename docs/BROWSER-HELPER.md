@@ -103,6 +103,34 @@ See [activeTab](https://developer.chrome.com/docs/extensions/develop/concepts/ac
 [storage access](https://developer.chrome.com/docs/extensions/reference/api/storage/StorageArea) and
 [Edge compatibility](https://learn.microsoft.com/en-us/microsoft-edge/extensions-chromium/developer-guide/port-chrome-extension).
 
+## CSP and localhost development
+
+The helper's popup and editor are extension pages, even when the reviewed form is on localhost.
+Without a CSP override, Manifest V3 applies `script-src 'self'; object-src 'self'`. Keep executable
+code in packaged script files; do not add inline handlers, remote scripts or `unsafe-eval` to fix a
+test. This is separate from the form page's HTTP/meta CSP and from CORS response headers.
+See [Chrome's extension CSP contract](https://developer.chrome.com/docs/extensions/reference/manifest/content-security-policy).
+
+| Context | Owning policy | Reusable development approach |
+|---|---|---|
+| Extension popup/editor | Manifest V3 extension-page CSP; independent of a PHP router | Packaged scripts and function callbacks in automation; preserve the installed-browser receipt. |
+| An HTTP form or website on localhost | That app's actual response headers, HTML CSP and local-server configuration | Use its existing router/settings and inspect the actual response; do not invent a second permissive policy for QA. |
+| Cross-origin HTTP API read | The endpoint's CORS headers plus the caller's applicable CSP | Reuse the owning API's origin/method rules only if the feature actually needs such a request. |
+
+Website `cors.php` helpers and `server.php`/`router.php` routing can inform an HTTP fixture or site
+investigation; they do not override extension CSP. This helper has no production HTTP API client
+and does not need a PHP server, localhost host permission or website CORS change. Its fictional
+native-form fixtures remain served by the isolated Python test harness. For future selected-site QA,
+honor the site's existing local policy and record the effective headers/meta policy separately.
+
+If Playwright reports a CSP error while waiting on the editor, use an actual function callback such
+as `page.wait_for_function("() => document.querySelector('#save').disabled")`. Avoid string-evaluating
+wait expressions. Diagnose that harness error separately from an application failure. A .NET or
+PowerShell out-of-memory dialog is a host/runtime failure and needs its process/stack evidence;
+changing web CSP or CORS is not a remedy for it.
+
+## Reproducible checks
+
 Run `node browser-extension/test-profile.cjs`, `node browser-extension/test-helper.cjs`, and
 `python -B -m unittest discover -s browser-extension -p test_export_profile.py`.
 For real installed-browser checks, use Playwright and websocket-client in an isolated QA environment:
