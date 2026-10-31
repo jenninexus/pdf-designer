@@ -92,7 +92,7 @@ fast on a large tree. If the server is briefly down mid-poll, the client just re
 | Pointer | Role |
 |---|---|
 | [`.config/mcp-pdf-designer.example.json#breakpoints`](../.config/mcp-pdf-designer.example.json) | ⭐ Tracked seed — copy to local `mcp-pdf-designer.json` (gitignored) for machine paths |
-| Global breakpoint **registry** (optional, not SSOT) | e.g. `C:\mcp\.config\mcp-breakpoints.json` → project → set → nav_switch |
+| Global breakpoint **registry** (optional, not SSOT) | Your optional local registry → project → set → nav_switch |
 | `www-theme-kit/scss/_breakpoint-tokens.scss` | Shared numeric tokens / mixins (www-theme-kit is the consumer SSOT for this repo) |
 | `hub.css` `@media` | Hard-codes the same `.98px` maxes (CSS cannot `var()` inside `@media`) |
 

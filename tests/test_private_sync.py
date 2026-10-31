@@ -92,6 +92,26 @@ def test_personal_commands_are_shared_but_public_seeds_and_settings_are_not(lan:
     assert ".claude/settings.local.json" not in files
 
 
+def test_private_docs_round_trip_without_legacy_storage_or_runtime_state(lan: tuple[Path, Path, Path]) -> None:
+    remote, a, b = lan
+    docs = a / "storage" / "docs"
+    docs.mkdir(parents=True)
+    (docs / "PROTOCOL.md").write_text("private operating rules\n", encoding="utf-8")
+    (a / "storage" / "old-vault.json").write_text("legacy residue", encoding="utf-8")
+    (a / "storage" / "scripts").mkdir()
+    (a / "storage" / "scripts" / "local.cjs").write_text("machine settings", encoding="utf-8")
+    assert _sync(a, "setup", str(remote)).returncode == 0
+    assert _private_files(a) == {"storage/docs/PROTOCOL.md"}
+    assert _sync(b, "setup", str(remote)).returncode == 0
+    assert (b / "storage" / "docs" / "PROTOCOL.md").read_text(encoding="utf-8") == "private operating rules\n"
+    (b / "storage" / "docs" / "PROTOCOL.md").write_text("reviewed rules\n", encoding="utf-8")
+    assert _sync(b, "push").returncode == 0
+    assert _sync(a, "pull").returncode == 0
+    assert (docs / "PROTOCOL.md").read_text(encoding="utf-8") == "reviewed rules\n"
+    assert not (b / "storage" / "old-vault.json").exists()
+    assert not (b / "storage" / "scripts").exists()
+
+
 def test_joining_machine_keeps_its_own_files(lan: tuple[Path, Path, Path]) -> None:
     remote, a, b = lan
     (a / "users" / "pat.json").write_text("A version", encoding="utf-8")

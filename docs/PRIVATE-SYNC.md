@@ -75,6 +75,7 @@ The private repository lives in `.git-private/` beside `.git/` and uses the same
 Design Hub sees one workspace. It holds only:
 
 - `users/` `vaults/` `profiles/` `resumes/` `_job-apps/` `applications/` `collages/` `brands/` `Plans/`
+- `storage/docs/` (private operational protocol and evidence); machine-specific scripts/settings stay local
 - `docs/*.local.md`, `docs/private/`, and the private notes listed in `PUBLIC-LOCAL-SPLIT.md`
 - `.config/private-markers.txt` (so every machine guards every person's identifiers)
 - the bare personal commands `.claude/commands/*.md` (`/make-resume`, `/pdf-start`, …), so any machine can
@@ -86,7 +87,7 @@ per line, e.g. `/vaults/me.json` or `/collages/drafts/`). A path that is already
 removed from the shared copy once: `python scripts/private-sync.py git rm --cached <path>`, then `push`.
 
 Never shared: anything the public repository tracks (README stubs, `*.example.*` seeds), the retired
-`storage/` alias, and the disposable `output/` and `_exports/` scratch trees.
+`storage/` residue outside `storage/docs/`, and the disposable `output/` and `_exports/` scratch trees.
 
 ## What the push gate checks
 

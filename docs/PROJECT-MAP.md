@@ -31,20 +31,8 @@ under `resumes/<person>/<application>/`. The human response/submission index is
 Private data, correspondence, generated files and plans must not enter public Git or general
 knowledge indexing. See [STORAGE.md](STORAGE.md) and [APPLICATIONS.md](APPLICATIONS.md).
 
-## Relationship to sys-admin and Synabrain
+## Optional agent tooling
 
-**sys-admin is optional agent tooling, not an engine dependency.** Its MCP adapter can enrich an
-agent session with file operations, machine access, SSH transfers and coordination. Synabrain
-provides retrieval and knowledge indexing. Neither is required to render documents or use the
-public examples. The engine has no MCP, environment-variable or network-service requirement;
-installation and browser provisioning are separate setup steps.
-
-A standing MCP process and a chat's tool attachment are separate: verify callable tools in the
-current chat. `get_context` must use the actual caller repository path. A useful retrieved passage
-does not prove that the caller's private files or current dirty bytes were indexed. Remote QA
-may use a maintainer's live machine route and verified source snapshot. Public users run the same
-deterministic document checks on their own computer; no network or LLM service is required.
-
-Index this public map and selected public protocol documents in `proj:pdf-designer`. Preserve
-source paths and revision provenance; do not recursively learn the private root nouns. Network
-roles, providers and credentials remain owned by their respective services, not this repository.
+The engine and public examples run without private agent services. Personal service registrations,
+startup checks and indexing procedures belong in ignored `storage/docs/`. Public documentation
+and fictional examples may be indexed; personal data and operational notes must remain excluded.

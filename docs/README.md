@@ -20,7 +20,7 @@ then use [`PUBLIC-LOCAL-SPLIT.md`](PUBLIC-LOCAL-SPLIT.md) for the tracking/priva
 
 | Doc | Owns |
 |---|---|
-| [`PROJECT-MAP.md`](PROJECT-MAP.md) | Project folders, privacy boundaries and optional sys-admin / Synabrain relationship |
+| [`PROJECT-MAP.md`](PROJECT-MAP.md) | Project folders, privacy boundaries and optional agent tooling |
 | [`PUBLIC-LOCAL-SPLIT.md`](PUBLIC-LOCAL-SPLIT.md) | ⭐ Public vs local vs paid architecture |
 | [`PRIVATE-SYNC.md`](PRIVATE-SYNC.md) | Pre-push privacy gate + sharing personal files between your own machines |
 | [`WORKSPACE-LAYOUT.md`](WORKSPACE-LAYOUT.md) | ⭐ Target root folders (`users/` · `vaults/` · …) for the free product |
