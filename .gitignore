@@ -136,6 +136,8 @@ job-listing-capture-*.md
 *.png
 !docs/images/**/*.png
 !src/pdf_tool/static/hub-app-icon.png
+# Extension icons are product UI shipped inside the unpacked extension.
+!browser-extension/icons/*.png
 # Real-applicant Hub captures belong beside their document family (or the _exports/ fallback), never public docs media.
 docs/images/hub-resume-*.png
 *.jpg

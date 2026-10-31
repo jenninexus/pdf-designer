@@ -75,6 +75,7 @@ codebase · `reference`: pointer to an external resource.
 
 | Lesson | Hook |
 |---|---|
+| [lesson-annotated-default-is-not-a-value.md](lesson-annotated-default-is-not-a-value.md) | A generated artifact must satisfy the *consumer's* strict schema on the finished bytes: an annotated `emailRules.default` copied verbatim into a Form Helper profile would have typed a whole sentence into an employer's Email field. Sanitize at the boundary, prove it with validation. |
 | [lesson-required-render-failure-must-fail.md](lesson-required-render-failure-must-fail.md) | A renderer/browser exception cannot become a green shipping gate; explicit source-only QA is labelled |
 | [lesson-pdf-viewer-needs-first-class-route.md](lesson-pdf-viewer-needs-first-class-route.md) | A dark iframe shell is not proof that a PDF loaded — use `/pdf-viewer` and verify real page images inside the frame |
 | [lesson-default-light-must-override-dark-source.md](lesson-default-light-must-override-dark-source.md) | A `-light.pdf` filename does not make the DOM light — default PDF and PNG renders must actively override a dark source root |

@@ -24,11 +24,14 @@ The exact checklist, blocker evidence, and next action live in the dated checkli
 local-only `Plans/README.md`. This file is the durable backlog; completed slices are archived
 in `Plans/_complete/2026-09-26-roadmap-completed-archive.md` (local-only) and are **not** restated here.
 
-**Browser helper contact-editor baseline delivered.** Explicit first/last/contact approvals,
-local save/reopen/update/removal, strict v2 JSON preview/export/import and explicit v1 migration
-are implemented. Names are never inferred; existing-value consent and no-submit/no-upload safeguards
-remain. Installed Chrome/Edge acceptance uses fictional native-input patterns, not employer sites.
-See [BROWSER-HELPER](BROWSER-HELPER.md) for the exact compatibility matrix and manual boundaries.
+**Browser helper = Form Helper (v0.4.0).** Explicit first/last/contact approvals, local
+save/reopen/update/removal, strict v2 JSON preview/export/import and explicit v1 migration are
+implemented. Names are never inferred; existing-value consent and no-submit/no-upload safeguards
+remain. Named profiles (one per person, e.g. Jenni and Shade) are stored as a local map with a picker
+in both the popup and the editor, so the toolbar action chooses whose values fill a page; the private
+starter exporter emits a validated version 2 profile per person. The extension carries the product
+name and icon set. Installed Chrome/Edge acceptance uses fictional native-input patterns, not employer
+sites. See [BROWSER-HELPER](BROWSER-HELPER.md) for the exact compatibility matrix and manual boundaries.
 
 **Review invalidation implemented:** single-use five-minute tokens, defined same-URL navigation,
 light-DOM mutation and document-lifecycle guards. Invisible unchanged-DOM state remains outside
