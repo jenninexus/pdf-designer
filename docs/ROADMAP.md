@@ -24,7 +24,11 @@ The exact checklist, blocker evidence, and next action live in the dated checkli
 local-only `Plans/README.md`. This file is the durable backlog; completed slices are archived
 in `Plans/_complete/2026-09-26-roadmap-completed-archive.md` (local-only) and are **not** restated here.
 
-**Priority: select one next product-evolution slice from the decision-gated work below.**
+**Next bounded slice: an approved local contact-profile editor for the browser helper.**
+Separate explicit first/last/contact fields, validate and persist them locally, and export only
+approved fields. Do not infer missing names from a full-name string. After save/reopen/export and
+both-browser profile tests pass, address review invalidation and site compatibility. Paid features,
+Google identity, MSIX and extension-store publication remain decision-gated.
 
 Command and instruction maintenance uses `AGENTS.md` as the project guide, with `CLAUDE.md` as a
 pointer. Global commands remain in the user library; project adapters are generated from local

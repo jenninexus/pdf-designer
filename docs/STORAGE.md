@@ -12,12 +12,12 @@
 >
 > **Tracked protocol SSOT:** this page lives in `docs/` so a fresh clone can learn the flow.
 
-Everything under `storage/` is **local-only legacy residue**. Keep it for recovery/history, but
-route live career data through the root nouns; deliberate generated deliverables now export
-beside their document family (`resumes/<user>/…`, `collages/<project>/`), with `_exports/`
-as the fallback for unmatched sources.
-Private *notes* (`MARKETING` · `WORKSPACE` · history scrub) now live under **`docs/`** (gitignored)
-— not a second docs tree here.
+`storage/docs/` is the private operational documentation home: local protocol, service setup,
+review receipts and evidence. It stays ignored by public Git and general knowledge indexing.
+Private-sync shares this docs subtree only; machine-specific scripts/settings stay local.
+Other `storage/` contents are retired career-data residue. Live identities, vaults, applications,
+brands and generated deliverables remain under the root nouns. Existing private notes under
+`docs/*.local.md` remain valid; new operational notes belong in `storage/docs/`.
 
 ---
 

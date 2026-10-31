@@ -26,13 +26,13 @@ Sibling pattern: [`agency/docs/PUBLIC-LOCAL-SPLIT.md`](../../agency/docs/PUBLIC-
 | Commands | `.claude/commands/*.example.md` only | Bare `start` / `wrap` / `make-*` / commands `README` + generated `.codex/` adapters |
 | Config | `.config/mcp-pdf-designer.example.json` | `mcp-pdf-designer.json` (absolute paths) |
 | Theme kit | Public default themes in-repo | `www-theme-kit` profiles + `brands/` (private kits) |
-| Docs | This folder (public `*.md`) · [`ROADMAP.md`](ROADMAP.md) backlog | `MARKETING.md` · `WORKSPACE.md` · `HISTORY-SCRUB.md` · `CHANNELS.local.md` · `WINDOWS-ELECTRON.local.md` · other `*.local.md` / `*.private.md` · all `Plans/` |
+| Docs | This folder (public `*.md`) · [`ROADMAP.md`](ROADMAP.md) backlog | `storage/docs/` operations · existing private `MARKETING.md` · `WORKSPACE.md` · `HISTORY-SCRUB.md` · `CHANNELS.local.md` · `WINDOWS-ELECTRON.local.md` · other `*.local.md` / `*.private.md` · all `Plans/` |
 | Lessons | `.memory/README.md` · `.memory/lesson-*.md` | Other `.memory/` notes · frozen `Plans/_complete/_archive/dev-log-sego.yaml` |
 
 ## Local execution and applicant ownership
 
 Public users run the renderer, deterministic QA and preview locally. They do not need another PC,
-MCP, Synabrain, Syqo, a theme-kit checkout or an agent subscription. A maintainer's optional network
+a private service, theme-kit checkout or agent subscription. A maintainer's optional network
 routing belongs to private operating instructions. See [QA.md](QA.md) for one final gate and cheap
 receipt reuse; document QA does not require an LLM call.
 

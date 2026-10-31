@@ -67,7 +67,7 @@ Maintainer channel/signing: `docs/CHANNELS.local.md` (gitignored).
 **Session start / wrap:** after `/clear`, run only `/pdf-start` → local
 [`.claude/commands/pdf-start.md`](.claude/commands/pdf-start.md) (gitignored). It incorporates the
 project-relevant base start checks; do not also run `/session-start`. `/pdf-wrap` → local
-[`.claude/commands/pdf-wrap.md`](.claude/commands/pdf-wrap.md) — **requires `/reflect-universal`**,
+[`.claude/commands/pdf-wrap.md`](.claude/commands/pdf-wrap.md) — **requires reflection**,
 updates the active plan + roadmap, and incorporates the base wrap checks without a separate
 `/session-wrap`. `/start` and `/wrap` (and `/jen:start` / `/jen:wrap`) are thin
 aliases in `start.md` / `wrap.md` that defer here. Public protocol seeds:
@@ -88,7 +88,7 @@ Applicant-specific closed applications and owner decisions live in private appli
 do not reopen, regenerate or submit them merely because you refresh a reusable pack.
 
 **QA execution:** public users run deterministic Python/Chromium document checks locally. An LLM,
-second PC, Synabrain or sys-admin is not required. A maintainer's network routing follows their own
+second PC or private agent service is not required. A maintainer's network routing follows their own
 private operating instructions. Use the full gate once for changed final source/dependencies;
 reuse its receipt for unchanged artifacts. Source-only checks during editing are not acceptance.
 See [`docs/QA.md`](docs/QA.md) for the check types, limits and hash-based reuse policy.
@@ -179,7 +179,7 @@ and follow it."*
 | `make-cover-letter.example.md` | ✅ public seed | Standalone cover letter (not auto-bundled with resume) |
 | `make-work-examples.example.md` | ✅ public seed | Standalone work-samples / portfolio |
 | `make-collage.example.md` | ✅ public seed | Collage / layout builder over `layouts/` + `themes/` |
-| `pdf-start.md` · `pdf-wrap.md` | 🔒 **dev-only** (gitignored) | Canonical, self-contained project start/wrap — wrap includes `/reflect-universal`; never push |
+| `pdf-start.md` · `pdf-wrap.md` | 🔒 **dev-only** (gitignored) | Canonical, self-contained project start/wrap — wrap includes reflection; never push |
 | `start.md` · `wrap.md` · `README.md` | 🔒 **dev-only** (gitignored) | Thin aliases → `pdf-start.md` / `pdf-wrap.md` + local index |
 | `make-resume.md` · `make-cover-letter.md` · `make-work-examples.md` · `make-collage.md` | 🔒 personal (gitignored) | Your copies with real specifics |
 
@@ -187,7 +187,7 @@ and follow it."*
 Local operators define applicant shorthand in their private command README; public users select their own person, vault and profile. Additional operator maps may live in ignored `docs/AGENTS.local.md`; public operation never requires it.
 
 **Global commands in scope here** (personal, `~/.claude/commands/`, not in this repo): **`/pdf`**
-· **`/voice`** · **`/reflect-universal`** (`/reflect` alias — required at wrap) · `/roadmap` →
+· **`/voice`** · **`/reflect`** (required at wrap) · `/roadmap` →
 [`docs/ROADMAP.md`](docs/ROADMAP.md).
 
 **Shared-agent tooling:** command Markdown is the source; `.codex/skills/` and `.agents/skills/`
@@ -195,9 +195,8 @@ are generated local adapters. Keep global commands in the user library and proje
 link to global commands instead of copying their bodies. Never hand-edit generated `SKILL.md` files.
 The source/runtime map and safe refresh order live in
 [`docs/PRIVATE-SYNC.md`](docs/PRIVATE-SYNC.md#command-sources-and-runtime-adapters).
-Claude may use the optional `.claude/settings.json` profile. sys-admin enriches a maintainer's
-workspace; standing-process health and per-chat attachment are separate. The engine must continue
-to run without MCP, environment variables, or copied credentials.
+Claude may use the optional `.claude/settings.json` profile. Maintainer-specific tooling and startup
+checks belong in ignored `storage/docs/`; the public engine runs without private services or credentials.
 
 ### 📎 Public seed vs. personal / dev copy — the `.example` split
 
@@ -235,12 +234,12 @@ marketed résumé-creator demo path (vault shape + palettes + smoke), not privat
 | `resumes/<user>/resources/{images,logos,videos,references}/` | Private reusable career-document sources for one person; not résumé-only. Job-specific evidence stays with the application. |
 | `_exports/` | **Fallback** export folder (examples · unfiled) — tracked README only; payload ignored. Personal exports live in `resumes/<user>/(<App>/)` and `collages/<project>/`. |
 | `output/` | **automation/test scratch** — tracked README only; payload ignored; explicit opt-in, not the engine default. |
-| `storage/` | **Retired legacy residue** (keep private; never ship or add new live work). Dual-run resolver still maps old `storage/<user>/` URLs. |
+| `storage/` | **Private operations:** `storage/docs/` holds local protocol, evidence and tooling notes. Other contents are retired career-data residue; use root nouns for live career data. |
 | `resumes/<user>/resources/` | Private reusable images, logos, videos and references; shared assets require verified attribution. See [`docs/STORAGE.md`](docs/STORAGE.md). |
 
 ### Privacy split (do not blur this)
 
-| Public / tracked (safe to clone) | Private / gitignored (root nouns; `storage/` retired — live data is root nouns) |
+| Public / tracked (safe to clone) | Private / gitignored (root nouns for career data; `storage/docs/` for private operations) |
 |---|---|
 | `src/pdf_tool/`, `themes/`, `examples/`, `docs/`, `AGENTS.md`, `*.example.md`, `output/README.md`, `_exports/README.md` | `users/`, `vaults/`, `profiles/`, `_job-apps/`, `brands/`, `resumes/`, `collages/`, `_exports/*` (payload), `output/*` (scratch), legacy `storage/` |
 | Brand-neutral default theme | Real brand maps (`brands/brand-<name>.json`) |
@@ -263,7 +262,7 @@ Four layers, each answering one question. **The vault is the brain.**
 | Profile | `profiles/<user>-resume.json` | **how** it renders (one per person) · `workSamples` |
 | Application | `_job-apps/<Track>/` | **the job** — listing, apply link, pay, company palette |
 
-(`storage/` retired 2026-08-17; dual-run resolver kept for old URLs.)
+(`storage/` career-data layout retired 2026-08-17; dual-run resolver kept for old URLs.)
 
 Read [`docs/VAULT.md`](docs/VAULT.md) before authoring any resume claim.
 

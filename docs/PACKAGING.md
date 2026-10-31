@@ -71,8 +71,8 @@ this). Verifying from the checkout directory will silently use live `themes/`.
 2. `python scripts/check-wheel-assets.py` → PASS
 3. `python scripts/smoke-white-label.py` from a clean clone (still the product gate)
 4. **For a future TestPyPI release, create an API token** at https://test.pypi.org/manage/account/token/
-   — store in sys-admin `userdata.db` (`category=API Keys`, `service=TestPyPI`,
-   `key=api_token`) or set the local-only `TESTPYPI_TOKEN` environment variable.
+   — keep it in your private credential manager or set the local-only `TESTPYPI_TOKEN`
+   environment variable.
    For a single upload without retaining the token, the preferred path is:
 
    ```powershell

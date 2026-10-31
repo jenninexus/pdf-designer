@@ -44,8 +44,8 @@ GIT_DIR_NAME = ".git-private"
 SKIP_FILE_NAME = "skip"
 BRANCH = "main"
 
-# Private roots shared between your machines. storage/ (retired alias), output/ and _exports/
-# (disposable scratch) are deliberately absent.
+# Private roots shared between your machines. Only storage/docs/ is admitted below;
+# other legacy storage, output/ and _exports/ remain excluded.
 SHARED_ROOTS = (
     "users",
     "vaults",
@@ -59,6 +59,7 @@ SHARED_ROOTS = (
     "Plans",
 )
 SHARED_FILES = (
+    "storage/docs/",
     "docs/*.local.md",
     "docs/MARKETING.md",
     "docs/WORKSPACE.md",
@@ -78,11 +79,11 @@ def exclude_rules(public_paths: set[str]) -> str:
     then drop every file the public repo tracks (README stubs, *.example seeds)."""
     lines = ["# Written by scripts/private-sync.py on every run - do not edit.", "/*"]
     lines += [f"!/{root}/" for root in SHARED_ROOTS]
-    lines += ["!/docs/", "/docs/*", "!/.config/", "/.config/*"]
+    lines += ["!/docs/", "/docs/*", "!/storage/", "/storage/*", "!/.config/", "/.config/*"]
     lines += ["!/.claude/", "/.claude/*", "!/.claude/commands/", "/.claude/commands/*"]
     lines += [f"!/{pattern}" for pattern in SHARED_FILES]
     lines += list(NOISE)
-    roots = tuple(f"{root}/" for root in SHARED_ROOTS) + ("docs/", ".config/", ".claude/")
+    roots = tuple(f"{root}/" for root in SHARED_ROOTS) + ("docs/", "storage/docs/", ".config/", ".claude/")
     lines += [f"/{path}" for path in sorted(public_paths) if path.startswith(roots)]
     skip = REPO / GIT_DIR_NAME / SKIP_FILE_NAME
     if skip.is_file():
