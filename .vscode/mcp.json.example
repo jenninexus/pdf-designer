@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "description": "OPTIONAL VS Code MCP helper for pdf-designer. Copy to .vscode/mcp.json and edit paths for your machine. This repo needs NO MCP server to run — the engine is pure Python + Playwright. This file only wires an optional local admin/helper server if you happen to run one; delete the `servers` block if you don't.",
+    "description": "OPTIONAL VS Code MCP helper for pdf-designer. Prefer your existing global MCP registrations: do not redeclare globally configured server names here, because project entries can shadow them. This repo needs NO MCP server to run — the engine is pure Python + Playwright. Copy only when adding a distinct project-only helper, then edit its paths for your machine.",
     "project_ssot": ".config/mcp-pdf-designer.json"
   },
   "servers": {
