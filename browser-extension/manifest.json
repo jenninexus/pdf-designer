@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "PDF Designer Application Helper",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Review and fill approved application fields from a local profile.",
   "permissions": [
     "activeTab",

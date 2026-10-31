@@ -63,14 +63,39 @@ the browser's Extensions menu also exposes it. Repeat review on each page.
 
 Existing values are unchecked. Checking one explicitly consents to overwrite that reviewed value.
 Less-specific full-name/title/company matches are also unchecked. Review binds to the tab,
-document ID, URL and actual input elements. Changed values/signatures, replaced or unavailable
-controls are skipped; changed URLs/documents require review again. Profile changes clear the review.
-Browsers may dismiss the action themselves when the tab URL changes.
+document ID, URL, actual input elements and their form owners, plus a single-use isolated-world
+token. Profile changes clear the review; errors and fill attempts clear the action's selections.
+Changing an input's value or matching clues skips that input, even with overwrite consent.
 
-Same-URL SPA transitions preserving an unchanged control and its signature/value are **not**
-reliably distinguished. That remains a separate review-invalidation slice. Native `input` and
-`change` events are dispatched, but site frameworks or validation can still reject a value.
-Only selected values enter the isolated script; site scripts can observe their own field values.
+### Review invalidation boundary
+
+A review lasts at most **five minutes** and can be used only once. Review again after any of:
+
+| Observed trigger | Protection |
+|---|---|
+| Navigation API `navigate` or `currententrychange` | Invalidates even same-URL `pushState`, `replaceState`, entry-state updates and history traversal. No site history functions are patched. |
+| Any light-DOM child-list, text or attribute mutation anywhere in the document | Invalidates replacements, moved controls, changed form ownership/action, changed job/step context and changes reverted before Fill. Unrelated page updates also invalidate conservatively. |
+| `popstate`, `hashchange`, `pagehide`, `pageshow`, or document becoming hidden | Invalidates navigation/lifecycle changes and tab switches, including a hidden-then-visible document. |
+| URL/document/tab mismatch, changed root, elapsed lifetime or replaced review token | Rejects stale targets and superseded reviews. Unsupported Navigation API or a hidden document cannot be reviewed. |
+
+Pending mutation records are drained synchronously before filling and before every subsequent
+write. If a site's input/change handlers mutate the DOM during a batch, later inputs are skipped;
+values already written are not rolled back. Page scripts still receive native `input`/`change`
+events and can reject or transform a value. Browsers may dismiss the action on navigation/tab
+switches; dismissal writes nothing. A visible stale action may keep its displayed matches until
+Fill, where validation rejects it and clears the review; this is not a live status indicator.
+
+**Remaining unchanged-DOM limitation:** a site's private JavaScript/server state can change the
+meaning of an unchanged form without a Navigation API event, observed light-DOM mutation,
+visibility/lifecycle signal, URL change, or changed control value/clues. The helper cannot detect
+that transition within the five-minute lifetime. CSSOM-only changes, shadow-root internals,
+canvas content and changed event-handler closures are not watched. Property-only value changes
+that return to the reviewed value before Fill are also not tracked as a history. The fictional invisible-state
+fixture deliberately demonstrates this boundary; it is not a claim of universal SPA safety.
+Always inspect the displayed application and review again after a job/step change.
+
+Only selected values enter the isolated fill script; site scripts can observe their own field
+values. No main-world bridge, persistent content script or extra permission is used.
 Always review the application before manually sending it.
 
 ## Compatibility matrix
@@ -83,7 +108,8 @@ employer's live site**. No portal, account or real applicant data is used.
 | `fixtures/associated-labels.html` | Exact associated labels, required asterisks, first_name/last_name, email/tel/URL inputs. | Vendor changes, remote validation and actual employer forms. |
 | `fixtures/wrapped-labels.html` | Nested native inputs with exact labels, given/family-name autocomplete clues, phone and portfolio aliases. | Dropdowns and work-authorization questions. |
 | `fixtures/aria-labels.html` | Native inputs with exact aria-label clues and compatible autocomplete; conflicting name clues are skipped. | aria-labelledby-only matching, custom widgets, shadow DOM and frames. |
-| Consent / stale controls | Empty-only defaults; explicit overwrite; changed values/replaced nodes skipped; changed URL/document rejected or action dismissed. | Same-URL unchanged-control transitions and form semantics. |
+| Consent / stale controls | Empty-only defaults; explicit overwrite; single-use expiring review; defined navigation, DOM and lifecycle invalidation. | Invisible state changes described above; no universal SPA/site certification. |
+| `fixtures/review-transitions.html` | Fictional same-URL history, step/job context, form/control mutations, navigation and stale-review negative cases. | Actual employer workflows, custom controls and server semantics. |
 | Unsupported / sensitive | Hidden, disabled, read-only, file, salary/authorization and ambiguous inputs excluded; top frame only. | Uploads, dropdowns, dates, radio/checkbox answers, demographic/legal/salary/free-text answers, iframes and custom controls. |
 | Editor / JSON | Field approval, save/reopen/update/remove, v2 preview/export/import, v1 preservation and explicit migration. | Deliverability, URL ownership, encryption and erasure of external files/backups. |
 
@@ -93,6 +119,14 @@ fixture exercised five contact matches, empty-only defaults, explicit overwrite,
 replacement-control rejection and profile-change invalidation, with zero submissions/file changes.
 Exact source hashes and acceptance receipts are recorded in the maintainer's active plan. This
 supersedes the earlier synthetic baseline for these changed files, without expanding to live sites.
+
+Version 0.3.0 review guards were verified on Windows Chrome 156.0.8078.74 (headed) and Edge
+156.0.4314.50 (headless), using each installed browser's real native default action. Each complete
+suite passed 26 transition/lifecycle scenarios, all three matching fixtures, editor/JSON lifecycle,
+explicit overwrite and profile-change invalidation, with zero submissions/uploads. The invisible-state
+case deliberately still fills, proving the documented boundary. Headed Edge also passed the 26 guard
+scenarios, but its full suite was intermittently dismissed; no uninterrupted headed Edge receipt is
+claimed. Exact production-byte hashes bind the completed receipts to this version.
 
 ## Permissions and checks
 
@@ -131,12 +165,18 @@ changing web CSP or CORS is not a remedy for it.
 
 ## Reproducible checks
 
+Navigation/mutation references: [Navigation events](https://developer.mozilla.org/en-US/docs/Web/API/Navigation/navigate_event) and
+[pending mutation records](https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver/takeRecords).
+
 Run `node browser-extension/test-profile.cjs`, `node browser-extension/test-helper.cjs`, and
 `python -B -m unittest discover -s browser-extension -p test_export_profile.py`.
-For real installed-browser checks, use Playwright and websocket-client in an isolated QA environment:
+For real installed-browser checks, use Playwright in an isolated QA environment:
 `python browser-extension/test-browser.py --channel chrome --work-dir <scratch>`, then `--channel msedge`.
-Use an interactive Windows desktop. The harness stages exact production bytes, loads them through
+Use an interactive Windows desktop for headed mode, or add `--headless` to avoid desktop-focus
+dismissals. Both modes use the installed browser and its real default action. The harness stages
+exact production bytes, loads them through
 Chromium's [unpacked-extension debug API](https://chromedevtools.github.io/devtools-protocol/tot/Extensions/#method-loadUnpacked),
-invokes the real action with an OS gesture on its own fixture window, and records browser/source
+invokes the real default action with native `Extensions.triggerAction` on its exact fixture tab,
+and records browser/source
 receipts. It never uses the user's browser profile or submits/uploads a fixture. Preserve textual
 evidence and clean owned QA contexts/scratch after the run.

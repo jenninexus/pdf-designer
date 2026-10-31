@@ -30,8 +30,11 @@ are implemented. Names are never inferred; existing-value consent and no-submit/
 remain. Installed Chrome/Edge acceptance uses fictional native-input patterns, not employer sites.
 See [BROWSER-HELPER](BROWSER-HELPER.md) for the exact compatibility matrix and manual boundaries.
 
-**Next bounded slice: review invalidation for same-URL SPA changes and stale form semantics.**
-Then establish selected-site compatibility with read-only inspection and equivalent fictional
+**Review invalidation implemented:** single-use five-minute tokens, defined same-URL navigation,
+light-DOM mutation and document-lifecycle guards. Invisible unchanged-DOM state remains outside
+the guarantee; see BROWSER-HELPER for the exact boundary and browser acceptance.
+
+**Next bounded slice: selected-site compatibility**, with read-only inspection and equivalent fictional
 fixtures. Paid features, Google identity, MSIX and extension-store publication remain decision-gated.
 
 Command and instruction maintenance uses `AGENTS.md` as the project guide, with `CLAUDE.md` as a
