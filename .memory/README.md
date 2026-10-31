@@ -128,6 +128,7 @@ codebase · `reference`: pointer to an external resource.
 | [lesson-rewrite-flips-crlf-in-crlf-stored-files.md](lesson-rewrite-flips-crlf-in-crlf-stored-files.md) | A full-file rewrite normalizes CRLF→LF; `src/pdf_tool/*.py` is stored CRLF — check `git ls-files --eol` or the diff balloons |
 | [lesson-letter-signoff-width-trips-footer-collision.md](lesson-letter-signoff-width-trips-footer-collision.md) | A letter sign-off line past ~40% page width fails `footer-collision` on its own; if the rows don't move when you cut prose, shorten the sign-off |
 | [lesson-extension-action-targets-need-managed-attachment.md](lesson-extension-action-targets-need-managed-attachment.md) | Actual extension actions may be protocol `other` targets; use the isolated harness's managed Playwright attachment, without loosening CSP |
+| [lesson-live-application-submit-is-owner-gated.md](lesson-live-application-submit-is-owner-gated.md) | A real employer form behind a CAPTCHA + legal attestation + custom widgets/upload can't be auto-submitted; the helper fills only native text inputs — the human submits |
 
 ## Related
 

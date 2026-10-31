@@ -110,6 +110,7 @@ employer's live site**. No portal, account or real applicant data is used.
 | `fixtures/aria-labels.html` | Native inputs with exact aria-label clues and compatible autocomplete; conflicting name clues are skipped. | aria-labelledby-only matching, custom widgets, shadow DOM and frames. |
 | Consent / stale controls | Empty-only defaults; explicit overwrite; single-use expiring review; defined navigation, DOM and lifecycle invalidation. | Invisible state changes described above; no universal SPA/site certification. |
 | `fixtures/review-transitions.html` | Fictional same-URL history, step/job context, form/control mutations, navigation and stale-review negative cases. | Actual employer workflows, custom controls and server semantics. |
+| Live site: Lightfox Games careers form (2026-10-31) | A real, top-frame form. Its **native text inputs** (Name, Email, Portfolio/Reel URL, LinkedIn URL) are ordinary fillable controls. | Its **custom brand-styled date picker**, **file upload**, **acknowledgment checkboxes**, **free-text note** and **Cloudflare Turnstile** are manual; a submission cannot be automated and the CAPTCHA must not be bypassed. This is one observed site, not vendor certification. |
 | Unsupported / sensitive | Hidden, disabled, read-only, file, salary/authorization and ambiguous inputs excluded; top frame only. | Uploads, dropdowns, dates, radio/checkbox answers, demographic/legal/salary/free-text answers, iframes and custom controls. |
 | Editor / JSON | Field approval, save/reopen/update/remove, v2 preview/export/import, v1 preservation and explicit migration. | Deliverability, URL ownership, encryption and erasure of external files/backups. |
 
@@ -119,6 +120,12 @@ fixture exercised five contact matches, empty-only defaults, explicit overwrite,
 replacement-control rejection and profile-change invalidation, with zero submissions/file changes.
 Exact source hashes and acceptance receipts are recorded in the maintainer's active plan. This
 supersedes the earlier synthetic baseline for these changed files, without expanding to live sites.
+
+The 2026-10-31 live capture above is a single real site inspected read-only and then filled by the
+site's owner under their own direction. It confirms the boundary in the table: only the plain text
+inputs are helper-fillable; uploads, custom widgets, legal acknowledgments, free text and the
+Turnstile CAPTCHA stay with the human. It is not a general claim that any named ATS vendor works,
+and it does not certify any employer's site.
 
 Version 0.3.0 review guards were verified on Windows Chrome 156.0.8078.74 (headed) and Edge
 156.0.4314.50 (headless), using each installed browser's real native default action. Each complete
