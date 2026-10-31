@@ -1,0 +1,17 @@
+'use strict';
+const assert = require('node:assert/strict');
+const {validate,editable,retained} = require('./profile.js');
+const v1 = {version:1,fields:{fullName:'Alex Example',currentTitle:'Designer',currentCompany:'Example Studio',email:'alex@example.com'}};
+const before = JSON.stringify(v1);
+assert.deepEqual(validate(v1),v1);
+assert.equal(JSON.stringify(v1),before,'reading v1 never mutates or infers names');
+assert.equal(validate(v1).fields.firstName,undefined);
+assert.deepEqual(validate({version:2,fields:{...v1.fields,firstName:' Alex ',website:'https://example.com'}}).fields,{...v1.fields,firstName:'Alex',website:'https://example.com'});
+for (const data of [null,{}, {version:3,fields:{email:'a@example.com'}}, {version:2,fields:[]}, {version:2,fields:{salary:'100'}}, {version:2,fields:{firstName:42}}, {version:2,fields:{firstName:'a\nline'}}, {version:2,fields:{firstName:'a'.repeat(501)}}, {version:2,fields:{email:'wrong'}}, {version:2,fields:{email:'Name <a@example.com>'}}, ...['javascript:alert(1)','file:///private','https://user:pass@example.com','https://example.com/a b','//example.com'].map(website=>({version:2,fields:{website}})), {version:2,fields:{firstName:' '}}, {version:2,fields:{email:'a@example.com'},vault:{}}]) assert.throws(()=>validate(data));
+assert.equal(validate({version:1,fields:{website:'legacy.example'}}).fields.website,'legacy.example','legacy content remains readable until explicit migration');
+assert.throws(()=>validate({version:2,fields:{website:'legacy.example'}}));
+assert.equal(editable.includes('fullName'),false);
+assert.deepEqual(retained,['fullName','currentTitle','currentCompany']);
+assert.deepEqual(validate(JSON.parse(JSON.stringify(v1))),v1);
+assert.equal(JSON.stringify(validate(v1)),JSON.stringify(validate({fields:Object.fromEntries(Object.entries(v1.fields).reverse()),version:1})), 'storage key ordering must not change profile equality');
+console.log('Profile checks passed: v1 preservation, explicit names, v2 allowlist/types/email/URLs, round trip.');

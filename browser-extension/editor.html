@@ -1,0 +1,11 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Approved contact profile · Application Helper</title><link rel="stylesheet" href="editor.css"></head>
+<body><main><h1>Approved contact profile</h1>
+<p>Enter only what you want to share. Check each value to approve it. Editing a value clears its approval. Missing names stay blank.</p>
+<p>Saving stays in this browser. Export creates a private JSON file; keep it out of shared folders. Filling a page still requires a separate review in the helper.</p>
+<p id="version"></p><div id="fields"></div>
+<section id="retained-section" hidden><h2>Previously approved values</h2><p>Full name and role values from an imported profile are preserved without inference. Uncheck a value to remove it; this contact editor cannot add or edit these values.</p><div id="retained"></div></section>
+<h2>Exact approved export</h2><p>Only checked, nonempty values appear below. Save before exporting. Unchecked drafts are never saved.</p><pre id="preview" aria-live="polite"></pre>
+<div class="actions"><button id="save" type="button" disabled>Save approved values</button><button id="export" type="button" disabled>Export saved JSON</button><button id="reload" type="button">Reload saved values</button><button id="remove" type="button">Remove saved profile</button></div>
+<p id="status" role="status"></p><small>No account, cloud sync, upload, or application submission. Removing clears extension storage and this editor; exported files and browser backups remain yours to remove.</small>
+</main><script src="profile.js"></script><script src="editor.js"></script></body></html>

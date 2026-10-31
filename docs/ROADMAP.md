@@ -24,11 +24,15 @@ The exact checklist, blocker evidence, and next action live in the dated checkli
 local-only `Plans/README.md`. This file is the durable backlog; completed slices are archived
 in `Plans/_complete/2026-09-26-roadmap-completed-archive.md` (local-only) and are **not** restated here.
 
-**Next bounded slice: an approved local contact-profile editor for the browser helper.**
-Separate explicit first/last/contact fields, validate and persist them locally, and export only
-approved fields. Do not infer missing names from a full-name string. After save/reopen/export and
-both-browser profile tests pass, address review invalidation and site compatibility. Paid features,
-Google identity, MSIX and extension-store publication remain decision-gated.
+**Browser helper contact-editor baseline delivered.** Explicit first/last/contact approvals,
+local save/reopen/update/removal, strict v2 JSON preview/export/import and explicit v1 migration
+are implemented. Names are never inferred; existing-value consent and no-submit/no-upload safeguards
+remain. Installed Chrome/Edge acceptance uses fictional native-input patterns, not employer sites.
+See [BROWSER-HELPER](BROWSER-HELPER.md) for the exact compatibility matrix and manual boundaries.
+
+**Next bounded slice: review invalidation for same-URL SPA changes and stale form semantics.**
+Then establish selected-site compatibility with read-only inspection and equivalent fictional
+fixtures. Paid features, Google identity, MSIX and extension-store publication remain decision-gated.
 
 Command and instruction maintenance uses `AGENTS.md` as the project guide, with `CLAUDE.md` as a
 pointer. Global commands remain in the user library; project adapters are generated from local

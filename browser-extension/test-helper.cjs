@@ -32,8 +32,14 @@ assert.equal(context.inspectPage('fill',[{...first,previous:first.value,value:'A
 const manifest = JSON.parse(fs.readFileSync(require('node:path').join(__dirname,'manifest.json'),'utf8').replace(/^\uFEFF/,''));
 assert.deepEqual(manifest.permissions.sort(),['activeTab','scripting','storage']);
 assert.equal(manifest.host_permissions,undefined); assert.equal(manifest.content_scripts,undefined);
+assert.deepEqual(manifest.options_ui,{page:'editor.html',open_in_tab:true});
+for (const name of ['popup.js','profile.js','editor.js']) {
+  const production = fs.readFileSync(require('node:path').join(__dirname,name),'utf8');
+  assert.doesNotMatch(production,/fetch\s*\(|XMLHttpRequest|WebSocket\s*\(|\.submit\s*\(|requestSubmit\s*\(|sendMessage\s*\(/);
+}
+assert.doesNotMatch(fs.readFileSync(require('node:path').join(__dirname,'editor.js'),'utf8'),/chrome\.scripting|inspectPage/,'editor cannot fill a page');
 assert.doesNotMatch(source,/\.submit\s*\(|requestSubmit\s*\(|sendMessage\s*\(/);
-assert.match(source,/TRUSTED_CONTEXTS/);
+assert.match(fs.readFileSync(require('node:path').join(__dirname,'profile.js'),'utf8'),/TRUSTED_CONTEXTS/);
 assert.match(source,/documentIds:\[documentId\]/);
 assert.match(source,/result\.documentId!==documentId/);
 assert.match(source,/tab\.url!==tabUrl/);
