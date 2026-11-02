@@ -1,6 +1,6 @@
 # ROADMAP — pdf-designer
 
-Updated 2026-10-30: public product capabilities; personal operations live in the ignored workspace roadmap.
+Updated 2026-11-02: public product capabilities; personal operations live in the ignored workspace roadmap.
 
 > **Durable product backlog and status map.** Completed work is archived, not restated here.
 >
@@ -33,6 +33,8 @@ command sources. The owning [source/runtime map](PRIVATE-SYNC.md#command-sources
 and local active plan hold maintenance procedure and verification, rather than a second product backlog.
 
 **Landed context — do not re-open:**
+
+- **Reusable document rhythm** (2026-11-02) — section and role spacing, print-safe glass, and artwork fit guidance live in [LAYOUT-SYSTEM.md](LAYOUT-SYSTEM.md) and the layout recipes; the default résumé example reflects the section spacing.
 
 - **Exports beside their document family** (2026-09-27) — a personal document lands under
   `resumes/<user>/…`, a collage under `collages/<project>/`; `_exports/` is the public/unfiled
