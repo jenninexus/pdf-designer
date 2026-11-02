@@ -8,6 +8,8 @@ fallback.** `_exports/<id>/resumes/` exists only for a source the engine cannot 
 |---|---|
 | this README | HTML, private resources, job-letter HTML, generated PDFs/PNGs |
 
+For a public, fictional starting point, see [the default résumé example](../examples/profiles/default-resume/) and [work-samples example](../examples/profiles/default-work-examples/). Personal content belongs in the private folders below.
+
 **Vault SSOT is [`vaults/<id>.json`](../vaults/), not a `resume-source.json` in this folder.**
 
 | What | Where |

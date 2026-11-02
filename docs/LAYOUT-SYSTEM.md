@@ -176,20 +176,23 @@ Templates that don't `@import` the theme still follow the same equal-margin rule
 
 ### Vertical rhythm (what "airier" meant)
 
-- **Résumé:** `header` bottom-margin ~20px; `section` ~16–19px; under `h2` ~10–12px; list items ~4px;
-  column gap ~32px. Signature `padding-top` ~14–18px. Keep section gaps even across both pages —
-  don't pack page 2 tighter than page 1.
+- **Résumé:** `header` bottom-margin ~20px; major sections ~20px; consecutive roles or subsections
+  ~14px; under `h2` ~10–12px; list items ~4px; column gap ~32px. These are starting points for
+  visible gaps, not additive CSS requirements: check for collapsed or doubled margins in both themes.
+  Signature `padding-top` ~14–18px. Keep section gaps even across both pages; when content no longer
+  fits, move or edit it instead of shrinking the equal margins.
 - **Cover letter:** header block sits above a `border-bottom` rule with ~24px gap before the recipient;
   paragraph gap ~13px; **~30px gap above the sign-off** (plus `margin-top:auto`). Sign-off stays lean:
   closing + script name + mailto email (title lives in the header, not a third footer line).
-- **Work samples:** `.page-main` is a flex column with a generous `gap` (~18px) and
+- **Work samples:** `.page-main` is a flex column with a generous `gap` (~20px between sections,
+  ~14px between subsections) and
   `padding-bottom` clear of the signature — prefer gap over `justify-content: space-between` (a tall
   Agency grid + space-between has false-triggered footer-collision). Category `h2` ~13px; callout
   ~14–16px; footer `padding-top` ~16px. Portfolio URLs stay in a body `.links-panel` (title left,
   items centered/even in the row) — never a L/R footer row.
 
 **Defaults must match this table.** Recipe JSON is not applied at export time. If the HTML
-inlines `section { margin-bottom: 12px }` while this doc says 16–19px, the PDF follows the
+inlines `section { margin-bottom: 12px }` while this doc starts at ~20px, the PDF follows the
 HTML. Reconcile HTML (or `@import` `themes/default-resume.css`) rather than treating the
 JSON as live CSS. Trap: [`.memory/lesson-layout-recipe-vs-inline-html.md`](../.memory/lesson-layout-recipe-vs-inline-html.md).
 
@@ -225,8 +228,13 @@ fails `footer-collision` at ~70 px on every page.
 | Game shots (3-col) | 16:9 frame + label under |
 | Agent cards (3-col) | ~92px image + label under |
 
-`object-fit: cover` / `contain` still crops to the box — raise a grid's height rather than fighting fit.
-Use only assets supported by the person’s profile and permissions.
+For decorative game art, `object-fit: cover` fills the frame while preserving aspect ratio; adjust
+`object-position` and inspect the actual PDF so the subject and essential content survive the crop.
+If bars are baked into the image itself, crop those from an appropriate source before fitting it.
+For screenshots whose whole interface, text, or evidentiary content must remain visible, use
+`contain` instead. Never stretch an image. Use only assets supported by the person’s profile and
+permissions. A subtle translucent surface and border can give cards a glass-like finish; provide a
+legible print fallback rather than depending on backdrop blur, and check both exported themes.
 
 ---
 

@@ -39,6 +39,11 @@ Map of every SSOT surface: [`../docs/SSOT.md`](../docs/SSOT.md).
 | **Work samples** | [`work-examples/work-examples.json`](work-examples/work-examples.json) | Footer row (name L / links R). Portfolio URLs in a **body** section — not an extra footer line | **3** |
 
 Full narrative + bands: [`../docs/LAYOUT-SYSTEM.md`](../docs/LAYOUT-SYSTEM.md).  
+Use the visible rhythm as a starting point: roughly 20px between major sections and 14px between
+consecutive roles or subsections, checked in both PDF themes. Fit content without shrinking the
+equal page margins. Game-art thumbnails may cover their frame if the subject survives the crop;
+screenshots whose complete content matters use contain. See the work-samples recipe for the
+print-safe glass-like card treatment.
 **Visual reference for cover-letter pin/padding:** `resumes/jenni/CZI/jenni-czi-letter.html` (geometry only — not its palette).  
 **Personal letter example:** [`../examples/profiles/default-letter/personal-letter.html`](../examples/profiles/default-letter/personal-letter.html).
 

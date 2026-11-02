@@ -31,6 +31,7 @@
     "break": ".page + .page { break-before: page }",
     "trap": "A trailing break-after: page emits a phantom blank sheet."
   },
+  "verticalRhythm": "Separate major sections with about 20px after the preceding content and consecutive roles/subsections with about 14px; use about 10–12px below section headings and 4px between list items. Check actual visible gaps (including collapsed margins) on every page in both PDF themes; move or edit content before shrinking equal page margins.",
   "expectedPages": { "resume": 2 },
   "guards": ["check_overflow", "check_generation", "check_palette", "check_ats"],
   "bestFor": "Every résumé (exactly 2 pages). Work-samples use work-examples.json (3 pages). Cover letters use one-page-letter.json — never this print height pattern on a letter."
