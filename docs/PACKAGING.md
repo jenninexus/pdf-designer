@@ -127,4 +127,4 @@ Before any submission: choose the publisher/account type and verify eligibility;
 | Publisher and paid delivery | Owner/channel decisions remain private and held | Confirm publisher, licensing, commerce and support without silently enabling checkout |
 | Store review | No certification or listing acceptance recorded | Run applicable certification checks and obtain an explicit submission decision |
 
-Google sign-in and the browser helper are separate integrations; neither is needed to export a local document or proves Store readiness.
+Google sign-in is not needed to export a local document and does not establish Store readiness.

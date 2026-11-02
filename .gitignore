@@ -35,6 +35,8 @@ storage/
 # RULE. Private brand palettes live in brands/, which the previewer reads alongside themes/.
 # Tracked brand TEMPLATE (no personal data): examples/brand-design/
 private/
+browser-extension/
+docs/BROWSER-HELPER.md
 notes/
 # Root workspace nouns — track README + *.example.* only; real data stays local
 users/*

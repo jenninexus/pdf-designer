@@ -28,7 +28,7 @@ These are product proposals, not implemented entitlements or prices. Validate de
 
 | Tier | Proposed value |
 |---|---|
-| Free | Generous MIT engine, Design Hub, document QA and the basic browser helper already published. |
+| Free | Generous MIT engine, Design Hub and document QA. |
 | One-time purchase | Convenient desktop packaging and additional paid-only desktop capabilities, if developed and validated. |
 | Subscription | Only for sustained value such as maintained ATS integrations, updates or services with recurring costs; do not charge recurring fees for ordinary local documents. |
 
@@ -173,4 +173,4 @@ The current public GitHub offering is the local-first engine, Design Hub, exampl
 
 Recommendation: retain one public engine and the existing LAN/private workspace. A separate private product-shell repository is not justified until independent ownership, licensing, release cadence or actual private source creates a concrete need; a second repository alone does not protect data already placed in public history. Personal operating backlog is `docs/ROADMAP.local.md` in a configured private workspace; this file is intentionally absent from public clones.
 
-A browser form helper is a separate, consent-driven local capability; see [BROWSER-HELPER](BROWSER-HELPER.md) for its actual scope and status. Google sign-in is a future optional identity integration, not a current PDF Designer feature or a requirement for local use. Synagen's desktop precedent opens the system browser and uses a loopback callback with its self-hosted Supabase/GoTrue OAuth flow; its provider credentials and allowlist are server-side. Reuse the architectural pattern only after reviewing its current source; do not reuse its credentials or assume its account backend is appropriate for this product. Define a separate provider project, registered redirects, state/PKCE and validated identity/session lifecycle before implementation. [Google's OpenID Connect documentation](https://developers.google.com/identity/openid-connect/openid-connect) describes the server authorization-code flow.
+Google sign-in is a future optional identity integration, not a current PDF Designer feature or a requirement for local use. Synagen's desktop precedent opens the system browser and uses a loopback callback with its self-hosted Supabase/GoTrue OAuth flow; its provider credentials and allowlist are server-side. Reuse the architectural pattern only after reviewing its current source; do not reuse its credentials or assume its account backend is appropriate for this product. Define a separate provider project, registered redirects, state/PKCE and validated identity/session lifecycle before implementation. [Google's OpenID Connect documentation](https://developers.google.com/identity/openid-connect/openid-connect) describes the server authorization-code flow.
