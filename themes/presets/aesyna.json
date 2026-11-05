@@ -1,0 +1,39 @@
+{
+  "_meta": {
+    "id": "aesyna",
+    "name": "Aesyna",
+    "description": "Aesyna ink-violet surfaces with violet and ice-cyan accents.",
+    "lineage": "syna-theme-kit/profiles/aesyna.json",
+    "paletteRules": "themes/PALETTE-RULES.md"
+  },
+  "tokens": {
+    "dark": {
+      "--bg": "#0a0916",
+      "--surface": "#100e1c",
+      "--elevated": "#1b1740",
+      "--text": "#e8ecf8",
+      "--dim": "#a3acc6",
+      "--dim2": "#7d86a6",
+      "--border": "rgba(45, 212, 191, 0.20)",
+      "--border2": "rgba(168, 85, 247, 0.35)",
+      "--primary": "#a855f7",
+      "--secondary": "#4f7bff",
+      "--accent": "#4de8ff",
+      "--support": "#5dffc1"
+    },
+    "light": {
+      "--bg": "#e6e3f5",
+      "--surface": "#f7f5fd",
+      "--elevated": "#ffffff",
+      "--text": "#1a1430",
+      "--dim": "#4a4668",
+      "--dim2": "#656187",
+      "--border": "rgba(22, 18, 31, 0.12)",
+      "--border2": "rgba(22, 18, 31, 0.26)",
+      "--primary": "#7c3aed",
+      "--secondary": "#3b5bdb",
+      "--accent": "#066c96",
+      "--support": "#0b8a69"
+    }
+  }
+}

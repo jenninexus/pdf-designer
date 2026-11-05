@@ -24,6 +24,12 @@ def test_recipe_gallery_lists_public_registries():
 
     palette_ids = {p["id"] for p in data["palettePresets"]}
     assert "slate-ink" in palette_ids
+    assert {"aesyna", "aesyna-harmony"} <= palette_ids
+    for palette_id in ("aesyna", "aesyna-harmony"):
+        preset = next(p for p in data["palettePresets"] if p["id"] == palette_id)
+        for mode in ("dark", "light"):
+            assert preset["modes"][mode]["hubUrl"] == f"/?palette={palette_id}&mode={mode}"
+            assert preset["modes"][mode]["swatches"].get("--accent")
     slate = next(p for p in data["palettePresets"] if p["id"] == "slate-ink")
     assert slate["modes"]["dark"]["hubUrl"] == "/?palette=slate-ink&mode=dark"
     assert slate["modes"]["dark"]["swatches"].get("--primary")

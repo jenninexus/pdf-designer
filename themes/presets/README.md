@@ -9,6 +9,8 @@ Personal/studio brands stay in gitignored `brands/`.
 | `slate-ink.json` | Classic navy professional | original |
 | `ocean-breeze.json` | Calm blues/teals | syna `#ocean` |
 | `synagentic.json` | Teal + violet glass | syna synagentic / synabrain |
+| `aesyna.json` | Ink-violet glass with violet and ice-cyan accents | syna-theme-kit Aesyna brand profile |
+| `aesyna-harmony.json` | Aesyna surfaces with cool harmony accents | Aesyna spectrum Ice, Blue, Indigo and Violet |
 | `void-circuit.json` | Violet circuits | syna `#void-circuit` |
 | `cinematic-studio.json` | Muted cinematic cool | syna `#cinematic-studio` |
 | `midnight-chrome.json` | Midnight blue chrome | syna midnight-chrome skin |
