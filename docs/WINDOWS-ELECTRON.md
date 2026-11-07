@@ -71,6 +71,14 @@ Partner Center identity for a production manifest and let the Store sign the
 submitted package. The provisional package runs the full-trust Electron shell
 with the same workspace and bundled export runtime as NSIS.
 
+Copy both signed packages, the public QA certificate and
+`scripts/verify-msix-lifecycle.ps1` into a disposable offline Windows guest.
+Run it from the guest's interactive desktop with an administrator session
+for the temporary certificate import. It verifies the installed runtime,
+fictional import, PDF outputs, update and workspace retention. Check the
+retained PDFs with `pdf_tool.check_ats` outside the guest. Keep the guest
+receipt with the exact artifact hashes.
+
 ## Why the clean-machine harness refuses Python / Node / a checkout
 
 `scripts/verify-clean-machine.ps1` is not “run the installer on a machine that

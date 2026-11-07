@@ -114,7 +114,7 @@ this). Verifying from the checkout directory will silently use live `themes/`.
 
 ## Windows release readiness (2026-11-07)
 
-The desktop implementation currently produces a local unsigned x64 NSIS installer. A Store-compatible package, clean-machine lifecycle, certification and listing remain open. Evaluate **Store-packaged MSIX/AppX first** for a trusted Windows install.
+The desktop build supports unsigned x64 NSIS and full-trust x64 MSIX. The MSIX builder can sign an internal test pair with a provisional identity. Store release uses the verified Partner Center identity and the certification and listing gates below. See [Windows Electron packaging](WINDOWS-ELECTRON.md#store-format-msix).
 
 | Route | Cost and install behavior |
 |---|---|
@@ -128,8 +128,8 @@ Choose the appropriate publisher and account type, then use the exact Partner Ce
 |---|---|---|
 | Engine and local UI | Implemented, with deterministic document checks | Reuse accepted source/artifact receipts; test each release source |
 | Desktop shell | Electron main process, bundled-runtime builder and NSIS target exist | Rebuild from the chosen release source; old local binaries do not prove current source |
-| Store package | `desktop/package.json` targets NSIS | Build a Store-compatible package with the actual Electron/Python/Chromium runtime and verify the installed application |
-| Clean Windows lifecycle | A harness exists; release-specific clean-machine proof remains open | Install, launch, export, update, uninstall and retain the private workspace on clean Windows 10/11 |
+| Store package | MakeAppx can package the same bundled Electron/Python/Chromium app as NSIS | Use the exact publisher identity and review distribution rights and bundled notices before submitting |
+| Clean Windows lifecycle | A release harness exercises two versions of the same provisional MSIX identity | Retain install, export, update and uninstall receipts from clean offline Windows 10/11 x64 |
 | Publisher and commerce | Public source and optional tips are available | Confirm publisher, licensing and support. Treat paid packs and their fulfillment as a separate delivery path |
 | Store review | No certification or listing acceptance recorded | Run applicable certification checks and obtain an explicit submission decision |
 
