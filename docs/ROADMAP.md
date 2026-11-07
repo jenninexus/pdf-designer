@@ -1,6 +1,6 @@
 # ROADMAP — pdf-designer
 
-Updated 2026-11-02: public product capabilities; personal operations live in the ignored workspace roadmap.
+Updated 2026-11-07. Personal operations live in the ignored workspace roadmap.
 
 > **Durable product backlog and status map.** Completed work is archived, not restated here.
 >
@@ -73,7 +73,7 @@ and local active plan hold maintenance procedure and verification, rather than a
 ### Optional integrations and delivery
 
 - **Optional Google sign-in — next identity planning slice:** design a separately configured account/licensing identity, independent of résumé data; preserve offline local use. Implementation depends on a validated account-backed use and security design. [PRODUCT.md](PRODUCT.md) records the Synagen precedent and boundary.
-- **Microsoft Store:** assess MSIX packaging, clean-machine lifecycle, certification and truthful listing before release; current NSIS installer is unsigned. [PACKAGING.md](PACKAGING.md) records the route and gates.
+- **Microsoft Store:** build a Store-compatible MSIX/AppX candidate from the existing desktop runtime. Verify the clean Windows install, export, update and uninstall lifecycle, then complete certification and listing review. [PACKAGING.md](PACKAGING.md) records the free Store path and separate direct-signing costs.
 
 ### Product evolution
 

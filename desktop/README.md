@@ -24,10 +24,9 @@ The first app run copies `workspace-seed/` to `Documents/PDF Designer` only if t
 ## Signing
 
 Default `npm run dist` is unsigned on purpose (`CSC_IDENTITY_AUTO_DISCOVERY=false`).
-Windows SmartScreen warnings are expected for those test builds. Do not treat the
-unsigned artifact as a customer download.
+Windows SmartScreen warnings are expected. Reserve unsigned builds for internal testing.
 
-A listable build is a separate local maintainer command (`npm run dist:signed`) that
-fails closed without gitignored credentials, then
+A signed direct-download build uses Azure Artifact Signing (formerly Trusted Signing).
+The local maintainer command (`npm run dist:signed`) fails closed without gitignored credentials, then
 `scripts/verify-authenticode.ps1 -RequireSigned` must exit 0. Details:
 [`docs/WINDOWS-ELECTRON.md`](../docs/WINDOWS-ELECTRON.md).

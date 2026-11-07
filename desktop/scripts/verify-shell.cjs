@@ -52,8 +52,8 @@ includes(main, "documentsLooksCloudRedirected", "shell must detect redirected Do
 assert(!main.includes("autoUpdater"), "desktop shell must not include an auto-updater");
 assert(!main.includes("https://"), "desktop shell must not load remote URLs");
 includes(readme, "SmartScreen", "README must explain unsigned Windows SmartScreen behavior");
-includes(readme, "Azure Trusted Signing", "README must name the Authenticode approach");
-includes(readme, "not listable", "README must refuse listing the unsigned installer");
+includes(readme, "Azure Artifact Signing", "README must name the Authenticode approach");
+includes(readme, "Reserve unsigned builds for internal testing.", "README must reserve unsigned builds for internal testing");
 includes(readme, "no auto-update", "README must state the no-auto-update contract");
 
 if (failures.length) {

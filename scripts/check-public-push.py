@@ -76,6 +76,9 @@ PUBLIC_MEDIA_ROOT = "docs/"
 # Hub/UI assets under src/pdf_tool/static are part of the public engine, not personal exports.
 PUBLIC_ENGINE_ASSET_ROOT = "src/pdf_tool/static/"
 PRIVATE_DOC_NAMES = frozenset({"docs/MARKETING.md", "docs/WORKSPACE.md", "docs/HISTORY-SCRUB.md"})
+WINDOWS_RELEASE_SUFFIXES = (
+    ".exe", ".msi", ".msix", ".msixbundle", ".msixupload", ".appx", ".appxbundle", ".appxupload",
+)
 
 LOCAL_MARKERS_FILE = REPO / ".config" / "private-markers.txt"
 # Contact fields whose values identify a real person. First names are deliberately absent:
@@ -111,6 +114,16 @@ def path_floor_violation(path: str) -> str | None:
     """Return why ``path`` may never be public, or None. Independent of ``.gitignore``."""
     posix = PurePosixPath(path)
     name = posix.name
+    lower_name = name.lower()
+    lower_path = path.lower()
+    if lower_name == ".env" or (lower_name.startswith(".env.") and lower_name != ".env.example"):
+        return "local environment file"
+    if lower_name == ".pypirc" or lower_name.endswith((".pfx", ".p12")):
+        return "local publishing credential"
+    if lower_name.endswith(WINDOWS_RELEASE_SUFFIXES):
+        return "Windows release binary"
+    if lower_path == "desktop/azure-trusted-signing.json":
+        return "local signing config"
     if path == "browser-extension" or path.startswith("browser-extension/") or path == "docs/BROWSER-HELPER.md":
         return "local-only extension"
     if path in PUBLIC_SEED_PATHS:
@@ -125,8 +138,10 @@ def path_floor_violation(path: str) -> str | None:
         return "private note"
     if path.startswith(".claude/commands/") and ".example." not in name:
         return "local command (only *.example.md is public)"
-    if path == ".config/mcp-pdf-designer.json" or path == LOCAL_MARKERS_FILE.relative_to(REPO).as_posix():
-        return "machine-local config"
+    if lower_path.startswith(".config/"):
+        is_public_example = posix.parent == PurePosixPath(".config") and name.endswith(".example.json")
+        if not is_public_example and path != ".config/capture/hub.breakpoints.json":
+            return "machine-local config"
     if name.lower().endswith(EXPORT_SUFFIXES) and not path.startswith(PUBLIC_MEDIA_ROOT) and not path.startswith(PUBLIC_ENGINE_ASSET_ROOT):
         return "document/image export outside docs/"
     return None

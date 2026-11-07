@@ -78,6 +78,39 @@ def test_floor_holds_when_gitignore_is_loosened(repo: Path) -> None:
     assert "private root resumes/" in result.stderr
 
 
+@pytest.mark.parametrize(
+    ("path", "reason"),
+    [
+        (".config/release-signing.json", "machine-local config"),
+        (".config/capture/credentials.json", "machine-local config"),
+        ("desktop/azure-trusted-signing.json", "local signing config"),
+        ("desktop/.ENV.production", "local environment file"),
+        (".pypirc", "local publishing credential"),
+        ("signing/Publisher.PFX", "local publishing credential"),
+        ("release/PDF-Designer.MSIXUPLOAD", "Windows release binary"),
+    ],
+)
+def test_release_privacy_floor_holds_without_gitignore(repo: Path, path: str, reason: str) -> None:
+    (repo / ".gitignore").write_text("", encoding="utf-8")
+    _commit(repo, path, "fictional fixture\n")
+    result = _gate(repo)
+    assert result.returncode == 1
+    assert reason in result.stderr
+
+
+@pytest.mark.parametrize(
+    "path",
+    [
+        ".config/mcp-pdf-designer.example.json",
+        ".config/capture/hub.breakpoints.json",
+        "desktop/azure-trusted-signing.example.json",
+    ],
+)
+def test_reviewed_config_seeds_can_be_published(repo: Path, path: str) -> None:
+    _commit(repo, path, "{}\n")
+    assert _gate(repo).returncode == 0
+
+
 @pytest.mark.parametrize("path", ["users/README.md", "vaults/you.example.json", "users/examples.json"])
 def test_named_public_seeds_pass_the_floor(repo: Path, path: str) -> None:
     _commit(repo, path, "{}\n")
