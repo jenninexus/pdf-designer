@@ -262,3 +262,18 @@ Durable *why*: `.memory/lesson-hub-profile-scopes-folder-and-kind.md` ·
 The toolbar shows the D mark only; its accessible name remains PDF Designer. Library, Recipes, Vault and Wizard icons are present in the initial HTML, with pointer-following glow and a quiet active edge. Mode links prefetch their destination on hover or keyboard focus. Same-origin cross-document view transitions keep the identity strip continuous in supporting browsers; normal navigation and back/forward remain available, and reduced motion disables the transition. This is progressively enhanced multi-page navigation, not a persistent single-page editor. [Chrome implementation guidance](https://developer.chrome.com/docs/web-platform/view-transitions/cross-document).
 
 Project facts live in `.config/mcp-pdf-designer.json` (portable seed beside it). The named breakpoint set is `bootstrap_5_3_8_extended_390_4k`, with `lg`/992 navigation and `xs-max`/575.98 stacking. `.vscode/mcp.json` configures VS Code servers only; it is not a second breakpoint registry. Cursor reads `.cursor/mcp.json`, Claude reads `.mcp.json`, and Codex uses its own TOML registration. Keep machine launch paths private; a public clone needs none of them. [VS Code configuration](https://code.visualstudio.com/docs/agents/reference/mcp-configuration), [Cursor configuration](https://prod.cursor.com/docs/mcp).
+## Local document security
+
+The Hub serves on `127.0.0.1`. Open the address printed at startup. It checks the
+exact loopback Host and browser origin and accepts writes as JSON. Native local
+clients can send JSON without an Origin header. Raw workspace URLs serve document
+formats and their assets. Vault and profile data are available through the Hub's
+own interfaces.
+
+Previewed HTML and SVG are sandboxed, including when opened directly. Inline
+styles, workspace CSS, images, and fonts remain available for preview and palette
+switching. Document scripts, embedded frames, forms and remote subresources are
+blocked. Use local assets or inline data images in documents. Hub PDF and PNG
+exports use an isolated Chromium page that can request only permitted local
+assets. The standalone CLI continues to render files with the caller's local
+browser privileges. The Hub trusts native processes running as the same user.

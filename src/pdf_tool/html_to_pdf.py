@@ -38,7 +38,7 @@ to control that behavior.
 import sys
 from pathlib import Path
 
-from .browser import chromium_launch_kwargs
+from .browser import chromium_launch_kwargs, open_render_document
 
 
 def resolve_pdf_theme(pdf_theme: str | None) -> str:
@@ -66,6 +66,9 @@ def export_html_to_pdf(
     force: bool = False,
     pdf_theme: str | None = None,
     css_vars: dict | None = None,
+    *,
+    workspace: Path | None = None,
+    resolve_asset=None,
 ) -> Path:
     """Render html_path to PDF and return the output path.
 
@@ -105,7 +108,7 @@ def export_html_to_pdf(
     else:
         from .paths import default_output_dir
 
-        export_dir = Path(output_dir).resolve() if output_dir else default_output_dir(html_path)
+        export_dir = Path(output_dir).resolve() if output_dir else default_output_dir(html_path, root=workspace)
         export_dir.mkdir(parents=True, exist_ok=True)
         # Dual-mode convention: stem-light.pdf (ATS) / stem-dark.pdf (branded).
         # Explicit pdf_path still wins when the caller wants a custom name.
@@ -114,8 +117,7 @@ def export_html_to_pdf(
 
     with sync_playwright() as p:
         browser = p.chromium.launch(**chromium_launch_kwargs())
-        page = browser.new_page()
-        page.goto(html_path.as_uri())
+        page = open_render_document(browser, html_path, workspace=workspace, resolve_asset=resolve_asset)
         page.evaluate(
             "theme => { document.documentElement.dataset.pdfTheme = theme; }",
             resolved_theme,

@@ -9,6 +9,7 @@
     "verify-shell": "node scripts/verify-shell.cjs",
     "pack": "npm run runtime && npm run verify-shell && electron-builder --dir --win --x64 --publish never",
     "dist": "npm run runtime && npm run verify-shell && node scripts/dist-nsis.cjs",
+    "dist:msix": "pwsh -NoProfile -File scripts/dist-msix.ps1",
     "dist:signed": "npm run runtime && npm run verify-shell && node scripts/dist-signed.cjs"
   },
   "devDependencies": {

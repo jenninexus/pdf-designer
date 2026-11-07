@@ -27,7 +27,7 @@ Setup: pip install -e .   (Playwright only -- Apache-2.0)
 
 from pathlib import Path
 
-from .browser import chromium_launch_kwargs
+from .browser import chromium_launch_kwargs, open_render_document
 from .html_to_pdf import resolve_pdf_theme
 import sys
 
@@ -41,6 +41,9 @@ def render_to_png(
     output_dir: str | None = None,
     scale: float = 2.0,
     pdf_theme: str | None = None,
+    *,
+    workspace: Path | None = None,
+    resolve_asset=None,
 ) -> list[Path]:
     """Render each page of an HTML document to a PNG. Returns the output paths."""
     from playwright.sync_api import sync_playwright
@@ -64,18 +67,18 @@ def render_to_png(
     out_dir = (
         Path(output_dir).resolve()
         if output_dir
-        else default_output_dir(src, leaf=f"{src.stem}-png")
+        else default_output_dir(src, root=workspace, leaf=f"{src.stem}-png")
     )
     out_dir.mkdir(parents=True, exist_ok=True)
 
     outputs: list[Path] = []
     with sync_playwright() as pw:
         browser = pw.chromium.launch(**chromium_launch_kwargs())
-        page = browser.new_page(
+        page = open_render_document(
+            browser, src, workspace=workspace, resolve_asset=resolve_asset,
             viewport={"width": _PAGE_W, "height": _PAGE_H},
-            device_scale_factor=scale,
+            device_scale_factor=scale, wait_until="networkidle",
         )
-        page.goto(src.as_uri(), wait_until="networkidle")
 
         page.evaluate(
             "t => document.documentElement.setAttribute('data-pdf-theme', t)",

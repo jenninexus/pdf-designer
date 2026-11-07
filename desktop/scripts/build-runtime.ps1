@@ -1,5 +1,5 @@
 [CmdletBinding()]
-param()
+param([string]$PythonExecutable, [switch]$Release)
 
 # Build a self-contained Python/Playwright sidecar for the Windows Electron
 # shell. This runs only at packaging time; the produced app reads no user
@@ -28,21 +28,33 @@ function Assert-WorkspaceChild([string]$candidate, [string]$parent) {
 Assert-WorkspaceChild $buildRoot $desktopRoot
 Assert-WorkspaceChild $finalRuntimeRoot (Join-Path $desktopRoot 'runtime')
 
-$python = Get-Command python -ErrorAction SilentlyContinue
-if (-not $python) { $python = Get-Command python3 -ErrorAction SilentlyContinue }
-if (-not $python) { throw 'Python 3.9+ is required to build the local desktop runtime.' }
+$python = if ($PythonExecutable) {
+    (Resolve-Path -LiteralPath $PythonExecutable).Path
+} else {
+    (Get-Command python.exe -ErrorAction Stop).Source
+}
+if ($Release) {
+    $pythonVersion = & $python -c 'import platform, struct; print(platform.python_version(), struct.calcsize("P") * 8)'
+    if ($LASTEXITCODE -or $pythonVersion -ne '3.12.10 64') {
+        throw "Windows release requires CPython 3.12.10 x64. Found: $pythonVersion"
+    }
+    if ((Test-Path -LiteralPath $buildRoot) -or (Test-Path -LiteralPath $finalRuntimeRoot)) {
+        throw 'Build a release from a fresh checkout with no staged runtime or browser cache.'
+    }
+}
 
-& $python.Source "$repoRoot\scripts\sync-wheel-share.py"
+& $python "$repoRoot\scripts\sync-wheel-share.py"
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-& $python.Source "$repoRoot\scripts\sync-desktop-seed.py"
+& $python "$repoRoot\scripts\sync-desktop-seed.py"
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
 if (-not (Test-Path -LiteralPath $venvPython)) {
-    & $python.Source -m venv $venvRoot
+    & $python -m venv $venvRoot
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 }
 
-& $venvPython -m pip install --disable-pip-version-check -e "$repoRoot" "pyinstaller==6.22.2"
+$locked = if ($Release) { @('-r', "$desktopRoot\runtime-requirements.txt") } else { @() }
+& $venvPython -m pip install --disable-pip-version-check -e "$repoRoot" "pyinstaller==6.22.2" @locked
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
 # The browser is an explicit sibling of the frozen runtime. `pdf_tool.browser`
@@ -59,6 +71,8 @@ if (-not $bundledChrome) {
         if ($null -eq $previousBrowserPath) { Remove-Item Env:PLAYWRIGHT_BROWSERS_PATH -ErrorAction SilentlyContinue }
         else { $env:PLAYWRIGHT_BROWSERS_PATH = $previousBrowserPath }
     }
+    $bundledChrome = Get-ChildItem -LiteralPath $browserRoot -Filter chrome.exe -Recurse | Select-Object -First 1
+    if (-not $bundledChrome) { throw 'Playwright did not install full Chromium.' }
 }
 
 & $venvPython -m PyInstaller --noconfirm --clean --onedir --name pdf-designer-runtime `
@@ -73,7 +87,35 @@ if (-not (Test-Path -LiteralPath $runtimeExe)) { throw "PyInstaller did not prod
 if (Test-Path -LiteralPath $finalRuntimeRoot) { Remove-Item -LiteralPath $finalRuntimeRoot -Recurse -Force }
 New-Item -ItemType Directory -Path (Split-Path -Parent $finalRuntimeRoot) -Force | Out-Null
 Copy-Item -LiteralPath $builtRuntime -Destination $finalRuntimeRoot -Recurse
-Copy-Item -LiteralPath $browserRoot -Destination (Join-Path $finalRuntimeRoot 'browsers') -Recurse
+$targetBrowsers = Join-Path $finalRuntimeRoot 'browsers'
+if ($Release) {
+    New-Item -ItemType Directory -Path $targetBrowsers | Out-Null
+    Copy-Item -LiteralPath $bundledChrome.Directory.Parent.FullName -Destination $targetBrowsers -Recurse
+} else {
+    Copy-Item -LiteralPath $browserRoot -Destination $targetBrowsers -Recurse
+}
+
+if ($Release) {
+    $notices = New-Item -ItemType Directory -Path (Join-Path $finalRuntimeRoot 'notices')
+    $pythonLicense = & $venvPython -c 'from pathlib import Path; import sys; print(Path(sys.base_prefix) / "LICENSE.txt")'
+    Copy-Item -LiteralPath $pythonLicense -Destination (Join-Path $notices.FullName 'Python-LICENSE.txt')
+    Copy-Item -LiteralPath "$repoRoot\LICENSE" -Destination (Join-Path $notices.FullName 'PDF-Designer-LICENSE.txt')
+    foreach ($distribution in Get-ChildItem -LiteralPath "$venvRoot\Lib\site-packages" -Directory -Filter '*.dist-info') {
+        $licenses = Get-ChildItem -LiteralPath $distribution.FullName -Recurse -File |
+            Where-Object { $_.Name -match '^(LICEN[CS]E|COPYING|NOTICE|AUTHORS)' }
+        foreach ($notice in $licenses) {
+            $target = Join-Path $notices.FullName (Join-Path $distribution.BaseName (
+                [IO.Path]::GetRelativePath($distribution.FullName, $notice.FullName)
+            ))
+            New-Item -ItemType Directory -Path (Split-Path -Parent $target) -Force | Out-Null
+            Copy-Item -LiteralPath $notice.FullName -Destination $target
+        }
+    }
+    @(
+        "CPython $pythonVersion"
+        (& $venvPython -m pip freeze --exclude-editable)
+    ) | Set-Content -LiteralPath (Join-Path $notices.FullName 'runtime-versions.txt') -Encoding utf8
+}
 
 $bundledChrome = Get-ChildItem -LiteralPath (Join-Path $finalRuntimeRoot 'browsers') -Filter chrome.exe -Recurse -ErrorAction SilentlyContinue | Select-Object -First 1
 if (-not $bundledChrome) { throw 'The runtime is missing bundled Playwright Chromium.' }

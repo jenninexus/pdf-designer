@@ -32,7 +32,7 @@
     loading.textContent = "No PDF was selected.";
     return;
   }
-  open.href = "/" + doc;
+  open.href = "/" + doc.split("/").map(encodeURIComponent).join("/");
 
   fetch("/api/pdf-info?doc=" + encodeURIComponent(doc))
     .then(response => response.json())

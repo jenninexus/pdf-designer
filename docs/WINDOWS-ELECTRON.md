@@ -46,6 +46,31 @@ fails closed without gitignored credentials. The gate is
 `scripts/verify-authenticode.ps1 -RequireSigned` printing Valid — not
 electron-builder’s `signing with signtool.exe` log.
 
+## Store-format MSIX
+
+Use a fresh clean checkout with CPython 3.12.10 x64, the pinned npm dependencies
+and the x64 Windows SDK tools. Build the same unpacked Electron app used for NSIS,
+then package it with MakeAppx. The release runtime records its Python and dependency
+versions and includes the notices found in the installed distributions.
+
+```powershell
+Set-Location desktop
+npm ci
+pwsh -NoProfile -File scripts/build-runtime.ps1 -Release -PythonExecutable $python312
+npm run verify-shell
+$env:CSC_IDENTITY_AUTO_DISCOVERY = 'false'
+npx --no-install electron-builder --dir --win --x64 --publish never
+& ./scripts/dist-msix.ps1 -AppDir dist/win-unpacked -SdkBin $sdkBin -OutputDir dist/msix-qa `
+  -IdentityName JenniNexus.PDFDesigner.QA -Publisher 'CN=PDF Designer Release QA' `
+  -Version @('0.1.0.0', '0.1.1.0') -SignForTest
+```
+
+The test certificate is self-signed and expires after 30 days. Trust only its
+public certificate inside a disposable Windows test guest. Use the verified
+Partner Center identity for a production manifest and let the Store sign the
+submitted package. The provisional package runs the full-trust Electron shell
+with the same workspace and bundled export runtime as NSIS.
+
 ## Why the clean-machine harness refuses Python / Node / a checkout
 
 `scripts/verify-clean-machine.ps1` is not “run the installer on a machine that
@@ -129,7 +154,7 @@ The shell logs a warning when the Documents path looks redirected (`OneDrive`,
 - Windows 10/11 x64 only; assisted per-user NSIS install with Start Menu and desktop shortcuts.
 - Electron uses `contextIsolation: true`, `nodeIntegration: false`, and `sandbox: true`.
 - The renderer has no preload bridge, remote content, auto-updater, telemetry, account flow, or cloud sync.
-- The runtime is bound to `127.0.0.1` on an ephemeral port. Electron accepts only the exact port written to its local ready file and blocks new windows/navigation elsewhere.
+- The runtime binds to `127.0.0.1` and reuses its last port when available so Hub preferences keep the same browser origin across upgrades. Electron restricts in-app navigation to the current origin. The two fixed support links open in the default browser, and the PDF reader can open the local original in a dedicated window.
 - The bundled Python runtime gives Playwright the adjacent, bundled Chromium executable explicitly. It does not need a user environment variable, system Python, or a second renderer.
 
 ### Local-process and Documents boundary

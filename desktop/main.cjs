@@ -2,12 +2,16 @@
 
 // This is intentionally only application chrome.  Rendering remains in the
 // bundled local Python runtime, where PDF Designer already uses Playwright.
-const { app, BrowserWindow } = require("electron");
+const { app, BrowserWindow, shell } = require("electron");
 const { spawn, execFile } = require("node:child_process");
 const fs = require("node:fs");
 const path = require("node:path");
 
 const STARTUP_TIMEOUT_MS = 30_000;
+const SUPPORT_LINKS = new Set([
+  "https://www.patreon.com/c/JenniNexus",
+  "https://paypal.me/jenninexus"
+]);
 let runtimeChild = null;
 let runtimeUrl = null;
 
@@ -79,11 +83,18 @@ async function startRuntime(workspace) {
   const runtime = packagedResource("runtime", "pdf-designer-runtime", "pdf-designer-runtime.exe");
   const readyFile = path.join(app.getPath("userData"), "runtime-ready.txt");
   fs.mkdirSync(path.dirname(readyFile), { recursive: true });
+  // Reuse the last successful loopback origin so Chromium keeps Hub settings
+  // across relaunches and updates. The runtime falls back if the port is busy.
+  const previousUrl = readReadyUrl(readyFile);
+  const preferredPort = previousUrl ? new URL(previousUrl).port : null;
   fs.rmSync(readyFile, { force: true });
+  const args = ["--port", "0", "--no-open", "--ready-file", readyFile];
+  if (preferredPort) args.push("--preferred-port", preferredPort);
+  args.push(workspace);
 
   runtimeChild = spawn(
     runtime,
-    ["--port", "0", "--no-open", "--ready-file", readyFile, workspace],
+    args,
     { stdio: ["ignore", "ignore", "pipe"], windowsHide: true, shell: false }
   );
   runtimeChild.stderr.on("data", (data) => console.error(`[pdf-designer runtime] ${data}`));
@@ -120,7 +131,19 @@ function createMainWindow() {
     }
   });
   window.removeMenu();
-  window.webContents.setWindowOpenHandler(() => ({ action: "deny" }));
+  window.webContents.setWindowOpenHandler(({ url }) => {
+    if (SUPPORT_LINKS.has(url)) {
+      shell.openExternal(url).catch(error => console.error("Support link failed:", error));
+    }
+    if (isAllowedRuntimeUrl(url) && new URL(url).pathname.toLowerCase().endsWith(".pdf")) {
+      return { action: "allow" };
+    }
+    return { action: "deny" };
+  });
+  window.webContents.on("did-create-window", child => {
+    child.webContents.setWindowOpenHandler(() => ({ action: "deny" }));
+    child.webContents.on("will-navigate", event => event.preventDefault());
+  });
   window.webContents.on("will-attach-webview", (event) => event.preventDefault());
   window.webContents.on("will-navigate", (event, target) => {
     if (!isAllowedRuntimeUrl(target)) event.preventDefault();

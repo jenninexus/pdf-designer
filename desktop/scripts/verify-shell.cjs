@@ -50,7 +50,8 @@ includes(main, "execFile(\"taskkill\"", "only the spawned runtime PID must be st
 includes(main, 'searchParams.set("splash", "1")', "packaged app must force the Hub title screen on launch");
 includes(main, "documentsLooksCloudRedirected", "shell must detect redirected Documents without relocating the workspace");
 assert(!main.includes("autoUpdater"), "desktop shell must not include an auto-updater");
-assert(!main.includes("https://"), "desktop shell must not load remote URLs");
+includes(main, "SUPPORT_LINKS.has(url)", "external window requests must use the fixed support allowlist");
+includes(main, 'new URL(url).pathname.toLowerCase().endsWith(".pdf")', "local popup must be a PDF original");
 includes(readme, "SmartScreen", "README must explain unsigned Windows SmartScreen behavior");
 includes(readme, "Azure Artifact Signing", "README must name the Authenticode approach");
 includes(readme, "Reserve unsigned builds for internal testing.", "README must reserve unsigned builds for internal testing");

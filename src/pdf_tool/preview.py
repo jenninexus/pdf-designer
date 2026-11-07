@@ -31,6 +31,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, unquote, urlparse
 
+from .browser import DOCUMENT_CSP, DOCUMENT_TYPES
 from .html_to_pdf import export_html_to_pdf
 from .paths import (
     brand_dirs,
@@ -376,7 +377,7 @@ def resolve_preview_file(root: Path, rel: str) -> Path | None:
     """
     root_resolved = root.resolve()
     rel = rel.replace("\\", "/").lstrip("/")
-    if not rel or rel.startswith("/") or ".." in Path(rel).parts:
+    if not rel or ":" in rel or ".." in Path(rel).parts:
         return None
     direct = (root / rel).resolve()
     try:
@@ -391,6 +392,26 @@ def resolve_preview_file(root: Path, rel: str) -> Path | None:
     except ValueError:
         return None
     return aliased if aliased.is_file() else None
+
+
+def resolve_document_asset(root: Path, rel: str) -> Path | None:
+    """Expose document formats only. Private data and tool directories stay behind the API."""
+    target = resolve_preview_file(root, rel)
+    if target is None or target.suffix.lower() not in DOCUMENT_TYPES:
+        return None
+    parts = tuple(part.casefold() for part in target.relative_to(root.resolve()).parts)
+    if (
+        any(part.startswith(".") for part in parts)
+        or _EXPORT_EXCLUDE_PARTS.intersection(parts)
+        or parts[0] in {"private", "users", "vaults", "profiles", "brands", "plans"}
+        or parts[:2] in {
+            ("storage", "docs"), ("storage", "users"), ("storage", "vaults"),
+            ("storage", "profiles"), ("storage", "brand-design"), ("src", "pdf_tool"),
+            ("desktop", "runtime"), ("desktop", "workspace-seed"),
+        }
+    ):
+        return None
+    return target
 
 
 def pdf_preview_info(path: Path) -> dict:
@@ -759,7 +780,7 @@ try {
       <p class="hub-home-lead">Public templates first. Pick a kind below, or use the chips and the <code>examples</code> profile to browse every clone-safe card.</p>
       <div class="hub-home-grid" id="hubHomeGrid"></div>
     </div>
-    <iframe id="main" title="Document preview" src="about:blank" hidden></iframe>
+    <iframe id="main" title="Document preview" sandbox="allow-same-origin" src="about:blank" hidden></iframe>
   </div>
 </main>
 
@@ -767,6 +788,15 @@ try {
 let DOCS = __DOCS__;
 const PALETTES = __PALETTES__;
 let PROFILE_IDS = __PROFILE_IDS__;
+
+function escapeMarkup(value) {
+  const entities = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" };
+  return String(value).replace(/[&<>"']/g, char => entities[char]);
+}
+
+function documentUrl(path) {
+  return "/" + path.split("/").map(encodeURIComponent).join("/");
+}
 const KIND_ORDER = ["all","resume","cover-letter","letter","work-samples","collage","gallery","example","other"];
 const KIND_LABEL = {
   all: "All",
@@ -1255,7 +1285,7 @@ function renderLibrary() {
     det.className = "group";
     det.open = true;
     const sum = document.createElement("summary");
-    sum.innerHTML = `<span class="path" title="${group}">${group}</span><span class="count">${list.length}</span>`;
+    sum.innerHTML = `<span class="path" title="${escapeMarkup(group)}">${escapeMarkup(group)}</span><span class="count">${list.length}</span>`;
     det.appendChild(sum);
     for (const d of list) {
       const el = document.createElement("div");
@@ -1264,16 +1294,16 @@ function renderLibrary() {
       const compareChecked = !compareExcluded.has(d.path);
       const badges = [`<span class="badge kind-${d.kind}">${d.kind}</span>`];
       const prof = d.profile || d.person;
-      if (prof) badges.push(`<span class="badge person-${prof}">${prof}</span>`);
+      if (prof) badges.push(`<span class="badge person-${escapeMarkup(prof)}">${escapeMarkup(prof)}</span>`);
       if (d.bucket === "examples") badges.push('<span class="badge">template</span>');
       if (d.artifact) badges.push(`<span class="badge">${d.format || "export"}</span>`);
       const preview = d.artifact
         ? `<div class="frame artifact-frame"><span class="artifact-format">${String(d.format || "file").toUpperCase()}</span><span class="artifact-note">Open export</span></div>`
-        : `<div class="frame"><iframe loading="lazy" src="/${d.path}" scrolling="no" tabindex="-1" title=""></iframe></div>`;
+        : `<div class="frame"><iframe sandbox="allow-same-origin" loading="lazy" src="${documentUrl(d.path)}" scrolling="no" tabindex="-1" title=""></iframe></div>`;
       el.innerHTML =
         preview +
-        `<div class="meta"><div class="thumb-title-row"><div class="name" title="${d.path}">${d.name}</div>` +
-        `<label class="compare-check" title="Include in focused comparison"><input type="checkbox" ${compareChecked ? "checked" : ""} aria-label="Include ${d.name} in comparison"><span aria-hidden="true"></span></label></div>` +
+        `<div class="meta"><div class="thumb-title-row"><div class="name" title="${escapeMarkup(d.path)}">${escapeMarkup(d.name)}</div>` +
+        `<label class="compare-check" title="Include in focused comparison"><input type="checkbox" ${compareChecked ? "checked" : ""} aria-label="Include ${escapeMarkup(d.name)} in comparison"><span aria-hidden="true"></span></label></div>` +
         `<div class="badges">${badges.join("")}</div></div>`;
       el.classList.toggle("compare-excluded", !compareChecked);
       el.querySelector(".compare-check")?.addEventListener("click", (event) => event.stopPropagation());
@@ -1468,9 +1498,12 @@ function select(d, el, { pushUrl = true } = {}) {
     if (match) match.classList.add("sel");
   }
   renderStagebar(d);
-  main.src = d.artifact && d.format === "pdf"
+  const pdf = d.artifact && d.format === "pdf";
+  if (pdf) main.removeAttribute("sandbox");
+  else main.setAttribute("sandbox", "allow-same-origin");
+  main.src = pdf
     ? "/pdf-viewer?doc=" + encodeURIComponent(d.path)
-    : "/" + d.path;
+    : documentUrl(d.path);
   const exportBtn = document.getElementById("exportBtn");
   if (exportBtn) {
     exportBtn.disabled = d.exportable === false;
@@ -1671,7 +1704,7 @@ function renderSearchOvl() {
     const row = document.createElement("button");
     row.type = "button";
     row.className = "hub-search-ovl-item";
-    row.innerHTML = `<span class="name">${d.name}</span><span class="path">${d.path}</span>`;
+    row.innerHTML = `<span class="name">${escapeMarkup(d.name)}</span><span class="path">${escapeMarkup(d.path)}</span>`;
     row.addEventListener("click", () => {
       closeSearchOvl();
       kindFilter = "all";
@@ -1825,7 +1858,7 @@ openPaletteFromQuery();
       try {
         main.src = selected.artifact && selected.format === "pdf"
           ? "/pdf-viewer?doc=" + encodeURIComponent(selected.path) + "&t=" + Date.now()
-          : "/" + selected.path + "?t=" + Date.now();
+          : documentUrl(selected.path) + "?t=" + Date.now();
       } catch (_) {}
     }
     return DOCS.length - prevCount;
@@ -1883,23 +1916,36 @@ openPaletteFromQuery();
 
 
 def make_handler(root: Path, docs: list[dict], palettes: list[dict]):
+    root = root.resolve()
     profiles = available_profile_ids(root, docs)
-    app_page = (
-        APP_HTML.replace("__DOCS__", json.dumps(docs))
-        .replace("__PALETTES__", json.dumps(palettes))
-        .replace("__PROFILE_IDS__", json.dumps(profiles))
-        .replace("__ROOT__", str(root))
-        .replace("__PROFILE_OPTIONS__", profile_options(profiles))
-    )
+    fields = {
+        "__DOCS__": json.dumps(docs),
+        "__PALETTES__": json.dumps(palettes),
+        "__PROFILE_IDS__": json.dumps(profiles),
+    }
+    fields = {key: value.replace("<", r"\u003c") for key, value in fields.items()}
+    fields["__PROFILE_OPTIONS__"] = profile_options(profiles)
+    app_page = re.sub(r"__DOCS__|__PALETTES__|__PROFILE_IDS__|__PROFILE_OPTIONS__",
+                      lambda match: fields[match[0]], APP_HTML)
+
+    def resolve_asset(rel):
+        return resolve_document_asset(root, rel)
 
     class Handler(BaseHTTPRequestHandler):
         def log_message(self, *args):
             pass
 
-        def _send(self, code: int, body: bytes, ctype: str):
+        def _send(self, code: int, body: bytes, ctype: str, *, document=False):
             self.send_response(code)
             self.send_header("Content-Type", ctype)
             self.send_header("Content-Length", str(len(body)))
+            self.send_header("X-Content-Type-Options", "nosniff")
+            self.send_header("Cross-Origin-Resource-Policy", "same-origin")
+            self.send_header("Referrer-Policy", "no-referrer")
+            self.send_header("Cache-Control", "no-store")
+            self.send_header("Content-Security-Policy", DOCUMENT_CSP if document else "frame-ancestors 'self'")
+            if document:
+                self.send_header("X-DNS-Prefetch-Control", "off")
             self.end_headers()
             try:
                 self.wfile.write(body)
@@ -1909,7 +1955,30 @@ def make_handler(root: Path, docs: list[dict], palettes: list[dict]):
                 # not turn a normal client disconnect into a server traceback.
                 return
 
+        def _allowed_request(self, *, write=False):
+            port = self.server.server_address[1]
+            authority = f"127.0.0.1:{port}" if port != 80 else "127.0.0.1"
+            origins = self.headers.get_all("Origin", [])
+            fetch_site = self.headers.get("Sec-Fetch-Site")
+            if (
+                self.headers.get_all("Host", []) != [authority]
+                or not self.path.startswith("/") or self.path.startswith("//")
+                or (origins and origins != [f"http://{authority}"])
+                or (fetch_site not in (None, "none", "same-origin") and
+                    (write or self.headers.get("Sec-Fetch-Mode") != "navigate" or
+                     self.headers.get("Sec-Fetch-Dest") != "document" or
+                     unquote(urlparse(self.path).path).startswith("/api/")))
+            ):
+                self._send(403, b'{"ok": false, "error": "local Hub request required"}', "application/json")
+                return False
+            if write and self.headers.get_content_type() != "application/json":
+                self._send(415, b'{"ok": false, "error": "JSON required"}', "application/json")
+                return False
+            return True
+
         def do_GET(self):
+            if not self._allowed_request():
+                return
             path = unquote(urlparse(self.path).path)
             if path in ("/", "/index.html"):
                 self._send(200, app_page.encode("utf-8"), "text/html; charset=utf-8")
@@ -1947,7 +2016,7 @@ def make_handler(root: Path, docs: list[dict], palettes: list[dict]):
                 return
             if path == "/api/pdf-info":
                 qs = parse_qs(urlparse(self.path).query)
-                target = resolve_preview_file(root, (qs.get("doc") or [""])[0])
+                target = resolve_asset((qs.get("doc") or [""])[0])
                 if target is None or target.suffix.lower() != ".pdf":
                     self._send(404, b'{"ok": false, "error": "PDF not found"}', "application/json")
                     return
@@ -1960,7 +2029,7 @@ def make_handler(root: Path, docs: list[dict], palettes: list[dict]):
                 return
             if path == "/api/pdf-page":
                 qs = parse_qs(urlparse(self.path).query)
-                target = resolve_preview_file(root, (qs.get("doc") or [""])[0])
+                target = resolve_asset((qs.get("doc") or [""])[0])
                 if target is None or target.suffix.lower() != ".pdf":
                     self._send(404, b"PDF not found", "text/plain")
                     return
@@ -2014,34 +2083,29 @@ def make_handler(root: Path, docs: list[dict], palettes: list[dict]):
                     ".css": "text/css; charset=utf-8",
                     ".js": "text/javascript; charset=utf-8",
                     ".svg": "image/svg+xml",
+                    ".png": "image/png",
+                    ".woff2": "font/woff2",
                 }.get(target.suffix.lower(), "application/octet-stream")
                 self._send(200, target.read_bytes(), ctype)
                 return
-            target = resolve_preview_file(root, path.lstrip("/"))
+            target = resolve_asset(path.lstrip("/"))
             if target is None:
                 self._send(404, b"not found", "text/plain")
                 return
-            ctype = {
-                ".html": "text/html; charset=utf-8",
-                ".css": "text/css",
-                ".js": "text/javascript",
-                ".json": "application/json",
-                ".png": "image/png",
-                ".jpg": "image/jpeg",
-                ".jpeg": "image/jpeg",
-                ".webp": "image/webp",
-                ".gif": "image/gif",
-                ".svg": "image/svg+xml",
-                ".pdf": "application/pdf",
-            }.get(target.suffix.lower(), "application/octet-stream")
-            self._send(200, target.read_bytes(), ctype)
+            suffix = target.suffix.lower()
+            self._send(200, target.read_bytes(), DOCUMENT_TYPES[suffix], document=suffix in {".html", ".svg"})
 
         def do_POST(self):
+            if not self._allowed_request(write=True):
+                return
             path = urlparse(self.path).path
             try:
                 length = int(self.headers.get("Content-Length", 0) or 0)
             except ValueError:
                 length = 0
+            if length < 0:
+                self._send(400, b'{"ok": false, "error": "invalid body length"}', "application/json")
+                return
             if length > MAX_IMPORT_BYTES + 120_000:
                 self._send(
                     413,
@@ -2079,8 +2143,8 @@ def make_handler(root: Path, docs: list[dict], palettes: list[dict]):
                 return
             try:
                 req = json.loads(raw.decode("utf-8"))
-                doc = resolve_preview_file(root, req["doc"])
-                if doc is None:
+                doc = resolve_asset(req["doc"])
+                if doc is None or doc.suffix.lower() != ".html":
                     raise ValueError(f"bad doc path: {req['doc']}")
                 fmt = req.get("format", "pdf-light")
                 pdf_theme = "dark" if fmt.endswith("-dark") else None
@@ -2088,7 +2152,8 @@ def make_handler(root: Path, docs: list[dict], palettes: list[dict]):
                 if fmt.startswith("png"):
                     outputs = [
                         str(p)
-                        for p in render_to_png(str(doc), out_dir, pdf_theme=pdf_theme)
+                        for p in render_to_png(str(doc), out_dir, pdf_theme=pdf_theme,
+                                               workspace=root, resolve_asset=resolve_asset)
                     ]
                 else:
                     pdf = export_html_to_pdf(
@@ -2096,6 +2161,8 @@ def make_handler(root: Path, docs: list[dict], palettes: list[dict]):
                         output_dir=out_dir,
                         pdf_theme=pdf_theme,
                         css_vars=req.get("cssVars"),
+                        workspace=root,
+                        resolve_asset=resolve_asset,
                     )
                     outputs = [str(pdf)]
                 self._send(200, json.dumps({"ok": True, "outputs": outputs}).encode(), "application/json")
@@ -2119,13 +2186,20 @@ def serve(
     port: int = 8787,
     open_browser: bool = True,
     ready_file: str | Path | None = None,
+    preferred_port: int = 0,
 ):
     root_path = Path(root).resolve() if root else _REPO_ROOT
     if not root_path.is_dir():
         raise FileNotFoundError(root_path)
     docs = scan_documents(root_path)
     palettes = load_palettes(root_path)
-    server = ThreadingHTTPServer(("127.0.0.1", port), make_handler(root_path, docs, palettes))
+    handler = make_handler(root_path, docs, palettes)
+    try:
+        server = ThreadingHTTPServer(("127.0.0.1", preferred_port or port), handler)
+    except OSError:
+        if not preferred_port:
+            raise
+        server = ThreadingHTTPServer(("127.0.0.1", port), handler)
     url = f"http://127.0.0.1:{server.server_port}/"
     by_kind = {}
     for d in docs:
@@ -2149,6 +2223,7 @@ def serve(
 def main() -> None:
     args = sys.argv[1:]
     port = 8787
+    preferred_port = 0
     open_browser = True
     root = None
     ready_file = None
@@ -2160,6 +2235,9 @@ def main() -> None:
             i += 1
         elif a.startswith("--port="):
             port = int(a.split("=", 1)[1])
+        elif a == "--preferred-port":
+            preferred_port = int(args[i + 1])
+            i += 1
         elif a == "--no-open":
             open_browser = False
         elif a == "--ready-file":
@@ -2173,7 +2251,8 @@ def main() -> None:
         else:
             root = a
         i += 1
-    serve(root, port=port, open_browser=open_browser, ready_file=ready_file)
+    serve(root, port=port, open_browser=open_browser, ready_file=ready_file,
+          preferred_port=preferred_port)
 
 
 if __name__ == "__main__":
