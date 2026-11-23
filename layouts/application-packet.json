@@ -1,0 +1,65 @@
+{
+  "id": "application-packet",
+  "docType": "applicationPacket",
+  "page": {
+    "size": "Letter"
+  },
+  "spec": "../docs/LAYOUT-SYSTEM.md",
+  "expectedPages": {
+    "withoutCoverLetter": 4,
+    "withCoverLetter": 5
+  },
+  "guards": [
+    "check_generation",
+    "check_ats"
+  ],
+  "bestFor": "A combined personal application with optional cover letter, résumé, and work samples.",
+  "paper": "Letter",
+  "files": 1,
+  "parts": [
+    {
+      "id": "coverLetter",
+      "includeByDefault": false,
+      "pages": 1,
+      "layout": "./cover-letter/one-page-letter.json"
+    },
+    {
+      "id": "resume",
+      "includeByDefault": true,
+      "pages": 2,
+      "layout": "./resume/two-page-standard.json",
+      "typography": {
+        "family": "Arial, Helvetica, sans-serif",
+        "bodyCssPx": 13,
+        "nameCssPx": 38,
+        "sectionHeadingCssPx": 12,
+        "roleHeadingCssPx": 15,
+        "headingWeight": 800
+      }
+    },
+    {
+      "id": "workSamples",
+      "includeByDefault": true,
+      "pages": 2,
+      "baseLayout": "./work-examples/work-examples.json",
+      "marginIn": 0.65,
+      "pageBodyIn": 9.7,
+      "pageBreak": ".page + .page { break-before: page; }",
+      "signature": "Pin the applicant name and email bottom-right on each page.",
+      "firstPage": "Lead with the closest visual evidence for the role. Use one featured example and up to two supporting examples.",
+      "secondPage": "Show a complementary project, craft or production system with an image, the applicant's contribution and relevant public links.",
+      "contentRules": "Select and substantiate samples from the current applicant's own vault and portfolio. Use rounded, clipped image frames. Scale the artwork to fill frames at the image's native aspect ratio when possible. Preserve the full composition when it carries evidence. Place captions and links beside or beneath the art."
+    }
+  ],
+  "pagesWithoutCoverLetter": 4,
+  "pagesWithCoverLetter": 5,
+  "theme": "Use one requested or applicant-appropriate theme for the full packet. A posting can still require a different upload format.",
+  "export": "Verify each part as its own source and merge in listed order using pdf_tool.merge_pdfs. Keep the intermediate PDFs in scratch and retain one final packet. Honor a résumé-only request separately.",
+  "headingHierarchy": {
+    "nameCase": "uppercase",
+    "projectTitleCase": "uppercase",
+    "nameCssPx": 38,
+    "featuredProjectCssPx": 24,
+    "rule": "Use the applicant name as the largest text heading. Put each featured project below it."
+  }
+}

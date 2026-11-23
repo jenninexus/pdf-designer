@@ -17,7 +17,7 @@ store login. They are different products.
 build is `npm run dist:signed` only after gitignored credentials exist. Trust
 `verify-authenticode.ps1`, not electron-builder's `signing with signtool.exe`
 log. Never distribute `PDF-Designer-Setup-*.exe` while status is `NotSigned`.
-Details: `docs/WINDOWS-ELECTRON.md` (public) · `docs/WINDOWS-ELECTRON.local.md`
+Details: `docs/WINDOWS-ELECTRON.md` (public) · `storage/docs/WINDOWS-ELECTRON.local.md`
 (maintainer).
 
 Related: [[lesson-unsigned-dist-must-disable-cert-auto-discovery]]

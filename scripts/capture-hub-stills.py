@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Recapture public Design Hub stills into docs/images/.
+"""Recapture public Design Hub stills into assets/public/hub/.
 
 Clone-safe pages (Library, Recipes, Vault, Wizard) are served from a temporary
 git-tracked checkout so the shots match a fresh clone: Jane Example only, no
@@ -29,8 +29,8 @@ from playwright.sync_api import sync_playwright
 from pdf_tool.preview import serve
 
 REPO = Path(__file__).resolve().parents[1]
-IMAGES = REPO / "docs" / "images"
-ARCHIVE = IMAGES / "_archive" / "2026-08-22-public-set"
+IMAGES = REPO / "assets" / "public" / "hub"
+ARCHIVE = REPO / "storage" / "docs" / "_archive" / "hub-captures" / "pre-recapture"
 
 VIEWPORT = {"width": 1440, "height": 900}
 
@@ -163,8 +163,6 @@ def capture_public(base: str) -> None:
 
         shot(page, f"{base}/?no-splash=1", IMAGES / "hub-library.png", wait_for=".hub-home-card")
         assert_clone_safe(page, "library")
-        shutil.copy2(IMAGES / "hub-library.png", IMAGES / "hub-home.png")
-        print("wrote docs/images/hub-home.png (copy of hub-library.png)")
 
         shot(page, f"{base}/recipes?no-splash=1", IMAGES / "hub-recipes.png", wait_for="a.hub-open")
         assert_clone_safe(page, "recipes")

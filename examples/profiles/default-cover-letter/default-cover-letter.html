@@ -9,9 +9,7 @@
     --bg: #f5f7fa; --surface: #ffffff; --text: #171b24;
     --dim: rgba(23,27,36,0.72); --border: rgba(23,27,36,0.14);
     --primary: #087c78; --accent: #6f57c2;
-    --script: "Segoe Script", "Brush Script MT", cursive;
-    --body: "Georgia", "Times New Roman", Times, serif;
-    --sans: "Segoe UI", system-ui, sans-serif;
+    --sans: Arial, Helvetica, sans-serif;
   }
   html[data-pdf-theme="dark"] {
     --bg: #0b0d12; --surface: #10131a; --text: rgba(240,242,246,0.94);
@@ -22,7 +20,7 @@
   * { box-sizing: border-box; }
   html, body {
     margin: 0; padding: 0; background: var(--bg); color: var(--text);
-    font-family: var(--body); font-size: 12px; line-height: 1.6;
+    font-family: var(--sans); font-size: 12px; line-height: 1.6;
   }
   .page {
     display: flex; flex-direction: column;
@@ -42,20 +40,20 @@
     .page { height: auto; min-height: 9.5in; }
   }
   header { padding-bottom: 0.85rem; margin-bottom: 24px; border-bottom: 1px solid var(--border); }
-  h1 { margin: 0; font-family: var(--sans); font-size: 1.35rem; letter-spacing: 0.04em; color: var(--primary); }
+  h1 { margin: 0; font-family: var(--sans); font-size: 38px; line-height: 1.1; font-weight: 800; letter-spacing: 0.04em; color: var(--primary); }
   .role { margin: 0.3rem 0 0; font-family: var(--sans); font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dim); }
-  .re { font-family: var(--sans); font-weight: 700; color: var(--accent); margin: 0 0 1rem; }
+  .re { font-family: var(--sans); font-size: 17px; font-weight: 700; color: var(--accent); margin: 0 0 1rem; }
   .letter-main { flex: 1 1 auto; min-height: 0; }
   p { margin: 0 0 13px; max-width: 40em; }
   .signoff { margin-top: auto; padding-top: 30px; flex: 0 0 auto; text-align: left; }
-  .script { font-family: var(--script); font-size: 1.7rem; color: var(--accent); margin: 0.15rem 0; }
+  .script { font-family: var(--sans); font-size: 16px; font-weight: 700; color: var(--accent); margin: 0.15rem 0; }
   .mail { font-family: var(--sans); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text); font-weight: 600; }
 </style>
 </head>
 <body>
   <article class="page">
     <header>
-      <h1>Jane Example</h1>
+      <h1>JANE EXAMPLE</h1>
       <p class="role">Product designer · Example Studio LLC</p>
     </header>
     <div class="letter-main">

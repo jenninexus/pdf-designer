@@ -147,3 +147,5 @@ python -m pdf_tool.collage <dir> --recipe <id> --png --shelve
 `<project>__`, in one flat directory (falls back to `_exports/<profile>/collages/` when the source
 can't be matched to a project). The **recipe** is the reusable artifact; the PNG is just a picture of
 one project's images.
+
+The [application packet recipe](application-packet.json) composes the cover letter, résumé, and work samples. The packet uses a consistent applicant-first heading hierarchy and may override standalone page counts.

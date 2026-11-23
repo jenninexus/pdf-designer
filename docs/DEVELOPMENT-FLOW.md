@@ -1,6 +1,6 @@
 # Development flow — local Hub to public product
 
-The Design Hub is the local development surface. Work in the owning checkout and record the slice in the active checklist named by `Plans/README.md`; use `ROADMAP.md` for the durable backlog. Choose each feature's destination before implementation.
+The Design Hub is the local development surface. Work in the owning checkout and record the slice in the active checklist named by `Plans/README.md`; use `storage/docs/ROADMAP.local.md` for the maintainer backlog. Choose each feature's destination before implementation.
 
 ```mermaid
 flowchart LR

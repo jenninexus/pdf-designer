@@ -9,15 +9,15 @@ Protocol:  AGENTS.md → docs/{STORAGE,VAULT,JOB-ASSESSMENT,ARCHITECTURE}.md →
 Product:   docs/PRODUCT.md + docs/PUBLIC-LOCAL-SPLIT.md   ← ⭐ free core vs private vs paid
 Clone:     docs/GETTING-STARTED.md   ← public reuse (ex-WHITE-LABEL stub)
 Theme:     themes/default-{resume,collage}.json + themes/presets/* + PALETTE-RULES.md   ← COLOR
-Gen-rules: themes/GENERATION-RULES.md   ← ⭐ house rules for ALL generated docs (casing · overlays · framing · no-magenta)
+Gen-rules: docs/GENERATION-RULES.md   ← ⭐ house rules for ALL generated docs (casing · overlays · framing · no-magenta)
 QA gate:   docs/QA.md + python -m pdf_tool.check_generation   ← 12 deterministic checks; public users run locally; judge saved PDFs
 Layouts:   layouts/{cover-letter,letter,resume,work-examples,collage}/*  (python -m pdf_tool.collage --list-recipes)  ← STRUCTURE
 Private:   root nouns (users/vaults/profiles/resumes/_job-apps/collages/brands/_exports) + storage/ residue (gitignored)
-Hub:       python -m pdf_tool.preview → :8787 (workspace auto-starts via scripts/ensure-design-hub.ps1)
+Hub:       python -m pdf_tool.preview → :8787 (optional VS Code example task)
 Smoke:     python scripts/smoke-white-label.py   ← ⭐ fresh-clone proof (examples/ only, no storage/)
 Package:   docs/PACKAGING.md + scripts/check-wheel-assets.py  ← wheel must include themes/layouts
 Engine:    python -m pdf_tool  (hub) / individual modules
-Plans:     docs/ROADMAP.md (durable backlog) · Plans/ (local-only, gitignored)
+Plans:     storage/docs/ROADMAP.local.md (durable backlog) · Plans/ (local-only, gitignored)
 ```
 
 Compact map of what this repo owns vs what it only points at. Agents: start here, then
@@ -38,8 +38,8 @@ Folder and optional agent-tooling overview: [`PROJECT-MAP.md`](PROJECT-MAP.md).
 | Page layout | `docs/LAYOUT-SYSTEM.md` + `themes/default-resume.{json,css}#document` | ⭐ Equal margins (0.65in default) + header-flows/footer-pins; one knob `--resume-page-margin`; content-fit rule |
 | Page signature | `themes/default-resume.json#document.signature` | Bottom-right page-footer pin (`.page` / `.page-main` / `.page-sig`) |
 | Previewer | `src/pdf_tool/preview.py` (`docs/PREVIEWER.md`) | Design Hub; `/recipes` · `/vault`; **auto-refreshes** via `/api/version`; focused comparison checkboxes; dark real-PDF page preview |
-| Palette rule | `themes/PALETTE-RULES.md` | No brown / mustard / lime — enforced by `check_palette` |
-| **Generation rules** | `themes/GENERATION-RULES.md` | ⭐ House rules for ALL generated docs: **name/company never all-lowercase**, no neon over images (dark scrim only), 16:9 no-crop framing, no-magenta pointer |
+| Palette rule | `docs/PALETTE-RULES.md` | No brown / mustard / lime — enforced by `check_palette` |
+| **Generation rules** | `docs/GENERATION-RULES.md` | ⭐ House rules for ALL generated docs: **name/company never all-lowercase**, no neon over images (dark scrim only), 16:9 no-crop framing, no-magenta pointer |
 | **QA gate** | `docs/QA.md` + `pdf_tool.check_generation` | One command, 12 checks including letter geometry and résumé text extraction. Required render errors fail; explicit source-only mode is not acceptance. Reuse unchanged source/dependency/PDF receipts. |
 | Protocol docs | `docs/{STORAGE,VAULT,JOB-ASSESSMENT,ARCHITECTURE}.md` | Claim rules + workflow |
 | **Work-samples SSOT** | `profiles/<user>-resume.json#workSamples` + `users/<user>.json#portfolio` | ⭐ **PER-USER** page structure + personal assets — never copy another person's page ([VAULT.md](VAULT.md) § Work-samples) |
@@ -53,7 +53,7 @@ Folder and optional agent-tooling overview: [`PROJECT-MAP.md`](PROJECT-MAP.md).
 | Make-collage | `.claude/commands/make-collage.example.md` | Multi-image collage routine (public seed) |
 | Public examples | `examples/resume-studio/`, `examples/profiles/`, `examples/brand-design/` | Clone-safe templates |
 | Project config | `.config/mcp-pdf-designer.example.json` | Seed only — local `mcp-pdf-designer.json` is gitignored |
-| Product backlog | `docs/ROADMAP.md` | Remaining and parked product work; authoritative when `_active/` is empty |
+| Maintainer backlog and publishing | `storage/docs/ROADMAP.local.md` and `storage/docs/PRODUCT-PUBLISHING.md` | Ignored product decisions, website publishing and release evidence |
 | Session plans (local-only) | `Plans/` | Gitignored working context: `_active/` slice + `_complete/` history; never pushed |
 
 ---
@@ -72,7 +72,7 @@ Design lives in **two tracked, composable registries**. Any layout renders in an
 > discoverable, and ships with a fresh clone. Content is private; design is shared.
 
 Both are reachable from one machine-readable file:
-[`.config/mcp-pdf-designer.json`](../.config/mcp-pdf-designer.json) → `layouts`, `collage`,
+`.config/mcp-pdf-designer.json` → `layouts`, `collage`,
 `palette_registry`. Clone-safe template: `.config/mcp-pdf-designer.example.json`.
 
 ---
@@ -162,4 +162,4 @@ short public-facing entry.
 | [`VAULT.md`](VAULT.md) | Claim + voice rules |
 | [`PREVIEWER.md`](PREVIEWER.md) | Design Hub how-to |
 | [`STORAGE.md`](STORAGE.md) | Private workspace layout |
-| [`ROADMAP.md`](ROADMAP.md) | Product backlog and current plan pointer |
+| [`PRODUCT.md`](PRODUCT.md) | Public product and distribution direction |

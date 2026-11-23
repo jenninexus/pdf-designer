@@ -27,3 +27,18 @@ prose reads, and they do contain recordings. Rules and public briefs: voice-seed
 
 This repo keeps **written** voice only: `users/<you>.json#characterVoice` holds personality and
 cross-register routing, `vaults/<you>.json#voice` holds application prose.
+
+## Personal and studio routes
+
+The person record in [`users/`](../users/) owns identity and contact data. The vault owns claim evidence.
+The profile owns presentation, document selection, and export preferences. Shared geometry and packet
+order live in [`layouts/`](../layouts/), including the [application packet](../layouts/application-packet.json).
+
+Local personal profiles can group gameplay, Synagen engine work, and Martian Games portal work as
+portfolio categories. Each category uses that applicant’s own vault. Studio references provide shared
+context for those categories. The studio profile still owns the company application using the scoped
+studio evidence from both founders. The Martian route selects the studio profile’s games focus.
+
+A public-brand demo can use an alias, an approved public email, and public social links and stats.
+Keep home and mailing addresses, phone numbers, legal names, private accounts, and private experience
+out of demo sources and exports. The tracked public example remains Jane Example.

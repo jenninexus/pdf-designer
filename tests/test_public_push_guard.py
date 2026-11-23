@@ -83,6 +83,13 @@ def test_floor_holds_when_gitignore_is_loosened(repo: Path) -> None:
     [
         (".config/release-signing.json", "machine-local config"),
         (".config/capture/credentials.json", "machine-local config"),
+        (".config/capture/hub.breakpoints.json", "machine-local config"),
+        (".vscode/tasks.json", "machine-local editor config"),
+        (".claude/settings.json", "local Claude data"),
+        (".mcp.json", "machine-local MCP config"),
+        (".codex/runtime.example.json", "private root .codex/"),
+        (".agents/README.md", "private root .agents/"),
+        ("docs/ROADMAP.md", "private note"),
         ("desktop/azure-trusted-signing.json", "local signing config"),
         ("desktop/.ENV.production", "local environment file"),
         (".pypirc", "local publishing credential"),
@@ -102,7 +109,9 @@ def test_release_privacy_floor_holds_without_gitignore(repo: Path, path: str, re
     "path",
     [
         ".config/mcp-pdf-designer.example.json",
-        ".config/capture/hub.breakpoints.json",
+        ".config/capture/hub.breakpoints.example.json",
+        ".vscode/tasks.json.example",
+        ".vscode/mcp.json.example",
         "desktop/azure-trusted-signing.example.json",
     ],
 )
@@ -146,4 +155,4 @@ def test_export_outside_docs_is_blocked(repo: Path) -> None:
     _commit(repo, "art/cover.pdf", "%PDF-1.4", force=True)
     result = _gate(repo)
     assert result.returncode == 1
-    assert "export outside docs/" in result.stderr
+    assert "export outside approved public assets" in result.stderr

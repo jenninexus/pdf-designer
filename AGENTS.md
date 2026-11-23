@@ -30,14 +30,13 @@ per section below.
 5. [`docs/JOB-ASSESSMENT.md`](docs/JOB-ASSESSMENT.md) — how to assess a listing (apply URL is blocking;
    remote? pay vs. market?; the evidence map).
 6. [`docs/STORAGE.md`](docs/STORAGE.md) — the four private layers, where exports land (beside their family; `_exports/` fallback), and legacy `storage/` residue.
-7. [`themes/PALETTE-RULES.md`](themes/PALETTE-RULES.md) — the color rule and its guard.
+7. [`docs/PALETTE-RULES.md`](docs/PALETTE-RULES.md) — the color rule and its guard.
 8. [`docs/LAYOUT-SYSTEM.md`](docs/LAYOUT-SYSTEM.md) — the page model (equal margins, header-flows /
    footer-pins, content-fit).
 9. The command you're running — [`.claude/commands/`](.claude/commands/) (see the table below).
 
-**Fire up the Design Hub:** `python -m pdf_tool.preview` → http://127.0.0.1:8787/ (on workspace open the
-folder task runs `scripts/ensure-design-hub.ps1` — starts the hub if needed, opens the browser; accept the
-"allow automatic tasks" prompt the first time). **One-time setup:** `pip install -e ".[dev]" && playwright install chromium`.
+**Fire up the Design Hub:** `python -m pdf_tool.preview` → http://127.0.0.1:8787/ (optional VS Code task: copy
+`.vscode/tasks.json.example` to `.vscode/tasks.json` before enabling folder-open startup). **One-time setup:** `pip install -e ".[dev]" && playwright install chromium`.
 **Chromium location:** `playwright install chromium` downloads into the **per-user** Playwright cache
 (`%LOCALAPPDATA%\ms-playwright` on Windows, `~/.cache/ms-playwright` on Linux) that every Playwright tool on the
 machine shares. The cache keeps one Chromium per Playwright *version*, so on a dev machine keep this venv's
@@ -58,11 +57,12 @@ direction (free GitHub vs later paid shell): [`docs/PRODUCT.md`](docs/PRODUCT.md
 
 **Development and promotion:** [`docs/DEVELOPMENT-FLOW.md`](docs/DEVELOPMENT-FLOW.md) owns the local-to-public flow and private paid-source boundary. Proposed tiers and optional identity are in [`docs/PRODUCT.md`](docs/PRODUCT.md).
 
-**Product backlog:** [`docs/ROADMAP.md`](docs/ROADMAP.md) owns the public backlog. `Plans/` is local-only
+**Maintainer planning:** `storage/docs/ROADMAP.local.md` owns the backlog.
+`storage/docs/PRODUCT-PUBLISHING.md` owns publishing and release decisions. `Plans/` is local-only
 working context (gitignored, never pushed); locally, current work is
 the single dated checklist named in `Plans/README.md`. Move it to `Plans/_complete/` only when
 its remaining work is verified or routed. Folder UX target: [`docs/WORKSPACE-LAYOUT.md`](docs/WORKSPACE-LAYOUT.md).
-Maintainer channel/signing: `docs/CHANNELS.local.md` (gitignored).
+Maintainer channel/signing: `storage/docs/CHANNELS.local.md` (gitignored).
 
 **Session start / wrap:** after `/clear`, run only `/pdf-start` → local
 [`.claude/commands/pdf-start.md`](.claude/commands/pdf-start.md) (gitignored). It incorporates the
@@ -76,7 +76,7 @@ private maps in `brands/` (was `storage/brand-design/`). Product front door: [`e
 
 **Where learnings go — two surfaces, do not confuse them.** Session narrative lives in
 an active `Plans/_active/` checklist when a concrete slice exists, with the durable backlog in
-[`docs/ROADMAP.md`](docs/ROADMAP.md); move completed narrative to `_complete`. Do not create or update
+`storage/docs/ROADMAP.local.md`; move completed narrative to `_complete`. Do not create or update
 `dev-log.yaml`, `dev-log-sego.yaml`, or `dev-chat.md`; the old YAML is frozen under
 `Plans/_complete/_archive/`. Durable lessons — a trap, its
 root cause, and the guard that now prevents it — go to **tracked**
@@ -184,18 +184,18 @@ and follow it."*
 | `make-resume.md` · `make-cover-letter.md` · `make-work-examples.md` · `make-collage.md` | 🔒 personal (gitignored) | Your copies with real specifics |
 
 **Applicant shorthand** (local `README.md` when present; else `/jen:pdf` applicant table).
-Local operators define applicant shorthand in their private command README; public users select their own person, vault and profile. Additional operator maps may live in ignored `docs/AGENTS.local.md`; public operation never requires it.
+Local operators define applicant shorthand in their private command README; public users select their own person, vault and profile. Additional operator maps may live in ignored `storage/docs/AGENTS.local.md`; public operation never requires it.
 
 **Global commands in scope here** (personal, `~/.claude/commands/`, not in this repo): **`/pdf`**
 · **`/voice`** · **`/reflect`** (required at wrap) · `/roadmap` →
-[`docs/ROADMAP.md`](docs/ROADMAP.md).
+`storage/docs/ROADMAP.local.md`.
 
 **Shared-agent tooling:** command Markdown is the source; `.codex/skills/` and `.agents/skills/`
 are generated local adapters. Keep global commands in the user library and project commands here;
 link to global commands instead of copying their bodies. Never hand-edit generated `SKILL.md` files.
 The source/runtime map and safe refresh order live in
 [`docs/PRIVATE-SYNC.md`](docs/PRIVATE-SYNC.md#command-sources-and-runtime-adapters).
-Claude may use the optional `.claude/settings.json` profile. Maintainer-specific tooling and startup
+Claude plugin preferences and active editor configuration stay local. Maintainer-specific tooling and startup
 checks belong in ignored `storage/docs/`; the public engine runs without private services or credentials.
 
 ### 📎 Public seed vs. personal / dev copy — the `.example` split
@@ -217,11 +217,12 @@ marketed résumé-creator demo path (vault shape + palettes + smoke), not privat
 
 | Path | What it is |
 |---|---|
+| `scripts/` and `storage/scripts/` | Public reusable tooling and private operator scripts. See [the scripts boundary](docs/PUBLIC-LOCAL-SPLIT.md#scripts). |
 | `.memory/` | ⭐ **tracked durable learnings** — one `lesson-*.md` per trap already hit here (root cause + the guard that now prevents it) + an index. Read at session start; written at wrap. Travels with every clone, unlike gitignored session Plans. |
 | `src/pdf_tool/` | the engine (html_to_pdf, variants, tracker, merge_pdfs, pdf_to_png, **check_generation**, check_palette, check_overflow, check_rendered_color, check_vault, check_ats, collage, deck, **check_deck**, preview) |
 | `themes/default-resume.{json,css}` | public default theme — JSON is the token SSOT, CSS its mirror |
 | `themes/presets/*.json` | public audition palettes (Design Hub swapper) |
-| `themes/PALETTE-RULES.md` | ⭐ **the color rule** (no brown/mustard/lime) + how the guard enforces it |
+| `docs/PALETTE-RULES.md` | ⭐ **the color rule** (no brown/mustard/lime) + how the guard enforces it |
 | `themes/default-collage.json` | collage canvas presets + `backgrounds` (gradients) + per-bg `frame` colors ([`docs/COLLAGE-DESIGN.md`](docs/COLLAGE-DESIGN.md)) |
 | `layouts/` | ⭐ **STRUCTURE registry** — document recipes under `layouts/{cover-letter,letter,resume,work-examples}/` + `layouts/collage/`; counterpart to `themes/` (color). See [`layouts/README.md`](layouts/README.md). |
 | `examples/brand-design/` | tracked **template** for private brand maps (copy → `brands/`) |
@@ -230,18 +231,18 @@ marketed résumé-creator demo path (vault shape + palettes + smoke), not privat
 | `examples/_job-listings/` | one-folder-per-job-application workflow + copyable template |
 | `docs/` | ARCHITECTURE · SSOT · PRODUCT · PACKAGING · GETTING-STARTED · PUBLIC-LOCAL-SPLIT · PRIVATE-SYNC · STORAGE · VAULT · JOB-ASSESSMENT · THEME-DESIGN · LAYOUT-SYSTEM · EXPORTS · COLLAGE-DESIGN · PREVIEWER · APPLICATIONS · LICENSING-NOTES ([`docs/README.md`](docs/README.md) is the index) |
 | `.config/mcp-pdf-designer.example.json` | ⭐ Tracked project config **seed** (breakpoints + hub/palette/layout pointers). Copy → local `mcp-pdf-designer.json` (gitignored — machine paths). |
-| `Plans/` | 🔒 Local-only session plans (gitignored); durable backlog is [`docs/ROADMAP.md`](docs/ROADMAP.md) |
+| `Plans/` | 🔒 Local-only session plans (gitignored); durable backlog is `storage/docs/ROADMAP.local.md` |
 | `resumes/<user>/resources/{images,logos,videos,references}/` | Private reusable career-document sources for one person; not résumé-only. Job-specific evidence stays with the application. |
 | `_exports/` | **Fallback** export folder (examples · unfiled) — tracked README only; payload ignored. Personal exports live in `resumes/<user>/(<App>/)` and `collages/<project>/`. |
 | `output/` | **automation/test scratch** — tracked README only; payload ignored; explicit opt-in, not the engine default. |
-| `storage/` | **Private operations:** `storage/docs/` holds local protocol, evidence and tooling notes. Other contents are retired career-data residue; use root nouns for live career data. |
+| `storage/` | **Private operations:** `storage/docs/` holds local protocol, evidence and tooling notes. Older material lives in archives; use root nouns for live career data. |
 | `resumes/<user>/resources/` | Private reusable images, logos, videos and references; shared assets require verified attribution. See [`docs/STORAGE.md`](docs/STORAGE.md). |
 
 ### Privacy split (do not blur this)
 
 | Public / tracked (safe to clone) | Private / gitignored (root nouns for career data; `storage/docs/` for private operations) |
 |---|---|
-| `src/pdf_tool/`, `themes/`, `examples/`, `docs/`, `AGENTS.md`, `*.example.md`, `output/README.md`, `_exports/README.md` | `users/`, `vaults/`, `profiles/`, `_job-apps/`, `brands/`, `resumes/`, `collages/`, `_exports/*` (payload), `output/*` (scratch), legacy `storage/` |
+| `src/pdf_tool/`, `themes/`, `examples/`, `docs/`, `AGENTS.md`, `*.example.md`, `output/README.md`, `assets/public/` | `users/`, `vaults/`, `profiles/`, `_job-apps/`, `brands/`, `resumes/`, `collages/`, `_exports/*` (payload), `output/*` (scratch), legacy `storage/` |
 | Brand-neutral default theme | Real brand maps (`brands/brand-<name>.json`) |
 | Example brand shape (`examples/brand-design/`) | Real vault claims, contacts, employer research |
 | Public seed commands (`*.example.md` only) | Bare commands (`pdf-start`/`pdf-wrap`/`start`/`wrap`/`make-*`/`README`), `.codex/`, all of `Plans/` (incl. frozen `Plans/_complete/_archive/dev-log-*.yaml`) |
@@ -299,7 +300,7 @@ Read [`docs/VAULT.md`](docs/VAULT.md) before authoring any resume claim.
 - **Palette rule.** **No brown, no mustard, no puke/lime green.** Amber has no readable dark form on white
   (darkening turns it brown); hand that role to another hue on the light palette. Enforced by
   `check_palette` (and by `check_rendered_color` for brown that only appears after compositing).
-  Full rule: [`themes/PALETTE-RULES.md`](themes/PALETTE-RULES.md).
+  Full rule: [`docs/PALETTE-RULES.md`](docs/PALETTE-RULES.md).
 - **QA gate.** **`python -m pdf_tool.check_generation <doc>.html` for final changed documents** — 12 checks
   including artifact-level rendered-color, overflow @ 816px, and footer-collision. Source-only
   greps are not "verified." SSOT: [`docs/QA.md`](docs/QA.md).

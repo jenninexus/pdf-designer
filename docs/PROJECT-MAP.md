@@ -7,7 +7,7 @@ and serves the Design Hub. Start with [AGENTS.md](../AGENTS.md) and [SSOT.md](SS
 | Folder | Responsibility |
 |---|---|
 | `src/pdf_tool/` | Engine, preview server, export commands and QA guards |
-| `docs/` | Public protocol, architecture, storage, applications, QA and roadmap |
+| `docs/` | Public protocol, architecture, storage, applications, QA and product information |
 | `themes/` | Public color tokens, presets and palette rules |
 | `layouts/` | Document structure recipes; separate from color |
 | `examples/` | Public sample profiles, vault shapes and résumé studio |
@@ -19,7 +19,7 @@ and serves the Design Hub. Start with [AGENTS.md](../AGENTS.md) and [SSOT.md](SS
 | `_job-apps/` | Private listings, apply URLs, application records, correspondence and source HTML |
 | `resumes/` | Private finished documents and reusable per-person reference assets |
 | `brands/`, `collages/` | Private mapped brand colors and collage families |
-| `Plans/` | Private session checklists; `docs/ROADMAP.md` owns the public backlog |
+| `Plans/` | Private session checklists; `storage/docs/ROADMAP.local.md` owns the maintainer backlog |
 | `_exports/` | Fallback exports for examples or unmatched sources |
 | `output/` | Disposable automation scratch, excluded from the document library |
 | `storage/` | Retired private residue; compatibility aliases only |

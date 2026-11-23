@@ -11,14 +11,12 @@ Recapture: `python scripts/capture-hub-stills.py` using a clone-safe workspace. 
 | Page | Current capture | Purpose |
 |---|---|---|
 | Title | [`hub-splash.png`](hub-splash.png) | Launch title: **Open** / **Start wizard** — the storefront first frame |
-| Library / home | [`hub-library.png`](hub-library.png) · [`hub-home.png`](hub-home.png) | Public templates and app chrome (same still; both names so README + this table resolve) |
+| Library / home | [`hub-library.png`](hub-library.png) | Public templates and app chrome |
 | Recipes | [`hub-recipes.png`](hub-recipes.png) | Layout and palette discovery |
 | Vault | [`hub-vault.png`](hub-vault.png) | Fictional Jane Example skill/vault shape |
 | Wizard | [`hub-start.png`](hub-start.png) | Local-first guided workflow, Voice Seed preview, tip buttons (filename kept; the nav label is **Wizard**) |
 
 Full QA evidence (all four pages at 390, 576, 768, 992, 1200, 1400, and 1920px) remains local in
-`storage/screenshots/2026-08-22-public-hub-final/`. Prior captures:
-
-- [`_archive/2026-08-22-public-set/`](_archive/2026-08-22-public-set/) — the 2026-08-22 GitHub stills this set replaced
+`storage/screenshots/2026-08-22-public-hub-final/`. The replaced public stills are retained in the maintainer’s private capture archive.
 
 The older mixed personal capture archive is retained only in private workspace storage and is excluded from public history.

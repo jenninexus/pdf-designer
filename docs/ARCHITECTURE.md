@@ -135,7 +135,7 @@ resumes/ collages/ _job-apps/ ignored editable sources, application workspaces, 
 _exports/                    ignored fallback export library (unmatched sources, public examples)
 output/                      ignored explicit automation/test scratch
 storage/                     ⛔ GITIGNORED legacy alias only
-Plans/                        ignored local-only session plans; docs/ROADMAP.md owns the backlog
+Plans/                        ignored local-only session plans; storage/docs/ROADMAP.local.md owns the backlog
 .claude/commands/             the /make-resume protocol (agent-agnostic markdown)
 pyproject.toml                `pip install -e .` → `pdf_tool` importable from the repo root
 ```
@@ -166,7 +166,7 @@ Honest status — nothing below exists yet.
 
 | What | Status |
 |---|---|
-| **Design Hub app** — Electron shell over the existing previewer; variant generation; canvas editor | Shell built but release-signing held; canvas/books remain later carryover. See [`PREVIEWER.md`](PREVIEWER.md) and [`ROADMAP.md`](ROADMAP.md). |
+| **Design Hub app** — Electron shell over the existing previewer; variant generation; canvas editor | Shell built but release-signing held; canvas/books remain later carryover. See [`PREVIEWER.md`](PREVIEWER.md) and [PRODUCT.md](PRODUCT.md). |
 | **PDF form filling** — AcroForm field filling, flat-PDF overlay filling | **Deferred indefinitely.** This was the repo's *original* premise and has never once been needed — every real document has been HTML → PDF. Don't build it until something actually demands it. |
 
 > The previous version of this document described a `src/application_assistant/` package

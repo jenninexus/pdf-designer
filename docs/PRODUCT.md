@@ -1,7 +1,7 @@
 # Product & commercialization — pdf-designer
 
 **Business / product-direction SSOT** for the free GitHub résumé toolkit and a planned
-paid shell later. Clone path: [`GETTING-STARTED.md`](GETTING-STARTED.md). Architecture:
+Windows desktop distribution. Clone path: [`GETTING-STARTED.md`](GETTING-STARTED.md). Architecture:
 [`PUBLIC-LOCAL-SPLIT.md`](PUBLIC-LOCAL-SPLIT.md).
 
 | | |
@@ -11,8 +11,8 @@ paid shell later. Clone path: [`GETTING-STARTED.md`](GETTING-STARTED.md). Archit
 | **Public product story** | Résumé creator for a broken job market — **vaults**, skills, palette prefs |
 | Public demo | [`../examples/resume-studio/`](../examples/resume-studio/) |
 | Folder UX (clone tree) | [`WORKSPACE-LAYOUT.md`](WORKSPACE-LAYOUT.md) — root-noun README scaffolds; `storage/` retired |
-| Private marketing / channel ops | `docs/MARKETING.md` · `docs/CHANNELS.local.md` (gitignored) |
-| Engineering backlog | [`ROADMAP.md`](ROADMAP.md); `Plans/` is local-only working context (gitignored) |
+| Private marketing / channel ops | `storage/docs/MARKETING.md` · `storage/docs/CHANNELS.local.md` (gitignored) |
+| Engineering backlog | `storage/docs/ROADMAP.local.md`; `Plans/` is local-only working context (gitignored) |
 
 The public GitHub toolkit and fictional résumé-studio demo are usable locally today. Desktop-shell
 implementation and unsigned artifacts are pre-release engineering, not a claim that a paid installer
@@ -29,7 +29,7 @@ These are product proposals, not implemented entitlements or prices. Validate de
 | Tier | Proposed value |
 |---|---|
 | Free | Generous MIT engine, Design Hub and document QA. |
-| One-time purchase | Convenient desktop packaging and additional paid-only desktop capabilities, if developed and validated. |
+| One-time purchase | Optional packs or guided workflows, once developed and verified. |
 | Subscription | Only for sustained value such as maintained ATS integrations, updates or services with recurring costs; do not charge recurring fees for ordinary local documents. |
 
 Personal résumé data remains local and private. Optional Google sign-in is the next identity planning slice: evaluate account and licensing identity separately from résumé data, with offline local use retained. Sign-in, licensing, paid feature loading and subscriptions are not implemented by this proposal. See [DEVELOPMENT-FLOW.md](DEVELOPMENT-FLOW.md) for the explicit public promotion boundary.
@@ -59,7 +59,7 @@ workflow that **asks before inventing gaps** — not another cloud form that own
 |---|---|---|---|
 | **Open toolkit** | Devs, agents, power users | ✅ MIT on GitHub | Free — trust + contributors |
 | **Personal protocol** | Founders using this clone privately | ✅ local root nouns + bare commands | Never sell *their* vaults |
-| **Packaged app** (pre-release) | Job-seekers who want Canva ease without lying | 🟡 Windows Electron/NSIS artifact builder; no public release | Paid / freemium **shell** |
+| **Packaged app** (pre-release) | Job-seekers who want Canva ease without lying | 🟡 Windows x64 Electron shell; internal MSIX and NSIS packaging | Free Store base is the release candidate; optional one-time extras are proposals |
 
 **Hard privacy split:** root nouns (`users/` · `vaults/` · …) ship **README + examples only**;
 real local data remains gitignored. `storage/` is retired, while the resolver keeps old URLs working.
@@ -111,8 +111,10 @@ Prefer a **thin shell** over a second renderer.
 └─────────────────────────────────────────────────────────┘
 ```
 
+Microsoft Store MSIX is the preferred first customer channel, subject to certification and installed-channel testing. See [PACKAGING.md](PACKAGING.md#windows-release-readiness-2026-11-07). The six HTML presentation starters and their PDF checks are in the free toolkit. A guided deck editor is a possible future paid workflow.
+
 Packaging precursor: [`PACKAGING.md`](PACKAGING.md) (wheel must include `themes/` + `layouts/`).
-TestPyPI upload and fresh-install proof passed for `pdf-designer 0.4.0` on 2026-08-21. We deliberately will not publish production PyPI now: it is a developer library channel, while the Windows Electron/NSIS route is the customer install path. Installer notes for contributors: [`WINDOWS-ELECTRON.md`](WINDOWS-ELECTRON.md).
+TestPyPI upload and fresh-install proof passed for `pdf-designer 0.4.0` on 2026-08-21. We deliberately will not publish production PyPI now: it is a developer library channel, while the Microsoft Store MSIX is the preferred customer install path. Installer notes for contributors: [`WINDOWS-ELECTRON.md`](WINDOWS-ELECTRON.md).
 
 ## Support (public)
 
@@ -125,7 +127,7 @@ does not unlock extra features.
 A one-click Windows installer, if it ships later, is a **thin shell** over this
 same engine — not a second feature set, and not a reason to delay clone-safe
 fixes. Contributor build notes: [`WINDOWS-ELECTRON.md`](WINDOWS-ELECTRON.md).
-Maintainer channel/signing notes stay local (`docs/CHANNELS.local.md`).
+Maintainer channel/signing notes stay local (`storage/docs/CHANNELS.local.md`).
 
 ## How to market it (public-safe)
 
@@ -140,7 +142,7 @@ Channels: README + Hub GIF from **`examples/` only** · TestPyPI only for develo
 package rehearsal (no production PyPI release) · short “export +
 check_generation” clips. Keep personal career work and Patreon drafts out.
 
-Longer private channel notes: `docs/MARKETING.md` · `docs/CHANNELS.local.md` (gitignored).
+Longer private channel notes: `storage/docs/MARKETING.md` · `storage/docs/CHANNELS.local.md` (gitignored).
 
 ## Non-goals
 
@@ -171,6 +173,6 @@ Longer private channel notes: `docs/MARKETING.md` · `docs/CHANNELS.local.md` (g
 
 The current public GitHub offering is the local-first engine, Design Hub, example templates and documented clone workflow. The Electron installer is a local pre-release implementation, not a released Store product. Private profiles, vaults, documents, application history and operating notes belong in ignored personal roots and may sync through an operator-owned private remote. See [PRIVATE-SYNC](PRIVATE-SYNC.md).
 
-Recommendation: retain one public engine and the existing LAN/private workspace. A separate private product-shell repository is not justified until independent ownership, licensing, release cadence or actual private source creates a concrete need; a second repository alone does not protect data already placed in public history. Personal operating backlog is `docs/ROADMAP.local.md` in a configured private workspace; this file is intentionally absent from public clones.
+Recommendation: retain one public engine and the existing LAN/private workspace. A separate private product-shell repository is not justified until independent ownership, licensing, release cadence or actual private source creates a concrete need; a second repository alone does not protect data already placed in public history. Personal operating backlog is `storage/docs/ROADMAP.local.md` in a configured private workspace; this file is intentionally absent from public clones.
 
 Google sign-in is a future optional identity integration, not a current PDF Designer feature or a requirement for local use. Synagen's desktop precedent opens the system browser and uses a loopback callback with its self-hosted Supabase/GoTrue OAuth flow; its provider credentials and allowlist are server-side. Reuse the architectural pattern only after reviewing its current source; do not reuse its credentials or assume its account backend is appropriate for this product. Define a separate provider project, registered redirects, state/PKCE and validated identity/session lifecycle before implementation. [Google's OpenID Connect documentation](https://developers.google.com/identity/openid-connect/openid-connect) describes the server authorization-code flow.

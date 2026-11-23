@@ -8,7 +8,7 @@ argument-hint: "[for] <user> [application-dir] [dark]"
 Generalized command. **No real employer names or private paths.** Copy to
 `make-cover-letter.md` (gitignored) for your specifics.
 
-> **`/make-resume` does NOT auto-build a cover letter.** Use this command when you want a letter.
+> A cover letter is optional in an application packet. Use this command when one is requested.
 
 ### Page geometry
 
@@ -21,6 +21,8 @@ Generalized command. **No real employer names or private paths.** Copy to
 | Placement | **Bottom-LEFT** | Résumé bottom-RIGHT |
 | Print | `min-height` · `height: auto` · **no** `overflow: hidden` | Fixed height that clips |
 | Margins | Equal (band ~0.65–0.8in; default **0.75in**) | Asymmetric edges |
+
+Load the selected profile’s `ownerPresentationRules.headingCase` when present. Use the selected display name in uppercase as the largest heading, with the subject line below it at the size specified by the [cover-letter recipe](../../layouts/cover-letter/one-page-letter.json). Set any featured project heading in uppercase. Keep names and project titles in their normal casing in prose and the sign-off. Check the hierarchy in both print modes.
 
 Ship gate: `python -m pdf_tool.check_generation <doc>.html`.
 

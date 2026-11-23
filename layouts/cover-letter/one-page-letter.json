@@ -1,7 +1,21 @@
 {
   "id": "one-page-letter",
   "docType": "coverLetter",
-  "spec": "../docs/LAYOUT-SYSTEM.md",
+  "spec": "../../docs/LAYOUT-SYSTEM.md",
+  "headingHierarchy": {
+    "applicantName": {
+      "case": "uppercase",
+      "targetCssPx": 38
+    },
+    "subjectLine": {
+      "targetCssPx": 17
+    },
+    "projectTitle": {
+      "case": "uppercase",
+      "scope": "Headings only; preserve normal casing in prose."
+    },
+    "rule": "The applicant name is the largest text heading. Keep body and headings on system sans-serif for application packets."
+  },
 
   "page": {
     "size": "Letter",

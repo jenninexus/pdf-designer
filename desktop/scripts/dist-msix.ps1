@@ -30,6 +30,7 @@ if ($SignForTest -and $Publisher -cne 'CN=PDF Designer Release QA') {
 $required = @(
     'PDF Designer.exe', 'resources/app.asar', 'LICENSE.electron.txt', 'LICENSES.chromium.html',
     'resources/runtime/pdf-designer-runtime/pdf-designer-runtime.exe',
+    'resources/runtime/pdf-designer-runtime/_internal/pdf_tool/share/profiles/you-resume.example.json',
     'resources/runtime/pdf-designer-runtime/notices/Python-LICENSE.txt',
     'resources/workspace-seed/users/examples.json'
 )

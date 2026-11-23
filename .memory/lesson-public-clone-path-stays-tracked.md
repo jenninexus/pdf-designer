@@ -12,7 +12,7 @@ as [`docs/GETTING-STARTED.md`](../docs/GETTING-STARTED.md). Architecture lives i
 [`docs/WORKSPACE-LAYOUT.md`](../docs/WORKSPACE-LAYOUT.md) (root `users/` · `vaults/` · … —
 migration pending; live data still under `storage/`). And **gitignore is not a history
 scrub** — bare commands / machine MCP config once committed stay in old SHAs until
-`git filter-repo` + human-authorized force-push ([`docs/HISTORY-SCRUB.md`](../docs/HISTORY-SCRUB.md),
+`git filter-repo` + human-authorized force-push (`storage/docs/HISTORY-SCRUB.md`,
 gitignored).
 
 **Why:** “Dev-only” and “clone-safe public how-to” got conflated because the old filename

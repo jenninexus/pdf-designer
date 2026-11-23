@@ -11,7 +11,7 @@ then use [`PUBLIC-LOCAL-SPLIT.md`](PUBLIC-LOCAL-SPLIT.md) for the tracking/priva
 
 | On GitHub (clone-safe) | Local only (gitignored) |
 |---|---|
-| Public product docs · `themes/` · `layouts/` · `examples/` | Live vaults / brands / jobs / collages / exports (`_job-apps/` + `storage/` alias) |
+| Public product docs · `themes/` · `layouts/` · `examples/` | Live vaults, brands, jobs, collages, and exports in the local workspace |
 | `.config/mcp-pdf-designer.example.json` | `mcp-pdf-designer.json` (machine paths) |
 | `*.example.md` command seeds only | Bare `start`/`wrap`/`README`/`make-*.md` |
 | [`PRODUCT.md`](PRODUCT.md) · [`GETTING-STARTED.md`](GETTING-STARTED.md) · `resume-studio/` · optional public-safe product plan | Personal/session plans, agent notes, application records, and local marketing / workspace / history notes |
@@ -28,8 +28,8 @@ then use [`PUBLIC-LOCAL-SPLIT.md`](PUBLIC-LOCAL-SPLIT.md) for the tracking/priva
 | [`PRODUCT.md`](PRODUCT.md) | ⭐ Business / product direction (free GitHub + optional tip; installer is a later shell) |
 | [`GETTING-STARTED.md`](GETTING-STARTED.md) | ⭐ Clone path without vaults |
 | [`../examples/resume-studio/`](../examples/resume-studio/) | Public product front door |
-| [`pdf-designer-overview.html`](pdf-designer-overview.html) · [`PDF`](pdf-designer-overview.pdf) | Browser-openable product overview + PDF rendered by this engine |
-| [`images/README.md`](images/README.md) | Current public-only Hub screenshot set; prior captures are dated archives |
+| [`pdf-designer-overview.html`](../assets/public/overview/pdf-designer-overview.html) · [`PDF`](../assets/public/overview/pdf-designer-overview.pdf) | Browser-openable product overview + PDF rendered by this engine |
+| [Public Hub screenshots](../assets/public/hub/README.md) | Current public-only Hub screenshot set; prior captures are dated archives |
 | [`PACKAGING.md`](PACKAGING.md) | PyPI / wheel spike |
 | [`WINDOWS-ELECTRON.md`](WINDOWS-ELECTRON.md) | Pre-release Windows shell: unsigned packaging, Documents/OneDrive, clean-machine harness |
 | [`VOICE-SEED-HANDOFF.md`](VOICE-SEED-HANDOFF.md) | Optional, public-safe voice-card boundary |
@@ -58,7 +58,6 @@ These remain separate because each owns a different decision boundary; they are 
 | [`VAULT.md`](VAULT.md) | Claim provenance, voice, role tracks, and vault schema |
 | [`APPLICATIONS.md`](APPLICATIONS.md) | One-folder-per-job workflow and where application artifacts live |
 | [`JOB-ASSESSMENT.md`](JOB-ASSESSMENT.md) | Apply-link, remote/pay, evidence, gap-check, and ATS assessment protocol |
-| [`ROADMAP.md`](ROADMAP.md) | Durable product backlog plus the optional current execution-plan pointer |
 
 ## Compatibility pointer
 
@@ -67,14 +66,13 @@ content lives in [`GETTING-STARTED.md`](GETTING-STARTED.md); do not grow a secon
 
 ## Historical records
 
-Completed audits and superseded spikes live under [`_archive/`](_archive/). They preserve evidence but
+Completed internal audits and superseded spikes live in local `storage/docs/_archive/`. They preserve evidence but
 are not current instructions. The maintained authorities remain the docs listed above.
 
 ## Local operating records
 
 Personal/session plans, agent runbooks, working vault payload, and application records stay
-gitignored. All of `Plans/` is local-only working context; the public backlog is
-[`ROADMAP.md`](ROADMAP.md). The public walkthrough is the fictional
+gitignored. Maintainer planning lives in `Plans/` and `storage/docs/`. The public walkthrough is the fictional
 [`../examples/resume-studio/`](../examples/resume-studio/) example plus
 [`GETTING-STARTED.md`](GETTING-STARTED.md).
 
@@ -82,15 +80,14 @@ gitignored. All of `Plans/` is local-only working context; the public backlog is
 
 | Path | Owns |
 |---|---|
-| [`../themes/PALETTE-RULES.md`](../themes/PALETTE-RULES.md) | No brown / mustard / lime + guard |
+| [`themes/README.md`](../themes/README.md) | Theme tokens, presets and font notices |
 | [`../layouts/README.md`](../layouts/README.md) | Layout recipes — structure (themes own color) |
 | [`../.claude/commands/*.example.md`](../.claude/commands/) | Public protocol seeds only |
 
 ### Privacy
 
 Root workspace nouns (`users/` · `vaults/` · `_job-apps/` · …) are **gitignored** except for
-tracked `README` scaffolds and `*.example.json`; real JSON/HTML stay ignored. `storage/` is
-retired and accepted only as an old-path alias. Public docs must not include machine pointers,
+tracked `README` scaffolds and `*.example.json`; real JSON/HTML stay ignored. The runtime accepts old career-data URLs under `storage/` as aliases. Public docs must not include machine pointers,
 personal data, or operational history. One checkout; no `.env` (the engine reads none).
 
 The local Design Hub can still browse ignored `_exports/` PDFs and images: select **Exports** in
@@ -98,4 +95,6 @@ Library. Those artifact cards are read-only and exist only on loopback; the
 public repository continues to track the folder README, never the payload.
 
 
-Microsoft Store gates: [PACKAGING.md](PACKAGING.md#microsoft-store-readiness-assessment-2026-10-30). Personal operating backlog is ignored `ROADMAP.local.md`; public product capabilities remain in [ROADMAP.md](ROADMAP.md).
+Microsoft Store gates: [PACKAGING.md](PACKAGING.md#windows-release-readiness-2026-11-07). Current product direction is in [PRODUCT.md](PRODUCT.md).
+
+[Document generation rules](GENERATION-RULES.md) cover typography, image treatment, and per-applicant limits. [Theme assets and font notices](../themes/README.md) stay beside their files. Private operator procedures and evidence go under `storage/docs/` or the owning ignored application evidence folder.

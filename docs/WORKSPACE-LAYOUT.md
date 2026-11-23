@@ -3,7 +3,7 @@
 **Status:** path resolver + root README scaffolds + local **data copy** (2026-08-13).
 **`storage/` is retired (2026-08-17).** Private application material remains local and the
 private font moved to `brands/fonts/`. The engine still accepts `storage/`
-aliases. Copy script (historical): `python scripts/migrate-workspace.py`.
+aliases. The legacy studio migration is maintained privately.
 
 This page is the **clone-safe product story**: what a future GitHub user should see at the
 repo root, vs what stays private on their machine.
@@ -183,7 +183,7 @@ output/*
 **/_exports/
 !/_exports/
 /_exports/*
-!/_exports/README.md
+
 
 # Local legacy residue; retain for recovery/history, never add new live work
 storage/
@@ -210,7 +210,7 @@ hides them from clones.
 1. **Docs + ignore** — private notes → `docs/`; stop using `storage/docs/` ✅
 2. **Path resolver** — `pdf_tool.paths` accepts both trees (Hub + CLI) ✅
 3. **Scaffold root dirs** — README stubs on GitHub ✅
-4. **Move local data** — copy `storage/*` → new nouns; keep `storage/` as read-only alias  ✅ `scripts/migrate-workspace.py`
+4. **Move local data** — copy `storage/*` → new nouns; keep `storage/` as read-only alias  (historical migration)
 5. **Delete `storage/`** — ✅ retired 2026-08-17 after smoke + Hub + tracker verification; retain the resolver only for old URLs.
 
 ---
@@ -232,8 +232,8 @@ A session's narrative names real people, listings, employers and machine paths, 
 never breaks a pointer → move it to `_complete/` when its outcomes are verified or explicitly routed,
 carrying forward only items that are genuinely still open. This repo uses lowercase **`_active` / `_complete`**.
 
-A fresh clone has none of it: create `_active/` on first use. The public backlog is
-[`ROADMAP.md`](ROADMAP.md), and the durable traps that *do* travel with a clone are in
+A fresh clone has none of it: create `_active/` on first use. The maintainer backlog is
+`storage/docs/ROADMAP.local.md`. Reviewed lessons travel with a clone in
 [`../.memory/`](../.memory/). Never create a root `dev-log.yaml`, `dev-log-sego.yaml` or `dev-chat.md`.
 
 ---
@@ -253,4 +253,4 @@ A fresh clone has none of it: create `_active/` on first use. The public backlog
 - Live layout today: [`STORAGE.md`](STORAGE.md)
 - Architecture: [`PUBLIC-LOCAL-SPLIT.md`](PUBLIC-LOCAL-SPLIT.md)
 - Product thesis: [`PRODUCT.md`](PRODUCT.md)
-- Product backlog: [`ROADMAP.md`](ROADMAP.md) · session plans: `Plans/` (local-only, gitignored)
+- Product backlog: `storage/docs/ROADMAP.local.md` · session plans: `Plans/` (local-only, gitignored)

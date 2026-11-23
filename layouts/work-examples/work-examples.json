@@ -1,7 +1,19 @@
 {
   "id": "work-examples",
   "docType": "workSamples",
-  "spec": "../docs/LAYOUT-SYSTEM.md",
+  "spec": "../../docs/LAYOUT-SYSTEM.md",
+  "headingHierarchy": {
+    "applicantName": {
+      "case": "uppercase",
+      "targetCssPx": 38
+    },
+    "projectTitle": {
+      "case": "uppercase",
+      "targetCssPx": 24
+    },
+    "order": "Applicant name, project title, project context, image and caption.",
+    "rule": "The applicant name is the largest text heading. Keep body and headings on system sans-serif for application packets."
+  },
   "page": {
     "size": "Letter",
     "margin": "0.6in",

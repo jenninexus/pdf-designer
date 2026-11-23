@@ -7,7 +7,7 @@ pdf-designer.code-workspace
 
 # Per-machine private session logs/channels — DEPRECATED (do not recreate at repo root).
 # Frozen copy: Plans/_complete/_archive/dev-log-sego.yaml
-# Current work lives in the dated plan named by Plans/README.md + docs/ROADMAP.md.
+# Current work lives in the dated plan named by Plans/README.md + storage/docs/ROADMAP.local.md.
 dev-log.yaml
 dev-log-sego.yaml
 dev-log-*.yaml
@@ -23,13 +23,14 @@ dev-chat.md
 # Optional local pointers: .config/mcp-pdf-designer.json (copy the .example). The engine
 # reads NO environment variables; a .env.local would be a fiction unless a new tool reads it.
 #
-# storage/ is retired (2026-08-17). Keep the ignore so a leftover tree cannot be committed.
-storage/
+# Entire maintainer storage tree, including operational docs and archives.
+/storage/
 #
 # ⚠ themes/ is deliberately NOT ignored. It is the PUBLIC engine's default theme + the palette
 # RULE. Private brand palettes live in brands/, which the previewer reads alongside themes/.
 # Tracked brand TEMPLATE (no personal data): examples/brand-design/
 private/
+/.local-artifacts/
 browser-extension/
 docs/BROWSER-HELPER.md
 notes/
@@ -71,7 +72,8 @@ brands/*
 !brands/*.example.json
 
 
-# Private product/ops notes live in docs/ beside public docs (never clone these)
+# Legacy private paths remain ignored for older checkouts. Current notes live in storage/docs/.
+/docs/ROADMAP.md
 docs/MARKETING.md
 docs/WORKSPACE.md
 docs/HISTORY-SCRUB.md
@@ -87,7 +89,7 @@ docs/HISTORY-SCRUB.md
 # ⚠ A bare `!Plans/README.md` after `Plans/` does NOT work: git cannot re-include a file whose
 # parent directory is excluded, so it fails silently. Track a scaffold only by excluding
 # `Plans/*` instead — which needs the owner rule re-decided first.
-Plans/
+/Plans/
 docs/*.local.md
 docs/private/
 docs/**/*.private.md
@@ -110,7 +112,11 @@ job-listing-capture-*.md
 !/.config/*.example.json
 !/.config/capture/
 /.config/capture/*
-!/.config/capture/hub.breakpoints.json
+!/.config/capture/hub.breakpoints.example.json
+
+# Claude command examples ship. Runtime settings stay local.
+/.claude/*
+!/.claude/commands/
 
 # Personal slash commands — TRACK ONLY `*.example.md` on GitHub.
 # Bare start/wrap/make-*/README are local/dev-only (reflect, applicant specifics, session ritual).
@@ -130,15 +136,21 @@ job-listing-capture-*.md
 # Codex runtime adapters — generated one-way from local bare .claude commands (SKILL.md format).
 # They may contain the same private/dev specifics as their source, so they stay local and untracked.
 # Public command seeds are only .claude/commands/*.example.md; never generate public mirrors here.
-.codex/
-.agents/
+/.codex/
+/.agents/
+/.cursor/
+/.mcp.json
 
 # Generated output + personal images (collage sets, screenshots) — real image
 # files stay local; a future tracked example image needs an explicit ! exception
 *.pdf
-!docs/pdf-designer-overview.pdf
+!/assets/public/overview/pdf-designer-overview.pdf
 *.png
-!docs/images/**/*.png
+!/assets/public/hub/hub-library.png
+!/assets/public/hub/hub-recipes.png
+!/assets/public/hub/hub-splash.png
+!/assets/public/hub/hub-start.png
+!/assets/public/hub/hub-vault.png
 !src/pdf_tool/static/hub-app-icon.png
 # Extension icons are product UI shipped inside the unpacked extension.
 !browser-extension/icons/*.png
@@ -152,12 +164,8 @@ docs/images/hub-resume-*.png
 # (resumes/<user>/, collages/<project>/); _exports/ is the fallback.
 output/*
 !output/README.md
-# Personal/private generated deliverables. Keep the root guide visible in public clones;
-# ignore every payload and any accidental nested _exports directory.
+# Generated fallback exports at every level. See docs/EXPORTS.md for the contract.
 **/_exports/
-!/_exports/
-/_exports/*
-!/_exports/README.md
 # CLI mishap: pdf_to_png treats a leftover flag as a positional out-dir
 --output-dir/
 _variants/
@@ -194,6 +202,7 @@ desktop/azure-trusted-signing.json
 src/pdf_tool/share/themes/
 src/pdf_tool/share/layouts/
 src/pdf_tool/share/examples/
+src/pdf_tool/share/profiles/
 
 # Playwright MCP capture dumps (local agent debugging artifacts)
 .playwright-mcp/
@@ -206,9 +215,10 @@ pytest-of-*/
 Thumbs.db
 .vscode/*.log
 
-# Personal VS Code MCP wiring (contains local machine paths). The tracked
-# .vscode/mcp.json.example is the agnostic template; the repo needs no MCP to run.
-.vscode/mcp.json
+# Public VS Code scaffolds. Local wiring and workspace settings are ignored.
+/.vscode/*
+!/.vscode/tasks.json.example
+!/.vscode/mcp.json.example
 
 # Secrets — defensive only.
 # This tool reads NO environment variables and makes NO network calls; there is nothing

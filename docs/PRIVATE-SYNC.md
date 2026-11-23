@@ -76,7 +76,7 @@ Design Hub sees one workspace. It holds only:
 
 - `users/` `vaults/` `profiles/` `resumes/` `_job-apps/` `applications/` `collages/` `brands/` `Plans/`
 - `storage/docs/` (private operational protocol and evidence); machine-specific scripts/settings stay local
-- `docs/*.local.md`, `docs/private/`, and the private notes listed in `PUBLIC-LOCAL-SPLIT.md`
+- Older private docs paths are still recognized for migration from earlier clones. Put new operating records under `storage/docs/`.
 - `.config/private-markers.txt` (so every machine guards every person's identifiers)
 - the bare personal commands `.claude/commands/*.md` (`/make-resume`, `/pdf-start`, …), so any machine can
   build any person's documents. The tracked `*.example.md` seeds stay public, and the `.codex/` and `.agents/`
@@ -94,7 +94,7 @@ Never shared: anything the public repository tracks (README stubs, `*.example.*`
 On every `git push`, before GitHub accepts it, for each commit being published:
 
 1. **Paths.** No pushed path may be one `.gitignore` ignores (a force-add), and none may sit under a
-   private root or be a PDF/image outside `docs/`, unless it is a named public seed. This floor is
+   private root or be a PDF/image outside the approved public asset paths. This floor is
    built into the script, so it holds even if the same push loosens `.gitignore`.
 2. **Identifiers.** No added line or commit message may contain a private marker. Markers come from
    this machine's real `users/*.json` and `vaults/*.json` (emails, phone numbers, full names,

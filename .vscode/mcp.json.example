@@ -1,13 +1,14 @@
 {
   "_meta": {
-    "description": "OPTIONAL VS Code MCP helper for pdf-designer. Prefer your existing global MCP registrations: do not redeclare globally configured server names here, because project entries can shadow them. This repo needs NO MCP server to run — the engine is pure Python + Playwright. Copy only when adding a distinct project-only helper, then edit its paths for your machine.",
+    "description": "OPTIONAL VS Code MCP helper for pdf-designer. Prefer your existing global MCP registrations: do not redeclare globally configured server names here, because project entries can shadow them. This repo needs NO MCP server to run \u2014 the engine is pure Python + Playwright. Copy only when adding a distinct project-only helper, then edit its paths for your machine.",
     "project_ssot": ".config/mcp-pdf-designer.json"
   },
   "servers": {
-    "//": "OPTIONAL. Remove this block if you have no local MCP server. Paths below are placeholders — edit for your machine or delete.",
     "example-local-helper": {
       "command": "node",
-      "args": ["/absolute/path/to/your/mcp-server/index.js"],
+      "args": [
+        "/absolute/path/to/your/mcp-server/index.js"
+      ],
       "cwd": "/absolute/path/to/your/mcp-server"
     }
   }

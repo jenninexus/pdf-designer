@@ -1,4 +1,4 @@
-# `storage/` — retired dual-run alias
+# Workspace data and private storage
 
 > **Retired 2026-08-17.** Live personal data is only at the root nouns in
 > [`WORKSPACE-LAYOUT.md`](WORKSPACE-LAYOUT.md): `users/` · `vaults/` · `profiles/` ·
@@ -15,9 +15,7 @@
 `storage/docs/` is the private operational documentation home: local protocol, service setup,
 review receipts and evidence. It stays ignored by public Git and general knowledge indexing.
 Private-sync shares this docs subtree only; machine-specific scripts/settings stay local.
-Other `storage/` contents are retired career-data residue. Live identities, vaults, applications,
-brands and generated deliverables remain under the root nouns. Existing private notes under
-`docs/*.local.md` remain valid; new operational notes belong in `storage/docs/`.
+Use `storage/docs/ops/` for live operations and `storage/docs/evidence/` for evidence with active dependencies. File completed receipts and recovery history under `storage/docs/_archive/`. Live identities, vaults, applications, brands and generated deliverables remain under their owning root folders.
 
 ---
 
@@ -25,7 +23,7 @@ brands and generated deliverables remain under the root nouns. Existing private 
 
 | Tracked in the repo (safe to clone) | Private at repo root (gitignored) | Lives in theme kits (website SSOT) |
 |---|---|---|
-| `src/`, `themes/`, `examples/`, `docs/`, `AGENTS.md`, `output/README.md`, `_exports/README.md` | `users/`, `vaults/`, `profiles/`, `_job-apps/`, `brands/`, `collages/`, `resumes/`, `_exports/*` payload, `output/*` scratch, legacy `storage/` | `www-theme-kit/profiles/…` (official kit) |
+| `src/`, `themes/`, `examples/`, `docs/`, `AGENTS.md`, `output/README.md`, `assets/public/` | `users/`, `vaults/`, `profiles/`, `_job-apps/`, `brands/`, `collages/`, `resumes/`, `_exports/` fallback, `output/*` scratch, all `storage/` and `Plans/` | `www-theme-kit/profiles/…` (official kit) |
 | Brand-neutral default theme + `examples/brand-design/` | Real brand maps + vaults + contacts + private notes | Live site primary/secondary/accent |
 | `.config/mcp-pdf-designer.example.json` | Local `mcp-pdf-designer.json` (absolute paths) | — |
 

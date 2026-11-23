@@ -7,5 +7,6 @@
   "theme": "default-resume",
   "render": "default-cover-letter.html",
   "layout": "cover-letter/one-page-letter",
+  "headingHierarchy": "../../../layouts/cover-letter/one-page-letter.json#headingHierarchy",
   "expectedPages": 1
 }

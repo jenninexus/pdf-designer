@@ -8,13 +8,15 @@ argument-hint: "[for] <user> [application-dir|track]"
 Generalized command. **No real client names.** Copy to `make-work-examples.md`
 (gitignored) for your specifics.
 
-> **Not auto-run by `/make-resume`.** Opt-in when the application needs a portfolio pack.
+> Use this command for the work-sample section of a packet or for a separate portfolio upload.
 
 ### Layout
 
 **Recipe:** [`layouts/work-examples/`](../../layouts/work-examples/) (see [`layouts/README.md`](../../layouts/README.md)).
 Signature: bottom-RIGHT (same family as résumés — avoid L/R footer false collisions;
 see `.memory/lesson-work-samples-footer-row-false-collision.md`).
+
+Load the selected profile’s `ownerPresentationRules.headingCase` when present. Follow the [work-examples recipe](../../layouts/work-examples/work-examples.json). Give each page an uppercase applicant name as its largest heading, then a smaller uppercase featured project title above the imagery. Keep official casing in prose and captions. Check the hierarchy in both print modes.
 
 ### Rules
 

@@ -169,8 +169,8 @@
     "active": "Plans/README.md",
     "index": "Plans/README.md",
     "complete": "Plans/_complete/",
-    "next": "See Plans/README.md for the current slice; docs/ROADMAP.md for public product gates.",
-    "private_backlog": "docs/ROADMAP.local.md"
+    "next": "See Plans/README.md for the current slice; storage/docs/ROADMAP.local.md for maintainer product gates.",
+    "private_backlog": "storage/docs/ROADMAP.local.md"
   },
   "protocol": {
     "storage": "docs/STORAGE.md",

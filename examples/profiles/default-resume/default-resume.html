@@ -92,7 +92,8 @@
   .page-sig .sig-name { display: block; font-weight: 600; color: var(--text); font-size: 12px; }
   .page-sig .sig-mail { display: block; text-transform: uppercase; letter-spacing: 0.08em; font-size: 11px; font-weight: 600; color: var(--text); }
 
-  h1 { font-family: var(--heading); font-size: clamp(1.8rem, 5vw, 2.4rem); margin: 0 0 4px; text-wrap: balance; }
+  h1 { font-family: var(--ats-safe); font-size: 38px; line-height: 1.1; font-weight: 800; margin: 0 0 4px; text-wrap: balance; }
+  .project-title { font-family: var(--ats-safe); font-size: 15px; font-weight: 700; margin: 0 0 8px; }
   .role { color: var(--dim); font-size: 14px; margin: 0 0 20px; }
 
   .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
@@ -206,7 +207,7 @@
       font-family: var(--ats-safe);
     }
 
-    h2 { font-family: var(--ats-safe); }
+    h2, h3 { font-family: var(--ats-safe); }
 
     html[data-pdf-theme="dark"] body {
       color-scheme: dark;
@@ -257,7 +258,7 @@
      If page 1 overflows, move a section here — never shrink the equal margin. -->
 <div class="page wrap">
   <div class="page-main">
-  <h1>Jane Example</h1>
+  <h1>JANE EXAMPLE</h1>
   <p class="role"><strong>Job Title:</strong> Founder &amp; Lead Developer</p>
 
   <div class="tags">
@@ -310,6 +311,7 @@
 
 <div class="page wrap">
   <div class="page-main">
+  <h1>JANE EXAMPLE</h1>
   <section>
     <h2>Technology</h2>
     <p style="font-size:13px; color:var(--dim);"><strong>Stack:</strong> tool, tool, tool.</p>
@@ -323,6 +325,7 @@
 
   <section>
     <h2>Selected Work / Links</h2>
+    <h3 class="project-title">RÉSUMÉ STUDIO</h3>
     <div class="portfolio-links">
       <a class="portfolio-link" href="https://example.com/portfolio">example.com/portfolio</a>
       <a class="portfolio-link" href="https://github.com/example-studio">github.com/example-studio</a>

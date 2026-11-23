@@ -1,0 +1,168 @@
+# Generation Rules — the house SSOT for every generated output
+
+**One page. Read it before generating any resume, cover letter, or work-samples for Jenni or Shade.**
+These rules apply to **all** generated documents (resume · cover letter · work-samples), for **both**
+applicants, in **every** track and company theme. They are the "must always be true" list — the taste
+and identity rules that sit above any single job.
+
+| | |
+|---|---|
+| [Naming & casing](#1-naming--casing--never-all-lowercase) | Our names + company names are never all-lowercase |
+| [Images & overlays](#2-images--overlays--no-neon-over-photos) | No neon/primary wash over banners or photos — dark→transparent scrims only |
+| [Image framing](#3-image-framing--169-no-crop) | 16:9, show the whole image, don't crop faces/logos |
+| [Color](#4-color--house-palette--no-magenta-for-shade) | → `PALETTE-RULES.md` (no brown/mustard/lime; no magenta for Shade/Martian) |
+| [Per-user prefs](#5-per-user-quick-reference) | The one-look table: what each person's outputs must obey |
+| Related | [`PALETTE-RULES.md`](PALETTE-RULES.md) · [`VAULT.md`](VAULT.md) · [`../.claude/commands/make-resume.md`](../.claude/commands/make-resume.example.md) |
+
+---
+
+## 1. Naming & casing — NEVER all-lowercase
+
+Set the applicant name and featured game/project headings in uppercase. Use the chosen
+identity's exact spelling, such as **JANE EXAMPLE**. Make the applicant name
+the largest text heading. Keep official name casing in prose and credits. The shared
+[application packet](../layouts/application-packet.json) sets the headline sizes.
+
+> **⛔ Our names and business/company names are NEVER rendered all-lowercase in a generated document.**
+> (Owner directive 2026-07-20.)
+
+- **People:** `Jenni`, `Shade` — never `jenni`, `shade` in headings, signatures, or body prose.
+  (The lowercase `jenni` / `shade` is only ever a **file/user key**, never display text.)
+- **Companies / products:** `Martian Games`, `Synagen`, `Synabrain`, `IQO`, `Agency` — never
+  `martian games`, `synagen`, etc.
+- A **stylized display** (e.g. a wordmark logo image, or an all-**UPPERCASE** `SHADE` header) is fine —
+  the ban is specifically on **all-lowercase**.
+- **Why this is a hard rule:** some earlier Martian Games resumes rendered the name/company all-lowercase
+  and the user **cannot submit those** — it reads as a typo / unprofessional. Any doc with an all-lowercase
+  name or company name is a **defect to fix at the source**, not a style choice.
+
+**Check before export:** grep the rendered HTML for a lowercase name/company as a standalone word —
+`grep -nE '>\s*(jenni|shade|martian games|synagen)\b' <doc>.html` (in display text; ignore `mailto:`,
+URLs, and file paths, which are legitimately lowercase).
+
+---
+
+## 2. Images & overlays — NO neon over photos
+
+> **⛔ Never lay a bright/neon/primary color wash over a banner, hero, or any photographic image.**
+> If text must sit on top of an image, use a **black → transparent gradient scrim** (or a dark solid at
+> reduced opacity) — never a saturated brand color. (Owner directive 2026-07-20.)
+
+**What went wrong:** a work-samples banner had a bright-pink/neon-primary tint painted over the hero image
+(seen in the 2026-07-18 Jenni Netflix work-samples PDFs). It fights the image and looks amateur.
+
+**Do instead — the only approved on-image overlays:**
+
+```css
+/* text legibility scrim over a hero/banner image — dark, not colored */
+.hero-overlay {
+  background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.55) 100%);
+  /* or top-anchored: linear-gradient(0deg, rgba(0,0,0,0) 40%, rgba(0,0,0,0.6) 100%) */
+}
+```
+
+- **Allowed:** `black → transparent` gradients, a **dark** solid at low opacity, a thin brand-colored
+  **border/rule** *beside* the image (not washed over it), a small logo/badge chip in a corner.
+- **Banned:** any neon/primary/saturated **fill** over an image (pink, cyan, red, violet washes), a
+  `mix-blend`/tint that recolors the photo, a colored `::before` covering the image.
+- The brand color belongs on **text, rules, borders, and solid panels next to the image** — not painted
+  across the image itself.
+
+---
+
+## 3. Image framing — 16:9, no-crop
+
+> **Show the whole image. Frame to 16:9 without cropping off faces, logos, or the subject.**
+
+- Game shots, hero art, and promo thumbnails render in a **16:9** frame. Use
+  `object-fit: contain` (letterbox on a dark panel) **or** a genuinely 16:9 source — do **not**
+  `object-fit: cover` a non-16:9 image and chop the sides/top off.
+- When the art isn't 16:9, **letterbox it on a neutral dark panel** (`#0f0f10`) rather than cropping.
+  A slim rounded frame + the dark mat reads intentional; a cropped-off head reads broken.
+- **Logos** (e.g. `martiangames-logo-16x9.webp`, `synagen-logo-16-9.png`): size them to **look good, not
+  huge** — a tasteful mark, not a page-dominating block. Center on a dark panel with padding; keep the
+  logo's own aspect ratio (never stretch).
+- Applies to **both** applicants' work-samples Martian-Games galleries and any logo-only panel.
+
+---
+
+## 3b. Backgrounds — ⛔ NO warm tint in a large dark area (the real "brown" bug)
+
+> **A dark grey with ANY red/warm tint reads as BROWN over a large area — even when every source
+> hex passes the palette guard.** Backgrounds must be **neutral** (chroma ≤ ~8: R, G, B within a
+> few points of each other). Red belongs on **saturated small elements** — text, rules, borders,
+> the spectrum — never as a large dim wash. (Owner directive 2026-07-21, after three docs "passed"
+> the hex guard while looking brown.)
+
+**How brown actually got made** (measured, not guessed):
+
+| Mechanism | Example | Measured result |
+|---|---|---|
+| Red-tinted base gradient + red glows | `linear-gradient(…#1c1416, #2a0e10)` + `rgba(229,9,20,.20)` | page bg averaged **#2c2224 / #291c1d** — a warm dark grey = brown to the eye |
+| Alpha layer over a warm gradient | `rgba(255,255,255,.16)` streaks over red | **#a08251 / #ae906e** — real brown pixels in no stylesheet |
+| Dark alpha over a warm stop | `rgba(0,0,0,.30)` streaks over `#E50914` | **#7f4c04** — darkening a warm hue lands in the brown band |
+| Red-alpha panel fill | `rgba(229,9,20,.06)` over `#0d0d0d` | **#1a0d0d**, chroma 13 — a warm dim panel |
+
+**Rules that follow:**
+
+- **Base background:** neutral only — `linear-gradient(150deg, #000, #0d0d0d, #141414, #1a1a1a)`.
+  No warm stop, no red radial glow spanning a large area.
+- **Never put an alpha layer over a warm gradient.** Streak/texture overlays on a red or rainbow
+  rule are banned — they *manufacture* brown. Keep such rules a flat pure gradient.
+- **Panel fills** use neutral white-alpha (`rgba(255,255,255,.035)`), not red-alpha. Keep the red
+  **border** for brand identity.
+- **Rainbow/spectrum stops** must avoid hue **20–100** (brown/lime) entirely — and, for Shade,
+  hue 290–345 (magenta). A safe run: `#E50914 → #FF6A72 → #FF9FA5 → #C86BFF → #7B5CFF → #1E5BE0 →
+  #2E9BE8 → #3DD6D0 → #9BE8DF`.
+
+**Enforced by `python -m pdf_tool.check_rendered_color`** — it renders the page and judges the
+PIXELS (and the average of large flat background tiles), so it catches brown the hex guard cannot
+see. It runs automatically inside `check_generation`.
+
+## 3c. One application = one page background (the PDF border colour)
+
+> **Every document in one applicant's set must use the SAME `@page` background.** That value paints
+> the PDF's **margin/border area**, so a doc with a different one looks visibly mismatched the moment
+> the files sit side by side.
+
+Caught 2026-07-21: the Netflix work-samples used `#000000` while the resume and cover letter still
+carried a stale `#0B0B0D` (a blue-tinted near-black) — the letter's border read as a different colour.
+
+- Keep `@page { background }`, `@page dark-letter { background }`, `--bg`, `--surface`, and the
+  `.page` gradient **identical across the resume, cover letter, and work-samples** of one applicant.
+- **Two applicants may differ** — Jenni and Shade legitimately render split accent runs off one
+  company palette. The rule is per-applicant, not per-folder.
+- Enforced by the `page-bg` check in `check_generation` (compares against same-prefix siblings).
+
+## 4. Color — house palette + no magenta for Shade
+
+The color rules live in their own guard-enforced SSOT — **do not duplicate hexes here:**
+
+- **Everyone:** no brown, no mustard, no puke/lime green → [`PALETTE-RULES.md`](PALETTE-RULES.md).
+- **Shade + Martian Games only:** **⛔ NO magenta / NO pink** (any theme, any mode). Verify with
+  `python -m pdf_tool.check_palette --no-magenta <doc>.html`. Jenni's brand legitimately uses pink, so
+  this is brand-scoped, never global.
+
+---
+
+## 5. Per-user quick reference
+
+| Rule | Jenni | Shade |
+|---|---|---|
+| **Name casing** | `Jenni` — never `jenni` | `Shade` — never `shade` |
+| **Company casing** | `Martian Games`, `Synagen`, `Agency` — never lowercase | same — never lowercase |
+| **Magenta / pink** | ✅ allowed (her brand) | ⛔ **BANNED** (`--no-magenta`) |
+| **Brown / mustard / lime** | ⛔ banned | ⛔ banned |
+| **Neon over images** | ⛔ banned — dark scrim only | ⛔ banned — dark scrim only |
+| **Work-samples hero** | Agency creative-technologist banner | **Synagen / Martian** (NOT Agency) — see [`VAULT.md`](VAULT.md) § Work-samples |
+| **Work-samples page-2** | Agency agent grid (hers) | **Shipped Multiplayer Games** + Synagen promo thumbs — **no** agency grid |
+| **Default brand theme** | `brands/brand-jenninexus.json` (via `users/jenni.json#brandTheme.ssot`) | `brands/brand-synagen.json` (violet + cyan; via `users/shade.json#brandTheme.ssot`) — studio/games: `brand-martian.json` |
+
+## Enforcement — one QA command
+
+Every rule on this page is checked by **`python -m pdf_tool.check_generation <doc>.html`** — the single QA
+gate (palette · rgba-magenta · casing · overlay · signature-pin · equal-margins · overflow), per-user and
+per-doc aware. Run it before shipping any generation; exit 1 = a rule failed. Full map: [`QA.md`](QA.md).
+
+When you touch generation code or a template and discover a new taste rule, fold it into **this file**
+(the human SSOT) **and** add a check to `check_generation` (the machine SSOT) so it can't regress.

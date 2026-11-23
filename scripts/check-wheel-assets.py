@@ -58,6 +58,7 @@ def main() -> int:
         "pdf_tool/share/themes/default-resume.json",
         "pdf_tool/share/themes/default-resume.css",
         "pdf_tool/share/layouts/collage/",
+        "pdf_tool/share/profiles/you-resume.example.json",
         "pdf_tool/paths.py",
     )
     missing = []

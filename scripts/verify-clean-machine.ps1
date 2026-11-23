@@ -26,7 +26,7 @@ param(
 
     [string]$InstallDir = (Join-Path $env:LOCALAPPDATA "Programs\PDF Designer Release Test"),
 
-    [string]$ExpectedCheckout = "C:\Github\pdf-designer",
+    [string]$ExpectedCheckout,
 
     [ValidateRange(30, 600)]
     [int]$TimeoutSeconds = 180,
@@ -90,7 +90,9 @@ function Assert-CleanTarget {
     Assert-NotInsideCheckout -Path $PSCommandPath
 
     if (-not $BundledRuntimeProof) {
-        Assert-Condition (-not (Test-Path -LiteralPath $ExpectedCheckout)) "Clean-target preflight failed: checkout exists at $ExpectedCheckout."
+        if ($ExpectedCheckout) {
+            Assert-Condition (-not (Test-Path -LiteralPath $ExpectedCheckout)) "Clean-target preflight failed: checkout exists at $ExpectedCheckout."
+        }
         foreach ($tool in @("python", "py", "node", "npm")) {
             Assert-Condition (-not (Test-CommandPresent -Name $tool)) (
                 "Clean-target preflight failed: system command '$tool' is available. " +

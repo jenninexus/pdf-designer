@@ -9,7 +9,7 @@ This is the clone-safe protocol seed. Copy it to `make-resume.md` (gitignored) i
 applicant routing, machine paths, real employers, or private brand maps. Do not put those details back
 into this tracked file.
 
-This command builds the résumé only. Cover letters and work samples are separate opt-in commands:
+Read the selected profile’s export preferences first. Use its [application packet recipe](../../layouts/application-packet.json) for bundled applications and the standalone résumé for a dedicated upload. Use the document commands for any additional parts:
 [`make-cover-letter.example.md`](make-cover-letter.example.md) and
 [`make-work-examples.example.md`](make-work-examples.example.md).
 
@@ -119,7 +119,7 @@ Palette changes may not alter paper size, margins, content, or pagination. Prese
 - Dark = branded human-facing file.
 
 Run the palette guard during authoring. No brown, mustard, lime, or puke green; see
-[`themes/PALETTE-RULES.md`](../../themes/PALETTE-RULES.md).
+[`docs/PALETTE-RULES.md`](../../docs/PALETTE-RULES.md).
 
 ### 8. Author the résumé
 
@@ -132,6 +132,7 @@ Follow [`docs/LAYOUT-SYSTEM.md`](../../docs/LAYOUT-SYSTEM.md) and the selected t
 - Content must fit its page box. Fix overflow by moving or cutting content, never by shrinking margins.
 - Prose bullets stay one column and in DOM reading order.
 - ATS-critical print body and headings use a system font.
+- Load the selected profile’s `ownerPresentationRules.headingCase` when present. Use the applicant’s selected display name in uppercase as the largest heading on each page. Set featured game and project headings in uppercase below it. Keep official casing in prose and credits. Check the heading order and sizes in both print modes. Follow the [résumé recipe](../../layouts/resume/two-page-standard.json).
 - Use exact machine-readable cues such as `Job Title`, `Work Experience`, and `Education`.
 
 ## Export and verify

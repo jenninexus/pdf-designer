@@ -40,23 +40,33 @@
     "mode": "company-derived",
     "modeNote": "Derive the palette from the TARGET COMPANY's real brand CSS when they give a usable signal; store it at _job-apps/<Track>/theme.json (it belongs to the company, not to you). Fall back to your brandTheme otherwise.",
     "pairing": "If two people apply to the SAME company: both render from the company palette with SPLIT accent runs — same grid and type, different accent order — so they read as a matched pair from one studio rather than two copies of one document.",
-    "houseRule": "themes/PALETTE-RULES.md — no brown, no mustard, no lime. Enforced on every export."
+    "houseRule": "docs/PALETTE-RULES.md — no brown, no mustard, no lime. Enforced on every export."
   },
   "layout": {
     "paper": "Letter",
     "widthIn": 8.5,
     "heightIn": 11,
     "pages": 2,
-    "note": "Resume = exactly 2 pages · cover letter = 1 · merged bundle = 3."
+    "headingHierarchy": "../layouts/application-packet.json#headingHierarchy",
+    "applicationPacketRecipe": "../layouts/application-packet.json",
+    "note": "After copying to profiles/, use the shared recipe for a two-page résumé plus two pages of work samples. Include a one-page cover letter first when requested."
   },
   "coverLetterPolicy": {
     "rule": "No separate cover-letter profile — this profile owns its letters. The RESUME stays company-agnostic within a track (so it is reusable across jobs in that track). The COVER LETTER carries ALL company-specific content: the mission hook, their named projects mapped to the listing, the recipient block, and any honest gap framing.",
-    "mergeCommand": "python -m pdf_tool.merge_pdfs <out>.pdf <cover-letter-light>.pdf <resume-light>.pdf --require-letter --title \"Your Name - <Role> - Cover Letter and Resume\"",
-    "order": "Cover letter FIRST, then resume."
+    "mergeCommand": "python -m pdf_tool.merge_pdfs <out>.pdf <cover-letter-light>.pdf <resume-light>.pdf <work-samples-light>.pdf --require-letter --title \"Your Name - <Role> - Application\"",
+    "order": "When bundled, the optional cover letter goes first, followed by the résumé and work samples."
   },
   "exports": {
-    "dir": "../output/yourname/resumes/<Application-Dir>/",
-    "rule": "PDFs and PNGs go to output/<user>/resumes/<Application-Dir>/ — NEVER into the application folder. The application folder holds the listing doc, application.json, theme.json, and the .html sources only. This keeps everything ONE person needs to send in one place.",
-    "deliverable": "Unless asked otherwise, an application ships: resume light+dark PDF, cover letter light+dark PDF, and the merged FINAL bundle. PNGs only on request."
+    "dir": "../resumes/yourname/<Application-Dir>/",
+    "rule": "Export into resumes/<user>/<Application-Dir>/. Keep the listing, application.json, theme.json, and HTML sources in the application folder.",
+    "deliverable": "The default packet is four pages, or five with a requested cover letter. Export light and dark standalone résumé PDFs when needed. Use the light résumé for a board’s résumé field and follow the posting’s other upload requirements.",
+    "exportPrefs": {
+      "defaultDeliverable": "application-packet",
+      "applicationPacketRecipe": "../layouts/application-packet.json",
+      "resumeDefault": "light-and-dark",
+      "includeWorkSamples": true,
+      "includeCoverLetter": false,
+      "includeLightAts": true
+    }
   }
 }

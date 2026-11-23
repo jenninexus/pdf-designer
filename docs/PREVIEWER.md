@@ -55,8 +55,7 @@ On compact layouts, the Design Hub drawer is a hamburger sheet through **991.98p
 backdrop, or Escape. Its manual **Refresh** control sits beside that X. Library, Recipes, Vault, and Wizard share that drawer contract.
 
 For the Windows-first browser launcher, see
-[`GETTING-STARTED.md`](GETTING-STARTED.md#first-local-hub-session). The completed acceptance spike is
-retained under [`_archive/WINDOWS-LAUNCHER.md`](_archive/WINDOWS-LAUNCHER.md).
+[`GETTING-STARTED.md`](GETTING-STARTED.md#first-local-hub-session). The completed acceptance spike is kept in the local operations archive.
 
 ### Application identity and workspace modes
 
@@ -207,8 +206,7 @@ installer around **this** Design Hub—not a second renderer. See
 | Engine | same `pdf_tool.preview` HTTP | same | same |
 
 Recipe gallery chrome: **shipped** at `/recipes` (see Features above). Packaging
-precursor for installers: [`PACKAGING.md`](PACKAGING.md). Remaining accepted and parked product ideas
-are tracked in [`ROADMAP.md`](ROADMAP.md).
+precursor for installers: [`PACKAGING.md`](PACKAGING.md).
 
 ### Phase 4 — canvas editor (drag & drop)
 
@@ -254,7 +252,6 @@ Durable *why*: `.memory/lesson-hub-profile-scopes-folder-and-kind.md` ·
 - [`THEME-DESIGN.md`](THEME-DESIGN.md) — token contract the palette swapper relies on
 - [`EXPORTS.md`](EXPORTS.md) — export command reference
 - [`WORKSPACE-LAYOUT.md`](WORKSPACE-LAYOUT.md) — root nouns (`storage/` retired; URL resolver only)
-- [`ROADMAP.md`](ROADMAP.md) — product backlog (`Plans/` is local-only, gitignored)
 
 
 ### Mode navigation (2026-10-30)
@@ -277,3 +274,11 @@ blocked. Use local assets or inline data images in documents. Hub PDF and PNG
 exports use an isolated Chromium page that can request only permitted local
 assets. The standalone CLI continues to render files with the caller's local
 browser privileges. The Hub trusts native processes running as the same user.
+
+### Workspace startup
+
+In VS Code, copy `.vscode/tasks.json.example` to `.vscode/tasks.json` to opt in to the folder-open task. It starts or reuses the loopback Design Hub.
+A maintainer workspace can run its local MCP preflight separately on demand.
+For Form Helper, select the private extension folder itself in Edge's **Load unpacked**
+folder chooser. The picker shows folders. Check for `manifest.json` in a regular File Explorer
+window before choosing it. Form Helper stays outside the public application and its packages.

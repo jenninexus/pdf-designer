@@ -41,6 +41,8 @@
     }
   },
   "layout": {
+    "headingHierarchy": "../../../layouts/resume/two-page-standard.json#headingHierarchy",
+    "applicationPacketRecipe": "../../../layouts/application-packet.json",
     "_note": "THE SHARED LAYOUT SYSTEM — every private profile that `extends` this public default inherits it. SSOT: themes/default-resume.json#document + docs/LAYOUT-SYSTEM.md.",
     "paper": "Letter",
     "widthIn": 8.5,
@@ -66,7 +68,7 @@
   "exportModes": {
     "lightPdf": "Default ATS-safe print mode — ALWAYS ship for every profile; board upload file.",
     "darkPdf": "Run html_to_pdf.py with --pdf-theme dark; template must include html[data-pdf-theme=\"dark\"] print overrides.",
-    "bundlePdf": "Run merge_pdfs.py final-application.pdf cover-letter.pdf resume.pdf --require-letter when a portal accepts one upload.",
+    "bundlePdf": "Follow application-packet.json for the suggested four-page résumé and work-samples bundle, or five pages when a cover letter is requested. Follow individual upload fields when the portal separates documents.",
     "png": "Render generated PDFs to page PNG files with pdf_to_png.py.",
     "universalBoardContract": "Every extending profile keeps exportPrefs.resumeDefault=light-and-dark + includeLightAts=true. Upload light only. Run check_ats before board submit. Print body font = system stack."
   },

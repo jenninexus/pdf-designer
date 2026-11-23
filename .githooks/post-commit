@@ -1,6 +1,6 @@
 #!/bin/sh
 # Mirror the current branch to the LAN bare (remote "lan") after each commit. A local backup
-# that never touches GitHub. Docs: docs/LAN-SYSTEM.local.md
+# that never touches GitHub. Docs: storage/docs/LAN-SYSTEM.local.md
 #
 # No-op when the "lan" remote is absent (a fresh clone) or HEAD is detached.
 # Non-fatal by design: a blocked or unreachable mirror must never fail a commit.

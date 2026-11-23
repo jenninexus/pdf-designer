@@ -16,3 +16,5 @@ account; turning Documents backup off keeps the files only on this PC.
 Same copy-me shape: [`examples/profiles/default-resume/user.example.json`](../examples/profiles/default-resume/user.example.json).
 
 The engine also reads the legacy tree `storage/users/` until the alias is dropped. Layout: [`docs/WORKSPACE-LAYOUT.md`](../docs/WORKSPACE-LAYOUT.md).
+
+Keep one record per identity. Its render settings live in [`profiles/`](../profiles/). A demo alias can have a separate person record limited to public brand data. A studio application uses studio-scoped evidence rather than a person's contact record.

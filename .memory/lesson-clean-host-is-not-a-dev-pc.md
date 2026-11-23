@@ -22,6 +22,6 @@ fresh Win10/11 x64 VM.
 **How to apply:** copy only the Setup EXE + script outside any git checkout.
 Use `-BundledRuntimeProof` on a toolchain PC; use `-RequireAuthenticode` only
 on a signed EXE. Details: `docs/WINDOWS-ELECTRON.md` (public) ·
-`docs/WINDOWS-ELECTRON.local.md` (LAN hosts).
+`storage/docs/WINDOWS-ELECTRON.local.md` (LAN hosts).
 
 Related: [[lesson-clean-installer-target-must-be-proven]] · [[lesson-hidden-electron-close-needs-stop-process]]

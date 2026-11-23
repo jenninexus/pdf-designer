@@ -24,7 +24,7 @@ python -m pdf_tool.check_generation <doc>.html --json          # machine-readabl
 | [Per-user / per-doc rules](#per-user--per-doc-awareness) | How document-specific checks are selected |
 | [Reading a report](#reading-a-report) | PASS/FAIL/skip and how to fix |
 | [When to run](#when-to-run) | Wired into make-resume / make-work-examples |
-| Related | [`../themes/GENERATION-RULES.md`](../themes/GENERATION-RULES.md) · [`../themes/PALETTE-RULES.md`](../themes/PALETTE-RULES.md) · [`LAYOUT-SYSTEM.md`](LAYOUT-SYSTEM.md) |
+| Related | [`GENERATION-RULES.md`](GENERATION-RULES.md) · [`PALETTE-RULES.md`](PALETTE-RULES.md) · [`LAYOUT-SYSTEM.md`](LAYOUT-SYSTEM.md) |
 
 ## ⭐ The governing principle — judge the ARTIFACT, not the source
 
@@ -70,7 +70,7 @@ rules they didn't cover (**12 checks**, some document-specific):
 
 | # | Check | Rule | SSOT |
 |---|---|---|---|
-| 1 | **palette** | no brown / mustard / lime; optional no-magenta policy | [PALETTE-RULES.md](../themes/PALETTE-RULES.md) |
+| 1 | **palette** | no brown / mustard / lime; optional no-magenta policy | [PALETTE-RULES.md](PALETTE-RULES.md) |
 | 2 | **rgba-magenta** | magenta/pink smuggled in as `rgba()`/`hsl()` — invisible to the hex-only palette guard | GENERATION-RULES |
 | 3 | **casing** | names & company names **never all-lowercase** in display text (for example, `example company`). Stylized wordmarks may be allowed | GENERATION-RULES §1 |
 | 4 | **overlay** | no bright/neon/primary **fill washed over a banner/hero/photo** — only a black→transparent scrim | GENERATION-RULES §2 |
@@ -168,13 +168,18 @@ an unpinned signature are all cheap to fix and each has bitten a real doc).
 
 ## Screenshots and optional external QA
 
+For the browser-first Windows launcher, verify that it opens the existing Design Hub on
+`127.0.0.1` and exports the fictional example with the shared PDF renderer. The launcher
+should work without a cloud account. Sample widths in CSS pixels are 390, 576, 768, 992,
+1200, 1400, 1920, 2560, and 3840.
+
 The toolkit needs **no** external QA service. Pick the lane by what you are proving:
 
 | Proving | Use | Ships with pdf-designer? |
 |---|---|---|
 | A document renders right (résumé, letter, work samples, collage) | `python -m pdf_tool.pdf_to_png <doc>.html` (one PNG per `.page`) + `check_generation` | ✅ built in |
 | An exported PDF is what it claims | render the **PDF** (for example `pypdfium2`) and count embedded images with `pypdf` — a template opened raw in a viewer is not evidence | ✅ (dependencies of the engine) |
-| The Design Hub UI holds up across widths | [`.config/capture/hub.breakpoints.json`](../.config/capture/hub.breakpoints.json) — a page × breakpoint manifest (`?no-splash`, examples profile only) for any breakpoint-capture tool | manifest only; bring your own capture tool |
+| The Design Hub UI holds up across widths | [`.config/capture/hub.breakpoints.example.json`](../.config/capture/hub.breakpoints.example.json) — a page × breakpoint manifest (`?no-splash`, examples profile only) for any breakpoint-capture tool | manifest only; bring your own capture tool |
 | Hover, focus, drag, drawer resize, custom selects | a real-pointer (human-simulated) QA pass | ❌ external |
 
 Rules: captures are **ephemeral evidence** — write them to a scratch directory, never commit them,

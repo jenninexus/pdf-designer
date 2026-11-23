@@ -19,6 +19,7 @@ COPIES = (
     ("themes", "themes"),
     ("layouts", "layouts"),
     ("examples/profiles/default-resume", "examples/profiles/default-resume"),
+    ("profiles/you-resume.example.json", "profiles/you-resume.example.json"),
 )
 
 
@@ -34,22 +35,25 @@ def main() -> int:
         if not src.exists():
             print(f"FAIL: missing {src}", file=sys.stderr)
             return 1
-        if dest.exists():
-            shutil.rmtree(dest)
         dest.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copytree(
-            src,
-            dest,
-            ignore=shutil.ignore_patterns(
-                "_exports",
-                "output",
-                "_variants",
-                "__pycache__",
-                "*.pyc",
-                "*.pdf",
-                "*.png",
-            ),
-        )
+        if src.is_file():
+            shutil.copy2(src, dest)
+        else:
+            if dest.exists():
+                shutil.rmtree(dest)
+            shutil.copytree(
+                src,
+                dest,
+                ignore=shutil.ignore_patterns(
+                    "_exports",
+                    "output",
+                    "_variants",
+                    "__pycache__",
+                    "*.pyc",
+                    "*.pdf",
+                    "*.png",
+                ),
+            )
         print(f"[ok] {src_rel} -> src/pdf_tool/share/{dest_rel}")
 
     marker = SHARE / "themes" / "default-resume.json"

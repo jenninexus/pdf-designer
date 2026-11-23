@@ -15,7 +15,7 @@ The old YAML dev-log is frozen; current session narrative belongs in the active 
 | **`.memory/*.md`** ⭐ | ✅ yes | **Durable learnings** — a trap, its root cause, and the guard that now prevents it | Permanent; survives clones |
 | `Plans/_active/` → `Plans/_complete/` | 🔒 gitignored | Session narrative, evidence, ownership and remaining work | Local, chronological |
 | `docs/*.md` | ✅ yes | **Protocol** — the rule as it stands now | Permanent, rewritten in place |
-| `docs/ROADMAP.md` | ✅ yes | Planned work | Until done |
+| `storage/docs/ROADMAP.local.md` | No | Planned work | Until done |
 | `Plans/` | 🔒 gitignored | Local session plans | Local |
 
 **The flow:** a session hits friction → reflection records it in the owning local plan
@@ -41,7 +41,7 @@ is invisible to the next clone. Thin the *reading* obligation, not the files.
 | ats-section-cues · jobright-content-score-is-not-parse-fail | [`docs/JOB-ASSESSMENT.md`](../docs/JOB-ASSESSMENT.md) § Tier 4.5 |
 | twin-files-always-fork | [`AGENTS.md`](../AGENTS.md) (`.example` vs bare commands) |
 | public-clone-path-stays-tracked | [`docs/GETTING-STARTED.md`](../docs/GETTING-STARTED.md) · [`docs/PUBLIC-LOCAL-SPLIT.md`](../docs/PUBLIC-LOCAL-SPLIT.md) |
-| exports-live-with-their-family (supersedes exports-are-one-user-facing-root) | [`docs/EXPORTS.md`](../docs/EXPORTS.md) · [`_exports/README.md`](../_exports/README.md) · [`output/README.md`](../output/README.md) |
+| exports-live-with-their-family (supersedes exports-are-one-user-facing-root) | [`docs/EXPORTS.md`](../docs/EXPORTS.md) · [`output/README.md`](../output/README.md) |
 | utf8-json-roundtrip-on-windows | `/jen/sys-admin` UTF-8 note · [`docs/QA.md`](../docs/QA.md) |
 
 Hub-specific traps (profile scope, scaffold vs payload, drawer clip) stay as lesson files until [`docs/PREVIEWER.md`](../docs/PREVIEWER.md) absorbs them — those are still the cheapest *why*.

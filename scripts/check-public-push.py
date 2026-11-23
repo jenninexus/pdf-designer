@@ -51,12 +51,9 @@ PRIVATE_ROOTS = (
     "applications",
     "collages",
     "brands",
-    "storage",
-    "Plans",
     "private",
     "notes",
     "output",
-    "_exports",
     ".codex",
     ".agents",
     ".git-private",
@@ -70,12 +67,22 @@ PUBLIC_SEED_PATHS = frozenset(
         "_job-apps/_template/README.md",
     }
 )
-# Generated documents and captures. Public product media lives under docs/ only.
+# Public product media is limited to deliberately reviewed files.
 EXPORT_SUFFIXES = (".pdf", ".png", ".jpg", ".jpeg", ".webp", ".gif", ".docx", ".doc")
-PUBLIC_MEDIA_ROOT = "docs/"
+PUBLIC_MEDIA_PATHS = frozenset(
+    {
+        "assets/public/overview/pdf-designer-overview.pdf",
+        "assets/public/hub/hub-library.png",
+        "assets/public/hub/hub-recipes.png",
+        "assets/public/hub/hub-splash.png",
+        "assets/public/hub/hub-start.png",
+        "assets/public/hub/hub-vault.png",
+    }
+)
+PRIVATE_ONLY_ROOTS = ("storage", "plans", "_exports", ".local-artifacts", ".codex", ".agents", ".cursor")
 # Hub/UI assets under src/pdf_tool/static are part of the public engine, not personal exports.
 PUBLIC_ENGINE_ASSET_ROOT = "src/pdf_tool/static/"
-PRIVATE_DOC_NAMES = frozenset({"docs/MARKETING.md", "docs/WORKSPACE.md", "docs/HISTORY-SCRUB.md"})
+PRIVATE_DOC_NAMES = frozenset({"docs/marketing.md", "docs/workspace.md", "docs/history-scrub.md", "docs/roadmap.md"})
 WINDOWS_RELEASE_SUFFIXES = (
     ".exe", ".msi", ".msix", ".msixbundle", ".msixupload", ".appx", ".appxbundle", ".appxupload",
 )
@@ -126,6 +133,9 @@ def path_floor_violation(path: str) -> str | None:
         return "local signing config"
     if path == "browser-extension" or path.startswith("browser-extension/") or path == "docs/BROWSER-HELPER.md":
         return "local-only extension"
+    for root in PRIVATE_ONLY_ROOTS:
+        if lower_path == root or lower_path.startswith(root + "/"):
+            return f"private root {root}/"
     if path in PUBLIC_SEED_PATHS:
         return None
     for root in PRIVATE_ROOTS:
@@ -134,16 +144,25 @@ def path_floor_violation(path: str) -> str | None:
             if is_root_readme or ".example." in name:
                 return None
             return f"private root {root}/"
-    if path in PRIVATE_DOC_NAMES or name.endswith((".local.md", ".private.md")):
+    if lower_path in PRIVATE_DOC_NAMES or lower_name.endswith((".local.md", ".private.md")):
         return "private note"
-    if path.startswith(".claude/commands/") and ".example." not in name:
-        return "local command (only *.example.md is public)"
+    if lower_path == ".mcp.json":
+        return "machine-local MCP config"
+    if lower_path.startswith(".vscode/") and path not in {".vscode/tasks.json.example", ".vscode/mcp.json.example"}:
+        return "machine-local editor config"
+    if lower_path.startswith(".claude/"):
+        if posix.parent != PurePosixPath(".claude/commands") or not name.endswith(".example.md"):
+            return "local Claude data (only command examples are public)"
     if lower_path.startswith(".config/"):
         is_public_example = posix.parent == PurePosixPath(".config") and name.endswith(".example.json")
-        if not is_public_example and path != ".config/capture/hub.breakpoints.json":
+        if not is_public_example and path != ".config/capture/hub.breakpoints.example.json":
             return "machine-local config"
-    if name.lower().endswith(EXPORT_SUFFIXES) and not path.startswith(PUBLIC_MEDIA_ROOT) and not path.startswith(PUBLIC_ENGINE_ASSET_ROOT):
-        return "document/image export outside docs/"
+    if (
+        lower_name.endswith(EXPORT_SUFFIXES)
+        and path not in PUBLIC_MEDIA_PATHS
+        and not path.startswith(PUBLIC_ENGINE_ASSET_ROOT)
+    ):
+        return "document/image export outside approved public assets"
     return None
 
 
