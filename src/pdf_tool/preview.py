@@ -25,6 +25,7 @@ import re
 import sys
 import threading
 import webbrowser
+from contextlib import contextmanager
 from io import BytesIO
 from html import escape
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -50,6 +51,7 @@ from .voice_card import build_voice_card
 
 _REPO_ROOT = repo_root()
 _STATIC_DIR = Path(__file__).resolve().parent / "static"
+_PDF_PREVIEW_LOCK = threading.Lock()
 EXCLUDE_PARTS = {
     "_exports",
     "output",
@@ -414,12 +416,18 @@ def resolve_document_asset(root: Path, rel: str) -> Path | None:
     return target
 
 
-def pdf_preview_info(path: Path) -> dict:
-    """Return page geometry for the Hub's themed PDF preview surface."""
+@contextmanager
+def _open_preview_pdf(path: Path):
+    """Serialize PDFium calls made by the Hub's threaded request handlers."""
     import pypdfium2 as pdfium
 
-    pdf = pdfium.PdfDocument(str(path))
-    try:
+    with _PDF_PREVIEW_LOCK, pdfium.PdfDocument(str(path)) as pdf:
+        yield pdf
+
+
+def pdf_preview_info(path: Path) -> dict:
+    """Return page geometry for the Hub's themed PDF preview surface."""
+    with _open_preview_pdf(path) as pdf:
         pages = []
         for index in range(len(pdf)):
             page = pdf[index]
@@ -429,16 +437,11 @@ def pdf_preview_info(path: Path) -> dict:
                 page.close()
             pages.append({"index": index, "widthPt": width, "heightPt": height})
         return {"name": path.name, "pageCount": len(pages), "pages": pages}
-    finally:
-        pdf.close()
 
 
 def render_pdf_preview_page(path: Path, page_index: int, scale: float = 2.0) -> bytes:
     """Rasterize one real PDF page in memory for the dark Hub viewer."""
-    import pypdfium2 as pdfium
-
-    pdf = pdfium.PdfDocument(str(path))
-    try:
+    with _open_preview_pdf(path) as pdf:
         if page_index < 0 or page_index >= len(pdf):
             raise IndexError("PDF page out of range")
         page = pdf[page_index]
@@ -453,8 +456,6 @@ def render_pdf_preview_page(path: Path, page_index: int, scale: float = 2.0) -> 
                 bitmap.close()
         finally:
             page.close()
-    finally:
-        pdf.close()
 
 
 # File suffixes the auto-refresh watcher tracks. HTML sources change the doc

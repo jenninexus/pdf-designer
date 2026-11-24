@@ -5,11 +5,18 @@ param(
     [Parameter(Mandatory)][string]$OutputDir,
     [Parameter(Mandatory)][ValidatePattern('^[A-Za-z0-9.-]{3,50}$')][string]$IdentityName,
     [Parameter(Mandatory)][string]$Publisher,
+    [string]$PublisherDisplayName,
     [Parameter(Mandatory)][ValidatePattern('^[1-9]?\d{1,4}\.\d{1,5}\.\d{1,5}\.0$')][string[]]$Version,
     [switch]$SignForTest
 )
 
 $ErrorActionPreference = 'Stop'
+if ([string]::IsNullOrWhiteSpace($PublisherDisplayName)) {
+    if (-not $SignForTest) {
+        throw 'Pass -PublisherDisplayName from the app Product identity page in Partner Center.'
+    }
+    $PublisherDisplayName = 'PDF Designer'
+}
 $repo = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 $source = git -C $repo rev-parse HEAD
 if ($LASTEXITCODE -or (git -C $repo status --porcelain)) {
@@ -102,6 +109,7 @@ try {
         '"' + $file.FullName + '" "' + $relative + '"'
     }
     $escapedPublisher = [Security.SecurityElement]::Escape($Publisher)
+    $escapedPublisherDisplayName = [Security.SecurityElement]::Escape($PublisherDisplayName)
     foreach ($number in $Version) {
         if ([version]$number -lt [version]'0.1.0.0' -or ($number.Split('.') | Where-Object { [int]$_ -gt 65535 })) {
             throw "Invalid Store package version: $number"
@@ -116,7 +124,7 @@ try {
   <Identity Name="$IdentityName" Publisher="$escapedPublisher" Version="$number" ProcessorArchitecture="x64" />
   <Properties>
     <DisplayName>PDF Designer</DisplayName>
-    <PublisherDisplayName>PDF Designer</PublisherDisplayName>
+    <PublisherDisplayName>$escapedPublisherDisplayName</PublisherDisplayName>
     <Description>Local document designer and PDF exporter.</Description>
     <Logo>Assets\Logo50.png</Logo>
   </Properties>

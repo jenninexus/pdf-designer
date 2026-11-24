@@ -65,9 +65,11 @@ npx --no-install electron-builder --dir --win --x64 --publish never
 ```
 
 The test certificate is self-signed and expires after 30 days. Trust only its
-public certificate inside a disposable Windows test guest. Use the verified
-Partner Center identity for a production manifest and let the Store sign the
-submitted package. The provisional package runs the full-trust Electron shell
+public certificate inside a disposable Windows test guest. For production, use
+`-IdentityName`, `-Publisher`, and `-PublisherDisplayName` exactly as displayed
+on the Partner Center Product identity page. The build uses the reserved app
+display name **PDF Designer**. Omit `-SignForTest` for the unsigned Store
+submission, which the Store signs after certification. The provisional package runs the full-trust Electron shell
 with the same workspace and bundled export runtime as NSIS.
 
 Copy both signed packages, the public QA certificate and

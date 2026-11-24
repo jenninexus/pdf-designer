@@ -342,7 +342,7 @@ def test_pdf_viewer_assets_use_dark_canvas_and_matching_scrollbar():
     css = (root / "pdf-viewer.css").read_text(encoding="utf-8")
     js = (root / "pdf-viewer.js").read_text(encoding="utf-8")
     assert 'id="pdfCanvas"' in html
-    assert "--viewer-bg: #12151c" in css
+    assert "--viewer-bg: var(--ae-void, #12151c)" in css
     assert "--viewer-scroll-thumb: rgba(66, 244, 200, 0.55)" in css
     assert "/api/pdf-info?doc=" in js
     assert "/api/pdf-page?doc=" in js

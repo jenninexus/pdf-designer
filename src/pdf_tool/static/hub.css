@@ -1753,11 +1753,11 @@ html.drawer-resizing, html.drawer-resizing * { cursor: ew-resize !important; use
 .hub-home-lead code { font-family: var(--dash-mono); color: var(--dash-accent); font-size: 0.88em; }
 .hub-home-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  gap: clamp(12px, 1.2vw, 20px);
   margin-top: 22px;
   width: 100%;
-  max-width: none;
+  max-width: 1400px;
 }
 .hub-home-card {
   appearance: none;
@@ -2222,6 +2222,15 @@ body.wizard-page {
    (www-theme-kit/scss/_breakpoint-tokens.scss mirror)
    ════════════════════════════════════════════════════════════ */
 
+/* ── xl (≥1200) — comfortable ───────────────────────────── */
+@media (min-width: 1200px) {
+  .hub-search input { width: 140px; }
+  .hub-search input:focus { width: 180px; }
+  .hub-folder-trigger { max-width: 160px; }
+  .hub-bar #palette { max-width: 150px; }
+  .hub-page-wrap { max-width: 1180px; padding: 24px 28px 56px; }
+}
+
 /* ── xxl (≥1400) — widescreen ────────────────────────────── */
 @media (min-width: 1400px) {
   .hub-search input { width: 160px; }
@@ -2240,15 +2249,6 @@ body.wizard-page {
   .hub-bar #palette { max-width: 200px; }
   .hub-bar #fmt { width: 110px; }
   .hub-page-wrap { max-width: 1400px; }
-}
-
-/* ── xl (≥1200) — comfortable ───────────────────────────── */
-@media (min-width: 1200px) {
-  .hub-search input { width: 140px; }
-  .hub-search input:focus { width: 180px; }
-  .hub-folder-trigger { max-width: 160px; }
-  .hub-bar #palette { max-width: 150px; }
-  .hub-page-wrap { max-width: 1180px; padding: 24px 28px 56px; }
 }
 
 /* ── lg / md-max (≤991.98) — keep split; slightly tighter library ── */
@@ -2325,10 +2325,6 @@ body.wizard-page {
   .hub-drawer .chip { font-size: 0.88rem; min-height: 44px; height: auto; padding: 0 10px; }
   .hub-drawer .hub-nav .hub-link { font-size: 0.88rem; padding: 0 10px; }
 
-  .hub-home-grid {
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
-    gap: 14px;
-  }
   .hub-home-card { min-height: 124px; padding: 18px 20px; }
   .hub-home-name { font-size: 1.05rem; }
 
@@ -2350,15 +2346,6 @@ body.wizard-page {
     text-align: center;
   }
   .wizard-support .hub-support-actions { justify-content: center; }
-}
-
-/* ── lg-max (≤1199.98) — iPad portrait 1024: one large stacked kind-card ─ */
-@media (max-width: 1199.98px) {
-  .hub-home-grid { grid-template-columns: 1fr; gap: 14px; }
-  .hub-home-card { min-height: 140px; padding: 22px 24px; }
-  .hub-home-name { font-size: 1.14rem; }
-  .hub-home-kind { font-size: 0.74rem; }
-  .hub-home-path { font-size: 0.78rem; }
 }
 
 /* ── sm (≤575.98) — phones: stack library above stage ───── */
@@ -2432,6 +2419,13 @@ body.wizard-page {
   .hub-drawer-resize { display: none !important; }
   .hub-home { padding: 10px 12px 24px; }
   .hub-home h2 { font-size: 1.25rem; }
+}
+
+@media (max-width: 575.98px), (max-height: 480px) {
+  .hub-main:has(.stage iframe:not([hidden])) {
+    grid-template-rows: clamp(78px, 20vh, 128px) minmax(0, 1fr);
+  }
+  .hub-main:has(.stage iframe:not([hidden])) > .library { max-height: 100%; }
 }
 
 /* ── Launch title (Sylva grain/orbs + Syna letter stagger; kit pdf-designer.json) ── */

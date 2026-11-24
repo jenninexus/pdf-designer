@@ -96,7 +96,8 @@ fast on a large tree. If the server is briefly down mid-poll, the client just re
 | `hub.css` `@media` | Hard-codes the same `.98px` maxes (CSS cannot `var()` inside `@media`) |
 
 Hub layout: **library left + viewer right** from **576px** up (desktop / tablet). Stacks only below
-**575.98px** (phones) and in **short landscape** (`max-height: 480px`). Drawer (hamburger) from
+**575.98px** (phones) and in **short landscape** (`max-height: 480px`). The stacked library stays
+scrollable and gives the preview more vertical space when a document is open. Drawer (hamburger) from
 **≤991.98px** (`nav_switch: lg`) so desktop windows from 992px retain the horizontally scrollable toolbar.
 The desktop toolbar starts at **992px** and widescreen spacing starts at **1400px**. The main action row is **52px**. Below **390px**, the Library adds a labeled workspace navigation row to keep all four destinations reachable at 320px. Header icon buttons share one 1:1 square (`--hub-icon-box`). The menu contains keyboard focus and returns it to the trigger on dismissal. Hover animation applies to fine pointers, and reduced motion removes drawer travel.
 `www-theme-kit/scss/_offcanvas-nav.scss`.
@@ -111,7 +112,7 @@ Local-first library + filters (Jobright-style UX inspiration — not cloud match
 
 - **Kind chips (leading, after Profiles):** All · Resumes · Cover Letters · Letters · Work Samples · **Collages** · Galleries — then Library / Recipes / Vault / search / folder / palette scroll horizontally. **Refresh (icon) + Export (download icon) stay pinned** on the right; **⋯** opens the output-folder popover (also pinned — not clipped). ≤991.98px: hamburger drawer holds filters + outdir + tip links; magnifier opens search overlay (Ctrl/Cmd+K). Mouse wheel over the header strip scrolls that row horizontally.
 - **Folder:** custom picker (not a bare `<select>`). Open the list → hover a row for a **ghost ★**; click the star to pin / unpin. Pinned folders sort to the **top** and persist in `localStorage` (`pdf-designer.hub.pinnedFolders`) across Refresh and full reloads. No separate pin button in the toolbar. Menu is `position:fixed` (JS places it from the trigger rect) so `.hub-bar-scroll`’s `overflow-y:hidden` cannot clip it.
-- **Drawer palette / profiles / format:** also custom lists (`hub-select.js`). Native `<select>` popups ignore Chrome’s device-mode frame and clip off iPad portrait. Folder stays `.hub-folder-native` (hidden) + the pin picker. Compact footer (Support JenniNexus) is centered with smaller tip pills and larger copy ≤991.98. Home kind-cards stack to one column ≤1199.98 (iPad portrait 1024).
+- **Drawer palette / profiles / format:** also custom lists (`hub-select.js`). Native `<select>` popups ignore Chrome’s device-mode frame and clip off iPad portrait. Folder stays `.hub-folder-native` (hidden) + the pin picker. Compact footer (Support JenniNexus) is centered with smaller tip pills and larger copy ≤991.98. Home cards add columns as the available stage widens and cap the grid at 1400px.
 - **Profiles** (was “Who”): `all profiles` plus **`examples` first** (Jane Example, from tracked `profiles/examples.json`) then every workspace id from `users/` + `profiles/`. Path ownership (`resumes/<id>/` · legacy `storage/<id>/` URLs resolve to the same files) or a hyphen-bounded token (`jenni-…`, `meet-jenni-bot`) tags the card. Preference: `pdf-designer.hub.profileFilter`. First visit with no stored preference selects `examples`. **PDF Designer** app icon/title returns to the home landing (kind cards) and clears `?doc=`.
   - Choosing a profile **scopes** the folder picker and kind-chip counts to that profile. Kind chips click the first matching card. A leftover folder filter is **not** restored across reload (that hid the library behind one template dir).
   - Copy `profiles/you-resume.example.json` → `profiles/you-resume.json` for yourself; keep `profiles/examples.json` so the public cards stay in the dropdown.
@@ -142,7 +143,9 @@ collapsible by folder. Stage bar shows filterable kind · profile · root folder
   the same cyan scrollbar as the library; **Open original** is still available for the browser's native
   PDF toolbar. The preview rasterizes the actual PDF pages on demand rather than re-rendering source HTML.
   The reader offers **Continuous**, **Single page**, and **Two pages** modes, optional cover-alone
-  pairing, page-number navigation, zoom and Fit controls. It displays the PDF's real raster pages;
+  pairing, page-number navigation, zoom and Fit controls. Paired pages stack below 576px of
+  reader width, including in the Library iframe. Fit recalculates on resize. Manual zoom stays
+  in place until Fit is selected. Ctrl/Cmd+wheel zooms over the page canvas. It displays the PDF's real raster pages;
   two-up is a reading layout, not editable spreads or PDF source editing. Reading mode and cover
   preference persist for that document in the browser tab.
 - **Palette swapper** → injects CSS vars into the previewed document (and into export)
