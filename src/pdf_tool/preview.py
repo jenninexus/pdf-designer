@@ -772,8 +772,13 @@ try {
     <div class="library-resize" id="libraryResize" role="separator" aria-label="Resize library" aria-orientation="vertical" tabindex="0"></div>
   </aside>
   <div class="stage">
-    <div class="stagebar" id="stagebar">
-      <span>Select a template in the library →</span>
+    <div class="stagebar">
+      <div id="stagebar" class="stagebar-details"><span>Select a template in the library →</span></div>
+      <span class="stage-filename" id="stageFilename"></span>
+      <button type="button" id="previewToggle" class="hub-preview-toggle" aria-controls="hubLibrary" aria-expanded="true" aria-label="Expand preview" title="Expand preview" hidden>
+        <svg class="hub-expand-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4v5m11-5h5v5m0 6v5h-5M4 15v5h5"/></svg>
+        <svg class="hub-restore-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h5V4m11 5h-5V4m5 11h-5v5M4 15h5v5"/></svg>
+      </button>
     </div>
     <div class="hub-home" id="hubHomePanel">
       <p class="hub-home-kicker">pdf-designer</p>
@@ -1347,6 +1352,7 @@ document.getElementById("compareResetBtn").addEventListener("click", () => {
 });
 
 const main = document.getElementById("main");
+const previewToggle = document.getElementById("previewToggle");
 main.addEventListener("load", () => applyPalette(main));
 paletteSel.addEventListener("change", () => {
   applyPalette(main);
@@ -1355,17 +1361,32 @@ paletteSel.addEventListener("change", () => {
 
 const HOME_KINDS = ["resume","cover-letter","letter","work-samples","collage","gallery"];
 
+function setPreviewExpanded(expanded) {
+  document.body.classList.toggle("preview-expanded", expanded);
+  document.getElementById("hubLibrary").hidden = expanded;
+  const label = expanded ? "Restore Library" : "Expand preview";
+  previewToggle.setAttribute("aria-expanded", String(!expanded));
+  previewToggle.setAttribute("aria-label", label);
+  previewToggle.title = label;
+}
+previewToggle.addEventListener("click", () => {
+  setPreviewExpanded(previewToggle.getAttribute("aria-expanded") === "true");
+});
+
 function hideHome() {
   const home = document.getElementById("hubHomePanel");
   const frame = document.getElementById("main");
   if (home) home.hidden = true;
   if (frame) frame.hidden = false;
+  previewToggle.hidden = false;
 }
 function showHome() {
   const home = document.getElementById("hubHomePanel");
   const frame = document.getElementById("main");
   if (home) home.hidden = false;
   if (frame) { frame.hidden = true; frame.removeAttribute("src"); frame.src = "about:blank"; }
+  setPreviewExpanded(false);
+  previewToggle.hidden = true;
   document.querySelectorAll(".thumb").forEach(t => t.classList.remove("sel"));
   const bar = document.getElementById("stagebar");
   if (bar) bar.innerHTML = "<span>Public examples — pick a kind, or a card in the library</span>";
@@ -1470,6 +1491,9 @@ function renderStagebar(d) {
   path.className = "path";
   path.textContent = d.path;
   bar.appendChild(path);
+  const filename = document.getElementById("stageFilename");
+  filename.textContent = d.path.split("/").at(-1);
+  filename.title = d.path;
 }
 
 function applyStageFilter(type, value) {

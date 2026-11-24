@@ -1689,7 +1689,6 @@ html.drawer-resizing, html.drawer-resizing * { cursor: ew-resize !important; use
 }
 .stagebar {
   display: flex;
-  flex-wrap: wrap;
   gap: var(--dash-space-2);
   align-items: center;
   padding: 6px 12px;
@@ -1699,6 +1698,47 @@ html.drawer-resizing, html.drawer-resizing * { cursor: ew-resize !important; use
   color: var(--dash-text-dim);
   flex-shrink: 0;
   min-height: 30px;
+}
+.stagebar-details {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--dash-space-2);
+  min-width: 0;
+}
+.stage-filename { display: none; }
+.hub-preview-toggle {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 var(--hub-icon-box);
+  min-height: var(--hub-icon-box);
+  padding: 0;
+  border: 1px solid var(--dash-card-border);
+  border-radius: var(--dash-radius-sm);
+  background: var(--dash-card);
+  color: var(--dash-text);
+  cursor: pointer;
+}
+.hub-preview-toggle:hover,
+.hub-preview-toggle:focus-visible { color: var(--dash-accent); border-color: var(--dash-accent); }
+.hub-preview-toggle svg { width: 24px; height: 24px; }
+.hub-preview-toggle[hidden],
+.library[hidden],
+.hub-preview-toggle .hub-restore-icon,
+.preview-expanded .hub-preview-toggle .hub-expand-icon,
+.preview-expanded .stagebar-details { display: none; }
+.preview-expanded .hub-main {
+  grid-template: minmax(0, 1fr) / minmax(0, 1fr);
+}
+.preview-expanded .hub-preview-toggle .hub-restore-icon { display: block; }
+.preview-expanded .stage-filename {
+  display: block;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .stagebar .path {
   font-family: var(--dash-mono);
@@ -2422,10 +2462,17 @@ body.wizard-page {
 }
 
 @media (max-width: 575.98px), (max-height: 480px) {
-  .hub-main:has(.stage iframe:not([hidden])) {
+  body:not(.preview-expanded) .hub-main:has(.stage iframe:not([hidden])) {
     grid-template-rows: clamp(78px, 20vh, 128px) minmax(0, 1fr);
   }
   .hub-main:has(.stage iframe:not([hidden])) > .library { max-height: 100%; }
+}
+
+.hub-bar-pin button:is(.hub-icon-btn, .hub-drawer-toggle, .hub-search-trigger) :is(.hub-icon, .hub-fa-icon),
+.hub-drawer-head-actions button .hub-fa-icon { width: 24px; height: 24px; }
+
+@media (max-width: 575.98px) {
+  .preview-expanded .hub-bar { display: none; }
 }
 
 /* ── Launch title (Sylva grain/orbs + Syna letter stagger; kit pdf-designer.json) ── */
@@ -2699,7 +2746,7 @@ html.hub-splash-skip .hub-splash { display: none !important; }
 /* Aesyna static-adapter bindings; document palettes remain independent. */
 .hub-bar { background: color-mix(in srgb, var(--ae-solid) 96%, transparent); }
 .hub-bar-pin { background: var(--ae-solid); }
-.hub-modes .hub-link .hub-fa-icon { width: 20px; height: 20px; }
+.hub-modes .hub-link .hub-fa-icon { width: 24px; height: 24px; }
 .fa-file-lines { --hub-fa-icon: url('/_hub/fa-file-lines.svg'); }
 .fa-table-columns { --hub-fa-icon: url('/_hub/fa-table-columns.svg'); }
 .fa-shield-halved { --hub-fa-icon: url('/_hub/fa-shield-halved.svg'); }
@@ -2755,10 +2802,10 @@ html.hub-splash-skip .hub-splash { display: none !important; }
   .hub-modes .hub-link {
     width: auto;
     flex-direction: column;
-    gap: 4px;
+    gap: 1px;
     font-size: .68rem;
   }
-  .hub-modes .hub-link .hub-fa-icon { width: 16px; height: 16px; }
+  .hub-modes .hub-link .hub-fa-icon { width: 22px; height: 22px; }
   .hub-mode-name {
     position: static;
     width: auto;

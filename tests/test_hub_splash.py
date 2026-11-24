@@ -181,7 +181,30 @@ def test_pdf_reader_fits_real_spreads_and_preserves_manual_zoom(tmp_path):
                 embedded = page.frame_locator("#main")
                 assert embedded.get_by_role("img", name="PDF page 1", exact=True).is_visible()
                 assert embedded.get_by_role("combobox", name="Reading mode").input_value() == "single"
-                assert page.locator(".library").bounding_box()["height"] <= 128
+                library = page.locator("#hubLibrary")
+                assert library.bounding_box()["height"] <= 128
+                page.set_viewport_size({"width": 320, "height": 568})
+                frame = page.locator("#main")
+                height = frame.bounding_box()["height"]
+                frame_url = frame.get_attribute("src")
+                toggle = page.get_by_role("button", name="Expand preview")
+                toggle.press("Enter")
+                restore = page.get_by_role("button", name="Restore Library")
+                assert restore.evaluate("(el) => el === document.activeElement")
+                assert restore.get_attribute("aria-expanded") == "false"
+                assert not library.is_visible() and not page.locator(".hub-bar").is_visible()
+                assert frame.bounding_box()["height"] > height + 150
+                assert frame.get_attribute("src") == frame_url
+                assert embedded.get_by_role("combobox", name="Reading mode").input_value() == "single"
+                for width in (576, 768, 1024):
+                    page.set_viewport_size({"width": width, "height": 800})
+                    assert page.locator(".hub-bar").is_visible()
+                    assert not library.is_visible()
+                    assert frame.bounding_box()["width"] == width
+                restore.click()
+                assert toggle.get_attribute("aria-expanded") == "true"
+                assert library.is_visible()
+                assert frame.bounding_box()["width"] < 1024
                 browser.close()
         finally:
             server.shutdown()

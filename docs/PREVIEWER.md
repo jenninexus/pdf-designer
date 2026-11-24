@@ -129,6 +129,9 @@ Local-first library + filters (Jobright-style UX inspiration — not cloud match
 
 Sidebar is a **left column**; the stage / iframe viewer fills the rest of the viewport. Groups stay
 collapsible by folder. Stage bar shows filterable kind · profile · root folder, then the exact path.
+Use **Expand preview** beside the path to hide the Library while keeping the current document open.
+The top navigation stays visible from 576px up. On narrower screens the preview uses that space
+as well. **Restore Library** returns the usual layout.
 
 ### Features
 
