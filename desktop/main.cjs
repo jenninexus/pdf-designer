@@ -2,7 +2,7 @@
 
 // This is intentionally only application chrome.  Rendering remains in the
 // bundled local Python runtime, where PDF Designer already uses Playwright.
-const { app, BrowserWindow, shell } = require("electron");
+const { app, BrowserWindow, screen, shell } = require("electron");
 const { spawn, execFile } = require("node:child_process");
 const fs = require("node:fs");
 const path = require("node:path");
@@ -117,12 +117,24 @@ function isAllowedRuntimeUrl(url) {
   }
 }
 
+function windowBounds(preferredWidth, preferredHeight) {
+  const { x, y, width, height } = screen.getDisplayNearestPoint(screen.getCursorScreenPoint()).workArea;
+  const windowWidth = Math.min(preferredWidth, width);
+  const windowHeight = Math.min(preferredHeight, height);
+  return {
+    x: x + Math.floor((width - windowWidth) / 2),
+    y: y + Math.floor((height - windowHeight) / 2),
+    width: windowWidth,
+    height: windowHeight,
+  };
+}
+
 function createMainWindow() {
+  const bounds = windowBounds(1360, 900);
   const window = new BrowserWindow({
-    width: 1360,
-    height: 900,
-    minWidth: 960,
-    minHeight: 680,
+    ...bounds,
+    minWidth: Math.min(640, bounds.width),
+    minHeight: Math.min(400, bounds.height),
     show: false,
     webPreferences: {
       contextIsolation: true,
@@ -157,8 +169,7 @@ function createMainWindow() {
 function showStartupError(error) {
   console.error("PDF Designer startup failed:", error);
   const window = new BrowserWindow({
-    width: 720,
-    height: 460,
+    ...windowBounds(720, 460),
     resizable: false,
     webPreferences: { contextIsolation: true, nodeIntegration: false, sandbox: true }
   });

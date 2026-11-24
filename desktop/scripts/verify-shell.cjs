@@ -2,6 +2,7 @@
 
 const fs = require("node:fs");
 const path = require("node:path");
+const vm = require("node:vm");
 
 const root = path.resolve(__dirname, "..");
 const packageJson = JSON.parse(fs.readFileSync(path.join(root, "package.json"), "utf8"));
@@ -52,6 +53,29 @@ includes(main, "documentsLooksCloudRedirected", "shell must detect redirected Do
 assert(!main.includes("autoUpdater"), "desktop shell must not include an auto-updater");
 includes(main, "SUPPORT_LINKS.has(url)", "external window requests must use the fixed support allowlist");
 includes(main, 'new URL(url).pathname.toLowerCase().endsWith(".pdf")', "local popup must be a PDF original");
+includes(main, "const bounds = windowBounds(1360, 900)", "main window must use display-bounded sizing");
+includes(main, "...windowBounds(720, 460)", "startup recovery must use display-bounded sizing");
+
+const workArea = { x: -1210, y: 32, width: 911, height: 488 };
+const shellContext = vm.createContext({
+  require(name) {
+    if (name !== "electron") return require(name);
+    return {
+      app: { requestSingleInstanceLock: () => false, quit() {} },
+      screen: {
+        getCursorScreenPoint: () => ({ x: -800, y: 100 }),
+        getDisplayNearestPoint: () => ({ workArea }),
+      },
+    };
+  },
+});
+vm.runInContext(main, shellContext, { filename: "main.cjs" });
+const compact = vm.runInContext("windowBounds(1360, 900)", shellContext);
+assert(JSON.stringify(compact) === JSON.stringify(workArea), "main window must fit a 150%-scaled secondary display");
+const recovery = vm.runInContext("windowBounds(720, 460)", shellContext);
+assert(recovery.x === -1115 && recovery.y === 46 && recovery.width === 720 && recovery.height === 460,
+  "startup error window must be centered within the display work area");
+
 includes(readme, "SmartScreen", "README must explain unsigned Windows SmartScreen behavior");
 includes(readme, "Azure Artifact Signing", "README must name the Authenticode approach");
 includes(readme, "Reserve unsigned builds for internal testing.", "README must reserve unsigned builds for internal testing");

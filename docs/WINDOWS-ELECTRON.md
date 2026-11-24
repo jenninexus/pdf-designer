@@ -20,6 +20,10 @@ Electron provides only the native Windows window, first-run workspace seed,
 and child-process lifecycle. It never calls Electron PDF printing APIs and
 never introduces another HTML-to-PDF renderer.
 
+The Hub and startup recovery windows open within the available work area on
+the display nearest the pointer. The shell uses Electron's device-independent
+coordinates so Windows display scaling and taskbar placement are accounted for.
+
 The first run copies the public, Git-tracked Jane Example seed into
 `Documents/PDF Designer` only when that directory does not exist. Later runs
 never merge, overwrite, sync, or delete that workspace. The installer/uninstaller
@@ -69,8 +73,9 @@ public certificate inside a disposable Windows test guest. For production, use
 `-IdentityName`, `-Publisher`, and `-PublisherDisplayName` exactly as displayed
 on the Partner Center Product identity page. The build uses the reserved app
 display name **PDF Designer**. Omit `-SignForTest` for the unsigned Store
-submission, which the Store signs after certification. The provisional package runs the full-trust Electron shell
-with the same workspace and bundled export runtime as NSIS.
+submission, which the Store signs after certification. The provisional package
+runs the full-trust Electron shell with the same workspace and bundled export
+runtime as NSIS.
 
 Copy both signed packages, the public QA certificate and
 `scripts/verify-msix-lifecycle.ps1` into a disposable offline Windows guest.
