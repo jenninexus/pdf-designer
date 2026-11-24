@@ -50,6 +50,9 @@ $files = @(Get-ChildItem -LiteralPath $app -Recurse -File -Force)
 if (-not ($files | Where-Object FullName -Match '[\\/]chrome-win[^\\/]*[\\/]chrome\.exe$')) {
     throw 'The unpacked runtime is missing its bundled Chromium.'
 }
+if ($files | Where-Object FullName -Match '[\\/]browsers[\\/].*[\\/]setup\.exe$') {
+    throw 'Build the release runtime again. The Chromium setup executable is unnecessary in the MSIX payload.'
+}
 if ($files | Where-Object { $_.Name -match '(^\.env($|\.)|\.(pfx|p12|pem|key)$|^runtime-ready\.txt$)' }) {
     throw 'The unpacked app contains unexpected private material.'
 }

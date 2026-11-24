@@ -55,6 +55,8 @@ Use a fresh clean checkout with CPython 3.12.10 x64, the pinned npm dependencies
 and the x64 Windows SDK tools. Build the same unpacked Electron app used for NSIS,
 then package it with MakeAppx. The release runtime records its Python and dependency
 versions and includes the notices found in the installed distributions.
+The build excludes Chromium's standalone setup program. The packaged app
+launches the bundled browser directly for offline rendering.
 
 ```powershell
 Set-Location desktop

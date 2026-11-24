@@ -90,7 +90,14 @@ Copy-Item -LiteralPath $builtRuntime -Destination $finalRuntimeRoot -Recurse
 $targetBrowsers = Join-Path $finalRuntimeRoot 'browsers'
 if ($Release) {
     New-Item -ItemType Directory -Path $targetBrowsers | Out-Null
-    Copy-Item -LiteralPath $bundledChrome.Directory.Parent.FullName -Destination $targetBrowsers -Recurse
+    $browserRevision = $bundledChrome.Directory.Parent
+    Copy-Item -LiteralPath $browserRevision.FullName -Destination $targetBrowsers -Recurse
+    # The frozen runtime launches chrome.exe directly. The updater installer is
+    # unnecessary in an offline runtime and is flagged by Store certification.
+    $stagedSetup = Join-Path $targetBrowsers "$($browserRevision.Name)/$($bundledChrome.Directory.Name)/setup.exe"
+    if (Test-Path -LiteralPath $stagedSetup -PathType Leaf) {
+        Remove-Item -LiteralPath $stagedSetup -Force
+    }
 } else {
     Copy-Item -LiteralPath $browserRoot -Destination $targetBrowsers -Recurse
 }
