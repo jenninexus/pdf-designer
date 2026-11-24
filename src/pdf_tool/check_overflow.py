@@ -35,7 +35,7 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-from .browser import chromium_launch_kwargs
+from .browser import chromium_launch_kwargs, open_render_document
 
 # US Letter at 96dpi = 8.5in × 96 = 816 CSS px. The measurement viewport MUST be this wide;
 # see the note in check_overflow() for why a wider viewport silently hides real overflow.
@@ -82,7 +82,15 @@ _NATURAL_JS = r"""
 """
 
 
-def check_overflow(html_path: str, pdf_theme: str | None = None, tolerance: int = 3) -> list[dict]:
+def check_overflow(
+    html_path: str,
+    pdf_theme: str | None = None,
+    tolerance: int = 3,
+    *,
+    workspace: Path | None = None,
+    resolve_asset=None,
+    content_width_px: int = _LETTER_PX,
+) -> list[dict]:
     """Return a list of overflow records (empty = clean).
 
     Each record: {index, box, content, overflow_px, footerCollision}.
@@ -102,8 +110,10 @@ def check_overflow(html_path: str, pdf_theme: str | None = None, tolerance: int 
         # lines and under-reports content height badly. (Measured on a real doc: 726px at
         # 1280 vs 940px at 816 — the guard reported 205px of headroom on a page that was
         # actually 9px OVER, and a footer overlap shipped. Fixed 2026-07-21.)
-        page = browser.new_page(viewport={"width": _LETTER_PX, "height": 1056})
-        page.goto(p_html.as_uri())
+        page = open_render_document(
+            browser, p_html, workspace=workspace, resolve_asset=resolve_asset,
+            viewport={"width": content_width_px, "height": 1056},
+        )
         if pdf_theme:
             page.evaluate(
                 "theme => { document.documentElement.dataset.pdfTheme = theme; }",
@@ -114,7 +124,14 @@ def check_overflow(html_path: str, pdf_theme: str | None = None, tolerance: int 
         # 1) box heights while the fixed print layout is still in force
         boxes = page.evaluate(_BOX_JS)
         # 2) neutralize the height/flex clamp, then read the true content heights
-        page.add_style_tag(content=_NEUTRALIZE_CSS)
+        page.evaluate(
+            """css => {
+                const style = document.createElement('style');
+                style.textContent = css;
+                document.head.append(style);
+            }""",
+            _NEUTRALIZE_CSS,
+        )
         page.evaluate("() => document.body.getBoundingClientRect().height")
         naturals = page.evaluate(_NATURAL_JS)
         browser.close()

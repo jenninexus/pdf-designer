@@ -26,7 +26,8 @@
     remembered[currentPath] = location.pathname + location.search + location.hash;
     try { sessionStorage.setItem(key, JSON.stringify(remembered)); } catch (_) {}
   };
-  for (const link of nav.querySelectorAll('a')) {
+  const modeLinks = document.querySelectorAll('.hub-modes a, .hub-drawer .hub-nav a');
+  for (const link of modeLinks) {
     const path = new URL(link.href).pathname;
     const mode = modes[path];
     if (!mode) continue;
@@ -46,13 +47,18 @@
     }
     link.addEventListener('click', (event) => {
       saveLocation();
-      if (active && !event.ctrlKey && !event.metaKey && !event.shiftKey && !event.altKey && event.button === 0) event.preventDefault();
+      if (active && !event.ctrlKey && !event.metaKey && !event.shiftKey && !event.altKey && event.button === 0) {
+        event.preventDefault();
+        window.hubCloseDrawer?.();
+      }
     });
   }
   // Warm the destination HTML on intent. Keep normal links, back/forward and
   // each page's existing lifecycle; never cache private API responses in storage.
   const warmed = new Set();
-  for (const link of document.querySelectorAll('.hub-modes a, .hub-drawer .hub-nav a')) {
+  const canHover = matchMedia('(hover: hover) and (pointer: fine)');
+  const pointerMotion = matchMedia('(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)');
+  for (const link of modeLinks) {
     const warm = () => {
       const url = new URL(link.href, location.origin);
       if (url.origin !== location.origin || !modes[url.pathname] || url.pathname === currentPath || warmed.has(url.href)) return;
@@ -64,13 +70,19 @@
       hint.as = 'document';
       document.head.append(hint);
     };
-    link.addEventListener('pointerenter', warm, { once: true });
+    link.addEventListener('pointerenter', () => { if (canHover.matches) warm(); });
     link.addEventListener('focus', warm, { once: true });
+    if (!nav.contains(link)) continue;
     link.addEventListener('pointermove', event => {
+      if (event.pointerType !== 'mouse' || !pointerMotion.matches) return;
       const box = link.getBoundingClientRect();
       link.style.setProperty('--pointer-x', `${event.clientX - box.left}px`);
       link.style.setProperty('--pointer-y', `${event.clientY - box.top}px`);
     }, { passive: true });
+    link.addEventListener('pointerleave', () => {
+      link.style.removeProperty('--pointer-x');
+      link.style.removeProperty('--pointer-y');
+    });
   }
   // Desktop Support lives beside actions; compact layouts keep it in the existing drawer.
   const support = document.querySelector('.hub-drawer .hub-support');

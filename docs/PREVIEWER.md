@@ -98,9 +98,9 @@ fast on a large tree. If the server is briefly down mid-poll, the client just re
 Hub layout: **library left + viewer right** from **576px** up (desktop / tablet). Stacks only below
 **575.98px** (phones) and in **short landscape** (`max-height: 480px`). Drawer (hamburger) from
 **≤991.98px** (`nav_switch: lg`) so desktop windows from 992px retain the horizontally scrollable toolbar.
-The desktop toolbar starts at **992px**; widescreen spacing starts at **1400px**. The toolbar is **52px** at every width. Header icon buttons share one 1:1 square (`--hub-icon-box`). Offcanvas: phone full-bleed; sm–md almost-full end-panel. Contract:
+The desktop toolbar starts at **992px** and widescreen spacing starts at **1400px**. The main action row is **52px**. Below **390px**, the Library adds a labeled workspace navigation row to keep all four destinations reachable at 320px. Header icon buttons share one 1:1 square (`--hub-icon-box`). The menu contains keyboard focus and returns it to the trigger on dismissal. Hover animation applies to fine pointers, and reduced motion removes drawer travel.
 `www-theme-kit/scss/_offcanvas-nav.scss`.
-The regression matrix covers 390, 576, 768, 992, 1024, 1366, 1400, 1920, 2560, and 3840px.
+The regression matrix covers 320, 390, 576, 768, 992, 1024, 1366, 1400, 1920, 2560, and 3840px.
 **Vault + Recipes + Wizard** use the same switch points (shared `hub.css` + `Library | Recipes | Vault | Wizard` nav). Library is `body.hub-shell` (fixed panes); subpages are `body.hub-page` (document scroll). After ~280px of page scroll a discreet back-to-top chevron appears (bottom-right; `hub-chrome.js`). Tables get a horizontal scroll wrapper below md.
 
 Each `.html` file is its **own template** in the library (one card = one file).
@@ -154,7 +154,7 @@ collapsible by folder. Stage bar shows filterable kind · profile · root folder
   public audition palettes). Copy collage CLI (`--recipe <id>`), open raw JSON, or
   **Try in Hub** via `/?palette=<id>&mode=dark|light` (selects the palette swapper).
   Discovery chrome only — still one renderer.
-- **Start wizard** → [http://127.0.0.1:8787/wizard](http://127.0.0.1:8787/wizard) — a dark-default, four-step, no-account walkthrough. Copy ignored local templates **or** upload an old résumé/cover letter (PDF/TXT/MD/HTML) to seed a gitignored starter vault. Imported claims are `inferred` until reviewed. Then add source-backed skills (programs in vault-root `software` plus `kind: "tool"` claims), audition a public palette, and use the existing Library export (Jane Example until you author HTML from your vault). Hub chrome and document palettes remain separate. No second renderer.
+- **Start wizard** → [Open Wizard](http://127.0.0.1:8787/wizard). Import a text-based PDF, DOCX, TXT, Markdown, or HTML résumé, paste text, or start from scratch. Review and edit the claims, pick a public palette and section order, and save a private vault, profile, and editable two-page HTML draft. Imported records keep their `inferred` provenance. Open the draft in the Library for light and dark PDF export with the existing renderer. Scanned PDFs need pasted text or a text-based copy.
 - **Optional Voice Seed preview** → the Wizard route includes a read-only, redacted local card preview. It defaults to Jane Example; an explicitly named local profile receives a generic skeletal card, never free-form local text. No card is saved, copied, exported, or synced.
 - **Business-deck starters**: `python -m pdf_tool.deck --list-starters` lists six editable HTML flows
   (pitch, proposal, kickoff, status, case study, training); `--starter <name> --output <file.html>`

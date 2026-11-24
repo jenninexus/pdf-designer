@@ -119,7 +119,10 @@ def test_hub_offcanvas_controls_are_in_the_header_and_close_from_the_backdrop():
     css = (Path(__file__).resolve().parents[1] / "src" / "pdf_tool" / "static" / "hub.css").read_text(
         encoding="utf-8"
     )
-    assert 'if (backdrop) backdrop.addEventListener("click", closeDrawer);' in APP_HTML
+    chrome = (Path(__file__).resolve().parents[1] / "src" / "pdf_tool" / "static" / "hub-chrome.js").read_text(
+        encoding="utf-8"
+    )
+    assert 'backdrop?.addEventListener("click", closeDrawer);' in chrome
     assert 'searchOvl.addEventListener("pointerdown", (e) => {' in APP_HTML
     assert 'if (!searchCard?.contains(e.target)) closeSearchOvl();' in APP_HTML
     assert '<kbd>Esc</kbd> or click outside closes' in APP_HTML
@@ -158,7 +161,7 @@ def test_recipes_and_vault_share_the_mobile_drawer_contract():
     assert ".hub-to-top" in css
     assert "window.hubCloseContainedSelects?.();" in chrome
     assert "MutationObserver" not in select_script
-    assert 'src="/_hub/hub-chrome.js"' not in APP_HTML
+    assert 'src="/_hub/hub-chrome.js"' in APP_HTML
 
 
 def test_drawer_resize_and_compact_mobile_controls_are_shared_across_hub_routes():

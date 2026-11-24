@@ -8,13 +8,17 @@ from __future__ import annotations
 import base64
 import re
 from datetime import date
+from html.parser import HTMLParser
 from io import BytesIO
 from pathlib import Path
+from xml.etree import ElementTree
+from zipfile import BadZipFile, ZipFile
 
 from pypdf import PdfReader
 
 MAX_IMPORT_BYTES = 2_000_000
-ALLOWED_SUFFIXES = {".pdf", ".txt", ".md", ".html", ".htm"}
+ALLOWED_SUFFIXES = {".docx", ".pdf", ".txt", ".md", ".html", ".htm"}
+_WORD_NAMESPACE = "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}"
 
 _EMAIL = re.compile(r"\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b", re.I)
 _URL = re.compile(r"https?://[^\s)>\]]+", re.I)
@@ -38,7 +42,7 @@ _SECTION = re.compile(
 _COVER_HINT = re.compile(r"cover\s*letter|^dear\b", re.I)
 _BULLET = re.compile(r"^\s*(?:[-*•●▪]|\d+[.)])\s+(.*\S)\s*$")
 _JOB_LINE = re.compile(
-    r"^(?P<left>.+?)\s+(?:[\u2014\u2013\-|]| at )\s+(?P<right>.+)$",
+    r"^(?P<left>.+?)\s+(?:[\u2014\u2013\-|]|at)\s+(?P<right>.+)$",
     re.I,
 )
 
@@ -50,12 +54,68 @@ def slugify(value: str) -> str:
     return text[:32]
 
 
+class _ResumeHTML(HTMLParser):
+    _blocks = {"article", "br", "div", "h1", "h2", "h3", "h4", "header", "li", "p", "section", "tr"}
+    _ignored = {"head", "script", "style", "template"}
+
+    def __init__(self):
+        super().__init__()
+        self.parts: list[str] = []
+        self.skip: str | None = None
+
+    def handle_starttag(self, tag, attrs):
+        if self.skip is not None:
+            return
+        if tag in self._ignored:
+            self.skip = tag
+        elif tag in self._blocks:
+            self.parts.append("\n- " if tag == "li" else "\n")
+
+    def handle_endtag(self, tag):
+        if self.skip == tag:
+            self.skip = None
+        elif self.skip is None and tag in self._blocks:
+            self.parts.append("\n")
+
+    def handle_data(self, data):
+        if self.skip is None:
+            self.parts.append(re.sub(r"\s+", " ", data))
+
+
+def _word_text(payload: bytes) -> str:
+    try:
+        with ZipFile(BytesIO(payload)) as archive:
+            entry = archive.getinfo("word/document.xml")
+            if entry.file_size > MAX_IMPORT_BYTES:
+                raise ValueError("The Word document text is too large to import.")
+            document = ElementTree.fromstring(archive.read(entry))
+    except (BadZipFile, KeyError, ElementTree.ParseError) as exc:
+        raise ValueError("Could not read this Word document. Try a DOCX or paste its text.") from exc
+    return "\n".join(
+        ("- " if paragraph.find(f".//{_WORD_NAMESPACE}numPr") is not None else "")
+        + "".join(node.text or "" for node in paragraph.iter(f"{_WORD_NAMESPACE}t"))
+        for paragraph in document.iter(f"{_WORD_NAMESPACE}p")
+    )
+
+
 def extract_text(filename: str, payload: bytes) -> str:
     suffix = Path(filename or "upload.txt").suffix.lower()
     if suffix == ".pdf":
         reader = PdfReader(BytesIO(payload))
+        if reader.is_encrypted:
+            raise ValueError("Choose an unlocked PDF or paste the résumé text.")
         return "\n".join((page.extract_text() or "") for page in reader.pages)
-    return payload.decode("utf-8", errors="replace")
+    if suffix == ".docx":
+        return _word_text(payload)
+    text = payload.decode("utf-8-sig", errors="replace")
+    if suffix in {".html", ".htm"}:
+        parser = _ResumeHTML()
+        parser.feed(text)
+        parser.close()
+        return "".join(parser.parts)
+    if suffix == ".md":
+        return re.sub(r"^\s{0,3}#{1,6}\s+", "", text, flags=re.MULTILINE)
+    return text
 
 
 def _clean_lines(text: str) -> list[str]:
@@ -122,7 +182,7 @@ def _parse_skills(lines: list[str]) -> list[str]:
             continue
         seen.add(key)
         out.append(skill)
-    return out[:24]
+    return out
 
 
 def _parse_jobs(lines: list[str]) -> list[dict]:
@@ -130,8 +190,9 @@ def _parse_jobs(lines: list[str]) -> list[dict]:
     current: dict | None = None
     for line in lines:
         dates = _YEAR_SPAN.search(line)
-        job_match = _JOB_LINE.match(line)
         bullet = _BULLET.match(line)
+        heading = _YEAR_SPAN.sub("", line).rstrip(" |–—-,()") if dates else line
+        job_match = _JOB_LINE.match(heading)
         if job_match and not bullet:
             if current:
                 jobs.append(current)
@@ -158,11 +219,11 @@ def _parse_jobs(lines: list[str]) -> list[dict]:
             current["summary"] = line
     if current:
         jobs.append(current)
-    return jobs[:8]
+    return jobs
 
 
 def _parse_education(lines: list[str]) -> list[str]:
-    return [line for line in lines[:6] if len(line) > 8]
+    return [line for line in lines if len(line) > 8]
 
 
 def draft_from_text(
@@ -173,8 +234,6 @@ def draft_from_text(
 ) -> dict:
     names = filenames or []
     lines = _clean_lines(resume_text)
-    if not lines and cover_text:
-        lines = _clean_lines(cover_text)
     sections = _split_sections(lines)
     name = _guess_name(sections["header"] or lines[:8])
     blob = f"{resume_text}\n{cover_text}"
@@ -213,6 +272,7 @@ def draft_from_text(
         "slug": slugify(name) or "applicant",
         "displayName": name,
         "headline": headline,
+        "summary": " ".join(sections["summary"]),
         "email": emails[0] if emails else "",
         "phone": phones[0] if phones else "",
         "web": urls[0] if urls else "",
@@ -240,25 +300,26 @@ def draft_from_uploads(files: list[dict]) -> dict:
     resume_parts: list[str] = []
     cover_parts: list[str] = []
     names: list[str] = []
+    total_bytes = 0
     for item in files or []:
         name = str(item.get("name") or "upload.txt")
         suffix = Path(name).suffix.lower()
         if suffix and suffix not in ALLOWED_SUFFIXES:
-            raise ValueError(f"Unsupported file type: {suffix}. Use PDF, TXT, MD, or HTML.")
-        if item.get("text"):
-            text = str(item["text"])
-        else:
-            raw_b64 = item.get("contentBase64") or ""
-            payload = base64.b64decode(raw_b64) if raw_b64 else b""
-            if len(payload) > MAX_IMPORT_BYTES:
-                raise ValueError(f"{name} is over {MAX_IMPORT_BYTES} bytes.")
-            if not payload:
-                continue
-            text = extract_text(name, payload)
+            raise ValueError(f"Unsupported file type: {suffix}. Use PDF, DOCX, TXT, MD, or HTML.")
+        raw_b64 = item.get("contentBase64") or ""
+        payload = base64.b64decode(raw_b64, validate=True) if raw_b64 else str(item.get("text") or "").encode()
+        total_bytes += len(payload)
+        if total_bytes > MAX_IMPORT_BYTES:
+            raise ValueError("Choose files totaling 2 MB or less, or paste the résumé text.")
+        if not payload:
+            continue
+        text = extract_text(name, payload)
+        if not text.strip():
+            raise ValueError(f"No selectable text in {name}. Paste its text or choose a text-based file.")
         names.append(name)
         kind = _kind_for_name(name, item.get("kind"))
         if kind == "cover-letter" or (
-            not resume_parts and _COVER_HINT.search((text or "")[:400])
+            not item.get("kind") and not resume_parts and _COVER_HINT.search(text[:400])
         ):
             cover_parts.append(text)
         else:

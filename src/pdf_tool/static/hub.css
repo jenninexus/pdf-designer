@@ -38,7 +38,7 @@
  *   .config/mcp-pdf-designer*.json — optional project pointers only
  *
  * Cascade (nav_switch = lg; scrollable desktop toolbar starts at 992px):
- *   xxs < 390         floor: horizontal scroll lives, nothing hides
+ *   xxs < 390         labeled mode row under the 52px action row
  *   xs  ≤ 575.98      library stacks above stage (phones only)
  *   short landscape   max-height 480 — stack like a phone (iPhone rotated)
  *   until-lg ≤991.98 hamburger; end-panel drawer (full-bleed only ≤575.98);
@@ -382,32 +382,40 @@ a.hub-brand { gap: 8px; color: var(--dash-text-bright); background: none; }
 /* A quiet holographic edge replaces the solid active underline. */
 .hub-modes .hub-link {
   isolation: isolate;
-  border-color: transparent;
+  color: var(--hub-mode-ink, var(--dash-text-dim));
+  border-color: var(--hub-mode-edge, transparent);
   background: transparent;
-  transition: color var(--motion), border-color var(--motion), box-shadow var(--motion);
+  box-shadow: var(--hub-mode-shadow, none);
+  transition: color var(--motion), border-color var(--motion), box-shadow var(--motion),
+    transform var(--ae-t-press) var(--ae-glide);
 }
+.hub-modes .hub-link:active { transform: scale(.96); }
 .hub-modes .hub-link::before {
   content: "";
   position: absolute;
   inset: 1px;
   z-index: -1;
   border-radius: inherit;
-  opacity: 0;
+  opacity: var(--hub-mode-glow, 0);
   background: radial-gradient(circle at var(--pointer-x, 50%) var(--pointer-y, 50%),
     color-mix(in srgb, var(--dash-accent) 22%, transparent), transparent 70%);
   transition: opacity var(--motion);
 }
-.hub-modes .hub-link:hover,
 .hub-modes .hub-link:focus-visible,
 .hub-modes .hub-link.on {
-  color: var(--dash-text-bright);
-  border-color: color-mix(in srgb, var(--dash-accent) 48%, var(--ae-accent-2, #9b5cf6));
-  box-shadow: 0 0 10px color-mix(in srgb, var(--dash-accent) 18%, transparent),
+  --hub-mode-ink: var(--dash-text-bright);
+  --hub-mode-edge: color-mix(in srgb, var(--dash-accent) 48%, var(--ae-violet));
+  --hub-mode-shadow: 0 0 10px color-mix(in srgb, var(--dash-accent) 18%, transparent),
     inset 0 0 9px color-mix(in srgb, var(--dash-accent) 10%, transparent);
+  --hub-mode-glow: 1;
 }
-.hub-modes .hub-link:hover::before,
-.hub-modes .hub-link:focus-visible::before,
-.hub-modes .hub-link.on::before { opacity: 1; }
+@media (hover: hover) and (pointer: fine) {
+  .hub-modes .hub-link:hover {
+    color: var(--dash-text-bright);
+    border-color: color-mix(in srgb, var(--dash-accent) 48%, var(--ae-violet));
+    --hub-mode-glow: 1;
+  }
+}
 .hub-modes .hub-link.on .hub-fa-icon {
   background: linear-gradient(135deg, var(--dash-accent), var(--ae-accent-2, #b299ff));
   filter: drop-shadow(0 0 4px color-mix(in srgb, var(--dash-accent) 42%, transparent));
@@ -416,7 +424,7 @@ a.hub-brand { gap: 8px; color: var(--dash-text-bright); background: none; }
    Unsupported browsers retain normal navigation; reduced motion skips the transition. */
 @view-transition { navigation: auto; }
 .hub-bar .hub-brand-group { view-transition-name: hub-identity; }
-::view-transition-group(hub-identity) { animation-duration: 120ms; }
+::view-transition-group(hub-identity) { animation-duration: var(--ae-t-press); }
 ::view-transition-old(hub-identity), ::view-transition-new(hub-identity) { animation: none; }
 @media (prefers-reduced-motion: reduce) {
   @view-transition { navigation: none; }
@@ -433,13 +441,6 @@ a.hub-brand { gap: 8px; color: var(--dash-text-bright); background: none; }
   overflow: hidden;
   clip-path: inset(50%);
   white-space: nowrap;
-}
-@media (max-width: 575.98px) {
-  .hub-brand-group { gap: 6px; }
-  .hub-app-name { display: none; }
-  .hub-bar .hub-brand-group .hub-modes { padding: 0 4px 0 8px; gap: 2px; }
-  .hub-modes .hub-link { width: 32px; height: 36px; flex-basis: 32px; }
-  .hub-bar-scroll { padding-left: 8px; }
 }
 
 /* ── Chips (kind filters) ────────────────────────────────── */
@@ -977,7 +978,7 @@ a.hub-brand { gap: 8px; color: var(--dash-text-bright); background: none; }
   z-index: 90;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.22s ease;
+  transition: opacity var(--ae-t-exit-fade) var(--ae-ease);
 }
 .hub-drawer-backdrop.open {
   opacity: 1;
@@ -989,14 +990,16 @@ a.hub-brand { gap: 8px; color: var(--dash-text-bright); background: none; }
   right: 0;
   bottom: 0;
   width: clamp(var(--hub-drawer-min), var(--hub-drawer-w), min(var(--hub-drawer-max), calc(100vw - 24px)));
-  background: rgba(13, 15, 20, 0.96);
+  background: color-mix(in srgb, var(--ae-solid) 97%, transparent);
   backdrop-filter: blur(var(--dash-glass-blur));
   -webkit-backdrop-filter: blur(var(--dash-glass-blur));
   border-left: 1px solid var(--dash-card-border);
   box-shadow: -16px 0 40px rgba(0, 0, 0, 0.5);
   z-index: 100;
+  visibility: hidden;
   transform: translateX(100%);
-  transition: transform 0.24s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transition: transform var(--ae-t-exit-travel) var(--ae-ease),
+    visibility 0s var(--ae-t-exit-travel);
   display: flex;
   flex-direction: column;
   min-height: 0;
@@ -1088,7 +1091,11 @@ a.hub-brand { gap: 8px; color: var(--dash-text-bright); background: none; }
   border: 1px solid var(--dash-card-border);
   background: var(--dash-card);
 }
-.hub-drawer.open { transform: translateX(0); }
+.hub-drawer.open {
+  visibility: visible;
+  transform: translateX(0);
+  transition: transform var(--ae-t-state) var(--ae-glide);
+}
 .hub-drawer-resize {
   position: absolute;
   z-index: 1;
@@ -1153,8 +1160,11 @@ html.drawer-resizing, html.drawer-resizing * { cursor: ew-resize !important; use
 
 .hub-drawer-body {
   flex: 1;
+  min-height: 0;
   overflow-y: auto;
+  overscroll-behavior: contain;
   padding: 14px;
+  padding-bottom: max(14px, env(safe-area-inset-bottom));
   display: flex;
   flex-direction: column;
   gap: 18px;
@@ -2303,8 +2313,7 @@ body.wizard-page {
     border-left: 1px solid var(--dash-card-border);
     border-radius: 0;
   }
-  .hub-drawer.open { transform: translateX(0); }
-  .hub-drawer-body { padding: 16px; gap: 20px; }
+  .hub-drawer-body { padding: 16px; padding-bottom: max(16px, env(safe-area-inset-bottom)); gap: 20px; }
   .hub-drawer .hub-nav .hub-link,
   .hub-drawer .chip,
   .hub-drawer select,
@@ -2396,12 +2405,6 @@ body.wizard-page {
   .wizard-field-row { flex-direction: column; }
   .wizard-field-row input { width: 100%; flex: 0 0 auto; min-height: 40px; }
   .wizard-field-row button { width: 100%; min-height: 40px; }
-}
-
-/* ── xxs (<390) — sub-iPhone-14 floor, horizontal scroll lives ── */
-@media (max-width: 389.98px) {
-  .hub-bar { padding: 0 8px; }
-  .hub-brand { font-size: 1rem; }
 }
 
 /* ── short landscape (phone rotated, iPhone 14 landscape 844×390) ──
@@ -2707,8 +2710,6 @@ html.hub-splash-skip .hub-splash { display: none !important; }
 .fa-table-columns { --hub-fa-icon: url('/_hub/fa-table-columns.svg'); }
 .fa-shield-halved { --hub-fa-icon: url('/_hub/fa-shield-halved.svg'); }
 .fa-wand-magic-sparkles { --hub-fa-icon: url('/_hub/fa-wand-magic-sparkles.svg'); }
-.hub-modes .hub-link { transition: color var(--ae-t-state) var(--ae-ease), background var(--ae-t-state) var(--ae-ease), transform var(--ae-t-press) var(--ae-glide); }
-.hub-modes .hub-link:active { transform: scale(.96); }
 .hub-support-menu .hub-more-panel { width: min(340px, calc(100vw - 24px)); }
 .hub-bar .hub-support-menu > summary { width: auto; min-width: 72px; max-width: none; padding: 0 10px !important; line-height: 1; font-size: .78rem; }
 @keyframes hub-splash-deadline { to { visibility: hidden; pointer-events: none; } }
@@ -2717,16 +2718,64 @@ html.hub-splash-skip .hub-splash { display: none !important; }
   .hub-bar .hub-brand-group .hub-modes { gap: 2px; }
 }
 @media (max-width: 575.98px) {
+  .hub-bar { position: relative; }
   .hub-brand-group { gap: 0; padding: 0; }
   .hub-bar .hub-brand-group .hub-brand { min-width: 44px; height: 44px; padding: 0; justify-content: center; }
   .hub-bar .hub-brand-group .hub-modes { gap: 0; padding: 0; margin: 0; border: 0; }
   .hub-modes .hub-link { width: 44px; height: 44px; flex-basis: 44px; }
   .hub-bar-scroll { padding: 0; }
-  .hub-bar .hub-bar-pin { padding: 0; gap: 2px; }
+  .hub-bar .hub-bar-pin { position: static; padding: 0; gap: 2px; }
   .hub-bar .hub-bar-pin #refreshBtn { display: none !important; } /* Refresh remains in drawer header. */
+  .hub-bar #status:not(:empty) {
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 8px;
+    max-width: min(36ch, calc(100% - 16px));
+    overflow-wrap: anywhere;
+    white-space: normal;
+    padding: 8px 10px;
+    border: 1px solid var(--dash-card-border);
+    border-radius: var(--dash-radius-sm);
+    background: var(--ae-solid);
+    pointer-events: none;
+  }
+}
+/* Keep all primary actions reachable without a horizontal gesture at 320px. */
+@media (max-width: 389.98px) {
+  .hub-bar {
+    --hub-bar-h: 100px;
+    display: grid;
+    grid-template: 52px 1fr / 44px minmax(0, 1fr);
+  }
+  .hub-bar-scroll, .hub-brand-group { display: contents; }
+  .hub-bar .hub-brand-group { view-transition-name: none; }
+  .hub-bar .hub-brand-group .hub-brand { grid-area: 1 / 1; align-self: center; view-transition-name: hub-identity; }
+  .hub-bar .hub-bar-pin { grid-area: 1 / 2; justify-self: end; }
+  .hub-bar .hub-brand-group .hub-modes {
+    grid-area: 2 / 1 / 3 / -1;
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 4px;
+    padding: 0 0 3px;
+  }
+  .hub-modes .hub-link {
+    width: auto;
+    flex-direction: column;
+    gap: 4px;
+    font-size: .68rem;
+  }
+  .hub-modes .hub-link .hub-fa-icon { width: 16px; height: 16px; }
+  .hub-mode-name {
+    position: static;
+    width: auto;
+    height: auto;
+    clip-path: none;
+  }
+  .hub-drawer .hub-nav { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .hub-modes .hub-link, .hub-splash, .hub-splash * { animation: none !important; transition: none !important; transform: none !important; }
+  .hub-modes .hub-link, .hub-modes .hub-link::before, .hub-splash, .hub-splash * { animation: none !important; transition: none !important; transform: none !important; }
+  .hub-drawer, .hub-drawer.open, .hub-drawer-backdrop { transition: none; }
 }
 
 /* Desktop keeps its full scrollable toolbar from the existing lg breakpoint. */

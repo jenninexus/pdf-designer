@@ -107,12 +107,14 @@ pwsh -NoProfile -File scripts/launch-design-hub.ps1
 
 Use `-NoOpen` for automation. The launcher is not an installer or a second renderer.
 
-The Hub starts dark by default. Its theme is only the local app chrome; document palettes
-still control the preview and exported PDF. The Wizard route guides a local vault →
-source-backed skills → palette → light/dark export. You can copy the ignored templates
-or upload an old résumé/cover letter (PDF/TXT/MD/HTML) to seed a starter vault; every
-imported claim is `inferred` until you review it. It creates no account and uses the
-existing renderer only. Stop the temporary localhost server with `Ctrl+C`.
+Choose **Add your résumé** in the Library or open **Wizard**. Read a PDF with selectable
+text, Word `.docx`, TXT, Markdown, or HTML résumé, paste its text, or start from scratch.
+Review your contact information, experience, skills, and education. Pick a document palette
+and decide whether to lead with experience or skills. **Save résumé and vault** creates a
+local editable HTML draft and stores your palette and layout choices in its profile.
+Imported vault records retain their `inferred` provenance. Review the page fit in the Library
+before exporting light and dark PDFs. The Hub itself opens in dark mode and keeps its own
+theme. Stop the temporary localhost server with `Ctrl+C`.
 
 For the Windows Electron wrapper, read [`WINDOWS-ELECTRON.md`](WINDOWS-ELECTRON.md) before
 sharing anything: it is an unsigned pre-release artifact, not a supported public download.

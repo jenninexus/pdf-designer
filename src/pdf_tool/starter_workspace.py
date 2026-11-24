@@ -6,6 +6,7 @@ import json
 import re
 from copy import deepcopy
 from datetime import date
+from html import escape
 from pathlib import Path
 
 RESERVED_SLUGS = frozenset(
@@ -21,6 +22,9 @@ RESERVED_SLUGS = frozenset(
     }
 )
 _SLUG_RE = re.compile(r"^[a-z][a-z0-9-]{1,31}$")
+STARTER_LAYOUTS = {"experience-first": "Experience first", "skills-first": "Skills first"}
+# Letter width minus the two 0.65in print margins, at 96 CSS pixels per inch.
+STARTER_CONTENT_WIDTH_PX = round((8.5 - 2 * 0.65) * 96)
 
 
 def normalize_slug(value: str) -> str:
@@ -35,11 +39,6 @@ def normalize_slug(value: str) -> str:
 
 def _load_json(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
-
-
-def _dump(path: Path, payload: dict) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
 
 def _skill_entries(draft: dict, track: str, source: str) -> list[dict]:
@@ -78,7 +77,7 @@ def _jobs(draft: dict, track: str, source: str) -> list[dict]:
                 "role": role or "Role (review)",
                 "dates": (row.get("dates") or "").strip() or "dates unknown — review",
                 "summary": (row.get("summary") or "").strip(),
-                "bullets": [b for b in (row.get("bullets") or []) if str(b).strip()][:8],
+                "bullets": [b for b in (row.get("bullets") or []) if str(b).strip()],
                 "tracks": [track],
                 "strength": "solid" if index == 1 else "supporting",
                 "source": source,
@@ -124,6 +123,7 @@ def build_user(draft: dict, slug: str) -> dict:
         "created": date.today().isoformat(),
         "contact": {
             "email": (draft.get("email") or "").strip(),
+            "phone": (draft.get("phone") or "").strip(),
             "web": (draft.get("web") or "").strip(),
             "github": "",
             "location": "",
@@ -142,6 +142,7 @@ def build_user(draft: dict, slug: str) -> dict:
         },
         "identity": {
             "headline": (draft.get("headline") or "").strip(),
+            "summary": (draft.get("summary") or "").strip(),
             "company": "",
             "role": "",
             "voice": "Imported draft — replace with the person's real application voice.",
@@ -256,6 +257,85 @@ def build_profile(slug: str, template: dict, name: str) -> dict:
     return profile
 
 
+def _resume_html(user: dict, vault: dict, layout: str, palette: dict, base_css: str) -> str:
+    def content(value):
+        return escape(str(value or ""))
+
+    def section(title, body):
+        return f"<section><h2>{title}</h2>{body}</section>" if body else ""
+
+    def list_items(rows):
+        return "<ul>" + "".join(f"<li>{content(row)}</li>" for row in rows) + "</ul>" if rows else ""
+
+    name = content(user["name"])
+    contact = user["contact"]
+    contact_line = " · ".join(content(contact[key]) for key in ("email", "phone", "web") if contact[key])
+    headline = content(user["identity"]["headline"])
+    summary = content(user["identity"]["summary"])
+    experience = section("Work experience", "".join(
+        f"<article><h3>{content(job['role'])} · {content(job['org'])}</h3>"
+        f"<p>{content(job['dates'])}</p><p>{content(job['summary'])}</p>"
+        f"{list_items(job['bullets'])}</article>"
+        for job in vault["employment"]
+    ))
+    skills = section("Skills", list_items([entry["claim"] for entry in vault["skills"]["imported"]]))
+    education = section("Education", list_items([entry["claim"] for entry in vault["education"]]))
+    first, second = (skills, experience) if layout == "skills-first" else (experience, skills)
+    # Keep the document's standard paper, text contrast and geometry. Palette
+    # tokens are limited to color values from the installed public presets.
+    def colors(mode):
+        return " ".join(
+            f"{token}: {value};"
+            for token, value in palette[mode].items()
+            if token in {"--primary", "--secondary", "--accent", "--support"}
+            and isinstance(value, str) and re.fullmatch(r"#[a-fA-F0-9]{6}", value)
+        )
+
+    def page(body, first_page=False):
+        heading = "h1" if first_page else "h2"
+        header = f"<{heading} class=\"resume-name\">{name}</{heading}>"
+        if first_page:
+            if headline:
+                header += f"<p>Job title: {headline}</p>"
+            if contact_line:
+                header += f"<p>{contact_line}</p>"
+        return (f'<div class="page"><div class="page-main"><header class="page-head">{header}</header>'
+                f'{body}</div><footer class="page-sig">{name}</footer></div>')
+
+    return f'''<!doctype html>
+<html lang="en" data-starter-resume><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{name} · Résumé</title>
+<style>
+{base_css}
+html:not([data-theme="light"]) {{ {colors("dark")} }}
+html[data-theme="light"] {{ {colors("light")} }}
+body {{ margin: 0; background: var(--bg); color: var(--text); font: 14px/1.45 var(--ats-safe); overflow-wrap: anywhere; }}
+.page {{ margin: 24px auto; background: var(--surface); }}
+.page-head {{ margin-bottom: 24px; }}
+.resume-name {{ font-size: 38px; color: var(--primary); line-height: 1.1; margin: 0 0 12px; }}
+section {{ margin-bottom: 20px; }}
+section h2 {{ font-size: 15px; margin: 0 0 10px; border-bottom: 1px solid var(--border2); }}
+article {{ margin-bottom: 14px; }}
+h3, p {{ margin: 0 0 4px; }}
+ul {{ padding-inline-start: 20px; margin: 4px 0; }}
+li {{ margin-block: 4px; }}
+.page-sig {{ margin-top: auto; text-align: right; font-size: 12px; }}
+@media print {{
+  @page starter-dark {{ size: Letter; margin: 0.65in; background: #0b0d12; }}
+  html:not([data-pdf-theme="dark"]) {{ {colors("light")} }}
+  html[data-pdf-theme="dark"] {{ {colors("dark")} }}
+  html[data-pdf-theme="dark"] body {{ page: starter-dark; }}
+  .page {{ margin: 0; }}
+  .page + .page {{ break-before: page; }}
+}}
+</style></head><body>
+{page(section("Summary", f"<p>{summary}</p>" if summary else "") + first, first_page=True)}
+{page(second + education)}
+</body></html>
+'''
+
+
 def save_starter(
     workspace_root: Path,
     draft: dict,
@@ -263,14 +343,20 @@ def save_starter(
     slug: str | None = None,
     overwrite: bool = False,
     template_root: Path | None = None,
+    resume_options: dict | None = None,
 ) -> dict:
-    root = Path(workspace_root)
+    root = Path(workspace_root).resolve()
     templates = Path(template_root) if template_root else root
     ident = normalize_slug(slug or draft.get("slug") or "")
     user_path = root / "users" / f"{ident}.json"
     vault_path = root / "vaults" / f"{ident}.json"
     profile_path = root / "profiles" / f"{ident}-resume.json"
-    existing = [p for p in (user_path, vault_path, profile_path) if p.exists()]
+    paths = {"user": user_path, "vault": vault_path, "profile": profile_path}
+    if resume_options is not None:
+        paths["resume"] = root / "resumes" / ident / f"{ident}-resume.html"
+    if any(not path.resolve().is_relative_to(root) for path in paths.values()):
+        raise ValueError("Choose a workspace folder inside PDF Designer.")
+    existing = [p for p in paths.values() if p.exists()]
     if existing and not overwrite:
         raise FileExistsError(
             "Starter files already exist for "
@@ -280,24 +366,52 @@ def save_starter(
     user = build_user(draft, ident)
     vault = build_vault(draft, ident)
     profile = build_profile(ident, profile_template, user["name"])
-    _dump(user_path, user)
-    _dump(vault_path, vault)
-    _dump(profile_path, profile)
+    if resume_options is not None:
+        if not (draft.get("displayName") or "").strip() or not (vault["employment"] or vault["skills"]["imported"] or vault["education"]):
+            raise ValueError("Add your name and at least one job, skill or education entry.")
+        layout = resume_options.get("layout")
+        palette_id = resume_options.get("palette")
+        if layout not in STARTER_LAYOUTS or not isinstance(palette_id, str) or not _SLUG_RE.fullmatch(palette_id):
+            raise ValueError("Choose an available résumé layout and palette.")
+        palette_path = templates / "themes" / "presets" / f"{palette_id}.json"
+        if not palette_path.is_file():
+            raise ValueError("Choose an available résumé palette.")
+        palette = _load_json(palette_path)["tokens"]
+        profile["theme"]["preset"] = palette_id
+        profile["layout"]["variant"] = layout
+        profile["source"] = f"../{paths['resume'].relative_to(root).as_posix()}"
+        resume = _resume_html(user, vault, layout, palette, (templates / "themes/default-resume.css").read_text(encoding="utf-8"))
+
     dirs = asset_dirs(ident)
+    if any(not (root / directory).resolve().is_relative_to(root) for directory in dirs.values()):
+        raise ValueError("Choose resource folders inside PDF Designer.")
     for key in ("images", "logos", "videos", "references"):
         (root / dirs[key]).mkdir(parents=True, exist_ok=True)
     readme = root / dirs["root"] / "README.md"
     if not readme.exists():
         readme.write_text(ASSET_README.replace("<id>", ident), encoding="utf-8")
+    payloads = {key: json.dumps(value, indent=2, ensure_ascii=False) + "\n"
+                for key, value in (("user", user), ("vault", vault), ("profile", profile))}
+    if resume_options is not None:
+        payloads["resume"] = resume
+    written = []
+    try:
+        for key, path in paths.items():
+            path.parent.mkdir(parents=True, exist_ok=True)
+            with path.open("w" if overwrite else "x", encoding="utf-8") as file:
+                written.append(path)
+                file.write(payloads[key])
+    except OSError:
+        if not overwrite:
+            for path in written:
+                path.unlink(missing_ok=True)
+        raise
     return {
         "ok": True,
         "slug": ident,
-        "files": {
-            "user": user_path.as_posix(),
-            "vault": vault_path.as_posix(),
-            "profile": profile_path.as_posix(),
-        },
+        "files": {key: path.as_posix() for key, path in paths.items()},
         "assets": dirs,
         "warnings": list(draft.get("warnings") or []),
         "vaultHref": f"/vault?profile={ident}",
+        **({"resumePath": paths["resume"].relative_to(root).as_posix()} if resume_options is not None else {}),
     }

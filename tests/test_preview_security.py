@@ -30,7 +30,7 @@ def hub(tmp_path):
 
     external = ThreadingHTTPServer(("127.0.0.1", 0), External)
     external_url = f"http://127.0.0.1:{external.server_port}"
-    source.write_text(f"""<!doctype html>
+    source.write_text(f"""<!doctype html><html data-starter-resume>
       <meta http-equiv="refresh" content="0;url={external_url}/navigate">
       <link rel="stylesheet" href="layout.css">
       <link rel="stylesheet" href="{external_url}/stylesheet">

@@ -44,7 +44,7 @@ from .paths import (
 from .pdf_to_png import render_to_png
 from .recipe_gallery import build_recipe_gallery
 from .seed_from_resume import MAX_IMPORT_BYTES, draft_from_uploads
-from .starter_workspace import save_starter
+from .starter_workspace import STARTER_CONTENT_WIDTH_PX, STARTER_LAYOUTS, save_starter
 from .vault_overview import build_vault_overview
 from .voice_card import build_voice_card
 
@@ -674,7 +674,7 @@ try {
     <button type="button" class="hub-drawer-toggle" id="drawerToggle" title="Menu" aria-label="Open menu" aria-expanded="false" aria-controls="hubDrawer">
       <svg class="hub-icon hub-menu-icon" viewBox="0 0 512 512" aria-hidden="true" focusable="false"><path fill="currentColor" d="M0 96C0 78.3 14.3 64 32 64l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 128C14.3 128 0 113.7 0 96zM64 256c0-17.7 14.3-32 32-32l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L96 288c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32L32 448c-17.7 0-32-14.3-32-32s14.3-32 32-32l384 0c17.7 0 32 14.3 32 32z"/></svg>
     </button>
-    <span id="status"></span>
+    <span id="status" role="status"></span>
   </div>
 </header>
 
@@ -777,7 +777,8 @@ try {
     <div class="hub-home" id="hubHomePanel">
       <p class="hub-home-kicker">pdf-designer</p>
       <h2>Design Hub</h2>
-      <p class="hub-home-lead">Public templates first. Pick a kind below, or use the chips and the <code>examples</code> profile to browse every clone-safe card.</p>
+      <p class="hub-home-lead">Start with your own résumé or browse the example documents.</p>
+      <p><a class="hub-link" href="/wizard">Add your résumé</a></p>
       <div class="hub-home-grid" id="hubHomeGrid"></div>
     </div>
     <iframe id="main" title="Document preview" sandbox="allow-same-origin" src="about:blank" hidden></iframe>
@@ -1639,33 +1640,14 @@ syncSelectPair("palette", "drawerPalette", () => {
 })();
 
 /* ---- Drawer + search overlay (responsive ≤991.98 / nav_switch lg) ---- */
-function openDrawer() {
-  const drawer = document.getElementById("hubDrawer");
-  const backdrop = document.getElementById("hubDrawerBackdrop");
-  const toggle = document.getElementById("drawerToggle");
-  if (!drawer) return;
-  drawer.classList.add("open");
-  drawer.setAttribute("aria-hidden", "false");
-  if (backdrop) { backdrop.hidden = false; backdrop.classList.add("open"); }
-  document.body.classList.add("drawer-open");
-  if (toggle) toggle.setAttribute("aria-expanded", "true");
-}
 function closeDrawer() {
-  const drawer = document.getElementById("hubDrawer");
-  const backdrop = document.getElementById("hubDrawerBackdrop");
-  const toggle = document.getElementById("drawerToggle");
-  if (!drawer) return;
-  drawer.classList.remove("open");
-  drawer.setAttribute("aria-hidden", "true");
-  if (backdrop) { backdrop.classList.remove("open"); backdrop.hidden = true; }
-  document.body.classList.remove("drawer-open");
-  if (toggle) toggle.setAttribute("aria-expanded", "false");
-  window.hubCloseContainedSelects?.();
+  window.hubCloseDrawer?.();
 }
 function openSearchOvl() {
   const ovl = document.getElementById("hubSearchOvl");
   const input = document.getElementById("searchOvlInput");
   if (!ovl) return;
+  closeDrawer();
   ovl.hidden = false;
   ovl.classList.add("open");
   if (input) {
@@ -1715,20 +1697,10 @@ function renderSearchOvl() {
     box.appendChild(row);
   }
 }
-(function wireDrawerSearch() {
-  const toggle = document.getElementById("drawerToggle");
-  const closeBtn = document.getElementById("drawerClose");
-  const backdrop = document.getElementById("hubDrawerBackdrop");
+(function wireSearch() {
   const searchTrigger = document.getElementById("searchTrigger");
   const searchOvl = document.getElementById("hubSearchOvl");
   const searchOvlInput = document.getElementById("searchOvlInput");
-  const drawerRefresh = document.getElementById("drawerRefresh");
-  if (toggle) toggle.addEventListener("click", () => {
-    const open = document.getElementById("hubDrawer")?.classList.contains("open");
-    if (open) closeDrawer(); else openDrawer();
-  });
-  if (closeBtn) closeBtn.addEventListener("click", closeDrawer);
-  if (backdrop) backdrop.addEventListener("click", closeDrawer);
   if (searchTrigger) searchTrigger.addEventListener("click", openSearchOvl);
   if (searchOvl) {
     const searchCard = searchOvl.querySelector(".hub-search-ovl-inner");
@@ -1749,12 +1721,8 @@ function renderSearchOvl() {
       }
     });
   }
-  if (drawerRefresh) drawerRefresh.addEventListener("click", () => {
-    document.getElementById("refreshBtn")?.click();
-    closeDrawer();
-  });
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") { closeDrawer(); closeSearchOvl(); }
+    if (e.key === "Escape") closeSearchOvl();
     if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
       e.preventDefault();
       openSearchOvl();
@@ -1908,6 +1876,7 @@ openPaletteFromQuery();
 </script>
 <script src="/_hub/drawer-resize.js"></script>
 <script src="/_hub/hub-select.js"></script>
+<script src="/_hub/hub-chrome.js"></script>
 <script src="/_hub/splash.js"></script>
 <script src="/_hub/hub-modes.js"></script>
 </body>
@@ -1917,16 +1886,17 @@ openPaletteFromQuery();
 
 def make_handler(root: Path, docs: list[dict], palettes: list[dict]):
     root = root.resolve()
-    profiles = available_profile_ids(root, docs)
-    fields = {
-        "__DOCS__": json.dumps(docs),
-        "__PALETTES__": json.dumps(palettes),
-        "__PROFILE_IDS__": json.dumps(profiles),
-    }
-    fields = {key: value.replace("<", r"\u003c") for key, value in fields.items()}
-    fields["__PROFILE_OPTIONS__"] = profile_options(profiles)
-    app_page = re.sub(r"__DOCS__|__PALETTES__|__PROFILE_IDS__|__PROFILE_OPTIONS__",
-                      lambda match: fields[match[0]], APP_HTML)
+
+    def library_page(documents):
+        profiles = available_profile_ids(root, documents)
+        fields = {"__DOCS__": documents, "__PALETTES__": palettes, "__PROFILE_IDS__": profiles}
+        fields = {key: json.dumps(value).replace("<", r"\u003c") for key, value in fields.items()}
+        fields["__PROFILE_OPTIONS__"] = profile_options(profiles)
+        return re.sub(r"__DOCS__|__PALETTES__|__PROFILE_IDS__|__PROFILE_OPTIONS__",
+                      lambda match: fields[match[0]], APP_HTML).encode("utf-8")
+
+    app_page = library_page(docs)
+    known_documents = {doc["path"] for doc in docs}
 
     def resolve_asset(rel):
         return resolve_document_asset(root, rel)
@@ -1981,7 +1951,9 @@ def make_handler(root: Path, docs: list[dict], palettes: list[dict]):
                 return
             path = unquote(urlparse(self.path).path)
             if path in ("/", "/index.html"):
-                self._send(200, app_page.encode("utf-8"), "text/html; charset=utf-8")
+                requested = parse_qs(urlparse(self.path).query).get("doc", [None])[0]
+                body = library_page(scan_documents(root)) if requested and requested not in known_documents else app_page
+                self._send(200, body, "text/html; charset=utf-8")
                 return
             if path == "/api/version":
                 # Auto-refresh poll: current tree signature + a fresh doc list.
@@ -2013,6 +1985,21 @@ def make_handler(root: Path, docs: list[dict], palettes: list[dict]):
             if path == "/api/recipe-gallery":
                 payload = build_recipe_gallery(root)
                 self._send(200, json.dumps(payload).encode("utf-8"), "application/json")
+                return
+            if path == "/api/starter-options":
+                presets = _REPO_ROOT / "themes" / "presets"
+                public = {file.stem for file in presets.glob("*.json")}
+                options = {}
+                for palette in palettes:
+                    ident = palette["id"]
+                    if ident in public:
+                        option = options.setdefault(ident, {"id": ident, "label": palette["name"].rsplit(" · ", 1)[0]})
+                        option[palette["mode"]] = palette["vars"].get("--primary")
+                self._send(200, json.dumps({
+                    "palettes": [p for p in options.values() if p.get("light") and p.get("dark")],
+                    "layouts": STARTER_LAYOUTS,
+                    "maxImportBytes": MAX_IMPORT_BYTES,
+                }).encode(), "application/json")
                 return
             if path == "/api/pdf-info":
                 qs = parse_qs(urlparse(self.path).query)
@@ -2106,7 +2093,7 @@ def make_handler(root: Path, docs: list[dict], palettes: list[dict]):
             if length < 0:
                 self._send(400, b'{"ok": false, "error": "invalid body length"}', "application/json")
                 return
-            if length > MAX_IMPORT_BYTES + 120_000:
+            if length > 4 * ((MAX_IMPORT_BYTES + 2) // 3) + 120_000:
                 self._send(
                     413,
                     json.dumps({"ok": False, "error": "payload too large"}).encode(),
@@ -2127,12 +2114,16 @@ def make_handler(root: Path, docs: list[dict], palettes: list[dict]):
             if path == "/api/save-starter":
                 try:
                     req = json.loads(raw.decode("utf-8"))
+                    options = req.get("resumeOptions")
+                    if options is not None and (not isinstance(options, dict) or options.get("reviewed") is not True):
+                        raise ValueError("Review the imported entries before creating a résumé draft.")
                     result = save_starter(
                         root,
                         req.get("draft") or {},
                         slug=req.get("slug"),
                         overwrite=bool(req.get("overwrite")),
                         template_root=_REPO_ROOT,
+                        resume_options=options,
                     )
                     self._send(200, json.dumps(result).encode(), "application/json")
                 except Exception as exc:
@@ -2148,6 +2139,16 @@ def make_handler(root: Path, docs: list[dict], palettes: list[dict]):
                     raise ValueError(f"bad doc path: {req['doc']}")
                 fmt = req.get("format", "pdf-light")
                 pdf_theme = "dark" if fmt.endswith("-dark") else None
+                with doc.open(encoding="utf-8", errors="replace") as source:
+                    starter_resume = "data-starter-resume" in source.read(256)
+                if starter_resume:
+                    from .check_overflow import check_overflow
+
+                    if check_overflow(
+                        str(doc), pdf_theme=pdf_theme or "light", workspace=root,
+                        resolve_asset=resolve_asset, content_width_px=STARTER_CONTENT_WIDTH_PX,
+                    ):
+                        raise ValueError("This résumé exceeds its page space. Shorten or move entries in the HTML draft before exporting.")
                 out_dir = req.get("outDir") or None
                 if fmt.startswith("png"):
                     outputs = [

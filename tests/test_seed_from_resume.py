@@ -1,5 +1,12 @@
 """Local résumé/cover-letter extract builds a reviewable starter draft."""
 
+import base64
+from io import BytesIO
+from xml.sax.saxutils import escape
+from zipfile import ZipFile
+
+import pytest
+
 from pdf_tool.seed_from_resume import draft_from_text, draft_from_uploads
 
 RESUME = """
@@ -67,3 +74,34 @@ def test_combined_resume_and_cover_keeps_jobs():
     )
     assert draft["jobs"][0]["org"] == "Example Studio"
     assert "Sincerely" in draft["coverLetterNotes"]
+
+
+def test_word_resume_is_read_from_document_body():
+    payload = BytesIO()
+    paragraphs = "".join(f"<w:p><w:r><w:t>{escape(line)}</w:t></w:r></w:p>" for line in RESUME.splitlines())
+    with ZipFile(payload, "w") as docx:
+        docx.writestr("word/document.xml", '<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">'
+                      f"<w:body>{paragraphs}</w:body></w:document>")
+    draft = draft_from_uploads([{"name": "candidate.docx", "contentBase64": base64.b64encode(payload.getvalue())}])
+    assert draft["displayName"] == "Alex Rivera"
+    assert draft["jobs"][0]["dates"] == "2022 – Present"
+    assert len(draft["jobs"][0]["bullets"]) == 2
+
+
+def test_html_resume_extracts_body_text_and_ignores_scripts():
+    draft = draft_from_uploads([{"name": "resume.html", "text": """
+      <head><title>Discard this title</title></head>
+      <h1>Alex Rivera</h1><p>Product Designer</p>
+      <script>incorrect@example.studio</script><p>alex@example.studio</p>
+      <h2>Experience</h2><p>Product Designer at Example Studio | 2022 – Present</p>
+      <ul><li>Built a reusable résumé.</li></ul><h2>Skills</h2><p>HTML</p>
+    """}])
+    assert draft["displayName"] == "Alex Rivera"
+    assert draft["email"] == "alex@example.studio"
+    assert draft["jobs"][0]["org"] == "Example Studio"
+    assert draft["jobs"][0]["bullets"] == ["Built a reusable résumé."]
+
+
+def test_empty_html_directs_user_to_text_fallback():
+    with pytest.raises(ValueError, match="No selectable text"):
+        draft_from_uploads([{"name": "resume.html", "text": '<img src="scan.png">'}])
