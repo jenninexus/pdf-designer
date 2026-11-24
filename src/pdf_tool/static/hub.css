@@ -90,7 +90,10 @@
   --motion: var(--ae-t-state) var(--ae-ease);
   --hub-bar-h: 52px;
   --hub-ctrl-h: 26px;
-  --hub-icon-box: 44px;
+  --hub-icon-box: 36px;
+  --hub-icon-size: 18px;
+  --hub-action-hover: color-mix(in srgb, var(--dash-text-bright) 8%, transparent);
+  --hub-action-active: color-mix(in srgb, var(--dash-accent) 14%, transparent);
 
   /* Drawer + overlay (new) */
   /* A local preference, set by the drawer's grab edge. It is clamped for the
@@ -223,9 +226,7 @@ button, [role="button"], summary, .chip, .thumb { user-select: none; -webkit-use
   max-height: var(--hub-bar-h);
   padding: 0;
   border-bottom: 1px solid var(--dash-card-border);
-  background: rgba(17, 20, 27, 0.94);
-  backdrop-filter: blur(var(--dash-glass-blur));
-  -webkit-backdrop-filter: blur(var(--dash-glass-blur));
+  background: var(--ae-solid);
   flex-shrink: 0;
   z-index: 40;
   /* visible so .hub-more panel (in .hub-bar-pin) is not clipped */
@@ -234,6 +235,7 @@ button, [role="button"], summary, .chip, .thumb { user-select: none; -webkit-use
 }
 
 .hub-bar-scroll {
+  position: relative;
   display: flex;
   flex-wrap: nowrap;
   align-items: stretch;
@@ -364,11 +366,11 @@ a.hub-brand { gap: 8px; color: var(--dash-text-bright); background: none; }
 }
 .hub-modes .hub-link {
   position: relative;
-  width: 44px;
-  height: 44px;
+  width: var(--hub-icon-box);
+  height: var(--hub-icon-box);
   padding: 0;
-  flex: 0 0 44px;
-  border-radius: 8px;
+  flex: 0 0 var(--hub-icon-box);
+  border-radius: 7px;
 }
 .hub-modes .hub-link svg {
   width: 20px;
@@ -379,46 +381,16 @@ a.hub-brand { gap: 8px; color: var(--dash-text-bright); background: none; }
   stroke-linecap: round;
   stroke-linejoin: round;
 }
-/* A quiet holographic edge replaces the solid active underline. */
 .hub-modes .hub-link {
-  isolation: isolate;
-  color: var(--hub-mode-ink, var(--dash-text-dim));
-  border-color: var(--hub-mode-edge, transparent);
+  color: var(--dash-text);
+  border: 0;
   background: transparent;
-  box-shadow: var(--hub-mode-shadow, none);
-  transition: color var(--motion), border-color var(--motion), box-shadow var(--motion),
-    transform var(--ae-t-press) var(--ae-glide);
+  transition: color var(--motion), background var(--motion);
 }
-.hub-modes .hub-link:active { transform: scale(.96); }
-.hub-modes .hub-link::before {
-  content: "";
-  position: absolute;
-  inset: 1px;
-  z-index: -1;
-  border-radius: inherit;
-  opacity: var(--hub-mode-glow, 0);
-  background: radial-gradient(circle at var(--pointer-x, 50%) var(--pointer-y, 50%),
-    color-mix(in srgb, var(--dash-accent) 22%, transparent), transparent 70%);
-  transition: opacity var(--motion);
-}
-.hub-modes .hub-link:focus-visible,
+.hub-modes .hub-link:hover { background: var(--hub-action-hover); }
 .hub-modes .hub-link.on {
-  --hub-mode-ink: var(--dash-text-bright);
-  --hub-mode-edge: color-mix(in srgb, var(--dash-accent) 48%, var(--ae-violet));
-  --hub-mode-shadow: 0 0 10px color-mix(in srgb, var(--dash-accent) 18%, transparent),
-    inset 0 0 9px color-mix(in srgb, var(--dash-accent) 10%, transparent);
-  --hub-mode-glow: 1;
-}
-@media (hover: hover) and (pointer: fine) {
-  .hub-modes .hub-link:hover {
-    color: var(--dash-text-bright);
-    border-color: color-mix(in srgb, var(--dash-accent) 48%, var(--ae-violet));
-    --hub-mode-glow: 1;
-  }
-}
-.hub-modes .hub-link.on .hub-fa-icon {
-  background: linear-gradient(135deg, var(--dash-accent), var(--ae-accent-2, #b299ff));
-  filter: drop-shadow(0 0 4px color-mix(in srgb, var(--dash-accent) 42%, transparent));
+  color: var(--dash-accent);
+  background: var(--hub-action-active);
 }
 /* Shared identity is present on first paint and stays continuous during mode changes.
    Unsupported browsers retain normal navigation; reduced motion skips the transition. */
@@ -472,9 +444,9 @@ a.hub-brand { gap: 8px; color: var(--dash-text-bright); background: none; }
 }
 .chip:hover { border-color: var(--dash-card-hover); color: var(--dash-text); }
 .chip.on {
-  color: #0a1210;
-  background: var(--hub-grad);
-  border-color: transparent;
+  color: var(--dash-accent);
+  background: var(--hub-action-active);
+  border-color: color-mix(in srgb, var(--dash-accent) 36%, transparent);
   font-weight: 700;
   padding-right: 7px;
 }
@@ -490,8 +462,8 @@ a.hub-brand { gap: 8px; color: var(--dash-text-bright); background: none; }
   line-height: 1.2;
 }
 .chip.on .n {
-  background: rgba(10, 18, 16, 0.32);
-  color: #0a1210;
+  background: var(--hub-action-hover);
+  color: inherit;
   opacity: 1;
 }
 
@@ -589,6 +561,7 @@ a.hub-brand { gap: 8px; color: var(--dash-text-bright); background: none; }
 .hub-bar select.hub-folder-native,
 .hub-drawer select.hub-folder-native {
   position: absolute;
+  inset: 0 auto auto 0;
   width: 1px;
   height: 1px;
   padding: 0;
@@ -860,8 +833,7 @@ a.hub-brand { gap: 8px; color: var(--dash-text-bright); background: none; }
 .fa-patreon { --hub-fa-icon: url("/_hub/fa-patreon.svg"); }
 .fa-paypal { --hub-fa-icon: url("/_hub/fa-paypal.svg"); }
 
-/* Every header / drawer-head icon control is the same square. Export is
-   `primary` for the gradient only — never a wider pill. */
+/* Header and drawer icon controls share one square hit target. */
 .hub-bar .hub-icon-btn,
 .hub-bar .hub-icon-btn.primary,
 .hub-bar .hub-search-trigger,
@@ -940,15 +912,6 @@ a.hub-brand { gap: 8px; color: var(--dash-text-bright); background: none; }
   line-height: 1;
 }
 .hub-bar button:hover { border-color: var(--dash-card-hover); color: var(--dash-text-bright); }
-
-.hub-bar button.primary {
-  background: var(--hub-grad);
-  color: #0a1210;
-  font-weight: 700;
-  border-color: transparent;
-  box-shadow: var(--hub-glow);
-}
-.hub-bar button.primary:hover { filter: brightness(1.06); }
 
 /* Menu trigger — compact default (390 through iPad Pro landscape). Hide at lg. */
 .hub-drawer-toggle {
@@ -1722,7 +1685,6 @@ html.drawer-resizing, html.drawer-resizing * { cursor: ew-resize !important; use
 }
 .hub-preview-toggle:hover,
 .hub-preview-toggle:focus-visible { color: var(--dash-accent); border-color: var(--dash-accent); }
-.hub-preview-toggle svg { width: 24px; height: 24px; }
 .hub-preview-toggle[hidden],
 .library[hidden],
 .hub-preview-toggle .hub-restore-icon,
@@ -2081,7 +2043,6 @@ code.path-mini, code.cmd {
   font: 600 var(--dash-fs-xs) var(--dash-body);
   text-decoration: none;
 }
-.wizard-actions .primary { background: var(--hub-grad); border-color: transparent; color: #0a1210; }
 .wizard-actions a:hover, .wizard-actions button:hover { border-color: var(--dash-accent); }
 .wizard-actions a:focus-visible,
 .wizard-actions button:focus-visible,
@@ -2197,9 +2158,9 @@ body.wizard-page {
 .wizard-field-row input:focus { border-color: var(--dash-accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--dash-accent) 12%, transparent); }
 .wizard-actions { justify-content: center; gap: 8px; margin-top: 20px; }
 .wizard-actions a, .wizard-actions button, .wizard-field-row button { min-height: 36px; padding: 7px 11px; border-radius: 7px; background: rgba(17, 20, 27, 0.88); font: 700 var(--dash-fs-xs) var(--dash-body); letter-spacing: 0.01em; transition: border-color var(--motion), background var(--motion), transform var(--motion); }
-.wizard-actions .primary { border-color: transparent; background: var(--hub-grad); }
+
 .wizard-actions a:hover, .wizard-actions button:hover, .wizard-field-row button:hover { border-color: var(--dash-accent); transform: translateY(-1px); }
-.wizard-actions .primary:hover { border-color: transparent; box-shadow: var(--hub-glow); }
+
 .wizard-import, .wizard-editor {
   display: grid;
   gap: 8px;
@@ -2249,10 +2210,13 @@ body.wizard-page {
   font: 700 var(--dash-fs-xs) var(--dash-body);
   cursor: pointer;
 }
-.wizard-import-actions .primary {
-  border-color: transparent;
-  background: var(--hub-grad);
-  color: #0a1210;
+.wizard-actions .primary, .wizard-import-actions .primary {
+  border-color: color-mix(in srgb, var(--dash-accent) 40%, transparent);
+  background: var(--hub-action-active);
+  color: var(--dash-text-bright);
+}
+.wizard-actions .primary:hover, .wizard-import-actions .primary:hover {
+  background: color-mix(in srgb, var(--dash-accent) 22%, transparent);
 }
 @keyframes wizard-arrive { from { opacity: 0; transform: translateY(7px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -2313,7 +2277,6 @@ body.wizard-page {
 @media (max-width: 991.98px) {
   :root {
     --hub-bar-h: 52px;
-    --hub-icon-box: 44px;
     --hub-library-w: 240px;
     --hub-library-max: 320px;
     --hub-drawer-w: 92vw;
@@ -2468,8 +2431,43 @@ body.wizard-page {
   .hub-main:has(.stage iframe:not([hidden])) > .library { max-height: 100%; }
 }
 
-.hub-bar-pin button:is(.hub-icon-btn, .hub-drawer-toggle, .hub-search-trigger) :is(.hub-icon, .hub-fa-icon),
-.hub-drawer-head-actions button .hub-fa-icon { width: 24px; height: 24px; }
+/* Match the reader toolbar's compact actions and keep touch targets generous. */
+:is(.hub-modes, .hub-bar-pin, .hub-drawer-head-actions) :is(.hub-icon, .hub-fa-icon),
+.hub-preview-toggle svg { width: var(--hub-icon-size); height: var(--hub-icon-size); }
+
+.hub-bar-pin :is(button, .hub-more > summary),
+.hub-drawer-head-actions :is(button.hub-icon-btn, button.hub-drawer-close),
+.hub-preview-toggle {
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--dash-text);
+}
+.hub-bar-pin :is(button:enabled, .hub-more > summary):hover,
+.hub-drawer-head-actions button:hover,
+.hub-preview-toggle:hover { background: var(--hub-action-hover); }
+.hub-bar-pin .hub-more[open] > summary,
+.hub-bar-pin #exportBtn,
+.preview-expanded .hub-preview-toggle {
+  background: var(--hub-action-active);
+  color: var(--dash-accent);
+}
+.hub-bar-pin #exportBtn:enabled:hover { background: color-mix(in srgb, var(--dash-accent) 22%, transparent); }
+.hub-bar-pin #exportBtn:disabled { opacity: .45; cursor: default; }
+.hub-bar-pin :is(button, summary):focus-visible,
+.hub-drawer-head-actions button:focus-visible,
+.hub-preview-toggle:focus-visible {
+  outline: 2px solid var(--dash-accent);
+  outline-offset: -2px;
+}
+@media (pointer: coarse) {
+  :root { --hub-icon-box: 44px; }
+}
+@media (forced-colors: active) {
+  .hub-modes .hub-link.on,
+  .hub-bar-pin .hub-more[open] > summary,
+  .preview-expanded .hub-preview-toggle { outline: 1px solid Highlight; outline-offset: -1px; }
+}
 
 @media (max-width: 575.98px) {
   .preview-expanded .hub-bar { display: none; }
@@ -2744,9 +2742,7 @@ html.hub-splash-skip .hub-splash { display: none !important; }
 }
 
 /* Aesyna static-adapter bindings; document palettes remain independent. */
-.hub-bar { background: color-mix(in srgb, var(--ae-solid) 96%, transparent); }
 .hub-bar-pin { background: var(--ae-solid); }
-.hub-modes .hub-link .hub-fa-icon { width: 24px; height: 24px; }
 .fa-file-lines { --hub-fa-icon: url('/_hub/fa-file-lines.svg'); }
 .fa-table-columns { --hub-fa-icon: url('/_hub/fa-table-columns.svg'); }
 .fa-shield-halved { --hub-fa-icon: url('/_hub/fa-shield-halved.svg'); }
@@ -2763,7 +2759,6 @@ html.hub-splash-skip .hub-splash { display: none !important; }
   .hub-brand-group { gap: 0; padding: 0; }
   .hub-bar .hub-brand-group .hub-brand { min-width: 44px; height: 44px; padding: 0; justify-content: center; }
   .hub-bar .hub-brand-group .hub-modes { gap: 0; padding: 0; margin: 0; border: 0; }
-  .hub-modes .hub-link { width: 44px; height: 44px; flex-basis: 44px; }
   .hub-bar-scroll { padding: 0; }
   .hub-bar .hub-bar-pin { position: static; padding: 0; gap: 2px; }
   .hub-bar .hub-bar-pin #refreshBtn { display: none !important; } /* Refresh remains in drawer header. */
@@ -2805,7 +2800,6 @@ html.hub-splash-skip .hub-splash { display: none !important; }
     gap: 1px;
     font-size: .68rem;
   }
-  .hub-modes .hub-link .hub-fa-icon { width: 22px; height: 22px; }
   .hub-mode-name {
     position: static;
     width: auto;
@@ -2815,7 +2809,7 @@ html.hub-splash-skip .hub-splash { display: none !important; }
   .hub-drawer .hub-nav { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .hub-modes .hub-link, .hub-modes .hub-link::before, .hub-splash, .hub-splash * { animation: none !important; transition: none !important; transform: none !important; }
+  .hub-modes .hub-link, .hub-splash, .hub-splash * { animation: none !important; transition: none !important; transform: none !important; }
   .hub-drawer, .hub-drawer.open, .hub-drawer-backdrop { transition: none; }
 }
 

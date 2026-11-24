@@ -110,6 +110,11 @@ def test_compact_navigation_keeps_modes_reachable_and_drawer_focus_contained(tmp
                 assert not toggle.is_visible()
                 assert page.locator(".hub-brand").first.evaluate("(el) => el === document.activeElement")
 
+                page.goto(f"{origin}/?no-splash=1")
+                bar = page.locator(".hub-bar")
+                assert bar.evaluate("(el) => el.scrollWidth === el.clientWidth")
+                assert page.locator("#exportBtn").evaluate("(el) => getComputedStyle(el).backgroundImage") == "none"
+
                 page.goto(f"{origin}/recipes?no-splash=1")
                 for width, wrap in ((1200, "1180px"), (1400, "1280px"), (1920, "1400px"), (3840, "1400px")):
                     page.set_viewport_size({"width": width, "height": 900})
@@ -155,6 +160,11 @@ def test_pdf_reader_fits_real_spreads_and_preserves_manual_zoom(tmp_path):
                 page.set_viewport_size({"width": 320, "height": 568})
                 assert second.bounding_box()["y"] > first.bounding_box()["y"]
                 assert first.evaluate("(image) => document.documentElement.scrollWidth <= document.documentElement.clientWidth")
+                toolbar = reader.locator(".pdf-toolbar")
+                assert toolbar.evaluate("(el) => el.scrollWidth === el.clientWidth")
+                zoom_out = reader.get_by_role("button", name="Zoom out")
+                assert zoom_out.bounding_box()["height"] == zoom_out.bounding_box()["width"] == 34
+                assert zoom_out.evaluate("(el) => getComputedStyle(el).borderTopWidth") == "0px"
                 reader.get_by_role("button", name="Next page").click()
                 assert reader.get_by_role("spinbutton", name="Go to page").input_value() == "2"
                 reader.get_by_role("button", name="Previous page").click()

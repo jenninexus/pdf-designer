@@ -99,7 +99,7 @@ Hub layout: **library left + viewer right** from **576px** up (desktop / tablet)
 **575.98px** (phones) and in **short landscape** (`max-height: 480px`). The stacked library stays
 scrollable and gives the preview more vertical space when a document is open. Drawer (hamburger) from
 **≤991.98px** (`nav_switch: lg`) so desktop windows from 992px retain the horizontally scrollable toolbar.
-The desktop toolbar starts at **992px** and widescreen spacing starts at **1400px**. The main action row is **52px**. Below **390px**, the Library adds a labeled workspace navigation row to keep all four destinations reachable at 320px. Header icon buttons share one 1:1 square (`--hub-icon-box`). The menu contains keyboard focus and returns it to the trigger on dismissal. Hover animation applies to fine pointers, and reduced motion removes drawer travel.
+The desktop toolbar starts at **992px** and widescreen spacing starts at **1400px**. The main action row is **52px**. Below **390px**, the Library adds a labeled workspace navigation row to keep all four destinations reachable at 320px. Header and drawer icons share an 18px glyph box and a 36px control that expands to 44px for coarse pointers. The active mode uses an accent tint. Keyboard focus has a separate outline. The menu contains keyboard focus and returns it to the trigger on dismissal, and reduced motion removes drawer travel.
 `www-theme-kit/scss/_offcanvas-nav.scss`.
 The regression matrix covers 320, 390, 576, 768, 992, 1024, 1366, 1400, 1920, 2560, and 3840px.
 **Vault + Recipes + Wizard** use the same switch points (shared `hub.css` + `Library | Recipes | Vault | Wizard` nav). Library is `body.hub-shell` (fixed panes); subpages are `body.hub-page` (document scroll). After ~280px of page scroll a discreet back-to-top chevron appears (bottom-right; `hub-chrome.js`). Tables get a horizontal scroll wrapper below md.
@@ -146,7 +146,10 @@ as well. **Restore Library** returns the usual layout.
   the same cyan scrollbar as the library; **Open original** is still available for the browser's native
   PDF toolbar. The preview rasterizes the actual PDF pages on demand rather than re-rendering source HTML.
   The reader offers **Continuous**, **Single page**, and **Two pages** modes, optional cover-alone
-  pairing, page-number navigation, zoom and Fit controls. Paired pages stack below 576px of
+  pairing, page-number navigation, zoom and Fit controls. Control groups wrap at the available
+  reader width. Icon buttons are compact with 44px targets on touch devices, and Fit uses an
+  accent tint when selected. Open original uses a labeled icon at narrow reader widths.
+  Paired pages stack below 576px of
   reader width, including in the Library iframe. Fit recalculates on resize. Manual zoom stays
   in place until Fit is selected. Ctrl/Cmd+wheel zooms over the page canvas. It displays the PDF's real raster pages;
   two-up is a reading layout, not editable spreads or PDF source editing. Reading mode and cover
@@ -262,7 +265,7 @@ Durable *why*: `.memory/lesson-hub-profile-scopes-folder-and-kind.md` ·
 
 ### Mode navigation (2026-10-30)
 
-The toolbar shows the D mark only; its accessible name remains PDF Designer. Library, Recipes, Vault and Wizard icons are present in the initial HTML, with pointer-following glow and a quiet active edge. Mode links prefetch their destination on hover or keyboard focus. Same-origin cross-document view transitions keep the identity strip continuous in supporting browsers; normal navigation and back/forward remain available, and reduced motion disables the transition. This is progressively enhanced multi-page navigation, not a persistent single-page editor. [Chrome implementation guidance](https://developer.chrome.com/docs/web-platform/view-transitions/cross-document).
+The toolbar shows the D mark, with PDF Designer as its accessible name. Library, Recipes, Vault, and Wizard icons are present in the initial HTML. Mode links prefetch their destination on hover or keyboard focus. Same-origin cross-document view transitions keep the identity strip continuous in supporting browsers. Normal navigation and back/forward remain available, and reduced motion disables the transition. [Chrome implementation guidance](https://developer.chrome.com/docs/web-platform/view-transitions/cross-document)
 
 Project facts live in `.config/mcp-pdf-designer.json` (portable seed beside it). The named breakpoint set is `bootstrap_5_3_8_extended_390_4k`, with `lg`/992 navigation and `xs-max`/575.98 stacking. `.vscode/mcp.json` configures VS Code servers only; it is not a second breakpoint registry. Cursor reads `.cursor/mcp.json`, Claude reads `.mcp.json`, and Codex uses its own TOML registration. Keep machine launch paths private; a public clone needs none of them. [VS Code configuration](https://code.visualstudio.com/docs/agents/reference/mcp-configuration), [Cursor configuration](https://prod.cursor.com/docs/mcp).
 ## Local document security

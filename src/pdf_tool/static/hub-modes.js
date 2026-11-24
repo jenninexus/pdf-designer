@@ -57,7 +57,6 @@
   // each page's existing lifecycle; never cache private API responses in storage.
   const warmed = new Set();
   const canHover = matchMedia('(hover: hover) and (pointer: fine)');
-  const pointerMotion = matchMedia('(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)');
   for (const link of modeLinks) {
     const warm = () => {
       const url = new URL(link.href, location.origin);
@@ -72,17 +71,6 @@
     };
     link.addEventListener('pointerenter', () => { if (canHover.matches) warm(); });
     link.addEventListener('focus', warm, { once: true });
-    if (!nav.contains(link)) continue;
-    link.addEventListener('pointermove', event => {
-      if (event.pointerType !== 'mouse' || !pointerMotion.matches) return;
-      const box = link.getBoundingClientRect();
-      link.style.setProperty('--pointer-x', `${event.clientX - box.left}px`);
-      link.style.setProperty('--pointer-y', `${event.clientY - box.top}px`);
-    }, { passive: true });
-    link.addEventListener('pointerleave', () => {
-      link.style.removeProperty('--pointer-x');
-      link.style.removeProperty('--pointer-y');
-    });
   }
   // Desktop Support lives beside actions; compact layouts keep it in the existing drawer.
   const support = document.querySelector('.hub-drawer .hub-support');
