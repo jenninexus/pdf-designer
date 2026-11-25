@@ -58,6 +58,10 @@ versions and includes the notices found in the installed distributions.
 The build excludes Chromium's standalone setup program. The packaged app
 launches the bundled full browser directly for offline rendering, so release
 builds skip the separate Chromium headless-shell download.
+When the browser download is unavailable, a maintainer can pass
+`-BrowserCache` with a previously verified Playwright browser directory.
+Release staging still starts fresh and Playwright resolves the pinned full
+Chromium executable from that directory.
 
 ```powershell
 Set-Location desktop

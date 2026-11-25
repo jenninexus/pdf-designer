@@ -1,5 +1,5 @@
 [CmdletBinding()]
-param([string]$PythonExecutable, [switch]$Release)
+param([string]$PythonExecutable, [switch]$Release, [string]$BrowserCache)
 
 # Build a self-contained Python/Playwright sidecar for the Windows Electron
 # shell. This runs only at packaging time; the produced app reads no user
@@ -42,6 +42,9 @@ if ($Release) {
         throw 'Build a release from a fresh checkout with no staged runtime or browser cache.'
     }
 }
+if ($BrowserCache -and -not $Release) {
+    throw 'BrowserCache applies only to the release runtime.'
+}
 
 & $python "$repoRoot\scripts\sync-wheel-share.py"
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
@@ -61,6 +64,23 @@ if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 # passes its executable path to Playwright only when frozen, avoiding a user
 # environment variable and retaining the existing Playwright renderer.
 $bundledChrome = Get-ChildItem -LiteralPath $browserRoot -Filter chrome.exe -Recurse -ErrorAction SilentlyContinue | Select-Object -First 1
+if ($BrowserCache) {
+    $cachePath = (Resolve-Path -LiteralPath $BrowserCache).Path
+    $previousBrowserPath = $env:PLAYWRIGHT_BROWSERS_PATH
+    try {
+        $env:PLAYWRIGHT_BROWSERS_PATH = $cachePath
+        $cachedExecutable = & $venvPython -c 'from playwright.sync_api import sync_playwright; p=sync_playwright().start(); print(p.chromium.executable_path); p.stop()'
+        if ($LASTEXITCODE -or -not $cachedExecutable) { throw 'Playwright could not resolve its pinned browser.' }
+        Assert-WorkspaceChild $cachedExecutable $cachePath
+        if (-not (Test-Path -LiteralPath $cachedExecutable -PathType Leaf)) {
+            throw 'BrowserCache is missing the full Chromium revision pinned by Playwright.'
+        }
+        $bundledChrome = Get-Item -LiteralPath $cachedExecutable
+    } finally {
+        if ($null -eq $previousBrowserPath) { Remove-Item Env:PLAYWRIGHT_BROWSERS_PATH -ErrorAction SilentlyContinue }
+        else { $env:PLAYWRIGHT_BROWSERS_PATH = $previousBrowserPath }
+    }
+}
 if (-not $bundledChrome) {
     $previousBrowserPath = $env:PLAYWRIGHT_BROWSERS_PATH
     try {
