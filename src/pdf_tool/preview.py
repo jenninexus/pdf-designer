@@ -577,6 +577,8 @@ APP_HTML = """<!doctype html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>pdf-designer — Design Hub</title>
 <link rel="stylesheet" href="/_hub/hub-aesyna.css">
+<script src="/_hub/hub-appearance.js"></script>
+<link rel="stylesheet" href="/_hub/hub-controls.css">
 <link rel="stylesheet" href="/_hub/hub.css">
 <link rel="preload" as="image" href="/_hub/hub-app-icon.png">
 <script>
@@ -621,7 +623,6 @@ try {
         <option value="">all profiles</option>
         __PROFILE_OPTIONS__
       </select>
-      <span class="hub-fa-icon fa-chevron-down hub-chevron" aria-hidden="true"></span>
     </div>
   </div>
   <div class="hub-bar-scroll" id="hubBarScroll">
@@ -642,11 +643,11 @@ try {
         <div class="hub-menu-label" id="hubFolderLabel">Folder</div>
         <select id="folderFilter" class="hub-folder-native" aria-hidden="true" tabindex="-1"><option value="">all folders</option></select>
         <div class="hub-folder-picker" id="folderPicker">
-          <button type="button" class="hub-folder-trigger" id="folderFilterBtn" aria-labelledby="hubFolderLabel folderFilterLabel" aria-haspopup="listbox" aria-expanded="false" title="Folder — hover ★ to pin go-tos">
+          <button type="button" class="hub-folder-trigger" id="folderFilterBtn" aria-labelledby="hubFolderLabel folderFilterLabel" aria-expanded="false" title="Folders and favorites">
             <span class="hub-folder-label" id="folderFilterLabel">all folders</span>
             <span class="hub-fa-icon fa-chevron-down" aria-hidden="true"></span>
           </button>
-          <div class="hub-folder-menu" id="folderFilterMenu" role="listbox" hidden></div>
+          <div class="hub-folder-menu" id="folderFilterMenu" role="group" aria-label="Folders" hidden></div>
         </div>
       </div>
     </details>
@@ -661,20 +662,23 @@ try {
       <details class="hub-more" id="hubMore">
         <summary title="Export options" aria-label="Export options"><span class="hub-fa-icon fa-chevron-down hub-chevron" aria-hidden="true"></span></summary>
         <div class="hub-more-panel">
-          <label>Format
+          <div class="hub-export-field">
+            <label for="fmt">Format</label>
             <select id="fmt" title="Export format" aria-label="Export format">
               <option value="pdf-light">PDF light</option>
               <option value="pdf-dark">PDF dark</option>
               <option value="png-light">PNG light</option>
               <option value="png-dark">PNG dark</option>
             </select>
-          </label>
-          <label>Preview palette
-            <select id="palette" title="Palette" aria-label="Palette"><option value="">doc default</option></select>
-          </label>
-          <label>Export folder
+          </div>
+          <div class="hub-export-field">
+            <label for="palette">Preview palette</label>
+            <select id="palette" title="Preview palette" aria-label="Preview palette"><option value="">doc default</option></select>
+          </div>
+          <div class="hub-export-field">
+            <label for="outdir">Export folder</label>
             <input id="outdir" type="text" placeholder="beside source: resumes/&lt;profile&gt;/… (default)">
-          </label>
+          </div>
         </div>
       </details>
     </div>
@@ -721,11 +725,11 @@ try {
         <span class="hub-drawer-label" id="drawerFolderLabel">Folder</span>
         <select id="drawerFolderFilter" class="hub-folder-native" aria-hidden="true" tabindex="-1"><option value="">all folders</option></select>
         <div class="hub-folder-picker" id="drawerFolderPicker">
-          <button type="button" class="hub-folder-trigger" id="drawerFolderFilterBtn" aria-haspopup="listbox" aria-expanded="false" title="Folder — hover ★ to pin">
+          <button type="button" class="hub-folder-trigger" id="drawerFolderFilterBtn" aria-expanded="false" title="Folders and favorites">
             <span class="hub-folder-label" id="drawerFolderFilterLabel">all folders</span>
             <span class="hub-fa-icon fa-chevron-down" aria-hidden="true"></span>
           </button>
-          <div class="hub-folder-menu" id="drawerFolderFilterMenu" role="listbox" hidden></div>
+          <div class="hub-folder-menu" id="drawerFolderFilterMenu" role="group" aria-label="Folders" hidden></div>
         </div>
       </div>
       <div class="hub-drawer-field">
@@ -757,13 +761,16 @@ try {
   </div>
 </aside>
 
-<div class="hub-search-ovl" id="hubSearchOvl" hidden>
+<dialog class="hub-search-ovl" id="hubSearchOvl" aria-label="Search the library">
   <div class="hub-search-ovl-inner">
-    <input class="hub-search-ovl-input" id="searchOvlInput" type="search" placeholder="Search name or path…" autocomplete="off" aria-label="Search documents">
-    <div class="hub-search-ovl-results" id="searchOvlResults"></div>
-    <div class="hub-search-ovl-foot"><kbd>Esc</kbd> or click outside closes · <kbd>Enter</kbd> opens first</div>
+    <div class="hub-search-ovl-row">
+      <span class="hub-fa-icon fa-magnifying-glass" aria-hidden="true"></span>
+      <input class="hub-search-ovl-input" id="searchOvlInput" type="search" placeholder="Search name or path…" autocomplete="off" aria-label="Search documents">
+      <button class="hub-search-close" id="searchOvlClose" type="button" title="Close search" aria-label="Close search"><span class="hub-fa-icon fa-xmark" aria-hidden="true"></span></button>
+    </div>
+    <div class="hub-search-ovl-results" id="searchOvlResults" hidden></div>
   </div>
-</div>
+</dialog>
 
 <main class="hub-main">
   <aside class="library" id="hubLibrary">
@@ -853,8 +860,6 @@ function togglePinFolder(folder) {
   buildFolderSelect();
 }
 
-const STAR_SVG = '<svg class="hub-icon" viewBox="0 0 576 512" aria-hidden="true" focusable="false"><path fill="currentColor" d="M316.9 18C311.6 7 300.4 0 288.1 0s-23.4 7-28.8 18L195 150.3 51.4 171.5c-12 1.8-22 10.2-25.7 21.7s-.7 24.2 7.9 32.7L137.8 329 113.2 474.7c-2 12 3 24.2 12.9 31.3s23 8 33.8 2.3l128.3-68.5 128.3 68.5c10.8 5.7 23.9 4.9 33.8-2.3s14.9-19.3 12.9-31.3L438.5 329 542.7 225.9c8.6-8.5 11.7-21.2 7.9-32.7s-13.7-19.9-25.7-21.7L381.2 150.3 316.9 18z"/></svg>';
-
 function clearFolderMenuPos(menu) {
   if (!menu) return;
   menu.style.top = "";
@@ -930,10 +935,11 @@ function folderDisplayName(folder) {
 function folderMenuRow(folder, { selected, pinned, isAll }) {
   const row = document.createElement("div");
   row.className = "hub-folder-item";
-  row.setAttribute("role", "option");
-  row.setAttribute("aria-selected", selected ? "true" : "false");
+  row.classList.toggle("selected", selected);
   row.dataset.value = folder;
-  const label = document.createElement("span");
+  const label = document.createElement("button");
+  label.type = "button";
+  label.setAttribute("aria-pressed", String(selected));
   label.className = "hub-folder-item-label";
   label.textContent = isAll ? "all folders" : folderDisplayName(folder);
   label.title = isAll ? "all folders" : folder;
@@ -945,19 +951,27 @@ function folderMenuRow(folder, { selected, pinned, isAll }) {
     pin.title = pinned ? "Unpin folder" : "Pin folder (stays after Refresh)";
     pin.setAttribute("aria-label", pinned ? "Unpin " + folder : "Pin " + folder);
     pin.setAttribute("aria-pressed", pinned ? "true" : "false");
-    pin.innerHTML = STAR_SVG;
+    const star = document.createElement("span");
+    star.className = "hub-select-star";
+    star.setAttribute("aria-hidden", "true");
+    star.textContent = pinned ? "★" : "☆";
+    pin.append(star);
     pin.addEventListener("click", (e) => {
       e.preventDefault();
       e.stopPropagation();
+      const menu = row.parentElement;
       togglePinFolder(folder);
+      menu.querySelector(`[data-value="${CSS.escape(folder)}"] .hub-folder-pin`)?.focus();
     });
     row.appendChild(pin);
   }
-  row.addEventListener("click", () => {
+  label.addEventListener("click", () => {
+    const trigger = row.closest(".hub-folder-picker").querySelector(".hub-folder-trigger");
     setFolderFilterValue(folder);
     closeFolderPickers();
     const drawer = document.getElementById("hubDrawer");
     if (drawer && drawer.classList.contains("open")) closeDrawer();
+    else trigger.focus({ preventScroll: true });
   });
   return row;
 }
@@ -1081,6 +1095,7 @@ PALETTES.forEach((p, i) => {
   const o = document.createElement("option");
   o.value = i;
   o.textContent = p.name;
+  o.dataset.favoriteKey = JSON.stringify([p.id, p.mode]);
   paletteSel.appendChild(o);
   if (drawerPaletteSel) drawerPaletteSel.appendChild(o.cloneNode(true));
 });
@@ -1182,6 +1197,7 @@ function buildProfileSelects() {
     }
     select.value = PROFILE_IDS.includes(current) ? current : "";
   }
+  window.hubSyncSelects?.();
 }
 
 function uniqueFolders() {
@@ -1412,6 +1428,7 @@ function goHome(opts) {
     const drawer = document.getElementById("drawerPersonFilter");
     if (drawer) drawer.value = "examples";
     try { localStorage.setItem(HUB_PROFILE_KEY, "examples"); } catch (_) {}
+    window.hubSyncSelects?.();
   }
   reconcileKindForProfile();
   buildKindChips();
@@ -1565,7 +1582,10 @@ function openFromQuery() {
   // Clear filters that would hide the target, then select.
   kindFilter = "all";
   setFolderFilterValue("", { silent: true });
-  document.getElementById("personFilter").value = (d.profile || d.person || "");
+  const profile = d.profile || d.person || "";
+  document.getElementById("personFilter").value = profile;
+  document.getElementById("drawerPersonFilter").value = profile;
+  window.hubSyncSelects?.();
   document.getElementById("search").value = "";
   buildKindChips();
   renderLibrary();
@@ -1590,6 +1610,8 @@ function openPaletteFromQuery() {
     return false;
   }
   paletteSel.value = String(idx);
+  if (drawerPaletteSel) drawerPaletteSel.value = paletteSel.value;
+  window.hubSyncSelects?.();
   applyPalette(main);
   document.querySelectorAll(".thumb iframe").forEach(f => applyPalette(f));
   document.getElementById("status").textContent = "palette: " + (PALETTES[idx].name || id);
@@ -1613,6 +1635,7 @@ function applyProfileChange() {
   try { localStorage.setItem(HUB_PROFILE_KEY, v); } catch (_) {}
   const d = document.getElementById("drawerPersonFilter");
   if (d) d.value = v;
+  window.hubSyncSelects?.();
   setFolderFilterValue("", { silent: true });
   reconcileKindForProfile();
   buildKindChips();
@@ -1646,7 +1669,11 @@ function syncSelectPair(primaryId, drawerId, onChange) {
   const a = document.getElementById(primaryId);
   const b = document.getElementById(drawerId);
   if (!a || !b) return;
-  a.addEventListener("change", () => { b.value = a.value; onChange && onChange(); });
+  a.addEventListener("change", () => {
+    b.value = a.value;
+    window.hubSyncSelects?.();
+    onChange?.();
+  });
   b.addEventListener("change", () => { a.value = b.value; a.dispatchEvent(new Event("change")); });
 }
 syncSelectPair("fmt", "drawerFmt");
@@ -1678,9 +1705,9 @@ function openSearchOvl() {
   const input = document.getElementById("searchOvlInput");
   if (!ovl) return;
   closeDrawer();
+  window.hubCloseContainedSelects?.();
   document.querySelectorAll(".hub-bar .hub-more[open]").forEach(menu => { menu.open = false; });
-  ovl.hidden = false;
-  ovl.classList.add("open");
+  if (!ovl.open) ovl.showModal();
   if (input) {
     input.value = document.getElementById("search").value || "";
     input.focus();
@@ -1690,10 +1717,7 @@ function openSearchOvl() {
 }
 function closeSearchOvl() {
   const ovl = document.getElementById("hubSearchOvl");
-  if (!ovl || ovl.hidden) return;
-  ovl.classList.remove("open");
-  ovl.hidden = true;
-  document.getElementById("searchTrigger").focus({ preventScroll: true });
+  if (ovl?.open) ovl.close();
 }
 function renderSearchOvl() {
   const box = document.getElementById("searchOvlResults");
@@ -1705,11 +1729,9 @@ function renderSearchOvl() {
     const hay = `${d.path} ${d.name} ${d.label} ${d.group} ${d.kind}`.toLowerCase();
     return hay.includes(q);
   }).slice(0, 40);
-  box.innerHTML = "";
-  if (!q) {
-    box.innerHTML = '<div class="hub-search-ovl-empty">Type to search the library</div>';
-    return;
-  }
+  box.replaceChildren();
+  box.hidden = !q;
+  if (!q) return;
   if (!hits.length) {
     box.innerHTML = '<div class="hub-search-ovl-empty">No matches</div>';
     return;
@@ -1734,7 +1756,11 @@ function renderSearchOvl() {
   const searchOvl = document.getElementById("hubSearchOvl");
   const searchOvlInput = document.getElementById("searchOvlInput");
   if (searchTrigger) searchTrigger.addEventListener("click", openSearchOvl);
+  document.getElementById("searchOvlClose").addEventListener("click", closeSearchOvl);
   if (searchOvl) {
+    searchOvl.addEventListener("close", () => {
+      if (!searchOvl.open) searchTrigger.focus({ preventScroll: true });
+    });
     const searchCard = searchOvl.querySelector(".hub-search-ovl-inner");
     searchOvl.addEventListener("pointerdown", (e) => {
       // The full-screen glass is the backdrop; any pointer action outside the card closes it.
@@ -1747,14 +1773,14 @@ function renderSearchOvl() {
       renderLibrary();
     });
     searchOvlInput.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") {
+      if (e.key === "Enter" && !e.isComposing) {
+        e.preventDefault();
         const first = document.querySelector(".hub-search-ovl-item");
         if (first) first.click();
       }
     });
   }
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") closeSearchOvl();
     if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
       e.preventDefault();
       openSearchOvl();

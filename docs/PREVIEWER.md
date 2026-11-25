@@ -40,7 +40,7 @@ Open, Start wizard, Enter, or Escape can dismiss it sooner. Reduced-motion prefe
 skips the decorative launch immediately. `?no-splash=1` disables it; `?splash=1` forces
 it (the packaged app always launches this way). After dismissal, the same browser tab
 does not replay it. The splash has no donation prompt. Support links remain available
-after launch in the desktop toolbar's **Support** menu and the compact-layout drawer;
+after launch under **Settings** in the desktop toolbar and in the compact-layout drawer;
 `/wizard` also has a support section. URLs: `docs/PRODUCT.md`.
 
 The Hub links a generated Aesyna static adapter at `/_hub/hub-aesyna.css`; authoring
@@ -67,8 +67,10 @@ Returning via **Library** restores its selected document URL within the browser 
 The workspace links run **Library**, **Recipes**, **Vault**, then **Wizard**. Each has an accessible
 name, keyboard focus ring and current-page state. The desktop toolbar groups document type and
 folder under **Filters**. **Export** runs with the current settings and its adjacent chevron opens
-format, preview palette and output folder. **Support** has its own chevron on desktop and lives
-in the drawer at compact widths.
+format, preview palette and output folder. Open **Settings → Appearance** on desktop, or
+**Menu → Appearance** on compact screens, to choose light or dark Hub chrome. The choice is saved
+for this browser and applies to the PDF reader too. Export format and document palette have their
+own controls.
 
 ### Auto-refresh (no restart when you export)
 
@@ -122,8 +124,12 @@ Each `.html` file is its **own template** in the library (one card = one file).
 Local-first library + filters (Jobright-style UX inspiration — not cloud match scores):
 
 - **Document type and folder:** open **Filters** on desktop or the menu drawer at compact widths. Document type chips show counts for the selected profile. The folder picker retains starred folders across refresh and reload. Open it and click a row's star to pin or unpin that folder.
-- **Search and export:** use the leading Search control or Ctrl/Cmd+K in the Library. Refresh and Export are pinned on the right on desktop. The compact drawer includes Refresh, and Export options remain available beside Export.
-- **Drawer palette / profiles / format:** also custom lists (`hub-select.js`). Native `<select>` popups ignore Chrome’s device-mode frame and clip off iPad portrait. Folder stays `.hub-folder-native` (hidden) + the pin picker. Compact footer (Support JenniNexus) is centered with smaller tip pills and larger copy ≤991.98. Home cards add columns as the available stage widens and cap the grid at 1400px.
+- **Search and export:** use the leading Search control or Ctrl/Cmd+K in the Library. Search starts with a single field
+  and a close button. Results appear as you type. Refresh and Export are pinned on the right on desktop. The compact drawer includes Refresh, and Export options remain available beside Export.
+- **Palettes and dropdowns:** use a star beside a preview palette to keep that variant at the top.
+  Favorites are saved per browser and shared between the desktop Export menu and compact drawer.
+  Profiles, format, preview palettes, Wizard style fields and PDF reading mode share the themed
+  picker. The folder picker shows starred folders above the other folders.
 - **Profiles** (was “Who”): `all profiles` plus **`examples` first** (Jane Example, from tracked `profiles/examples.json`) then every workspace id from `users/` + `profiles/`. Path ownership (`resumes/<id>/` · legacy `storage/<id>/` URLs resolve to the same files) or a hyphen-bounded token (`jenni-…`, `meet-jenni-bot`) tags the card. Preference: `pdf-designer.hub.profileFilter`. First visit with no stored preference selects `examples`. **PDF Designer** app icon/title returns to the home landing (kind cards) and clears `?doc=`.
   - Choosing a profile **scopes** the folder picker and kind-chip counts to that profile. Kind chips click the first matching card. A leftover folder filter is **not** restored across reload (that hid the library behind one template dir).
   - Copy `profiles/you-resume.example.json` → `profiles/you-resume.json` for yourself; keep `profiles/examples.json` so the public cards stay in the dropdown.

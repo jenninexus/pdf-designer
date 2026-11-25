@@ -92,10 +92,13 @@ def test_compact_wizard_imports_reviews_styles_and_exports(tmp_path, max_pages, 
                 assert page.evaluate("document.documentElement.scrollWidth === innerWidth")
             page.set_viewport_size({"width": 320, "height": 568})
             page.get_by_role("button", name="Choose a style").click()
-            page.locator("#starterLayout").select_option("skills-first")
-            page.locator("#starterPalette").select_option("slate-ink")
-            page.get_by_label("Heading case").select_option(heading_case)
-            page.get_by_label("Résumé page limit").select_option(str(max_pages))
+            for picker, value in (
+                ("starterLayout", "skills-first"), ("starterPalette", "slate-ink"),
+                ("starterHeadingCase", heading_case), ("starterResumePages", str(max_pages)),
+            ):
+                label = page.locator(f'#{picker} option[value="{value}"]').text_content().strip()
+                page.locator(f"#{picker}Trigger").click()
+                page.locator(f"#{picker}Menu").get_by_role("button", name=label, exact=True).click()
             page.get_by_role("button", name="Review and save").click()
             save = page.get_by_role("button", name="Save résumé and vault")
             assert save.is_disabled()

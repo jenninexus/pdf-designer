@@ -62,6 +62,9 @@ def test_splash_auto_advances_preserving_deep_links_and_support_is_post_launch()
 
 def test_compact_navigation_keeps_modes_reachable_and_drawer_focus_contained(tmp_path):
     playwright = pytest.importorskip("playwright.sync_api")
+    sample = tmp_path / "documents" / "fictional-resume.html"
+    sample.parent.mkdir()
+    sample.write_text("<!doctype html><title>Fictional resume</title><p>Example</p>", encoding="utf-8")
     handler = make_handler(tmp_path, scan_documents(tmp_path), load_palettes(tmp_path))
     with ThreadingHTTPServer(("127.0.0.1", 0), handler) as server:
         runner = Thread(target=server.serve_forever, daemon=True)
@@ -80,7 +83,7 @@ def test_compact_navigation_keeps_modes_reachable_and_drawer_focus_contained(tmp
                     search = leading.get_by_label("Search library", exact=True)
                     assert leading.locator(".hub-brand").bounding_box()["x"] < search.bounding_box()["x"]
                     if route in ("/", "/vault"):
-                        assert search.bounding_box()["x"] < leading.get_by_label("Profiles").bounding_box()["x"]
+                        assert search.bounding_box()["x"] < leading.get_by_role("button", name="Profiles", exact=True).bounding_box()["x"]
                     modes = page.locator(".hub-modes a")
                     assert modes.all_inner_texts() == ["Library", "Recipes", "Vault", "Wizard"]
                     assert page.evaluate("document.documentElement.scrollWidth") == 320
@@ -125,7 +128,7 @@ def test_compact_navigation_keeps_modes_reachable_and_drawer_focus_contained(tmp
                     assert page.evaluate("document.documentElement.scrollWidth") == width
                     leading = bar.locator(".hub-bar-leading")
                     brand = leading.locator(".hub-brand")
-                    profile = leading.get_by_label("Profiles")
+                    profile = leading.get_by_role("button", name="Profiles", exact=True)
                     assert brand.is_visible() and profile.is_visible()
                     export = bar.get_by_label("Export options", exact=True)
                     export.click()
@@ -167,7 +170,81 @@ def test_compact_navigation_keeps_modes_reachable_and_drawer_focus_contained(tmp
                 page.get_by_label("Search library", exact=True).click()
                 assert page.get_by_role("searchbox", name="Search documents").evaluate("(el) => el === document.activeElement")
                 page.keyboard.press("Escape")
-                assert page.get_by_label("Search library", exact=True).evaluate("(el) => el === document.activeElement")
+                playwright.expect(page.get_by_label("Search library", exact=True)).to_be_focused()
+                search_trigger = page.locator("#searchTrigger")
+                search_dialog = page.get_by_role("dialog", name="Search the library")
+                search_trigger.click()
+                assert not search_dialog.locator("#searchOvlResults").is_visible()
+                assert search_dialog.get_by_role("searchbox").get_attribute("placeholder") == "Search name or path…"
+                search_dialog.get_by_role("button", name="Close search").click()
+                playwright.expect(search_trigger).to_be_focused()
+                search_trigger.click()
+                page.mouse.click(3, 3)
+                playwright.expect(search_trigger).to_be_focused()
+                search_trigger.click()
+                search_dialog.get_by_role("searchbox").fill("fictional-resume")
+                playwright.expect(search_dialog.locator(".hub-search-ovl-item")).to_have_count(1)
+                page.keyboard.press("Enter")
+                playwright.expect(search_dialog).to_be_hidden()
+
+                page.set_viewport_size({"width": 1280, "height": 900})
+                export = bar.get_by_label("Export options", exact=True)
+                export.click()
+                palette = page.locator("#paletteTrigger")
+                palette.press("ArrowDown")
+                options = page.locator("#paletteMenu .hub-select-option")
+                names = options.all_text_contents()[-3:]
+                for name in names:
+                    page.get_by_role("button", name=f"Favorite {name}", exact=True).click()
+                assert options.all_text_contents()[:3] == names
+                assert page.locator("#palette").input_value() == ""
+                page.reload()
+                export.click()
+                palette.click()
+                assert options.all_text_contents()[:3] == names
+                for appearance in ("dark", "light"):
+                    page.keyboard.press("Escape")
+                    settings = bar.get_by_text("Settings", exact=True)
+                    settings.click()
+                    radio = bar.get_by_role("radio", name=appearance.capitalize())
+                    if not radio.is_visible():
+                        bar.get_by_text("Appearance", exact=True).click()
+                    radio.check()
+                    assert page.locator("html").get_attribute("data-hub-appearance") == appearance
+                    export.click()
+                    page.locator("#fmtTrigger").click()
+                    assert page.locator('#fmtMenu .hub-select-option[aria-pressed="true"]').evaluate("""element => {
+                        const luminance = color => {
+                            const rgb = color.match(/\\d+/g).slice(0, 3).map(value => {
+                                const channel = value / 255;
+                                return channel <= .04045 ? channel / 12.92 : ((channel + .055) / 1.055) ** 2.4;
+                            });
+                            return rgb[0] * .2126 + rgb[1] * .7152 + rgb[2] * .0722;
+                        };
+                        const style = getComputedStyle(element);
+                        const values = [luminance(style.color), luminance(style.backgroundColor)].sort((a, b) => a - b);
+                        return (values[1] + .05) / (values[0] + .05) >= 4.5;
+                    }""")
+                page.reload()
+                assert page.locator("html").get_attribute("data-hub-appearance") == "light"
+                filters.click()
+                folder.click()
+                pin = page.locator("#folderFilterMenu .hub-folder-pin").first
+                pin.click()
+                assert pin.get_attribute("aria-pressed") == "true"
+                page.reload()
+                filters.click()
+                folder.click()
+                assert pin.get_attribute("aria-pressed") == "true"
+                page.set_viewport_size({"width": 390, "height": 844})
+                toggle.click()
+                drawer.locator("#drawerPaletteTrigger").click()
+                assert drawer.locator("#drawerPaletteMenu .hub-select-option").all_text_contents()[:3] == names
+                page.keyboard.press("Escape")
+                assert drawer.is_visible()
+                drawer.get_by_text("Appearance", exact=True).click()
+                drawer.get_by_role("radio", name="Dark").check()
+                assert page.locator("html").get_attribute("data-hub-appearance") == "dark"
                 browser.close()
         finally:
             server.shutdown()
@@ -198,8 +275,9 @@ def test_pdf_reader_fits_real_spreads_and_preserves_manual_zoom(tmp_path):
                 reader = page
                 first = reader.get_by_role("img", name="PDF page 1", exact=True)
                 assert first.evaluate("async (image) => { await image.decode(); return image.naturalWidth > 0; }")
-                mode = reader.get_by_role("combobox", name="Reading mode")
-                mode.select_option("two-up")
+                mode = reader.get_by_role("button", name="Reading mode")
+                mode.click()
+                reader.get_by_role("button", name="Two pages", exact=True).click()
                 second = reader.get_by_role("img", name="PDF page 2", exact=True)
                 assert second.evaluate("async (image) => { await image.decode(); return image.naturalWidth > 0; }")
                 assert abs(first.bounding_box()["y"] - second.bounding_box()["y"]) < 1
@@ -230,7 +308,8 @@ def test_pdf_reader_fits_real_spreads_and_preserves_manual_zoom(tmp_path):
                 ))""")
                 assert fit.get_attribute("aria-pressed") == "false"
 
-                mode.select_option("single")
+                mode.click()
+                reader.get_by_role("button", name="Single page", exact=True).click()
                 reader.get_by_role("button", name="Next page").click()
                 assert second.is_visible() and not first.is_visible()
                 original = reader.get_by_role("link", name="Open original PDF in browser viewer")
@@ -239,7 +318,7 @@ def test_pdf_reader_fits_real_spreads_and_preserves_manual_zoom(tmp_path):
                 page.goto(f"{origin}/?no-splash=1&doc=_exports/fictional-review.pdf")
                 embedded = page.frame_locator("#main")
                 assert embedded.get_by_role("img", name="PDF page 1", exact=True).is_visible()
-                assert embedded.get_by_role("combobox", name="Reading mode").input_value() == "single"
+                playwright.expect(embedded.get_by_role("button", name="Reading mode")).to_have_text("Single page")
                 library = page.locator("#hubLibrary")
                 assert library.bounding_box()["height"] <= 128
                 page.set_viewport_size({"width": 320, "height": 568})
@@ -254,7 +333,7 @@ def test_pdf_reader_fits_real_spreads_and_preserves_manual_zoom(tmp_path):
                 assert not library.is_visible() and not page.locator(".hub-bar").is_visible()
                 assert frame.bounding_box()["height"] > height + 150
                 assert frame.get_attribute("src") == frame_url
-                assert embedded.get_by_role("combobox", name="Reading mode").input_value() == "single"
+                playwright.expect(embedded.get_by_role("button", name="Reading mode")).to_have_text("Single page")
                 for width in (576, 768, 1024):
                     page.set_viewport_size({"width": width, "height": 800})
                     assert page.locator(".hub-bar").is_visible()
@@ -264,6 +343,11 @@ def test_pdf_reader_fits_real_spreads_and_preserves_manual_zoom(tmp_path):
                 assert toggle.get_attribute("aria-expanded") == "true"
                 assert library.is_visible()
                 assert frame.bounding_box()["width"] < 1024
+                bar = page.locator("header.hub-bar")
+                bar.get_by_text("Settings", exact=True).click()
+                bar.get_by_text("Appearance", exact=True).click()
+                bar.get_by_role("radio", name="Light").check()
+                playwright.expect(embedded.locator("html")).to_have_attribute("data-hub-appearance", "light")
                 browser.close()
         finally:
             server.shutdown()

@@ -107,7 +107,8 @@ def test_chromium_preview_and_exports_cannot_run_document_code(hub, tmp_path):
         assert frame.locator("body").get_attribute("data-executed") is None
         export_options = page.get_by_label("Export options", exact=True)
         export_options.click()
-        page.locator("#palette").select_option(index=1)
+        page.locator("#paletteTrigger").click()
+        page.locator("#paletteMenu .hub-select-option").nth(1).click()
         assert frame.locator("html").evaluate("(node) => node.style.getPropertyValue('--primary')").strip()
         page.keyboard.press("Escape")
         assert not any("/api/vault-overview" in url or url == origin + "/vault" for url in requests)
@@ -118,9 +119,12 @@ def test_chromium_preview_and_exports_cannot_run_document_code(hub, tmp_path):
         assert direct.locator("body").get_attribute("data-executed") is None
 
         for format_name in ("pdf-light", "pdf-dark", "png-light"):
+            file_type, appearance = format_name.split("-")
+            format_label = f"{file_type.upper()} {appearance}"
             with page.expect_response(lambda response: response.url == origin + "/api/export") as export:
                 export_options.click()
-                page.locator("#fmt").select_option(format_name)
+                page.locator("#fmtTrigger").click()
+                page.locator("#fmtMenu").get_by_role("button", name=format_label, exact=True).click()
                 page.locator("#exportBtn").click()
             data = export.value.json()
             assert data["ok"], data

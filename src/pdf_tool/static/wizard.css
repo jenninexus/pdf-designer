@@ -75,3 +75,6 @@
 @media (prefers-reduced-motion: reduce) {
   .wizard-page :is(.wizard-step, .wizard-actions a, .wizard-actions button, .wizard-field-row button) { transition: none; animation: none; }
 }
+
+[data-hub-appearance="light"] .draft-fields { --dash-card-bg: var(--ae-solid); }
+.draft-swatches span[data-swatch='dark'] { color: #e8ecf8; }

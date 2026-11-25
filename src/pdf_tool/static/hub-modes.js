@@ -71,20 +71,37 @@
     link.addEventListener('pointerenter', () => { if (canHover.matches) warm(); });
     link.addEventListener('focus', warm, { once: true });
   }
-  // Desktop Support lives beside actions; compact layouts keep it in the existing drawer.
+  // Share one settings layout across desktop chrome and the compact drawer.
   const support = document.querySelector('.hub-drawer .hub-support');
   const pin = bar.querySelector('.hub-bar-pin');
+  function appearance(group) {
+    const settings = document.createElement('details');
+    settings.className = 'hub-appearance-settings';
+    settings.innerHTML = `
+      <summary>Appearance</summary>
+      <fieldset aria-label="Hub color mode">
+        <label><input type="radio" name="hub-appearance-${group}" value="dark" data-hub-appearance-choice> Dark</label>
+        <label><input type="radio" name="hub-appearance-${group}" value="light" data-hub-appearance-choice> Light</label>
+      </fieldset>`;
+    settings.querySelectorAll('input').forEach(input => {
+      input.checked = input.value === document.documentElement.dataset.hubAppearance;
+    });
+    return settings;
+  }
   if (support && pin) {
     const menu = document.createElement('details');
     menu.className = 'hub-more hub-support-menu';
     const summary = document.createElement('summary');
-    summary.innerHTML = 'Support <span class="hub-fa-icon fa-chevron-down hub-chevron" aria-hidden="true"></span>';
-    summary.setAttribute('aria-label', 'Support PDF Designer');
+    summary.innerHTML = 'Settings <span class="hub-fa-icon fa-chevron-down hub-chevron" aria-hidden="true"></span>';
     const panel = document.createElement('div');
     panel.className = 'hub-more-panel';
-    panel.append(support.cloneNode(true));
+    panel.append(appearance('desktop'), support.cloneNode(true));
     menu.append(summary, panel);
     pin.append(menu);
+    const compactSettings = document.createElement('div');
+    compactSettings.className = 'hub-drawer-section';
+    compactSettings.append(appearance('drawer'));
+    support.before(compactSettings);
   }
   window.addEventListener('pagehide', saveLocation);
 })();

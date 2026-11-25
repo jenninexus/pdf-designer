@@ -51,6 +51,7 @@
     if (result.palettes.some(item => item.id === 'slate-ink')) palette.value = 'slate-ink';
     layout.replaceChildren(...Object.entries(result.layouts).map(([id, title]) => new Option(title, id)));
     options = result;
+    window.hubSyncSelects?.();
     showSwatches();
   }
 
