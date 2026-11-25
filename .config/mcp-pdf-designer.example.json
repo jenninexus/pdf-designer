@@ -48,45 +48,12 @@
   "breakpoints": {
     "_role": "Project pointer only; named set and numeric tokens live in www-theme-kit. Hub CSS and drawer-resize.js implement the selected profile behavior.",
     "set": "bootstrap_5_3_8_extended_390_4k",
-    "framework": "Bootstrap 5.3.8 extended (xxs + HD/2K/4K)",
-    "shared_token_reference": "<WWW_THEME_KIT>\\scss\\_breakpoint-tokens.scss",
-    "hub_css": "src/pdf_tool/static/hub.css (hard-codes the same .98px maxes — CSS cannot var() inside @media)",
-    "viewport_floor": "390x844",
-    "nav_switch": "lg (992px) — scrollable desktop toolbar from lg; drawer below lg",
-    "hub_layout_switch": {
-      "stack_below": "575.98px (xs-max) — library stacks above stage (phones only)",
-      "drawer_below": "991.98px (md-max) — phone full-bleed; 576–991.98 flexible end-panel",
-      "short_landscape": "max-height 480px — stack like a phone",
-      "comfortable_from": "992px (lg) — full horizontally scrollable header controls",
-      "widescreen_from": "1400px (xxl) — max content breathing room"
-    },
-    "key_maxes": {
-      "xxs": "389.98px",
-      "xs": "575.98px",
-      "sm": "767.98px",
-      "md": "991.98px",
-      "lg": "1199.98px",
-      "xl": "1399.98px",
-      "xxl": "1919.98px"
-    },
-    "display_refs": {
-      "hd": "1920px",
-      "2k": "2560px",
-      "4k": "3840px"
-    },
-    "qa_matrix": [
-      390,
-      576,
-      768,
-      992,
-      1024,
-      1200,
-      1366,
-      1400,
-      1920,
-      2560,
-      3840
+    "shared_token_reference": "../www-theme-kit/scss/_breakpoint-tokens.scss",
+    "runtime_sources": [
+      "src/pdf_tool/static/hub.css",
+      "src/pdf_tool/static/drawer-resize.js"
     ],
+    "capture_manifest_reference": ".config/capture/hub.breakpoints.example.json",
     "set_reference": "../www-theme-kit/docs/BREAKPOINTS.md",
     "profile_reference": "../www-theme-kit/profiles/pdf-designer.json#breakpoints"
   },

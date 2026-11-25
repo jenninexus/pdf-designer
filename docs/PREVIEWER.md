@@ -79,6 +79,13 @@ plus a fresh document list. When the signature changes, the sidebar re-renders, 
 hub updates on its own.** The signature is coarse and content-free (never reads file bytes), so it stays
 fast on a large tree. If the server is briefly down mid-poll, the client just retries the next tick.
 
+### HTTP freshness
+
+The loopback Hub sends `Cache-Control: no-store` on its pages, static assets and API responses.
+Reload an open tab to pick up changed Hub CSS or JavaScript. The document poller above refreshes
+document content in an already open workspace. An installed desktop bundle receives shell updates
+with an app release.
+
 ### Chrome vs document tokens
 
 | Layer | Where | Purpose |
@@ -90,8 +97,8 @@ fast on a large tree. If the server is briefly down mid-poll, the client just re
 
 | Pointer | Role |
 |---|---|
-| [`.config/mcp-pdf-designer.example.json#breakpoints`](../.config/mcp-pdf-designer.example.json) | ⭐ Tracked seed — copy to local `mcp-pdf-designer.json` (gitignored) for machine paths |
-| Global breakpoint **registry** (optional, not SSOT) | Your optional local registry → project → set → nav_switch |
+| [`.config/mcp-pdf-designer.example.json#breakpoints`](../.config/mcp-pdf-designer.example.json) | Tracked seed for the gitignored local MCP config. The breakpoint block links to the set, profile and runtime sources. |
+| [PDF Designer profile](../../www-theme-kit/profiles/pdf-designer.json) | Owns the selected navigation, library and short-landscape rules |
 | `www-theme-kit/scss/_breakpoint-tokens.scss` | Shared numeric tokens / mixins (www-theme-kit is the consumer SSOT for this repo) |
 | `hub.css` `@media` | Hard-codes the same `.98px` maxes (CSS cannot `var()` inside `@media`) |
 
