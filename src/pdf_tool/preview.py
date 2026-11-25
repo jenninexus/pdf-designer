@@ -585,7 +585,7 @@ try {
   var q = new URLSearchParams(location.search);
   var skip = sessionStorage.getItem("pdf-designer.hub.splash") === "1";
   var force = q.has("splash");
-  var off = q.has("no-splash");
+  var off = q.has("no-splash") || q.get("search") === "1";
   if ((skip && !force) || (off && !force)) document.documentElement.classList.add("hub-splash-skip");
 } catch (e) {}
 </script>
@@ -613,65 +613,71 @@ try {
   </div>
 </div>
 <header class="hub-bar" aria-label="Design Hub toolbar">
-  <div class="hub-bar-scroll" id="hubBarScroll" tabindex="0" title="Scroll horizontally — mouse wheel works here">
-    <div class="hub-group hub-brand-group">
-      <a class="hub-brand" id="hubHomeLink" href="/" title="PDF Designer — home and templates" aria-label="PDF Designer — home and templates"><img src="/_hub/hub-app-icon.png" width="28" height="28" alt="" fetchpriority="high"></a>
+  <div class="hub-bar-leading">
+    <a class="hub-brand" id="hubHomeLink" href="/" title="PDF Designer — home and templates" aria-label="PDF Designer — home and templates"><img src="/_hub/hub-app-icon.png" width="28" height="28" alt="" fetchpriority="high"></a>
+    <button type="button" class="hub-search-trigger" id="searchTrigger" title="Search library (Ctrl/Cmd+K)" aria-label="Search library"><span class="hub-fa-icon fa-magnifying-glass" aria-hidden="true"></span><span class="hub-action-label">Search</span></button>
+    <div class="hub-profile">
+      <select id="personFilter" title="Profiles" aria-label="Profiles">
+        <option value="">all profiles</option>
+        __PROFILE_OPTIONS__
+      </select>
+      <span class="hub-fa-icon fa-chevron-down hub-chevron" aria-hidden="true"></span>
+    </div>
+  </div>
+  <div class="hub-bar-scroll" id="hubBarScroll">
     <nav class="hub-group hub-nav hub-modes" aria-label="Workspace modes">
       <a class="hub-link on" href="/" title="Library — Documents and templates" aria-label="Library" aria-current="page"><span class="hub-fa-icon fa-file-lines" aria-hidden="true"></span><span class="hub-mode-name">Library</span></a>
       <a class="hub-link" href="/recipes" title="Recipes — Layout and palette templates" aria-label="Recipes"><span class="hub-fa-icon fa-table-columns" aria-hidden="true"></span><span class="hub-mode-name">Recipes</span></a>
       <a class="hub-link" href="/vault" title="Vault — Skills and source-backed claims" aria-label="Vault"><span class="hub-fa-icon fa-shield-halved" aria-hidden="true"></span><span class="hub-mode-name">Vault</span></a>
       <a class="hub-link" href="/wizard" title="Wizard — Create a resume workspace" aria-label="Wizard"><span class="hub-fa-icon fa-wand-magic-sparkles" aria-hidden="true"></span><span class="hub-mode-name">Wizard</span></a>
     </nav>
-    </div>
-    <div class="hub-group" title="Profiles — applicants + studio entity decks">
-      <select id="personFilter" title="Profiles" aria-label="Profiles">
-        <option value="">all profiles</option>
-        __PROFILE_OPTIONS__
-      </select>
-    </div>
-    <div class="hub-group">
-      <div class="chips" id="kindChips" role="tablist" aria-label="Document kind"></div>
-    </div>
-
-    <div class="hub-group hub-filters">
-      <input id="search" type="search" placeholder="Search…" autocomplete="off" title="Search name or path" aria-label="Search">
-      <select id="folderFilter" class="hub-folder-native" aria-hidden="true" tabindex="-1"><option value="">all folders</option></select>
-      <div class="hub-folder-picker" id="folderPicker">
-        <button type="button" class="hub-folder-trigger" id="folderFilterBtn" aria-haspopup="listbox" aria-expanded="false" title="Folder — hover ★ to pin go-tos">
-          <span class="hub-folder-label" id="folderFilterLabel">all folders</span>
-          <span class="hub-fa-icon fa-chevron-down" aria-hidden="true"></span>
-        </button>
-        <div class="hub-folder-menu" id="folderFilterMenu" role="listbox" hidden></div>
-      </div>
-      <select id="palette" title="Palette" aria-label="Palette"><option value="">doc default</option></select>
-      <select id="fmt" title="Export format" aria-label="Export format">
-        <option value="pdf-light">PDF light</option>
-        <option value="pdf-dark">PDF dark</option>
-        <option value="png-light">PNG light</option>
-        <option value="png-dark">PNG dark</option>
-      </select>
-    </div>
   </div>
   <div class="hub-bar-pin" aria-label="Pinned actions">
-    <details class="hub-more" id="hubMore">
-      <summary title="More export options" aria-label="More export options">
-        <span class="hub-fa-icon fa-ellipsis" aria-hidden="true"></span>
-      </summary>
+    <input id="search" type="hidden">
+    <details class="hub-more hub-library-filters">
+      <summary class="hub-pill">Filters <span class="hub-fa-icon fa-chevron-down hub-chevron" aria-hidden="true"></span></summary>
       <div class="hub-more-panel">
-        <label>Export folder
-          <input id="outdir" type="text" placeholder="beside source: resumes/&lt;profile&gt;/… (default)">
-        </label>
+        <div class="hub-menu-label" id="hubKindLabel">Document type</div>
+        <div class="chips" id="kindChips" role="group" aria-labelledby="hubKindLabel"></div>
+        <div class="hub-menu-label" id="hubFolderLabel">Folder</div>
+        <select id="folderFilter" class="hub-folder-native" aria-hidden="true" tabindex="-1"><option value="">all folders</option></select>
+        <div class="hub-folder-picker" id="folderPicker">
+          <button type="button" class="hub-folder-trigger" id="folderFilterBtn" aria-labelledby="hubFolderLabel folderFilterLabel" aria-haspopup="listbox" aria-expanded="false" title="Folder — hover ★ to pin go-tos">
+            <span class="hub-folder-label" id="folderFilterLabel">all folders</span>
+            <span class="hub-fa-icon fa-chevron-down" aria-hidden="true"></span>
+          </button>
+          <div class="hub-folder-menu" id="folderFilterMenu" role="listbox" hidden></div>
+        </div>
       </div>
     </details>
-    <button type="button" class="hub-search-trigger" id="searchTrigger" title="Search (Ctrl/Cmd+K)" aria-label="Search">
-      <span class="hub-fa-icon fa-magnifying-glass" aria-hidden="true"></span>
-    </button>
     <button id="refreshBtn" type="button" class="hub-icon-btn" title="Re-scan the repo for new/changed documents" aria-label="Refresh">
       <svg class="hub-icon" viewBox="0 0 512 512" aria-hidden="true" focusable="false"><path fill="currentColor" d="M105.1 202.6c7.7-21.8 20.2-42.3 37.8-59.8c62.5-62.5 163.8-62.5 226.3 0L386.3 160 352 160c-17.7 0-32 14.3-32 32s14.3 32 32 32l111.5 0c0 0 0 0 0 0l.4 0c17.7 0 32-14.3 32-32l0-112c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 35.2L414.4 97.6c-87.5-87.5-229.3-87.5-316.8 0C73.2 122 55.6 150.7 44.8 181.4c-5.9 16.7 2.9 34.9 19.5 40.8s34.9-2.9 40.8-19.5zM39 289.3c-5 1.5-9.8 4.2-13.7 8.2c-4 4-6.7 8.8-8.1 14c-.3 1.2-.6 2.5-.8 3.8c-.3 1.7-.4 3.4-.4 5.1L16 432c0 17.7 14.3 32 32 32s32-14.3 32-32l0-35.1 17.6 17.5c0 0 0 0 0 0c87.5 87.4 229.3 87.4 316.7 0c24.4-24.4 42.1-53.1 52.9-83.8c5.9-16.7-2.9-34.9-19.5-40.8s-34.9 2.9-40.8 19.5c-7.7 21.8-20.2 42.3-37.8 59.8c-62.5 62.5-163.8 62.5-226.3 0l-.1-.1L125.6 352l34.4 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L48.4 288c-1.6 0-3.2 .1-4.8 .3s-3.1 .5-4.6 1z"/></svg>
     </button>
-    <button class="primary hub-icon-btn" id="exportBtn" type="button" title="Export selected document" aria-label="Export">
-      <svg class="hub-icon" viewBox="0 0 512 512" aria-hidden="true" focusable="false"><path fill="currentColor" d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 242.7-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7 288 32zM64 352c-35.3 0-64 28.7-64 64l0 32c0 35.3 28.7 64 64 64l384 0c35.3 0 64-28.7 64-64l0-32c0-35.3-28.7-64-64-64l-101.5 0-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352 64 352zm368 56a24 24 0 1 1 0 48 24 24 0 1 1 0-48z"/></svg>
-    </button>
+    <div class="hub-export-split">
+      <button class="primary hub-icon-btn hub-export-action" id="exportBtn" type="button" title="Export selected document" aria-label="Export">
+        <svg class="hub-icon" viewBox="0 0 512 512" aria-hidden="true" focusable="false"><path fill="currentColor" d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 242.7-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7 288 32zM64 352c-35.3 0-64 28.7-64 64l0 32c0 35.3 28.7 64 64 64l384 0c35.3 0 64-28.7 64-64l0-32c0-35.3-28.7-64-64-64l-101.5 0-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352 64 352zm368 56a24 24 0 1 1 0 48 24 24 0 1 1 0-48z"/></svg>
+        <span class="hub-action-label">Export</span>
+      </button>
+      <details class="hub-more" id="hubMore">
+        <summary title="Export options" aria-label="Export options"><span class="hub-fa-icon fa-chevron-down hub-chevron" aria-hidden="true"></span></summary>
+        <div class="hub-more-panel">
+          <label>Format
+            <select id="fmt" title="Export format" aria-label="Export format">
+              <option value="pdf-light">PDF light</option>
+              <option value="pdf-dark">PDF dark</option>
+              <option value="png-light">PNG light</option>
+              <option value="png-dark">PNG dark</option>
+            </select>
+          </label>
+          <label>Preview palette
+            <select id="palette" title="Palette" aria-label="Palette"><option value="">doc default</option></select>
+          </label>
+          <label>Export folder
+            <input id="outdir" type="text" placeholder="beside source: resumes/&lt;profile&gt;/… (default)">
+          </label>
+        </div>
+      </details>
+    </div>
     <button type="button" class="hub-drawer-toggle" id="drawerToggle" title="Menu" aria-label="Open menu" aria-expanded="false" aria-controls="hubDrawer">
       <svg class="hub-icon hub-menu-icon" viewBox="0 0 512 512" aria-hidden="true" focusable="false"><path fill="currentColor" d="M0 96C0 78.3 14.3 64 32 64l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 128C14.3 128 0 113.7 0 96zM64 256c0-17.7 14.3-32 32-32l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L96 288c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32L32 448c-17.7 0-32-14.3-32-32s14.3-32 32-32l384 0c17.7 0 32 14.3 32 32z"/></svg>
     </button>
@@ -701,7 +707,7 @@ try {
     </div>
     <div class="hub-drawer-section">
       <span class="hub-drawer-label">Kind</span>
-      <div class="chips" id="drawerKindChips" role="tablist" aria-label="Document kind (menu)"></div>
+      <div class="chips" id="drawerKindChips" role="group" aria-label="Document type"></div>
     </div>
     <div class="hub-drawer-section">
       <div class="hub-drawer-field">
@@ -1042,7 +1048,12 @@ document.addEventListener("click", (e) => {
   closeFolderPickers();
 });
 document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") closeFolderPickers();
+  if (e.key !== "Escape") return;
+  const picker = document.querySelector(".hub-folder-picker.open");
+  if (!picker) return;
+  closeFolderPickers();
+  picker.querySelector(".hub-folder-trigger").focus({ preventScroll: true });
+  e.preventDefault();
 });
 function repositionOpenFolderMenus() {
   document.querySelectorAll(".hub-folder-picker.open").forEach(p => {
@@ -1050,15 +1061,10 @@ function repositionOpenFolderMenus() {
   });
 }
 window.addEventListener("resize", repositionOpenFolderMenus);
-const hubBarScrollEl = document.getElementById("hubBarScroll");
-/* Reposition (don't close) on header scroll — close-on-scroll fights
-   scroll-into-view when focusing the trigger and leaves the menu looking dead. */
-if (hubBarScrollEl) hubBarScrollEl.addEventListener("scroll", repositionOpenFolderMenus, { passive: true });
 
 /* Horizontal wheel-scroll on the header strip (and its scrollbar). */
 (function hubBarWheelScroll() {
   const sc = document.getElementById("hubBarScroll");
-  const bar = document.querySelector(".hub-bar");
   if (!sc) return;
   const onWheel = (e) => {
     if (Math.abs(e.deltaY) < Math.abs(e.deltaX)) return;
@@ -1067,10 +1073,6 @@ if (hubBarScrollEl) hubBarScrollEl.addEventListener("scroll", repositionOpenFold
     sc.scrollLeft += e.deltaY;
   };
   sc.addEventListener("wheel", onWheel, { passive: false });
-  if (bar) bar.addEventListener("wheel", (e) => {
-    if (e.target.closest(".hub-bar-pin")) return;
-    onWheel(e);
-  }, { passive: false });
 })();
 
 const paletteSel = document.getElementById("palette");
@@ -1142,8 +1144,7 @@ function fillKindChipHost(wrap) {
     b.type = "button";
     b.className = "chip" + (kindFilter === k ? " on" : "");
     b.dataset.kind = k;
-    b.setAttribute("role", "tab");
-    b.setAttribute("aria-selected", kindFilter === k ? "true" : "false");
+    b.setAttribute("aria-pressed", kindFilter === k ? "true" : "false");
     b.innerHTML = `${KIND_LABEL[k]}<span class="n">${c[k] || 0}</span>`;
     b.addEventListener("click", () => {
       kindFilter = k;
@@ -1152,6 +1153,11 @@ function fillKindChipHost(wrap) {
       renderLibrary();
       const first = filteredDocs()[0];
       if (first) select(first);
+      const filters = wrap.closest("details");
+      if (filters) {
+        filters.open = false;
+        filters.querySelector("summary").focus({ preventScroll: true });
+      }
       closeDrawer();
     });
     wrap.appendChild(b);
@@ -1619,7 +1625,6 @@ document.getElementById("hubHomeLink").addEventListener("click", (ev) => {
   ev.preventDefault();
   goHome({ resetProfile: true });
 });
-document.getElementById("search").addEventListener("input", renderLibrary);
 function readOutdir() {
   const a = document.getElementById("outdir");
   const b = document.getElementById("outdirDrawer");
@@ -1673,6 +1678,7 @@ function openSearchOvl() {
   const input = document.getElementById("searchOvlInput");
   if (!ovl) return;
   closeDrawer();
+  document.querySelectorAll(".hub-bar .hub-more[open]").forEach(menu => { menu.open = false; });
   ovl.hidden = false;
   ovl.classList.add("open");
   if (input) {
@@ -1684,9 +1690,10 @@ function openSearchOvl() {
 }
 function closeSearchOvl() {
   const ovl = document.getElementById("hubSearchOvl");
-  if (!ovl) return;
+  if (!ovl || ovl.hidden) return;
   ovl.classList.remove("open");
   ovl.hidden = true;
+  document.getElementById("searchTrigger").focus({ preventScroll: true });
 }
 function renderSearchOvl() {
   const box = document.getElementById("searchOvlResults");
@@ -1753,6 +1760,12 @@ function renderSearchOvl() {
       openSearchOvl();
     }
   });
+  const url = new URL(location.href);
+  if (url.searchParams.get("search") === "1") {
+    url.searchParams.delete("search");
+    history.replaceState(history.state, "", url);
+    openSearchOvl();
+  }
 })();
 
 document.getElementById("exportBtn").addEventListener("click", async () => {

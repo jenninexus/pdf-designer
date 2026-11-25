@@ -1,8 +1,7 @@
 /* Shared application identity and real Hub modes. Independent of drawer wiring. */
 (function () {
   const bar = document.querySelector('.hub-bar');
-  const brandGroup = bar?.querySelector('.hub-brand-group');
-  const brand = brandGroup?.querySelector('.hub-brand');
+  const brand = bar?.querySelector('.hub-brand');
   const nav = bar?.querySelector('.hub-nav');
   if (!brand || !nav) return;
 
@@ -79,15 +78,13 @@
     const menu = document.createElement('details');
     menu.className = 'hub-more hub-support-menu';
     const summary = document.createElement('summary');
-    summary.textContent = 'Support';
+    summary.innerHTML = 'Support <span class="hub-fa-icon fa-chevron-down hub-chevron" aria-hidden="true"></span>';
     summary.setAttribute('aria-label', 'Support PDF Designer');
     const panel = document.createElement('div');
     panel.className = 'hub-more-panel';
     panel.append(support.cloneNode(true));
     menu.append(summary, panel);
-    pin.prepend(menu);
-    document.addEventListener('keydown', event => { if (event.key === 'Escape') menu.open = false; });
-    document.addEventListener('pointerdown', event => { if (!menu.contains(event.target)) menu.open = false; });
+    pin.append(menu);
   }
   window.addEventListener('pagehide', saveLocation);
 })();

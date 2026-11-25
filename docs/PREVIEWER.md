@@ -59,15 +59,16 @@ For the Windows-first browser launcher, see
 
 ### Application identity and workspace modes
 
-The 52px toolbar uses a small original document-and-pencil app icon and a readable 16px
-**PDF Designer** title. On phones the title gives way to the icon. The adjacent icon row switches
-between the existing **Library**, **Recipes**, **Vault** and **Wizard** views; each link has a tooltip,
-accessible name, keyboard focus ring and current-page state. The drawer retains full text labels.
-Returning through the Library mode restores its selected document URL within the browser tab.
-The home icon deliberately returns to the template landing page. Templates, palettes, filters and
-export controls continue to use their existing registries and behavior. The desktop toolbar includes
-a post-launch **Support** menu; compact layouts keep the same links in the existing drawer. This
-navigation adds no vector editor or publishing mode; those remain planned features.
+The D mark, **Search**, and the **Profiles** chooser stay in that order at the leading edge while
+the workspace links scroll. Profiles are available in Library and Vault. Search opens the
+Library search overlay from every workspace. The D mark opens the template landing page.
+Returning via **Library** restores its selected document URL within the browser tab.
+
+The workspace links run **Library**, **Recipes**, **Vault**, then **Wizard**. Each has an accessible
+name, keyboard focus ring and current-page state. The desktop toolbar groups document type and
+folder under **Filters**. **Export** runs with the current settings and its adjacent chevron opens
+format, preview palette and output folder. **Support** has its own chevron on desktop and lives
+in the drawer at compact widths.
 
 ### Auto-refresh (no restart when you export)
 
@@ -105,9 +106,12 @@ with an app release.
 Hub layout: **library left + viewer right** from **576px** up (desktop / tablet). Stacks only below
 **575.98px** (phones) and in **short landscape** (`max-height: 480px`). The stacked library stays
 scrollable and gives the preview more vertical space when a document is open. Drawer (hamburger) from
-**≤991.98px** (`nav_switch: lg`) so desktop windows from 992px retain the horizontally scrollable toolbar.
-The desktop toolbar starts at **992px** and widescreen spacing starts at **1400px**. The main action row is **52px**. Below **390px**, the Library adds a labeled workspace navigation row to keep all four destinations reachable at 320px. Header and drawer icons share an 18px glyph box and a 36px control that expands to 44px for coarse pointers. The active mode uses an accent tint. Keyboard focus has a separate outline. The menu contains keyboard focus and returns it to the trigger on dismissal, and reduced motion removes drawer travel.
-`www-theme-kit/scss/_offcanvas-nav.scss`.
+**≤991.98px** (`nav_switch: lg`) so desktop windows from 992px show Filters and Support in the toolbar.
+The main action row is **52px**. Below **576px**, a labeled workspace row keeps all four destinations
+reachable at 320px. From **576px to 1199px**, workspace links fit on the action row as icons.
+Starting at **1200px**, the same row shows workspace, Search and Export labels. Header and drawer
+icons share a 36px control that expands to 44px for coarse pointers. The drawer contains focus
+and returns it to the trigger on dismissal. Reduced motion removes drawer travel.
 The regression matrix covers 320, 390, 576, 768, 992, 1024, 1366, 1400, 1920, 2560, and 3840px.
 **Vault + Recipes + Wizard** use the same switch points (shared `hub.css` + `Library | Recipes | Vault | Wizard` nav). Library is `body.hub-shell` (fixed panes); subpages are `body.hub-page` (document scroll). After ~280px of page scroll a discreet back-to-top chevron appears (bottom-right; `hub-chrome.js`). Tables get a horizontal scroll wrapper below md.
 
@@ -117,8 +121,8 @@ Each `.html` file is its **own template** in the library (one card = one file).
 
 Local-first library + filters (Jobright-style UX inspiration — not cloud match scores):
 
-- **Kind chips (leading, after Profiles):** All · Resumes · Cover Letters · Letters · Work Samples · **Collages** · Galleries — then Library / Recipes / Vault / search / folder / palette scroll horizontally. **Refresh (icon) + Export (download icon) stay pinned** on the right; **⋯** opens the output-folder popover (also pinned — not clipped). ≤991.98px: hamburger drawer holds filters + outdir + tip links; magnifier opens search overlay (Ctrl/Cmd+K). Mouse wheel over the header strip scrolls that row horizontally.
-- **Folder:** custom picker (not a bare `<select>`). Open the list → hover a row for a **ghost ★**; click the star to pin / unpin. Pinned folders sort to the **top** and persist in `localStorage` (`pdf-designer.hub.pinnedFolders`) across Refresh and full reloads. No separate pin button in the toolbar. Menu is `position:fixed` (JS places it from the trigger rect) so `.hub-bar-scroll`’s `overflow-y:hidden` cannot clip it.
+- **Document type and folder:** open **Filters** on desktop or the menu drawer at compact widths. Document type chips show counts for the selected profile. The folder picker retains starred folders across refresh and reload. Open it and click a row's star to pin or unpin that folder.
+- **Search and export:** use the leading Search control or Ctrl/Cmd+K in the Library. Refresh and Export are pinned on the right on desktop. The compact drawer includes Refresh, and Export options remain available beside Export.
 - **Drawer palette / profiles / format:** also custom lists (`hub-select.js`). Native `<select>` popups ignore Chrome’s device-mode frame and clip off iPad portrait. Folder stays `.hub-folder-native` (hidden) + the pin picker. Compact footer (Support JenniNexus) is centered with smaller tip pills and larger copy ≤991.98. Home cards add columns as the available stage widens and cap the grid at 1400px.
 - **Profiles** (was “Who”): `all profiles` plus **`examples` first** (Jane Example, from tracked `profiles/examples.json`) then every workspace id from `users/` + `profiles/`. Path ownership (`resumes/<id>/` · legacy `storage/<id>/` URLs resolve to the same files) or a hyphen-bounded token (`jenni-…`, `meet-jenni-bot`) tags the card. Preference: `pdf-designer.hub.profileFilter`. First visit with no stored preference selects `examples`. **PDF Designer** app icon/title returns to the home landing (kind cards) and clears `?doc=`.
   - Choosing a profile **scopes** the folder picker and kind-chip counts to that profile. Kind chips click the first matching card. A leftover folder filter is **not** restored across reload (that hid the library behind one template dir).

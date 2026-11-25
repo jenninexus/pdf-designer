@@ -76,6 +76,11 @@ def test_compact_navigation_keeps_modes_reachable_and_drawer_focus_contained(tmp
                 )
                 for route in ("/", "/recipes", "/vault", "/wizard"):
                     page.goto(f"{origin}{route}?no-splash=1")
+                    leading = page.locator(".hub-bar-leading")
+                    search = leading.get_by_label("Search library", exact=True)
+                    assert leading.locator(".hub-brand").bounding_box()["x"] < search.bounding_box()["x"]
+                    if route in ("/", "/vault"):
+                        assert search.bounding_box()["x"] < leading.get_by_label("Profiles").bounding_box()["x"]
                     modes = page.locator(".hub-modes a")
                     assert modes.all_inner_texts() == ["Library", "Recipes", "Vault", "Wizard"]
                     assert page.evaluate("document.documentElement.scrollWidth") == 320
@@ -115,10 +120,54 @@ def test_compact_navigation_keeps_modes_reachable_and_drawer_focus_contained(tmp
                 assert bar.evaluate("(el) => el.scrollWidth === el.clientWidth")
                 assert page.locator("#exportBtn").evaluate("(el) => getComputedStyle(el).backgroundImage") == "none"
 
+                for width in (320, 390, 575, 576, 768, 991, 992, 1199, 1200, 1400, 2560, 3840):
+                    page.set_viewport_size({"width": width, "height": 800})
+                    assert page.evaluate("document.documentElement.scrollWidth") == width
+                    leading = bar.locator(".hub-bar-leading")
+                    brand = leading.locator(".hub-brand")
+                    profile = leading.get_by_label("Profiles")
+                    assert brand.is_visible() and profile.is_visible()
+                    export = bar.get_by_label("Export options", exact=True)
+                    export.click()
+                    panel = page.locator("#hubMore .hub-more-panel").bounding_box()
+                    assert panel["x"] >= 0 and panel["x"] + panel["width"] <= width
+                    page.keyboard.press("Escape")
+                    assert export.evaluate("(el) => el === document.activeElement && !el.parentElement.open")
+
+                page.set_viewport_size({"width": 1200, "height": 800})
+                for action in ("#searchTrigger", "#exportBtn"):
+                    assert bar.locator(action).evaluate("""(button) => {
+                        const control = button.getBoundingClientRect();
+                        const label = button.querySelector(".hub-action-label").getBoundingClientRect();
+                        return label.left >= control.left && label.right <= control.right;
+                    }""")
+                page.locator("#hubBarScroll").evaluate("(el) => { el.firstElementChild.style.minWidth = '2000px'; }")
+                before = brand.bounding_box()["x"]
+                assert page.locator("#hubBarScroll").evaluate("(el) => { el.scrollLeft = 100; return el.scrollLeft; }") > 0
+                assert brand.bounding_box()["x"] == before
+                filters = bar.get_by_text("Filters", exact=True)
+                filters.click()
+                folder = page.locator("#folderFilterBtn")
+                folder.click()
+                assert folder.get_attribute("aria-expanded") == "true"
+                page.keyboard.press("Escape")
+                assert folder.get_attribute("aria-expanded") == "false"
+                assert folder.evaluate("(el) => el === document.activeElement")
+                assert filters.evaluate("(el) => el.parentElement.open")
+                page.keyboard.press("Escape")
+                assert filters.evaluate("(el) => el === document.activeElement && !el.parentElement.open")
+                filters.click()
+                page.locator("#kindChips .chip").first.click()
+                assert filters.evaluate("(el) => el === document.activeElement && !el.parentElement.open")
+
                 page.goto(f"{origin}/recipes?no-splash=1")
                 for width, wrap in ((1200, "1180px"), (1400, "1280px"), (1920, "1400px"), (3840, "1400px")):
                     page.set_viewport_size({"width": width, "height": 900})
                     assert page.locator(".hub-page-wrap").evaluate("(el) => getComputedStyle(el).maxWidth") == wrap
+                page.get_by_label("Search library", exact=True).click()
+                assert page.get_by_role("searchbox", name="Search documents").evaluate("(el) => el === document.activeElement")
+                page.keyboard.press("Escape")
+                assert page.get_by_label("Search library", exact=True).evaluate("(el) => el === document.activeElement")
                 browser.close()
         finally:
             server.shutdown()

@@ -13,10 +13,11 @@
  * Kit SSOT for prefs / layout pointers: www-theme-kit/profiles/pdf-designer.json
  *
  * Header contract (2026-08-11):
- *   .hub-bar           — readable 52px; split into scroll strip + pinned actions.
- *     .hub-bar-scroll  — Design Hub · Profiles · All/Resumes/… · folder picker · rest.
+ *   .hub-bar           — fixed leading controls, workspace links, and pinned actions.
+ *     .hub-bar-leading — D mark · Search · Profiles where applicable.
+ *     .hub-bar-scroll  — Library · Recipes · Vault · Wizard.
  *                        Mouse wheel → horizontal scroll (passive:false on wheel).
- *     .hub-bar-pin     — ⋯ + Refresh + Export stay visible on the right.
+ *     .hub-bar-pin     — Filters · Refresh · split Export · Support or compact menu.
  *     .hub-folder-picker — custom list; ghost ★ on row hover; pinned rows sort to top.
  *                        Menu is position:fixed (JS top/left) so hub-bar-scroll overflow
  *                        does not clip it — same class of bug as hub-more before the pin move.
@@ -214,9 +215,7 @@ button, [role="button"], summary, .chip, .thumb { user-select: none; -webkit-use
 }
 *::-webkit-scrollbar-thumb:hover { background: var(--hub-scroll-thumb-hover); }
 
-/* ── Toolbar shell ─────────────────────────────────────────
-   Split: .hub-bar-scroll (wheel → horizontal) | .hub-bar-pin (Refresh + Export stay visible).
-   Order in scroll: Design Hub · Profiles · All/Resumes/Cover Letters/Work Samples · then the rest. */
+/* Fixed identity and actions flank the scrollable workspace links. */
 .hub-bar {
   display: flex;
   flex-wrap: nowrap;
@@ -284,20 +283,22 @@ button, [role="button"], summary, .chip, .thumb { user-select: none; -webkit-use
   margin-left: 0;
 }
 
-.hub-brand-group {
-  align-items: center;
-  align-self: stretch;
-}
-.hub-brand-group .hub-brand {
+
+.hub-bar-leading {
   display: flex;
   align-items: center;
-  height: 100%;
-  margin: 0;
-  padding: 0 4px 0 0;
+  flex: 0 0 auto;
+  gap: 5px;
+  padding: 0 10px;
+  border-right: var(--hub-divider);
 }
-
-/* Spacer group — flexible, no separator lines, holds nothing but breathing room. */
-.hub-group.spacer { flex: 1; min-width: 8px; border-left: 0; padding: 0; }
+.hub-bar-leading .hub-brand {
+  display: grid;
+  place-items: center;
+  width: var(--hub-icon-box);
+  height: var(--hub-icon-box);
+  border-radius: 50%;
+}
 
 /* ── Brand ───────────────────────────────────────────────── */
 .hub-brand {
@@ -352,25 +353,16 @@ a.hub-brand {
   background: color-mix(in srgb, var(--dash-accent) 8%, transparent);
 }
 
-/* Compact workspace icons stay beside the app identity at every breakpoint.
-   The drawer retains full labels and all template/filter options. */
-.hub-brand-group { gap: 12px; }
-a.hub-brand { gap: 8px; color: var(--dash-text-bright); background: none; }
-.hub-brand img { display: block; flex: 0 0 28px; }
-.hub-bar .hub-brand-group .hub-modes {
-  display: flex !important;
-  gap: 4px;
-  padding: 0 8px 0 12px;
-  margin: 0;
-  border-left: var(--hub-divider);
-}
+a.hub-brand { color: var(--dash-text-bright); background: none; }
+.hub-brand img { display: block; }
+.hub-bar .hub-modes { gap: 4px; padding: 0 4px; }
 .hub-modes .hub-link {
   position: relative;
   width: var(--hub-icon-box);
   height: var(--hub-icon-box);
   padding: 0;
-  flex: 0 0 var(--hub-icon-box);
-  border-radius: 7px;
+  flex: 0 0 auto;
+  border-radius: 999px;
 }
 .hub-modes .hub-link svg {
   width: 20px;
@@ -395,7 +387,7 @@ a.hub-brand { gap: 8px; color: var(--dash-text-bright); background: none; }
 /* Shared identity is present on first paint and stays continuous during mode changes.
    Unsupported browsers retain normal navigation; reduced motion skips the transition. */
 @view-transition { navigation: auto; }
-.hub-bar .hub-brand-group { view-transition-name: hub-identity; }
+.hub-bar .hub-brand { view-transition-name: hub-identity; }
 ::view-transition-group(hub-identity) { animation-duration: var(--ae-t-press); }
 ::view-transition-old(hub-identity), ::view-transition-new(hub-identity) { animation: none; }
 @media (prefers-reduced-motion: reduce) {
@@ -514,7 +506,7 @@ a.hub-brand { gap: 8px; color: var(--dash-text-bright); background: none; }
   pointer-events: none;
 }
 
-/* Compact magnifier — visible through until-lg; hidden ≥992 (search input returns). */
+/* Search opens the same Library overlay at every width. */
 .hub-search-trigger {
   display: inline-flex;
   align-items: center;
@@ -553,9 +545,6 @@ a.hub-brand { gap: 8px; color: var(--dash-text-bright); background: none; }
   border-color: var(--dash-accent);
   box-shadow: 0 0 0 2px color-mix(in srgb, var(--dash-accent) 18%, transparent);
 }
-.hub-bar #personFilter { width: 118px; }
-.hub-bar #palette { max-width: 130px; }
-.hub-bar #fmt { width: 96px; }
 
 /* Hidden native select — value SSOT for folder filter (custom picker is the UI). */
 .hub-bar select.hub-folder-native,
@@ -732,7 +721,7 @@ a.hub-brand { gap: 8px; color: var(--dash-text-bright); background: none; }
 }
 .hub-drawer .hub-folder-picker.open .hub-folder-menu { display: block; }
 
-/* ── More / output-folder popover (lives next to Export) ── */
+/* ── Toolbar disclosures ─────────────────────────────────── */
 .hub-more { position: relative; flex-shrink: 0; }
 .hub-more > summary {
   list-style: none;
@@ -756,28 +745,23 @@ a.hub-brand { gap: 8px; color: var(--dash-text-bright); background: none; }
 }
 .hub-more > summary:hover { color: var(--dash-text-bright); border-color: var(--dash-card-hover); }
 .hub-more > summary::-webkit-details-marker { display: none; }
-.hub-more > summary .chev {
-  display: inline-block;
-  font-size: 0.62rem;
-  transition: transform var(--motion);
-  opacity: 0.85;
-}
 .hub-more[open] > summary {
   border-color: var(--dash-accent);
   color: var(--dash-text-bright);
   background: color-mix(in srgb, var(--dash-accent) 6%, transparent);
 }
-.hub-more[open] > summary .chev { transform: rotate(180deg); }
 .hub-more-panel {
   position: absolute;
   right: 0;
   top: calc(100% + 6px);
   z-index: 30;
-  min-width: 240px;
-  padding: 10px;
+  display: grid;
+  gap: 10px;
+  width: min(280px, calc(100vw - 20px));
+  padding: 12px;
   background: var(--dash-bg-2);
   border: 1px solid var(--dash-card-border);
-  border-radius: var(--dash-radius);
+  border-radius: 14px;
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
 }
 .hub-more-panel label {
@@ -892,7 +876,7 @@ a.hub-brand { gap: 8px; color: var(--dash-text-bright); background: none; }
 }
 
 /* ── Buttons (Refresh, Export, drawer toggle) ───────────── */
-.hub-bar button {
+.hub-bar :is(.hub-icon-btn, .hub-drawer-toggle) {
   background: var(--dash-card);
   color: var(--dash-text);
   border: 1px solid var(--dash-card-border);
@@ -911,9 +895,9 @@ a.hub-brand { gap: 8px; color: var(--dash-text-bright); background: none; }
   white-space: nowrap;
   line-height: 1;
 }
-.hub-bar button:hover { border-color: var(--dash-card-hover); color: var(--dash-text-bright); }
+.hub-bar :is(.hub-icon-btn, .hub-drawer-toggle):hover { border-color: var(--dash-card-hover); color: var(--dash-text-bright); }
 
-/* Menu trigger — compact default (390 through iPad Pro landscape). Hide at lg. */
+/* Menu trigger for compact layouts. */
 .hub-drawer-toggle {
   font-size: 0.9rem;
 }
@@ -2231,7 +2215,6 @@ body.wizard-page {
   .hub-search input { width: 140px; }
   .hub-search input:focus { width: 180px; }
   .hub-folder-trigger { max-width: 160px; }
-  .hub-bar #palette { max-width: 150px; }
   .hub-page-wrap { max-width: 1180px; padding: 24px 28px 56px; }
 }
 
@@ -2240,7 +2223,6 @@ body.wizard-page {
   .hub-search input { width: 160px; }
   .hub-search input:focus { width: 200px; }
   .hub-folder-trigger { max-width: 180px; }
-  .hub-bar #palette { max-width: 160px; }
   .hub-page-wrap { max-width: 1280px; }
 
 }
@@ -2250,8 +2232,6 @@ body.wizard-page {
   .hub-search input { width: 200px; }
   .hub-search input:focus { width: 240px; }
   .hub-folder-trigger { max-width: 220px; }
-  .hub-bar #palette { max-width: 200px; }
-  .hub-bar #fmt { width: 110px; }
   .hub-page-wrap { max-width: 1400px; }
 }
 
@@ -2260,7 +2240,6 @@ body.wizard-page {
   .hub-search input { width: 110px; }
   .hub-search input:focus { width: 140px; }
   .hub-folder-trigger { max-width: 130px; min-width: 96px; }
-  .hub-bar #palette { max-width: 120px; }
   .hub-page-wrap { padding: 16px 14px 40px; }
   .hub-page-wrap h1 { font-size: 1.25rem; }
   .hub-card { padding: 14px; }
@@ -2282,25 +2261,10 @@ body.wizard-page {
     --hub-drawer-w: 92vw;
     --hub-drawer-max: calc(100vw - 24px);
   }
-  /* Hide the empty desktop groups themselves, not only their children. Otherwise
-     their divider borders survive as stray vertical lines beside the logo/actions. */
-  .hub-bar-scroll > .hub-group:not(.hub-brand-group):not(.spacer) { display: none; }
   .hub-bar-pin { border-left: 0; padding-left: 4px; }
-
-  .hub-bar #personFilter,
-  .hub-bar #palette,
-  .hub-bar #fmt,
-  .hub-bar .chips,
-  .hub-bar .hub-nav,
-  .hub-bar .hub-filters input[type="search"],
-  .hub-bar .hub-search-kbd,
-  .hub-bar .hub-folder-picker { display: none !important; }
-
-  .hub-bar .hub-drawer-toggle,
-  .hub-bar .hub-search-trigger { display: inline-flex !important; }
-
-  .hub-bar .hub-more { display: none !important; }
-  .hub-bar .hub-group.spacer { display: none; }
+  .hub-bar .hub-drawer-toggle { display: inline-flex !important; }
+  .hub-bar .hub-library-filters,
+  .hub-bar .hub-support-menu { display: none; }
 
   .hub-page-wrap { max-width: none; padding: 14px 14px 36px; }
   .hub-page-wrap h1 { font-size: 1.22rem; }
@@ -2435,7 +2399,7 @@ body.wizard-page {
 :is(.hub-modes, .hub-bar-pin, .hub-drawer-head-actions) :is(.hub-icon, .hub-fa-icon),
 .hub-preview-toggle svg { width: var(--hub-icon-size); height: var(--hub-icon-size); }
 
-.hub-bar-pin :is(button, .hub-more > summary),
+.hub-bar-pin :is(.hub-icon-btn, .hub-drawer-toggle, .hub-more > summary),
 .hub-drawer-head-actions :is(button.hub-icon-btn, button.hub-drawer-close),
 .hub-preview-toggle {
   border: 0;
@@ -2443,7 +2407,7 @@ body.wizard-page {
   background: transparent;
   color: var(--dash-text);
 }
-.hub-bar-pin :is(button:enabled, .hub-more > summary):hover,
+.hub-bar-pin :is(.hub-icon-btn:enabled, .hub-drawer-toggle, .hub-more > summary):hover,
 .hub-drawer-head-actions button:hover,
 .hub-preview-toggle:hover { background: var(--hub-action-hover); }
 .hub-bar-pin .hub-more[open] > summary,
@@ -2747,21 +2711,140 @@ html.hub-splash-skip .hub-splash { display: none !important; }
 .fa-table-columns { --hub-fa-icon: url('/_hub/fa-table-columns.svg'); }
 .fa-shield-halved { --hub-fa-icon: url('/_hub/fa-shield-halved.svg'); }
 .fa-wand-magic-sparkles { --hub-fa-icon: url('/_hub/fa-wand-magic-sparkles.svg'); }
+/* Toolbar pills and disclosures use the Hub's own palette and icon set. */
+.hub-bar .hub-search-trigger {
+  border-radius: 999px;
+  text-decoration: none;
+}
+.hub-bar-leading .hub-search-trigger .hub-fa-icon { font-size: var(--hub-icon-size); }
+.hub-action-label { display: none; }
+.hub-profile { position: relative; }
+.hub-bar .hub-profile select {
+  appearance: none;
+  width: clamp(88px, 15vw, 142px);
+  height: var(--hub-icon-box);
+  padding: 0 24px 0 10px;
+  border-radius: 999px;
+  background: var(--dash-card);
+  font-size: .78rem;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+.hub-profile .hub-chevron {
+  position: absolute;
+  right: 9px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+.hub-bar .hub-chevron { width: 10px; height: 10px; }
+.hub-more[open] > summary .hub-chevron { transform: rotate(180deg); }
+.hub-bar .hub-more > .hub-pill,
+.hub-bar .hub-support-menu > summary {
+  width: auto;
+  min-width: auto;
+  max-width: none;
+  padding: 0 12px !important;
+  gap: 7px;
+  border-radius: 999px;
+  font-size: .78rem;
+  line-height: 1;
+}
+.hub-bar :is(.hub-search-trigger, .hub-more > summary, .hub-export-action):focus-visible {
+  outline: 2px solid var(--dash-accent);
+  outline-offset: 2px;
+}
 .hub-support-menu .hub-more-panel { width: min(340px, calc(100vw - 24px)); }
-.hub-bar .hub-support-menu > summary { width: auto; min-width: 72px; max-width: none; padding: 0 10px !important; line-height: 1; font-size: .78rem; }
+.hub-more-panel label, .hub-menu-label {
+  font-size: .72rem;
+  color: var(--dash-text-dim);
+}
+.hub-more-panel :is(select:not(.hub-folder-native), input, .hub-folder-trigger) {
+  width: 100%;
+  max-width: none;
+  min-height: var(--hub-icon-box);
+  font-size: .8rem;
+}
+.hub-more-panel .chips { display: flex; flex-wrap: wrap; }
+.hub-more-panel .chip { min-height: 32px; font-size: .75rem; }
+.hub-export-split { display: flex; flex: 0 0 auto; }
+.hub-bar .hub-export-split .hub-export-action {
+  border-radius: 999px 0 0 999px;
+}
+.hub-bar .hub-export-split .hub-more > summary {
+  border-radius: 0 999px 999px 0;
+  border-left: 1px solid var(--dash-card-border);
+  background: var(--hub-action-active);
+  color: var(--dash-accent);
+}
+.hub-bar .hub-export-split .hub-more > summary:is(:hover, :focus-visible),
+.hub-bar .hub-export-split .hub-more[open] > summary {
+  background: color-mix(in srgb, var(--dash-accent) 22%, transparent);
+}
 @keyframes hub-splash-deadline { to { visibility: hidden; pointer-events: none; } }
-@media (min-width: 576px) and (max-width: 991.98px) {
-  .hub-brand-group { gap: 6px; }
-  .hub-bar .hub-brand-group .hub-modes { gap: 2px; }
+
+@media (min-width: 1200px) {
+  .hub-bar .hub-modes .hub-link,
+  .hub-bar .hub-search-trigger,
+  .hub-bar .hub-export-split .hub-export-action {
+    width: auto;
+    min-width: max-content;
+    max-width: none;
+    aspect-ratio: auto;
+    gap: 7px;
+    padding: 0 12px !important;
+    font-size: .8rem;
+    line-height: 1;
+  }
+  .hub-action-label { display: inline; }
+}
+@media (min-width: 1200px), (max-width: 575.98px) {
+  .hub-mode-name {
+    position: static;
+    width: auto;
+    height: auto;
+    clip-path: none;
+  }
 }
 @media (max-width: 575.98px) {
+  .hub-bar {
+    --hub-bar-h: 100px;
+    position: relative;
+    display: grid;
+    grid-template: 52px 1fr / minmax(0, 1fr) auto;
+    padding: 0;
+  }
+  .hub-bar-leading { grid-area: 1 / 1; padding: 0 2px; gap: 0; border: 0; }
+  .hub-bar-scroll { grid-area: 2 / 1 / 3 / -1; padding: 0 4px; }
+  .hub-bar .hub-bar-pin { grid-area: 1 / 2; position: static; padding: 0 2px; gap: 0; }
+  .hub-bar .hub-bar-pin #refreshBtn { display: none !important; }
+  .hub-bar .hub-modes {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    width: 100%;
+    padding: 0;
+  }
+  .hub-modes .hub-link {
+    width: auto;
+    height: 44px;
+    flex-direction: column;
+    gap: 2px;
+    font-size: .72rem;
+  }
+  .hub-bar .hub-search-trigger,
+  .hub-bar .hub-export-split .hub-export-action,
+  .hub-export-split .hub-more > summary,
+  .hub-bar .hub-drawer-toggle {
+    min-width: 44px;
+    max-width: none;
+    min-height: 44px;
+  }
+  .hub-export-split #hubMore { position: static; }
+  .hub-export-split .hub-more-panel { top: 52px; right: 6px; }
+}
+@media (max-width: 991.98px) {
   .hub-bar { position: relative; }
-  .hub-brand-group { gap: 0; padding: 0; }
-  .hub-bar .hub-brand-group .hub-brand { min-width: 44px; height: 44px; padding: 0; justify-content: center; }
-  .hub-bar .hub-brand-group .hub-modes { gap: 0; padding: 0; margin: 0; border: 0; }
-  .hub-bar-scroll { padding: 0; }
-  .hub-bar .hub-bar-pin { position: static; padding: 0; gap: 2px; }
-  .hub-bar .hub-bar-pin #refreshBtn { display: none !important; } /* Refresh remains in drawer header. */
+  .hub-bar-pin { position: static; }
   .hub-bar #status:not(:empty) {
     position: absolute;
     top: calc(100% + 6px);
@@ -2776,36 +2859,7 @@ html.hub-splash-skip .hub-splash { display: none !important; }
     pointer-events: none;
   }
 }
-/* Keep all primary actions reachable without a horizontal gesture at 320px. */
 @media (max-width: 389.98px) {
-  .hub-bar {
-    --hub-bar-h: 100px;
-    display: grid;
-    grid-template: 52px 1fr / 44px minmax(0, 1fr);
-  }
-  .hub-bar-scroll, .hub-brand-group { display: contents; }
-  .hub-bar .hub-brand-group { view-transition-name: none; }
-  .hub-bar .hub-brand-group .hub-brand { grid-area: 1 / 1; align-self: center; view-transition-name: hub-identity; }
-  .hub-bar .hub-bar-pin { grid-area: 1 / 2; justify-self: end; }
-  .hub-bar .hub-brand-group .hub-modes {
-    grid-area: 2 / 1 / 3 / -1;
-    display: grid !important;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 4px;
-    padding: 0 0 3px;
-  }
-  .hub-modes .hub-link {
-    width: auto;
-    flex-direction: column;
-    gap: 1px;
-    font-size: .68rem;
-  }
-  .hub-mode-name {
-    position: static;
-    width: auto;
-    height: auto;
-    clip-path: none;
-  }
   .hub-drawer .hub-nav { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -2813,8 +2867,6 @@ html.hub-splash-skip .hub-splash { display: none !important; }
   .hub-drawer, .hub-drawer.open, .hub-drawer-backdrop { transition: none; }
 }
 
-/* Desktop keeps its full scrollable toolbar from the existing lg breakpoint. */
 @media (min-width: 992px) {
-  .hub-bar .hub-drawer-toggle,
-  .hub-bar .hub-search-trigger { display: none !important; }
+  .hub-bar .hub-drawer-toggle { display: none !important; }
 }

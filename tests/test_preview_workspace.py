@@ -126,7 +126,6 @@ def test_hub_offcanvas_controls_are_in_the_header_and_close_from_the_backdrop():
     assert 'searchOvl.addEventListener("pointerdown", (e) => {' in APP_HTML
     assert 'if (!searchCard?.contains(e.target)) closeSearchOvl();' in APP_HTML
     assert '<kbd>Esc</kbd> or click outside closes' in APP_HTML
-    assert ".hub-bar-scroll > .hub-group:not(.hub-brand-group):not(.spacer)" in css
     assert 'class="hub-drawer-head-actions"' in APP_HTML
     assert APP_HTML.index('id="drawerRefresh"') < APP_HTML.index('id="drawerClose"')
     assert '<div class="hub-drawer-foot"><kbd>Esc</kbd> closes</div>' not in APP_HTML

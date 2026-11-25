@@ -8,6 +8,27 @@
   if (!drawer || !toggle || !closeBtn) return;
 
   const compactNav = window.matchMedia("(max-width: 991.98px)");
+  const toolbar = toggle.closest(".hub-bar");
+  function closeToolbarMenus(except) {
+    toolbar.querySelectorAll(".hub-more[open]").forEach(menu => {
+      if (menu === except) return;
+      menu.open = false;
+    });
+  }
+  toolbar.addEventListener("click", event => {
+    const menu = event.target.closest(".hub-more");
+    if (event.target.closest("summary")) closeToolbarMenus(menu);
+  });
+  document.addEventListener("pointerdown", event => {
+    closeToolbarMenus(event.target.closest(".hub-more"));
+  });
+  document.addEventListener("keydown", event => {
+    if (event.key !== "Escape" || event.defaultPrevented) return;
+    const menu = toolbar.querySelector(".hub-more[open]");
+    if (!menu) return;
+    closeToolbarMenus();
+    menu.querySelector("summary").focus({ preventScroll: true });
+  });
   const isOpen = () => drawer.classList.contains("open");
   let previousFocus;
   let background = [];
@@ -17,6 +38,7 @@
 
   function openDrawer() {
     if (isOpen() || !compactNav.matches) return;
+    closeToolbarMenus();
     previousFocus = document.activeElement;
     background = [...document.body.children].filter(el =>
       el !== drawer && el !== backdrop && el.tagName !== "SCRIPT" && !el.inert);
@@ -57,10 +79,11 @@
     closeDrawer();
   });
   compactNav.addEventListener("change", () => {
+    closeToolbarMenus();
     if (!compactNav.matches) closeDrawer();
   });
   drawer.addEventListener("keydown", event => {
-    if (event.key === "Escape") closeDrawer();
+    if (event.key === "Escape" && !drawer.querySelector(".hub-folder-picker.open")) closeDrawer();
     if (event.key !== "Tab") return;
     const focusable = [...drawer.querySelectorAll("a[href], button, input, select, [tabindex]")]
       .filter(el => !el.disabled && el.tabIndex >= 0 && el.getClientRects().length);
