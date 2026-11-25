@@ -157,6 +157,22 @@ def test_local_marker_file_and_public_exemption(repo: Path) -> None:
     assert _gate(repo).returncode == 1
 
 
+def test_public_link_exception_keeps_other_uses_of_the_marker_blocked(repo: Path) -> None:
+    config = repo / ".config"
+    config.mkdir()
+    url = "https://example.org/private-marker/project"
+    path = "docs/NOTES.md"
+    (config / "private-markers.txt").write_text(f"private-marker\n!{path}\t{url}\n", encoding="utf-8")
+    _commit(repo, path, f"[Public project]({url})\n")
+    assert _gate(repo).returncode == 0
+    _commit(repo, path, f"[Public project]({url})\nprivate-marker\n")
+    assert _gate(repo).returncode == 1
+    _commit(repo, path, f"[Other]({url}/other)\n")
+    assert _gate(repo).returncode == 1
+    _commit(repo, "docs/OTHER.md", f"[Public project]({url})\n")
+    assert _gate(repo).returncode == 1
+
+
 def test_export_outside_docs_is_blocked(repo: Path) -> None:
     _commit(repo, "art/cover.pdf", "%PDF-1.4", force=True)
     result = _gate(repo)

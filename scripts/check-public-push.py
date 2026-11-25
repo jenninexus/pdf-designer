@@ -223,6 +223,11 @@ def _is_example(path: Path) -> bool:
     return ".example." in path.name or path.name == "examples.json"
 
 
+def _marker_lines(repo: Path = REPO) -> list[str]:
+    file = repo / LOCAL_MARKERS_FILE.relative_to(REPO)
+    return file.read_text(encoding="utf-8-sig").splitlines() if file.is_file() else []
+
+
 def derive_markers(repo: Path = REPO) -> set[str]:
     """Identifiers that must never appear in a public commit, from this machine's real data."""
     raw: set[str] = set()
@@ -236,14 +241,13 @@ def derive_markers(repo: Path = REPO) -> set[str]:
                 continue
             _collect_identifiers(data, raw)
     public: set[str] = set()
-    markers_file = repo / LOCAL_MARKERS_FILE.relative_to(REPO)
-    if markers_file.is_file():
-        for line in markers_file.read_text(encoding="utf-8-sig").splitlines():
-            line = line.strip()
-            if line.startswith("!"):
+    for line in _marker_lines(repo):
+        line = line.strip()
+        if line.startswith("!"):
+            if "\t" not in line:
                 public.add(_normalize(line[1:]))  # deliberately public, e.g. a studio domain
-            elif line and not line.startswith("#"):
-                raw.add(line)
+        elif line and not line.startswith("#"):
+            raw.add(line)
     host = os.environ.get("COMPUTERNAME") or os.environ.get("HOSTNAME") or ""
     if len(host) >= MIN_MARKER_LEN:
         raw.add(host)
@@ -286,6 +290,11 @@ def check_content(rev_range: list[str], markers: set[str]) -> list[str]:
     if not markers:
         return []
     log = git("log", "-p", "--no-color", "--no-ext-diff", "--format=%x00%H%n%B", *rev_range)
+    public_links: dict[str, list[str]] = {}
+    for line in _marker_lines():
+        path, _, url = line.strip().partition("\t")
+        if path.startswith("!") and path.endswith(".md") and re.fullmatch(r"https://[^\s()]+", url):
+            public_links.setdefault(path[1:], []).append(url)
     problems: list[str] = []
     for chunk in log.split("\x00")[1:]:
         sha, _, body = chunk.partition("\n")
@@ -298,6 +307,8 @@ def check_content(rev_range: list[str], markers: set[str]) -> list[str]:
             elif line.startswith("+") and not line.startswith("+++"):
                 added.append((current, line[1:]))
         for where, text in added:
+            for url in public_links.get(where, ()):
+                text = text.replace(f"]({url})", "](approved-public-link)")
             for marker in find_markers(text, markers):
                 problems.append(f"{sha[:10]} {where}: private identifier {_redact(marker)}")
     return sorted(set(problems))
