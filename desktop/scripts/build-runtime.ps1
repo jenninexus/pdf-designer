@@ -65,7 +65,9 @@ if (-not $bundledChrome) {
     $previousBrowserPath = $env:PLAYWRIGHT_BROWSERS_PATH
     try {
         $env:PLAYWRIGHT_BROWSERS_PATH = $browserRoot
-        & $venvPython -m playwright install chromium
+        $installArgs = @('-m', 'playwright', 'install')
+        if ($Release) { $installArgs += '--no-shell' }
+        & $venvPython @installArgs chromium
         if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
     } finally {
         if ($null -eq $previousBrowserPath) { Remove-Item Env:PLAYWRIGHT_BROWSERS_PATH -ErrorAction SilentlyContinue }
