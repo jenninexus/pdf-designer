@@ -45,12 +45,7 @@
   @page {
     size: Letter;
     margin: 0.65in;
-  }
-
-  @page dark-letter {
-    size: Letter;
-    margin: 0.65in;
-    background: #0b0d12;
+    background: var(--bg);
   }
 
   body {
@@ -177,6 +172,7 @@
 
   @media print {
     :root {
+      color-scheme: light;
       --bg: #ffffff;
       --surface: #ffffff;
       --elevated: #ffffff;
@@ -192,6 +188,7 @@
     }
 
     html[data-pdf-theme="dark"] {
+      color-scheme: dark;
       --bg: #0b0d12;
       --surface: #10131a;
       --elevated: #171b24;
@@ -203,16 +200,11 @@
 
     body {
       background: var(--bg);
-      color-scheme: light;
+      color-scheme: inherit;
       font-family: var(--ats-safe);
     }
 
     h2, h3 { font-family: var(--ats-safe); }
-
-    html[data-pdf-theme="dark"] body {
-      color-scheme: dark;
-      page: dark-letter;
-    }
 
     .page,
     .wrap {

@@ -258,7 +258,7 @@ def main(argv) -> int:
             for c in rep["cast_violations"][:6]:
                 print(f"      {c}")
             print("  FIX: remove red/warm tint from the BASE background gradient; keep red only")
-            print("       as saturated accents. See themes/GENERATION-RULES.md § background.")
+            print("       as saturated accents. See docs/GENERATION-RULES.md § background.")
         if not rep["ok"]:
             bad += 1
     return 1 if bad else 0

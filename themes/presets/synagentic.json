@@ -5,7 +5,7 @@
     "description": "Teal + violet glass — the Syna ecosystem default, dialed for long-form resume reading.",
     "aesthetic": "AI / platforms / agent tooling — signature Syna look without product chrome noise.",
     "lineage": "syna-theme-kit skins synagentic-glass + palettes/synabrain (accents mapped)",
-    "paletteRules": "themes/PALETTE-RULES.md"
+    "paletteRules": "docs/PALETTE-RULES.md"
   },
   "tokens": {
     "dark": {

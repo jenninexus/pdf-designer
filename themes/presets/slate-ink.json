@@ -5,7 +5,7 @@
     "description": "Classic professional — deep navy ink on cool paper. ATS-friendly light mode; quiet dark for portfolio review.",
     "aesthetic": "Law / consulting / senior IC — restrained, high contrast, no neon.",
     "lineage": "pdf-designer public preset (inspired by traditional CV typography, not a Syna UI skin)",
-    "paletteRules": "themes/PALETTE-RULES.md"
+    "paletteRules": "docs/PALETTE-RULES.md"
   },
   "tokens": {
     "dark": {

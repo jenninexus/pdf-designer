@@ -19,12 +19,14 @@ PUBLIC_PREFIXES = ("themes/", "layouts/", "examples/")
 PUBLIC_FILES = (
     "users/README.md",
     "users/examples.json",
+    "users/you.example.json",
     "vaults/README.md",
     "vaults/examples.json",
+    "vaults/you.example.json",
     "profiles/README.md",
     "profiles/examples.json",
+    "profiles/you-resume.example.json",
     "resumes/README.md",
-    "_job-apps/README.md",
     "collages/README.md",
     "brands/README.md",
 )

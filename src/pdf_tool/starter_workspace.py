@@ -23,6 +23,7 @@ RESERVED_SLUGS = frozenset(
 )
 _SLUG_RE = re.compile(r"^[a-z][a-z0-9-]{1,31}$")
 STARTER_LAYOUTS = {"experience-first": "Experience first", "skills-first": "Skills first"}
+STARTER_HEADING_CASES = ("as-written", "uppercase")
 # Letter width minus the two 0.65in print margins, at 96 CSS pixels per inch.
 STARTER_CONTENT_WIDTH_PX = round((8.5 - 2 * 0.65) * 96)
 
@@ -257,7 +258,10 @@ def build_profile(slug: str, template: dict, name: str) -> dict:
     return profile
 
 
-def _resume_html(user: dict, vault: dict, layout: str, palette: dict, base_css: str) -> str:
+def _resume_html(
+    user: dict, vault: dict, layout: str, palette: dict, base_css: str, *,
+    heading_case: str, page_cap: int,
+) -> str:
     def content(value):
         return escape(str(value or ""))
 
@@ -281,6 +285,9 @@ def _resume_html(user: dict, vault: dict, layout: str, palette: dict, base_css: 
     skills = section("Skills", list_items([entry["claim"] for entry in vault["skills"]["imported"]]))
     education = section("Education", list_items([entry["claim"] for entry in vault["education"]]))
     first, second = (skills, experience) if layout == "skills-first" else (experience, skills)
+    summary_section = section("Summary", f"<p>{summary}</p>" if summary else "")
+    first_page_body = summary_section + first
+    second_page_body = second + education
     # Keep the document's standard paper, text contrast and geometry. Palette
     # tokens are limited to color values from the installed public presets.
     def colors(mode):
@@ -302,6 +309,12 @@ def _resume_html(user: dict, vault: dict, layout: str, palette: dict, base_css: 
         return (f'<div class="page"><div class="page-main"><header class="page-head">{header}</header>'
                 f'{body}</div><footer class="page-sig">{name}</footer></div>')
 
+    if page_cap == 1:
+        pages = page(first_page_body + second_page_body, first_page=True)
+    else:
+        pages = page(first_page_body, first_page=True) + page(second_page_body)
+    heading_style = "h1, h2, h3 { text-transform: uppercase; }" if heading_case == "uppercase" else ""
+
     return f'''<!doctype html>
 <html lang="en" data-starter-resume><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -316,6 +329,7 @@ body {{ margin: 0; background: var(--bg); color: var(--text); font: 14px/1.45 va
 .resume-name {{ font-size: 38px; color: var(--primary); line-height: 1.1; margin: 0 0 12px; }}
 section {{ margin-bottom: 20px; }}
 section h2 {{ font-size: 15px; margin: 0 0 10px; border-bottom: 1px solid var(--border2); }}
+{heading_style}
 article {{ margin-bottom: 14px; }}
 h3, p {{ margin: 0 0 4px; }}
 ul {{ padding-inline-start: 20px; margin: 4px 0; }}
@@ -330,8 +344,7 @@ li {{ margin-block: 4px; }}
   .page + .page {{ break-before: page; }}
 }}
 </style></head><body>
-{page(section("Summary", f"<p>{summary}</p>" if summary else "") + first, first_page=True)}
-{page(second + education)}
+{pages}
 </body></html>
 '''
 
@@ -371,16 +384,33 @@ def save_starter(
             raise ValueError("Add your name and at least one job, skill or education entry.")
         layout = resume_options.get("layout")
         palette_id = resume_options.get("palette")
-        if layout not in STARTER_LAYOUTS or not isinstance(palette_id, str) or not _SLUG_RE.fullmatch(palette_id):
+        if (
+            not isinstance(layout, str) or layout not in STARTER_LAYOUTS
+            or not isinstance(palette_id, str) or not _SLUG_RE.fullmatch(palette_id)
+        ):
             raise ValueError("Choose an available résumé layout and palette.")
+        layout_prefs = profile.setdefault("layoutPrefs", {})
+        max_pages = layout_prefs.setdefault(
+            "maxPages", {"coverLetter": 1, "resume": 2, "workSamples": 2, "packet": 5}
+        )
+        heading_case = resume_options.get("headingCase", layout_prefs.get("headingCase", "as-written"))
+        page_cap = resume_options.get("resumeMaxPages", max_pages.get("resume", 2))
+        if heading_case not in STARTER_HEADING_CASES or type(page_cap) is not int or page_cap not in (1, 2):
+            raise ValueError("Choose a heading style and a one- or two-page résumé.")
         palette_path = templates / "themes" / "presets" / f"{palette_id}.json"
         if not palette_path.is_file():
             raise ValueError("Choose an available résumé palette.")
         palette = _load_json(palette_path)["tokens"]
         profile["theme"]["preset"] = palette_id
         profile["layout"]["variant"] = layout
+        profile["layout"]["pages"] = page_cap
+        layout_prefs["headingCase"] = heading_case
+        max_pages["resume"] = page_cap
         profile["source"] = f"../{paths['resume'].relative_to(root).as_posix()}"
-        resume = _resume_html(user, vault, layout, palette, (templates / "themes/default-resume.css").read_text(encoding="utf-8"))
+        base_css = (templates / "themes/default-resume.css").read_text(encoding="utf-8")
+        resume = _resume_html(
+            user, vault, layout, palette, base_css, heading_case=heading_case, page_cap=page_cap
+        )
 
     dirs = asset_dirs(ident)
     if any(not (root / directory).resolve().is_relative_to(root) for directory in dirs.values()):

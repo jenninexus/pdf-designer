@@ -7,7 +7,7 @@
 > scripts and Hub URLs keep working. Existing backups/collage/video/PyPI residue may
 > remain there; do **not** add new live listings or current application sources under it.
 >
-> `_job-apps/_template/` is a tracked folder-shape pointer only. Keep real application material local.
+> Copy the [fictional application starter](../examples/_job-listings/example-application/) into the private `_job-apps/` workspace.
 > Private font: `brands/fonts/alienleaguebold.woff2` (gitignored).
 >
 > **Tracked protocol SSOT:** this page lives in `docs/` so a fresh clone can learn the flow.
@@ -136,3 +136,7 @@ python -m pdf_tool.html_to_pdf …    # works with zero server running
 - **No MCP server required** for best results.
 - **No cloud / env / telemetry.**
 - The previewer is a **temporary localhost** process (stdlib HTTP on 127.0.0.1). Stop it when you’re done. Playwright launches Chromium only for export/preview rendering.
+
+### Wizard-created workspaces
+
+The wizard writes the editable starter under `resumes/<user>/` and saves preferences in `profiles/<user>-resume.json`. The Library exports PDFs beside that person's document family as `resumes/<user>/` or `resumes/<user>/<application>/`. The Windows app uses the PDF Designer folder under the user's Documents directory for its first-run workspace. A CLI or source checkout uses its selected workspace root. Real workspace files stay private. [Profile preferences](../profiles/README.md)

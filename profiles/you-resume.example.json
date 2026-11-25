@@ -42,13 +42,21 @@
     "pairing": "If two people apply to the SAME company: both render from the company palette with SPLIT accent runs — same grid and type, different accent order — so they read as a matched pair from one studio rather than two copies of one document.",
     "houseRule": "docs/PALETTE-RULES.md — no brown, no mustard, no lime. Enforced on every export."
   },
+  "layoutPrefs": {
+    "headingCase": "as-written",
+    "maxPages": {
+      "coverLetter": 1,
+      "resume": 2,
+      "workSamples": 2,
+      "packet": 5
+    },
+    "applicationPacketRecipe": "../layouts/application-packet.example.json"
+  },
   "layout": {
     "paper": "Letter",
     "widthIn": 8.5,
     "heightIn": 11,
     "pages": 2,
-    "headingHierarchy": "../layouts/application-packet.json#headingHierarchy",
-    "applicationPacketRecipe": "../layouts/application-packet.json",
     "note": "After copying to profiles/, use the shared recipe for a two-page résumé plus two pages of work samples. Include a one-page cover letter first when requested."
   },
   "coverLetterPolicy": {
@@ -62,7 +70,6 @@
     "deliverable": "The default packet is four pages, or five with a requested cover letter. Export light and dark standalone résumé PDFs when needed. Use the light résumé for a board’s résumé field and follow the posting’s other upload requirements.",
     "exportPrefs": {
       "defaultDeliverable": "application-packet",
-      "applicationPacketRecipe": "../layouts/application-packet.json",
       "resumeDefault": "light-and-dark",
       "includeWorkSamples": true,
       "includeCoverLetter": false,

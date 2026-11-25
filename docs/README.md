@@ -24,15 +24,13 @@ then use [`PUBLIC-LOCAL-SPLIT.md`](PUBLIC-LOCAL-SPLIT.md) for the tracking/priva
 | [`PUBLIC-LOCAL-SPLIT.md`](PUBLIC-LOCAL-SPLIT.md) | ⭐ Public vs local vs paid architecture |
 | [`PRIVATE-SYNC.md`](PRIVATE-SYNC.md) | Pre-push privacy gate + sharing personal files between your own machines |
 | [`WORKSPACE-LAYOUT.md`](WORKSPACE-LAYOUT.md) | ⭐ Target root folders (`users/` · `vaults/` · …) for the free product |
-| [`DEVELOPMENT-FLOW.md`](DEVELOPMENT-FLOW.md) | Local development, private paid incubation, explicit public promotion and separate distribution gates |
 | [`PRODUCT.md`](PRODUCT.md) | ⭐ Business / product direction (free GitHub + optional tip; installer is a later shell) |
 | [`GETTING-STARTED.md`](GETTING-STARTED.md) | ⭐ Clone path without vaults |
-| [`../examples/resume-studio/`](../examples/resume-studio/) | Public product front door |
+| [`../examples/README.md`](../examples/README.md#resume-studio) | Public product front door |
 | [`pdf-designer-overview.html`](../assets/public/overview/pdf-designer-overview.html) · [`PDF`](../assets/public/overview/pdf-designer-overview.pdf) | Browser-openable product overview + PDF rendered by this engine |
 | [Public Hub screenshots](../assets/public/hub/README.md) | Current public-only Hub screenshot set; prior captures are dated archives |
 | [`PACKAGING.md`](PACKAGING.md) | PyPI / wheel spike |
 | [`WINDOWS-ELECTRON.md`](WINDOWS-ELECTRON.md) | Pre-release Windows shell: unsigned packaging, Documents/OneDrive, clean-machine harness |
-| [`VOICE-SEED-HANDOFF.md`](VOICE-SEED-HANDOFF.md) | Optional, public-safe voice-card boundary |
 | [`QA.md`](QA.md) | Ship gate — `check_generation` |
 
 ## Engine & design
@@ -73,7 +71,7 @@ are not current instructions. The maintained authorities remain the docs listed 
 
 Personal/session plans, agent runbooks, working vault payload, and application records stay
 gitignored. Maintainer planning lives in `Plans/` and `storage/docs/`. The public walkthrough is the fictional
-[`../examples/resume-studio/`](../examples/resume-studio/) example plus
+[`../examples/README.md`](../examples/README.md#resume-studio) example plus
 [`GETTING-STARTED.md`](GETTING-STARTED.md).
 
 ### Also (tracked, outside `docs/`)

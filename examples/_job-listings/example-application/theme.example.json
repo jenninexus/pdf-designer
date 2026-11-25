@@ -85,5 +85,5 @@
     }
   },
 
-  "houseRule": "No brown. No mustard. No puke/lime green. Yellow and orange only as BRIGHT, clean tones. Amber cannot be darkened for white paper without turning brown — on light, hand the amber role to another hue. ENFORCED ON EVERY EXPORT (html_to_pdf refuses to render a document that violates it; --skip-palette-check overrides). Full rule: themes/PALETTE-RULES.md"
+  "houseRule": "No brown. No mustard. No puke/lime green. Yellow and orange only as BRIGHT, clean tones. Amber cannot be darkened for white paper without turning brown — on light, hand the amber role to another hue. ENFORCED ON EVERY EXPORT (html_to_pdf refuses to render a document that violates it; --skip-palette-check overrides). Full rule: docs/PALETTE-RULES.md"
 }

@@ -167,7 +167,7 @@ def _guard_palette(input_html: str) -> None:
     print(
         "\nHouse rule: no brown, no mustard, no lime/puke green.\n"
         "On WHITE, amber has no readable dark form -- it turns brown. Give the amber\n"
-        "role to another hue from the palette instead. See themes/PALETTE-RULES.md.\n"
+        "role to another hue from the palette instead. See docs/PALETTE-RULES.md.\n"
         "\nTo export anyway (rare, and say why): --skip-palette-check\n",
         file=sys.stderr,
     )

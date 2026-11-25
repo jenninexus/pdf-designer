@@ -5,7 +5,7 @@
     "description": "Muted violet circuits on near-black — technical without arcade heat.",
     "aesthetic": "Systems / infra / research — quiet hacker elegance.",
     "lineage": "syna-theme-kit/palettes/syna-palettes.json#void-circuit",
-    "paletteRules": "themes/PALETTE-RULES.md"
+    "paletteRules": "docs/PALETTE-RULES.md"
   },
   "tokens": {
     "dark": {

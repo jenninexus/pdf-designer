@@ -121,7 +121,7 @@ no contract doc.)*
 hue.
 
 This is **enforced on every export** (`html_to_pdf` refuses to render a violating document).
-Full rule and rationale: [`../themes/PALETTE-RULES.md`](../themes/PALETTE-RULES.md).
+Full rule and rationale: [`PALETTE-RULES.md`](PALETTE-RULES.md).
 
 Geometry tokens are not brand tokens. Do not change paper size, page margins,
 or page-break strategy during palette sync unless the destination explicitly

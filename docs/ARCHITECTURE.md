@@ -181,5 +181,5 @@ Honest status — nothing below exists yet.
 [`STORAGE.md`](STORAGE.md) — the four data layers ·
 [`EXPORTS.md`](EXPORTS.md) — export commands and pagination traps ·
 [`THEME-DESIGN.md`](THEME-DESIGN.md) — the token contract ·
-[`../themes/PALETTE-RULES.md`](../themes/PALETTE-RULES.md) — the color rule ·
+[`PALETTE-RULES.md`](PALETTE-RULES.md) — the color rule ·
 [`PREVIEWER.md`](PREVIEWER.md) · [`COLLAGE-DESIGN.md`](COLLAGE-DESIGN.md)

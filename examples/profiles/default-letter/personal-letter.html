@@ -5,14 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Personal letter — example</title>
 <style>
-  /* Public example: bundled public font; never reach into private storage/. */
-  @font-face {
-    font-family: "Parisienne";
-    src: url("../../../themes/fonts/Parisienne-Regular.woff2") format("woff2");
-    font-style: normal;
-    font-weight: 400;
-    font-display: swap;
-  }
   :root {
     --bg: #faf7f2;
     --surface: #fffdf9;
@@ -21,7 +13,7 @@
     --border: #e4d8cc;
     --primary: #7a5c8a;
     --accent: #c45c7a;
-    --script: "Parisienne", "Segoe Script", "Brush Script MT", cursive;
+    --signature: "Georgia", "Times New Roman", Times, serif;
     --body: "Georgia", "Times New Roman", Times, serif;
   }
   html[data-pdf-theme="dark"] {
@@ -82,7 +74,8 @@
     border-bottom: 1px solid var(--border);
   }
   .letter-identity .who {
-    font-family: var(--script);
+    font-family: var(--signature);
+    font-style: italic;
     font-size: 2rem;
     line-height: 1.1;
     color: var(--primary);
@@ -119,7 +112,8 @@
   }
   .signoff .closing { margin: 0 0 0.35rem; }
   .signoff .script-name {
-    font-family: var(--script);
+    font-family: var(--signature);
+    font-style: italic;
     font-size: 1.85rem;
     line-height: 1.15;
     color: var(--accent);

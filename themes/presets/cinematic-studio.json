@@ -5,7 +5,7 @@
     "description": "Premium muted cool tones — elegant glass surfaces for creative-tech portfolios.",
     "aesthetic": "Film / animation / creative tech — restrained cinematic, not neon.",
     "lineage": "syna-theme-kit/palettes/syna-palettes.json#cinematic-studio",
-    "paletteRules": "themes/PALETTE-RULES.md"
+    "paletteRules": "docs/PALETTE-RULES.md"
   },
   "tokens": {
     "dark": {

@@ -12,7 +12,7 @@ or a neon color painted over a photo. Composes the existing single-purpose guard
 
 Exit 0 = all checks pass. Exit 1 = one or more FAIL. Exit 2 = bad usage / file not found.
 
-The rules (SSOT: themes/GENERATION-RULES.md + themes/PALETTE-RULES.md):
+The rules (SSOT: docs/GENERATION-RULES.md + docs/PALETTE-RULES.md):
   1. palette      no brown / mustard / lime  (+ no magenta/pink for shade & martian)
   2. rgba-magenta magenta/pink smuggled in as rgba()/hsl() (invisible to the hex-only palette guard)
   3. casing       names & company names never all-lowercase in display text

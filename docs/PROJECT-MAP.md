@@ -11,7 +11,8 @@ and serves the Design Hub. Start with [AGENTS.md](../AGENTS.md) and [SSOT.md](SS
 | `themes/` | Public color tokens, presets and palette rules |
 | `layouts/` | Document structure recipes; separate from color |
 | `examples/` | Public sample profiles, vault shapes and résumé studio |
-| `.memory/` | Tracked lessons; read its index before opening relevant lessons |
+| `storage/docs/` | Local maintainer operations and lessons |
+| `.local-artifacts/` | Local QA captures, logs and evidence |
 | `.claude/commands/` | Public `*.example.md` protocols; bare personal commands are ignored |
 | `users/` | Private identity, contact rules and character voice |
 | `vaults/` | Private source-backed claims and application prose voice |
@@ -22,7 +23,7 @@ and serves the Design Hub. Start with [AGENTS.md](../AGENTS.md) and [SSOT.md](SS
 | `Plans/` | Private session checklists; `storage/docs/ROADMAP.local.md` owns the maintainer backlog |
 | `_exports/` | Fallback exports for examples or unmatched sources |
 | `output/` | Disposable automation scratch, excluded from the document library |
-| `storage/` | Retired private residue; compatibility aliases only |
+| `storage/_archive/` | Private archive of superseded source material |
 
 The résumé protocol uses four layers: person → vault → profile → application. Claims are
 authored in the vault before use. Source HTML lives with the application; generated PDFs live

@@ -1,24 +1,22 @@
-# Public resume color presets
+# Public document palette presets
 
-These are **brand-neutral** audition palettes for the Design Hub palette swapper.
-Personal/studio brands stay in gitignored `brands/`.
+Try these palettes from the Design Hub. Each has a light and dark map for
+document use. The editor palettes in [Syn Themes](https://github.com/jenninexus/syn-themes)
+are part of the visual inspiration, including Void Circuit. The presets adapt
+that palette lineage to document surfaces and print contrast.
 
 | File | Aesthetic | Lineage |
 |---|---|---|
 | `../default-resume.json` | Cool teal / gold / violet (engine default) | pdf-designer |
-| `slate-ink.json` | Classic navy professional | original |
-| `ocean-breeze.json` | Calm blues/teals | syna `#ocean` |
-| `synagentic.json` | Teal + violet glass | syna synagentic / synabrain |
-| `aesyna.json` | Ink-violet glass with violet and ice-cyan accents | syna-theme-kit Aesyna brand profile |
+| `slate-ink.json` | Classic navy professional | PDF Designer |
+| `ocean-breeze.json` | Calm blues/teals | Syna Ocean palette |
+| `synagentic.json` | Teal + violet glass | Synagentic Glass and Synabrain colors |
+| `aesyna.json` | Ink-violet glass with violet and ice-cyan accents | Aesyna visual tokens |
 | `aesyna-harmony.json` | Aesyna surfaces with cool harmony accents | Aesyna spectrum Ice, Blue, Indigo and Violet |
-| `void-circuit.json` | Violet circuits | syna `#void-circuit` |
-| `cinematic-studio.json` | Muted cinematic cool | syna `#cinematic-studio` |
-| `midnight-chrome.json` | Midnight blue chrome | syna midnight-chrome skin |
+| `void-circuit.json` | Violet circuits | Syn Themes Void Circuit |
+| `cinematic-studio.json` | Muted cinematic cool | Syna Cinematic Studio palette |
+| `midnight-chrome.json` | Midnight blue chrome | Syna Midnight Chrome skin |
 
-**Private brands (also loaded by Design Hub):** `brands/brand-synagen.json` (Shade Default/AI — orchid-**violet** + iridescent-**cyan**, ⛔ no magenta), `brand-martian.json` (studio), `brand-jenninexus.json` (Jenni).
-
-**User prefs are pointers only** — `users/<profile>.json#brandTheme.ssot` → the matching `brand-*.json` above. Hex lives in brand maps, never in the person file. Design Hub person filter only filters the library; it does not auto-pick a palette.
-
-Registry mirror (kit): `www-theme-kit/palettes/resume-palettes.json` (7 public presets + default-resume + martian-resume).  
-Rules: [`../PALETTE-RULES.md`](../PALETTE-RULES.md)  
-Breakpoints SSOT: [`.config/mcp-pdf-designer.json#breakpoints`](../../.config/mcp-pdf-designer.json)
+Choose a preset by ID or create a local map under `brands/`. For the token
+names and validation commands, see [Theme design](../../docs/THEME-DESIGN.md)
+and [Palette rules](../../docs/PALETTE-RULES.md).

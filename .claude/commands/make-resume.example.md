@@ -9,7 +9,11 @@ This is the clone-safe protocol seed. Copy it to `make-resume.md` (gitignored) i
 applicant routing, machine paths, real employers, or private brand maps. Do not put those details back
 into this tracked file.
 
-Read the selected profile’s export preferences first. Use its [application packet recipe](../../layouts/application-packet.json) for bundled applications and the standalone résumé for a dedicated upload. Use the document commands for any additional parts:
+Read [render preferences](../../profiles/README.md) from the selected profile before authoring.
+Resolve the current request first, then `layoutPrefs`, `theme`, and `exports.exportPrefs`, then
+the [example packet recipe](../../layouts/application-packet.example.json) or the selected
+recipe. Use the standalone résumé for a dedicated upload. Use the document commands for any
+additional parts:
 [`make-cover-letter.example.md`](make-cover-letter.example.md) and
 [`make-work-examples.example.md`](make-work-examples.example.md).
 
@@ -106,9 +110,11 @@ Rank vault-backed evidence against the listing:
 Employer-specific promises and gap framing belong in a cover letter, not the résumé body. Keep the
 résumé reusable, factual, and first-person defensible.
 
-### 7. Derive the company theme
+### 7. Resolve the document palette
 
-Capture the company's public visual language, then map it into the repository token contract:
+Use the requested theme first. Otherwise follow the selected profile's theme policy and preset,
+the person record's brand map, then the public default. When policy calls for a company theme,
+capture the company's public visual language and map it into the repository token contract:
 
 `--bg, --surface, --elevated, --text, --dim, --dim2, --border, --border2, --primary, --secondary,
 --accent, --support`.
@@ -127,12 +133,14 @@ Follow [`docs/LAYOUT-SYSTEM.md`](../../docs/LAYOUT-SYSTEM.md) and the selected t
 `layouts/resume/`.
 
 - US Letter with equal margins on all four edges; default `0.65in`.
-- Expected résumé page count comes from the profile/recipe; the default is two pages.
+- Use the résumé cap at `layoutPrefs.maxPages.resume` unless this request overrides it.
 - Every `.page` is a flex column; the signature pins bottom-right.
 - Content must fit its page box. Fix overflow by moving or cutting content, never by shrinking margins.
 - Prose bullets stay one column and in DOM reading order.
 - ATS-critical print body and headings use a system font.
-- Load the selected profile’s `ownerPresentationRules.headingCase` when present. Use the applicant’s selected display name in uppercase as the largest heading on each page. Set featured game and project headings in uppercase below it. Keep official casing in prose and credits. Check the heading order and sizes in both print modes. Follow the [résumé recipe](../../layouts/resume/two-page-standard.json).
+- Use `layoutPrefs.headingCase` for titles and headings and keep official casing in prose and
+  credits. Give the applicant name the largest heading on each page, with smaller project headings
+  below it. Check the hierarchy in both print modes.
 - Use exact machine-readable cues such as `Job Title`, `Work Experience`, and `Education`.
 
 ## Export and verify
@@ -178,6 +186,9 @@ not substitutes for the ATS upload.
 ### 12. Verify the artifact and log the result
 
 - Confirm the PDF page count from the PDF itself.
+- For a packet, verify the cover-letter, résumé, and work-example caps before merging, then
+  check the finished combined cap in each requested mode. Use the recipe order and keep
+  intermediate PDFs in scratch.
 - Rasterize and inspect the actual export when layout changed.
 - Record generated paths, QA results, posting verification, and the next human action in
   `application.json` and the private application index.

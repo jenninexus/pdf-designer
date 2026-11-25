@@ -5,7 +5,7 @@ sign-off always lands where it should. Established while refining career-documen
 
 > **Sibling docs:** [`THEME-DESIGN.md`](THEME-DESIGN.md) (tokens, dual light/dark, signature pin) ·
 > [`EXPORTS.md`](EXPORTS.md) (export commands + pagination traps) ·
-> [`../themes/PALETTE-RULES.md`](../themes/PALETTE-RULES.md) (color guard).
+> [`PALETTE-RULES.md`](PALETTE-RULES.md) (color guard).
 > **Profile hook:** `profiles/<user>-resume.json → layout.system` points here.
 
 ## Design Hub responsive shell
@@ -194,7 +194,7 @@ Templates that don't `@import` the theme still follow the same equal-margin rule
 **Defaults must match this table.** Recipe JSON is not applied at export time. If the HTML
 inlines `section { margin-bottom: 12px }` while this doc starts at ~20px, the PDF follows the
 HTML. Reconcile HTML (or `@import` `themes/default-resume.css`) rather than treating the
-JSON as live CSS. Trap: [`.memory/lesson-layout-recipe-vs-inline-html.md`](../.memory/lesson-layout-recipe-vs-inline-html.md).
+JSON as live CSS. Apply recipe changes to the authored HTML and verify the printed document.
 
 ### ⚠ Full-row group items (stats · link chips · badge rows)
 

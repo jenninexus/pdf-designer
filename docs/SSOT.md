@@ -9,7 +9,7 @@ Protocol:  AGENTS.md → docs/{STORAGE,VAULT,JOB-ASSESSMENT,ARCHITECTURE}.md →
 Product:   docs/PRODUCT.md + docs/PUBLIC-LOCAL-SPLIT.md   ← ⭐ free core vs private vs paid
 Clone:     docs/GETTING-STARTED.md   ← public reuse (ex-WHITE-LABEL stub)
 Theme:     themes/default-{resume,collage}.json + themes/presets/* + PALETTE-RULES.md   ← COLOR
-Gen-rules: docs/GENERATION-RULES.md   ← ⭐ house rules for ALL generated docs (casing · overlays · framing · no-magenta)
+Gen-rules: docs/GENERATION-RULES.md   ← ⭐ document layout, color and render checks
 QA gate:   docs/QA.md + python -m pdf_tool.check_generation   ← 12 deterministic checks; public users run locally; judge saved PDFs
 Layouts:   layouts/{cover-letter,letter,resume,work-examples,collage}/*  (python -m pdf_tool.collage --list-recipes)  ← STRUCTURE
 Private:   root nouns (users/vaults/profiles/resumes/_job-apps/collages/brands/_exports) + storage/ residue (gitignored)
@@ -39,19 +39,18 @@ Folder and optional agent-tooling overview: [`PROJECT-MAP.md`](PROJECT-MAP.md).
 | Page signature | `themes/default-resume.json#document.signature` | Bottom-right page-footer pin (`.page` / `.page-main` / `.page-sig`) |
 | Previewer | `src/pdf_tool/preview.py` (`docs/PREVIEWER.md`) | Design Hub; `/recipes` · `/vault`; **auto-refreshes** via `/api/version`; focused comparison checkboxes; dark real-PDF page preview |
 | Palette rule | `docs/PALETTE-RULES.md` | No brown / mustard / lime — enforced by `check_palette` |
-| **Generation rules** | `docs/GENERATION-RULES.md` | ⭐ House rules for ALL generated docs: **name/company never all-lowercase**, no neon over images (dark scrim only), 16:9 no-crop framing, no-magenta pointer |
+| **Generation rules** | `docs/GENERATION-RULES.md` | Document typography, image treatment, palette and checks |
 | **QA gate** | `docs/QA.md` + `pdf_tool.check_generation` | One command, 12 checks including letter geometry and résumé text extraction. Required render errors fail; explicit source-only mode is not acceptance. Reuse unchanged source/dependency/PDF receipts. |
 | Protocol docs | `docs/{STORAGE,VAULT,JOB-ASSESSMENT,ARCHITECTURE}.md` | Claim rules + workflow |
 | **Work-samples SSOT** | `profiles/<user>-resume.json#workSamples` + `users/<user>.json#portfolio` | ⭐ **PER-USER** page structure + personal assets — never copy another person's page ([VAULT.md](VAULT.md) § Work-samples) |
 | Agent map | `AGENTS.md` | Capability / command SSOT for assistants |
-| **Development and promotion** | [`DEVELOPMENT-FLOW.md`](DEVELOPMENT-FLOW.md) | Local Hub work, private paid source and explicit public promotion |
 | **Product / business** | [`PRODUCT.md`](PRODUCT.md) | ⭐ Free GitHub toolkit vs future paid app; shell-over-Hub |
 | **Public vs local** | [`PUBLIC-LOCAL-SPLIT.md`](PUBLIC-LOCAL-SPLIT.md) | ⭐ Tracked vs gitignored; sibling-repo map |
 | Packaging / PyPI | [`PACKAGING.md`](PACKAGING.md) | Wheel must ship public `themes/` + `layouts/` via `pdf_tool/share/` |
 | Clone how-to | [`GETTING-STARTED.md`](GETTING-STARTED.md) | Public path without vaults (`WHITE-LABEL.md` is a stub alias) |
 | Make-resume | `.claude/commands/make-resume.example.md` | Job-application routine (public seed; personal `make-resume.md` is gitignored) |
 | Make-collage | `.claude/commands/make-collage.example.md` | Multi-image collage routine (public seed) |
-| Public examples | `examples/resume-studio/`, `examples/profiles/`, `examples/brand-design/` | Clone-safe templates |
+| Public examples | `examples/README.md#resume-studio`, `examples/profiles/`, `examples/brand-design/` | Clone-safe templates |
 | Project config | `.config/mcp-pdf-designer.example.json` | Seed only — local `mcp-pdf-designer.json` is gitignored |
 | Maintainer backlog and publishing | `storage/docs/ROADMAP.local.md` and `storage/docs/PRODUCT-PUBLISHING.md` | Ignored product decisions, website publishing and release evidence |
 | Session plans (local-only) | `Plans/` | Gitignored working context: `_active/` slice + `_complete/` history; never pushed |

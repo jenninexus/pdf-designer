@@ -9,7 +9,7 @@ Windows desktop distribution. Clone path: [`GETTING-STARTED.md`](GETTING-STARTED
 | Free / open core | Engine + themes + layouts + guards + Design Hub + public docs + `*.example.md` |
 | Planned commercial app (not publicly released) | Packaged desktop app — installer + guided vault/export UX over the same engine |
 | **Public product story** | Résumé creator for a broken job market — **vaults**, skills, palette prefs |
-| Public demo | [`../examples/resume-studio/`](../examples/resume-studio/) |
+| Public demo | [`../examples/README.md`](../examples/README.md#resume-studio) |
 | Folder UX (clone tree) | [`WORKSPACE-LAYOUT.md`](WORKSPACE-LAYOUT.md) — root-noun README scaffolds; `storage/` retired |
 | Private marketing / channel ops | `storage/docs/MARKETING.md` · `storage/docs/CHANNELS.local.md` (gitignored) |
 | Engineering backlog | `storage/docs/ROADMAP.local.md`; `Plans/` is local-only working context (gitignored) |
@@ -32,7 +32,7 @@ These are product proposals, not implemented entitlements or prices. Validate de
 | One-time purchase | Optional packs or guided workflows, once developed and verified. |
 | Subscription | Only for sustained value such as maintained ATS integrations, updates or services with recurring costs; do not charge recurring fees for ordinary local documents. |
 
-Personal résumé data remains local and private. Optional Google sign-in is the next identity planning slice: evaluate account and licensing identity separately from résumé data, with offline local use retained. Sign-in, licensing, paid feature loading and subscriptions are not implemented by this proposal. See [DEVELOPMENT-FLOW.md](DEVELOPMENT-FLOW.md) for the explicit public promotion boundary.
+Personal résumé data remains local and private. Optional Google sign-in is the next identity planning slice: evaluate account and licensing identity separately from résumé data, with offline local use retained. Sign-in, licensing, paid feature loading and subscriptions are not implemented by this proposal. See [the public release boundary](PUBLIC-LOCAL-SPLIT.md#release-boundary).
 
 ## Thesis (one sentence)
 
@@ -87,7 +87,7 @@ the public GitHub pitch. Public color defaults live in-repo under `themes/`.
 - Public protocol seeds: `make-resume.example.md` · cover · work-examples · collage
 - Docs: [`PUBLIC-LOCAL-SPLIT.md`](PUBLIC-LOCAL-SPLIT.md) · [`PRODUCT.md`](PRODUCT.md) ·
   [`GETTING-STARTED.md`](GETTING-STARTED.md) · [`VAULT.md`](VAULT.md) shape
-- Stranger-proof demo: `python scripts/smoke-white-label.py` + `examples/resume-studio/`
+- Stranger-proof demo: `python scripts/smoke-white-label.py` + `examples/README.md#resume-studio`
 
 ## Windows desktop shell (pre-release; not a storefront promise)
 

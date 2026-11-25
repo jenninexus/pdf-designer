@@ -18,3 +18,5 @@ their document family (`resumes/<user>/`, `collages/<project>/`), falling back t
 deleted and must never be referenced as a submitted or final deliverable.
 
 A stranger's first export from `examples/profiles/default-resume/` lands in `_exports/examples/` and is immediately visible under **Exports** in the Hub.
+
+Retain useful QA captures and logs under a named .local-artifacts task in a maintainer checkout. Keep application originals and generated documents in their owning private application or résumé family.

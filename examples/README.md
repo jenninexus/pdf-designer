@@ -1,76 +1,68 @@
-# `examples/` — start here, then copy into root nouns
+# PDF Designer examples
 
-**Product front door (résumé creator pitch):** [`resume-studio/`](resume-studio/) — vault +
-skills + palette demo path for the free GitHub story ([`docs/PRODUCT.md`](../docs/PRODUCT.md)).
+The public examples use fictional data and editable HTML. Open the Design Hub
+to preview and export them. Use the [setup guide](../docs/GETTING-STARTED.md)
+on a fresh clone.
 
-This folder is the **public, tracked template set**. It shows the shape of every file the toolkit uses,
-with placeholder data only — no real names, contacts, or claims. Your real work lives in the
-**gitignored root nouns** (`users/` · `vaults/` · `profiles/` · `resumes/` · `_job-apps/` ·
-`collages/` · `brands/`).
+## Resume Studio
 
-> **The mental model:** `examples/` (public shapes) → copy → root nouns (your real data, gitignored).
-> Full protocol: [`../docs/STORAGE.md`](../docs/STORAGE.md). Layout system:
-> [`../docs/LAYOUT-SYSTEM.md`](../docs/LAYOUT-SYSTEM.md).
-
-## First run (fresh clone)
-
-```bash
-pip install -e ".[dev]" && playwright install chromium     # one-time
-python scripts/smoke-white-label.py                        # QA + light/dark PDF + ATS (no storage/)
-python -m pdf_tool.preview                                  # Design Hub → http://127.0.0.1:8787/
-```
-
-Full white-label checklist: [`../docs/GETTING-STARTED.md`](../docs/GETTING-STARTED.md).
-
-The Design Hub already renders everything in `examples/` (and it **auto-refreshes** when you export a
-new document — no restart). To make it yours:
+[Open the example résumé in the Hub](http://127.0.0.1:8787/?doc=examples%2Fprofiles%2Fdefault-resume%2Fdefault-resume.html).
+Try the palette picker to compare screen and print colors. The editable
+[résumé HTML](profiles/default-resume/default-resume.html) prints in both modes.
+The [sample vault](profiles/default-resume/resume-source.example.json)
+illustrates the underlying claims and the [example profile](profiles/default-resume/profile.json)
+identifies its render and export settings.
 
 ```bash
-# a person + their claim vault + a render profile
-cp examples/profiles/default-resume/user.example.json         users/me.json
-cp examples/profiles/default-resume/resume-source.example.json vaults/me.json
-cp examples/profiles/default-resume/profile.example.json      profiles/me-resume.json
-
-# your brand palette (colors only — no personal data)
-cp examples/brand-design/brand-example.json                   brands/brand-me.json
-
-# a job application folder
-cp -r examples/_job-listings/example-application               _job-apps/My-Role
+python -m pdf_tool.check_generation examples/profiles/default-resume/default-resume.html
+python -m pdf_tool.html_to_pdf examples/profiles/default-resume/default-resume.html
+python -m pdf_tool.html_to_pdf examples/profiles/default-resume/default-resume.html --pdf-theme dark
+python -m pdf_tool.check_ats _exports/examples/default-resume-light.pdf
 ```
 
-Then edit those copies with your real details and export:
+The generated files stay in `_exports/examples/` and appear in the Hub's
+Exports view. For one end-to-end smoke test, run
+`python scripts/smoke-white-label.py`.
 
-```bash
-python -m pdf_tool.html_to_pdf _job-apps/My-Role/my-resume.html          # light / ATS PDF
-python -m pdf_tool.html_to_pdf _job-apps/My-Role/my-resume.html --pdf-theme dark  # branded
-```
+### Make a local copy
 
-## What's here
+Use the Hub Wizard or copy each starter in place, removing `.example` from
+the filename. Enter your own identity in [users](../users/README.md), verified
+claims in [vaults](../vaults/README.md), and document preferences in
+[profiles](../profiles/README.md). See [storage and export paths](../docs/STORAGE.md).
 
-| Path | It's the template for |
+| Copy | To |
 |---|---|
-| [`profiles/default-resume/`](profiles/default-resume/) | A person: `user.example.json` (who), `resume-source.example.json` (the **claim vault**), `profile.example.json` (how it renders), plus a working `default-resume.html` you can open in the hub |
-| [`profiles/default-cover-letter/`](profiles/default-cover-letter/) | One-page cover letter |
-| [`profiles/default-letter/`](profiles/default-letter/) | Personal letter |
-| [`profiles/default-work-examples/`](profiles/default-work-examples/) | Work-samples / portfolio page (CSS placeholder tiles) |
-| [`profiles/default-collage/`](profiles/default-collage/) | A collage document |
-| [`profiles/default-gallery/`](profiles/default-gallery/) | Collage-candidate gallery (`_candidates/index.html`) |
-| [`brand-design/`](brand-design/) | A brand-neutral color palette (`brand-example.json`) — map your real colors into these token names |
-| [`_job-listings/`](_job-listings/) | One-folder-per-job workflow: copy into `_job-apps/<Track>/` |
+| [Person starter](../users/you.example.json) | `users/you.json` |
+| [Vault starter](../vaults/you.example.json) | `vaults/you.json` |
+| [Résumé profile starter](../profiles/you-resume.example.json) | `profiles/you-resume.json` |
+| [Brand palette shape](brand-design/brand-example.json) | `brands/brand-you.json` |
+| [Job listing template](_job-listings/example-application/) | `_job-apps/My-Role/` |
 
-## The rules that keep it clean
+## Document starters
 
-- **Equal margins, pinned footer.** Every document uses one margin on all four edges (default `0.65in`),
-  the header flows at the top, the footer/signature pins to the bottom. Don't fight it — reuse the
-  classes in [`../themes/default-resume.css`](../themes/default-resume.css). Full spec:
-  [`../docs/LAYOUT-SYSTEM.md`](../docs/LAYOUT-SYSTEM.md).
-- **Content must fit the page box** (9.7in tall at the default) or the pinned signature collides with
-  the last lines. `python -m pdf_tool.check_overflow <doc>.html --pdf-theme dark` catches it (and
-  auto-warns on every export). If it warns, **move a section to the next page** — never shrink the margin.
-- **Palette rule.** No brown, no mustard, no puke/lime green. Run
-  `python -m pdf_tool.check_palette <doc>.html` before every export.
-  ([`../themes/PALETTE-RULES.md`](../themes/PALETTE-RULES.md)).
-- **Source-backed only.** A résumé is a *query* against the vault — never write a claim that isn't in it.
-  ([`../docs/VAULT.md`](../docs/VAULT.md)).
-- **Nothing real in tracked paths.** Real data goes in the root nouns (gitignored). `*.example.*` files stay
-  public; everything you copy off them stays local.
+| Starter | Preview or edit |
+|---|---|
+| Résumé | [Two-page résumé](profiles/default-resume/default-resume.html) |
+| Cover letter | [One-page cover letter](profiles/default-cover-letter/default-cover-letter.html) |
+| Work examples | [Work-samples page](profiles/default-work-examples/default-work-examples.html) |
+| Personal letter | [Personal letter](profiles/default-letter/personal-letter.html) |
+| Collage | [Collage canvas](profiles/default-collage/default-collage.html) |
+| Collage gallery | [Candidate gallery](profiles/default-gallery/_candidates/index.html) |
+| Presentation | [Widescreen pitch](profiles/default-deck/default-deck.html) |
+
+## Presentation starter
+
+Generate a pitch, proposal, kickoff, status update, case study, or training
+deck. Edit the generated HTML, or copy the [deck content example](profiles/default-deck/content.example.json)
+to supply your own title, subtitle, and slides with `--input content.json`.
+
+```bash
+python -m pdf_tool.deck --list-starters
+python -m pdf_tool.deck --starter proposal --output proposal.html
+python -m pdf_tool.check_deck proposal.html
+python -m pdf_tool.html_to_pdf proposal.html
+```
+
+See [layout geometry](../docs/LAYOUT-SYSTEM.md) and
+[document validation](../docs/QA.md) for export checks.

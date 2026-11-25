@@ -45,8 +45,8 @@
     "widthIn": 8.5,
     "heightIn": 11,
     "pages": 2,
-    "headingHierarchy": "../layouts/application-packet.json#headingHierarchy",
-    "applicationPacketRecipe": "../layouts/application-packet.json",
+    "headingHierarchy": "../layouts/application-packet.example.json#headingHierarchy",
+    "applicationPacketRecipe": "../layouts/application-packet.example.json",
     "note": "After copying to profiles/, use the shared recipe for a two-page résumé plus two pages of work samples. Include a one-page cover letter first when requested."
   },
   "coverLetterPolicy": {
@@ -60,7 +60,7 @@
     "deliverable": "The default packet is four pages, or five with a requested cover letter. Export light and dark standalone résumé PDFs when needed. Use the light résumé for a board’s résumé field and follow the posting’s other upload requirements.",
     "exportPrefs": {
       "defaultDeliverable": "application-packet",
-      "applicationPacketRecipe": "../layouts/application-packet.json",
+      "applicationPacketRecipe": "../layouts/application-packet.example.json",
       "resumeDefault": "light-and-dark",
       "includeWorkSamples": true,
       "includeCoverLetter": false,

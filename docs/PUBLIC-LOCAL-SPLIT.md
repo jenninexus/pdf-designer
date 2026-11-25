@@ -11,8 +11,8 @@ The **free product** is the clone. The planned Windows app packages the same eng
 
 | Layer | On GitHub | Local only |
 |---|---|---|
-| Engine | `src/pdf_tool/`, `themes/` (including licensed `themes/fonts/`), `layouts/`, QA guards | — |
-| Product story | [`PRODUCT.md`](PRODUCT.md) · [`examples/resume-studio/`](../examples/resume-studio/) | `storage/docs/MARKETING.md` |
+| Engine | `src/pdf_tool/`, `themes/` (presets and the optional-font guide), `layouts/`, QA guards | — |
+| Product story | [`PRODUCT.md`](PRODUCT.md) · [`examples/README.md`](../examples/README.md#resume-studio) | `storage/docs/MARKETING.md` |
 | Folder UX | [`WORKSPACE-LAYOUT.md`](WORKSPACE-LAYOUT.md) · [`STORAGE.md`](STORAGE.md) (alias notes) | Real data under root nouns; leftover `storage/` |
 | Generated files | [`STORAGE.md`](STORAGE.md) (canonical export layout) · [`EXPORTS.md`](EXPORTS.md) (fallback export layout) · [`../output/README.md`](../output/README.md) (automation scratch contract) · [`APPLICATIONS.md`](APPLICATIONS.md) § freeze what you sent | Exports beside their document family (`resumes/`, `collages/`) — including every `submitted-*` sent-artifact folder, which is a permanent record — plus `_exports/` and `output/` payloads |
 | Clone path | [`GETTING-STARTED.md`](GETTING-STARTED.md) | — |
@@ -21,7 +21,6 @@ The **free product** is the clone. The planned Windows app packages the same eng
 | Config | `.config/mcp-pdf-designer.example.json` | `mcp-pdf-designer.json` (absolute paths) |
 | Theme kit | Public default themes in-repo | `www-theme-kit` profiles + `brands/` (private kits) |
 | Docs | This folder (public `*.md`) | `storage/docs/` for operations and history · all `Plans/` for local work |
-| Lessons | `.memory/README.md` · `.memory/lesson-*.md` | Other `.memory/` notes · frozen `Plans/_complete/_archive/dev-log-sego.yaml` |
 
 ## Root files and ownership
 
@@ -37,7 +36,6 @@ The **free product** is the clone. The planned Windows app packages the same eng
 | `.vscode/` | Mixed | Opt-in `tasks.json.example` and `mcp.json.example`. Active tasks, MCP wiring and editor settings stay local. |
 | `.claude/` | Mixed | Only `commands/*.example.md`. Plugin preferences, bare commands and other runtime files stay local. |
 | `.config/` | Mixed | Optional `*.example.json` seeds, including the capture manifest. Active settings and privacy markers stay local. |
-| `.memory/` | Mixed | Public reviewed lessons and their index. Other personal notes stay local. |
 | `private/`, `.agents/`, `.codex/`, and `.local-artifacts/` | Local | Private add-ons, generated command adapters, and retained local output. |
 
 Keep [AGENTS.md](../AGENTS.md) public as the contributor contract and [CLAUDE.md](../CLAUDE.md) as its short compatibility pointer. Operator sessions and machine setup live in ignored files.
@@ -87,10 +85,9 @@ Commit when they are clone-safe and reusable:
 - `README.md` · `LICENSE` · contributor map `AGENTS.md` (keep it clone-safe; no vault bodies)
 - `.claude/commands/*.example.md` — generalized protocol seeds; placeholders only
 - `.config/*.example.json` · `.vscode/mcp.json.example`
-- `.memory/lesson-*.md` — durable traps (no vault bodies)
 - `output/README.md` — explicit automation/test scratch layout; never the payload itself
 - `users/examples.json` · `vaults/examples.json` · `profiles/examples.json` — fictional Jane Example so the Hub Vault and profile dropdown have a clone-safe card. Copy-me seeds stay `*.example.json`.
-- `_job-apps/_template/README.md` — generic folder-shape pointer only. Real listings, provider-specific material, employer notes, submission evidence, phone numbers, and real names never belong in this tracked tree.
+- `examples/_job-listings/` contains the fictional application starter. All actual application folders and submission records are private.
 
 ## Keep local files untracked
 
@@ -195,3 +192,7 @@ Files that once lived on `main` (bare commands, machine MCP config) can still ex
 - [`EXPORTS.md`](EXPORTS.md) — fallback export layout (see `STORAGE.md` for the family-local default)
 - [`../output/README.md`](../output/README.md) — automation/test scratch layout
 - [`../AGENTS.md`](../AGENTS.md) — agent contracts (keep clone-safe)
+
+## Release boundary
+
+The public source contains the MIT engine, Design Hub, generic recipes and fictional examples. Desktop distributions seed a user-owned workspace from reviewed public files. A future paid distribution needs its own packaging and release checks. Private workspaces, receipts and maintainer plans stay outside customer packages.

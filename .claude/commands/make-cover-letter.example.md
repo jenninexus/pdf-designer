@@ -22,7 +22,10 @@ Generalized command. **No real employer names or private paths.** Copy to
 | Print | `min-height` · `height: auto` · **no** `overflow: hidden` | Fixed height that clips |
 | Margins | Equal (band ~0.65–0.8in; default **0.75in**) | Asymmetric edges |
 
-Load the selected profile’s `ownerPresentationRules.headingCase` when present. Use the selected display name in uppercase as the largest heading, with the subject line below it at the size specified by the [cover-letter recipe](../../layouts/cover-letter/one-page-letter.json). Set any featured project heading in uppercase. Keep names and project titles in their normal casing in prose and the sign-off. Check the hierarchy in both print modes.
+Read the selected [profile](../../profiles/README.md) for its palette and
+`layoutPrefs.headingCase` and `layoutPrefs.maxPages.coverLetter`. Apply any one-off request
+first. Give the applicant name the largest heading, with the subject line below it at the
+recipe size. Preserve official capitalization in prose and the sign-off.
 
 Ship gate: `python -m pdf_tool.check_generation <doc>.html`.
 
@@ -43,7 +46,7 @@ Never studio “we” on a solo application.
 2. Gap check — ask before writing gaps
 3. Write letter (company-specific content lives HERE)
 4. Export per `exportPrefs` → `resumes/<user>/<Job>/`
-5. Verify 1 page US Letter
+5. Verify US Letter and the selected page cap in every requested mode
 6. Log paths in `application.json`
 
 Contracts: [`AGENTS.md`](../../AGENTS.md) · sibling [`make-resume.example.md`](make-resume.example.md).

@@ -1,20 +1,12 @@
-# `users/` — who is applying
+# People
 
-Person cards: contact, `characterVoice`, brand pointer.
+Copy [`you.example.json`](you.example.json) to `users/<id>.json` to add an identity manually,
+or let the wizard create it in your workspace. The copy is gitignored. It owns contact details,
+`characterVoice` and the optional `brandTheme.ssot` pointer to a theme map. Save document
+formatting in the person's [render profile](../profiles/README.md).
 
-| Tracked | Gitignored |
-|---|---|
-| this README · [`examples.json`](examples.json) (Jane Example) · `*.example.json` | real `<id>.json` (PII) |
+[`examples.json`](examples.json) supplies the fictional person for the live Hub demo.
 
-Copy [`you.example.json`](you.example.json) → `users/<you>.json`. The live Hub person
-[`examples.json`](examples.json) stays tracked so Vault still has Jane Example after you add yourself.
-
-This workspace follows Windows **Documents**. If OneDrive (or another provider) redirects
-Documents, this folder can sync with that account. PDF Designer does not create the cloud
-account; turning Documents backup off keeps the files only on this PC.
-
-Same copy-me shape: [`examples/profiles/default-resume/user.example.json`](../examples/profiles/default-resume/user.example.json).
-
-The engine also reads the legacy tree `storage/users/` until the alias is dropped. Layout: [`docs/WORKSPACE-LAYOUT.md`](../docs/WORKSPACE-LAYOUT.md).
-
-Keep one record per identity. Its render settings live in [`profiles/`](../profiles/). A demo alias can have a separate person record limited to public brand data. A studio application uses studio-scoped evidence rather than a person's contact record.
+The desktop app uses a workspace in your Documents folder. Your existing Documents backup
+settings determine whether that folder syncs with a cloud account. See the
+[workspace layout](../docs/WORKSPACE-LAYOUT.md).

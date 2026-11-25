@@ -4,7 +4,7 @@
     "name": "Aesyna Harmony",
     "description": "Aesyna surfaces with a cool harmony selection of ice, blue, indigo and violet.",
     "lineage": "syna-theme-kit/effects/spectrum.ts: Aesyna harmony order, cool slots 1,2,4,5",
-    "paletteRules": "themes/PALETTE-RULES.md"
+    "paletteRules": "docs/PALETTE-RULES.md"
   },
   "tokens": {
     "dark": {

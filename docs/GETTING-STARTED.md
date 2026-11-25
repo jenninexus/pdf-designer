@@ -17,7 +17,7 @@ Public defaults and presets *are* the product.
 
 > **Architecture:** [`PUBLIC-LOCAL-SPLIT.md`](PUBLIC-LOCAL-SPLIT.md) ·
 > **Business thesis:** [`PRODUCT.md`](PRODUCT.md) ·
-> **Front door:** [`../examples/resume-studio/`](../examples/resume-studio/)
+> **Front door:** [`../examples/README.md`](../examples/README.md#resume-studio)
 
 *(Formerly titled “WHITE-LABEL” — same checklist, clearer name for a public README.)*
 
@@ -27,11 +27,11 @@ Public defaults and presets *are* the product.
 
 | Piece | Path | Notes |
 |---|---|---|
-| **Product entry** | [`examples/resume-studio/`](../examples/resume-studio/) | Résumé-creator pitch + demo path |
+| **Product entry** | [`examples/README.md`](../examples/README.md#resume-studio) | Résumé-creator pitch + demo path |
 | Example profile + HTML | `examples/profiles/default-resume/` | Reference render + `profile.json` |
 | Default theme | `themes/default-resume.{json,css}` | Token SSOT + CSS mirror |
 | Audition palettes | `themes/presets/*.json` | Design Hub / `--variants` shopping |
-| Palette rule | [`themes/PALETTE-RULES.md`](../themes/PALETTE-RULES.md) | No brown / mustard / lime |
+| Palette rule | [`docs/PALETTE-RULES.md`](PALETTE-RULES.md) | No brown / mustard / lime |
 | Brand template (optional) | `examples/brand-design/` | Copy shape only — not real hex maps |
 | Protocol seeds | `.claude/commands/*.example.md` | Bare start/wrap/make-* are **not** on GitHub |
 

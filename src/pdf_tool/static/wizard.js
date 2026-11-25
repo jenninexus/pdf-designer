@@ -194,7 +194,14 @@
     status.textContent = 'Saving locally…';
     try {
       const result = await post('/api/save-starter', {
-        draft: readDraft(), resumeOptions: { palette: palette.value, layout: layout.value, reviewed: reviewed.checked }
+        draft: readDraft(),
+        resumeOptions: {
+          palette: palette.value,
+          layout: layout.value,
+          headingCase: byId('starterHeadingCase').value,
+          resumeMaxPages: Number(byId('starterResumePages').value),
+          reviewed: reviewed.checked
+        }
       });
       byId('openStarterResume').href = '/?' + new URLSearchParams({ doc: result.resumePath });
       byId('openStarterVault').href = result.vaultHref;

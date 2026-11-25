@@ -112,6 +112,19 @@ def test_private_docs_round_trip_without_legacy_storage_or_runtime_state(lan: tu
     assert not (b / "storage" / "scripts").exists()
 
 
+def test_only_the_editable_packet_recipe_syncs(lan: tuple[Path, Path, Path]) -> None:
+    remote, a, b = lan
+    layouts = a / "layouts"
+    layouts.mkdir()
+    (layouts / "application-packet.json").write_text("{}", encoding="utf-8")
+    (layouts / "application-packet.example.json").write_text("{}", encoding="utf-8")
+    (layouts / "draft.json").write_text("{}", encoding="utf-8")
+    assert _sync(a, "setup", str(remote)).returncode == 0
+    assert _private_files(a) == {"layouts/application-packet.json"}
+    assert _sync(b, "setup", str(remote)).returncode == 0
+    assert (b / "layouts" / "application-packet.json").is_file()
+
+
 def test_joining_machine_keeps_its_own_files(lan: tuple[Path, Path, Path]) -> None:
     remote, a, b = lan
     (a / "users" / "pat.json").write_text("A version", encoding="utf-8")

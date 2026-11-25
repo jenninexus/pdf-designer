@@ -124,7 +124,7 @@ python -m pdf_tool.html_to_pdf resumes/<user>/defaults/<user>-work-examples.html
 `--max-mb 5` fails the export if the PDF is still over the cap. Do **not** try
 to shrink the PDF after the fact with an AGPL rasterizer — the size has to be
 won at inline time. Game shots still use `object-fit: contain` on a 16:9 dark
-mat ([`../themes/GENERATION-RULES.md`](../themes/GENERATION-RULES.md) §3).
+mat ([`GENERATION-RULES.md`](GENERATION-RULES.md) §3).
 
 ## Light PDF
 

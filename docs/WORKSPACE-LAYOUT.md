@@ -162,9 +162,7 @@ profiles/*
 resumes/*
 !resumes/README.md
 
-_job-apps/*
-!_job-apps/README.md
-!_job-apps/_template/
+/_job-apps/
 
 # Runtime compatibility alias only; do not store listings here
 applications/
@@ -234,7 +232,7 @@ carrying forward only items that are genuinely still open. This repo uses lowerc
 
 A fresh clone has none of it: create `_active/` on first use. The maintainer backlog is
 `storage/docs/ROADMAP.local.md`. Reviewed lessons travel with a clone in
-[`../.memory/`](../.memory/). Never create a root `dev-log.yaml`, `dev-log-sego.yaml` or `dev-chat.md`.
+the local maintainer lessons in `storage/docs/lessons/`. Never create a root `dev-log.yaml`, `dev-log-sego.yaml` or `dev-chat.md`.
 
 ---
 
@@ -242,7 +240,7 @@ A fresh clone has none of it: create `_active/` on first use. The maintainer bac
 
 | Moment | Free GitHub | Paid later |
 |---|---|---|
-| Clone | Sees `users/` · `vaults/` · `examples/resume-studio/` | Installer creates the same folders |
+| Clone | Sees `users/` · `vaults/` · `examples/README.md#resume-studio` | Installer creates the same folders |
 | First win | Copy example vault → edit → light+dark PDF | Wizard: create vault → pick skills → export |
 | Trust | `.gitignore` proves we never want their PII | Same local folders; optional sync of themes only |
 

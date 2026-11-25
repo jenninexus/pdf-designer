@@ -5,8 +5,11 @@ from __future__ import annotations
 import re
 from pathlib import Path
 
-from pdf_tool.check_generation import run_file
+import pytest
+from pypdfium2 import PdfDocument
 
+from pdf_tool.check_generation import run_file
+from pdf_tool.html_to_pdf import export_html_to_pdf
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -61,11 +64,11 @@ def test_tracked_job_template_has_no_provider_specific_material() -> None:
     assert all(forbidden not in path.lower() for path in visible)
 
 
-def test_public_letter_uses_the_tracked_parisienne_asset() -> None:
+def test_public_personal_letter_uses_system_fonts() -> None:
     letter = ROOT / "examples/profiles/default-letter/personal-letter.html"
     text = letter.read_text(encoding="utf-8")
-    assert "../../../themes/fonts/Parisienne-Regular.woff2" in text
-    assert (ROOT / "themes/fonts/Parisienne-Regular.woff2").is_file()
+    assert '@font-face' not in text
+    assert '--signature: "Georgia", "Times New Roman", Times, serif;' in text
 
 
 def test_public_personal_letter_passes_the_full_generation_gate() -> None:
@@ -76,3 +79,33 @@ def test_public_personal_letter_passes_the_full_generation_gate() -> None:
 def test_public_cover_letter_passes_the_full_generation_gate() -> None:
     result = run_file(ROOT / "examples/profiles/default-cover-letter/default-cover-letter.html")
     assert result["passed"], result
+
+
+@pytest.mark.parametrize(
+    ("mode", "background", "expected"),
+    [
+        ("light", None, (255, 255, 255)),
+        ("light", "#f5f3fb", (245, 243, 251)),
+        ("dark", "#0a0a12", (10, 10, 18)),
+    ],
+)
+def test_default_resume_prints_the_selected_background_to_every_edge(
+    tmp_path: Path, mode: str, background: str | None, expected: tuple[int, int, int]
+) -> None:
+    source = ROOT / "examples/profiles/default-resume/default-resume.html"
+    pdf = export_html_to_pdf(
+        source,
+        pdf_path=tmp_path / "example.pdf",
+        pdf_theme=mode,
+        css_vars={"--bg": background} if background else None,
+    )
+    with PdfDocument(pdf) as document:
+        assert len(document) == 2
+        for page in document:
+            try:
+                assert page.get_size() == (612, 792)
+                with page.render(scale=1).to_pil() as image:
+                    for x, y in ((10, 10), (10, 400), (600, 400), (305, 780)):
+                        assert image.getpixel((x, y))[:3] == expected
+            finally:
+                page.close()

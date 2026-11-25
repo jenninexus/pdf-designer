@@ -52,8 +52,7 @@ this checkout. Generated adapters are deliberate runtime copies, not independent
 Private-sync shares project command sources, not generated adapters, global commands, runtime settings,
 authentication, or session history. Each machine regenerates its own adapters.
 
-For maintainers with `/sync-all`, use that command's global-plus-exact-checkout audit and repair
-entry point. Follow its current source instructions rather than calling its generator internals.
+For maintainers with `/sync-all`, audit the exact checkout with the project-scoped entry point. Follow its current source instructions rather than calling its generator internals.
 On other setups use the installed generator's documented scoped interface; neither tool is a public
 engine dependency. Preserve and compare unexplained adapter edits before any regeneration; a baseline
 refusal requires investigation, never a forced overwrite.
@@ -75,7 +74,8 @@ The private repository lives in `.git-private/` beside `.git/` and uses the same
 Design Hub sees one workspace. It holds only:
 
 - `users/` `vaults/` `profiles/` `resumes/` `_job-apps/` `applications/` `collages/` `brands/` `Plans/`
-- `storage/docs/` (private operational protocol and evidence); machine-specific scripts/settings stay local
+- `storage/docs/` (private operational protocol and lessons); machine-specific scripts/settings stay local
+- `layouts/application-packet.json` (editable private application-packet recipe)
 - Older private docs paths are still recognized for migration from earlier clones. Put new operating records under `storage/docs/`.
 - `.config/private-markers.txt` (so every machine guards every person's identifiers)
 - the bare personal commands `.claude/commands/*.md` (`/make-resume`, `/pdf-start`, …), so any machine can

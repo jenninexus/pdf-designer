@@ -13,7 +13,7 @@
     "check_generation",
     "check_ats"
   ],
-  "bestFor": "A combined personal application with optional cover letter, résumé, and work samples.",
+  "bestFor": "A starter layout for a combined application with an optional cover letter, résumé, and work examples.",
   "paper": "Letter",
   "files": 1,
   "parts": [
@@ -53,13 +53,19 @@
   ],
   "pagesWithoutCoverLetter": 4,
   "pagesWithCoverLetter": 5,
-  "theme": "Use one requested or applicant-appropriate theme for the full packet. A posting can still require a different upload format.",
-  "export": "Verify each part as its own source and merge in listed order using pdf_tool.merge_pdfs. Keep the intermediate PDFs in scratch and retain one final packet. Honor a résumé-only request separately.",
+  "theme": "Use the chosen theme consistently for all parts and follow the posting's upload requirements.",
+  "export": "Verify each part separately and merge in listed order using pdf_tool.merge_pdfs. Keep intermediate PDFs in scratch. Retain one final packet per requested print theme.",
   "headingHierarchy": {
-    "nameCase": "uppercase",
-    "projectTitleCase": "uppercase",
+    "nameCase": "as-written",
+    "projectTitleCase": "as-written",
     "nameCssPx": 38,
     "featuredProjectCssPx": 24,
     "rule": "Use the applicant name as the largest text heading. Put each featured project below it."
+  },
+  "maxPages": {
+    "coverLetter": 1,
+    "resume": 2,
+    "workSamples": 2,
+    "packet": 5
   }
 }

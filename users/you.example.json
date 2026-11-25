@@ -106,7 +106,7 @@
       "accent": "#4FD8E8",
       "support": "#8F9BE8"
     },
-    "⚠paletteRule": "No brown, no mustard, no lime. Amber has NO readable dark form on white paper — it turns brown. On light, hand the amber role to another hue. Enforced on every export; see themes/PALETTE-RULES.md."
+    "⚠paletteRule": "No brown, no mustard, no lime. Amber has NO readable dark form on white paper — it turns brown. On light, hand the amber role to another hue. Enforced on every export; see docs/PALETTE-RULES.md."
   },
 
   "profiles": {

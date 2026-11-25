@@ -169,7 +169,7 @@ try {
 
   <section class="wizard-step" data-step="2" hidden aria-labelledby="wizard-style">
     <h2 id="wizard-style" tabindex="-1">Choose a palette and layout</h2>
-    <p>These settings style your résumé and its two US Letter pages.</p>
+    <p>These settings style your résumé and are saved in your local profile.</p>
     <div class="wizard-editor draft-fields">
       <label for="starterPalette">Document palette</label>
       <select id="starterPalette"></select>
@@ -179,7 +179,17 @@ try {
       </div>
       <label for="starterLayout">Section order</label>
       <select id="starterLayout" aria-describedby="layoutHint"></select>
-      <p class="wizard-hint" id="layoutHint">Put experience or skills on the first page. Education follows on page two.</p>
+      <p class="wizard-hint" id="layoutHint">Lead with experience or skills. Education comes last.</p>
+      <label for="starterHeadingCase">Heading case</label>
+      <select id="starterHeadingCase">
+        <option value="as-written">As written</option>
+        <option value="uppercase">All caps</option>
+      </select>
+      <label for="starterResumePages">Résumé page limit</label>
+      <select id="starterResumePages">
+        <option value="2">Two pages</option>
+        <option value="1">One page</option>
+      </select>
       <p id="styleStatus" class="wizard-status-line" role="status"></p>
     </div>
     <div class="wizard-actions">

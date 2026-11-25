@@ -20,7 +20,7 @@ Never put real emails, employers, or private paths into `themes/` or `examples/`
 
 1. Copy [`brand-example.json`](brand-example.json) → `brands/brand-<yours>.json`.
 2. Map from your website profile (`www-theme-kit/profiles/...`) into the pdf-designer token names (`--primary`, `--secondary`, `--accent`, `--support`, surfaces, text).
-3. Derive a **light** print map that obeys [`../../themes/PALETTE-RULES.md`](../../themes/PALETTE-RULES.md) — never darken amber/gold into brown; hand that role to another hue already in the palette.
+3. Derive a **light** print map that obeys [`../../docs/PALETTE-RULES.md`](../../docs/PALETTE-RULES.md) — never darken amber/gold into brown; hand that role to another hue already in the palette.
 4. Point your `profiles/<you>-resume.json` → `theme.default` at that brand file.
 5. Run `python -m pdf_tool.check_palette --scan brands/` before export.
 

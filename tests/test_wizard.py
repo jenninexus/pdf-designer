@@ -57,7 +57,8 @@ def test_wizard_is_a_design_hub_route_and_navigation_target():
         assert ">Wizard</a>" in html
 
 
-def test_compact_wizard_imports_reviews_styles_and_exports(tmp_path):
+@pytest.mark.parametrize(("max_pages", "heading_case"), [(2, "as-written"), (1, "uppercase")])
+def test_compact_wizard_imports_reviews_styles_and_exports(tmp_path, max_pages, heading_case):
     playwright = pytest.importorskip("playwright.sync_api")
     server = ThreadingHTTPServer(("127.0.0.1", 0), make_handler(tmp_path, [], load_palettes(tmp_path)))
     thread = threading.Thread(target=server.serve_forever, daemon=True)
@@ -93,6 +94,8 @@ def test_compact_wizard_imports_reviews_styles_and_exports(tmp_path):
             page.get_by_role("button", name="Choose a style").click()
             page.locator("#starterLayout").select_option("skills-first")
             page.locator("#starterPalette").select_option("slate-ink")
+            page.get_by_label("Heading case").select_option(heading_case)
+            page.get_by_label("Résumé page limit").select_option(str(max_pages))
             page.get_by_role("button", name="Review and save").click()
             save = page.get_by_role("button", name="Save résumé and vault")
             assert save.is_disabled()
@@ -100,13 +103,24 @@ def test_compact_wizard_imports_reviews_styles_and_exports(tmp_path):
             save.click()
             page.get_by_role("link", name="Open my résumé").click()
             preview = page.frame_locator("#main")
-            playwright.expect(preview.get_by_role("heading", name="Alex Rivera", level=1)).to_be_visible()
-            assert preview.locator(".page").first.get_by_text("Skills", exact=True).is_visible()
-            assert not preview.locator(".page").first.get_by_text("Work experience", exact=True).count()
+            heading = preview.get_by_role("heading", level=1)
+            playwright.expect(heading).to_be_visible()
+            assert heading.text_content() == "Alex Rivera"
+            assert heading.evaluate("(element) => getComputedStyle(element).textTransform") == (
+                "uppercase" if heading_case == "uppercase" else "none"
+            )
+            headings = preview.locator(".page").first.locator("section h2").all_text_contents()
+            assert "Skills" in headings
+            if max_pages == 1:
+                assert headings.index("Skills") < headings.index("Work experience")
+            else:
+                assert "Work experience" not in headings
             assert not errors
             profile = json.loads((tmp_path / "profiles/alex-rivera-resume.json").read_text(encoding="utf-8"))
             assert profile["theme"]["preset"] == "slate-ink"
             assert profile["layout"]["variant"] == "skills-first"
+            assert profile["layoutPrefs"]["headingCase"] == heading_case
+            assert profile["layoutPrefs"]["maxPages"]["resume"] == max_pages
             vault = json.loads((tmp_path / "vaults/alex-rivera.json").read_text(encoding="utf-8"))
             assert [skill["claim"] for skill in vault["skills"]["imported"]] == ["HTML", "Python"]
             assert all(skill["confidence"] == "inferred" for skill in vault["skills"]["imported"])
@@ -117,11 +131,13 @@ def test_compact_wizard_imports_reviews_styles_and_exports(tmp_path):
                 result = response.json()
                 assert result["ok"], result
                 pdf = PdfReader(result["outputs"][0])
-                assert len(pdf.pages) == 2
+                assert len(pdf.pages) == max_pages
                 assert float(pdf.pages[0].mediabox.width) == 612
                 assert float(pdf.pages[0].mediabox.height) == 792
                 assert "Python" in pdf.pages[0].extract_text()
-                assert "Example Studio" in pdf.pages[1].extract_text()
+                assert "Example Studio" in pdf.pages[-1].extract_text().title()
+                if heading_case == "uppercase":
+                    assert "ALEX RIVERA" in pdf.pages[0].extract_text()
             browser.close()
     finally:
         server.shutdown()

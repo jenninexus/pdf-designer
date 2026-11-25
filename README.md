@@ -6,3 +6,7 @@ Design documents in HTML and export them locally as PDFs. The Design Hub include
 - [Browse the official docs](docs/README.md) for exports, templates, QA, and packaging.
 
 [MIT license](LICENSE)
+
+## Personal workspaces
+
+The wizard saves your editable résumé, render profile and vault locally. See the [workspace guide](docs/STORAGE.md) for generated PDF locations, the [profile guide](profiles/README.md) for presentation preferences and the [examples catalog](examples/README.md) for fictional starters. The repository contains the MIT-licensed public toolkit and its documented examples. [Public and local files](docs/PUBLIC-LOCAL-SPLIT.md)

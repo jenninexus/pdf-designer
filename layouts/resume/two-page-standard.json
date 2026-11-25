@@ -4,11 +4,11 @@
   "spec": "../../docs/LAYOUT-SYSTEM.md",
   "headingHierarchy": {
     "applicantName": {
-      "case": "uppercase",
+      "case": "as-written",
       "targetCssPx": 38
     },
     "projectTitle": {
-      "case": "uppercase",
+      "case": "as-written",
       "targetCssPx": 15
     },
     "rule": "The applicant name is the largest text heading. Keep body and headings on system sans-serif for application packets."
@@ -36,7 +36,7 @@
   "signature": {
     "placement": "bottom-right",
     "pin": "margin-top: auto + align-self: flex-end (or text-align: right)",
-    "not": "Cover-letter bottom-LEFT — that is one-page-letter.json (CZI reference)"
+    "not": "See the cover-letter recipe for its bottom-left sign-off."
   },
   "pagination": {
     "break": ".page + .page { break-before: page }",

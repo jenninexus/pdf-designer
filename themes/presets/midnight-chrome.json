@@ -5,7 +5,7 @@
     "description": "Midnight-blue professional chrome — sharp, modern, engineer-forward.",
     "aesthetic": "Staff+ eng / architecture — cool chrome on deep blue-black.",
     "lineage": "syna-theme-kit skins midnight-chrome (accents mapped for resume reading)",
-    "paletteRules": "themes/PALETTE-RULES.md"
+    "paletteRules": "docs/PALETTE-RULES.md"
   },
   "tokens": {
     "dark": {

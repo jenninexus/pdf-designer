@@ -32,7 +32,7 @@ still maps old `storage/<user>/…` preview URLs to `resumes/<user>/…` when th
 A fresh clone contains only tracked files, so it has no personal cards to discover. To inspect
 the release experience exactly, run `python -m pdf_tool.preview examples`: the library contains
 only the tracked default resume, cover letter, letter, work samples, collage, and gallery examples.
-`examples/resume-studio/` is the walkthrough data and docs, not a renderable document directory by itself.
+The [résumé studio walkthrough](../examples/README.md#resume-studio) links to the renderable examples.
 
 Library, Recipes, Vault, and Wizard open with a **PDF Designer** title screen. It
 targets **2,700 ms total**, including the **180 ms exit fade**, with a three-second acceptance cap;
@@ -123,7 +123,7 @@ Local-first library + filters (Jobright-style UX inspiration — not cloud match
 - **Profiles** (was “Who”): `all profiles` plus **`examples` first** (Jane Example, from tracked `profiles/examples.json`) then every workspace id from `users/` + `profiles/`. Path ownership (`resumes/<id>/` · legacy `storage/<id>/` URLs resolve to the same files) or a hyphen-bounded token (`jenni-…`, `meet-jenni-bot`) tags the card. Preference: `pdf-designer.hub.profileFilter`. First visit with no stored preference selects `examples`. **PDF Designer** app icon/title returns to the home landing (kind cards) and clears `?doc=`.
   - Choosing a profile **scopes** the folder picker and kind-chip counts to that profile. Kind chips click the first matching card. A leftover folder filter is **not** restored across reload (that hid the library behind one template dir).
   - Copy `profiles/you-resume.example.json` → `profiles/you-resume.json` for yourself; keep `profiles/examples.json` so the public cards stay in the dropdown.
-  - **Trap:** collage projects **without** a profile token (`profile: null`) still disappear when Profiles ≠ `all profiles`. Search the folder name, or pick All. Lesson: `.memory/lesson-hub-collage-hidden-by-profile-filter.md`.
+  - **Trap:** collage projects **without** a profile token (`profile: null`) still disappear when Profiles ≠ `all profiles`. Search the folder name, or pick All.
 - **Search:** name or path substring
 - **Focused comparison:** every filtered card starts included. Uncheck cards you do not want, then
   choose **Focus N** to hide the unchecked cards. Choose **Edit all** to bring them back for another
@@ -258,7 +258,6 @@ is the rule. Application identity is the path relative to `_job-apps/` (the runt
 `applications/` name is accepted as a compatibility alias), not the leaf folder name. Hub scan excludes `_archive/`
 and `*.template.html`; stale `/storage/<user>/…` links resolve via `resolve_preview_file`.
 
-Durable *why*: `.memory/lesson-hub-profile-scopes-folder-and-kind.md` ·
 `lesson-scaffold-readme-must-not-win-path-resolution.md` ·
 `lesson-hub-archive-not-found.md`.
 

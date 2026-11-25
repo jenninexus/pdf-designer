@@ -81,7 +81,7 @@
     "public_presets": "themes/presets/",
     "kit_registry": "www-theme-kit/palettes/resume-palettes.json",
     "private_brands": "brands/",
-    "rules": "themes/PALETTE-RULES.md"
+    "rules": "docs/PALETTE-RULES.md"
   },
   "layouts": {
     "_role": "⭐ STRUCTURE — where things sit on the page. Tracked and reusable, the counterpart to `palette_registry` (color). Never store a reusable layout in storage/.",

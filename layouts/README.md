@@ -5,20 +5,20 @@
 *theme* answers "what color is it" (tokens, palettes, gradients). They compose: any
 layout renders in any theme.
 
-> **Nothing private lives here.** Real image sets and vaults stay in their gitignored root nouns;
-> finished exports stay beside their document family (`resumes/<user>/`, `collages/<project>/`), with
-> `_exports/` as the fallback. This directory is tracked so layouts survive, get reused, and
-> ship with a fresh clone — the same way `themes/presets/` does.
+The reusable recipes here ship with a fresh clone. For a shared workspace customization, copy
+[`application-packet.example.json`](application-packet.example.json) to the ignored
+`layouts/application-packet.json`, then point the profiles that should use it at that copy.
+Keep each person's preferences in their [render profile](../profiles/README.md).
 
 | Path | Owns | Consumed by |
 |---|---|---|
 | [`cover-letter/`](cover-letter/) | Professional cover letters (1 page, bottom-LEFT sign-off) | `/make-cover-letter` · LAYOUT-SYSTEM |
-| [`letter/`](letter/) | Personal / family letterhead (date top-RIGHT, Parisienne sign-off) | personal notes — not ATS |
+| [`letter/`](letter/) | Personal letterhead (date top-right, optional cursive sign-off) | personal notes |
 | [`resume/`](resume/) | Résumé page model (2 pages, bottom-RIGHT signature) | `/make-resume` |
 | [`work-examples/`](work-examples/) | Work-samples / Additional Documents (3 pages) | `/make-work-examples` |
 | [`collage/`](collage/) | Collage layout recipes — family + canvas + fit + background | `python -m pdf_tool.collage --recipe <id>` · `/make-collage` |
 
-Machine-readable pointers: [`../.config/mcp-pdf-designer.json#layouts`](../.config/mcp-pdf-designer.json).
+Machine-readable pointers: [project config seed](../.config/mcp-pdf-designer.example.json).
 Map of every SSOT surface: [`../docs/SSOT.md`](../docs/SSOT.md).
 
 > **Path note (2026-08-10):** document recipes live in **category folders**
@@ -34,7 +34,7 @@ Map of every SSOT surface: [`../docs/SSOT.md`](../docs/SSOT.md).
 | Doc | Open this recipe | Signature | Pages |
 |---|---|---|---|
 | **Cover letter** | [`cover-letter/one-page-letter.json`](cover-letter/one-page-letter.json) ⭐ | **Bottom-LEFT**, flex-pinned (`margin-top: auto`, `padding-top: 30px`). Print = `min-height` only — **never** fixed `height` + `overflow: hidden` | **1** |
-| **Personal letter** | [`letter/personal-letter.json`](letter/personal-letter.json) | Date **top-RIGHT**; closing + **Parisienne** first name **bottom-LEFT**; soft footer | **1** |
+| **Personal letter** | [`letter/personal-letter.json`](letter/personal-letter.json) | Date **top-RIGHT**; closing + optional cursive first name **bottom-LEFT**; soft footer | **1** |
 | **Résumé** | [`resume/two-page-standard.json`](resume/two-page-standard.json) | **Bottom-RIGHT**, flex-pinned. Print = fixed `height` + `overflow: hidden` | **2** |
 | **Work samples** | [`work-examples/work-examples.json`](work-examples/work-examples.json) | Footer row (name L / links R). Portfolio URLs in a **body** section — not an extra footer line | **3** |
 
@@ -44,15 +44,16 @@ consecutive roles or subsections, checked in both PDF themes. Fit content withou
 equal page margins. Game-art thumbnails may cover their frame if the subject survives the crop;
 screenshots whose complete content matters use contain. See the work-samples recipe for the
 print-safe glass-like card treatment.
-**Visual reference for cover-letter pin/padding:** `resumes/jenni/CZI/jenni-czi-letter.html` (geometry only — not its palette).  
-**Personal letter example:** [`../examples/profiles/default-letter/personal-letter.html`](../examples/profiles/default-letter/personal-letter.html).
+See the [cover-letter example](../examples/profiles/default-cover-letter/default-cover-letter.html)
+for sign-off placement and padding and the [personal-letter example](../examples/profiles/default-letter/personal-letter.html)
+for personal letterhead.
 
 | Recipe | Doc types | Page model |
 |---|---|---|
 | [`resume/two-page-standard.json`](resume/two-page-standard.json) | résumé | Flex column · fixed print `height` + `overflow: hidden` · signature **bottom-RIGHT** |
 | [`work-examples/work-examples.json`](work-examples/work-examples.json) | work-samples / Additional Documents | Flex column · fixed print `height` · signature bottom-right · **full-row** stats/link grids |
 | [`cover-letter/one-page-letter.json`](cover-letter/one-page-letter.json) ⭐ | **cover letter** | Flex column · print `min-height` · sign-off **bottom-LEFT** |
-| [`letter/personal-letter.json`](letter/personal-letter.json) | family / friend letter | Letterhead · date top-RIGHT · Parisienne closing · soft footer · same CZI-safe print model |
+| [`letter/personal-letter.json`](letter/personal-letter.json) | family / friend letter | Letterhead · date top-RIGHT · optional cursive closing · soft footer · letter print model |
 
 > ### ⛔ Never put the résumé's *print* model on a cover letter or personal letter
 >
@@ -148,4 +149,16 @@ python -m pdf_tool.collage <dir> --recipe <id> --png --shelve
 can't be matched to a project). The **recipe** is the reusable artifact; the PNG is just a picture of
 one project's images.
 
-The [application packet recipe](application-packet.json) composes the cover letter, résumé, and work samples. The packet uses a consistent applicant-first heading hierarchy and may override standalone page counts.
+## Application packets
+
+The [example packet recipe](application-packet.example.json) defines the part order, Letter
+geometry and applicant-first hierarchy. It allows up to one cover-letter page, two résumé
+pages and two work-example pages. The cover letter is optional and goes first when included.
+A finished packet has at most five pages in each requested print theme.
+
+Resolve values in this order: the request for the current document, the selected profile's
+`layoutPrefs`, then the selected packet or document recipe. Use heading case as written when
+the profile has no preference. Keep names and project titles in their official casing in
+body text and use the profile's case for headings. Use the actual rendered page counts to
+check the individual caps and the combined cap. Edit the content to fit the available space
+within the standard equal margins.

@@ -84,7 +84,11 @@ def _document_layouts(root: Path) -> list[dict]:
         if cat_dir.is_dir():
             paths.extend(sorted(cat_dir.glob("*.json")))
     # Legacy flat layouts/*.json (pre-category) — keep discoverable if any remain
-    paths.extend(sorted(layouts_root.glob("*.json")))
+    packet_seed = layouts_root / "application-packet.example.json"
+    paths.extend(
+        path for path in sorted(layouts_root.glob("*.json"))
+        if path.name != "application-packet.json" or not packet_seed.is_file()
+    )
 
     seen: set[str] = set()
     out = []

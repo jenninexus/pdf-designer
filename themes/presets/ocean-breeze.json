@@ -5,7 +5,7 @@
     "description": "Calm ocean blues and teals — focused technical resume without gaming heat.",
     "aesthetic": "Product / eng / data — cool and clear.",
     "lineage": "syna-theme-kit/palettes/syna-palettes.json#ocean (mapped to pdf-designer resume tokens)",
-    "paletteRules": "themes/PALETTE-RULES.md"
+    "paletteRules": "docs/PALETTE-RULES.md"
   },
   "tokens": {
     "dark": {

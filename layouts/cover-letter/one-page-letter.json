@@ -4,14 +4,14 @@
   "spec": "../../docs/LAYOUT-SYSTEM.md",
   "headingHierarchy": {
     "applicantName": {
-      "case": "uppercase",
+      "case": "as-written",
       "targetCssPx": 38
     },
     "subjectLine": {
       "targetCssPx": 17
     },
     "projectTitle": {
-      "case": "uppercase",
+      "case": "as-written",
       "scope": "Headings only; preserve normal casing in prose."
     },
     "rule": "The applicant name is the largest text heading. Keep body and headings on system sans-serif for application packets."
@@ -34,14 +34,14 @@
     "body": ".letter-main { flex: 1 1 auto; min-height: 0; }",
     "signoff": ".signoff { margin-top: auto; padding-top: 30px; flex: 0 0 auto; text-align: left; break-inside: avoid; }",
     "printPage": ".page { width: auto; height: auto; min-height: 9.5in; margin: 0; padding: 0; /* NO overflow:hidden */ }",
-    "rule": "⭐ CZI reference (resumes/jenni/CZI/jenni-czi-letter.html): flex column + growing .letter-main + sign-off pinned with margin-top:auto so whitespace sits ABOVE the closing. Sign-off is bottom-LEFT (Warm regards → script → title → email). Résumés pin bottom-RIGHT — do not conflate.",
-    "reference": "CZI letter — position + padding (padding-top: 30px). Copy geometry, not palette.",
+    "rule": "Use a flex column with a growing .letter-main and margin-top:auto on the bottom-left sign-off so whitespace stays above the closing.",
+    "reference": "Use padding-top: 30px on the sign-off.",
     "⛔forbidden": [
       "height: <n>in on .page in print — @page{margin} already insets the printable area; a near-full fixed height overflows the sheet",
       "overflow: hidden on .page in print — combined with a fixed height it CLIPS the sign-off (Sony 2026-07-25)",
       "Leaving the sign-off floating mid-page with no margin-top:auto — short letters look unfinished"
     ],
-    "why": "Observed 2026-07-25 (Sony letter): résumé fixed-height + overflow:hidden copied onto a letter sliced the sign-off while every guard passed. Safe pin = flex + min-height (CZI). Unsafe pin = fixed height + overflow:hidden (Netflix/Sony)."
+    "why": "A fixed height and overflow:hidden can clip the sign-off in print. Use flex with min-height."
   },
   "signature": {
     "placement": "bottom-left",

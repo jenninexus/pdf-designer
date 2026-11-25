@@ -21,9 +21,7 @@ per section below.
 ## Session start (read in this order)
 
 1. **This file** — capability map + the contracts that must not break.
-2. ⭐ [`.memory/README.md`](.memory/) **index only** — the trap hooks. Open a `lesson-*.md` when
-   the hook matches the task you are about to do. Do **not** read the entire lesson directory every session;
-   the protocol already lives in `docs/`. The directory stays tracked so clones still get the *why*.
+2. **Maintainers only.** Read the local index at `storage/docs/lessons/README.md` when available. Public behavior is specified in `docs/` and enforced by the tests.
 3. [`docs/SSOT.md`](docs/SSOT.md) — the SSOT dashboard (what this repo owns vs. points elsewhere).
 4. [`docs/VAULT.md`](docs/VAULT.md) — **the vault**: what may be claimed, how each person sounds
    (`characterVoice` + vault `voice`), the capability matrix, the role tracks.
@@ -42,7 +40,7 @@ per section below.
 machine shares. The cache keeps one Chromium per Playwright *version*, so on a dev machine keep this venv's
 `playwright` on the same version as your other Playwright tools rather than pointing each at its own folder.
 `PLAYWRIGHT_BROWSERS_PATH` moves the shared cache for development only — never set it for the installed app
-([lesson](.memory/lesson-electron-packaged-playwright-needs-explicit-browser-path.md)).
+(see [Windows desktop](docs/WINDOWS-ELECTRON.md)).
 
 The Hub's launch title dismisses within 2,700 ms total, including its 180 ms exit; Open, Start wizard,
 Enter, Escape, and reduced-motion preference can dismiss or skip it sooner. Support links appear after
@@ -55,7 +53,7 @@ direction (free GitHub vs later paid shell): [`docs/PRODUCT.md`](docs/PRODUCT.md
 [`docs/PACKAGING.md`](docs/PACKAGING.md) · `python scripts/check-wheel-assets.py` ·
 `python scripts/testpypi-dry-run.py` (local wheel proof; `--upload` needs `TESTPYPI_TOKEN`).
 
-**Development and promotion:** [`docs/DEVELOPMENT-FLOW.md`](docs/DEVELOPMENT-FLOW.md) owns the local-to-public flow and private paid-source boundary. Proposed tiers and optional identity are in [`docs/PRODUCT.md`](docs/PRODUCT.md).
+**Development and promotion:** [Public release boundary](docs/PUBLIC-LOCAL-SPLIT.md#release-boundary). The maintainer workflow lives in local `storage/docs/DEVELOPMENT-FLOW.md`. Proposed tiers and optional identity are in [`docs/PRODUCT.md`](docs/PRODUCT.md).
 
 **Maintainer planning:** `storage/docs/ROADMAP.local.md` owns the backlog.
 `storage/docs/PRODUCT-PUBLISHING.md` owns publishing and release decisions. `Plans/` is local-only
@@ -72,15 +70,13 @@ updates the active plan + roadmap, and incorporates the base wrap checks without
 `/session-wrap`. `/start` and `/wrap` (and `/jen:start` / `/jen:wrap`) are thin
 aliases in `start.md` / `wrap.md` that defer here. Public protocol seeds:
 `.claude/commands/*.example.md`. Palette prefs: [`docs/SSOT.md`](docs/SSOT.md) § Personal palette prefs ·
-private maps in `brands/` (was `storage/brand-design/`). Product front door: [`examples/resume-studio/`](examples/resume-studio/).
+private maps in `brands/` (was `storage/brand-design/`). Product front door: [`examples/README.md#resume-studio`](examples/README.md#resume-studio).
 
 **Where learnings go — two surfaces, do not confuse them.** Session narrative lives in
 an active `Plans/_active/` checklist when a concrete slice exists, with the durable backlog in
 `storage/docs/ROADMAP.local.md`; move completed narrative to `_complete`. Do not create or update
 `dev-log.yaml`, `dev-log-sego.yaml`, or `dev-chat.md`; the old YAML is frozen under
-`Plans/_complete/_archive/`. Durable lessons — a trap, its
-root cause, and the guard that now prevents it — go to **tracked**
-[`.memory/lesson-*.md`](.memory/) with a row in [`.memory/README.md`](.memory/README.md). If
+`Plans/_complete/_archive/`. Durable maintainer lessons go in ignored `storage/docs/lessons/` with a row in its index. If
 the lesson changes a standing rule, edit the owning `docs/` page **as well**.
 
 **Submission history is private and immutable.** Keep exact sent files and confirmation evidence.
@@ -208,7 +204,7 @@ checks belong in ignored `storage/docs/`; the public engine runs without private
 You type `/make-<name>`; the assistant runs the bare `<name>.md` when it exists, else the tracked
 `.example.md`. Same idea as `*.example` data files and `.config/*.example.json`.
 
-**Public product entry (examples only):** [`examples/resume-studio/`](examples/resume-studio/) —
+**Public product entry (examples only):** [`examples/README.md#resume-studio`](examples/README.md#resume-studio) —
 marketed résumé-creator demo path (vault shape + palettes + smoke), not private vaults.
 
 ---
@@ -218,7 +214,7 @@ marketed résumé-creator demo path (vault shape + palettes + smoke), not privat
 | Path | What it is |
 |---|---|
 | `scripts/` and `storage/scripts/` | Public reusable tooling and private operator scripts. See [the scripts boundary](docs/PUBLIC-LOCAL-SPLIT.md#scripts). |
-| `.memory/` | ⭐ **tracked durable learnings** — one `lesson-*.md` per trap already hit here (root cause + the guard that now prevents it) + an index. Read at session start; written at wrap. Travels with every clone, unlike gitignored session Plans. |
+| `storage/docs/lessons/` | Private maintainer lessons and index |
 | `src/pdf_tool/` | the engine (html_to_pdf, variants, tracker, merge_pdfs, pdf_to_png, **check_generation**, check_palette, check_overflow, check_rendered_color, check_vault, check_ats, collage, deck, **check_deck**, preview) |
 | `themes/default-resume.{json,css}` | public default theme — JSON is the token SSOT, CSS its mirror |
 | `themes/presets/*.json` | public audition palettes (Design Hub swapper) |
@@ -227,7 +223,7 @@ marketed résumé-creator demo path (vault shape + palettes + smoke), not privat
 | `layouts/` | ⭐ **STRUCTURE registry** — document recipes under `layouts/{cover-letter,letter,resume,work-examples}/` + `layouts/collage/`; counterpart to `themes/` (color). See [`layouts/README.md`](layouts/README.md). |
 | `examples/brand-design/` | tracked **template** for private brand maps (copy → `brands/`) |
 | `examples/profiles/<id>/` | one profile per document type: `profile.json` + reference `.html` + example data |
-| `examples/resume-studio/` | ⭐ **public product entry** — marketed résumé-creator demo (links vault/palette/skills shapes) |
+| `examples/README.md#resume-studio` | ⭐ **public product entry** — marketed résumé-creator demo (links vault/palette/skills shapes) |
 | `examples/_job-listings/` | one-folder-per-job-application workflow + copyable template |
 | `docs/` | ARCHITECTURE · SSOT · PRODUCT · PACKAGING · GETTING-STARTED · PUBLIC-LOCAL-SPLIT · PRIVATE-SYNC · STORAGE · VAULT · JOB-ASSESSMENT · THEME-DESIGN · LAYOUT-SYSTEM · EXPORTS · COLLAGE-DESIGN · PREVIEWER · APPLICATIONS · LICENSING-NOTES ([`docs/README.md`](docs/README.md) is the index) |
 | `.config/mcp-pdf-designer.example.json` | ⭐ Tracked project config **seed** (breakpoints + hub/palette/layout pointers). Copy → local `mcp-pdf-designer.json` (gitignored — machine paths). |

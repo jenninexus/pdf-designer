@@ -18,4 +18,4 @@ cannot guarantee that a job site will fill every form field correctly. Export re
 `check_ats`, inspect reading order, and review the populated fields before submitting. See
 [`docs/QA.md`](../docs/QA.md). Historical submitted PDFs are preserved, not silently regenerated.
 
-Legacy alias: `storage/brand-design/` (retired). Palette rule: [`themes/PALETTE-RULES.md`](../themes/PALETTE-RULES.md).
+Legacy alias: `storage/brand-design/` (retired). Palette rule: [`docs/PALETTE-RULES.md`](../docs/PALETTE-RULES.md).

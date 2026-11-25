@@ -13,10 +13,13 @@ Generalized command. **No real client names.** Copy to `make-work-examples.md`
 ### Layout
 
 **Recipe:** [`layouts/work-examples/`](../../layouts/work-examples/) (see [`layouts/README.md`](../../layouts/README.md)).
-Signature: bottom-RIGHT (same family as résumés — avoid L/R footer false collisions;
-see `.memory/lesson-work-samples-footer-row-false-collision.md`).
+Follow the recipe's footer placement and check the restored print geometry with the
+[document gate](../../docs/QA.md).
 
-Load the selected profile’s `ownerPresentationRules.headingCase` when present. Follow the [work-examples recipe](../../layouts/work-examples/work-examples.json). Give each page an uppercase applicant name as its largest heading, then a smaller uppercase featured project title above the imagery. Keep official casing in prose and captions. Check the hierarchy in both print modes.
+Read the selected [profile](../../profiles/README.md) for its palette and
+`layoutPrefs.headingCase` and `layoutPrefs.maxPages.workSamples`. Apply any one-off request
+first. Give each page the applicant name as its largest heading, then a smaller featured
+project title above the imagery. Preserve official capitalization in prose and captions.
 
 ### Rules
 

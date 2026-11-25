@@ -100,7 +100,7 @@ Each background also declares a **`frame`** color, used for the polaroid borders
 `frame-scatter`. **Never hardcode white** — it fights every dark palette. A background with no
 declared frame falls back to the theme mode's border color.
 
-> The house palette rule from [`themes/PALETTE-RULES.md`](../../themes/PALETTE-RULES.md)
+> The house palette rule from [`docs/PALETTE-RULES.md`](../../docs/PALETTE-RULES.md)
 > (no brown / mustard / lime) applies to collage backgrounds too.
 
 ---
@@ -142,7 +142,7 @@ discoverable, and ships with a clone.
 
 [`docs/COLLAGE-DESIGN.md`](../../docs/COLLAGE-DESIGN.md) — layout families, canvas presets, backgrounds, fit ·
 [`layouts/README.md`](../../layouts/README.md) — recipe schema + how to add one ·
-[`themes/PALETTE-RULES.md`](../../themes/PALETTE-RULES.md) — color guard ·
+[`docs/PALETTE-RULES.md`](../../docs/PALETTE-RULES.md) — color guard ·
 [`docs/PREVIEWER.md`](../../docs/PREVIEWER.md) — Design Hub ·
 [`docs/SSOT.md`](../../docs/SSOT.md) — full surface map ·
 [`.claude/commands/make-resume.example.md`](make-resume.example.md) — the sibling document routine

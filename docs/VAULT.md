@@ -343,7 +343,7 @@ Persuasion is the goal; fabrication is never the method.
   flat (HTML stays in `resumes/<user>/defaults/`). `_exports/` is the fallback only.
 - **Palette:** **no brown, no mustard, no puke/lime green.** Amber cannot be darkened for white paper
   without turning brown — on light, hand the amber role to another hue. Full rule + the guard:
-  [`../themes/PALETTE-RULES.md`](../themes/PALETTE-RULES.md). Run `python -m pdf_tool.check_palette` before every export.
+  [`PALETTE-RULES.md`](PALETTE-RULES.md). Run `python -m pdf_tool.check_palette` before every export.
 - **Emails — the default is the default; don't deliberate.** Read
   `users/<user>.json#contact.emailRules.default` and use that address on every résumé and letter
   automatically. Other addresses on file are recognition/recovery data, **never** permission to

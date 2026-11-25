@@ -24,7 +24,7 @@
     "signoff": ".signoff { margin-top: auto; padding-top: 28px; flex: 0 0 auto; text-align: left; break-inside: avoid; }",
     "footer": ".letter-foot { margin-top: 1.25rem; padding-top: 0.75rem; border-top: 1px solid var(--border); font-size: 0.78rem; color: var(--dim); }",
     "printPage": ".page { width: auto; height: auto; min-height: 9.5in; margin: 0; padding: 0; /* NO overflow:hidden */ }",
-    "rule": "Personal letterhead: identity block top-LEFT (name + optional soft rule), DATE pinned top-RIGHT. Greeting + body in .letter-main. Closing + Parisienne script name bottom-LEFT. Soft footer rule under the sign-off. Same CZI-safe print model as cover letters — never fixed height + overflow:hidden.",
+    "rule": "Personal letterhead: identity block top-LEFT (name + optional soft rule), DATE pinned top-RIGHT. Greeting + body in .letter-main. Closing and optional cursive name bottom-left. Soft footer rule under the sign-off. Use the cover-letter print model — never fixed height + overflow:hidden.",
     "⛔forbidden": [
       "height: <n>in on .page in print",
       "overflow: hidden on .page in print",
@@ -34,7 +34,7 @@
   },
   "header": {
     "placement": "top",
-    "left": ["display name (Parisienne or brand script optional for first name)", "optional one-line personal tag"],
+    "left": ["display name (optional cursive first-name mark)", "optional one-line personal tag"],
     "right": ["date — pinned top-RIGHT"],
     "inspiredBy": "Résumé header rhythm (identity left / meta right) without ATS chrome or skill rows."
   },
@@ -42,9 +42,9 @@
     "placement": "bottom-left",
     "pin": "margin-top: auto on .signoff",
     "paddingTop": "28px",
-    "order": ["Warm closing (Love, / Warmly, / Sincerely,)", "Parisienne script first name (Jenni / Jennifer)", "optional full legal name in smaller roman under the script"],
+    "order": ["Warm closing (Love, / Warmly, / Sincerely,)", "optional cursive first name", "optional full legal name in smaller roman under the script"],
     "fonts": {
-      "scriptName": "Parisienne — first-name mark only (same role as résumé/cover script)",
+      "scriptName": "Optional cursive first-name mark for personal letters",
       "body": "Readable serif or system — personal letters may use a gentle serif; ATS rules do not apply"
     },
     "not": "Cover-letter Warm regards + title + EMAIL tracking — keep this human, not application"

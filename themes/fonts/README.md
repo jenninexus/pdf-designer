@@ -1,20 +1,21 @@
-# Public font assets
+# Local fonts
 
-This folder contains the small, licensed font set that a fresh clone may use
-without reaching into a local `storage/` tree. The root `themes/` directory is
-also copied into the wheel share during packaging, so these assets travel with
-the public product.
+Add fonts you have permission to use here. Reference them with relative URLs
+from your own HTML and keep any license and attribution files alongside the
+fonts. For a screen-only accent, put the `@font-face` and its use in
+`@media screen`. Use system fonts such as Arial or Helvetica for all text in
+light and dark career PDFs, including names, headings, contacts, and signatures.
 
-| Font | Use | License |
-|---|---|---|
-| `Parisienne-Regular.woff2` | Optional script/display face for personal letters and brand flourishes. Never use it for ATS body text. | SIL Open Font License 1.1 |
-| `Montserrat-VariableFont_wght.woff2` | Optional on-screen display face. Do not use it for printed résumé body text or `h2`; keep the system-font ATS rule. | SIL Open Font License 1.1 |
+Job websites can use an applicant tracking system (ATS) to extract text from a
+PDF and map it to fields. Extraction needs selectable text with characters that
+map correctly to Unicode. Field matching also depends on reading order and
+recognizable section headings. A custom font can extract correctly when the
+generated PDF maps its characters, but missing mappings or unexpected spacing can
+yield garbled words even if the page looks fine. Text flattened into images
+requires OCR. [Adobe PDF accessibility guide](https://helpx.adobe.com/acrobat/using/accessibility-features-pdfs.html)
+· [Greenhouse resume parsing guide](https://support.greenhouse.io/hc/en-us/articles/200989175-Unsuccessful-resume-parse)
 
-`OFL-1.1.txt` and `NOTICES.md` ship with the binaries. The font binaries are
-exact, unmodified copies from the former local asset store; their embedded
-metadata was checked before release. Add a font here only when its redistribution
-license and copyright notice are known. Unverified local fonts stay private.
-
-Use a repo-relative URL from an example, for example
-`../../../themes/fonts/Parisienne-Regular.woff2` from a profile HTML file.
-Never point a public example at `storage/fonts/`.
+Keep experience prose in one column. Before uploading, copy text from the light
+PDF into a text editor and check the reading order. Run
+`python -m pdf_tool.check_ats <resume-light.pdf>` and review the fields that
+the destination site fills. [PDF Designer export verification](../../docs/EXPORTS.md)

@@ -4,11 +4,11 @@
   "spec": "../../docs/LAYOUT-SYSTEM.md",
   "headingHierarchy": {
     "applicantName": {
-      "case": "uppercase",
+      "case": "as-written",
       "targetCssPx": 38
     },
     "projectTitle": {
-      "case": "uppercase",
+      "case": "as-written",
       "targetCssPx": 24
     },
     "order": "Applicant name, project title, project context, image and caption.",
@@ -54,7 +54,7 @@
     "mgLogo": "Optional. Default work-examples omits the MG mark in shipped-games. If used elsewhere, prefer SQUARE 1×1 — not landscape 16×9 in the header.",
     "ssot": "resumes/studio/resources/images/martiangames/martiangames-logo-1x1.webp"
   },
-  "tenureRule": "Studio at a glance: studio age (25 yrs founded 2000) and applicant tenure (Jenni = 15 yrs from Dec 2011) are DIFFERENT. Never tag the glance as 'Martian Games · 25 years' if it reads as the applicant's tenure — prefer 'studio · founded 2000' + a separate '15 yrs with studio' badge.",
+  "tenureRule": "Label studio age and personal tenure explicitly wherever they appear together.",
   "expectedPages": { "workSamples": 3 },
   "guards": ["check_overflow", "check_generation", "check_palette"],
   "bestFor": "Every work-samples / Additional Documents visual portfolio. Résumés use two-page-standard.json; cover letters use one-page-letter.json."

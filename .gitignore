@@ -32,7 +32,13 @@ dev-chat.md
 private/
 /.local-artifacts/
 browser-extension/
-docs/BROWSER-HELPER.md
+/docs/BROWSER-HELPER.md
+/docs/DEVELOPMENT-FLOW.md
+/docs/VOICE-SEED-HANDOFF.md
+/.form-helper/
+/layouts/application-packet.json
+/themes/fonts/*
+!/themes/fonts/README.md
 notes/
 # Root workspace nouns — track README + *.example.* only; real data stays local
 users/*
@@ -53,13 +59,10 @@ profiles/*
 resumes/*
 !resumes/README.md
 
-_job-apps/*
-!_job-apps/README.md
-!_job-apps/_template/
+/_job-apps/
 
-# Brand / creator-collab correspondence — track README only, real records stay local.
-_collabs/*
-!_collabs/README.md
+# Brand and creator correspondence stays local.
+/_collabs/
 
 # Brief 2026-08 name — runtime alias only; listings live in _job-apps/
 applications/
@@ -78,12 +81,7 @@ docs/MARKETING.md
 docs/WORKSPACE.md
 docs/HISTORY-SCRUB.md
 # AGENTS.md is the tracked, vendor-neutral contributor SSOT.
-# Lessons travel with the clone (README + lesson-*.md). Other .memory/ notes stay local.
-.memory/*
-!.memory/README.md
-!.memory/lesson-*.md
-# MEMORY.md is a tracked pointer to README.md (the /start convention looks for it).
-!.memory/MEMORY.md
+/.memory/
 # Session plans are local-only (public repo rule 2026-09-30). Backlog: docs/ROADMAP.md.
 # The rotation contract is documented at docs/WORKSPACE-LAYOUT.md § Session plans.
 # ⚠ A bare `!Plans/README.md` after `Plans/` does NOT work: git cannot re-include a file whose

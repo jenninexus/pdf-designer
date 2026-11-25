@@ -1,14 +1,8 @@
-# `vaults/` — what may be claimed
+# Claim vaults
 
-One vault per person: `vaults/<id>.json` (claims, `voice`, `roleTracks`).
+Copy [`you.example.json`](you.example.json) to `vaults/<id>.json`, or have the wizard create
+a draft from your reviewed résumé entries. This gitignored file owns evidence, `roleTracks`
+and the applicant's writing preferences in `voice`.
+See the [vault protocol](../docs/VAULT.md) before publishing or applying with any claim.
 
-| Tracked | Gitignored |
-|---|---|
-| this README · [`examples.json`](examples.json) (Jane Example) · `*.example.json` | real vault JSON |
-
-Copy [`you.example.json`](you.example.json) → `vaults/<you>.json`. Keep
-[`examples.json`](examples.json) so `/vault` still shows the public card.
-
-Same copy-me shape: [`examples/profiles/default-resume/resume-source.example.json`](../examples/profiles/default-resume/resume-source.example.json).
-
-Legacy alias: `storage/<id>/resume-source.json`. Protocol: [`docs/VAULT.md`](../docs/VAULT.md).
+[`examples.json`](examples.json) supplies the fictional vault for the live Hub demo.

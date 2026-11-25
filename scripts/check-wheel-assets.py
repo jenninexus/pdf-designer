@@ -58,6 +58,8 @@ def main() -> int:
         "pdf_tool/share/themes/default-resume.json",
         "pdf_tool/share/themes/default-resume.css",
         "pdf_tool/share/layouts/collage/",
+        "pdf_tool/share/layouts/application-packet.example.json",
+        "pdf_tool/share/themes/fonts/README.md",
         "pdf_tool/share/profiles/you-resume.example.json",
         "pdf_tool/paths.py",
     )
@@ -77,6 +79,11 @@ def main() -> int:
             "/_exports/" in name
             or "/output/" in name
             or "/_variants/" in name
+            or name == "pdf_tool/share/layouts/application-packet.json"
+            or (
+                name.startswith("pdf_tool/share/themes/fonts/")
+                and name != "pdf_tool/share/themes/fonts/README.md"
+            )
             or (
                 name.startswith("pdf_tool/share/")
                 and name.lower().endswith((".pdf", ".png", ".jpg", ".jpeg", ".webp", ".gif"))

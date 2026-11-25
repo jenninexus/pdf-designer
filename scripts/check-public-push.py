@@ -47,7 +47,6 @@ PRIVATE_ROOTS = (
     "vaults",
     "profiles",
     "resumes",
-    "_job-apps",
     "applications",
     "collages",
     "brands",
@@ -64,7 +63,6 @@ PUBLIC_SEED_PATHS = frozenset(
         "users/examples.json",
         "vaults/examples.json",
         "profiles/examples.json",
-        "_job-apps/_template/README.md",
     }
 )
 # Public product media is limited to deliberately reviewed files.
@@ -79,10 +77,16 @@ PUBLIC_MEDIA_PATHS = frozenset(
         "assets/public/hub/hub-vault.png",
     }
 )
-PRIVATE_ONLY_ROOTS = ("storage", "plans", "_exports", ".local-artifacts", ".codex", ".agents", ".cursor")
+PRIVATE_ONLY_ROOTS = (
+    "storage", "plans", "_exports", "_job-apps", "_collabs", ".local-artifacts", ".memory",
+    ".form-helper", ".codex", ".agents", ".cursor",
+)
 # Hub/UI assets under src/pdf_tool/static are part of the public engine, not personal exports.
 PUBLIC_ENGINE_ASSET_ROOT = "src/pdf_tool/static/"
-PRIVATE_DOC_NAMES = frozenset({"docs/marketing.md", "docs/workspace.md", "docs/history-scrub.md", "docs/roadmap.md"})
+PRIVATE_DOC_NAMES = frozenset({
+    "docs/marketing.md", "docs/workspace.md", "docs/history-scrub.md", "docs/roadmap.md",
+    "docs/development-flow.md", "docs/voice-seed-handoff.md",
+})
 WINDOWS_RELEASE_SUFFIXES = (
     ".exe", ".msi", ".msix", ".msixbundle", ".msixupload", ".appx", ".appxbundle", ".appxupload",
 )
@@ -131,6 +135,10 @@ def path_floor_violation(path: str) -> str | None:
         return "Windows release binary"
     if lower_path == "desktop/azure-trusted-signing.json":
         return "local signing config"
+    if lower_path == "layouts/application-packet.json":
+        return "local application packet recipe"
+    if lower_path.startswith("themes/fonts/") and path != "themes/fonts/README.md":
+        return "local font asset"
     if path == "browser-extension" or path.startswith("browser-extension/") or path == "docs/BROWSER-HELPER.md":
         return "local-only extension"
     for root in PRIVATE_ONLY_ROOTS:
