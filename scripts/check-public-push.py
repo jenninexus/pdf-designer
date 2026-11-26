@@ -75,6 +75,8 @@ PUBLIC_MEDIA_PATHS = frozenset(
         "assets/public/hub/hub-splash.png",
         "assets/public/hub/hub-start.png",
         "assets/public/hub/hub-vault.png",
+        "assets/public/hub/wizard-palettes-dark.png",
+        "assets/public/hub/wizard-palettes-light.png",
     }
 )
 PRIVATE_ONLY_ROOTS = (

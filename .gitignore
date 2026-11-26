@@ -149,6 +149,8 @@ job-listing-capture-*.md
 !/assets/public/hub/hub-splash.png
 !/assets/public/hub/hub-start.png
 !/assets/public/hub/hub-vault.png
+!/assets/public/hub/wizard-palettes-dark.png
+!/assets/public/hub/wizard-palettes-light.png
 !src/pdf_tool/static/hub-app-icon.png
 # Extension icons are product UI shipped inside the unpacked extension.
 !browser-extension/icons/*.png

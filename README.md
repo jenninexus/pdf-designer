@@ -19,6 +19,14 @@ Design documents in HTML and export them locally as PDFs. The Design Hub include
 - [Get started](docs/GETTING-STARTED.md) to set up the free toolkit and open the Design Hub.
 - [Browse the official docs](docs/README.md) for exports, templates, QA, and packaging.
 
+## Wizard palette preview
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/public/hub/wizard-palettes-dark.png">
+  <source media="(prefers-color-scheme: light)" srcset="assets/public/hub/wizard-palettes-light.png">
+  <img alt="Six résumé palettes with light and dark samples. Default Résumé is selected alongside Void Circuit, Neon Decay, Ghost Protocol, Plasma Drift, and Martian." src="assets/public/hub/wizard-palettes-light.png">
+</picture>
+
 ## Personal workspaces
 
 The wizard saves your editable résumé, render profile and vault locally. See the [workspace guide](docs/STORAGE.md) for generated PDF locations, the [profile guide](profiles/README.md) for presentation preferences and the [examples catalog](examples/README.md) for fictional starters. The repository contains the MIT-licensed public toolkit and its documented examples. [Public and local files](docs/PUBLIC-LOCAL-SPLIT.md)
