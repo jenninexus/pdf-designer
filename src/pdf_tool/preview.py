@@ -45,19 +45,25 @@ from .paths import (
 from .pdf_to_png import render_to_png
 from .recipe_gallery import build_recipe_gallery
 from .seed_from_resume import MAX_IMPORT_BYTES, draft_from_uploads
-from .starter_workspace import STARTER_CONTENT_WIDTH_PX, STARTER_LAYOUTS, save_starter
+from .starter_workspace import (
+    STARTER_CONTENT_WIDTH_PX, STARTER_LAYOUTS, save_brand_palette, save_starter, starter_brand_available,
+)
 from .vault_overview import build_vault_overview
 from .voice_card import build_voice_card
 
 _REPO_ROOT = repo_root()
 _STATIC_DIR = Path(__file__).resolve().parent / "static"
 _PDF_PREVIEW_LOCK = threading.Lock()
+_FEATURED_STARTER_PALETTES = (
+    "default-resume", "void-circuit", "neon-decay", "ghost-protocol", "plasma-drift", "martian",
+)
 EXCLUDE_PARTS = {
     "_exports",
     "output",
     "_archive",
     "node_modules",
     ".git",
+    ".local-artifacts",
     "__pycache__",
     ".venv",
     "venv",
@@ -293,7 +299,8 @@ def _is_excluded_rel(rel_parts: tuple[str, ...]) -> bool:
     return False
 
 
-def scan_documents(root: Path) -> list[dict]:
+def scan_documents(root: Path, *, servable_only: bool = False) -> list[dict]:
+    """Catalog real files, with optional filtering through the Hub asset boundary."""
     docs = []
     profile_ids = tuple(sorted(workspace_profile_ids(root), key=len, reverse=True))
     for p in sorted(root.rglob("*.html")):
@@ -304,9 +311,11 @@ def scan_documents(root: Path) -> list[dict]:
         if "pdf_tool" in rel.parts and "static" in rel.parts:
             continue
         # Source templates are authoring sidecars, not previewable documents.
-        if p.name.endswith(".template.html"):
+        if p.name.endswith(".template.html") or not p.is_file():
             continue
-        docs.append(classify_document(str(rel).replace("\\", "/"), p.stem, profile_ids))
+        path = rel.as_posix()
+        if not servable_only or resolve_document_asset(root, path) is not None:
+            docs.append(classify_document(path, p.stem, profile_ids))
 
     # Finished exports are browseable in the local Hub as read-only cards. They live
     # WITH their document family (resumes/<user>/…, collages/<project>/…), with
@@ -315,7 +324,10 @@ def scan_documents(root: Path) -> list[dict]:
     # package or the repository.
     for p in iter_export_artifacts(root):
         rel = p.relative_to(root)
-        doc = classify_document(str(rel).replace("\\", "/"), p.stem, profile_ids)
+        path = rel.as_posix()
+        if servable_only and resolve_document_asset(root, path) is None:
+            continue
+        doc = classify_document(path, p.stem, profile_ids)
         doc.update(
             {
                 "template": False,
@@ -750,14 +762,6 @@ try {
         <input id="outdirDrawer" type="text" placeholder="beside source: resumes/&lt;profile&gt;/… (default)">
       </div>
     </div>
-    <div class="hub-drawer-section hub-support" role="group" aria-label="Support JenniNexus">
-      <p class="hub-support-kicker">Support JenniNexus</p>
-      <p class="hub-support-copy">Free MIT toolkit. A tip is optional — it never unlocks extra features.</p>
-      <div class="hub-support-actions">
-        <a class="hub-support-btn patreon" href="https://www.patreon.com/c/JenniNexus" target="_blank" rel="noopener noreferrer"><span class="hub-fa-icon fa-patreon" aria-hidden="true"></span>Patreon</a>
-        <a class="hub-support-btn paypal" href="https://paypal.me/jenninexus" target="_blank" rel="noopener noreferrer"><span class="hub-fa-icon fa-paypal" aria-hidden="true"></span>PayPal</a>
-      </div>
-    </div>
   </div>
 </aside>
 
@@ -778,7 +782,8 @@ try {
       <span class="library-title">Library <strong id="visibleCount">0</strong></span>
       <span class="library-compare" aria-label="Comparison focus controls">
         <button type="button" id="compareFocusBtn" title="Uncheck cards, then focus the comparison">Focus</button>
-        <button type="button" id="compareResetBtn" title="Include every filtered card again" hidden>Reset</button>
+        <button type="button" id="compareResetBtn" title="Include every filtered item in focus" aria-label="Focus all filtered items">All</button>
+        <button type="button" id="compareNoneBtn" title="Exclude every filtered item from focus" aria-label="Focus none of the filtered items">None</button>
       </span>
     </div>
     <div class="library-scroll" id="sidebar"></div>
@@ -799,6 +804,16 @@ try {
       <p class="hub-home-lead">Start with your own résumé or browse the example documents.</p>
       <p><a class="hub-link" href="/wizard">Add your résumé</a></p>
       <div class="hub-home-grid" id="hubHomeGrid"></div>
+      <details class="hub-home-support" id="hubSupport">
+        <summary>Help &amp; support</summary>
+        <p class="hub-support-copy">PDF Designer is free. A suggested $5 donation helps support development.</p>
+        <div class="hub-support-actions">
+          <a class="hub-support-btn patreon" href="https://www.patreon.com/c/JenniNexus" target="_blank" rel="noopener noreferrer"><span class="hub-fa-icon fa-patreon" aria-hidden="true"></span>Patreon</a>
+          <a class="hub-support-btn paypal" href="https://paypal.me/jenninexus" target="_blank" rel="noopener noreferrer"><span class="hub-fa-icon fa-paypal" aria-hidden="true"></span>PayPal</a>
+          <a class="hub-support-btn" href="https://discord.gg/KYPh7Cp" target="_blank" rel="noopener noreferrer">Discord</a>
+          <a class="hub-support-btn" href="https://x.com/JenniNexus" target="_blank" rel="noopener noreferrer">X</a>
+        </div>
+      </details>
     </div>
     <iframe id="main" title="Document preview" sandbox="allow-same-origin" src="about:blank" hidden></iframe>
   </div>
@@ -806,7 +821,7 @@ try {
 
 <script>
 let DOCS = __DOCS__;
-const PALETTES = __PALETTES__;
+let PALETTES = __PALETTES__;
 let PROFILE_IDS = __PROFILE_IDS__;
 
 function escapeMarkup(value) {
@@ -954,7 +969,6 @@ function folderMenuRow(folder, { selected, pinned, isAll }) {
     const star = document.createElement("span");
     star.className = "hub-select-star";
     star.setAttribute("aria-hidden", "true");
-    star.textContent = pinned ? "★" : "☆";
     pin.append(star);
     pin.addEventListener("click", (e) => {
       e.preventDefault();
@@ -1091,14 +1105,27 @@ window.addEventListener("resize", repositionOpenFolderMenus);
 
 const paletteSel = document.getElementById("palette");
 const drawerPaletteSel = document.getElementById("drawerPalette");
-PALETTES.forEach((p, i) => {
-  const o = document.createElement("option");
-  o.value = i;
-  o.textContent = p.name;
-  o.dataset.favoriteKey = JSON.stringify([p.id, p.mode]);
-  paletteSel.appendChild(o);
-  if (drawerPaletteSel) drawerPaletteSel.appendChild(o.cloneNode(true));
-});
+function paletteKey(palette) {
+  return JSON.stringify([palette.id, palette.mode]);
+}
+
+function buildPaletteSelects() {
+  const previousKey = paletteSel.selectedOptions[0]?.dataset.favoriteKey;
+  const entries = PALETTES.map((palette, index) => {
+    const option = new Option(palette.name, index);
+    option.dataset.favoriteKey = paletteKey(palette);
+    return option;
+  });
+  const selectedIndex = entries.findIndex(option => option.dataset.favoriteKey === previousKey);
+  for (const select of [paletteSel, drawerPaletteSel]) {
+    if (!select) continue;
+    select.replaceChildren(new Option("doc default", ""), ...entries.map(option => option.cloneNode(true)));
+    select.selectedIndex = selectedIndex + 1;
+  }
+  window.hubSyncSelects?.();
+}
+buildPaletteSelects();
+const appliedPaletteVars = new WeakMap();
 
 function ensureHubScrollbars(doc) {
   if (!doc || !doc.head || doc.getElementById("hub-scroll-theme")) return;
@@ -1114,13 +1141,21 @@ function ensureHubScrollbars(doc) {
 }
 
 function applyPalette(iframe) {
-  const idx = paletteSel.value;
+  const palette = PALETTES[paletteSel.value];
   const doc = iframe.contentDocument;
   if (!doc) return;
   ensureHubScrollbars(doc);
   const st = doc.documentElement.style;
-  for (const p of PALETTES) for (const k of Object.keys(p.vars)) st.removeProperty(k);
-  if (idx !== "") for (const [k, v] of Object.entries(PALETTES[idx].vars)) st.setProperty(k, v);
+  for (const [key, value, priority] of appliedPaletteVars.get(doc) || []) {
+    if (value) st.setProperty(key, value, priority);
+    else st.removeProperty(key);
+  }
+  const originals = [];
+  for (const [key, value] of Object.entries(palette?.vars || {})) {
+    originals.push([key, st.getPropertyValue(key), st.getPropertyPriority(key)]);
+    st.setProperty(key, value);
+  }
+  appliedPaletteVars.set(doc, originals);
 }
 
 function activeProfile() {
@@ -1200,8 +1235,7 @@ function buildProfileSelects() {
   window.hubSyncSelects?.();
 }
 
-function uniqueFolders() {
-  const pool = docsForProfile(activeProfile());
+function uniqueFolders(pool = docsForProfile(activeProfile())) {
   const folders = new Set(pool.flatMap(d => [d.root, d.group]).filter(Boolean));
   if (pool.some(d => String(d.path || "").replace(/\\\\/g, "/").startsWith("_exports/"))) {
     folders.add("_exports");
@@ -1246,21 +1280,38 @@ function filteredDocs() {
 }
 
 const HUB_COMPARE_EXCLUDED_KEY = "pdf-designer.hub.compareExcluded";
-let compareFocus = false;
-let compareExcluded = new Set(loadCompareExcluded());
+const HUB_COMPARE_FOCUS_KEY = "pdf-designer.hub.compareFocus";
+const HUB_DOCUMENT_PINS_KEY = "pdf-designer.hub.pinnedDocuments";
 
-function loadCompareExcluded() {
+function loadPathSet(storage, key) {
   try {
-    const raw = JSON.parse(sessionStorage.getItem(HUB_COMPARE_EXCLUDED_KEY) || "[]");
-    return Array.isArray(raw) ? raw.map(String) : [];
-  } catch (_) { return []; }
+    const raw = JSON.parse(window[storage].getItem(key) || "[]");
+    return new Set(Array.isArray(raw) ? raw.filter(value => typeof value === "string") : []);
+  } catch (_) { return new Set(); }
 }
 
-function saveCompareExcluded() {
-  try { sessionStorage.setItem(HUB_COMPARE_EXCLUDED_KEY, JSON.stringify([...compareExcluded])); }
-  catch (_) {}
+function savePathSet(storage, key, paths) {
+  try { window[storage].setItem(key, JSON.stringify([...paths])); } catch (_) {}
 }
 
+let compareFocus = false;
+try { compareFocus = sessionStorage.getItem(HUB_COMPARE_FOCUS_KEY) === "true"; } catch (_) {}
+const compareExcluded = loadPathSet("sessionStorage", HUB_COMPARE_EXCLUDED_KEY);
+const pinnedDocuments = loadPathSet("localStorage", HUB_DOCUMENT_PINS_KEY);
+
+function reconcileLibraryPreferences() {
+  const paths = new Set(DOCS.map(d => d.path));
+  for (const [entries, storage, key] of [
+    [compareExcluded, "sessionStorage", HUB_COMPARE_EXCLUDED_KEY],
+    [pinnedDocuments, "localStorage", HUB_DOCUMENT_PINS_KEY],
+  ]) {
+    const size = entries.size;
+    for (const path of entries) {
+      if (!paths.has(path)) entries.delete(path);
+    }
+    if (entries.size !== size) savePathSet(storage, key, entries);
+  }
+}
 function renderCompareControls(baseDocs) {
   const included = baseDocs.filter(d => !compareExcluded.has(d.path)).length;
   const excluded = baseDocs.length - included;
@@ -1276,10 +1327,9 @@ function renderCompareControls(baseDocs) {
       ? "Show every filtered item so you can change the comparison set"
       : "Hide unchecked items and focus this comparison set";
   }
-  if (reset) {
-    reset.hidden = !excluded;
-    reset.textContent = `Reset ${excluded}`;
-  }
+  if (reset) reset.disabled = !excluded;
+  document.getElementById("compareNoneBtn").disabled = !included;
+  focus.setAttribute("aria-pressed", String(compareFocus));
 }
 
 const THUMB_W = 248;
@@ -1289,32 +1339,46 @@ function renderLibrary() {
   const baseDocs = filteredDocs();
   const docs = compareFocus ? baseDocs.filter(d => !compareExcluded.has(d.path)) : baseDocs;
   renderCompareControls(baseDocs);
-  sidebar.innerHTML = "";
-  if (selected && !docs.some(d => d.path === selected.path)) {
-    // Selection hidden by filters — keep preview, drop false sidebar highlight
-  }
+  const scrollTop = sidebar.scrollTop;
+  const collapsed = new Set([...sidebar.querySelectorAll("details[data-library-group]:not([open])")]
+    .map(group => group.dataset.libraryGroup));
+  sidebar.replaceChildren();
   if (!docs.length) {
     const profile = activeProfile();
     const owned = docsForProfile(profile).length;
     let msg = "No templates match these filters.";
     if (compareFocus && baseDocs.length) {
-      msg = "No items remain in this focused comparison. Choose Edit all or Reset.";
+      msg = "No items are in focus. Choose All or Edit all.";
     } else if (profile && owned === 0) {
       msg = "No documents tagged “" + profile + "” yet. Pick all profiles, or add HTML under resumes/" + profile + "/.";
     } else if (profile) {
       msg = "No “" + profile + "” documents match this folder or kind. Try All or another folder.";
     }
-    sidebar.innerHTML = '<div class="empty">' + msg + "</div>";
+    const empty = document.createElement("div");
+    empty.className = "empty";
+    empty.textContent = msg;
+    sidebar.append(empty);
     return;
   }
-  const groups = {};
-  for (const d of docs) (groups[d.group] ||= []).push(d);
-  for (const [group, list] of Object.entries(groups)) {
+  const groups = new Map();
+  const pinned = [];
+  for (const d of docs) {
+    if (pinnedDocuments.has(d.path)) pinned.push(d);
+    else {
+      if (!groups.has(d.group)) groups.set(d.group, []);
+      groups.get(d.group).push(d);
+    }
+  }
+  const sections = [...groups];
+  if (pinned.length) sections.unshift([null, pinned]);
+  for (const [group, list] of sections) {
     const det = document.createElement("details");
     det.className = "group";
-    det.open = true;
+    det.dataset.libraryGroup = group === null ? "pinned" : "folder:" + group;
+    det.open = !collapsed.has(det.dataset.libraryGroup);
+    const heading = group === null ? "Pinned" : group;
     const sum = document.createElement("summary");
-    sum.innerHTML = `<span class="path" title="${escapeMarkup(group)}">${escapeMarkup(group)}</span><span class="count">${list.length}</span>`;
+    sum.innerHTML = `<span class="path" title="${escapeMarkup(heading)}">${escapeMarkup(heading)}</span><span class="count">${list.length}</span>`;
     det.appendChild(sum);
     for (const d of list) {
       const el = document.createElement("div");
@@ -1329,20 +1393,38 @@ function renderLibrary() {
       const preview = d.artifact
         ? `<div class="frame artifact-frame"><span class="artifact-format">${String(d.format || "file").toUpperCase()}</span><span class="artifact-note">Open export</span></div>`
         : `<div class="frame"><iframe sandbox="allow-same-origin" loading="lazy" src="${documentUrl(d.path)}" scrolling="no" tabindex="-1" title=""></iframe></div>`;
+      const pinned = pinnedDocuments.has(d.path);
       el.innerHTML =
         preview +
         `<div class="meta"><div class="thumb-title-row"><div class="name" title="${escapeMarkup(d.path)}">${escapeMarkup(d.name)}</div>` +
+        `<button class="library-pin" type="button" aria-label="Pin ${escapeMarkup(d.name)}" aria-pressed="${pinned}" title="${pinned ? "Unpin from Library" : "Pin to top of Library"}"><span class="hub-select-star" aria-hidden="true"></span></button>` +
         `<label class="compare-check" title="Include in focused comparison"><input type="checkbox" ${compareChecked ? "checked" : ""} aria-label="Include ${escapeMarkup(d.name)} in comparison"><span aria-hidden="true"></span></label></div>` +
         `<div class="badges">${badges.join("")}</div></div>`;
       el.classList.toggle("compare-excluded", !compareChecked);
-      el.querySelector(".compare-check")?.addEventListener("click", (event) => event.stopPropagation());
-      const compareBox = el.querySelector(".compare-check input");
-      if (compareBox) compareBox.addEventListener("click", (event) => {
+      el.querySelector(".library-pin").addEventListener("click", event => {
         event.stopPropagation();
+        if (pinnedDocuments.has(d.path)) pinnedDocuments.delete(d.path);
+        else pinnedDocuments.add(d.path);
+        savePathSet("localStorage", HUB_DOCUMENT_PINS_KEY, pinnedDocuments);
+        renderLibrary();
+        const pin = sidebar.querySelector(`[data-path="${CSS.escape(d.path)}"] .library-pin`);
+        const section = pin?.closest("details");
+        if (section) section.open = true;
+        pin?.focus();
+      });
+      el.querySelector(".compare-check")?.addEventListener("click", event => event.stopPropagation());
+      const compareBox = el.querySelector(".compare-check input");
+      compareBox.addEventListener("change", () => {
         if (compareBox.checked) compareExcluded.delete(d.path);
         else compareExcluded.add(d.path);
-        saveCompareExcluded();
-        renderLibrary();
+        savePathSet("sessionStorage", HUB_COMPARE_EXCLUDED_KEY, compareExcluded);
+        if (compareFocus) {
+          renderLibrary();
+          document.getElementById("compareFocusBtn").focus({ preventScroll: true });
+        } else {
+          el.classList.toggle("compare-excluded", !compareBox.checked);
+          renderCompareControls(baseDocs);
+        }
       });
       const ifr = el.querySelector("iframe");
       if (ifr) ifr.addEventListener("load", () => {
@@ -1360,18 +1442,25 @@ function renderLibrary() {
     }
     sidebar.appendChild(det);
   }
+  sidebar.scrollTop = scrollTop;
 }
 
 document.getElementById("compareFocusBtn").addEventListener("click", () => {
   compareFocus = !compareFocus;
+  try { sessionStorage.setItem(HUB_COMPARE_FOCUS_KEY, String(compareFocus)); } catch (_) {}
   renderLibrary();
 });
-document.getElementById("compareResetBtn").addEventListener("click", () => {
-  for (const d of filteredDocs()) compareExcluded.delete(d.path);
-  compareFocus = false;
-  saveCompareExcluded();
+
+function setFilteredFocus(include) {
+  for (const d of filteredDocs()) {
+    if (include) compareExcluded.delete(d.path);
+    else compareExcluded.add(d.path);
+  }
+  savePathSet("sessionStorage", HUB_COMPARE_EXCLUDED_KEY, compareExcluded);
   renderLibrary();
-});
+}
+document.getElementById("compareResetBtn").addEventListener("click", () => setFilteredFocus(true));
+document.getElementById("compareNoneBtn").addEventListener("click", () => setFilteredFocus(false));
 
 const main = document.getElementById("main");
 const previewToggle = document.getElementById("previewToggle");
@@ -1416,8 +1505,16 @@ function showHome() {
   if (exportBtn) exportBtn.disabled = true;
   buildHomeGrid();
 }
+function clearDocumentLocation() {
+  try {
+    const u = new URL(location.href);
+    if (!u.searchParams.has("doc")) return;
+    u.searchParams.delete("doc");
+    history.replaceState(null, "", u.pathname + u.search + u.hash);
+  } catch (_) {}
+}
+
 function goHome(opts) {
-  const pushUrl = !opts || opts.pushUrl !== false;
   const resetProfile = opts && opts.resetProfile;
   selected = null;
   kindFilter = "all";
@@ -1435,13 +1532,7 @@ function goHome(opts) {
   buildFolderSelect();
   renderLibrary();
   showHome();
-  if (pushUrl) {
-    try {
-      const u = new URL(location.href);
-      u.searchParams.delete("doc");
-      history.replaceState(null, "", u.pathname + u.search);
-    } catch (_) {}
-  }
+  clearDocumentLocation();
 }
 function buildHomeGrid() {
   const grid = document.getElementById("hubHomeGrid");
@@ -1485,8 +1576,9 @@ function renderStagebar(d) {
   const bar = document.getElementById("stagebar");
   if (!bar || !d) return;
   bar.replaceChildren();
+  const kindLabel = KIND_LABEL[d.kind] || d.kind;
   bar.appendChild(stageFilterButton(
-    KIND_LABEL[d.kind] || d.kind,
+    kindLabel,
     "kind",
     d.kind,
     "kind-" + d.kind,
@@ -1503,8 +1595,12 @@ function renderStagebar(d) {
     ));
   }
   const root = d.root || String(d.path || "").split("/")[0] || "(root)";
+  const folderLabel = folderDisplayName(root);
+  const rootLabel = [kindLabel, profile].some(label => label?.toLowerCase() === folderLabel.toLowerCase())
+    ? "Folder: " + folderLabel
+    : folderLabel;
   bar.appendChild(stageFilterButton(
-    folderDisplayName(root),
+    rootLabel,
     "root",
     root,
     "",
@@ -1537,7 +1633,7 @@ function applyStageFilter(type, value) {
   renderStagebar(selected);
 }
 
-function select(d, el, { pushUrl = true } = {}) {
+function select(d, el, { pushUrl = true, refresh = false } = {}) {
   selected = d;
   hideHome();
   document.querySelectorAll(".thumb").forEach(t => t.classList.remove("sel"));
@@ -1550,9 +1646,9 @@ function select(d, el, { pushUrl = true } = {}) {
   const pdf = d.artifact && d.format === "pdf";
   if (pdf) main.removeAttribute("sandbox");
   else main.setAttribute("sandbox", "allow-same-origin");
-  main.src = pdf
-    ? "/pdf-viewer?doc=" + encodeURIComponent(d.path)
-    : documentUrl(d.path);
+  const url = new URL(pdf ? "/pdf-viewer?doc=" + encodeURIComponent(d.path) : documentUrl(d.path), location.href);
+  if (refresh) url.searchParams.set("t", String(Date.now()));
+  main.src = url.href;
   const exportBtn = document.getElementById("exportBtn");
   if (exportBtn) {
     exportBtn.disabled = d.exportable === false;
@@ -1839,11 +1935,12 @@ buildProfileSelects();
     }
   } catch (_) {}
 })();
+reconcileLibraryPreferences();
 reconcileKindForProfile();
 buildKindChips();
 buildFolderSelect();
 renderLibrary();
-if (!openFromQuery()) goHome({ pushUrl: false });
+if (!openFromQuery()) goHome();
 openPaletteFromQuery();
 
 /* ---- Auto-refresh watcher ----
@@ -1875,67 +1972,70 @@ openPaletteFromQuery();
 
   function applyDocs(data) {
     const prevCount = DOCS.length;
+    const previousPath = selected?.path;
     DOCS = data.docs;
     PROFILE_IDS = Array.isArray(data.profiles) ? data.profiles : PROFILE_IDS;
-    if (selected) {
-      const still = DOCS.find(d => d.path === selected.path);
-      selected = still || null;
+    selected = previousPath ? DOCS.find(d => d.path === previousPath) || null : null;
+    if (Array.isArray(data.palettes)) {
+      PALETTES = data.palettes;
+      buildPaletteSelects();
     }
+    reconcileLibraryPreferences();
+    const availableFolders = uniqueFolders(DOCS);
+    const pins = loadPinnedFolders();
+    const survivingFolders = pins.filter(folder => availableFolders.includes(folder));
+    if (survivingFolders.length !== pins.length) savePinnedFolders(survivingFolders);
     buildProfileSelects();
     reconcileKindForProfile();
     buildKindChips();
     buildFolderSelect();
     renderLibrary();
     if (selected) {
-      try {
-        main.src = selected.artifact && selected.format === "pdf"
-          ? "/pdf-viewer?doc=" + encodeURIComponent(selected.path) + "&t=" + Date.now()
-          : documentUrl(selected.path) + "?t=" + Date.now();
-      } catch (_) {}
+      select(selected, null, { pushUrl: false, refresh: true });
+    } else if (previousPath) {
+      clearDocumentLocation();
+      showHome();
+    } else {
+      buildHomeGrid();
     }
     return DOCS.length - prevCount;
   }
 
-  async function tick() {
-    if (busy) return;
+  let request = 0;
+  async function refresh(force = false) {
+    if (busy && !force) return;
     busy = true;
+    const current = ++request;
     try {
-      const r = await fetch("/api/version", { cache: "no-store" });
-      if (r.ok) {
-        const data = await r.json();
-        if (sig === null) {
-          sig = data.sig;
-        } else if (data.sig !== sig) {
-          sig = data.sig;
-          const delta = applyDocs(data);
-          toast(delta > 0 ? ("＋" + delta + " document" + (delta > 1 ? "s" : "")) :
-                delta < 0 ? (delta + " document" + (delta < -1 ? "s" : "")) :
-                "updated");
-        }
-      }
-    } catch (_) { /* server down mid-poll — ignore, retry next tick */ }
-    finally { busy = false; }
-  }
-
-  // Manual refresh — re-scan on demand (always re-render, even if the signature
-  // is unchanged), so the button is a reliable "show me what's on disk now".
-  async function forceRefresh() {
-    try {
-      const r = await fetch("/api/version", { cache: "no-store" });
-      if (!r.ok) { toast("refresh failed"); return; }
+      const r = await fetch(force ? "/api/version?refresh=1" : "/api/version", { cache: "no-store" });
+      if (!r.ok) throw new Error("refresh failed");
       const data = await r.json();
+      if (current !== request) return;
+      const changed = sig !== data.sig;
+      const first = sig === null;
       sig = data.sig;
+      if (!changed && !force) return;
+      if (first && !force && JSON.stringify(data.docs) === JSON.stringify(DOCS)
+          && JSON.stringify(data.profiles) === JSON.stringify(PROFILE_IDS)) return;
       const delta = applyDocs(data);
-      toast(delta === 0 ? ("refreshed · " + DOCS.length + " docs")
-            : (delta > 0 ? "＋" : "") + delta + " · " + DOCS.length + " docs");
-    } catch (_) { toast("refresh failed"); }
+      if (force) {
+        toast(delta === 0 ? ("refreshed · " + DOCS.length + " docs")
+              : (delta > 0 ? "＋" : "") + delta + " · " + DOCS.length + " docs");
+      } else if (!first) {
+        toast(delta ? (delta > 0 ? "＋" : "") + delta + " · " + DOCS.length + " docs" : "updated");
+      }
+    } catch (_) {
+      if (force && current === request) toast("refresh failed");
+    } finally {
+      if (current === request) busy = false;
+    }
   }
 
   const rb = document.getElementById("refreshBtn");
-  if (rb) rb.addEventListener("click", forceRefresh);
+  if (rb) rb.addEventListener("click", () => refresh(true));
 
-  tick();
-  setInterval(tick, INTERVAL);
+  refresh();
+  setInterval(refresh, INTERVAL);
 })();
 </script>
 <script src="/_hub/drawer-resize.js"></script>
@@ -1951,16 +2051,15 @@ openPaletteFromQuery();
 def make_handler(root: Path, docs: list[dict], palettes: list[dict]):
     root = root.resolve()
 
-    def library_page(documents):
-        profiles = available_profile_ids(root, documents)
-        fields = {"__DOCS__": documents, "__PALETTES__": palettes, "__PROFILE_IDS__": profiles}
+    def library_page(documents, current_palettes, profiles):
+        fields = {"__DOCS__": documents, "__PALETTES__": current_palettes, "__PROFILE_IDS__": profiles}
         fields = {key: json.dumps(value).replace("<", r"\u003c") for key, value in fields.items()}
         fields["__PROFILE_OPTIONS__"] = profile_options(profiles)
         return re.sub(r"__DOCS__|__PALETTES__|__PROFILE_IDS__|__PROFILE_OPTIONS__",
                       lambda match: fields[match[0]], APP_HTML).encode("utf-8")
 
-    app_page = library_page(docs)
-    known_documents = {doc["path"] for doc in docs}
+    profiles = available_profile_ids(root, docs)
+    app_page = library_page(docs, palettes, profiles)
 
     def resolve_asset(rel):
         return resolve_document_asset(root, rel)
@@ -2015,8 +2114,13 @@ def make_handler(root: Path, docs: list[dict], palettes: list[dict]):
                 return
             path = unquote(urlparse(self.path).path)
             if path in ("/", "/index.html"):
-                requested = parse_qs(urlparse(self.path).query).get("doc", [None])[0]
-                body = library_page(scan_documents(root)) if requested and requested not in known_documents else app_page
+                current_docs = scan_documents(root, servable_only=True)
+                current_palettes = load_palettes(root)
+                current_profiles = available_profile_ids(root, current_docs)
+                body = (
+                    app_page if (current_docs, current_palettes, current_profiles) == (docs, palettes, profiles)
+                    else library_page(current_docs, current_palettes, current_profiles)
+                )
                 self._send(200, body, "text/html; charset=utf-8")
                 return
             if path == "/api/version":
@@ -2024,18 +2128,24 @@ def make_handler(root: Path, docs: list[dict], palettes: list[dict]):
                 # Re-scanning docs here keeps the sidebar live when HTML sources
                 # or generated output/_exports artifacts change, without restarting the server.
                 sig = tree_signature(root)
-                current_docs = scan_documents(root)
+                current_docs = scan_documents(root, servable_only=True)
                 payload = {
                     "sig": sig,
                     "docs": current_docs,
                     "profiles": available_profile_ids(root, current_docs),
                 }
+                if parse_qs(urlparse(self.path).query).get("refresh") == ["1"]:
+                    payload["palettes"] = load_palettes(root)
                 self._send(200, json.dumps(payload).encode("utf-8"), "application/json")
                 return
             if path == "/api/vault-overview":
                 qs = parse_qs(urlparse(self.path).query)
                 profile = (qs.get("profile") or [None])[0]
                 payload = build_vault_overview(root, profile=profile)
+                for user in payload.get("users", []):
+                    for pack in user.get("goToPacks", []):
+                        if pack["htmlExists"]:
+                            pack["htmlExists"] = resolve_document_asset(root, pack["html"]) is not None
                 self._send(200, json.dumps(payload).encode("utf-8"), "application/json")
                 return
             if path == "/api/voice-card":
@@ -2053,14 +2163,30 @@ def make_handler(root: Path, docs: list[dict], palettes: list[dict]):
             if path == "/api/starter-options":
                 presets = _REPO_ROOT / "themes" / "presets"
                 public = {file.stem for file in presets.glob("*.json")}
+                public.add("default-resume")
                 options = {}
-                for palette in palettes:
+                available = load_palettes(root)
+                paper = {item["mode"]: item["vars"] for item in available if item["id"] == "default-resume"}
+                for palette in available:
                     ident = palette["id"]
-                    if ident in public:
-                        option = options.setdefault(ident, {"id": ident, "label": palette["name"].rsplit(" · ", 1)[0]})
-                        option[palette["mode"]] = palette["vars"].get("--primary")
+                    if ident in public or starter_brand_available(root, ident):
+                        label = "Default Résumé" if ident == "default-resume" else palette["name"].rsplit(" · ", 1)[0]
+                        option = options.setdefault(ident, {"id": ident, "label": label, "samples": {}})
+                        mode = palette["mode"]
+                        vars_ = palette["vars"]
+                        option[mode] = vars_.get("--primary")
+                        base = paper.get(mode, {})
+                        option["samples"][mode] = {
+                            "paper": base.get("--surface"),
+                            "ink": base.get("--text"),
+                            "primary": vars_.get("--primary"),
+                            "secondary": vars_.get("--secondary"),
+                            "accent": vars_.get("--accent"),
+                            "support": vars_.get("--support"),
+                        }
                 self._send(200, json.dumps({
                     "palettes": [p for p in options.values() if p.get("light") and p.get("dark")],
+                    "featuredPaletteIds": _FEATURED_STARTER_PALETTES,
                     "layouts": STARTER_LAYOUTS,
                     "maxImportBytes": MAX_IMPORT_BYTES,
                 }).encode(), "application/json")
@@ -2165,6 +2291,18 @@ def make_handler(root: Path, docs: list[dict], palettes: list[dict]):
                 )
                 return
             raw = self.rfile.read(length) if length else b"{}"
+            if path == "/api/import-brand":
+                try:
+                    if length > 64_000:
+                        raise ValueError("Choose a palette JSON smaller than 64 KB.")
+                    ident = save_brand_palette(root, json.loads(raw))
+                    payload = {"ok": True, "id": ident}
+                except (ValueError, OSError, AttributeError) as error:
+                    # JSON/validation errors are actionable. Filesystem details stay local.
+                    payload = {"ok": False, "error": str(error) if isinstance(error, ValueError)
+                               else "The local palette could not be saved."}
+                self._send(200, json.dumps(payload).encode(), "application/json")
+                return
             if path == "/api/import-resume":
                 try:
                     req = json.loads(raw.decode("utf-8"))
@@ -2256,7 +2394,7 @@ def serve(
     root_path = Path(root).resolve() if root else _REPO_ROOT
     if not root_path.is_dir():
         raise FileNotFoundError(root_path)
-    docs = scan_documents(root_path)
+    docs = scan_documents(root_path, servable_only=True)
     palettes = load_palettes(root_path)
     handler = make_handler(root_path, docs, palettes)
     try:

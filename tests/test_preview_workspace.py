@@ -198,16 +198,16 @@ def test_hub_icons_are_local_font_awesome_assets_with_attribution():
     for icon in (
         "xmark", "arrows-rotate", "magnifying-glass",
         "download", "ellipsis", "chevron-down", "chevron-up", "star",
-        "patreon", "paypal",
+        "patreon", "paypal", "gear",
     ):
         assert (root / f"fa-{icon}.svg").is_file()
         assert f".fa-{icon}" in css
 
+    assert 'class="hub-fa-icon fa-patreon"' in APP_HTML
+    assert 'class="hub-fa-icon fa-paypal"' in APP_HTML
     for html in (APP_HTML, *((root / name).read_text(encoding="utf-8") for name in ("recipes.html", "vault.html", "wizard.html"))):
         assert 'class="hub-icon hub-menu-icon"' in html
         assert 'viewBox="0 0 512 512"' in html
-        assert 'class="hub-fa-icon fa-patreon"' in html
-        assert 'class="hub-fa-icon fa-paypal"' in html
         assert ">Wizard</a>" in html
 
 

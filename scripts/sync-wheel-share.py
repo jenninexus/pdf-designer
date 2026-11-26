@@ -14,6 +14,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SHARE = ROOT / "src" / "pdf_tool" / "share"
+STATIC = ROOT / "src" / "pdf_tool" / "static"
 
 # (repo-relative source, share-relative dest)
 COPIES = (
@@ -26,13 +27,26 @@ COPIES = (
 EXCLUDED_PARTS = {"_exports", "output", "_variants", "__pycache__"}
 
 
-def public_sources() -> list[Path]:
+def tracked_sources(*paths: str) -> list[Path]:
     tracked = subprocess.run(
-        ["git", "-C", str(ROOT), "ls-files", "-z", "--", *(src for src, _ in COPIES)],
+        ["git", "-C", str(ROOT), "ls-files", "-z", "--", *paths],
         check=True,
         capture_output=True,
     )
     return [Path(path) for path in tracked.stdout.decode("utf-8").split("\0") if path]
+
+
+def check_packaging_tree(root: Path, expected: set[Path]) -> None:
+    """Reject loose or missing inputs before they can enter a package."""
+    paths = list(root.rglob("*"))
+    entries = {path.relative_to(root) for path in paths if path.is_file()}
+    links = {path.relative_to(root) for path in paths if path.is_symlink()}
+    unexpected = sorted((entries - expected) | links)
+    missing = sorted(expected - entries)
+    if unexpected or missing:
+        details = [*(f"unexpected: {path}" for path in unexpected),
+                   *(f"missing: {path}" for path in missing)]
+        raise ValueError(f"Package inputs in {root.name} differ from the manifest: " + ", ".join(details))
 
 
 def main() -> int:
@@ -40,8 +54,13 @@ def main() -> int:
         print("FAIL: themes/default-resume.json missing — run from a full checkout", file=sys.stderr)
         return 1
 
+    static_prefix = STATIC.relative_to(ROOT)
+    check_packaging_tree(STATIC, {
+        path.relative_to(static_prefix) for path in tracked_sources(static_prefix.as_posix())
+    })
     SHARE.mkdir(parents=True, exist_ok=True)
-    sources = public_sources()
+    sources = tracked_sources(*(src for src, _ in COPIES))
+    expected_share = {Path("README.md")}
     for src_rel, dest_rel in COPIES:
         dest = SHARE / dest_rel
         prefix = Path(src_rel)
@@ -60,8 +79,10 @@ def main() -> int:
             target = dest if source == prefix else dest / source.relative_to(prefix)
             target.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(ROOT / source, target)
+            expected_share.add(target.relative_to(SHARE))
         print(f"[ok] {src_rel} -> src/pdf_tool/share/{dest_rel}")
 
+    check_packaging_tree(SHARE, expected_share)
     marker = SHARE / "themes" / "default-resume.json"
     if not marker.is_file():
         print("FAIL: share sync incomplete", file=sys.stderr)
@@ -71,4 +92,8 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    try:
+        raise SystemExit(main())
+    except ValueError as exc:
+        print(f"FAIL: {exc}", file=sys.stderr)
+        raise SystemExit(1) from None

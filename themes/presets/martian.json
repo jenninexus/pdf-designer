@@ -1,0 +1,38 @@
+{
+  "_meta": {
+    "id": "martian",
+    "name": "Martian",
+    "description": "Ember and violet for visual portfolios and collage covers.",
+    "lineage": "Inspired by Syn Themes, adapted for document use"
+  },
+  "tokens": {
+    "light": {
+      "--bg": "#fcf5f8",
+      "--text": "#352337",
+      "--primary": "#a63718",
+      "--secondary": "#634497",
+      "--accent": "#7b4baa",
+      "--support": "#14685c",
+      "--surface": "#fcf5f8",
+      "--elevated": "#fcf5f8",
+      "--dim": "#352337",
+      "--dim2": "#352337",
+      "--border": "#634497",
+      "--border2": "#634497"
+    },
+    "dark": {
+      "--bg": "#1e1425",
+      "--text": "#f8ebf3",
+      "--primary": "#ffac8e",
+      "--secondary": "#c7aff8",
+      "--accent": "#d2aff9",
+      "--support": "#9bdecc",
+      "--surface": "#1e1425",
+      "--elevated": "#1e1425",
+      "--dim": "#f8ebf3",
+      "--dim2": "#f8ebf3",
+      "--border": "#c7aff8",
+      "--border2": "#c7aff8"
+    }
+  }
+}

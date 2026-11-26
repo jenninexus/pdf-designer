@@ -39,9 +39,9 @@ targets **2,700 ms total**, including the **180 ms exit fade**, with a three-sec
 Open, Start wizard, Enter, or Escape can dismiss it sooner. Reduced-motion preference
 skips the decorative launch immediately. `?no-splash=1` disables it; `?splash=1` forces
 it (the packaged app always launches this way). After dismissal, the same browser tab
-does not replay it. The splash has no donation prompt. Support links remain available
-after launch under **Settings** in the desktop toolbar and in the compact-layout drawer;
-`/wizard` also has a support section. URLs: `docs/PRODUCT.md`.
+does not replay it. The splash has no donation prompt. Open **Help & support** on the Design Hub
+start page for contact and optional donation links. The Settings gear and the compact menu
+link to this section.
 
 The Hub links a generated Aesyna static adapter at `/_hub/hub-aesyna.css`; authoring
 tokens live in the `syna-theme-kit` PDF Designer profile. The `www-theme-kit` profile and
@@ -108,7 +108,7 @@ with an app release.
 Hub layout: **library left + viewer right** from **576px** up (desktop / tablet). Stacks only below
 **575.98px** (phones) and in **short landscape** (`max-height: 480px`). The stacked library stays
 scrollable and gives the preview more vertical space when a document is open. Drawer (hamburger) from
-**≤991.98px** (`nav_switch: lg`) so desktop windows from 992px show Filters and Support in the toolbar.
+**≤991.98px** (`nav_switch: lg`) so desktop windows from 992px show Filters and the Settings gear in the toolbar.
 The main action row is **52px**. Below **576px**, a labeled workspace row keeps all four destinations
 reachable at 320px. From **576px to 1199px**, workspace links fit on the action row as icons.
 Starting at **1200px**, the same row shows workspace, Search and Export labels. Header and drawer
@@ -128,6 +128,7 @@ Local-first library + filters (Jobright-style UX inspiration — not cloud match
   and a close button. Results appear as you type. Refresh and Export are pinned on the right on desktop. The compact drawer includes Refresh, and Export options remain available beside Export.
 - **Palettes and dropdowns:** use a star beside a preview palette to keep that variant at the top.
   Favorites are saved per browser and shared between the desktop Export menu and compact drawer.
+  Use the X to hide a variant, and **Restore hidden palettes** to bring back hidden choices.
   Profiles, format, preview palettes, Wizard style fields and PDF reading mode share the themed
   picker. The folder picker shows starred folders above the other folders.
 - **Profiles** (was “Who”): `all profiles` plus **`examples` first** (Jane Example, from tracked `profiles/examples.json`) then every workspace id from `users/` + `profiles/`. Path ownership (`resumes/<id>/` · legacy `storage/<id>/` URLs resolve to the same files) or a hyphen-bounded token (`jenni-…`, `meet-jenni-bot`) tags the card. Preference: `pdf-designer.hub.profileFilter`. First visit with no stored preference selects `examples`. **PDF Designer** app icon/title returns to the home landing (kind cards) and clears `?doc=`.
@@ -135,10 +136,12 @@ Local-first library + filters (Jobright-style UX inspiration — not cloud match
   - Copy `profiles/you-resume.example.json` → `profiles/you-resume.json` for yourself; keep `profiles/examples.json` so the public cards stay in the dropdown.
   - **Trap:** collage projects **without** a profile token (`profile: null`) still disappear when Profiles ≠ `all profiles`. Search the folder name, or pick All.
 - **Search:** name or path substring
-- **Focused comparison:** every filtered card starts included. Uncheck cards you do not want, then
-  choose **Focus N** to hide the unchecked cards. Choose **Edit all** to bring them back for another
-  pass, or **Reset** to include the whole filtered set again. The comparison set lasts for the browser
-  tab only; it never changes or deletes source files.
+- **Library focus and pins:** **All** and **None** select or clear the current filtered set. Use
+  **Focus N** to compare checked cards and **Edit all** to return to the full filtered set. Focus
+  survives a reload in the same tab. Star individual documents to keep them in the **Pinned**
+  group above other matching results across browser sessions. Refresh removes vanished paths
+  from results and saved pins, rescans palettes, and returns to the start page if the selected
+  document disappears.
 - **Selected-document chips:** the stage bar's kind, profile, and root-folder pills are buttons. Click
   one to scope the left library to that dimension while leaving the selected preview open. For example,
   `Galleries` + `martian` + `collages` gives progressively broader/narrower comparison views without
@@ -302,7 +305,7 @@ browser privileges. The Hub trusts native processes running as the same user.
 
 ### Workspace startup
 
-In VS Code, copy `.vscode/tasks.json.example` to `.vscode/tasks.json` to opt in to the folder-open task. It starts or reuses the loopback Design Hub.
+In VS Code, copy `.vscode/tasks.json.example` to `.vscode/tasks.json` to opt in to the folder-open task. It starts or reuses the loopback Design Hub. Run **Design Hub: open in browser** to open the default browser on demand.
 A maintainer workspace can run its local MCP preflight separately on demand.
 For Form Helper, select the private extension folder itself in Edge's **Load unpacked**
 folder chooser. The picker shows folders. Check for `manifest.json` in a regular File Explorer

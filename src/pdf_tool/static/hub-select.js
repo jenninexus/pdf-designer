@@ -1,12 +1,35 @@
 /* One themed picker for the Hub, drawer, Wizard and PDF reader. */
 (() => {
-  const key = "pdf-designer.hub.favoritePalettes";
+  const favoritesKey = "pdf-designer.hub.favoritePalettes";
+  const hiddenKey = "pdf-designer.hub.hiddenPalettes";
   const pickers = new Map();
-  let favorites = new Set();
-  try {
-    const stored = JSON.parse(localStorage.getItem(key) || "[]");
-    if (Array.isArray(stored)) favorites = new Set(stored.filter(value => typeof value === "string"));
-  } catch (_) {}
+
+  function loadSet(key) {
+    try {
+      const stored = JSON.parse(localStorage.getItem(key) || "[]");
+      if (Array.isArray(stored)) return new Set(stored.filter(value => typeof value === "string"));
+    } catch (_) {}
+    return new Set();
+  }
+
+  function saveSet(key, values) {
+    try { localStorage.setItem(key, JSON.stringify([...values])); } catch (_) {}
+  }
+
+  const favorites = loadSet(favoritesKey);
+  const hiddenPalettes = loadSet(hiddenKey);
+
+  function iconButton(className, label, iconClass) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = className;
+    button.setAttribute("aria-label", label);
+    const icon = document.createElement("span");
+    icon.className = iconClass;
+    icon.setAttribute("aria-hidden", "true");
+    button.append(icon);
+    return button;
+  }
 
   let active;
   function close(restoreFocus = false) {
@@ -48,16 +71,19 @@
     const rect = button.getBoundingClientRect();
     const viewport = menu.getBoundingClientRect();
     if (rect.top < viewport.top) menu.scrollTop += rect.top - viewport.top;
-    if (rect.bottom > viewport.bottom) menu.scrollTop += rect.bottom - viewport.bottom;
+    const restore = menu.querySelector(".hub-select-restore");
+    const bottom = restore ? Math.min(viewport.bottom, restore.getBoundingClientRect().top) : viewport.bottom;
+    if (rect.bottom > bottom) menu.scrollTop += rect.bottom - bottom;
   }
 
   function render(picker, focusKey) {
     const { select, menu } = picker;
     menu.replaceChildren();
     let favoriteToFocus;
-    const options = [...select.options].filter(option => !option.hidden);
+    const available = [...select.options].filter(option => !option.hidden);
+    const options = available.filter(option => !hiddenPalettes.has(option.dataset.favoriteKey));
     options.sort((a, b) => Number(favorites.has(b.dataset.favoriteKey)) - Number(favorites.has(a.dataset.favoriteKey)));
-    for (const option of options) {
+    for (const [index, option] of options.entries()) {
       const row = document.createElement("div");
       row.className = "hub-select-row";
       const choice = document.createElement("button");
@@ -75,29 +101,52 @@
 
       const favoriteKey = option.dataset.favoriteKey;
       if (favoriteKey) {
-        const pin = document.createElement("button");
-        pin.type = "button";
-        pin.className = "hub-select-pin";
-        pin.setAttribute("aria-label", "Favorite " + option.label);
+        const pin = iconButton("hub-select-pin", "Favorite " + option.label, "hub-select-star");
         pin.setAttribute("aria-pressed", String(favorites.has(favoriteKey)));
         pin.title = favorites.has(favoriteKey) ? "Remove favorite" : "Add favorite";
-        const icon = document.createElement("span");
-        icon.className = "hub-select-star";
-        icon.setAttribute("aria-hidden", "true");
-        icon.textContent = favorites.has(favoriteKey) ? "★" : "☆";
-        pin.append(icon);
         pin.addEventListener("click", () => {
           if (favorites.has(favoriteKey)) favorites.delete(favoriteKey);
           else favorites.add(favoriteKey);
-          try { localStorage.setItem(key, JSON.stringify([...favorites])); } catch (_) {}
+          saveSet(favoritesKey, favorites);
           const nextPin = render(picker, favoriteKey);
           position();
           reveal(nextPin);
         });
         if (favoriteKey === focusKey) favoriteToFocus = pin;
-        row.append(pin);
+
+        const hide = iconButton("hub-select-hide", "Hide " + option.label, "hub-select-remove-icon");
+        hide.title = "Hide this palette";
+        hide.addEventListener("click", () => {
+          hiddenPalettes.add(favoriteKey);
+          saveSet(hiddenKey, hiddenPalettes);
+          if (option.selected) {
+            select.value = "";
+            select.dispatchEvent(new Event("change", { bubbles: true }));
+          }
+          render(picker);
+          position();
+          const choices = menu.querySelectorAll(".hub-select-option:enabled");
+          reveal(choices[index] || choices[choices.length - 1]);
+        });
+        row.append(pin, hide);
       }
       menu.append(row);
+    }
+
+    if (available.some(option => hiddenPalettes.has(option.dataset.favoriteKey))) {
+      const restore = document.createElement("button");
+      restore.type = "button";
+      restore.className = "hub-select-restore";
+      restore.textContent = "Restore hidden palettes";
+      restore.addEventListener("click", () => {
+        hiddenPalettes.clear();
+        saveSet(hiddenKey, hiddenPalettes);
+        render(picker);
+        position();
+        reveal(menu.querySelector('.hub-select-option[aria-pressed="true"]:enabled')
+          || menu.querySelector(".hub-select-option:enabled"));
+      });
+      menu.append(restore);
     }
     return favoriteToFocus;
   }

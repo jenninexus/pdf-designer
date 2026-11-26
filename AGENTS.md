@@ -43,8 +43,7 @@ machine shares. The cache keeps one Chromium per Playwright *version*, so on a d
 (see [Windows desktop](docs/WINDOWS-ELECTRON.md)).
 
 The Hub's launch title dismisses within 2,700 ms total, including its 180 ms exit; Open, Start wizard,
-Enter, Escape, and reduced-motion preference can dismiss or skip it sooner. Support links appear after
-launch in the desktop Support menu or compact drawer. `hub-aesyna.css` is the generated visual-token
+Enter, Escape, and reduced-motion preference can dismiss or skip it sooner. The start-screen Help & support section is reachable from the Settings gear or compact drawer. `hub-aesyna.css` is the generated visual-token
 adapter; `www-theme-kit` remains the breakpoint source of truth. See [`docs/PREVIEWER.md`](docs/PREVIEWER.md).
 
 **Public-path smoke (no `storage/`):** `python scripts/smoke-white-label.py` — QA + light/dark PDF + ATS on

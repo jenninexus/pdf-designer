@@ -31,8 +31,9 @@ def test_wizard_is_a_design_hub_route_and_navigation_target():
             html = response.read().decode("utf-8")
             assert "Start wizard" in html
             assert ">Wizard</a>" in html
-            assert 'class="hub-fa-icon fa-patreon"' in html
-            assert 'class="hub-fa-icon fa-paypal"' in html
+            assert 'src="/_hub/hub-modes.js"' in html
+        with urlopen(f"http://127.0.0.1:{server.server_port}/_hub/hub-modes.js") as response:
+            assert "'/#hubSupport'" in response.read().decode("utf-8")
         with urlopen(f"http://127.0.0.1:{server.server_port}/api/voice-card") as response:
             payload = json.loads(response.read())
             assert payload["ok"] is True
@@ -92,6 +93,12 @@ def test_compact_wizard_imports_reviews_styles_and_exports(tmp_path, max_pages, 
                 assert page.evaluate("document.documentElement.scrollWidth === innerWidth")
             page.set_viewport_size({"width": 320, "height": 568})
             page.get_by_role("button", name="Choose a style").click()
+            cards = page.locator("#starterPaletteCards")
+            assert cards.get_by_role("radio").count() == 6
+            assert cards.locator(".draft-palette-sample").count() == 12
+            assert cards.get_by_role("radio", name="Default Résumé").is_checked()
+            assert not cards.get_by_role("radio", name="Acid Rain").count()
+            page.get_by_text("All palettes", exact=True).click()
             for picker, value in (
                 ("starterLayout", "skills-first"), ("starterPalette", "slate-ink"),
                 ("starterHeadingCase", heading_case), ("starterResumePages", str(max_pages)),
@@ -99,6 +106,9 @@ def test_compact_wizard_imports_reviews_styles_and_exports(tmp_path, max_pages, 
                 label = page.locator(f'#{picker} option[value="{value}"]').text_content().strip()
                 page.locator(f"#{picker}Trigger").click()
                 page.locator(f"#{picker}Menu").get_by_role("button", name=label, exact=True).click()
+            if max_pages == 2:
+                cards.get_by_role("radio", name="Plasma Drift").check()
+                assert page.locator("#starterPalette").input_value() == "plasma-drift"
             page.get_by_role("button", name="Review and save").click()
             save = page.get_by_role("button", name="Save résumé and vault")
             assert save.is_disabled()
@@ -120,7 +130,7 @@ def test_compact_wizard_imports_reviews_styles_and_exports(tmp_path, max_pages, 
                 assert "Work experience" not in headings
             assert not errors
             profile = json.loads((tmp_path / "profiles/alex-rivera-resume.json").read_text(encoding="utf-8"))
-            assert profile["theme"]["preset"] == "slate-ink"
+            assert profile["theme"]["preset"] == ("plasma-drift" if max_pages == 2 else "slate-ink")
             assert profile["layout"]["variant"] == "skills-first"
             assert profile["layoutPrefs"]["headingCase"] == heading_case
             assert profile["layoutPrefs"]["maxPages"]["resume"] == max_pages

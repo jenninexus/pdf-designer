@@ -42,6 +42,10 @@ Tracked default theme files:
 
 Private brand maps belong in ignored `brands/`; profile and person files point to those maps. The Hub scans public themes and private maps independently.
 
+The Wizard starts with **Default Résumé**. Its featured palette cards show the normal light and dark résumé colors side by side. Open **All palettes** for additional installed presets and compatible imported brands.
+
+In the Wizard's palette step, **Load brand palette** imports a local JSON file with six-digit hex values for the background, text, primary, secondary, accent and support roles in both modes. The Wizard uses the palette's accents and keeps résumé paper and body text on the standard colors. Its **Subtle gradient** option applies to the dark PDF. For collages, select `subtle-gradient` as the background. Theme Designer provides downloadable light and dark palette examples.
+
 The public default is intentionally brand-neutral. It supports:
 
 - dark browser preview

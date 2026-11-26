@@ -41,27 +41,86 @@
     return result;
   }
 
-  async function loadOptions() {
-    if (options) return;
+  async function loadOptions(selectedPalette) {
+    if (options && !selectedPalette) return;
     const response = await fetch('/api/starter-options', { cache: 'no-store' });
     if (!response.ok) throw new Error('Style choices could not load. Go back and try again.');
     const result = await response.json();
     if (!result.palettes.length) throw new Error('The installed palettes could not be found.');
     palette.replaceChildren(...result.palettes.map(item => new Option(item.label, item.id)));
-    if (result.palettes.some(item => item.id === 'slate-ink')) palette.value = 'slate-ink';
-    layout.replaceChildren(...Object.entries(result.layouts).map(([id, title]) => new Option(title, id)));
+    if (selectedPalette) palette.value = selectedPalette;
+    else if (result.palettes.some(item => item.id === 'default-resume')) palette.value = 'default-resume';
+    if (!options) layout.replaceChildren(...Object.entries(result.layouts).map(([id, title]) => new Option(title, id)));
     options = result;
+    renderPaletteCards();
     window.hubSyncSelects?.();
-    showSwatches();
+    syncPaletteCards();
   }
 
-  function showSwatches() {
-    const selected = options.palettes.find(item => item.id === palette.value);
-    for (const swatch of byId('starterSwatches').children) {
-      swatch.style.setProperty('--draft-swatch', selected[swatch.dataset.swatch]);
+  function renderPaletteCards() {
+    const cards = byId('starterPaletteCards');
+    const entries = new Map(options.palettes.map(item => [item.id, item]));
+    cards.replaceChildren();
+    for (const id of options.featuredPaletteIds) {
+      const item = entries.get(id);
+      if (!item) continue;
+      const card = document.createElement('label');
+      card.className = 'draft-palette-card';
+      card.innerHTML = '<span class="draft-palette-title"><input type="radio" name="featured-palette"><span></span></span><span class="draft-palette-faces" aria-hidden="true"></span>';
+      const radio = card.querySelector('input');
+      radio.value = id;
+      card.querySelector('.draft-palette-title > span').textContent = item.label;
+      radio.addEventListener('change', () => {
+        palette.value = id;
+        palette.dispatchEvent(new Event('change', { bubbles: true }));
+      });
+      for (const mode of ['light', 'dark']) {
+        const sample = document.createElement('span');
+        sample.className = 'draft-palette-sample';
+        sample.dataset.mode = mode;
+        sample.innerHTML = '<span class="draft-palette-mode"></span><strong>Jane Example</strong><span>Product Designer</span><i></i>';
+        sample.querySelector('.draft-palette-mode').textContent = mode === 'light' ? 'Light' : 'Dark';
+        for (const [role, color] of Object.entries(item.samples[mode])) {
+          if (color) sample.style.setProperty('--sample-' + role, color);
+        }
+        card.querySelector('.draft-palette-faces').append(sample);
+      }
+      cards.append(card);
     }
   }
-  palette.addEventListener('change', showSwatches);
+
+  function syncPaletteCards() {
+    const cards = byId('starterPaletteCards');
+    for (const radio of cards.querySelectorAll('input')) {
+      radio.checked = radio.value === palette.value;
+    }
+    byId('starterPaletteSelection').textContent = cards.querySelector('input:checked') || !palette.selectedOptions.length
+      ? ''
+      : ' · ' + palette.selectedOptions[0].textContent;
+  }
+  palette.addEventListener('change', syncPaletteCards);
+  byId('starterBrand').addEventListener('change', async event => {
+    const input = event.currentTarget;
+    const file = input.files[0];
+    const status = byId('starterBrandStatus');
+    const next = byId('starterContinue');
+    if (!file) return;
+    input.disabled = next.disabled = true;
+    try {
+      if (file.size > 64_000) throw new Error('Choose a palette JSON smaller than 64 KB.');
+      const result = await post('/api/import-brand', {
+        filename: file.name, palette: JSON.parse(await file.text())
+      });
+      await loadOptions(result.id);
+      byId('starterPaletteDetails').open = true;
+      status.textContent = 'Brand palette loaded and selected.';
+    } catch (error) {
+      status.textContent = error.message;
+    } finally {
+      input.value = '';
+      input.disabled = next.disabled = false;
+    }
+  });
 
   function addJob(job = {}, focus = false) {
     const card = jobTemplate.content.firstElementChild.cloneNode(true);
@@ -201,6 +260,7 @@
           layout: layout.value,
           headingCase: byId('starterHeadingCase').value,
           resumeMaxPages: Number(byId('starterResumePages').value),
+          subtleGradient: byId('starterGradient').checked,
           reviewed: reviewed.checked
         }
       });

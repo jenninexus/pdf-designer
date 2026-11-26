@@ -1,0 +1,38 @@
+{
+  "_meta": {
+    "id": "ghost-protocol",
+    "name": "Ghost Protocol",
+    "description": "Steel blue and slate for a restrained professional option.",
+    "lineage": "Inspired by Syn Themes, adapted for document use"
+  },
+  "tokens": {
+    "light": {
+      "--bg": "#f2f6fb",
+      "--text": "#182c43",
+      "--primary": "#245c90",
+      "--secondary": "#445c76",
+      "--accent": "#64568d",
+      "--support": "#19737d",
+      "--surface": "#f2f6fb",
+      "--elevated": "#f2f6fb",
+      "--dim": "#182c43",
+      "--dim2": "#182c43",
+      "--border": "#445c76",
+      "--border2": "#445c76"
+    },
+    "dark": {
+      "--bg": "#101925",
+      "--text": "#e4edf7",
+      "--primary": "#9cc8f3",
+      "--secondary": "#aebed4",
+      "--accent": "#bbaee4",
+      "--support": "#8ed3dc",
+      "--surface": "#101925",
+      "--elevated": "#101925",
+      "--dim": "#e4edf7",
+      "--dim2": "#e4edf7",
+      "--border": "#aebed4",
+      "--border2": "#aebed4"
+    }
+  }
+}

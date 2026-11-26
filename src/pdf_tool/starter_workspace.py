@@ -9,6 +9,9 @@ from datetime import date
 from html import escape
 from pathlib import Path
 
+from .check_palette import classify
+from .paths import brand_dirs
+
 RESERVED_SLUGS = frozenset(
     {
         "examples",
@@ -26,6 +29,81 @@ STARTER_LAYOUTS = {"experience-first": "Experience first", "skills-first": "Skil
 STARTER_HEADING_CASES = ("as-written", "uppercase")
 # Letter width minus the two 0.65in print margins, at 96 CSS pixels per inch.
 STARTER_CONTENT_WIDTH_PX = round((8.5 - 2 * 0.65) * 96)
+_BRAND_ROLES = ("--bg", "--text", "--primary", "--secondary", "--accent", "--support")
+_HEX_COLOR = re.compile(r"#[0-9a-fA-F]{6}")
+
+
+def _brand_tokens(data):
+    modes = data.get("tokens") if isinstance(data, dict) else None
+    if not isinstance(modes, dict):
+        raise ValueError("Use a palette JSON with tokens.light and tokens.dark.")
+    result = {}
+    for mode in ("light", "dark"):
+        colors = modes.get(mode)
+        if not isinstance(colors, dict):
+            raise ValueError(f"Add {mode} colors to the palette.")
+        result[mode] = {}
+        for role in _BRAND_ROLES:
+            value = colors.get(role)
+            if not isinstance(value, str) or not _HEX_COLOR.fullmatch(value):
+                raise ValueError(f"{mode.title()} {role} needs a six-digit hex color.")
+            verdict, label = classify(value[1:])
+            if verdict == "banned":
+                raise ValueError(f"{mode.title()} {role} uses an excluded color ({label}).")
+            result[mode][role] = value.lower()
+    return result
+
+
+def save_brand_palette(root: Path, payload: dict) -> str:
+    name = payload.get("filename")
+    if not isinstance(name, str) or not name.lower().endswith(".json"):
+        raise ValueError("Choose a brand palette JSON file.")
+    stem = re.sub(r"[^a-z0-9-]+", "-", name[:-5].lower()).strip("-")
+    ident = ("brand-" + stem.removeprefix("brand-"))[:32].rstrip("-")
+    if ident == "brand":
+        raise ValueError("Give the palette file a name before loading it.")
+    data = payload.get("palette")
+    tokens = _brand_tokens(data)
+    metadata = data.get("_meta")
+    title = metadata.get("name") if isinstance(metadata, dict) else None
+    if not isinstance(title, str) or not title.strip():
+        title = ident.removeprefix("brand-").replace("-", " ").title()
+    brand_root = root / "brands"
+    if not brand_root.resolve().is_relative_to(root.resolve()) or brand_root.is_symlink():
+        raise ValueError("Use the local workspace's brands folder.")
+    brand_root.mkdir(exist_ok=True)
+    target = brand_root / f"{ident}.json"
+    try:
+        with target.open("x", encoding="utf-8") as handle:
+            json.dump({"_meta": {"name": title.strip()[:80]}, "tokens": tokens}, handle, indent=2)
+            handle.write("\n")
+    except FileExistsError as exc:
+        if target.is_symlink() or not target.resolve().is_relative_to(brand_root.resolve()):
+            raise ValueError("Choose an unused palette filename.") from exc
+        if _load_json(target).get("tokens") != tokens:
+            raise ValueError("That palette filename already exists. Rename the import to keep both.") from exc
+    return ident
+
+
+def _private_brand_path(root: Path, palette_id: str) -> Path | None:
+    if not palette_id.startswith("brand-"):
+        return None
+    for folder in brand_dirs(root=root):
+        target = folder / f"{palette_id}.json"
+        if target.is_file() and target.resolve().is_relative_to(root.resolve()):
+            return target
+    return None
+
+
+def starter_brand_available(root: Path, palette_id: str) -> bool:
+    path = _private_brand_path(root, palette_id)
+    if path is None:
+        return False
+    try:
+        _brand_tokens(_load_json(path))
+    except (OSError, ValueError):
+        return False
+    return True
 
 
 def normalize_slug(value: str) -> str:
@@ -260,7 +338,7 @@ def build_profile(slug: str, template: dict, name: str) -> dict:
 
 def _resume_html(
     user: dict, vault: dict, layout: str, palette: dict, base_css: str, *,
-    heading_case: str, page_cap: int,
+    heading_case: str, page_cap: int, gradient: bool = False,
 ) -> str:
     def content(value):
         return escape(str(value or ""))
@@ -289,7 +367,7 @@ def _resume_html(
     first_page_body = summary_section + first
     second_page_body = second + education
     # Keep the document's standard paper, text contrast and geometry. Palette
-    # tokens are limited to color values from the installed public presets.
+    # tokens are limited to validated accent colors.
     def colors(mode):
         return " ".join(
             f"{token}: {value};"
@@ -297,6 +375,18 @@ def _resume_html(
             if token in {"--primary", "--secondary", "--accent", "--support"}
             and isinstance(value, str) and re.fullmatch(r"#[a-fA-F0-9]{6}", value)
         )
+
+    finish = """
+html:not([data-theme="light"]) .page {
+  background-image: linear-gradient(140deg, transparent 35%, color-mix(in srgb, var(--surface) 92%, var(--accent)));
+}
+@media print {
+  html:not([data-pdf-theme="dark"]) .page { background-image: none; }
+  html[data-pdf-theme="dark"] .page {
+    background-image: linear-gradient(140deg, transparent 35%, color-mix(in srgb, var(--surface) 92%, var(--accent)));
+  }
+}
+""" if gradient else ""
 
     def page(body, first_page=False):
         heading = "h1" if first_page else "h2"
@@ -343,6 +433,7 @@ li {{ margin-block: 4px; }}
   .page {{ margin: 0; }}
   .page + .page {{ break-before: page; }}
 }}
+{finish}
 </style></head><body>
 {pages}
 </body></html>
@@ -398,10 +489,20 @@ def save_starter(
         if heading_case not in STARTER_HEADING_CASES or type(page_cap) is not int or page_cap not in (1, 2):
             raise ValueError("Choose a heading style and a one- or two-page résumé.")
         palette_path = templates / "themes" / "presets" / f"{palette_id}.json"
-        if not palette_path.is_file():
+        private_brand = _private_brand_path(root, palette_id)
+        if private_brand is not None:
+            palette_path = private_brand
+        if palette_id == "default-resume":
+            palette = {"light": {}, "dark": {}}
+        elif not palette_path.is_file():
             raise ValueError("Choose an available résumé palette.")
-        palette = _load_json(palette_path)["tokens"]
+        else:
+            data = _load_json(palette_path)
+            palette = _brand_tokens(data) if private_brand else data["tokens"]
         profile["theme"]["preset"] = palette_id
+        gradient = resume_options.get("subtleGradient") is True
+        if gradient:
+            profile["theme"]["subtleGradient"] = True
         profile["layout"]["variant"] = layout
         profile["layout"]["pages"] = page_cap
         layout_prefs["headingCase"] = heading_case
@@ -409,7 +510,8 @@ def save_starter(
         profile["source"] = f"../{paths['resume'].relative_to(root).as_posix()}"
         base_css = (templates / "themes/default-resume.css").read_text(encoding="utf-8")
         resume = _resume_html(
-            user, vault, layout, palette, base_css, heading_case=heading_case, page_cap=page_cap
+            user, vault, layout, palette, base_css, heading_case=heading_case, page_cap=page_cap,
+            gradient=gradient,
         )
 
     dirs = asset_dirs(ident)

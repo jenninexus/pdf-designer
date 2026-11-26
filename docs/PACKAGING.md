@@ -55,6 +55,10 @@ python scripts/testpypi-dry-run.py --upload --prompt-token  # private one-use pr
 fresh-venv proof must run with cwd *outside* the repo (the dry-run script does
 this). Verifying from the checkout directory will silently use live `themes/`.
 
+The maintained wheel and Windows runtime staging commands validate the package input trees.
+Static Hub assets must match the Git-tracked manifest. Generated share content must match the
+public source mapping, which keeps local captures and stray files out of the package.
+
 ## Supported install paths (today → next)
 
 | Path | Who | Status |

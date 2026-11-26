@@ -50,5 +50,11 @@ if (-not (Test-DesignHub)) {
     }
 }
 
-if (-not $NoOpen) { Start-Process $url }
 Write-Host "Design Hub ready (local only): $url"
+if (-not $NoOpen) {
+    try {
+        Start-Process -FilePath $url -ErrorAction Stop
+    } catch {
+        Write-Warning "The default browser could not open automatically. Open $url in your browser."
+    }
+}

@@ -44,6 +44,7 @@
     "usage": "python -m pdf_tool.collage <dir> --bg discord-slate"
   },
   "backgrounds": {
+    "subtle-gradient": { "css": "linear-gradient(140deg, #101722 35%, #20243b 100%)", "frame": "#38435c", "use": "Subtle slate-to-indigo finish for branded collages" },
     "discord-slate":  { "css": "linear-gradient(160deg, #313338 0%, #2b2d31 45%, #1e1f22 100%)", "frame": "#3f434b", "use": "Default Discord grey — matches the client chrome the screenshots came from" },
     "discord-deep":   { "css": "linear-gradient(180deg, #2b2d31 0%, #1e1f22 60%, #111214 100%)", "frame": "#383b42", "use": "Darker vertical fade, keeps bright screenshots dominant" },
     "discord-ember":  { "css": "linear-gradient(145deg, #313338 0%, #2b2d31 55%, #3a2622 100%)", "frame": "#5a3a2c", "use": "Discord gray warming into an orange accent" },

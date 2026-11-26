@@ -1,0 +1,38 @@
+{
+  "_meta": {
+    "id": "neon-decay",
+    "name": "Neon Decay",
+    "description": "Sea-glass teal and lavender for product and interface work.",
+    "lineage": "Inspired by Syn Themes, adapted for document use"
+  },
+  "tokens": {
+    "light": {
+      "--bg": "#f0f8f6",
+      "--text": "#122c2a",
+      "--primary": "#096458",
+      "--secondary": "#55449c",
+      "--accent": "#55449c",
+      "--support": "#305aa0",
+      "--surface": "#f0f8f6",
+      "--elevated": "#f0f8f6",
+      "--dim": "#122c2a",
+      "--dim2": "#122c2a",
+      "--border": "#55449c",
+      "--border2": "#55449c"
+    },
+    "dark": {
+      "--bg": "#0b191b",
+      "--text": "#e0f4f0",
+      "--primary": "#76e7cc",
+      "--secondary": "#bdb1f5",
+      "--accent": "#c9a6f2",
+      "--support": "#8eaff2",
+      "--surface": "#0b191b",
+      "--elevated": "#0b191b",
+      "--dim": "#e0f4f0",
+      "--dim2": "#e0f4f0",
+      "--border": "#bdb1f5",
+      "--border2": "#bdb1f5"
+    }
+  }
+}

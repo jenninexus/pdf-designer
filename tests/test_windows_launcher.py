@@ -11,9 +11,11 @@ def test_windows_launcher_is_loopback_only_and_waits_for_design_hub():
     assert "-m pdf_tool.preview" in launcher
     assert "--no-open" in launcher
     assert "<title>.*Design Hub" in launcher
-    assert "Start-Process $url" in launcher
+    assert "Start-Process -FilePath $url -ErrorAction Stop" in launcher
+    assert launcher.index("Design Hub ready") < launcher.index("Start-Process -FilePath $url")
     assert "cloud" in launcher.lower()
     assert "launch-design-hub.ps1" in workspace_entry
+    assert "@PSBoundParameters" in workspace_entry
 
 
 def test_launcher_acceptance_spec_covers_local_data_and_breakpoint_matrix():

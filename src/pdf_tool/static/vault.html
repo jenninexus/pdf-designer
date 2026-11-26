@@ -95,14 +95,6 @@ try {
         <select id="drawerPersonFilter" aria-label="Profiles"><option value="examples">examples</option></select>
       </div>
     </div>
-    <div class="hub-drawer-section hub-support" role="group" aria-label="Support JenniNexus">
-      <p class="hub-support-kicker">Support JenniNexus</p>
-      <p class="hub-support-copy">Free MIT toolkit. A tip is optional — it never unlocks extra features.</p>
-      <div class="hub-support-actions">
-        <a class="hub-support-btn patreon" href="https://www.patreon.com/c/JenniNexus" target="_blank" rel="noopener noreferrer"><span class="hub-fa-icon fa-patreon" aria-hidden="true"></span>Patreon</a>
-        <a class="hub-support-btn paypal" href="https://paypal.me/jenninexus" target="_blank" rel="noopener noreferrer"><span class="hub-fa-icon fa-paypal" aria-hidden="true"></span>PayPal</a>
-      </div>
-    </div>
   </div>
   <div class="hub-drawer-actions" hidden aria-hidden="true">
     <button id="legacyDrawerRefresh" type="button" class="hub-icon-btn" title="Reload vault overview" aria-label="Refresh" tabindex="-1">
@@ -181,7 +173,7 @@ async function load() {
         <div class="hub-meta">
           ${esc(u.headline || "")}
           ${u.email ? " · " + esc(u.email) : ""}
-          ${u.web ? " · <a href='" + esc(u.web) + "' target='_blank' rel='noopener'>" + esc(stripProto(u.web)) + "</a>" : ""}
+          ${u.web ? " · " + esc(stripProto(u.web)) : ""}
           ${u.vaultFile ? "<br>Vault: <code>" + esc(u.vaultFile) + "</code>" : ""}
         </div>
         <h3 class="hub-section-label">Board skills (${tags.length})</h3>
@@ -206,7 +198,6 @@ async function load() {
                   ? `<div class="hub-cell-actions">
                        <a class="hub-open" href="/?doc=${encodeURIComponent(p.html)}" title="Select in Design Hub library">Open in library</a>
                        <span class="ok">✓</span>
-                       <a class="raw" href="/${esc(p.html)}" target="_blank" rel="noopener" title="Raw HTML">raw HTML</a>
                        <code class="path-mini">${esc(p.html)}</code>
                      </div>`
                   : `<span class="missing">${esc(p.html || "—")} missing</span>`}</td>

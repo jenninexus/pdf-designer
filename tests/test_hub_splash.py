@@ -57,7 +57,9 @@ def test_splash_auto_advances_preserving_deep_links_and_support_is_post_launch()
         assert "hub-support" not in splash_region
         assert 'src="/_hub/hub-aesyna.css"' not in splash_region
         assert 'href="/_hub/hub-aesyna.css"' in markup
-        assert 'class="hub-support' in markup
+    assert 'id="hubSupport"' in APP_HTML
+    modes = (ROOT / "hub-modes.js").read_text(encoding="utf-8")
+    assert "/#hubSupport" in modes
 
 
 def test_compact_navigation_keeps_modes_reachable_and_drawer_focus_contained(tmp_path):
@@ -121,7 +123,7 @@ def test_compact_navigation_keeps_modes_reachable_and_drawer_focus_contained(tmp
                 page.goto(f"{origin}/?no-splash=1")
                 bar = page.locator(".hub-bar")
                 assert bar.evaluate("(el) => el.scrollWidth === el.clientWidth")
-                assert page.locator("#exportBtn").evaluate("(el) => getComputedStyle(el).backgroundImage") == "none"
+                assert page.locator("#exportBtn").evaluate("(el) => getComputedStyle(el).backgroundImage").startswith("radial-gradient(")
 
                 for width in (320, 390, 575, 576, 768, 991, 992, 1199, 1200, 1400, 2560, 3840):
                     page.set_viewport_size({"width": width, "height": 800})
@@ -204,7 +206,7 @@ def test_compact_navigation_keeps_modes_reachable_and_drawer_focus_contained(tmp
                 assert options.all_text_contents()[:3] == names
                 for appearance in ("dark", "light"):
                     page.keyboard.press("Escape")
-                    settings = bar.get_by_text("Settings", exact=True)
+                    settings = bar.get_by_label("Settings", exact=True)
                     settings.click()
                     radio = bar.get_by_role("radio", name=appearance.capitalize())
                     if not radio.is_visible():
@@ -344,7 +346,7 @@ def test_pdf_reader_fits_real_spreads_and_preserves_manual_zoom(tmp_path):
                 assert library.is_visible()
                 assert frame.bounding_box()["width"] < 1024
                 bar = page.locator("header.hub-bar")
-                bar.get_by_text("Settings", exact=True).click()
+                bar.get_by_label("Settings", exact=True).click()
                 bar.get_by_text("Appearance", exact=True).click()
                 bar.get_by_role("radio", name="Light").check()
                 playwright.expect(embedded.locator("html")).to_have_attribute("data-hub-appearance", "light")

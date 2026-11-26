@@ -1,0 +1,38 @@
+{
+  "_meta": {
+    "id": "plasma-drift",
+    "name": "Plasma Drift",
+    "description": "Berry and icy cyan for creative résumés and collages.",
+    "lineage": "Inspired by Syn Themes, adapted for document use"
+  },
+  "tokens": {
+    "light": {
+      "--bg": "#fbf2f8",
+      "--text": "#35213e",
+      "--primary": "#8b306f",
+      "--secondary": "#365b82",
+      "--accent": "#743a88",
+      "--support": "#246e79",
+      "--surface": "#fbf2f8",
+      "--elevated": "#fbf2f8",
+      "--dim": "#35213e",
+      "--dim2": "#35213e",
+      "--border": "#365b82",
+      "--border2": "#365b82"
+    },
+    "dark": {
+      "--bg": "#1b1327",
+      "--text": "#f7ebf7",
+      "--primary": "#f3a1d7",
+      "--secondary": "#9dd6ec",
+      "--accent": "#d7b1f4",
+      "--support": "#a4dcca",
+      "--surface": "#1b1327",
+      "--elevated": "#1b1327",
+      "--dim": "#f7ebf7",
+      "--dim2": "#f7ebf7",
+      "--border": "#9dd6ec",
+      "--border2": "#9dd6ec"
+    }
+  }
+}

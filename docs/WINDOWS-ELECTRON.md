@@ -175,7 +175,7 @@ The shell logs a warning when the Documents path looks redirected (`OneDrive`,
 - Windows 10/11 x64 only; assisted per-user NSIS install with Start Menu and desktop shortcuts.
 - Electron uses `contextIsolation: true`, `nodeIntegration: false`, and `sandbox: true`.
 - The renderer has no preload bridge, remote content, auto-updater, telemetry, account flow, or cloud sync.
-- The runtime binds to `127.0.0.1` and reuses its last port when available so Hub preferences keep the same browser origin across upgrades. Electron restricts in-app navigation to the current origin. The two fixed support links open in the default browser, and the PDF reader can open the local original in a dedicated window.
+- The runtime binds to `127.0.0.1` and reuses its last port when available so Hub preferences keep the same browser origin across upgrades. Electron restricts in-app navigation to the current origin. The fixed Help & support links and optional Voice Seed repository open through the system handler. The PDF reader can open the local original in a dedicated window.
 - The bundled Python runtime gives Playwright the adjacent, bundled Chromium executable explicitly. It does not need a user environment variable, system Python, or a second renderer.
 
 ### Local-process and Documents boundary

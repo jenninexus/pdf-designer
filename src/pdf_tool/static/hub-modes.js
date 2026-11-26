@@ -72,7 +72,7 @@
     link.addEventListener('focus', warm, { once: true });
   }
   // Share one settings layout across desktop chrome and the compact drawer.
-  const support = document.querySelector('.hub-drawer .hub-support');
+  const drawerBody = document.querySelector('.hub-drawer-body');
   const pin = bar.querySelector('.hub-bar-pin');
   function appearance(group) {
     const settings = document.createElement('details');
@@ -88,20 +88,38 @@
     });
     return settings;
   }
-  if (support && pin) {
+  function helpLink() {
+    const link = document.createElement('a');
+    link.className = 'hub-settings-link';
+    link.href = '/#hubSupport';
+    link.textContent = 'Help & support';
+    link.addEventListener('click', () => window.hubCloseDrawer?.());
+    return link;
+  }
+  if (drawerBody && pin) {
     const menu = document.createElement('details');
-    menu.className = 'hub-more hub-support-menu';
+    menu.className = 'hub-more hub-settings-menu';
     const summary = document.createElement('summary');
-    summary.innerHTML = 'Settings <span class="hub-fa-icon fa-chevron-down hub-chevron" aria-hidden="true"></span>';
+    summary.setAttribute('aria-label', 'Settings');
+    summary.title = 'Settings';
+    summary.innerHTML = '<span class="hub-fa-icon fa-gear" aria-hidden="true"></span><span class="hub-fa-icon fa-chevron-down hub-chevron" aria-hidden="true"></span>';
     const panel = document.createElement('div');
     panel.className = 'hub-more-panel';
-    panel.append(appearance('desktop'), support.cloneNode(true));
+    panel.append(appearance('desktop'), helpLink());
     menu.append(summary, panel);
     pin.append(menu);
     const compactSettings = document.createElement('div');
     compactSettings.className = 'hub-drawer-section';
-    compactSettings.append(appearance('drawer'));
-    support.before(compactSettings);
+    compactSettings.append(appearance('drawer'), helpLink());
+    drawerBody.append(compactSettings);
   }
+  function showSupport() {
+    const support = document.getElementById('hubSupport');
+    if (!support || location.hash !== '#hubSupport') return;
+    support.open = true;
+    support.scrollIntoView({ block: 'nearest' });
+  }
+  window.addEventListener('hashchange', showSupport);
+  showSupport();
   window.addEventListener('pagehide', saveLocation);
 })();

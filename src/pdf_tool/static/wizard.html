@@ -81,14 +81,6 @@ try {
         <a class="hub-link on" href="/wizard" title="Start wizard — local résumé workspace" aria-current="page">Wizard</a>
       </nav>
     </div>
-    <div class="hub-drawer-section hub-support" role="group" aria-label="Support JenniNexus">
-      <p class="hub-support-kicker">Support JenniNexus</p>
-      <p class="hub-support-copy">Free MIT toolkit. A tip is optional — it never unlocks extra features.</p>
-      <div class="hub-support-actions">
-        <a class="hub-support-btn patreon" href="https://www.patreon.com/c/JenniNexus" target="_blank" rel="noopener noreferrer"><span class="hub-fa-icon fa-patreon" aria-hidden="true"></span>Patreon</a>
-        <a class="hub-support-btn paypal" href="https://paypal.me/jenninexus" target="_blank" rel="noopener noreferrer"><span class="hub-fa-icon fa-paypal" aria-hidden="true"></span>PayPal</a>
-      </div>
-    </div>
   </div>
 </aside>
 <main class="hub-page-wrap wizard-shell">
@@ -175,12 +167,20 @@ try {
     <h2 id="wizard-style" tabindex="-1">Choose a palette and layout</h2>
     <p>These settings style your résumé and are saved in your local profile.</p>
     <div class="wizard-editor draft-fields">
-      <label for="starterPalette">Document palette</label>
-      <select id="starterPalette"></select>
-      <div id="starterSwatches" class="draft-swatches">
-        <span data-swatch="light">Light accent</span>
-        <span data-swatch="dark">Dark accent</span>
-      </div>
+      <fieldset class="draft-palette-field">
+        <legend>Document palette</legend>
+        <div id="starterPaletteCards" class="draft-palette-grid"></div>
+        <details id="starterPaletteDetails">
+          <summary>All palettes<span id="starterPaletteSelection"></span></summary>
+          <label for="starterPalette">Choose a palette</label>
+          <select id="starterPalette"></select>
+        </details>
+      </fieldset>
+      <label for="starterBrand">Load brand palette</label>
+      <input id="starterBrand" type="file" accept=".json,application/json" aria-describedby="starterBrandHelp">
+      <p class="wizard-hint" id="starterBrandHelp">Choose a light and dark palette JSON.</p>
+      <p id="starterBrandStatus" role="status"></p>
+      <label><input id="starterGradient" type="checkbox"> Subtle gradient on the dark PDF</label>
       <label for="starterLayout">Section order</label>
       <select id="starterLayout" aria-describedby="layoutHint"></select>
       <p class="wizard-hint" id="layoutHint">Lead with experience or skills. Education comes last.</p>

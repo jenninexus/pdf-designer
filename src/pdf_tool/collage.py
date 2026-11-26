@@ -180,6 +180,7 @@ MODES = {
 # themes/default-collage.json#backgrounds — that file is the SSOT; this is the
 # fallback used when the theme file is unavailable.
 BACKGROUNDS = {
+    "subtle-gradient": "linear-gradient(140deg, #101722 35%, #20243b 100%)",
     "discord-slate":  "linear-gradient(160deg, #313338 0%, #2b2d31 45%, #1e1f22 100%)",
     "discord-deep":   "linear-gradient(180deg, #2b2d31 0%, #1e1f22 60%, #111214 100%)",
     "discord-ember":  "linear-gradient(145deg, #313338 0%, #2b2d31 55%, #3a2622 100%)",

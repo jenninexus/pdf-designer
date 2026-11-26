@@ -51,6 +51,9 @@ def is_magenta(hex6: str) -> bool:
 
 def classify(hex6: str):
     """Return (verdict, label) for a 6-digit hex. verdict: 'ok' | 'banned'."""
+    if hex6.lower() in {"858208", "aeab09", "79870f", "8c7f4d", "b2a572", "87802d",
+                        "79861a", "8b8113", "8f800f", "878120"}:
+        return "banned", "MUSTARD/OLIVE (excluded swatch)"
     r, g, b = (int(hex6[i : i + 2], 16) / 255 for i in (0, 2, 4))
     h, l, s = colorsys.rgb_to_hls(r, g, b)
     hue = h * 360
