@@ -51,22 +51,22 @@ electron-builder’s `signing with signtool.exe` log.
 
 ## Store-format MSIX
 
-Use a fresh clean checkout with CPython 3.12.10 x64, the pinned npm dependencies
-and the x64 Windows SDK tools. Build the same unpacked Electron app used for NSIS,
-then package it with MakeAppx. The release runtime records its Python and dependency
-versions and includes the notices found in the installed distributions.
-The build excludes Chromium's standalone setup program. The packaged app
-launches the bundled full browser directly for offline rendering, so release
-builds skip the separate Chromium headless-shell download.
-When the browser download is unavailable, a maintainer can pass
-`-BrowserCache` with a previously verified Playwright browser directory.
-Release staging still starts fresh and Playwright resolves the pinned full
-Chromium executable from that directory.
+Build from clean source with CPython 3.12.10 x64, the pinned npm dependencies,
+and the x64 Windows SDK. The Store edition opens the bundled Design Hub and
+Wizard offline. PDF and PNG rendering uses an installed stable Microsoft Edge
+or Google Chrome browser in a temporary background session. The Store package
+excludes browser installers and executables. Install either browser before
+exporting. An internet connection is only needed for installing or updating
+the app or browser and opening external links.
+
+The release runtime records Python and dependency versions and includes their
+notices. The separate bundled-browser QA and development builds retain their
+existing runtime recipe and optional Playwright browser cache.
 
 ```powershell
 Set-Location desktop
 npm ci
-pwsh -NoProfile -File scripts/build-runtime.ps1 -Release -PythonExecutable $python312
+pwsh -NoProfile -File scripts/build-runtime.ps1 -Release -Store -PythonExecutable $python312
 npm run verify-shell
 $env:CSC_IDENTITY_AUTO_DISCOVERY = 'false'
 npx --no-install electron-builder --dir --win --x64 --publish never

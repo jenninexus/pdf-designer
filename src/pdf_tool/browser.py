@@ -1,9 +1,7 @@
-"""Locate the one Chromium binary used by PDF Designer exports.
+"""Select the Chromium renderer used by PDF Designer exports.
 
-Normal developer and wheel installs let Playwright resolve its own browser.
-The Windows desktop runtime is frozen with a copied Playwright Chromium beside
-its executable, so it supplies that executable path explicitly instead of
-depending on a user environment variable or a second rendering engine.
+Developer and wheel installs use Playwright's browser. Internal Windows builds
+can bundle it, while the Store runtime uses installed stable Edge or Chrome.
 """
 
 from __future__ import annotations
@@ -94,3 +92,22 @@ def chromium_launch_kwargs() -> dict[str, str]:
     """Give Playwright its packaged browser path only for a frozen runtime."""
     chromium = bundled_chromium_path()
     return {"executable_path": str(chromium)} if chromium else {}
+
+
+def launch_chromium(browser_type, **kwargs):
+    """Use an installed stable browser in the frozen Microsoft Store edition."""
+    runtime = Path(sys.executable).resolve().parent
+    if not getattr(sys, "frozen", False) or not (runtime / "installed-browser.txt").is_file():
+        return browser_type.launch(**chromium_launch_kwargs(), **kwargs)
+
+    from playwright.sync_api import Error
+
+    for channel in ("msedge", "chrome"):
+        try:
+            return browser_type.launch(channel=channel, **kwargs)
+        except Error:
+            continue
+    raise RuntimeError(
+        "PDF export requires Microsoft Edge or Google Chrome. Install or repair one "
+        "of those browsers, then try again. Your documents are still saved locally."
+    )

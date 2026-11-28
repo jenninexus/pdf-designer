@@ -27,7 +27,7 @@ Setup: pip install -e .   (Playwright only -- Apache-2.0)
 
 from pathlib import Path
 
-from .browser import chromium_launch_kwargs, open_render_document
+from .browser import launch_chromium, open_render_document
 from .html_to_pdf import resolve_pdf_theme
 import sys
 
@@ -73,7 +73,7 @@ def render_to_png(
 
     outputs: list[Path] = []
     with sync_playwright() as pw:
-        browser = pw.chromium.launch(**chromium_launch_kwargs())
+        browser = launch_chromium(pw.chromium)
         page = open_render_document(
             browser, src, workspace=workspace, resolve_asset=resolve_asset,
             viewport={"width": _PAGE_W, "height": _PAGE_H},

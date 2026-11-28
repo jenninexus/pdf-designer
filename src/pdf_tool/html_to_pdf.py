@@ -38,7 +38,25 @@ to control that behavior.
 import sys
 from pathlib import Path
 
-from .browser import chromium_launch_kwargs, open_render_document
+from .browser import launch_chromium, open_render_document
+
+GRAYSCALE_PRINT_CSS = """
+@media print {
+  @page { background: white !important; }
+  *, *::before, *::after {
+    color: #171717 !important;
+    -webkit-text-fill-color: #171717 !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    border-color: #777 !important;
+    outline-color: #777 !important;
+    text-decoration-color: #171717 !important;
+    text-shadow: none !important;
+    box-shadow: none !important;
+  }
+  img, svg, canvas, video { filter: grayscale(1) !important; }
+}
+"""
 
 
 def resolve_pdf_theme(pdf_theme: str | None) -> str:
@@ -116,11 +134,11 @@ def export_html_to_pdf(
         out_path = default_path if force else _next_available_path(default_path)
 
     with sync_playwright() as p:
-        browser = p.chromium.launch(**chromium_launch_kwargs())
+        browser = launch_chromium(p.chromium)
         page = open_render_document(browser, html_path, workspace=workspace, resolve_asset=resolve_asset)
         page.evaluate(
             "theme => { document.documentElement.dataset.pdfTheme = theme; }",
-            resolved_theme,
+            "light" if resolved_theme == "grayscale" else resolved_theme,
         )
         if css_vars:
             # Palette override (e.g. from the preview server's palette swapper):
@@ -131,6 +149,15 @@ def export_html_to_pdf(
                 css_vars,
             )
         page.emulate_media(media="print")
+        if resolved_theme == "grayscale":
+            page.evaluate(
+                """css => {
+                    const style = document.createElement("style");
+                    style.textContent = css;
+                    document.head.appendChild(style);
+                }""",
+                GRAYSCALE_PRINT_CSS,
+            )
         page.pdf(
             path=str(out_path),
             format=page_format,

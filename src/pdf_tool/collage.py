@@ -62,7 +62,7 @@ import struct
 import sys
 from pathlib import Path
 
-from .browser import chromium_launch_kwargs
+from .browser import launch_chromium
 
 from .paths import repo_root
 
@@ -722,7 +722,7 @@ def generate(images_dir, canvas_name=None, layout=None, hero=None, title=None,
         from playwright.sync_api import sync_playwright
 
         with sync_playwright() as p:
-            browser = p.chromium.launch(**chromium_launch_kwargs())
+            browser = launch_chromium(p.chromium)
             page = browser.new_page(viewport={"width": canvas["px_w"], "height": canvas["px_h"]})
             for fam in families:
                 page.goto((out / f"{fam}{stem}.html").as_uri())

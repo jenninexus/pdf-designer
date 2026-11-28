@@ -13,14 +13,14 @@ from playwright.sync_api import sync_playwright
 from pypdf import PdfReader
 
 from .check_palette import check_file
-from .html_to_pdf import chromium_launch_kwargs
+from .browser import launch_chromium
 
 
 def check_deck(path: Path) -> list[str]:
     path = path.resolve()
     problems = [f"palette: {hit}" for hit in check_file(path)]
     with tempfile.TemporaryDirectory(prefix="pdf-deck-qa-") as scratch, sync_playwright() as pw:
-        browser = pw.chromium.launch(**chromium_launch_kwargs())
+        browser = launch_chromium(pw.chromium)
         try:
             for theme in ("light", "dark"):
                 page = browser.new_page(viewport={"width": 1184, "height": 624})

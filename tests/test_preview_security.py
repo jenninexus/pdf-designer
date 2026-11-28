@@ -15,7 +15,7 @@ def hub(tmp_path):
     source = tmp_path / "documents" / "fictional # example.html"
     source.parent.mkdir()
     (source.parent / "layout.css").write_text(
-        ".page { border-top: 3px solid rgb(16, 32, 64); }", encoding="utf-8"
+        ".page { width: 680px; border-top: 3px solid rgb(16, 32, 64); }", encoding="utf-8"
     )
     secret = tmp_path / "vaults" / "fictional.json"
     secret.parent.mkdir()
@@ -105,6 +105,18 @@ def test_chromium_preview_and_exports_cannot_run_document_code(hub, tmp_path):
         assert frame.locator(".page").inner_text() == "Fictional resume preview"
         assert frame.locator(".page").evaluate("(node) => getComputedStyle(node).borderTopWidth") == "3px"
         assert frame.locator("body").get_attribute("data-executed") is None
+        compact = browser.new_page(viewport={"width": 428, "height": 926})
+        compact.goto(origin + "/?no-splash=1&doc=" + quote(doc))
+        compact.frame_locator("#main").locator(".page").evaluate("""
+            async (node) => {
+              for (let i = 0; i < 30; i++) {
+                if (node.getBoundingClientRect().right <= node.ownerDocument.documentElement.clientWidth) return;
+                await new Promise(resolve => requestAnimationFrame(resolve));
+              }
+              throw new Error("Narrow document preview is clipped");
+            }
+        """)
+        compact.close()
         export_options = page.get_by_label("Export options", exact=True)
         export_options.click()
         page.locator("#paletteTrigger").click()
@@ -118,9 +130,11 @@ def test_chromium_preview_and_exports_cannot_run_document_code(hub, tmp_path):
         assert direct.locator(".page").inner_text() == "Fictional resume preview"
         assert direct.locator("body").get_attribute("data-executed") is None
 
-        for format_name in ("pdf-light", "pdf-dark", "png-light"):
+        for format_name in ("pdf-light", "pdf-dark", "pdf-grayscale", "png-light"):
             file_type, appearance = format_name.split("-")
             format_label = f"{file_type.upper()} {appearance}"
+            if appearance == "grayscale":
+                format_label += " (print)"
             with page.expect_response(lambda response: response.url == origin + "/api/export") as export:
                 export_options.click()
                 page.locator("#fmtTrigger").click()

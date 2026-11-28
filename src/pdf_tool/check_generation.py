@@ -29,7 +29,7 @@ import sys
 from collections import Counter
 from pathlib import Path
 
-from .browser import chromium_launch_kwargs
+from .browser import launch_chromium
 
 from . import check_palette
 
@@ -380,7 +380,7 @@ def check_footer_collision(path: Path):
         with tempfile.TemporaryDirectory() as td:
             out = Path(td) / "probe.pdf"
             with sync_playwright() as p:
-                b = p.chromium.launch(**chromium_launch_kwargs())
+                b = launch_chromium(p.chromium)
                 pg = b.new_page()
                 pg.goto(path.resolve().as_uri())
                 pg.evaluate("() => document.documentElement.setAttribute('data-pdf-theme','dark')")

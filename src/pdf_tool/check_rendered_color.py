@@ -33,7 +33,7 @@ import sys
 import tempfile
 from pathlib import Path
 
-from .browser import chromium_launch_kwargs
+from .browser import launch_chromium
 
 try:
     sys.stdout.reconfigure(encoding="utf-8")
@@ -81,9 +81,9 @@ def _render(html_path: Path, pdf_theme: str | None, png_out: Path) -> None:
         # invisible to the eye and exist on every browser-rendered page — they are a measurement
         # artifact, not a design defect. Rendering at 2x and downsampling averages them away so the
         # check only sees real surfaces.
-        browser = p.chromium.launch(
+        browser = launch_chromium(
+            p.chromium,
             args=["--disable-lcd-text", "--disable-font-subpixel-positioning"],
-            **chromium_launch_kwargs(),
         )
         page = browser.new_page(viewport={"width": 880, "height": 1140}, device_scale_factor=2)
         page.goto(url)

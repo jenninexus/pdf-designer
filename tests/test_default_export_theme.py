@@ -1,6 +1,9 @@
 from pathlib import Path
 
 import pytest
+from PIL import ImageChops
+from pypdf import PdfReader
+from pypdfium2 import PdfDocument
 
 from pdf_tool.html_to_pdf import export_html_to_pdf
 from pdf_tool.pdf_to_png import render_to_png
@@ -105,6 +108,24 @@ def test_explicit_dark_pdf_export_forces_dark_theme(
 
     assert output.name == "letter-dark.pdf"
     assert fake_page.evaluations[0][1] == "dark"
+
+
+def test_grayscale_pdf_keeps_searchable_text_and_neutral_art(tmp_path: Path) -> None:
+    source = tmp_path / "color.html"
+    source.write_text(
+        '<p style="color:red;background:yellow">Searchable print text</p>'
+        '<svg width="100" height="80"><rect width="100" height="80" fill="blue"/></svg>',
+        encoding="utf-8",
+    )
+    output = export_html_to_pdf(str(source), output_dir=str(tmp_path), pdf_theme="grayscale")
+    assert output.name == "color-grayscale.pdf"
+    assert "Searchable print text" in PdfReader(output).pages[0].extract_text()
+    with PdfDocument(str(output)) as pdf:
+        page = pdf[0]
+        bitmap = page.render()
+        red, green, blue = bitmap.to_pil().convert("RGB").split()
+        assert ImageChops.difference(red, green).getbbox() is None
+        assert ImageChops.difference(green, blue).getbbox() is None
 
 
 def test_default_png_render_forces_light_theme(

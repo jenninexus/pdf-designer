@@ -35,7 +35,7 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-from .browser import chromium_launch_kwargs, open_render_document
+from .browser import launch_chromium, open_render_document
 
 # US Letter at 96dpi = 8.5in × 96 = 816 CSS px. The measurement viewport MUST be this wide;
 # see the note in check_overflow() for why a wider viewport silently hides real overflow.
@@ -103,7 +103,7 @@ def check_overflow(
         raise FileNotFoundError(p_html)
 
     with sync_playwright() as p:
-        browser = p.chromium.launch(**chromium_launch_kwargs())
+        browser = launch_chromium(p.chromium)
         # ⚠ CRITICAL: measure at the REAL paper width. In print media the `.page` is
         # `width: auto`, so it inherits the VIEWPORT width. Playwright's default viewport is
         # 1280px — far wider than a Letter page's 816px — which makes text wrap into fewer

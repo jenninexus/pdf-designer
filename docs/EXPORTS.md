@@ -315,3 +315,10 @@ not an HTML re-render. Full model: [`LAYOUT-SYSTEM.md`](LAYOUT-SYSTEM.md).
 Default dual-mode names already separate light and dark (`<stem>-light.pdf` /
 `<stem>-dark.pdf`). Re-running the **same** theme bumps `-v2`, `-v3`, … instead of
 clobbering. Pass an explicit output path if you want a fixed filename.
+
+## Print a grayscale PDF
+
+Choose **PDF grayscale (print)** in the Design Hub export menu, or pass
+`--pdf-theme grayscale` to `python -m pdf_tool.html_to_pdf`. The export uses
+a white paper background, neutral text and borders, and grayscale images.
+Text remains selectable and searchable.

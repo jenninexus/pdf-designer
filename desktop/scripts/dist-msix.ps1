@@ -56,8 +56,13 @@ $excludedPayload = $files | Where-Object {
 if ($excludedPayload) {
     throw 'The unpacked app contains archived, generated, or personal workspace files. Rebuild the public runtime and workspace seed.'
 }
-if (-not ($files | Where-Object FullName -Match '[\\/]chrome-win[^\\/]*[\\/]chrome\.exe$')) {
-    throw 'The unpacked runtime is missing its bundled Chromium.'
+$installedBrowser = Test-Path -LiteralPath (Join-Path $app 'resources/runtime/pdf-designer-runtime/installed-browser.txt') -PathType Leaf
+$bundledBrowser = $files | Where-Object Name -Match '^(chrome|chrome-headless-shell|msedge)\.exe$'
+if ($installedBrowser -and $bundledBrowser) {
+    throw 'The installed-browser runtime must not redistribute a browser executable.'
+}
+if (-not $installedBrowser -and (-not $SignForTest -or -not $bundledBrowser)) {
+    throw 'Build the Store runtime with -Release -Store before packaging. Bundled Chromium is for signed internal QA only.'
 }
 if ($files | Where-Object FullName -Match '[\\/]browsers[\\/].*[\\/]setup\.exe$') {
     throw 'Build the release runtime again. The Chromium setup executable is unnecessary in the MSIX payload.'

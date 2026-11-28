@@ -1,5 +1,5 @@
 [CmdletBinding()]
-param([string]$PythonExecutable, [switch]$Release, [string]$BrowserCache)
+param([string]$PythonExecutable, [switch]$Release, [string]$BrowserCache, [switch]$Store)
 
 # Build a self-contained Python/Playwright sidecar for the Windows Electron
 # shell. This runs only at packaging time; the produced app reads no user
@@ -42,6 +42,9 @@ if ($Release) {
         throw 'Build a release from a fresh checkout with no staged runtime or browser cache.'
     }
 }
+if ($Store -and (-not $Release -or $BrowserCache)) {
+    throw 'Store requires Release and uses an installed browser instead of BrowserCache.'
+}
 if ($BrowserCache -and -not $Release) {
     throw 'BrowserCache applies only to the release runtime.'
 }
@@ -60,41 +63,42 @@ $locked = if ($Release) { @('-r', "$desktopRoot\runtime-requirements.txt") } els
 & $venvPython -m pip install --disable-pip-version-check -e "$repoRoot" "pyinstaller==6.22.2" @locked
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
-# The browser is an explicit sibling of the frozen runtime. `pdf_tool.browser`
-# passes its executable path to Playwright only when frozen, avoiding a user
-# environment variable and retaining the existing Playwright renderer.
-$bundledChrome = Get-ChildItem -LiteralPath $browserRoot -Filter chrome.exe -Recurse -ErrorAction SilentlyContinue | Select-Object -First 1
-if ($BrowserCache) {
-    $cachePath = (Resolve-Path -LiteralPath $BrowserCache).Path
-    $previousBrowserPath = $env:PLAYWRIGHT_BROWSERS_PATH
-    try {
-        $env:PLAYWRIGHT_BROWSERS_PATH = $cachePath
-        $cachedExecutable = & $venvPython -c 'from playwright.sync_api import sync_playwright; p=sync_playwright().start(); print(p.chromium.executable_path); p.stop()'
-        if ($LASTEXITCODE -or -not $cachedExecutable) { throw 'Playwright could not resolve its pinned browser.' }
-        Assert-WorkspaceChild $cachedExecutable $cachePath
-        if (-not (Test-Path -LiteralPath $cachedExecutable -PathType Leaf)) {
-            throw 'BrowserCache is missing the full Chromium revision pinned by Playwright.'
+# Non-Store builds keep a Playwright browser beside the frozen runtime.
+# Store builds skip the download and resolve a browser installed on the PC.
+if (-not $Store) {
+    $bundledChrome = Get-ChildItem -LiteralPath $browserRoot -Filter chrome.exe -Recurse -ErrorAction SilentlyContinue | Select-Object -First 1
+    if ($BrowserCache) {
+        $cachePath = (Resolve-Path -LiteralPath $BrowserCache).Path
+        $previousBrowserPath = $env:PLAYWRIGHT_BROWSERS_PATH
+        try {
+            $env:PLAYWRIGHT_BROWSERS_PATH = $cachePath
+            $cachedExecutable = & $venvPython -c 'from playwright.sync_api import sync_playwright; p=sync_playwright().start(); print(p.chromium.executable_path); p.stop()'
+            if ($LASTEXITCODE -or -not $cachedExecutable) { throw 'Playwright could not resolve its pinned browser.' }
+            Assert-WorkspaceChild $cachedExecutable $cachePath
+            if (-not (Test-Path -LiteralPath $cachedExecutable -PathType Leaf)) {
+                throw 'BrowserCache is missing the full Chromium revision pinned by Playwright.'
+            }
+            $bundledChrome = Get-Item -LiteralPath $cachedExecutable
+        } finally {
+            if ($null -eq $previousBrowserPath) { Remove-Item Env:PLAYWRIGHT_BROWSERS_PATH -ErrorAction SilentlyContinue }
+            else { $env:PLAYWRIGHT_BROWSERS_PATH = $previousBrowserPath }
         }
-        $bundledChrome = Get-Item -LiteralPath $cachedExecutable
-    } finally {
-        if ($null -eq $previousBrowserPath) { Remove-Item Env:PLAYWRIGHT_BROWSERS_PATH -ErrorAction SilentlyContinue }
-        else { $env:PLAYWRIGHT_BROWSERS_PATH = $previousBrowserPath }
     }
-}
-if (-not $bundledChrome) {
-    $previousBrowserPath = $env:PLAYWRIGHT_BROWSERS_PATH
-    try {
-        $env:PLAYWRIGHT_BROWSERS_PATH = $browserRoot
-        $installArgs = @('-m', 'playwright', 'install')
-        if ($Release) { $installArgs += '--no-shell' }
-        & $venvPython @installArgs chromium
-        if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-    } finally {
-        if ($null -eq $previousBrowserPath) { Remove-Item Env:PLAYWRIGHT_BROWSERS_PATH -ErrorAction SilentlyContinue }
-        else { $env:PLAYWRIGHT_BROWSERS_PATH = $previousBrowserPath }
+    if (-not $bundledChrome) {
+        $previousBrowserPath = $env:PLAYWRIGHT_BROWSERS_PATH
+        try {
+            $env:PLAYWRIGHT_BROWSERS_PATH = $browserRoot
+            $installArgs = @('-m', 'playwright', 'install')
+            if ($Release) { $installArgs += '--no-shell' }
+            & $venvPython @installArgs chromium
+            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+        } finally {
+            if ($null -eq $previousBrowserPath) { Remove-Item Env:PLAYWRIGHT_BROWSERS_PATH -ErrorAction SilentlyContinue }
+            else { $env:PLAYWRIGHT_BROWSERS_PATH = $previousBrowserPath }
+        }
+        $bundledChrome = Get-ChildItem -LiteralPath $browserRoot -Filter chrome.exe -Recurse | Select-Object -First 1
+        if (-not $bundledChrome) { throw 'Playwright did not install full Chromium.' }
     }
-    $bundledChrome = Get-ChildItem -LiteralPath $browserRoot -Filter chrome.exe -Recurse | Select-Object -First 1
-    if (-not $bundledChrome) { throw 'Playwright did not install full Chromium.' }
 }
 
 & $venvPython -m PyInstaller --noconfirm --clean --onedir --name pdf-designer-runtime `
@@ -110,7 +114,9 @@ if (Test-Path -LiteralPath $finalRuntimeRoot) { Remove-Item -LiteralPath $finalR
 New-Item -ItemType Directory -Path (Split-Path -Parent $finalRuntimeRoot) -Force | Out-Null
 Copy-Item -LiteralPath $builtRuntime -Destination $finalRuntimeRoot -Recurse
 $targetBrowsers = Join-Path $finalRuntimeRoot 'browsers'
-if ($Release) {
+if ($Store) {
+    Set-Content -LiteralPath (Join-Path $finalRuntimeRoot 'installed-browser.txt') -Value 'Edge or Chrome'
+} elseif ($Release) {
     New-Item -ItemType Directory -Path $targetBrowsers | Out-Null
     $browserRevision = $bundledChrome.Directory.Parent
     Copy-Item -LiteralPath $browserRevision.FullName -Destination $targetBrowsers -Recurse
@@ -146,8 +152,10 @@ if ($Release) {
     ) | Set-Content -LiteralPath (Join-Path $notices.FullName 'runtime-versions.txt') -Encoding utf8
 }
 
-$bundledChrome = Get-ChildItem -LiteralPath (Join-Path $finalRuntimeRoot 'browsers') -Filter chrome.exe -Recurse -ErrorAction SilentlyContinue | Select-Object -First 1
-if (-not $bundledChrome) { throw 'The runtime is missing bundled Playwright Chromium.' }
+if (-not $Store) {
+    $bundledChrome = Get-ChildItem -LiteralPath (Join-Path $finalRuntimeRoot 'browsers') -Filter chrome.exe -Recurse -ErrorAction SilentlyContinue | Select-Object -First 1
+    if (-not $bundledChrome) { throw 'The runtime is missing bundled Playwright Chromium.' }
+}
 & (Join-Path $finalRuntimeRoot 'pdf-designer-runtime.exe') --help
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 Write-Host "PASS - desktop runtime ready: $finalRuntimeRoot"

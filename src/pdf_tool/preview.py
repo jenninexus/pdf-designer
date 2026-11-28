@@ -679,6 +679,7 @@ try {
             <select id="fmt" title="Export format" aria-label="Export format">
               <option value="pdf-light">PDF light</option>
               <option value="pdf-dark">PDF dark</option>
+              <option value="pdf-grayscale">PDF grayscale (print)</option>
               <option value="png-light">PNG light</option>
               <option value="png-dark">PNG dark</option>
             </select>
@@ -753,6 +754,7 @@ try {
         <select id="drawerFmt" aria-label="Export format">
           <option value="pdf-light">PDF light</option>
           <option value="pdf-dark">PDF dark</option>
+          <option value="pdf-grayscale">PDF grayscale (print)</option>
           <option value="png-light">PNG light</option>
           <option value="png-dark">PNG dark</option>
         </select>
@@ -1461,7 +1463,26 @@ document.getElementById("compareNoneBtn").addEventListener("click", () => setFil
 
 const main = document.getElementById("main");
 const previewToggle = document.getElementById("previewToggle");
-main.addEventListener("load", () => applyPalette(main));
+function fitDocumentPreview() {
+  const doc = main.contentDocument;
+  if (!doc || !doc.querySelector(".page") || !main.clientWidth) return;
+  let fit = doc.getElementById("hub-preview-fit");
+  if (!fit) {
+    fit = doc.createElement("style");
+    fit.id = "hub-preview-fit";
+    doc.head.appendChild(fit);
+  }
+  fit.textContent = "";
+  const width = doc.documentElement.scrollWidth;
+  if (width > doc.documentElement.clientWidth) {
+    fit.textContent = `@media screen { html { zoom: ${doc.documentElement.clientWidth / width}; } }`;
+  }
+}
+main.addEventListener("load", () => {
+  applyPalette(main);
+  fitDocumentPreview();
+});
+new ResizeObserver(fitDocumentPreview).observe(main);
 paletteSel.addEventListener("change", () => {
   applyPalette(main);
   document.querySelectorAll(".thumb iframe").forEach(f => applyPalette(f));
@@ -2359,7 +2380,7 @@ def make_handler(root: Path, docs: list[dict], palettes: list[dict]):
                     pdf = export_html_to_pdf(
                         str(doc),
                         output_dir=out_dir,
-                        pdf_theme=pdf_theme,
+                        pdf_theme="grayscale" if fmt == "pdf-grayscale" else pdf_theme,
                         css_vars=req.get("cssVars"),
                         workspace=root,
                         resolve_asset=resolve_asset,
