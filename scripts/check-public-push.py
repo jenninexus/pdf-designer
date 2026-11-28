@@ -295,7 +295,7 @@ def check_content(rev_range: list[str], markers: set[str]) -> list[str]:
     public_links: dict[str, list[str]] = {}
     for line in _marker_lines():
         path, _, url = line.strip().partition("\t")
-        if path.startswith("!") and path.endswith(".md") and re.fullmatch(r"https://[^\s()]+", url):
+        if path.startswith("!") and path.endswith((".md", ".py", ".cjs")) and re.fullmatch(r"https://[^\s()'\"<>]+", url):
             public_links.setdefault(path[1:], []).append(url)
     problems: list[str] = []
     for chunk in log.split("\x00")[1:]:
@@ -310,7 +310,11 @@ def check_content(rev_range: list[str], markers: set[str]) -> list[str]:
                 added.append((current, line[1:]))
         for where, text in added:
             for url in public_links.get(where, ()):
-                text = text.replace(f"]({url})", "](approved-public-link)")
+                if where.endswith(".md"):
+                    text = text.replace(f"]({url})", "](approved-public-link)")
+                else:
+                    for quote in ('"', "'"):
+                        text = text.replace(f"{quote}{url}{quote}", f"{quote}approved-public-link{quote}")
             for marker in find_markers(text, markers):
                 problems.append(f"{sha[:10]} {where}: private identifier {_redact(marker)}")
     return sorted(set(problems))

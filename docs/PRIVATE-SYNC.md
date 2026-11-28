@@ -78,9 +78,9 @@ On every `git push`, before GitHub accepts it, for each commit being published:
 `!` marks a value as deliberately public (for example a studio domain that already appears in the
 docs), so editing a line that contains it is not blocked.
 
-To approve one exact HTTPS Markdown link in one file, add
+To approve one exact HTTPS Markdown link or a quoted URL in a Python or CommonJS file, add
 `!docs/FILE.md<TAB>https://example.org/project` with a literal tab between the path
-and URL. The guard still checks the link label, the surrounding line and other files.
+and URL. The guard still checks other URLs, the surrounding text, and other files.
 
 There is no bypass flag. If the gate blocks a push, amend or drop the offending commit. Do not use
 `git push --no-verify`.

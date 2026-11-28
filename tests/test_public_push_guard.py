@@ -178,3 +178,19 @@ def test_export_outside_docs_is_blocked(repo: Path) -> None:
     result = _gate(repo)
     assert result.returncode == 1
     assert "export outside approved public assets" in result.stderr
+
+
+def test_approved_code_url_is_exact_and_file_scoped(repo: Path) -> None:
+    config = repo / ".config"
+    config.mkdir()
+    url = "https://example.org/private-marker/project"
+    path = "desktop/help.cjs"
+    (config / "private-markers.txt").write_text(f"private-marker\n!{path}\t{url}\n", encoding="utf-8")
+    _commit(repo, path, f'const help = "{url}";\n')
+    assert _gate(repo).returncode == 0
+    _commit(repo, path, f'const help = "{url}/other";\n')
+    assert _gate(repo).returncode == 1
+    _commit(repo, path, f'const help = "{url}"; // private-marker\n')
+    assert _gate(repo).returncode == 1
+    _commit(repo, "desktop/other.cjs", f'const help = "{url}";\n')
+    assert _gate(repo).returncode == 1
