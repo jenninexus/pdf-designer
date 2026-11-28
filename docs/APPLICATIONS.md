@@ -42,18 +42,17 @@ address it once, plainly, in the cover letter. That candor wins credibility.
 
 ## Folder anatomy
 
-Folders are keyed by **role track**, *not* by date — so each new job in a track is a
-copy-and-tweak of the last one rather than a rebuild.
+Group multiple openings under their company. Existing flat opening folders still work.
 
 ```text
 _job-apps/
-  3D-Visualizer/            ← the TRACK, not a date
-    Company.md              research · verified links · pay verdict · evidence map · the listing verbatim
-    application.json        the machine record: apply URL · pay · status · who applied
-    theme.json              the palette derived from THIS COMPANY's real brand CSS
-    *.html                  the résumé + cover-letter SOURCES
-    evidence/               screenshots of the live posting
-  Backend/
+  ExampleCo/
+    3D-Visualizer/
+      Company.md            research, verified links, and the listing
+      application.json      apply URL, status, and applicants
+      theme.json            the company palette
+      *.html                editable résumé and cover letter
+      evidence/             screenshots of the posting
   …
 ```
 
@@ -75,9 +74,8 @@ resumes/alex/ExampleCo/Technical-Game-Designer/
 resumes/alex/Example-Company-Role/        ← single-application company stays flat
 ```
 
-Group only at two-or-more applications per person, and note that **exports into a company group need an
-explicit `--output-dir`** (the engine infers a flat path from the `_job-apps/<App>/` name) —
-[`STORAGE.md`](STORAGE.md) § Company grouping.
+The export path preserves the company and opening from the source folder. Use
+`--output-dir` when you want a custom destination. See [company grouping](STORAGE.md#company-grouping).
 
 Facts about the *job* (the apply link, the pay, the company palette) belong to the *job* — so
 two people applying to the same posting share **one** record and it can never drift apart

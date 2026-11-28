@@ -30,7 +30,7 @@ PUBLIC_FILES = (
     "collages/README.md",
     "brands/README.md",
 )
-EXCLUDED_PARTS = {"_exports", "output", "_variants", "__pycache__"}
+EXCLUDED_PARTS = {"_archive", "_exports", "output", "_variants", "__pycache__"}
 EXCLUDED_SUFFIXES = {".pdf", ".png", ".jpg", ".jpeg", ".webp", ".gif", ".pyc"}
 
 

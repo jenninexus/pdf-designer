@@ -51,7 +51,7 @@ project, replacing copying finished renders around by hand.
 --bg sets the page background instead of the theme's flat color. It takes a
 named preset from themes/default-collage.json#backgrounds (discord-slate,
 discord-deep, discord-ember, discord-signal, discord-radial, martian-ember,
-jenni-nexus, flat-dark, flat-white) or any raw CSS color/gradient string, which is passed
+flat-dark, flat-white) or any raw CSS color/gradient string, which is passed
 through verbatim.
 """
 
@@ -187,7 +187,6 @@ BACKGROUNDS = {
     "discord-signal": "linear-gradient(145deg, #313338 0%, #26323d 60%, #1b2733 100%)",
     "discord-radial": "radial-gradient(120% 90% at 50% 0%, #3a3d44 0%, #2b2d31 45%, #1a1b1e 100%)",
     "martian-ember":  "linear-gradient(150deg, #2b2d31 0%, #3a2622 55%, #f0561d 190%)",
-    "jenni-nexus":    "radial-gradient(120% 90% at 50% 0%, #2a1248 0%, #12071e 48%, #0A0710 100%)",
     "flat-dark":      "#0b0d12",
     "flat-white":     "#ffffff",
 }
@@ -197,7 +196,6 @@ BACKGROUNDS = {
 FRAMES = {
     "discord-slate": "#3f434b", "discord-deep": "#383b42", "discord-ember": "#5a3a2c",
     "discord-signal": "#2f4457", "discord-radial": "#454951", "martian-ember": "#f0561d",
-    "jenni-nexus": "#A563D1",
     "flat-dark": "#2a2e36", "flat-white": "#ffffff",
 }
 

@@ -129,21 +129,6 @@ same engine — not a second feature set, and not a reason to delay clone-safe
 fixes. Contributor build notes: [`WINDOWS-ELECTRON.md`](WINDOWS-ELECTRON.md).
 Maintainer channel/signing notes stay local (`storage/docs/CHANNELS.local.md`).
 
-## How to market it (public-safe)
-
-| Layer | Message | Proof |
-|---|---|---|
-| Free GitHub | Résumé creator you control — vault + skills + palettes | `resume-studio/` · smoke · Hub |
-| Who it’s for now | Agents + power users who refuse to lie on applications | Not a Canva beginner pitch yet |
-| Paid later | Installer + guided vault/export around the **same** engine | Shell-over-Hub |
-| Never as product | Someone’s vault, job history, or private brand maps | Privacy split *is* the brand |
-
-Channels: README + Hub GIF from **`examples/` only** · TestPyPI only for developer
-package rehearsal (no production PyPI release) · short “export +
-check_generation” clips. Keep personal career work and Patreon drafts out.
-
-Longer private channel notes: `storage/docs/MARKETING.md` · `storage/docs/CHANNELS.local.md` (gitignored).
-
 ## Non-goals
 
 - Auto-submit applications

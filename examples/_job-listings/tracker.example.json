@@ -6,7 +6,8 @@
     "  python -m pdf_tool.tracker status",
     "",
     "If you want a single flat file, copy this to _job-apps/tracker.json",
-    "(gitignored). The CLI still prefers the per-folder application.json scan."
+    "(gitignored) for manual use. The CLI reads the per-opening application.json records.",
+    "Use applied-index.md for your human submission history."
   ],
   "jobs": [
     {

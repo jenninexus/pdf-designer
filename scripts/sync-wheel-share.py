@@ -24,7 +24,7 @@ COPIES = (
     ("profiles/you-resume.example.json", "profiles/you-resume.example.json"),
 )
 
-EXCLUDED_PARTS = {"_exports", "output", "_variants", "__pycache__"}
+EXCLUDED_PARTS = {"_archive", "_exports", "output", "_variants", "__pycache__"}
 
 
 def tracked_sources(*paths: str) -> list[Path]:

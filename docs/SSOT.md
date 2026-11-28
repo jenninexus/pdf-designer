@@ -45,7 +45,7 @@ Folder and optional agent-tooling overview: [`PROJECT-MAP.md`](PROJECT-MAP.md).
 | **Work-samples SSOT** | `profiles/<user>-resume.json#workSamples` + `users/<user>.json#portfolio` | ⭐ **PER-USER** page structure + personal assets — never copy another person's page ([VAULT.md](VAULT.md) § Work-samples) |
 | Agent map | `AGENTS.md` | Capability / command SSOT for assistants |
 | **Product / business** | [`PRODUCT.md`](PRODUCT.md) | ⭐ Free GitHub toolkit vs future paid app; shell-over-Hub |
-| **Public vs local** | [`PUBLIC-LOCAL-SPLIT.md`](PUBLIC-LOCAL-SPLIT.md) | ⭐ Tracked vs gitignored; sibling-repo map |
+| **Public vs local** | [`PUBLIC-LOCAL-SPLIT.md`](PUBLIC-LOCAL-SPLIT.md) | ⭐ Tracked and Git-ignored workspace boundaries |
 | Packaging / PyPI | [`PACKAGING.md`](PACKAGING.md) | Wheel must ship public `themes/` + `layouts/` via `pdf_tool/share/` |
 | Clone how-to | [`GETTING-STARTED.md`](GETTING-STARTED.md) | Public path without vaults (`WHITE-LABEL.md` is a stub alias) |
 | Make-resume | `.claude/commands/make-resume.example.md` | Job-application routine (public seed; personal `make-resume.md` is gitignored) |

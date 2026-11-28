@@ -21,7 +21,8 @@ def test_wizard_is_a_design_hub_route_and_navigation_target():
     handler = make_handler(root, scan_documents(root), load_palettes(root))
     assert 'href="/wizard"' in APP_HTML
     assert ">Wizard</a>" in APP_HTML
-    assert 'class="hub-fa-icon fa-patreon"' in APP_HTML
+    support = APP_HTML.split('id="hubSupport"', 1)[1].split("</details>", 1)[0]
+    assert 'href="https://github.com/jenninexus/pdf-designer"' in support
     server = ThreadingHTTPServer(("127.0.0.1", 0), handler)
     thread = threading.Thread(target=server.serve_forever, daemon=True)
     thread.start()

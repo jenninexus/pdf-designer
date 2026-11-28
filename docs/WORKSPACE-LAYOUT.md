@@ -106,7 +106,7 @@ pdf-designer/
 
   # ── Teaching surface (public, tracked) ───────────────────
   examples/
-    resume-studio/          # product front door
+    README.md               # example catalog and résumé walkthrough
     users/                  # sample person card
     vaults/                 # sample vault (fake claims)
     profiles/               # already exists

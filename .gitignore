@@ -1,5 +1,7 @@
 # Personal workspace (contains private machine paths) — local only, never tracked
 pdf-designer.code-workspace
+/CLAUDE.md
+/.opencode/
 
 # Second Git repository for personal data shared between your own machines
 # (scripts/private-sync.py, docs/PRIVATE-SYNC.md). Never part of the public repo.

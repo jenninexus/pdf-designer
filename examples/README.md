@@ -37,7 +37,7 @@ claims in [vaults](../vaults/README.md), and document preferences in
 | [Vault starter](../vaults/you.example.json) | `vaults/you.json` |
 | [Résumé profile starter](../profiles/you-resume.example.json) | `profiles/you-resume.json` |
 | [Brand palette shape](brand-design/brand-example.json) | `brands/brand-you.json` |
-| [Job listing template](_job-listings/example-application/) | `_job-apps/My-Role/` |
+| [Job listing template](_job-listings/example-application/) | `_job-apps/Example-Company/My-Role/` |
 
 ## Document starters
 

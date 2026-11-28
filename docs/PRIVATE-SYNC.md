@@ -37,36 +37,10 @@ incoming one, stops the pull with a message; `push` yours first (or rename it), 
 Two people editing the same file produce an ordinary Git merge conflict; resolve it with
 `python scripts/private-sync.py git <command>`. History is kept, so nothing shared is ever lost.
 
-## Check every local-only surface
+## Command sources and runtime adapters
 
-### Command sources and runtime adapters
-
-| Scope | Source of truth | Generated consumers |
-|---|---|---|
-| Project | `.claude/commands/<name>.md` (private); tracked `*.example.md` seeds for public clones | `.codex/skills/<name>/SKILL.md`, `.agents/skills/source-command-<name>/SKILL.md` |
-| User | The user's global command library, conventionally `~/.claude/commands/` | User-level `.codex/skills/`, `.agents/skills/`, and configured runtime command links |
-| Project instructions | `AGENTS.md` | `CLAUDE.md` and local runtime READMEs point here |
-
-Global commands stay global. A project-specific alias may point to one; do not copy its body into
-this checkout. Generated adapters are deliberate runtime copies, not independently editable sources.
-Private-sync shares project command sources, not generated adapters, global commands, runtime settings,
-authentication, or session history. Each machine regenerates its own adapters.
-
-For maintainers with `/sync-all`, audit the exact checkout with the project-scoped entry point. Follow its current source instructions rather than calling its generator internals.
-On other setups use the installed generator's documented scoped interface; neither tool is a public
-engine dependency. Preserve and compare unexplained adapter edits before any regeneration; a baseline
-refusal requires investigation, never a forced overwrite.
-
-The session order is: pull public/private sources → inspect local edits → adopt reviewed adapter
-changes into their command source → regenerate → audit → share private sources → confirm local state.
-Keep this sequence in the session commands; keep generator mechanics in the global sync command.
-
-`python scripts/local-state.py` reports what GitHub never sees in one place. It covers private-sync state,
-the command wrappers (`.claude/commands/` is the source, and `.codex/` and `.agents/` are generated copies),
-and each `.config/<name>.json` compared with its tracked `.example` seed. It exits 1 when something needs
-action. A wrapper edited in another agent runtime is reported as `EDITED`. Fold it back into the source with
-`python scripts/local-state.py adopt <cmd> --from codex|agents`, then regenerate the wrappers, so the newest
-edit wins whichever tool made it.
+Private sync can share local command sources. Each machine regenerates its own runtime adapters.
+Maintainer instructions for adapter checks and recovery live in the private operating guide.
 
 ## What is shared
 
@@ -78,7 +52,7 @@ Design Hub sees one workspace. It holds only:
 - `layouts/application-packet.json` (editable private application-packet recipe)
 - Older private docs paths are still recognized for migration from earlier clones. Put new operating records under `storage/docs/`.
 - `.config/private-markers.txt` (so every machine guards every person's identifiers)
-- the bare personal commands `.claude/commands/*.md` (`/make-resume`, `/pdf-start`, …), so any machine can
+- the local command sources in `.claude/commands/*.md`, so any machine can
   build any person's documents. The tracked `*.example.md` seeds stay public, and the `.codex/` and `.agents/`
   wrappers are regenerated on each machine from these sources rather than shared.
 

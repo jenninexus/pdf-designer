@@ -2,8 +2,7 @@
 
 **The single agent-facing SSOT for this repo.** Any AI assistant (Claude, Codex, Cursor, Copilot, a
 local model) or a human with a terminal should be able to drive the whole toolkit from this one page.
-It is **vendor-neutral on purpose** — [`CLAUDE.md`](CLAUDE.md) and
-the local [command index](.claude/commands/README.md) point here rather than repeat project rules.
+It is **vendor-neutral on purpose**. Local tool-specific instructions point here.
 
 Read any user-level instructions supplied by your runtime as well. Keep personal doctrine and
 global command bodies in that user's command library; this public guide owns project contracts.
@@ -188,8 +187,7 @@ Local operators define applicant shorthand in their private command README; publ
 **Shared-agent tooling:** command Markdown is the source; `.codex/skills/` and `.agents/skills/`
 are generated local adapters. Keep global commands in the user library and project commands here;
 link to global commands instead of copying their bodies. Never hand-edit generated `SKILL.md` files.
-The source/runtime map and safe refresh order live in
-[`docs/PRIVATE-SYNC.md`](docs/PRIVATE-SYNC.md#command-sources-and-runtime-adapters).
+Maintainers can find the adapter refresh procedure in their local operating guide. [Private sync](docs/PRIVATE-SYNC.md) explains the portable workspace workflow.
 Claude plugin preferences and active editor configuration stay local. Maintainer-specific tooling and startup
 checks belong in ignored `storage/docs/`; the public engine runs without private services or credentials.
 

@@ -92,7 +92,10 @@ when nothing else can be inferred.
 
 ### Company grouping
 
-Group multiple roles for one company under `resumes/<user>/ExampleCo/<role>/`. The engine currently infers a flat application path; pass an explicit `--output-dir` when exporting to the grouped folder.
+Group multiple openings under `_job-apps/<company>/<opening>/`. A source for a known applicant
+exports to `resumes/<user>/<company>/<opening>/` by default. Use an applicant prefix on the
+source filename or put the source in a known applicant's subfolder within the opening.
+Existing flat application folders continue to export to `resumes/<user>/<opening>/`.
 
 ### Sent artifacts
 

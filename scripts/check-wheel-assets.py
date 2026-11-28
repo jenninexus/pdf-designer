@@ -76,7 +76,8 @@ def main() -> int:
         name
         for name in names
         if (
-            "/_exports/" in name
+            "/_archive/" in name
+            or "/_exports/" in name
             or "/output/" in name
             or "/_variants/" in name
             or name == "pdf_tool/share/layouts/application-packet.json"

@@ -806,12 +806,9 @@ try {
       <div class="hub-home-grid" id="hubHomeGrid"></div>
       <details class="hub-home-support" id="hubSupport">
         <summary>Help &amp; support</summary>
-        <p class="hub-support-copy">PDF Designer is free. A suggested $5 donation helps support development.</p>
+        <p class="hub-support-copy">Find setup help, product information, and the app privacy notice.</p>
         <div class="hub-support-actions">
-          <a class="hub-support-btn patreon" href="https://www.patreon.com/c/JenniNexus" target="_blank" rel="noopener noreferrer"><span class="hub-fa-icon fa-patreon" aria-hidden="true"></span>Patreon</a>
-          <a class="hub-support-btn paypal" href="https://paypal.me/jenninexus" target="_blank" rel="noopener noreferrer"><span class="hub-fa-icon fa-paypal" aria-hidden="true"></span>PayPal</a>
-          <a class="hub-support-btn" href="https://discord.gg/KYPh7Cp" target="_blank" rel="noopener noreferrer">Discord</a>
-          <a class="hub-support-btn" href="https://x.com/JenniNexus" target="_blank" rel="noopener noreferrer">X</a>
+          <a class="hub-support-btn" href="https://github.com/jenninexus/pdf-designer" target="_blank" rel="noopener noreferrer">Help and product information</a>
         </div>
       </details>
     </div>

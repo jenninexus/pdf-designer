@@ -211,7 +211,7 @@ _RESERVED_USER_DIRS = {
 
 
 def output_job_leaf(source: Path | str, *, root: Path | None = None) -> str | None:
-    """Per-job folder name (Netflix-App, CZI, …) when the source is not a go-to pack."""
+    """Per-job path when the source is not a go-to pack."""
     root_path = _root(root).resolve()
     source_path = Path(source).resolve()
     try:
@@ -225,7 +225,9 @@ def output_job_leaf(source: Path | str, *, root: Path | None = None) -> str | No
             return parts[idx + 1]
     # resumes/<user>/<App>/doc.html  (len>=4) — not a file sitting in the user folder
     if parts[:1] == ["resumes"] and len(parts) >= 4 and parts[2] not in _RESERVED_USER_DIRS:
-        return parts[2]
+        job_parts = parts[2:-1]
+        nested = next((i for i, part in enumerate(job_parts) if part in _RESERVED_USER_DIRS), len(job_parts))
+        return str(Path(*job_parts[:nested]))
     if len(parts) >= 4 and parts[1] == OUTPUT_KIND_RESUMES and parts[2] not in _RESERVED_USER_DIRS:
         return parts[2]
     return None
@@ -243,8 +245,8 @@ def _workspace_user_ids(root: Path) -> set[str]:
     return ids
 
 
-def _job_app_user_and_leaf(source: Path, root: Path) -> tuple[str | None, str | None]:
-    """``_job-apps/<App>/<user>-….html`` → ``(user, App)``; the user is the filename prefix."""
+def _job_app_user_and_leaf(source: Path, root: Path) -> tuple[str | None, Path | None]:
+    """Keep the opening path and resolve the applicant from the filename or folder."""
     try:
         parts = source.resolve().relative_to(root.resolve()).parts
     except ValueError:
@@ -256,10 +258,15 @@ def _job_app_user_and_leaf(source: Path, root: Path) -> tuple[str | None, str | 
         rest = rel[len(prefix) + 1 :].split("/")
         if len(rest) < 2:
             return None, None
-        app, name = rest[0], rest[-1].lower()
-        users = sorted(_workspace_user_ids(root), key=len, reverse=True)
+        *opening, name = rest
+        name = name.lower()
+        users = sorted(_workspace_user_ids(root), key=lambda user: (-len(user), user))
         user = next((u for u in users if name.startswith(u.lower() + "-")), None)
-        return user, app
+        folder_user = next((u for u in users if len(opening) > 1 and opening[-1].lower() == u.lower()), None)
+        if folder_user and (not user or user == folder_user):
+            opening.pop()
+            user = folder_user
+        return user, Path(*opening)
     return None, None
 
 
@@ -274,8 +281,8 @@ def default_output_dir(
 
     Exports live WITH their document family (owner directive 2026-09-27):
 
-    * ``resumes/<user>/…`` and ``_job-apps/<App>/<user>-….html`` → ``resumes/<user>/``
-      (plus the job folder, e.g. ``resumes/<user>/<App>/``);
+    * ``resumes/<user>/…`` and ``_job-apps/<company>/<opening>/<user>-….html``
+      → ``resumes/<user>/``, preserving the company and opening folders when present;
     * ``collages/<project>/…`` → ``collages/<project>/`` (beside ``images/`` and
       ``_candidates/``);
     * anything else — public ``examples/`` or an unrecognised source — falls back to

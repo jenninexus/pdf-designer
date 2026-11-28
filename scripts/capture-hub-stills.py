@@ -138,15 +138,13 @@ def capture_splash(context, base: str) -> None:
     )
     page.goto(f"{base}/?splash=1", wait_until="domcontentloaded")
     page.locator("#hubSplashOpen").wait_for(state="visible", timeout=20000)
-    page.wait_for_timeout(3400)
+    page.wait_for_timeout(350)
     dest = IMAGES / "hub-splash.png"
     page.screenshot(path=str(dest), full_page=False)
     print(f"wrote {dest.relative_to(REPO)} ({dest.stat().st_size} bytes)")
     text = page.inner_text("#hubSplash").lower()
     if "open" not in text or "start wizard" not in text:
         raise SystemExit("splash still is missing Open / Start wizard")
-    if "patreon" not in text:
-        raise SystemExit("splash still is missing tip buttons")
     page.close()
 
 
@@ -172,11 +170,8 @@ def capture_public(base: str) -> None:
         if "Jane Example" not in page.inner_text("body"):
             raise SystemExit("vault still is not showing Jane Example")
 
-        shot(page, f"{base}/wizard?no-splash=1", IMAGES / "hub-start.png", wait_for="aside.wizard-support .hub-support-btn.patreon")
+        shot(page, f"{base}/wizard?no-splash=1", IMAGES / "hub-start.png", wait_for="#wizard-start")
         assert_clone_safe(page, "wizard")
-        body = page.inner_text("aside.wizard-support")
-        if "Patreon" not in body or "PayPal" not in body:
-            raise SystemExit("wizard still is missing donate buttons")
 
         browser.close()
 

@@ -47,6 +47,15 @@ foreach ($file in $required) {
     }
 }
 $files = @(Get-ChildItem -LiteralPath $app -Recurse -File -Force)
+$excludedPayload = $files | Where-Object {
+    $relative = [IO.Path]::GetRelativePath($app, $_.FullName)
+    $relative -match '(?:^|[\\/])(?:_archive|_exports|_variants|output|__pycache__)(?:[\\/]|$)' -or
+        ($relative -match '^resources[\\/]workspace-seed[\\/](?:brands|collages|resumes)[\\/]' -and
+            $relative -notmatch '^resources[\\/]workspace-seed[\\/](?:brands|collages|resumes)[\\/]README\.md$')
+}
+if ($excludedPayload) {
+    throw 'The unpacked app contains archived, generated, or personal workspace files. Rebuild the public runtime and workspace seed.'
+}
 if (-not ($files | Where-Object FullName -Match '[\\/]chrome-win[^\\/]*[\\/]chrome\.exe$')) {
     throw 'The unpacked runtime is missing its bundled Chromium.'
 }

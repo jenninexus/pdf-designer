@@ -39,6 +39,8 @@ If you enjoyed this repo: ✨
 
 [Star this repo](https://github.com/jenninexus/pdf-designer) · [Links](https://jenninexus.com/links) · [Patreon](https://www.patreon.com/c/JenniNexus) · [PayPal](https://paypal.me/jenninexus)
 
+[Product walkthrough](https://jenninexus.com/blog/pdf-designer) · [Windows app privacy notice](https://jenninexus.com/pdf-designer-privacy)
+
 Optional tip **$5**.
 
 Made with 💚 by [Jenni](https://github.com/jenninexus) at [Monofinity Studio](https://github.com/monofinitystudio)

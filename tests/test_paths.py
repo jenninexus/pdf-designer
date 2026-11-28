@@ -97,6 +97,18 @@ def test_default_output_dir_job_app_routes_to_user_resumes(tmp_path: Path):
     assert paths.default_output_dir(other, root=tmp_path) == tmp_path / "_exports" / "unfiled"
 
 
+def test_grouped_job_sources_keep_company_and_opening_in_exports(tmp_path: Path):
+    (tmp_path / "users").mkdir()
+    (tmp_path / "users" / "alex-rivera.json").write_text("{}")
+    expected = tmp_path / "resumes" / "alex-rivera" / "Acme" / "Designer"
+    for source in (
+        "_job-apps/Acme/Designer/alex-rivera-resume.html",
+        "_job-apps/Acme/Designer/alex-rivera/resume.html",
+        "resumes/alex-rivera/Acme/Designer/resume.html",
+    ):
+        assert paths.default_output_dir(tmp_path / source, root=tmp_path) == expected
+
+
 def test_output_and_export_roots_have_distinct_roles(tmp_path: Path):
     assert paths.output_root(root=tmp_path) == tmp_path / "output"
     assert paths.export_root(root=tmp_path) == tmp_path / "_exports"

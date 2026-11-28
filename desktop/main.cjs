@@ -9,10 +9,7 @@ const path = require("node:path");
 
 const STARTUP_TIMEOUT_MS = 30_000;
 const SUPPORT_LINKS = new Set([
-  "https://www.patreon.com/c/JenniNexus",
-  "https://paypal.me/jenninexus",
-  "https://discord.gg/KYPh7Cp",
-  "https://x.com/JenniNexus"
+  "https://github.com/jenninexus/pdf-designer"
 ]);
 let runtimeChild = null;
 let runtimeUrl = null;

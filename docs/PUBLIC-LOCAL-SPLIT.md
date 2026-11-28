@@ -28,7 +28,7 @@ The **free product** is the clone. The planned Windows app packages the same eng
 |---|---|---|
 | [README.md](../README.md) | Public | Product introduction, setup, and the example gallery. |
 | [LICENSE](../LICENSE) | Public | MIT license for this repository. Bundled fonts carry their notices in `themes/fonts/`. |
-| [AGENTS.md](../AGENTS.md) and [CLAUDE.md](../CLAUDE.md) | Public | Contributor contract and its compatibility pointer. |
+| [AGENTS.md](../AGENTS.md) | Public | Contributor contract. Tool-specific pointers stay local. |
 | [.gitignore](../.gitignore) and [.gitattributes](../.gitattributes) | Public | Private path exclusions and portable hook line endings. |
 | `pdf-designer.code-workspace` | Local | Machine-specific editor setup and private extension folder. |
 | `docs/` and `assets/public/` | Public | Product documentation and reviewed example screenshots or overview assets. |
@@ -38,7 +38,7 @@ The **free product** is the clone. The planned Windows app packages the same eng
 | `.config/` | Mixed | Optional `*.example.json` seeds, including the capture manifest. Active settings and privacy markers stay local. |
 | `private/`, `.agents/`, `.codex/`, and `.local-artifacts/` | Local | Private add-ons, generated command adapters, and retained local output. |
 
-Keep [AGENTS.md](../AGENTS.md) public as the contributor contract and [CLAUDE.md](../CLAUDE.md) as its short compatibility pointer. Operator sessions and machine setup live in ignored files.
+Keep [AGENTS.md](../AGENTS.md) public as the contributor contract. Tool-specific pointers, sessions, and machine setup live in ignored files.
 
 ## Scripts
 
@@ -80,7 +80,7 @@ without tracking anyone's generated files.
 Commit when they are clone-safe and reusable:
 
 - `src/pdf_tool/` — HTML→PDF, Design Hub, guards, collage
-- `themes/` · `layouts/` · `examples/` (incl. `resume-studio/`)
+- `themes/` · `layouts/` · `examples/`
 - `docs/*.md` — engine, product, protocol **except** gitignored private notes listed below
 - `README.md` · `LICENSE` · contributor map `AGENTS.md` (keep it clone-safe; no vault bodies)
 - `.claude/commands/*.example.md` — generalized protocol seeds; placeholders only
@@ -150,40 +150,8 @@ data and receive private deliverables beside their document family (`resumes/<pr
 renderer rather than creating a second product.
 
 Thesis: [`PRODUCT.md`](PRODUCT.md). Clone without vaults: [`GETTING-STARTED.md`](GETTING-STARTED.md).
-Private marketing detail: `storage/docs/MARKETING.md` (gitignored).
 
-## Theme kits (private — not the public product)
-
-`www-theme-kit` / `syna-theme-kit` are **dev-only** brand registries on this network.
-They are **not** published with the free GitHub résumé product.
-
-| Kit profile | Owns | Public pdf-designer counterpart |
-|---|---|---|
-| `www-theme-kit/profiles/pdf-designer.json` | Design Hub chrome pointers | `src/pdf_tool/static/hub.css` + `themes/` |
-| `www-theme-kit/profiles/resume.json` | Private studio résumé layout notes | `layouts/` + public `themes/default-resume.*` |
-| `www-theme-kit/palettes/resume-palettes.json` | Audition / brand palette registry | `themes/presets/*.json` (public subset) |
-
-Document tokens that strangers need live in **`themes/`**. Real studio hex stays in
-`brands/`.
-
-## Sibling repos (same split idea)
-
-| Repo | Public | Private / local |
-|---|---|---|
-| **pdf-designer** (this) | Engine + product docs + fictional examples + `output/` layout guide | Root-noun payload, generated deliverables, bare commands, all `Plans/` |
-| **agency** | `agents/`, `docs/`, media masters | `projects/`, `mcp.json`, audits |
-| **socials** | Generic `docs/` + MCP tools | `storage/docs/*` IDs, `.env`, brand YAMLs |
-| **dashboard** | Seed profiles + fictional sample data | `my-dashboard/`, `.env` |
-| **www-theme-kit** | *(network private kit — not a public app)* | Private kit infrastructure |
-
-## History hygiene
-
-Files that once lived on `main` (bare commands, machine MCP config) can still exist in
-**old SHAs**. Working-tree ignore protects the current tree only; old commits remain accessible. Audit reachable history separately before deciding whether a targeted scrub is needed.
-
-- Runbook (local): `storage/docs/HISTORY-SCRUB.md` (gitignored)
-- Do **not** force-push without the required explicit owner authorization and a reviewed history-rewrite plan
-- Fast-forward of clone-safe `main` commits **is** how the public product stays current
+For the installed app, the bundled starter workspace contains fictional examples. Git exclusions protect local workspace files in normal use. Files committed in earlier revisions may still be visible in Git history.
 
 ## Related
 

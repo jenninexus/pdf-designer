@@ -143,7 +143,6 @@ link blue `#00a8fc` as accents:
 | `discord-ember` | Grey warming into orange |
 | `discord-signal` | Grey cooling into the embed link blue |
 | `martian-ember` | Warm orange accent |
-| `jenni-nexus` | Purple glow into `#0A0710` |
 | `flat-dark` / `flat-white` | The pre-gradient flat defaults |
 
 ```bash

@@ -14,7 +14,7 @@ then use [`PUBLIC-LOCAL-SPLIT.md`](PUBLIC-LOCAL-SPLIT.md) for the tracking/priva
 | Public product docs · `themes/` · `layouts/` · `examples/` | Live vaults, brands, jobs, collages, and exports in the local workspace |
 | `.config/mcp-pdf-designer.example.json` | `mcp-pdf-designer.json` (machine paths) |
 | `*.example.md` command seeds only | Bare `start`/`wrap`/`README`/`make-*.md` |
-| [`PRODUCT.md`](PRODUCT.md) · [`GETTING-STARTED.md`](GETTING-STARTED.md) · `resume-studio/` · optional public-safe product plan | Personal/session plans, agent notes, application records, and local marketing / workspace / history notes |
+| [`PRODUCT.md`](PRODUCT.md) · [`GETTING-STARTED.md`](GETTING-STARTED.md) · [fictional examples](../examples/README.md) | Personal/session plans, agent notes, application records, and local marketing / workspace / history notes |
 
 ## Start here
 
