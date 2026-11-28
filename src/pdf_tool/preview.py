@@ -593,6 +593,7 @@ APP_HTML = """<!doctype html>
 <link rel="stylesheet" href="/_hub/hub-controls.css">
 <link rel="stylesheet" href="/_hub/hub.css">
 <link rel="preload" as="image" href="/_hub/hub-app-icon.png">
+<link rel="icon" type="image/png" href="/_hub/hub-app-icon.png">
 <script>
 window.__pdfSplashStart = performance.now();
 try {
